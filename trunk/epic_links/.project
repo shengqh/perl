@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>epic_links</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>org.epic.perleditor.perlinkexternalfilesnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>1342723302047</name>
+			<type>2</type>
+			<location>C:/Perl64/lib</location>
+		</link>
+		<link>
+			<name>1342797963640</name>
+			<type>2</type>
+			<location>D:/sqh/programs/perl/lib/CQS</location>
+		</link>
+	</linkedResources>
+</projectDescription>
