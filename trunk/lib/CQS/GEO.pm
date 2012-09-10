@@ -1,6 +1,5 @@
 package CQS::GEO;
 
-use 5.014002;
 use strict;
 use warnings;
 use IO::Uncompress::Gunzip qw(gunzip $GunzipError);
