@@ -31,6 +31,11 @@ sub fastqc_by_pbs {
 
   my $pbsFile = $pbsDir . "/${sampleName}_fastqc.pbs";
 
+  my $fastqcDir = $resultDir . "/fastqc";
+  unless(-e $fastqcDir or mkdir($fastqcDir)){
+    die "Cannot create directory $fastqcDir\n";
+  }
+
   print "$pbsDir\n";
   open( OUT, ">$pbsFile" ) or die $!;
   print OUT $pbsDesc;
@@ -38,7 +43,7 @@ sub fastqc_by_pbs {
   print OUT "#PBS -j oe\n\n";
   print OUT "source $pathFile\n";
   print OUT "echo fastqc=`date`\n";
-  print OUT "fastqc -o $resultDir $seqFile\n";
+  print OUT "fastqc -o $fastqcDir $seqFile\n";
   print OUT "echo finished=`date`\n";
   close OUT;
 
