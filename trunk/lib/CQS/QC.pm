@@ -4,6 +4,7 @@ package CQS::QC;
 use strict;
 use warnings;
 use File::Basename;
+use CQS::PBS;
 
 require Exporter;
 
@@ -18,7 +19,7 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub fastqc_by_pbs {
-  my ( $rootDir, $seqFile ) = @_;
+  my ( $rootDir, $sampleName, $seqFile ) = @_;
 
   my $pathFile = '/home/shengq1/bin/path.txt';
 
@@ -26,7 +27,7 @@ sub fastqc_by_pbs {
 
   my ($pbsDesc) = get_pbs_desc();
 
-  my $fastqcDir = $resultDir . "/fastqc";
+  my $fastqcDir = $resultDir . "/fastqc_${sampleName}";
 
   unless(-e $fastqcDir or mkdir($fastqcDir)){
     die "Cannot create directory $fastqcDir\n";
