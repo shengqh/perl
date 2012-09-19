@@ -20,12 +20,12 @@ use Cwd;
 
 sub tophat2_by_pbs_single {
   my ( $dbDir, $rootDir, $sampleName, $sampleFile ) = @_;
-  tophat2_by_pbs($dbDir, $rootDir, $sampleName, $sampleFile);
+  tophat2_by_pbs($dbDir, $rootDir, $sampleName, ($sampleFile));
 }
 
 sub tophat2_by_pbs_double {
   my ( $dbDir, $rootDir, $sampleName, $sampleFile1, $sampleFile2 ) = @_;
-  tophat2_by_pbs($dbDir, $rootDir, $sampleName, $sampleFile1, $sampleFile2);
+  tophat2_by_pbs($dbDir, $rootDir, $sampleName, ($sampleFile1, $sampleFile2));
 }
 
 sub tophat2_by_pbs {
@@ -55,7 +55,7 @@ sub tophat2_by_pbs {
   print OUT "source $pathFile\n";
   print OUT "echo tophat2=`date` \n";
   print OUT "tophat2 --segment-length 25 -r 0 -p 8 -o $tophatDir $dbDir ";
-  foreach my $sampleFile in (@sampleFiles){
+  foreach my $sampleFile (@sampleFiles){
     print OUT " $sampleFile";
   }
   print OUT "\n";
