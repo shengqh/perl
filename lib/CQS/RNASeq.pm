@@ -80,21 +80,28 @@ sub tophat2_by_pbs_double {
 
   my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 
+  my $tophatDir = $resultDir . "/tophat2";
+
+  unless(-e $tophatDir or mkdir($tophatDir)){
+    die "Cannot create directory $tophatDir\n";
+  }
+
   my ($pbsDesc) = get_pbs_desc();
 
-  my $log           = $logDir . "/" . $sampleName . ".log";
+  my $log = $logDir . "/${sampleName}_tophat2.log";
 
-  my $pbsFile = $pbsDir . "/${sampleName}.pbs";
+  my $pbsFile = $pbsDir . "/${sampleName}_tophat2.pbs";
+
   print "$pbsDir\n";
   open( OUT, ">$pbsFile" ) or die $!;
   print OUT $pbsDesc;
   print OUT "#PBS -o $log\n";
   print OUT "#PBS -j oe\n\n";
   print OUT "source $pathFile\n";
-  print OUT "cd $resultDir\n\n";
+  print OUT "cd $tophatDir\n\n";
 
   print OUT "echo tophat2=`date` \n";
-  print OUT "tophat2 --segment-length 25 -r 0 -p 8 -o $resultDir $dbDir $sampleFile1 $sampleFile2\n";
+  print OUT "tophat2 --segment-length 25 -r 0 -p 8 -o $tophatDir $dbDir $sampleFile1 $sampleFile2\n";
   print OUT "echo finished=`date`\n";
   close OUT;
 
