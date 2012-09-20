@@ -9,7 +9,7 @@ my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
 my $genomeDb     = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769";
-my $gtfFile      = "/home/liuq6/reference/hg19.ensembl-for-tophat.gtf";
+my $gtfFile      = "/scratch/liuq6/reference/hg19.ensembl-for-tophat.gtf";
 my $gtfIndex     = "/scratch/cqs/shengq1/gtfindex/hg19";
 my $tophat2param = "--segment-length 25 -r 0 -p 8";
 
