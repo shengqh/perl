@@ -30,6 +30,6 @@ foreach my $sample (@samples) {
 	push( @sampleNames, $name );
 	push( @sampleFiles, $fastqFile1 );
 	push( @sampleFiles, $fastqFile2 );
-
-	tophat2_by_pbs( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, "test1769", \@sampleNames, \@sampleFiles );
 }
+
+tophat2_by_pbs( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, "test1769", \@sampleNames, \@sampleFiles );
