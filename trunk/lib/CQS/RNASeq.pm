@@ -53,7 +53,6 @@ sub tophat2_by_pbs {
 	my $pbsFile = $pbsDir . "/${taskName}_tophat2.pbs";
 	my $log     = $logDir . "/${taskName}_tophat2.log";
 
-	print "$pbsDir\n";
 	open( OUT, ">$pbsFile" ) or die $!;
 	print OUT $pbsDesc;
 	print OUT "#PBS -o $log\n";
@@ -88,6 +87,7 @@ sub tophat2_by_pbs {
 	print OUT "echo finished=`date`\n";
 	close OUT;
 
+    print "$pbsFile\n";
 	`qsub $pbsFile`;
 }
 
