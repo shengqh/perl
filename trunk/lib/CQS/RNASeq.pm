@@ -82,7 +82,6 @@ sub tophat2_by_pbs {
 		else {
 			print OUT "$sampleFiles[$i*2] $sampleFiles[$i*2+1]\n";
 		}
-
 	}
 	print OUT "echo finished=`date`\n";
 	close OUT;
