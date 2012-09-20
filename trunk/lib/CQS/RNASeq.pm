@@ -88,7 +88,7 @@ sub tophat2_by_pbs {
 	print OUT "echo finished=`date`\n";
 	close OUT;
 
-	#`qsub $pbsFile`;
+	`qsub $pbsFile`;
 }
 
 1;
