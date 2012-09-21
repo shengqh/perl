@@ -47,7 +47,7 @@ sub tophat2_by_pbs_batch {
 
 	print "$pbsFile\n";
 
-	#`qsub $pbsFile`;
+	`qsub $pbsFile`;
 }
 
 sub tophat2_by_pbs_individual {
@@ -77,7 +77,7 @@ sub tophat2_by_pbs_individual {
 
 		print "$pbsFile\n";
 
-		#`qsub $pbsFile`;
+		`qsub $pbsFile`;
 	}
 }
 
