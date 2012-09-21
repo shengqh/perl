@@ -12,6 +12,7 @@ my $cufflinkparam = "-p 6";
 my $rootDir = "/scratch/cqs/shengq1/rnaseq/1769";
 
 my $runNow = 0;
+print $#ARGV . "\n";
 if ($#ARGV > 0){
     my $isRunNow = $ARGV[0]; 
     print $isRunNow . "\n";
