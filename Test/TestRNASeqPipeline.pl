@@ -32,4 +32,5 @@ foreach my $sample (@samples) {
 	push( @sampleFiles, $fastqFile2 );
 }
 
-tophat2_by_pbs_batch( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, "test1769", \@sampleNames, \@sampleFiles );
+#tophat2_by_pbs_batch( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, "test1769", \@sampleNames, \@sampleFiles );
+tophat2_by_pbs_individual( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, \@sampleNames, \@sampleFiles );
