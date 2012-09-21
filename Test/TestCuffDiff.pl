@@ -6,6 +6,7 @@ use CQS::QC;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::StringUtils;
+use CQS::SystemUtils;
 
 my @samples1 = ( "1", "3", "4", "5" );
 my @samples2 = (  "10", "11", "13", "16" );
