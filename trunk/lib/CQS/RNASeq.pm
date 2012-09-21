@@ -106,6 +106,7 @@ sub cuffdiff_by_pbs {
 	foreach my $file (@files) {
 		print OUT "$file ";
 	}
+	print OUT "\n";
 
 	output_footer();
 
