@@ -52,7 +52,7 @@ sub tophat2_by_pbs_batch {
 }
 
 sub tophat2_by_pbs_individual {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $refSampleNames, $refSampleFiles ) = @_;
+	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $refSampleNames, $refSampleFiles, $runNow ) = @_;
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
 
@@ -78,7 +78,9 @@ sub tophat2_by_pbs_individual {
 
 		print "$pbsFile\n";
 
-		`qsub $pbsFile`;
+        if($runNow){
+		  `qsub $pbsFile`;
+        }
 	}
 }
 
