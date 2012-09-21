@@ -13,7 +13,7 @@ my @samples2 = (  "10", "11", "13", "16" );
 my $genomeFasta     = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
 my $gtfFile      = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 #my $gffIndex     = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68.gff";
-my $cuffdiffparam = "-p 8 -N ";
+my $cuffdiffparam = "-p 8 -N";
 my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769";
 
 create_directory_or_die($rootDir);
@@ -33,6 +33,6 @@ foreach my $sample (@samples2) {
     push( @bamFiles2, $bamfile );
 }
 
-my @files = (merge_string(@bamFiles1), merge_string(@bamFiles2));
+my @files = (merge_string(",", @bamFiles1), merge_string(",", @bamFiles2));
 
 cuffdiff_by_pbs($genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, "testCuffDiff", "G1,G2", @files);
