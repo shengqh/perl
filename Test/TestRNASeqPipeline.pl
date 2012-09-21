@@ -5,6 +5,7 @@ use warnings;
 use CQS::QC;
 use CQS::RNASeq;
 use CQS::FileUtils;
+use CQS::SystemUtils;
 
 my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
