@@ -5,12 +5,13 @@ use strict;
 use warnings;
 use File::Basename;
 use CQS::PBS;
+use CQS::FileUtils;
 
 require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual cuffdiff_by_pbs)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -30,7 +31,7 @@ sub tophat2_by_pbs_batch {
 	my $pathFile = '/home/shengq1/bin/path.txt';
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-    my $tophatDir = create_directory($resultDir . "/tophat2");
+	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
 	my ($pbsDesc) = get_pbs_desc();
 
 	my $pbsFile = $pbsDir . "/${taskName}_tophat2.pbs";
@@ -62,7 +63,7 @@ sub tophat2_by_pbs_individual {
 	my $pathFile = '/home/shengq1/bin/path.txt';
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-	my $tophatDir = create_directory($resultDir . "/tophat2");
+	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
 	my ($pbsDesc) = get_pbs_desc();
 
 	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
@@ -81,39 +82,95 @@ sub tophat2_by_pbs_individual {
 	}
 }
 
-sub output_tophat2_script {
-    my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
-    my $curDir = $tophatDir . "/$sampleName";
+sub cuffdiff_by_pbs {
+	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $refHash ) = @_;
+	my %hash = %{$refHash};
 
-    print OUT "echo tophat2=`date` \n";
+	my $pathFile = '/home/shengq1/bin/path.txt';
+
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	my $cuffdiffDir = create_directory_or_die( $resultDir . "/cuffdiff" );
+	my ($pbsDesc) = get_pbs_desc();
+
+	my $pbsFile = $pbsDir . "/${taskName}_cuffdiff.pbs";
+	my $log     = $logDir . "/${taskName}_cuffdiff.log";
+
+	output_header( $pbsFile, $pbsDesc, $pathFile, $log );
+	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir ";
+
+	if ( not( $genomeFasta eq "" ) ) {
+		print OUT "-b $genomeFasta ";
+	}
+
+	my $first = 1;
+	for ( keys %hash ) {
+		if ($first) {
+			print OUT "-L ";
+			$first = 0;
+		}
+		else {
+			print OUT ",";
+		}
+		print OUT @_;
+	}
+
+	print OUT " $gtfFile ";
+
+	for ( keys %hash ) {
+		my $refFiles = $hash{$_};
+		my @files    = @{$refFiles};
+
+		$first = 1;
+		foreach my $file (@files) {
+			if ($first) {
+				$first = 0;
+			}
+			else {
+				print OUT ",";
+			}
+			print OUT $file;
+		}
+	}
+    output_footer();
     
-    unless ( -e $curDir or mkdir($curDir) ) {
-        die "Cannot create directory $curDir\n";
-    }
+	print "$pbsFile\n";
 
-    my $gtfIndexFile = $gtfIndex . ".rev.2.bt2";
+	#`qsub $pbsFile`;
+}
 
-    if ( -e $gtfFile ) {
-        if ( ( $index == 0 ) && ( not -e $gtfIndexFile ) ) {
-            print OUT "tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
-        }
-        else {
-            print OUT "tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
-        }
-    }
-    elsif ( -e $gtfIndexFile ) {
-        print OUT "tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
-    }
-    else {
-        print OUT "tophat2 $tophat2param -o $curDir $genomeDb ";
-    }
+sub output_tophat2_script {
+	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
+	my $curDir = $tophatDir . "/$sampleName";
 
-    if ($isSingle) {
-        print OUT "$sampleFiles[$index]\n";
-    }
-    else {
-        print OUT "$sampleFiles[$index*2] $sampleFiles[$index*2+1]\n";
-    }
+	print OUT "echo tophat2=`date` \n";
+
+	unless ( -e $curDir or mkdir($curDir) ) {
+		die "Cannot create directory $curDir\n";
+	}
+
+	my $gtfIndexFile = $gtfIndex . ".rev.2.bt2";
+
+	if ( -e $gtfFile ) {
+		if ( ( $index == 0 ) && ( not -e $gtfIndexFile ) ) {
+			print OUT "tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+		}
+		else {
+			print OUT "tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+		}
+	}
+	elsif ( -e $gtfIndexFile ) {
+		print OUT "tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+	}
+	else {
+		print OUT "tophat2 $tophat2param -o $curDir $genomeDb ";
+	}
+
+	if ($isSingle) {
+		print OUT "$sampleFiles[$index]\n";
+	}
+	else {
+		print OUT "$sampleFiles[$index*2] $sampleFiles[$index*2+1]\n";
+	}
 }
 
 sub check_is_single() {
@@ -131,14 +188,6 @@ sub check_is_single() {
 	}
 
 	return ($isSingle);
-}
-
-sub create_directory() {
-	my ($result) = @_;
-	unless ( -e $result or mkdir($result) ) {
-		die "Cannot create directory $result\n";
-	}
-	return ($result);
 }
 
 sub output_header {
