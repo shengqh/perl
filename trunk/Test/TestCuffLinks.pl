@@ -5,20 +5,16 @@ use warnings;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::StringUtils;
+use CQS::SystemUtils;
 
 my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
 my $cufflinkparam = "-p 6";
 my $rootDir = "/scratch/cqs/shengq1/rnaseq/1769";
 
-my $runNow = 0;
-print $#ARGV . "\n";
-if ($#ARGV >= 0){
-    my $isRunNow = $ARGV[0]; 
-    print $isRunNow . "\n";
-    $runNow = $isRunNow eq "y";
-    print $runNow . "\n";
-}
+my $runNow = get_run_now();
+
+print $runNow . "\n";
 
 create_directory_or_die($rootDir);
 
@@ -31,4 +27,4 @@ foreach my $sample (@samples) {
 	push( @sampleFiles, $bamfile );
 }
 
-cufflinks_by_pbs( $cufflinkparam, $rootDir, \@sampleNames, \@sampleFiles, $runNow );
+cufflinks_by_pbs( $cufflinkparam, $rootDir, \@sampleNames, \@sampleFiles, 0 );
