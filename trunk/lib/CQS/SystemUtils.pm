@@ -19,7 +19,7 @@ sub get_run_now {
 		return ( $isRunNow eq "y" );
 	}
 	else {
-		return (0);
+		return (false);
 	}
 }
 
