@@ -10,7 +10,12 @@ my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
 my $cufflinkparam = "-p 6";
 my $rootDir = "/scratch/cqs/shengq1/rnaseq/1769";
+
 my $runNow = 0;
+if ($#ARGV > 0){
+	my $isRunNow = $ARGV[0]; 
+	$runNow = $isRunNow eq "y";
+}
 
 create_directory_or_die($rootDir);
 

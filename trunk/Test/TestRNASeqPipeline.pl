@@ -4,6 +4,7 @@ use warnings;
 
 use CQS::QC;
 use CQS::RNASeq;
+use CQS::FileUtils;
 
 my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
@@ -14,10 +15,12 @@ my $gtfIndex     = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 my $tophat2param = "--segment-length 25 -r 0 -p 6";
 
 my $runNow = 0;
-
-unless ( -e $rootDir or mkdir($rootDir) ) {
-	die "Unable to create $rootDir\n";
+if ($#ARGV > 0){
+    my $isRunNow = $ARGV[0]; 
+    $runNow = $isRunNow eq "y";
 }
+
+create_directory_or_die($rootDir);
 
 my @sampleNames = ();
 my @sampleFiles = ();
