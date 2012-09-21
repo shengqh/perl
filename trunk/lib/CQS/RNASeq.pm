@@ -11,7 +11,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual cuffdiff_by_pbs)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual cufflinks_by_pbs cuffdiff_by_pbs)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -78,9 +78,46 @@ sub tophat2_by_pbs_individual {
 
 		print "$pbsFile\n";
 
-        if($runNow){
-		  `qsub $pbsFile`;
-        }
+		if ($runNow) {
+			`qsub $pbsFile`;
+		}
+	}
+}
+
+sub cufflinks_by_pbs {
+	my ( $cufflinksparam, $rootDir, $refSampleNames, $refSampleFiles, $runNow ) = @_;
+
+	my @sampleNames     = @{$refSampleNames};
+	my @sampleFiles     = @{$refSampleFiles};
+	my $sampleNameCount = scalar(@sampleNames);
+
+	my $pathFile = '/home/shengq1/bin/path.txt';
+
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
+	my ($pbsDesc) = get_pbs_desc();
+
+	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
+		my $sampleName = $sampleNames[$index];
+		my $sampleFile = $sampleFiles[$index];
+
+		my $pbsFile = $pbsDir . "/${sampleName}_cufflinks.pbs";
+		my $log     = $logDir . "/${sampleName}_cufflinks.log";
+
+		output_header( $pbsFile, $pbsDesc, $pathFile, $log );
+
+		my $curDir = create_directory_or_die( $cufflinkDir . "/$sampleName" );
+
+		print OUT "echo cufflinks=`date` \n";
+		print OUT "cufflinks $cufflinksparam -o $curDir $sampleFile \n";
+
+		output_footer();
+
+		print "$pbsFile\n";
+
+		if ($runNow) {
+			`qsub $pbsFile`;
+		}
 	}
 }
 
