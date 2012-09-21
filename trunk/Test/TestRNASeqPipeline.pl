@@ -13,7 +13,7 @@ my $genomeDb     = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769_2";
 my $gtfFile      = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $gtfIndex     = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
-my $tophat2param = "--segment-length 25 -r 0 -p 6";
+my $tophat2param = "--segment-length 25 -r 0 -p 8";
 
 my $runNow = get_run_now();
 
