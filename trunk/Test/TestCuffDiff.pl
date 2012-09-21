@@ -5,6 +5,7 @@ use warnings;
 use CQS::QC;
 use CQS::RNASeq;
 use CQS::FileUtils;
+use CQS::StringUtils;
 
 my @samples1 = ( "1", "3", "4", "5" );
 my @samples2 = (  "10", "11", "13", "16" );
@@ -16,8 +17,6 @@ my $cuffdiffparam = "-p 8 -N ";
 my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769";
 
 create_directory_or_die($rootDir);
-
-my %hash = {};
 
 my @bamFiles1 = ();
 my @bamFiles2 = ();
@@ -34,7 +33,6 @@ foreach my $sample (@samples2) {
     push( @bamFiles2, $bamfile );
 }
 
-$hash{"G1"} = \@bamFiles1;
-$hash{"G2"} = \@bamFiles2;
+my @files = (merge_string(@bamFiles1), merge_string(@bamFiles2));
 
-cuffdiff_by_pbs($genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, "testCuffDiff", \%hash);
+cuffdiff_by_pbs($genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, "testCuffDiff", "G1,G2", @files);
