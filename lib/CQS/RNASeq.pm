@@ -83,8 +83,7 @@ sub tophat2_by_pbs_individual {
 }
 
 sub cuffdiff_by_pbs {
-	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $refHash ) = @_;
-	my %hash = %{$refHash};
+	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $labels, @files ) = @_;
 
 	my $pathFile = '/home/shengq1/bin/path.txt';
 
@@ -96,43 +95,20 @@ sub cuffdiff_by_pbs {
 	my $log     = $logDir . "/${taskName}_cuffdiff.log";
 
 	output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir ";
+	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels";
 
 	if ( not( $genomeFasta eq "" ) ) {
 		print OUT "-b $genomeFasta ";
 	}
 
-	my $first = 1;
-	for ( keys %hash ) {
-		if ($first) {
-			print OUT "-L ";
-			$first = 0;
-		}
-		else {
-			print OUT ",";
-		}
-		print OUT @_;
-	}
-
 	print OUT " $gtfFile ";
 
-	for ( keys %hash ) {
-		my $refFiles = $hash{$_};
-		my @files    = @{$refFiles};
-
-		$first = 1;
-		foreach my $file (@files) {
-			if ($first) {
-				$first = 0;
-			}
-			else {
-				print OUT ",";
-			}
-			print OUT $file;
-		}
+	foreach my $file (@files) {
+		print OUT "$file ";
 	}
-    output_footer();
-    
+
+	output_footer();
+
 	print "$pbsFile\n";
 
 	#`qsub $pbsFile`;
