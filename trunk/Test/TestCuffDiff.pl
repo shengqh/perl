@@ -16,6 +16,8 @@ my $gtfFile      = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh
 my $cuffdiffparam = "-p 6 -N";
 my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769";
 
+my $runNow = get_run_now();
+
 create_directory_or_die($rootDir);
 
 my @bamFiles1 = ();
@@ -35,4 +37,4 @@ foreach my $sample (@samples2) {
 
 my @files = (merge_string(",", @bamFiles1), merge_string(",", @bamFiles2));
 
-cuffdiff_by_pbs($genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, "test", "G1,G2", @files);
+cuffdiff_by_pbs($genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, "test", "G1,G2", \@files, $runNow);

@@ -14,8 +14,6 @@ my $rootDir = "/scratch/cqs/shengq1/rnaseq/1769";
 
 my $runNow = get_run_now();
 
-print $runNow . "\n";
-
 create_directory_or_die($rootDir);
 
 my @sampleNames = ();
@@ -27,4 +25,4 @@ foreach my $sample (@samples) {
 	push( @sampleFiles, $bamfile );
 }
 
-cufflinks_by_pbs( $cufflinkparam, $rootDir, \@sampleNames, \@sampleFiles, 0 );
+cufflinks_by_pbs( $cufflinkparam, $rootDir, \@sampleNames, \@sampleFiles, $runNow );
