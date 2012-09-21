@@ -95,7 +95,7 @@ sub cuffdiff_by_pbs {
 	my $log     = $logDir . "/${taskName}_cuffdiff.log";
 
 	output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels";
+	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels ";
 
 	if ( not( $genomeFasta eq "" ) ) {
 		print OUT "-b $genomeFasta ";
