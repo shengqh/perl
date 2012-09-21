@@ -20,7 +20,7 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub tophat2_by_pbs_batch {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $taskName, $refSampleNames, $refSampleFiles ) = @_;
+	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $taskName, $refSampleNames, $refSampleFiles, $runNow ) = @_;
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
 
@@ -46,9 +46,13 @@ sub tophat2_by_pbs_batch {
 
 	output_footer();
 
-	print "$pbsFile\n";
-
-	`qsub $pbsFile`;
+	if ($runNow) {
+		`qsub $pbsFile`;
+		print "$pbsFile submitted\n";
+	}
+	else {
+		print "$pbsFile created\n";
+	}
 }
 
 sub tophat2_by_pbs_individual {
@@ -76,10 +80,12 @@ sub tophat2_by_pbs_individual {
 		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles );
 		output_footer();
 
-		print "$pbsFile\n";
-
 		if ($runNow) {
 			`qsub $pbsFile`;
+			print "$pbsFile submitted\n";
+		}
+		else {
+			print "$pbsFile created\n";
 		}
 	}
 }
@@ -113,16 +119,20 @@ sub cufflinks_by_pbs {
 
 		output_footer();
 
-		print "$pbsFile\n";
-
 		if ($runNow) {
 			`qsub $pbsFile`;
+			print "$pbsFile submitted\n";
+		}
+		else {
+			print "$pbsFile created\n";
 		}
 	}
 }
 
 sub cuffdiff_by_pbs {
-	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $labels, @files ) = @_;
+	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $labels, $refFiles, $runNow ) = @_;
+
+	my @files = @{$refFiles};
 
 	my $pathFile = '/home/shengq1/bin/path.txt';
 
@@ -149,9 +159,13 @@ sub cuffdiff_by_pbs {
 
 	output_footer();
 
-	print "$pbsFile\n";
-
-	#`qsub $pbsFile`;
+	if ($runNow) {
+		`qsub $pbsFile`;
+		print "$pbsFile submitted\n";
+	}
+	else {
+		print "$pbsFile created\n";
+	}
 }
 
 sub output_tophat2_script {

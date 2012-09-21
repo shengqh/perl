@@ -14,13 +14,7 @@ my $gtfFile      = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh
 my $gtfIndex     = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 my $tophat2param = "--segment-length 25 -r 0 -p 6";
 
-my $runNow = 0;
-if ($#ARGV > 0){
-    my $isRunNow = $ARGV[0]; 
-    print $isRunNow . "\n";
-    $runNow = $isRunNow eq "y";
-    print $runNow . "\n";
-}
+my $runNow = get_run_now();
 
 create_directory_or_die($rootDir);
 
@@ -41,4 +35,3 @@ foreach my $sample (@samples) {
 
 #tophat2_by_pbs_batch( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, "test1769", \@sampleNames, \@sampleFiles );
 tophat2_by_pbs_individual( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, \@sampleNames, \@sampleFiles, $runNow );
-#tophat2_by_pbs_individual( $genomeDb, "", "", $tophat2param, $rootDir, \@sampleNames, \@sampleFiles );
