@@ -17,7 +17,9 @@ my $tophat2param = "--segment-length 25 -r 0 -p 6";
 my $runNow = 0;
 if ($#ARGV > 0){
     my $isRunNow = $ARGV[0]; 
+    print $isRunNow . "\n";
     $runNow = $isRunNow eq "y";
+    print $runNow . "\n";
 }
 
 create_directory_or_die($rootDir);
