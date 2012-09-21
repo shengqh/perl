@@ -7,7 +7,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw( list_directories list_files has_file)] );
+our %EXPORT_TAGS = ( 'all' => [qw( list_directories list_files has_file create_directory_or_die)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -77,6 +77,14 @@ sub has_file {
   }
 
   return (0);
+}
+
+sub create_directory_or_die {
+    my ($result) = @_;
+    unless ( -e $result or mkdir($result) ) {
+        die "Cannot create directory $result\n";
+    }
+    return ($result);
 }
 
 1;
