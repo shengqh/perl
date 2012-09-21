@@ -9,8 +9,8 @@ my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
 my $genomeDb     = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769";
-my $gtfFile      = "/scratch/liuq6/reference/hg19.ensembl-for-tophat.gtf";
-my $gtfIndex     = "/scratch/cqs/shengq1/gtfindex/hg19";
+my $gtfFile      = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+my $gtfIndex     = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 my $tophat2param = "--segment-length 25 -r 0 -p 8";
 
 unless ( -e $rootDir or mkdir($rootDir) ) {
