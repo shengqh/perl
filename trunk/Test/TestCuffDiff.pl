@@ -35,4 +35,4 @@ foreach my $sample (@samples2) {
 
 my @files = (merge_string(",", @bamFiles1), merge_string(",", @bamFiles2));
 
-cuffdiff_by_pbs($genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, "testCuffDiff", "G1,G2", @files);
+cuffdiff_by_pbs($genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, "test", "G1,G2", @files);
