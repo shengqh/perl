@@ -40,6 +40,10 @@ sub init_dir {
 }
 
 sub get_pbs_desc {
+	my ($hour) = @_;
+	if (not defined $hour ){
+		$hour = "24";
+	}
   my $pbsDesc = <<PBS;
 #!/bin/bash
 #Beginning of PBS bash script
@@ -49,7 +53,7 @@ sub get_pbs_desc {
 #Email generated at b)eginning, a)bort, and e)nd of jobs
 #PBS -l mem=15000mb
 #Total job memory required (specify how many megabytes)
-#PBS -l walltime=240:00:00
+#PBS -l walltime=${hour}:00:00
 #You must specify Wall Clock time (hh:mm:ss) [Maximum allowed 30 days = 720:00:00]
 #PBS -q batch
 PBS
