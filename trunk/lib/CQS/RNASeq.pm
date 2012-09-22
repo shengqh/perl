@@ -182,7 +182,7 @@ sub output_tophat2_script {
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
-	print OUT "if [ -f $tophat2file] then\n";
+	print OUT "if [! -s $tophat2file] then\n";
 	if ( -e $gtfFile ) {
 		if ( ( $index == 0 ) && ( not -e $gtfIndexFile ) ) {
 			print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
