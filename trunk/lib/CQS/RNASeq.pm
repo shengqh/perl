@@ -180,19 +180,22 @@ sub output_tophat2_script {
 
 	my $gtfIndexFile = $gtfIndex . ".rev.2.bt2";
 
+	my $tophat2file = $curDir . "/accepted_hits.bam";
+
+	print OUT "if [ -f $tophat2file] then\n";
 	if ( -e $gtfFile ) {
 		if ( ( $index == 0 ) && ( not -e $gtfIndexFile ) ) {
-			print OUT "tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+			print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
 		else {
-			print OUT "tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+			print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
 	}
 	elsif ( -e $gtfIndexFile ) {
-		print OUT "tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+		print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 	}
 	else {
-		print OUT "tophat2 $tophat2param -o $curDir $genomeDb ";
+		print OUT "  tophat2 $tophat2param -o $curDir $genomeDb ";
 	}
 
 	if ($isSingle) {
@@ -201,6 +204,7 @@ sub output_tophat2_script {
 	else {
 		print OUT "$sampleFiles[$index*2] $sampleFiles[$index*2+1]\n";
 	}
+        print OUT "fi\n";
 }
 
 sub check_is_single() {
