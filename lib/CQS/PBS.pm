@@ -42,7 +42,7 @@ sub init_dir {
 sub get_pbs_desc {
 	my ($hour) = @_;
 	if (not defined $hour ){
-		$hour = "24";
+		$hour = "48";
 	}
   my $pbsDesc = <<PBS;
 #!/bin/bash
