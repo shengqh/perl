@@ -182,7 +182,10 @@ sub output_tophat2_script {
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
-	print OUT "if [! -s $tophat2file] then\n";
+	print OUT "if [ -s $tophat2file ];\n";
+	print OUT "then\n";
+	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
+	print OUT "else\n";
 	if ( -e $gtfFile ) {
 		if ( ( $index == 0 ) && ( not -e $gtfIndexFile ) ) {
 			print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
