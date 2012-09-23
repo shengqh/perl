@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use File::Basename;
 use CQS::PBS;
+use CQS::SystemUtils;
 
 require Exporter;
 
@@ -19,35 +20,44 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub fastqc_by_pbs {
-  my ( $rootDir, $sampleName, $seqFile ) = @_;
+	my ( $rootDir, $refSampleNames, $refSampleFiles, $runNow ) = @_;
 
-  my $pathFile = '/home/shengq1/bin/path.txt';
+	my @sampleNames = @{$refSampleNames};
+	my @sampleFiles = @{$refSampleFiles};
 
-  my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	my $sampleNameCount = scalar(@sampleNames);
 
-  my ($pbsDesc) = get_pbs_desc();
+	my $pathFile = '/home/shengq1/bin/path.txt';
 
-  my $log = $logDir . "/${sampleName}_fastqc.log";
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 
-  my $pbsFile = $pbsDir . "/${sampleName}_fastqc.pbs";
+	my ($pbsDesc) = get_pbs_desc();
 
-  my $fastqcDir = $resultDir . "/fastqc";
-  unless(-e $fastqcDir or mkdir($fastqcDir)){
-    die "Cannot create directory $fastqcDir\n";
-  }
+	my $fastqcDir = create_directory_or_die( $resultDir . "/fastqc" );
+	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
+		my $sampleName = $sampleNames[$index];
 
-  print "$pbsDir\n";
-  open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
-  print OUT "source $pathFile\n";
-  print OUT "echo fastqc=`date`\n";
-  print OUT "fastqc -o $fastqcDir $seqFile\n";
-  print OUT "echo finished=`date`\n";
-  close OUT;
+		my $pbsFile = $pbsDir . "/${sampleName}_fastqc.pbs";
+		my $log     = $logDir . "/${sampleName}_fastqc.log";
 
-  `qsub $pbsFile`;
+		open( OUT, ">$pbsFile" ) or die $!;
+		print OUT $pbsDesc;
+		print OUT "#PBS -o $log\n";
+		print OUT "#PBS -j oe\n\n";
+		print OUT "source $pathFile\n";
+		print OUT "echo fastqc=`date`\n";
+		print OUT "fastqc -o $fastqcDir $sampleFiles[$index]\n";
+		print OUT "echo finished=`date`\n";
+		close OUT;
+
+		if ($runNow) {
+			`qsub $pbsFile`;
+			print "$pbsFile submitted\n";
+		}
+		else {
+			print "$pbsFile created\n";
+		}
+	}
 }
 
 1;
