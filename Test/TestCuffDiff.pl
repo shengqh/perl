@@ -26,7 +26,7 @@ my @bamFiles2 = ();
 
 foreach my $sample (@samples1) {
 	my $name = "1769-DPC-" . $sample;
-	my $bamfile = $rootDir . "/" . $name . "/result/tophat2/accepted_hits.bam";
+	my $bamfile = $rootDir . "/result/tophat2/". $name . "/accepted_hits.bam";
 	push( @bamFiles1, $bamfile );
 }
 
