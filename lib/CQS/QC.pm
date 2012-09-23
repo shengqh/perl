@@ -6,6 +6,7 @@ use warnings;
 use File::Basename;
 use CQS::PBS;
 use CQS::SystemUtils;
+use CQS::FileUtils;
 
 require Exporter;
 
