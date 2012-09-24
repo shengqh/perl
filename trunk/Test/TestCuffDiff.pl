@@ -2,7 +2,9 @@
 use strict;
 use warnings;
 
+use Data::Dumper 'Dumper';
 use CQS::RNASeq;
+use CQS::SystemUtils;
 
 my $runNow = get_run_now();
 
@@ -40,4 +42,6 @@ my $config = {
 	}
 };
 
-cuffdiff_by_pbs( $config, $runNow );
+Dumper [$config];
+
+#cuffdiff_by_pbs( $config, $runNow );
