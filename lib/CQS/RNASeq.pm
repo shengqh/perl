@@ -98,13 +98,6 @@ sub tophat2_by_pbs_individual {
 
 	my ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile ) = tophat2_parse_and_check_parameters($refParamHash);
 
-    print "root_dir = $rootDir\n";
-    print "genome_db = $genomeDb\n";
-    print "tophat2_param = $tophat2param\n";
-    print "gtf_file = $gtfFile\n";
-    print "gtf_index = $gtfIndex\n";
-    print "path_file = $pathFile\n";
-
 	my @sampleNames     = @{$refSampleNames};
 	my @sampleFiles     = @{$refSampleFiles};
 	my $sampleNameCount = scalar(@sampleNames);
@@ -214,6 +207,12 @@ sub cuffdiff_by_pbs {
 
 sub output_tophat2_script {
 	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
+
+    print "genome_db = $genomeDb\n";
+    print "tophat2_param = $tophat2param\n";
+    print "gtf_file = $gtfFile\n";
+    print "gtf_index = $gtfIndex\n";
+
 
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
