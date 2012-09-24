@@ -58,13 +58,14 @@ sub tophat2_by_pbs_batch {
 sub tophat2_by_pbs_individual2 {
 	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
-	my %paramHash       = %{$refParamHash};
-	my $rootDir         = $paramHash{"root_dir"} or die "define root_dir first";
-	my $genomeDb        = $paramHash{"genome_db"} or die "define genome_db first";
-	my $gtfFile         = $paramHash{"gtf_file"};                                            #optional parameter
-	my $gtfIndex        = $paramHash{"gtf_index"};                                           #optional parameter
-	my $tophat2param    = $paramHash{"tophat2_param"} or die "define tophat2_param first";
-	my $pathFile        = $paramHash{"path_file"};                                           #optional parameter
+	my %paramHash    = %{$refParamHash};
+	my $rootDir      = $paramHash{"root_dir"} or die "define root_dir first";
+	my $genomeDb     = $paramHash{"genome_db"} or die "define genome_db first";
+	my $gtfFile      = $paramHash{"gtf_file"};                                            #optional parameter
+	my $gtfIndex     = $paramHash{"gtf_index"};                                           #optional parameter
+	my $tophat2param = $paramHash{"tophat2_param"} or die "define tophat2_param first";
+	my $pathFile     = $paramHash{"path_file"};
+
 	my @sampleNames     = @{$refSampleNames};
 	my @sampleFiles     = @{$refSampleFiles};
 	my $sampleNameCount = scalar(@sampleNames);
@@ -209,6 +210,10 @@ sub cuffdiff_by_pbs {
 
 sub output_tophat2_script {
 	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
+
+	if ( ( defined $gtfFile ) and ( not defined $gtfIndex ) ) {
+		die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
+	}
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
 	print OUT "echo tophat2=`date` \n";
