@@ -32,7 +32,7 @@ sub tophat2_parse_and_check_parameters {
 	my $pathFile = $paramHash{"path_file"};    #optional parameter
 
 	if ( defined $gtfFile ) {
-		if ( not -e $gtfFile ) {
+		if ( not -s $gtfFile ) {
 			die "gtf_file $gtfFile defined but not exists!";
 		}
 
@@ -40,7 +40,7 @@ sub tophat2_parse_and_check_parameters {
 			die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
 		}
 	}
-	if ( ( defined $pathFile ) and ( not -e $pathFile ) ) {
+	if ( ( defined $pathFile ) and ( not -s $pathFile ) ) {
 		die "path_file $pathFile defined but not exists!";
 	}
 
@@ -53,7 +53,7 @@ sub tophat2_by_pbs_batch {
 	my ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile ) = tophat2_parse_and_check_parameters($refParamHash);
 
 	my $taskName = $refParamHash->{"task_name"} or die "task_name is not defined.";
-	
+
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
 
@@ -205,8 +205,8 @@ sub output_tophat2_script {
 
 	print OUT "echo tophat2=`date` \n";
 
-	my $hasGtfFile      = ( defined $gtfFile )  and ( -e $gtfFile );
-	my $hasGtfIndexFile = ( defined $gtfIndex ) and ( -e $gtfIndex . ".rev.2.bt2" );
+	my $hasGtfFile = ( defined $gtfFile ) and ( -s $gtfFile );
+	my $hasGtfIndexFile = ( defined $gtfIndex ) and ( -s ( $gtfIndex . ".rev.2.bt2" ) );
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
