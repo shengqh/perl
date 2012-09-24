@@ -47,8 +47,10 @@ sub tophat2_parse_and_check_parameters {
 			die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
 		}
 	}
-	if ( ( defined $pathFile ) && ( !-s $pathFile ) ) {
-		die "path_file $pathFile defined but not exists!";
+	if ( defined $pathFile ) {
+		if ( !-e $pathFile ) {
+			die "path_file $pathFile defined but not exists!";
+		}
 	}
 
 	return ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile );
@@ -101,6 +103,22 @@ sub tophat2_by_pbs_individual {
 	my @sampleNames     = @{$refSampleNames};
 	my @sampleFiles     = @{$refSampleFiles};
 	my $sampleNameCount = scalar(@sampleNames);
+
+	if ( $sampleNameCount > 1 ) {
+		my $hasGtfFile = -e $gtfFile;
+
+		my $hasIndexFile = 0;
+		if ( defined $gtfIndex ) {
+			if ( -e ( $gtfIndex . ".rev.2.bt2" ) ) {
+				$hasIndexFile = 1;
+			}
+		}
+
+		if ( $hasGtfFile && ( !$hasIndexFile ) ) {
+			die "Gtf file defined but index file has not been built, you should only run one job to build index first!";
+		}
+	}
+
 	my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
@@ -208,14 +226,11 @@ sub cuffdiff_by_pbs {
 sub output_tophat2_script {
 	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
 
-	print "genome_db = $genomeDb\n";
-	print "tophat2_param = $tophat2param\n";
-	print "gtf_file = $gtfFile\n";
-	print "gtf_index = $gtfIndex\n";
-
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
 	print OUT "echo tophat2=`date` \n";
+
+	my $hasGtfFile = -e $gtfFile;
 
 	my $hasIndexFile = 0;
 	if ( defined $gtfIndex ) {
@@ -223,11 +238,6 @@ sub output_tophat2_script {
 			$hasIndexFile = 1;
 		}
 	}
-
-	my $hasGtfFile = -e $gtfFile;
-
-	print "hasGtfFile = $hasGtfFile\n";
-	print "hasIndexFile = $hasIndexFile\n";
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
