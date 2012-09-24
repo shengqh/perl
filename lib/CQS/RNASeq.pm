@@ -20,7 +20,7 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub tophat2_by_pbs_batch {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $taskName, $refSampleNames, $refSampleFiles, $runNow ) = @_;
+	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $taskName, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
 
@@ -32,7 +32,7 @@ sub tophat2_by_pbs_batch {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
-	my ($pbsDesc) = get_pbs_desc();
+	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
 
 	my $pbsFile = $pbsDir . "/${taskName}_tophat2.pbs";
 	my $log     = $logDir . "/${taskName}_tophat2.log";
@@ -55,8 +55,47 @@ sub tophat2_by_pbs_batch {
 	}
 }
 
+sub tophat2_by_pbs_individual2 {
+	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
+
+	my %paramHash    = %{$refParamHash};
+    my $rootDir      = $paramHash{"root_dir"} or die "assign root_dir first";
+	my $genomeDb     = $paramHash{"genome_db"};
+	my $gtfFile      = $paramHash{"gtf_file"};
+	my $gtfIndex     = $paramHash{"gtf_index"};
+	my $tophat2param = $paramHash{"tophat2_param"};
+    my $pathFile      = $paramHash{"path_file"};
+	my @sampleNames     = @{$refSampleNames};
+	my @sampleFiles     = @{$refSampleFiles};
+	my $sampleNameCount = scalar(@sampleNames);
+	my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
+
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
+	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
+
+	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
+		my $sampleName = $sampleNames[$index];
+
+		my $pbsFile = $pbsDir . "/${sampleName}_tophat2.pbs";
+		my $log     = $logDir . "/${sampleName}_tophat2.log";
+
+		output_header( $pbsFile, $pbsDesc, $pathFile, $log );
+		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles );
+		output_footer();
+
+		if ($runNow) {
+			`qsub $pbsFile`;
+			print "$pbsFile submitted\n";
+		}
+		else {
+			print "$pbsFile created\n";
+		}
+	}
+}
+
 sub tophat2_by_pbs_individual {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $refSampleNames, $refSampleFiles, $pbsParamRef, $runNow ) = @_;
+	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
 
@@ -68,7 +107,7 @@ sub tophat2_by_pbs_individual {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
-	my ($pbsDesc) = get_pbs_desc($pbsParamRef);
+	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
 
 	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
 		my $sampleName = $sampleNames[$index];
@@ -91,7 +130,7 @@ sub tophat2_by_pbs_individual {
 }
 
 sub cufflinks_by_pbs {
-	my ( $cufflinksparam, $rootDir, $refSampleNames, $refSampleFiles, $runNow ) = @_;
+	my ( $cufflinksparam, $rootDir, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
 	my @sampleNames     = @{$refSampleNames};
 	my @sampleFiles     = @{$refSampleFiles};
@@ -101,7 +140,7 @@ sub cufflinks_by_pbs {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 	my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
-	my ($pbsDesc) = get_pbs_desc();
+	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
 
 	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
 		my $sampleName = $sampleNames[$index];
@@ -130,7 +169,7 @@ sub cufflinks_by_pbs {
 }
 
 sub cuffdiff_by_pbs {
-	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $labels, $refFiles, $runNow ) = @_;
+	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $labels, $refFiles, $refPbsParamHash, $runNow ) = @_;
 
 	my @files = @{$refFiles};
 
@@ -138,7 +177,7 @@ sub cuffdiff_by_pbs {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 	my $cuffdiffDir = create_directory_or_die( $resultDir . "/cuffdiff" );
-	my ($pbsDesc) = get_pbs_desc();
+	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
 
 	my $pbsFile = $pbsDir . "/${taskName}_cuffdiff.pbs";
 	my $log     = $logDir . "/${taskName}_cuffdiff.log";
@@ -207,7 +246,7 @@ sub output_tophat2_script {
 	else {
 		print OUT "$sampleFiles[$index*2] $sampleFiles[$index*2+1]\n";
 	}
-        print OUT "fi\n";
+	print OUT "fi\n";
 }
 
 sub check_is_single() {
