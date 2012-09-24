@@ -105,6 +105,125 @@ sub tophat2_by_pbs_individual {
 	my $sampleNameCount = scalar(@sampleNames);
 
 	if ( $sampleNameCount > 1 ) {
+		if ( -e $gtfFile ) {
+			if ( defined $gtfIndex ) {
+				if ( !-e ( $gtfIndex . ".rev.2.bt2" ) ) {
+					die "Gtf file defined but index file has not been built, you should only run one job to build index first!";
+				}
+			}
+		}
+
+		my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
+
+		my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+		my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
+		my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
+
+		for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
+			my $sampleName = $sampleNames[$index];
+
+			my $pbsFile = $pbsDir . "/${sampleName}_tophat2.pbs";
+			my $log     = $logDir . "/${sampleName}_tophat2.log";
+
+			output_header( $pbsFile, $pbsDesc, $pathFile, $log );
+			output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, 0, $isSingle, @sampleFiles );
+			output_footer();
+
+			if ($runNow) {
+				`qsub $pbsFile`;
+				print "$pbsFile submitted\n";
+			}
+			else {
+				print "$pbsFile created\n";
+			}
+		}
+	}
+
+	sub cufflinks_by_pbs {
+		my ( $cufflinksparam, $rootDir, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
+
+		my @sampleNames     = @{$refSampleNames};
+		my @sampleFiles     = @{$refSampleFiles};
+		my $sampleNameCount = scalar(@sampleNames);
+
+		my $pathFile = '/home/shengq1/bin/path.txt';
+
+		my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+		my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
+		my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
+
+		for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
+			my $sampleName = $sampleNames[$index];
+			my $sampleFile = $sampleFiles[$index];
+
+			my $pbsFile = $pbsDir . "/${sampleName}_cufflinks.pbs";
+			my $log     = $logDir . "/${sampleName}_cufflinks.log";
+
+			output_header( $pbsFile, $pbsDesc, $pathFile, $log );
+
+			my $curDir = create_directory_or_die( $cufflinkDir . "/$sampleName" );
+
+			print OUT "echo cufflinks=`date` \n";
+			print OUT "cufflinks $cufflinksparam -o $curDir $sampleFile \n";
+
+			output_footer();
+
+			if ($runNow) {
+				`qsub $pbsFile`;
+				print "$pbsFile submitted\n";
+			}
+			else {
+				print "$pbsFile created\n";
+			}
+		}
+	}
+
+	sub cuffdiff_by_pbs {
+		my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $labels, $refFiles, $refPbsParamHash, $runNow ) = @_;
+
+		my @files = @{$refFiles};
+
+		my $pathFile = '/home/shengq1/bin/path.txt';
+
+		my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+		my $cuffdiffDir = create_directory_or_die( $resultDir . "/cuffdiff" );
+		my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
+
+		my $pbsFile = $pbsDir . "/${taskName}_cuffdiff.pbs";
+		my $log     = $logDir . "/${taskName}_cuffdiff.log";
+
+		output_header( $pbsFile, $pbsDesc, $pathFile, $log );
+		print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels ";
+
+		if ( not( $genomeFasta eq "" ) ) {
+			print OUT "-b $genomeFasta ";
+		}
+
+		print OUT " $gtfFile ";
+
+		foreach my $file (@files) {
+			print OUT "$file ";
+		}
+		print OUT "\n";
+
+		output_footer();
+
+		if ($runNow) {
+			`qsub $pbsFile`;
+			print "$pbsFile submitted\n";
+		}
+		else {
+			print "$pbsFile created\n";
+		}
+	}
+
+	sub output_tophat2_script {
+		my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
+
+		my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
+
+		print OUT "echo tophat2=`date` \n";
+
 		my $hasGtfFile = -e $gtfFile;
 
 		my $hasIndexFile = 0;
@@ -114,192 +233,67 @@ sub tophat2_by_pbs_individual {
 			}
 		}
 
-		if ( $hasGtfFile && ( !$hasIndexFile ) ) {
-			die "Gtf file defined but index file has not been built, you should only run one job to build index first!";
+		my $tophat2file = $curDir . "/accepted_hits.bam";
+
+		print OUT "if [ -s $tophat2file ];\n";
+		print OUT "then\n";
+		print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
+		print OUT "else\n";
+		if ($hasGtfFile) {
+			if ( ( $index == 0 ) && ( !$hasIndexFile ) ) {
+				print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+			}
+			else {
+				print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
+			}
 		}
-	}
-
-	my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
-
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
-
-	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
-		my $sampleName = $sampleNames[$index];
-
-		my $pbsFile = $pbsDir . "/${sampleName}_tophat2.pbs";
-		my $log     = $logDir . "/${sampleName}_tophat2.log";
-
-		output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, 0, $isSingle, @sampleFiles );
-		output_footer();
-
-		if ($runNow) {
-			`qsub $pbsFile`;
-			print "$pbsFile submitted\n";
-		}
-		else {
-			print "$pbsFile created\n";
-		}
-	}
-}
-
-sub cufflinks_by_pbs {
-	my ( $cufflinksparam, $rootDir, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
-
-	my @sampleNames     = @{$refSampleNames};
-	my @sampleFiles     = @{$refSampleFiles};
-	my $sampleNameCount = scalar(@sampleNames);
-
-	my $pathFile = '/home/shengq1/bin/path.txt';
-
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-	my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
-
-	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
-		my $sampleName = $sampleNames[$index];
-		my $sampleFile = $sampleFiles[$index];
-
-		my $pbsFile = $pbsDir . "/${sampleName}_cufflinks.pbs";
-		my $log     = $logDir . "/${sampleName}_cufflinks.log";
-
-		output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-
-		my $curDir = create_directory_or_die( $cufflinkDir . "/$sampleName" );
-
-		print OUT "echo cufflinks=`date` \n";
-		print OUT "cufflinks $cufflinksparam -o $curDir $sampleFile \n";
-
-		output_footer();
-
-		if ($runNow) {
-			`qsub $pbsFile`;
-			print "$pbsFile submitted\n";
-		}
-		else {
-			print "$pbsFile created\n";
-		}
-	}
-}
-
-sub cuffdiff_by_pbs {
-	my ( $genomeFasta, $gtfFile, $cuffdiffparam, $rootDir, $taskName, $labels, $refFiles, $refPbsParamHash, $runNow ) = @_;
-
-	my @files = @{$refFiles};
-
-	my $pathFile = '/home/shengq1/bin/path.txt';
-
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-	my $cuffdiffDir = create_directory_or_die( $resultDir . "/cuffdiff" );
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
-
-	my $pbsFile = $pbsDir . "/${taskName}_cuffdiff.pbs";
-	my $log     = $logDir . "/${taskName}_cuffdiff.log";
-
-	output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels ";
-
-	if ( not( $genomeFasta eq "" ) ) {
-		print OUT "-b $genomeFasta ";
-	}
-
-	print OUT " $gtfFile ";
-
-	foreach my $file (@files) {
-		print OUT "$file ";
-	}
-	print OUT "\n";
-
-	output_footer();
-
-	if ($runNow) {
-		`qsub $pbsFile`;
-		print "$pbsFile submitted\n";
-	}
-	else {
-		print "$pbsFile created\n";
-	}
-}
-
-sub output_tophat2_script {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
-
-	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
-
-	print OUT "echo tophat2=`date` \n";
-
-	my $hasGtfFile = -e $gtfFile;
-
-	my $hasIndexFile = 0;
-	if ( defined $gtfIndex ) {
-		if ( -e ( $gtfIndex . ".rev.2.bt2" ) ) {
-			$hasIndexFile = 1;
-		}
-	}
-
-	my $tophat2file = $curDir . "/accepted_hits.bam";
-
-	print OUT "if [ -s $tophat2file ];\n";
-	print OUT "then\n";
-	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
-	print OUT "else\n";
-	if ($hasGtfFile) {
-		if ( ( $index == 0 ) && ( !$hasIndexFile ) ) {
-			print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
-		}
-		else {
+		elsif ($hasIndexFile) {
 			print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
-	}
-	elsif ($hasIndexFile) {
-		print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
-	}
-	else {
-		print OUT "  tophat2 $tophat2param -o $curDir $genomeDb ";
+		else {
+			print OUT "  tophat2 $tophat2param -o $curDir $genomeDb ";
+		}
+
+		if ($isSingle) {
+			print OUT "$sampleFiles[$index]\n";
+		}
+		else {
+			print OUT "$sampleFiles[$index*2] $sampleFiles[$index*2+1]\n";
+		}
+		print OUT "fi\n";
 	}
 
-	if ($isSingle) {
-		print OUT "$sampleFiles[$index]\n";
-	}
-	else {
-		print OUT "$sampleFiles[$index*2] $sampleFiles[$index*2+1]\n";
-	}
-	print OUT "fi\n";
-}
+	sub check_is_single() {
+		my ( $sampleNameCount, @sampleFiles ) = @_;
+		my $sampleFileCount = scalar(@sampleFiles);
+		my $isSingle        = 1;
+		if ( $sampleNameCount == $sampleFileCount ) {
+			$isSingle = 1;
+		}
+		elsif ( $sampleNameCount * 2 == $sampleFileCount ) {
+			$isSingle = 0;
+		}
+		else {
+			die "Count of SampleName should be equals to count/half count of SampleFiles";
+		}
 
-sub check_is_single() {
-	my ( $sampleNameCount, @sampleFiles ) = @_;
-	my $sampleFileCount = scalar(@sampleFiles);
-	my $isSingle        = 1;
-	if ( $sampleNameCount == $sampleFileCount ) {
-		$isSingle = 1;
-	}
-	elsif ( $sampleNameCount * 2 == $sampleFileCount ) {
-		$isSingle = 0;
-	}
-	else {
-		die "Count of SampleName should be equals to count/half count of SampleFiles";
+		return ($isSingle);
 	}
 
-	return ($isSingle);
-}
-
-sub output_header {
-	my ( $pbsFile, $pbsDesc, $pathFile, $log ) = @_;
-	open( OUT, ">$pbsFile" ) or die $!;
-	print OUT $pbsDesc;
-	print OUT "#PBS -o $log\n";
-	print OUT "#PBS -j oe\n\n";
-	if ( defined $pathFile ) {
-		print OUT "source $pathFile\n";
+	sub output_header {
+		my ( $pbsFile, $pbsDesc, $pathFile, $log ) = @_;
+		open( OUT, ">$pbsFile" ) or die $!;
+		print OUT $pbsDesc;
+		print OUT "#PBS -o $log\n";
+		print OUT "#PBS -j oe\n\n";
+		if ( defined $pathFile ) {
+			print OUT "source $pathFile\n";
+		}
 	}
-}
 
-sub output_footer() {
-	print OUT "echo finished=`date`\n";
-	close OUT;
-}
+	sub output_footer() {
+		print OUT "echo finished=`date`\n";
+		close OUT;
+	}
 
-1;
+	1;
