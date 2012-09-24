@@ -148,7 +148,6 @@ sub tophat2_create_config {
 	return ($refConfig);
 }
 
-#not finished! There is no Config::Std in accre
 sub tophat2_by_pbs_config {
 	my ( $paramFile, $runNow ) = @_;
 
