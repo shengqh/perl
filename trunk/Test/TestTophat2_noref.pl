@@ -13,6 +13,13 @@ my $genomeDb     = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769";
 my $tophat2param = "--segment-length 25 -r 0 -p 8";
 
+my $pbsParamRef = {
+	"email"    => "quanhu.sheng\@vanderbilt.edu",
+	"nodes"    => "8",
+	"walltime" => "72",
+	"mem"      => "15000mb"
+};
+
 my $runNow = get_run_now();
 
 create_directory_or_die($rootDir);
@@ -32,4 +39,4 @@ foreach my $sample (@samples) {
 	push( @sampleFiles, $fastqFile2 );
 }
 
-tophat2_by_pbs_individual( $genomeDb, "","", $tophat2param, $rootDir, \@sampleNames, \@sampleFiles, $runNow );
+tophat2_by_pbs_individual( $genomeDb, "", "", $tophat2param, $rootDir, \@sampleNames, \@sampleFiles, $pbsParamRef, $runNow );

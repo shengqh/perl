@@ -4,6 +4,7 @@ package CQS::PBS;
 use strict;
 use warnings;
 use File::Basename;
+use CQS::SystemUtils;
 
 require Exporter;
 
@@ -23,18 +24,10 @@ sub init_dir {
 	my $resultDir = "$rootDir/result";
 	my $logDir    = "$rootDir/log";
 
-	if ( !( -d $rootDir ) ) {
-		system "mkdir $rootDir";
-	}
-	if ( !( -d $pbsDir ) ) {
-		system "mkdir $pbsDir";
-	}
-	if ( !( -d $resultDir ) ) {
-		system "mkdir $resultDir";
-	}
-	if ( !( -d $logDir ) ) {
-		system "mkdir $logDir";
-	}
+    create_directory_or_die($rootDir);
+    create_directory_or_die($pbsDir);
+    create_directory_or_die($resultDir);
+    create_directory_or_die($logDir);
 
 	return ( $logDir, $pbsDir, $resultDir );
 }

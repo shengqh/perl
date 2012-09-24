@@ -21,7 +21,7 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub fastqc_by_pbs {
-	my ( $rootDir, $refSampleNames, $refSampleFiles, $pbsParamHashRef, $runNow ) = @_;
+	my ( $rootDir, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
@@ -32,7 +32,7 @@ sub fastqc_by_pbs {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 
-	my ($pbsDesc) = get_pbs_desc($pbsParamHashRef);
+	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
 
 	my $fastqcDir = create_directory_or_die( $resultDir . "/fastqc" );
 	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
