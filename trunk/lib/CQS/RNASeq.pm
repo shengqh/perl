@@ -30,13 +30,13 @@ sub tophat2_parse_and_check_parameters {
 	my $gtfFile  = $paramHash{"gtf_file"};     #optional parameter
 	my $gtfIndex = $paramHash{"gtf_index"};    #optional parameter
 	my $pathFile = $paramHash{"path_file"};    #optional parameter
-	
+
 	print "root_dir = $rootDir\n";
-    print "genome_db = $genomeDb\n";
-    print "tophat2_param = $tophat2param\n";
-    print "gtf_file = $gtfFile\n";
-    print "gtf_index = $gtfIndex\n";
-    print "path_file = $pathFile\n";
+	print "genome_db = $genomeDb\n";
+	print "tophat2_param = $tophat2param\n";
+	print "gtf_file = $gtfFile\n";
+	print "gtf_index = $gtfIndex\n";
+	print "path_file = $pathFile\n";
 
 	if ( defined $gtfFile ) {
 		if ( !-e $gtfFile ) {
@@ -208,17 +208,23 @@ sub cuffdiff_by_pbs {
 sub output_tophat2_script {
 	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
 
-    print "genome_db = $genomeDb\n";
-    print "tophat2_param = $tophat2param\n";
-    print "gtf_file = $gtfFile\n";
-    print "gtf_index = $gtfIndex\n";
+	print "genome_db = $genomeDb\n";
+	print "tophat2_param = $tophat2param\n";
+	print "gtf_file = $gtfFile\n";
+	print "gtf_index = $gtfIndex\n";
 
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
 	print OUT "echo tophat2=`date` \n";
-	
-    my $hasIndexFile = (defined $gtfIndex) and (-e ($gtfIndex . ".rev.2.bt2"));
-	my $hasGtfFile = ( defined $gtfFile ) and ( -e $gtfFile );
+
+	my $hasIndexFile = 0;
+	if ( defined $gtfIndex ) {
+		if ( -e ( $gtfIndex . ".rev.2.bt2" ) ) {
+			$hasIndexFile = 1;
+		}
+	}
+
+	my $hasGtfFile = -e $gtfFile;
 
 	print "hasGtfFile = $hasGtfFile\n";
 	print "hasIndexFile = $hasIndexFile\n";
