@@ -22,7 +22,7 @@ my $pbsParamRef = {
 	"email"    => "quanhu.sheng\@vanderbilt.edu",
 	"nodes"    => "8",
 	"walltime" => "72",
-	"mem"      => "15000mb"
+	"mem"      => "20000mb"
 };
 
 my $runNow = get_run_now();
