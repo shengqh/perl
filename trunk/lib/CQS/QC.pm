@@ -32,7 +32,9 @@ sub fastqc_by_pbs {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 
-	my ($pbsDesc) = get_pbs_desc();
+	my $hashRef = { "nodes" => "1" };
+
+	my ($pbsDesc) = get_pbs_desc($hashRef);
 
 	my $fastqcDir = create_directory_or_die( $resultDir . "/fastqc" );
 	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
