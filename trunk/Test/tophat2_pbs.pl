@@ -12,9 +12,13 @@ if ( $#ARGV < 0 ) {
 }
 
 my $config_file = $ARGV[0];
-my $run_now = $ARGV[1] eq 'y';
 
 if ( -e $config_file ) {
+	my $run_now = 0;
+	if ( $#ARGV > 0 ) {
+		$run_now = $ARGV[1] eq 'y';
+	}
+
 	tophat2_by_pbs_config( $config_file, $run_now );
 }
 else {
