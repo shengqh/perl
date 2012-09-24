@@ -9,7 +9,9 @@ use CQS::SystemUtils;
 
 my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
-my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769";
+my $rootDir = "/scratch/cqs/shengq1/rnaseq/1769_test";
+
+my $pbsParamRef = { "email" => "quanhu.sheng\@vanderbilt.edu", "nodes" => "1" };
 
 my $runNow = get_run_now();
 
@@ -31,4 +33,4 @@ foreach my $sample (@samples) {
 	push( @sampleFiles, $fastqFile2 );
 }
 
-fastqc_by_pbs($rootDir, \@sampleNames, \@sampleFiles, $runNow);
+fastqc_by_pbs( $rootDir, \@sampleNames, \@sampleFiles, $pbsParamRef, $runNow );
