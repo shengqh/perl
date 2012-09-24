@@ -207,6 +207,9 @@ sub output_tophat2_script {
 
 	my $hasGtfFile = ( defined $gtfFile ) and ( -s $gtfFile );
 	my $hasGtfIndexFile = ( defined $gtfIndex ) and ( -s ( $gtfIndex . ".rev.2.bt2" ) );
+	
+	print "hasGtfFile = $hasGtfFile\n"; 
+    print "hasGtfIndexFile = $hasGtfIndexFile\n"; 
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
