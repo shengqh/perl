@@ -107,7 +107,7 @@ sub tophat2_by_pbs_individual {
 		my $log     = $logDir . "/${sampleName}_tophat2.log";
 
 		output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles );
+		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, 0, $isSingle, @sampleFiles );
 		output_footer();
 
 		if ($runNow) {
