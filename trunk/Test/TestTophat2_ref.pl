@@ -10,19 +10,20 @@ use CQS::SystemUtils;
 my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
 my $tophat2ParamRef = {
-    "root_dir"     => "/scratch/cqs/shengq1/rnaseq/1769_test",
+	"root_dir"     => "/scratch/cqs/shengq1/rnaseq/1769_2",
 	"genome_db"    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
+	"tophat2_param" => "--segment-length 25 -r 0 -p 8",
 	"gtf_file"     => "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf",
 	"gtf_index"    => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
-	"tophat2_param" => "--segment-length 25 -r 0 -p 8",
-	#"path_file"    => "/home/shengq1/bin/path.txt"
+	"path_file"    => "/home/shengq1/bin/path.txt",
+	"task_name"	=> "1769_test"
 };
 
 my $pbsParamRef = {
 	"email"    => "quanhu.sheng\@vanderbilt.edu",
 	"nodes"    => "8",
 	"walltime" => "72",
-	"mem"      => "15000mb"
+	"mem"      => "20000mb"
 };
 
 my $runNow = get_run_now();
@@ -42,4 +43,5 @@ foreach my $sample (@samples) {
 	push( @sampleFiles, $fastqFile2 );
 }
 
-tophat2_by_pbs_individual2( $tophat2ParamRef, \@sampleNames, \@sampleFiles, $pbsParamRef, $runNow );
+tophat2_by_pbs_individual( $tophat2ParamRef, \@sampleNames, \@sampleFiles, $pbsParamRef, $runNow );
+#tophat2_by_pbs_batch( $tophat2ParamRef, \@sampleNames, \@sampleFiles, $pbsParamRef, $runNow );
