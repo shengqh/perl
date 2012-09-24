@@ -21,7 +21,7 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub fastqc_by_pbs {
-	my ( $rootDir, $refSampleNames, $refSampleFiles, $runNow ) = @_;
+	my ( $rootDir, $refSampleNames, $refSampleFiles, $hashRef, $runNow ) = @_;
 
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
@@ -31,8 +31,6 @@ sub fastqc_by_pbs {
 	my $pathFile = '/home/shengq1/bin/path.txt';
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-
-	my $hashRef = { "nodes" => "1" };
 
 	my ($pbsDesc) = get_pbs_desc($hashRef);
 
