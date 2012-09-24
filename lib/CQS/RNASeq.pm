@@ -155,7 +155,6 @@ sub tophat2_by_pbs_config {
 	read_config $paramFile => my %config;
 
 	my ( $root_dir, $genome_db, $tophat2_param, $gtf_file, $gtfIndex, $path_file ) = tophat2_parse_and_check_parameters( \%config );
-
 }
 
 sub tophat2_by_pbs_individual {
