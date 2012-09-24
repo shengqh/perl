@@ -212,6 +212,7 @@ sub output_tophat2_script {
     print "tophat2_param = $tophat2param\n";
     print "gtf_file = $gtfFile\n";
     print "gtf_index = $gtfIndex\n";
+    print "defined gtf_index = " . defined($gtfIndex) . "\n";
 
 
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
@@ -220,7 +221,7 @@ sub output_tophat2_script {
 
 	my $hasGtfFile = ( defined $gtfFile ) && ( -e $gtfFile );
 	my $hasGtfIndexFile = 0;
-	if ( defined $gtfIndex ) {
+	if (defined($gtfIndex)) {
        my $hasGtfIndexFile = 1;
 #		my $gtfIndexFile = $gtfIndex . ".rev.2.bt2";
 #		$hasGtfIndexFile = ( -e $gtfIndexFile );
