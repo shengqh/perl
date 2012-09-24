@@ -39,7 +39,7 @@ sub tophat2_parse_and_check_parameters {
     print "path_file = $pathFile\n";
 
 	if ( defined $gtfFile ) {
-		if ( !-s $gtfFile ) {
+		if ( !-e $gtfFile ) {
 			die "gtf_file $gtfFile defined but not exists!";
 		}
 
@@ -58,6 +58,14 @@ sub tophat2_by_pbs_batch {
 	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
 	my ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile ) = tophat2_parse_and_check_parameters($refParamHash);
+
+    print "root_dir = $rootDir\n";
+    print "genome_db = $genomeDb\n";
+    print "tophat2_param = $tophat2param\n";
+    print "gtf_file = $gtfFile\n";
+    print "gtf_index = $gtfIndex\n";
+    print "path_file = $pathFile\n";
+
 
 	my $taskName = $refParamHash->{"task_name"} or die "task_name is not defined.";
 
