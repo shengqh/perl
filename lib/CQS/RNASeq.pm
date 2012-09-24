@@ -209,7 +209,7 @@ sub output_tophat2_script {
 	
 	my $gtfIndexFile = $gtfIndex . ".rev.2.bt2";
 	
-	my $hasGtfIndexFile = ( defined $gtfIndex ) && ( -e $gtfIndexFile );
+	my $hasGtfIndexFile = ( defined $gtfIndex ) and ( -e $gtfIndexFile );
 
 	print "hasGtfFile = $hasGtfFile\n";
 	print "hasGtfIndexFile = $hasGtfIndexFile\n";
