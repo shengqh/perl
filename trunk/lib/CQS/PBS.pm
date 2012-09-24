@@ -40,29 +40,32 @@ sub init_dir {
 }
 
 sub get_pbs_desc {
-	my $hour   = "48";
-	my $email  = "quanhu.sheng\@vanderbilt.edu";
-	my $memory = "15000mb";
-	my $nodes  = "8";
+	my $walltime = "48";
+	my $email    = "";
+	my $mem      = "15000mb";
+	my $nodes    = "8";
 
-	my ($refHash) = @_;
-	if ( defined $refHash ) {
-		my %hash = %{$refHash};
+	my ($pbsParamHashRef) = @_;
+	if ( defined $pbsParamHashRef ) {
+		my %hash = %{$pbsParamHashRef};
 		foreach ( keys %hash ) {
-			if ( $_ eq "hour" ) {
-				$hour = $hash{$_};
+			if ( $_ eq "walltime" ) {
+				$walltime = $hash{$_};
 			}
 			elsif ( $_ eq "email" ) {
 				$email = $hash{$_};
 			}
-			elsif ( $_ eq "memory" ) {
-				$memory = $hash{$_};
+			elsif ( $_ eq "mem" ) {
+				$mem = $hash{$_};
 			}
 			elsif ( $_ eq "nodes" ) {
 				$nodes = $hash{$_};
 			}
 		}
 	}
+
+	die "Assign email address in hash (\"email\" => \"youremail\") and pass hash as parameter to get_pbs_desc" if ( $email eq "" );
+
 	my $pbsDesc = <<PBS;
 #!/bin/bash
 #Beginning of PBS bash script
@@ -72,9 +75,9 @@ sub get_pbs_desc {
 #Email generated at b)eginning, a)bort, and e)nd of jobs
 #PBS -l nodes=$nodes
 #Processors needed
-#PBS -l mem=$memory
+#PBS -l mem=$mem
 #Total job memory required (specify how many megabytes)
-#PBS -l walltime=${hour}:00:00
+#PBS -l walltime=${walltime}:00:00
 #You must specify Wall Clock time (hh:mm:ss) [Maximum allowed 30 days = 720:00:00]
 #PBS -q batch
 PBS
