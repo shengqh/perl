@@ -218,16 +218,10 @@ sub output_tophat2_script {
 	print OUT "echo tophat2=`date` \n";
 
 	my $hasGtfFile = ( defined $gtfFile ) && ( -e $gtfFile );
-	my $hasGtfIndexFile = 0;
-	if (defined($gtfIndex)) {
-		my $gtfIndexFile = $gtfIndex . ".rev.2.bt2";
-    print "gtfIndexFile = $gtfIndexFile\n";
-		$hasGtfIndexFile = ( -e $gtfIndexFile );
-    print "hasGtfIndexFile = $hasGtfIndexFile\n";
-	}
+	my $hasIndexFile = defined($gtfIndex) && (-e ($gtfIndex . ".rev.2.bt2"));
 
 	print "hasGtfFile = $hasGtfFile\n";
-	print "hasGtfIndexFile = $hasGtfIndexFile\n";
+	print "hasIndexFile = $hasIndexFile\n";
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
@@ -236,14 +230,14 @@ sub output_tophat2_script {
 	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
 	print OUT "else\n";
 	if ($hasGtfFile) {
-		if ( ( $index == 0 ) && ( !$hasGtfIndexFile ) ) {
+		if ( ( $index == 0 ) && ( !$hasIndexFile ) ) {
 			print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
 		else {
 			print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
 	}
-	elsif ($hasGtfIndexFile) {
+	elsif ($hasIndexFile) {
 		print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 	}
 	else {
