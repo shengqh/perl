@@ -11,7 +11,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual tophat2_by_pbs_individual2 cufflinks_by_pbs cuffdiff_by_pbs)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual cufflinks_by_pbs cuffdiff_by_pbs)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -19,43 +19,7 @@ our $VERSION = '0.01';
 
 use Cwd;
 
-sub tophat2_by_pbs_batch {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $taskName, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
-	my @sampleNames = @{$refSampleNames};
-	my @sampleFiles = @{$refSampleFiles};
-
-	my $sampleNameCount = scalar(@sampleNames);
-
-	my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
-
-	my $pathFile = '/home/shengq1/bin/path.txt';
-
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
-
-	my $pbsFile = $pbsDir . "/${taskName}_tophat2.pbs";
-	my $log     = $logDir . "/${taskName}_tophat2.log";
-
-	output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-
-	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
-		my $sampleName = $sampleNames[$index];
-		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles );
-	}
-
-	output_footer();
-
-	if ($runNow) {
-		`qsub $pbsFile`;
-		print "$pbsFile submitted\n";
-	}
-	else {
-		print "$pbsFile created\n";
-	}
-}
-
-sub parse_and_check_tophat2_parameters {
+sub tophat2_parse_and_check_parameters {
 	my ($refParamHash) = @_;
 
 	my %paramHash = %{$refParamHash};
@@ -83,42 +47,13 @@ sub parse_and_check_tophat2_parameters {
 	return ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile );
 }
 
-sub tophat2_by_pbs_individual2 {
+sub tophat2_by_pbs_batch {
 	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
-	my ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile ) = parse_and_check_tophat2_parameters($refParamHash);
+	my ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile ) = tophat2_parse_and_check_parameters($refParamHash);
 
-	my @sampleNames     = @{$refSampleNames};
-	my @sampleFiles     = @{$refSampleFiles};
-	my $sampleNameCount = scalar(@sampleNames);
-	my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
-
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
-	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
-
-	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
-		my $sampleName = $sampleNames[$index];
-
-		my $pbsFile = $pbsDir . "/${sampleName}_tophat2.pbs";
-		my $log     = $logDir . "/${sampleName}_tophat2.log";
-
-		output_header( $pbsFile, $pbsDesc, $pathFile, $log );
-		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles );
-		output_footer();
-
-		if ($runNow) {
-			`qsub $pbsFile`;
-			print "$pbsFile submitted\n";
-		}
-		else {
-			print "$pbsFile created\n";
-		}
-	}
-}
-
-sub tophat2_by_pbs_individual {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
+	my $taskName = $refParamHash->{"task_name"} or die "task_name is not defined.";
+	
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
 
@@ -126,7 +61,40 @@ sub tophat2_by_pbs_individual {
 
 	my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
 
-	my $pathFile = '/home/shengq1/bin/path.txt';
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
+	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
+
+	my $pbsFile = $pbsDir . "/${taskName}_tophat2.pbs";
+	my $log     = $logDir . "/${taskName}_tophat2.log";
+
+	output_header( $pbsFile, $pbsDesc, $pathFile, $log );
+
+	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
+		my $sampleName = $sampleNames[$index];
+		output_tophat2_script( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles );
+	}
+
+	output_footer();
+
+	if ($runNow) {
+		`qsub $pbsFile`;
+		print "$pbsFile submitted\n";
+	}
+	else {
+		print "$pbsFile created\n";
+	}
+}
+
+sub tophat2_by_pbs_individual {
+	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
+
+	my ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile ) = tophat2_parse_and_check_parameters($refParamHash);
+
+	my @sampleNames     = @{$refSampleNames};
+	my @sampleFiles     = @{$refSampleFiles};
+	my $sampleNameCount = scalar(@sampleNames);
+	my ($isSingle) = check_is_single( $sampleNameCount, @sampleFiles );
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
