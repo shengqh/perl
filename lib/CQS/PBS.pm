@@ -4,7 +4,7 @@ package CQS::PBS;
 use strict;
 use warnings;
 use File::Basename;
-use CQS::SystemUtils;
+use CQS::FileUtils;
 
 require Exporter;
 
