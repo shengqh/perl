@@ -11,8 +11,7 @@ my @samples = ( "1", "3", "4", "5", "10", "11", "13", "16" );
 
 my $rootDir = "/scratch/cqs/shengq1/rnaseq/1769_test";
 
-#my $pbsParamRef = { "email" => "quanhu.sheng\@vanderbilt.edu", "nodes" => "1" };
-my $pbsParamRef = { "nodes" => "1" };
+my $pbsParamRef = { "email" => "quanhu.sheng\@vanderbilt.edu", "nodes" => "1" };
 
 my $runNow = get_run_now();
 
