@@ -32,15 +32,15 @@ sub tophat2_parse_and_check_parameters {
 	my $pathFile = $paramHash{"path_file"};    #optional parameter
 
 	if ( defined $gtfFile ) {
-		if ( not -s $gtfFile ) {
+		if ( !-s $gtfFile ) {
 			die "gtf_file $gtfFile defined but not exists!";
 		}
 
-		if ( not defined $gtfIndex ) {
+		if ( !defined $gtfIndex ) {
 			die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
 		}
 	}
-	if ( ( defined $pathFile ) and ( not -s $pathFile ) ) {
+	if ( ( defined $pathFile ) && ( !-s $pathFile ) ) {
 		die "path_file $pathFile defined but not exists!";
 	}
 
@@ -205,11 +205,11 @@ sub output_tophat2_script {
 
 	print OUT "echo tophat2=`date` \n";
 
-	my $hasGtfFile = ( defined $gtfFile ) and ( -s $gtfFile );
-	my $hasGtfIndexFile = ( defined $gtfIndex ) and ( -s ( $gtfIndex . ".rev.2.bt2" ) );
-	
-	print "hasGtfFile = $hasGtfFile\n"; 
-    print "hasGtfIndexFile = $hasGtfIndexFile\n"; 
+	my $hasGtfFile = ( defined $gtfFile ) && ( -s $gtfFile );
+	my $hasGtfIndexFile = ( defined $gtfIndex ) && ( -s ( $gtfIndex . ".rev.2.bt2" ) );
+
+	print "hasGtfFile = $hasGtfFile\n";
+	print "hasGtfIndexFile = $hasGtfIndexFile\n";
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
@@ -218,7 +218,7 @@ sub output_tophat2_script {
 	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
 	print OUT "else\n";
 	if ($hasGtfFile) {
-		if ( ( $index == 0 ) && ( not $hasGtfIndexFile ) ) {
+		if ( ( $index == 0 ) && ( !$hasGtfIndexFile ) ) {
 			print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
 		else {
