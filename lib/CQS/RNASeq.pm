@@ -30,6 +30,13 @@ sub tophat2_parse_and_check_parameters {
 	my $gtfFile  = $paramHash{"gtf_file"};     #optional parameter
 	my $gtfIndex = $paramHash{"gtf_index"};    #optional parameter
 	my $pathFile = $paramHash{"path_file"};    #optional parameter
+	
+	print "root_dir = $rootDir\n";
+    print "genome_db = $genomeDb\n";
+    print "tophat2_param = $tophat2param\n";
+    print "gtf_file = $gtfFile\n";
+    print "gtf_index = $gtfIndex\n";
+    print "path_file = $pathFile\n";
 
 	if ( defined $gtfFile ) {
 		if ( !-s $gtfFile ) {
