@@ -217,7 +217,7 @@ sub output_tophat2_script {
 
 	print OUT "echo tophat2=`date` \n";
 
-    my $hasIndexFile = (defined $gtfIndex);# && (-e ($gtfIndex . ".rev.2.bt2"));
+    my $hasIndexFile = (defined $gtfIndex) and (-e ($gtfIndex . ".rev.2.bt2"));
 	my $hasGtfFile = ( defined $gtfFile ) && ( -e $gtfFile );
 
 	print "hasGtfFile = $hasGtfFile\n";
