@@ -216,9 +216,9 @@ sub output_tophat2_script {
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
 	print OUT "echo tophat2=`date` \n";
-
+	
     my $hasIndexFile = (defined $gtfIndex) and (-e ($gtfIndex . ".rev.2.bt2"));
-	my $hasGtfFile = ( defined $gtfFile ) && ( -e $gtfFile );
+	my $hasGtfFile = ( defined $gtfFile ) and ( -e $gtfFile );
 
 	print "hasGtfFile = $hasGtfFile\n";
 	print "hasIndexFile = $hasIndexFile\n";
