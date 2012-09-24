@@ -262,7 +262,7 @@ sub cuffdiff_by_pbs {
 
 	my $path_file = $config->{general}{path_file};
 
-	my %pbsParamHash = $config->{pbs} or die "define pbs parameters first";
+	my $refPbs = $config->{pbs} or die "define pbs parameters first";
 
 	my $gtf_file  = $config->{general}{transcript_gtf};
 	my $gtf_index = $config->{general}{transcript_gtf_index};
@@ -290,7 +290,7 @@ sub cuffdiff_by_pbs {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
 	my $cuffdiffDir = create_directory_or_die( $resultDir . "/cuffdiff" );
-	my ($pbsDesc) = get_pbs_desc( \%pbsParamHash );
+	my ($pbsDesc) = get_pbs_desc($refPbs);
 
 	my $pbsFile = $pbsDir . "/${task_name}_cuffdiff.pbs";
 	my $log     = $logDir . "/${task_name}_cuffdiff.log";
