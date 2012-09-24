@@ -56,7 +56,7 @@ sub tophat2_by_pbs_batch {
 }
 
 sub tophat2_by_pbs_individual {
-	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $refSampleNames, $refSampleFiles, $runNow ) = @_;
+	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $rootDir, $refSampleNames, $refSampleFiles, $pbsParamRef, $runNow ) = @_;
 	my @sampleNames = @{$refSampleNames};
 	my @sampleFiles = @{$refSampleFiles};
 
@@ -68,7 +68,7 @@ sub tophat2_by_pbs_individual {
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
-	my ($pbsDesc) = get_pbs_desc();
+	my ($pbsDesc) = get_pbs_desc($pbsParamRef);
 
 	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
 		my $sampleName = $sampleNames[$index];
