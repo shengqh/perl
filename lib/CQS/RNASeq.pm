@@ -61,10 +61,10 @@ sub tophat2_by_pbs_individual2 {
 	my %paramHash       = %{$refParamHash};
 	my $rootDir         = $paramHash{"root_dir"} or die "define root_dir first";
 	my $genomeDb        = $paramHash{"genome_db"} or die "define genome_db first";
-	my $gtfFile         = $paramHash{"gtf_file"};
-	my $gtfIndex        = $paramHash{"gtf_index"};
+	my $gtfFile         = $paramHash{"gtf_file"};                                            #optional parameter
+	my $gtfIndex        = $paramHash{"gtf_index"};                                           #optional parameter
 	my $tophat2param    = $paramHash{"tophat2_param"} or die "define tophat2_param first";
-	my $pathFile        = $paramHash{"path_file"};
+	my $pathFile        = $paramHash{"path_file"};                                           #optional parameter
 	my @sampleNames     = @{$refSampleNames};
 	my @sampleFiles     = @{$refSampleFiles};
 	my $sampleNameCount = scalar(@sampleNames);
@@ -213,7 +213,8 @@ sub output_tophat2_script {
 
 	print OUT "echo tophat2=`date` \n";
 
-	my $gtfIndexFile = $gtfIndex . ".rev.2.bt2";
+	my $hasGtfFile      = ( defined $gtfFile )  and ( -e $gtfFile );
+	my $hasGtfIndexFile = ( defined $gtfIndex ) and ( -e $gtfIndex . ".rev.2.bt2" );
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
@@ -221,15 +222,15 @@ sub output_tophat2_script {
 	print OUT "then\n";
 	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
 	print OUT "else\n";
-	if ( -e $gtfFile ) {
-		if ( ( $index == 0 ) && ( not -e $gtfIndexFile ) ) {
+	if ($hasGtfFile) {
+		if ( ( $index == 0 ) && ( not $hasGtfIndexFile ) ) {
 			print OUT "  tophat2 $tophat2param -G $gtfFile --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
 		else {
 			print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 		}
 	}
-	elsif ( -e $gtfIndexFile ) {
+	elsif ($hasGtfIndexFile) {
 		print OUT "  tophat2 $tophat2param --transcriptome-index=$gtfIndex -o $curDir $genomeDb ";
 	}
 	else {
