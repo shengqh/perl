@@ -11,7 +11,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual cufflinks_by_pbs cuffdiff_by_pbs)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual tophat2_by_pbs_individual2 cufflinks_by_pbs cuffdiff_by_pbs)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
