@@ -95,30 +95,39 @@ sub tophat2_by_pbs_batch {
 	}
 }
 
-sub tophat2_parse_config {
-	my ($refConfig) = @_;
+sub check_config_bool_value {
+	my ( $config, $key, $value ) = @_;
+	if ( !defined $config->{$key} ) {
+		return (0);
+	}
 
-	my %config = %{$refConfig};
+	return ( $config->{$key} eq $value );
+}
 
-	my $root_dir  = $config{global}{root_dir}  or die "define root_dir first";
-	my $genome_db = $config{global}{genome_db} or die "define genome_db first";
-	my $gtf_file      = $config{global}{gtf_file};                                             #optional parameter
-	my $gtf_index     = $config{global}{gtf_index};                                            #optional parameter
-	my $path_file     = $config{global}{path_file};                                            #optional parameter
-	my $tophat2_param = $config{tophat2}{tophat2_param} or die "define tophat2_param first";
+sub tophat2_check_config {
+	my ($config) = @_;
+
+	my $root_dir  = $config->{general}{root_dir}      or die "define general::root_dir first";
+	my $genome_db = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
+	my $gtf_file      = $config->{general}{transcript_gtf};                                 #optional parameter
+	my $gtf_index     = $config->{general}{transcript_gtf_index};                           #optional parameter
+	my $path_file     = $config->{general}{path_file};                                      #optional parameter
+	my $tophat2_param = $config->{option}{tophat2} or die "define option::tophat2 first";
 
 	if ( defined $gtf_file ) {
 		if ( !-e $gtf_file ) {
-			die "gtf_file $gtf_file defined but not exists!";
+			die "transcript_gtf $gtf_file defined but not exists!";
 		}
 
 		if ( !defined $gtf_index ) {
-			die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
+			die "transcript_gtf was defined but transcript_gtf_index was not defined, you should defined transcript_gtf_index to cache the parsing result.";
 		}
 	}
 	if ( defined $path_file ) {
-		if ( !-e $path_file ) {
-			die "path_file $path_file defined but not exists!";
+		if ( !$path_file eq "" ) {
+			if ( !-e $path_file ) {
+				die "path_file $path_file defined but not exists!";
+			}
 		}
 	}
 
@@ -126,26 +135,26 @@ sub tophat2_parse_config {
 }
 
 sub tophat2_create_config {
-	my ($refConfig) = @_;
-	if ( !$refConfig->{global}{root_dir} ) {
-		$refConfig->{global}{root_dir} = "root_dir";
+	my ($config) = @_;
+	if ( !$config->{general}{root_dir} ) {
+		$config->{general}{root_dir} = "root_dir";
 	}
-	if ( !$refConfig->{global}{genome_db} ) {
-		$refConfig->{global}{genome_db} = "genome_db";
+	if ( !$config->{general}{bowtie2_index} ) {
+		$config->{general}{bowtie2_index} = "bowtie2_index";
 	}
-	if ( !$refConfig->{global}{gtf_file} ) {
-		$refConfig->{global}{gtf_file} = "gtf_file";
+	if ( !$config->{general}{transcript_gtf} ) {
+		$config->{general}{transcript_gtf} = "transcript_gtf";
 	}
-	if ( !$refConfig->{global}{gtf_index} ) {
-		$refConfig->{global}{gtf_index} = "gtf_index";
+	if ( !$config->{general}{transcript_gtf_index} ) {
+		$config->{general}{transcript_gtf_index} = "transcript_gtf_index";
 	}
-	if ( !$refConfig->{global}{path_file} ) {
-		$refConfig->{global}{path_file} = "path_file";
+	if ( !$config->{general}{path_file} ) {
+		$config->{general}{path_file} = "path_file";
 	}
-	if ( !$refConfig->{tophat2}{tophat2_param} ) {
-		$refConfig->{tophat2}{tophat2_param} = "tophat2_param";
+	if ( !$config->{option}{tophat2} ) {
+		$config->{option}{tophat2} = "tophat2_option";
 	}
-	return ($refConfig);
+	return ($config);
 }
 
 sub tophat2_by_pbs_config {
