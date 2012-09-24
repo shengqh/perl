@@ -16,7 +16,7 @@ my $config = {
 		#transcript_gtf       => "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf",
 		transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
 		path_file            => "/home/shengq1/bin/path.txt",
-		task_name            => "1769_2"
+		task_name            => "1769-DPC"
 	},
 	cuffdiff => { option => "-p 8 -N" },
 	pbs      => {
