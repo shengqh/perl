@@ -280,7 +280,7 @@ sub cuffdiff_by_pbs {
 
 	my @labels = ();
 	my @files  = ();
-	for ( keys $config->{files} ) {
+	for ( keys %{ $config->{files} } ) {
 		push( @labels, $_ );
 		my @gfiles = @{ $config->{files}{$_} };
 		push( @files, merge_string( ",", @gfiles ) );
