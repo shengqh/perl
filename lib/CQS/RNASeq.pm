@@ -55,16 +55,38 @@ sub tophat2_by_pbs_batch {
 	}
 }
 
+sub parse_and_check_tophat2_parameters {
+	my ($refParamHash) = @_;
+
+	my %paramHash = %{$refParamHash};
+
+	my $rootDir      = $paramHash{"root_dir"}      or die "define root_dir first";
+	my $genomeDb     = $paramHash{"genome_db"}     or die "define genome_db first";
+	my $tophat2param = $paramHash{"tophat2_param"} or die "define tophat2_param first";
+	my $gtfFile  = $paramHash{"gtf_file"};     #optional parameter
+	my $gtfIndex = $paramHash{"gtf_index"};    #optional parameter
+	my $pathFile = $paramHash{"path_file"};    #optional parameter
+
+	if ( defined $gtfFile ) {
+		if ( not -e $gtfFile ) {
+			die "gtf_file $gtfFile defined but not exists!";
+		}
+
+		if ( not defined $gtfIndex ) {
+			die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
+		}
+	}
+	if ( ( defined $pathFile ) and ( not -e $pathFile ) ) {
+		die "path_file $pathFile defined but not exists!";
+	}
+
+	return ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile );
+}
+
 sub tophat2_by_pbs_individual2 {
 	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
-	my %paramHash    = %{$refParamHash};
-	my $rootDir      = $paramHash{"root_dir"} or die "define root_dir first";
-	my $genomeDb     = $paramHash{"genome_db"} or die "define genome_db first";
-	my $gtfFile      = $paramHash{"gtf_file"};                                            #optional parameter
-	my $gtfIndex     = $paramHash{"gtf_index"};                                           #optional parameter
-	my $tophat2param = $paramHash{"tophat2_param"} or die "define tophat2_param first";
-	my $pathFile     = $paramHash{"path_file"};
+	my ( $rootDir, $genomeDb, $tophat2param, $gtfFile, $gtfIndex, $pathFile ) = parse_and_check_tophat2_parameters($refParamHash);
 
 	my @sampleNames     = @{$refSampleNames};
 	my @sampleFiles     = @{$refSampleFiles};
@@ -211,9 +233,6 @@ sub cuffdiff_by_pbs {
 sub output_tophat2_script {
 	my ( $genomeDb, $gtfFile, $gtfIndex, $tophat2param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
 
-	if ( ( defined $gtfFile ) and ( not defined $gtfIndex ) ) {
-		die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
-	}
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
 	print OUT "echo tophat2=`date` \n";
