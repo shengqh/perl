@@ -2,45 +2,42 @@
 use strict;
 use warnings;
 
-use CQS::QC;
 use CQS::RNASeq;
-use CQS::FileUtils;
-use CQS::StringUtils;
-use CQS::SystemUtils;
-
-my @samples1 = ( "1", "3", "4", "5" );
-my @samples2 = (  "10", "11", "13", "16" );
-
-my $genomeFasta     = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
-#my $gtfFile      = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
-my $gffIndex     = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68.gff";
-my $cuffdiffparam = "-p 8 -N";
-my $rootDir      = "/scratch/cqs/shengq1/rnaseq/1769_2";
 
 my $runNow = get_run_now();
 
-my $pbsParamRef = {
-    "email"    => "quanhu.sheng\@vanderbilt.edu",
-    "nodes"    => "8",
-    "walltime" => "72",
-    "mem"      => "20000mb"
+my $root_dir = "/scratch/cqs/shengq1/rnaseq/1769_2";
+
+my $config = {
+	general => {
+		root_dir             => $root_dir,
+		bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
+		transcript_gtf       => "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf",
+		transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
+		path_file            => "/home/shengq1/bin/path.txt",
+		task_name            => "1769_2"
+	},
+	cuffdiff => { option => "-p 8 -N" },
+	pbs      => {
+		"email"    => "quanhu.sheng\@vanderbilt.edu",
+		"nodes"    => "8",
+		"walltime" => "72",
+		"mem"      => "20000mb"
+	},
+	files => {
+		G1 => [
+			$root_dir . "/result/tophat2/1769-DPC-1/accepted_hits.bam",
+			$root_dir . "/result/tophat2/1769-DPC-3/accepted_hits.bam",
+			$root_dir . "/result/tophat2/1769-DPC-4/accepted_hits.bam",
+			$root_dir . "/result/tophat2/1769-DPC-5/accepted_hits.bam"
+		],
+		G2 => [
+			$root_dir . "/result/tophat2/1769-DPC-10/accepted_hits.bam",
+			$root_dir . "/result/tophat2/1769-DPC-11/accepted_hits.bam",
+			$root_dir . "/result/tophat2/1769-DPC-13/accepted_hits.bam",
+			$root_dir . "/result/tophat2/1769-DPC-16/accepted_hits.bam"
+		],
+	}
 };
 
-my @bamFiles1 = ();
-my @bamFiles2 = ();
-
-foreach my $sample (@samples1) {
-	my $name = "1769-DPC-" . $sample;
-	my $bamfile = $rootDir . "/result/tophat2/". $name . "/accepted_hits.bam";
-	push( @bamFiles1, $bamfile );
-}
-
-foreach my $sample (@samples2) {
-    my $name = "1769-DPC-" . $sample;
-    my $bamfile = $rootDir . "/result/tophat2/". $name . "/accepted_hits.bam";
-    push( @bamFiles2, $bamfile );
-}
-
-my @files = (merge_string(",", @bamFiles1), merge_string(",", @bamFiles2));
-
-cuffdiff_by_pbs($genomeFasta, $gffIndex, $cuffdiffparam, $rootDir, "1769-DPC", "G1,G2", \@files, $pbsParamRef, $runNow);
+cuffdiff_by_pbs( $config, $runNow );

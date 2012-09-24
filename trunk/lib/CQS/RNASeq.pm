@@ -7,6 +7,7 @@ use File::Basename;
 use Config::Std;
 use CQS::PBS;
 use CQS::FileUtils;
+use CQS::StringUtils;
 
 require Exporter;
 
@@ -250,24 +251,54 @@ sub cufflinks_by_pbs {
 }
 
 sub cuffdiff_by_pbs {
-	my ( $genomeFasta, $gtf_file, $cuffdiffparam, $root_dir, $taskName, $labels, $refFiles, $refPbsParamHash, $runNow ) = @_;
+	my ( $config, $runNow ) = @_;
 
-	my @files = @{$refFiles};
+	my $root_dir  = $config->{general}{root_dir}      or die "define general::root_dir first";
+	my $genome_db = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
+	my $genome_fasta = $genome_db . ".fa";
 
-	my $path_file = '/home/shengq1/bin/path.txt';
+	my $task_name     = $config->{general}{task_name} or die "define general::task_name first";
+	my $cuffdiffparam = $config->{cuffdiff}{option}   or die "define cuffdiff::option first";
+
+	my $path_file = $config->{general}{path_file};
+
+	my %pbsParamHash = $config->{pbs} or die "define pbs parameters first";
+
+	my $gtf_file  = $config->{general}{transcript_gtf};
+	my $gtf_index = $config->{general}{transcript_gtf_index};
+
+	if ( ( !defined($gtf_file) ) && ( !defined($gtf_index) ) ) {
+		die "define general::transcript_gtf or general::transcript_gtf_index first";
+	}
+
+	if ( defined $gtf_index ) {
+		my $gff_file = $gtf_index . ".gff";
+		if ( -e $gff_file ) {
+			$gtf_file = $gff_file;
+		}
+	}
+
+	my @labels = ();
+	my @files  = ();
+	for ( keys $config->{files} ) {
+		push( @labels, $_ );
+		my @gfiles = @{ $config->{files}{$_} };
+		push( @files, merge_string( ",", @gfiles ) );
+	}
+
+	my $labels = merge_string( ",", @labels );
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
 	my $cuffdiffDir = create_directory_or_die( $resultDir . "/cuffdiff" );
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
+	my ($pbsDesc) = get_pbs_desc( \%pbsParamHash );
 
-	my $pbsFile = $pbsDir . "/${taskName}_cuffdiff.pbs";
-	my $log     = $logDir . "/${taskName}_cuffdiff.log";
+	my $pbsFile = $pbsDir . "/${task_name}_cuffdiff.pbs";
+	my $log     = $logDir . "/${task_name}_cuffdiff.log";
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
+
 	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels ";
 
-	if ( not( $genomeFasta eq "" ) ) {
-		print OUT "-b $genomeFasta ";
-	}
+	print OUT "-b $genome_fasta ";
 
 	print OUT " $gtf_file ";
 
