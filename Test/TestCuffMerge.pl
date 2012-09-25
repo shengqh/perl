@@ -20,7 +20,7 @@ my $config = {
 	},
 	cuffmerge => {
 		option    => "-p 8",
-		assembies => $root_dir . "/result/cuffmerge/assemblies.txt"
+		assemblies_file => $root_dir . "/result/cufflinks/assemblies.txt"
 	},
 	pbs => {
 		"email"    => "quanhu.sheng\@vanderbilt.edu",
