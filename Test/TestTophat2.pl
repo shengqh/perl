@@ -14,14 +14,14 @@ my $config = {
 		root_dir             => $root_dir,
 		bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
 		transcript_gtf       => "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf",
-		transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex2/hg19_GRCh37_68",
+		transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
 		paired_data          => 1,
 		path_file            => "/home/shengq1/bin/path.txt",
 		task_name            => "1769-DPC"
 	},
 	tophat2 => {
 		option    => "--segment-length 25 -r 0 -p 8",
-		batchmode => 1
+		batchmode => 0
 	},
 	pbs => {
 		"email"    => "quanhu.sheng\@vanderbilt.edu",
