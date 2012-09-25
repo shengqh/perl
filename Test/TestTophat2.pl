@@ -4,10 +4,12 @@ use warnings;
 
 use CQS::RNASeq;
 use CQS::SystemUtils;
+
 #use Config::Any;
 
 my $runNow = get_run_now();
 
+my $raw_dir  = "/scratch/cqs/guoy1/1769/rawdata/";
 my $root_dir = "/scratch/cqs/shengq1/rnaseq/1769_Test";
 
 my $config = {
@@ -32,18 +34,20 @@ my $config = {
 	},
 	fastqfiles => {
 		"G1" => {
-			"1769-DPC-1" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-1_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-1_2_sequence.txt" ],
-			"1769-DPC-3" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-3_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-3_2_sequence.txt" ],
-			"1769-DPC-4" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-4_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-4_2_sequence.txt" ],
-			"1769-DPC-5" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-5_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-5_2_sequence.txt" ],
+			"1769-DPC-1" => [ $raw_dir . "1769-DPC-1_1_sequence.txt", $raw_dir . "1769-DPC-1_2_sequence.txt" ],
+			"1769-DPC-3" => [ $raw_dir . "1769-DPC-3_1_sequence.txt", $raw_dir . "1769-DPC-3_2_sequence.txt" ],
+			"1769-DPC-4" => [ $raw_dir . "1769-DPC-4_1_sequence.txt", $raw_dir . "1769-DPC-4_2_sequence.txt" ],
+			"1769-DPC-5" => [ $raw_dir . "1769-DPC-5_1_sequence.txt", $raw_dir . "1769-DPC-5_2_sequence.txt" ],
 		},
 		"G2" => {
-			"1769-DPC-10" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-10_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-10_2_sequence.txt" ],
-			"1769-DPC-11" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-11_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-11_2_sequence.txt" ],
-			"1769-DPC-13" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-13_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-13_2_sequence.txt" ],
-			"1769-DPC-16" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-16_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-16_2_sequence.txt" ],
+			"1769-DPC-10" => [ $raw_dir . "1769-DPC-10_1_sequence.txt", $raw_dir . "1769-DPC-10_2_sequence.txt" ],
+			"1769-DPC-11" => [ $raw_dir . "1769-DPC-11_1_sequence.txt", $raw_dir . "1769-DPC-11_2_sequence.txt" ],
+			"1769-DPC-13" => [ $raw_dir . "1769-DPC-13_1_sequence.txt", $raw_dir . "1769-DPC-13_2_sequence.txt" ],
+			"1769-DPC-16" => [ $raw_dir . "1769-DPC-16_1_sequence.txt", $raw_dir . "1769-DPC-16_2_sequence.txt" ],
 		}
 	}
 };
 
 tophat2_by_pbs( $config, $runNow );
+
+1;
