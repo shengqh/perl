@@ -154,7 +154,7 @@ sub output_tophat2 {
 
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
-	print OUT "echo tophat2 ($sampleName)=`date` \n";
+	print OUT "echo tophat2=`date` \n";
 
 	my $hasgtf_file = file_exists($transcript_gtf);
 
