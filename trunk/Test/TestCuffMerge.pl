@@ -30,4 +30,4 @@ my $config = {
 	}
 };
 
-cuffdiff_by_pbs( $config, $runNow );
+cuffmerge_by_pbs( $config, $runNow );
