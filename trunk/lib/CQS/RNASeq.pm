@@ -268,9 +268,8 @@ sub cufflinks_by_pbs {
 	my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
-	for ( keys %{ $config->{tophat2_result} } ) {
-		my $sampleName = $_;
-		my $sampleFile = $config->{tophat2_result}{$_};
+	for my $sampleName ( sort keys %{ $config->{tophat2_result} } ) {
+		my $sampleFile = $config->{tophat2_result}{$sampleName};
 		my $pbsFile    = $pbsDir . "/${sampleName}_cufflinks.pbs";
 		my $log        = $logDir . "/${sampleName}_cufflinks.log";
 
