@@ -354,8 +354,7 @@ sub cuffmerge_by_pbs {
 	}
 
 	print OUT
-"cuffmerge $cuffmergeparam $gtfparam -s $bowtie2_fasta -o $cuffmergeDir $assemblies_file \n"
-	  ;
+"cuffmerge $cuffmergeparam $gtfparam -s $bowtie2_fasta -o $cuffmergeDir $assemblies_file \n";
 
 	output_footer();
 
@@ -373,31 +372,34 @@ sub cuffdiff_by_pbs {
 
 	my $root_dir = $config->{general}{root_dir}
 	  or die "define general::root_dir first";
-	my $genome_db = $config->{general}{bowtie2_index}
-	  or die "define general::bowtie2_index first";
-	my $genome_fasta = $genome_db . ".fa";
-
 	my $task_name = $config->{general}{task_name}
 	  or die "define general::task_name first";
+	my $bowtie2_index = $config->{general}{bowtie2_index}
+	  or die "define general::bowtie2_index first";
+	my $bowtie2_fasta =
+	  get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
+
+	my $path_file =
+	  get_param_file( $config->{general}{path_file}, "path_file", 0 );
+	my $refPbs = $config->{pbs} or die "define pbs parameters first";
+
 	my $cuffdiffparam = $config->{cuffdiff}{option}
 	  or die "define cuffdiff::option first";
 
-	my $path_file = $config->{general}{path_file};
+	my $transcript_gtf =
+	  get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
+	my $transcript_gtf_index = $config->{general}{transcript_gtf_index};
 
-	my $refPbs = $config->{pbs} or die "define pbs parameters first";
-
-	my $gtf_file  = $config->{general}{transcript_gtf};
-	my $gtf_index = $config->{general}{transcript_gtf_index};
-
-	if ( ( !defined($gtf_file) ) && ( !defined($gtf_index) ) ) {
+	if ( ( !defined($transcript_gtf) ) && ( !defined($transcript_gtf_index) ) )
+	{
 		die
 "define general::transcript_gtf or general::transcript_gtf_index first";
 	}
 
-	if ( defined $gtf_index ) {
-		my $gff_file = $gtf_index . ".gff";
+	if ( defined $transcript_gtf_index ) {
+		my $gff_file = $transcript_gtf_index . ".gff";
 		if ( -e $gff_file ) {
-			$gtf_file = $gff_file;
+			$transcript_gtf = $gff_file;
 		}
 	}
 
@@ -418,12 +420,11 @@ sub cuffdiff_by_pbs {
 	my $pbsFile = $pbsDir . "/${task_name}_cuffdiff.pbs";
 	my $log     = $logDir . "/${task_name}_cuffdiff.log";
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
-
 	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels ";
 
-	print OUT "-b $genome_fasta ";
+	print OUT "-b $bowtie2_fasta ";
 
-	print OUT " $gtf_file ";
+	print OUT " $transcript_gtf ";
 
 	foreach my $file (@files) {
 		print OUT "$file ";
