@@ -288,16 +288,16 @@ sub tophat2_by_pbs {
 				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $tophatDir, $sampleName, $index, @sampleFiles );
 				$index++;
 			}
+		}
 
-			output_footer();
+		output_footer();
 
-			if ($runNow) {
-				`qsub $pbsFile`;
-				print "$pbsFile submitted\n";
-			}
-			else {
-				print "$pbsFile created\n";
-			}
+		if ($runNow) {
+			`qsub $pbsFile`;
+			print "$pbsFile submitted\n";
+		}
+		else {
+			print "$pbsFile created\n";
 		}
 	}
 	else {
