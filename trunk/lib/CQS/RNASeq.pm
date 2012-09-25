@@ -13,11 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = (
-	'all' => [
-		qw(tophat2_by_pbs_batch tophat2_by_pbs_individual tophat2_by_pbs_config tophat2_create_config cufflinks_by_pbs cuffdiff_by_pbs)
-	]
-);
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual tophat2_create_config tophat2_by_pbs cufflinks_by_pbs cuffdiff_by_pbs)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -50,8 +46,7 @@ sub tophat2_parse_and_check_parameters {
 		}
 
 		if ( !defined $gtfIndex ) {
-			die
-"gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
+			die "gtf_file was defined but gtf_index was not defined, you should defined gtf_index to cache the parsing result.";
 		}
 	}
 	if ( defined $path_file ) {
@@ -60,22 +55,13 @@ sub tophat2_parse_and_check_parameters {
 		}
 	}
 
-	return (
-		$root_dir, $genome_db, $tophat2_param,
-		$gtf_file, $gtfIndex,  $path_file
-	);
+	return ( $root_dir, $genome_db, $tophat2_param, $gtf_file, $gtfIndex, $path_file );
 }
 
 sub tophat2_by_pbs_batch {
-	my (
-		$refParamHash,    $refSampleNames, $refSampleFiles,
-		$refPbsParamHash, $runNow
-	) = @_;
+	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
-	my (
-		$root_dir, $genome_db, $tophat2_param,
-		$gtf_file, $gtfIndex,  $path_file
-	) = tophat2_parse_and_check_parameters($refParamHash);
+	my ( $root_dir, $genome_db, $tophat2_param, $gtf_file, $gtfIndex, $path_file ) = tophat2_parse_and_check_parameters($refParamHash);
 
 	my $taskName = $refParamHash->{"task_name"}
 	  or die "task_name is not defined.";
@@ -98,11 +84,7 @@ sub tophat2_by_pbs_batch {
 
 	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
 		my $sampleName = $sampleNames[$index];
-		output_tophat2_script(
-			$genome_db,     $gtf_file,  $gtfIndex,
-			$tophat2_param, $tophatDir, $sampleName,
-			$index,         $isSingle,  @sampleFiles
-		);
+		output_tophat2_script( $genome_db, $gtf_file, $gtfIndex, $tophat2_param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles );
 	}
 
 	output_footer();
@@ -123,44 +105,6 @@ sub check_config_bool_value {
 	}
 
 	return ( $config->{$key} eq $value );
-}
-
-sub tophat2_check_config {
-	my ($config) = @_;
-
-	my $root_dir = $config->{general}{root_dir}
-	  or die "define general::root_dir first";
-	my $genome_db = $config->{general}{bowtie2_index}
-	  or die "define general::bowtie2_index first";
-	my $gtf_file = $config->{general}{transcript_gtf};    #optional parameter
-	my $gtf_index =
-	  $config->{general}{transcript_gtf_index};           #optional parameter
-	my $path_file     = $config->{general}{path_file};    #optional parameter
-	my $tophat2_param = $config->{option}{tophat2}
-	  or die "define option::tophat2 first";
-
-	if ( defined $gtf_file ) {
-		if ( !-e $gtf_file ) {
-			die "transcript_gtf $gtf_file defined but not exists!";
-		}
-
-		if ( !defined $gtf_index ) {
-			die
-"transcript_gtf was defined but transcript_gtf_index was not defined, you should defined transcript_gtf_index to cache the parsing result.";
-		}
-	}
-	if ( defined $path_file ) {
-		if ( !$path_file eq "" ) {
-			if ( !-e $path_file ) {
-				die "path_file $path_file defined but not exists!";
-			}
-		}
-	}
-
-	return (
-		$root_dir, $genome_db, $tophat2_param,
-		$gtf_file, $gtf_index, $path_file
-	);
 }
 
 sub tophat2_create_config {
@@ -186,27 +130,211 @@ sub tophat2_create_config {
 	return ($config);
 }
 
-sub tophat2_by_pbs_config {
-	my ( $paramFile, $runNow ) = @_;
+sub file_exists {
+	my $file   = shift;
+	my $result = 0;
+	if ( defined($file) ) {
+		$result = -e $file;
+	}
+	return ($result);
+}
 
-	read_config $paramFile => my %config;
+sub transcript_gtf_index_exists {
+	my $transcript_gtf_index = shift;
+	my $result               = 0;
+	if ( defined($transcript_gtf_index) ) {
+		my $file = $transcript_gtf_index . ".rev.1.bt2";
+		$result = -e $file;
+	}
+	return ($result);
+}
 
-	my (
-		$root_dir, $genome_db, $tophat2_param,
-		$gtf_file, $gtfIndex,  $path_file
-	) = tophat2_parse_and_check_parameters( \%config );
+sub output_tophat2 {
+	my ( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $tophatDir, $sampleName, $index, @sampleFiles ) = @_;
+
+	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
+
+	print OUT "echo tophat2 ($sampleName)=`date` \n";
+
+	my $hasgtf_file = file_exists($transcript_gtf);
+
+	my $hasIndexFile = transcript_gtf_index_exists($transcript_gtf_index);
+
+	my $tophat2file = $curDir . "/accepted_hits.bam";
+
+	print OUT "if [ -s $tophat2file ];\n";
+	print OUT "then\n";
+	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
+	print OUT "else\n";
+	if ($hasgtf_file) {
+		if ( ( $index == 0 ) && ( !$hasIndexFile ) ) {
+			print OUT "  tophat2 $tophat2_param -G $transcript_gtf --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
+		}
+		else {
+			print OUT "  tophat2 $tophat2_param --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
+		}
+	}
+	elsif ($hasIndexFile) {
+		print OUT "  tophat2 $tophat2_param --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
+	}
+	else {
+		print OUT "  tophat2 $tophat2_param -o $curDir $bowtie2_index ";
+	}
+
+	for my $sampleFile (@sampleFiles) {
+		print OUT "$sampleFile ";
+	}
+	print OUT "\n";
+	print OUT "fi\n";
+}
+
+#get parameter which indicates a file. If required, not defined or not exists, die. If defined but not exists, die.
+#returned file either undefined or exists.
+sub get_param_file {
+	my ( $file, $name, $required ) = @_;
+
+	my $result = $file;
+
+	if ($required) {
+		if ( !defined $file ) {
+			die "$name was not defined!";
+		}
+
+		if ( !-e $file ) {
+			die "$name $file defined but not exists!";
+		}
+	}
+	else {
+		if ( defined($file) ) {
+			if ( $file eq "" ) {
+				undef($result);
+			}
+			elsif ( !-e $file ) {
+				die "$name $file defined but not exists!";
+			}
+		}
+	}
+	return ($result);
+}
+
+sub tophat2_by_pbs {
+	my ( $config, $runNow ) = @_;
+
+	my $root_dir      = $config->{general}{root_dir}      or die "define general::root_dir first";
+	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
+	my $paired_data   = $config->{general}{paired_data}   or die "define general::paired_data first";
+	my $tophat2_param = $config->{tophat2}{option}        or die "define tophat2::option first";
+	my $refPbs        = $config->{pbs}                    or die "define pbs parameters first";
+
+	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );    #optional parameter
+
+	my $batchmode = $config->{tophat2}{batchmode};
+	my $task_name = $config->{general}{task_name};
+	if ( !defined($batchmode) ) {
+		$batchmode = 0;
+	}
+	if ($batchmode) {
+		if ( !defined $task_name ) {
+			die "define general::task_name for batchmode first!";
+		}
+	}
+
+	my $sampleNameCount = 0;
+	while ( my ( $groupName, $sampleMap ) = each( %{ $config->{fastqfiles} } ) ) {
+		$sampleNameCount = $sampleNameCount + scalar( keys %{$sampleMap} );
+	}
+
+	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
+	my $transcript_gtf_index = $config->{general}{transcript_gtf_index};
+
+	if ( -e $transcript_gtf ) {
+		if ( !defined $transcript_gtf_index ) {
+			die "transcript_gtf was defined but transcript_gtf_index was not defined, you should defined transcript_gtf_index to cache the parsing result.";
+		}
+
+		if ( ( !$batchmode ) && ( $sampleNameCount > 1 ) ) {
+			if ( !-e ( $transcript_gtf_index . ".rev.1.bt2" ) ) {
+				die "transcript_gtf was defined but transcript_gtf_index has not been built, you should run only one job to build index first!";
+			}
+		}
+	}
+	elsif ( defined $transcript_gtf_index ) {
+		if ( !transcript_gtf_index_exists($transcript_gtf_index) ) {
+			die "transcript_gtf_index $transcript_gtf_index defined but not exists!";
+		}
+	}
+
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
+	my $tophatDir = create_directory_or_die( $resultDir . "/tophat2" );
+	my ($pbsDesc) = get_pbs_desc($refPbs);
+
+	if ($batchmode) {
+		my $pbsFile = $pbsDir . "/${task_name}_tophat2.pbs";
+		my $log     = $logDir . "/${task_name}_tophat2.log";
+
+		output_header( $pbsFile, $pbsDesc, $path_file, $log );
+
+		my $index = 0;
+		while ( my ( $groupName, $sampleMap ) = each( %{ $config->{fastqfiles} } ) ) {
+			while ( my ( $sampleName, $sampleFile ) = each( %{$sampleMap} ) ) {
+				my @sampleFiles = ();
+				if ($paired_data) {
+					@sampleFiles = @{$sampleFile};
+				}
+				else {
+					push( @sampleFiles, $sampleFile );
+				}
+
+				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $tophatDir, $sampleName, $index, @sampleFiles );
+				$index++;
+			}
+
+			output_footer();
+
+			if ($runNow) {
+				`qsub $pbsFile`;
+				print "$pbsFile submitted\n";
+			}
+			else {
+				print "$pbsFile created\n";
+			}
+		}
+	}
+	else {
+		while ( my ( $groupName, $sampleMap ) = each( %{ $config->{fastqfiles} } ) ) {
+			while ( my ( $sampleName, $sampleFile ) = each( %{$sampleMap} ) ) {
+
+				my @sampleFiles = ();
+				if ($paired_data) {
+					@sampleFiles = @{$sampleFile};
+				}
+				else {
+					push( @sampleFiles, $sampleFile );
+				}
+
+				my $pbsFile = $pbsDir . "/${sampleName}_tophat2.pbs";
+				my $log     = $logDir . "/${sampleName}_tophat2.log";
+
+				output_header( $pbsFile, $pbsDesc, $path_file, $log );
+				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $tophatDir, $sampleName, 0, @sampleFiles );
+				output_footer();
+
+				if ($runNow) {
+					`qsub $pbsFile`;
+					print "$pbsFile submitted\n";
+				}
+				else {
+					print "$pbsFile created\n";
+				}
+			}
+		}
+	}
 }
 
 sub tophat2_by_pbs_individual {
-	my (
-		$refParamHash,    $refSampleNames, $refSampleFiles,
-		$refPbsParamHash, $runNow
-	) = @_;
+	my ( $refParamHash, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
 
-	my (
-		$root_dir, $genome_db, $tophat2_param,
-		$gtf_file, $gtfIndex,  $path_file
-	) = tophat2_parse_and_check_parameters($refParamHash);
+	my ( $root_dir, $genome_db, $tophat2_param, $gtf_file, $gtfIndex, $path_file ) = tophat2_parse_and_check_parameters($refParamHash);
 
 	my @sampleNames     = @{$refSampleNames};
 	my @sampleFiles     = @{$refSampleFiles};
@@ -216,8 +344,7 @@ sub tophat2_by_pbs_individual {
 		if ( -e $gtf_file ) {
 			if ( defined $gtfIndex ) {
 				if ( !-e ( $gtfIndex . ".rev.2.bt2" ) ) {
-					die
-"Gtf file defined but index file has not been built, you should only run one job to build index first!";
+					die "Gtf file defined but index file has not been built, you should only run one job to build index first!";
 				}
 			}
 		}
@@ -236,11 +363,7 @@ sub tophat2_by_pbs_individual {
 		my $log     = $logDir . "/${sampleName}_tophat2.log";
 
 		output_header( $pbsFile, $pbsDesc, $path_file, $log );
-		output_tophat2_script(
-			$genome_db,     $gtf_file,  $gtfIndex,
-			$tophat2_param, $tophatDir, $sampleName,
-			0,              $isSingle,  @sampleFiles
-		);
+		output_tophat2_script( $genome_db, $gtf_file, $gtfIndex, $tophat2_param, $tophatDir, $sampleName, 0, $isSingle, @sampleFiles );
 		output_footer();
 
 		if ($runNow) {
@@ -314,8 +437,7 @@ sub cuffdiff_by_pbs {
 	my $gtf_index = $config->{general}{transcript_gtf_index};
 
 	if ( ( !defined($gtf_file) ) && ( !defined($gtf_index) ) ) {
-		die
-"define general::transcript_gtf or general::transcript_gtf_index first";
+		die "define general::transcript_gtf or general::transcript_gtf_index first";
 	}
 
 	if ( defined $gtf_index ) {
@@ -366,11 +488,7 @@ sub cuffdiff_by_pbs {
 }
 
 sub output_tophat2_script {
-	my (
-		$genome_db,     $gtf_file,  $gtfIndex,
-		$tophat2_param, $tophatDir, $sampleName,
-		$index,         $isSingle,  @sampleFiles
-	) = @_;
+	my ( $genome_db, $gtf_file, $gtfIndex, $tophat2_param, $tophatDir, $sampleName, $index, $isSingle, @sampleFiles ) = @_;
 
 	my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
@@ -389,22 +507,18 @@ sub output_tophat2_script {
 
 	print OUT "if [ -s $tophat2file ];\n";
 	print OUT "then\n";
-	print OUT
-"  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
+	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
 	print OUT "else\n";
 	if ($hasgtf_file) {
 		if ( ( $index == 0 ) && ( !$hasIndexFile ) ) {
-			print OUT
-"  tophat2 $tophat2_param -G $gtf_file --transcriptome-index=$gtfIndex -o $curDir $genome_db ";
+			print OUT "  tophat2 $tophat2_param -G $gtf_file --transcriptome-index=$gtfIndex -o $curDir $genome_db ";
 		}
 		else {
-			print OUT
-"  tophat2 $tophat2_param --transcriptome-index=$gtfIndex -o $curDir $genome_db ";
+			print OUT "  tophat2 $tophat2_param --transcriptome-index=$gtfIndex -o $curDir $genome_db ";
 		}
 	}
 	elsif ($hasIndexFile) {
-		print OUT
-"  tophat2 $tophat2_param --transcriptome-index=$gtfIndex -o $curDir $genome_db ";
+		print OUT "  tophat2 $tophat2_param --transcriptome-index=$gtfIndex -o $curDir $genome_db ";
 	}
 	else {
 		print OUT "  tophat2 $tophat2_param -o $curDir $genome_db ";
@@ -430,8 +544,7 @@ sub check_is_single() {
 		$isSingle = 0;
 	}
 	else {
-		die
-"Count of SampleName should be equals to count/half count of SampleFiles";
+		die "Count of SampleName should be equals to count/half count of SampleFiles";
 	}
 
 	return ($isSingle);
