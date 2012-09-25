@@ -406,11 +406,8 @@ sub cuffdiff_by_pbs {
 	my $pbsFile = $pbsDir . "/${task_name}_cuffdiff.pbs";
 	my $log     = $logDir . "/${task_name}_cuffdiff.log";
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
-	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels ";
-
-	print OUT "-b $bowtie2_fasta ";
-
-	print OUT " $transcript_gtf ";
+	print OUT
+"cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
 
 	foreach my $file (@files) {
 		print OUT "$file ";
