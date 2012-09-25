@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 
 my $runNow = get_run_now();
 
-my $root_dir = "/scratch/cqs/shengq1/rnaseq/1769";
+my $root_dir = "/scratch/cqs/shengq1/rnaseq/1769_test";
 
 my $config = {
 	general => {
