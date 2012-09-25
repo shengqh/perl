@@ -4,7 +4,6 @@ use warnings;
 
 use CQS::RNASeq;
 use CQS::SystemUtils;
-use Config::Std;
 
 my $runNow = get_run_now();
 
@@ -46,9 +45,4 @@ my $config = {
 	}
 };
 
-my $tophat2configfile = $root_dir . "/" . $config->{general}->{task_name} . ".tophat2.config";
-write_config $config, $tophat2configfile;
 tophat2_by_pbs( $config, $runNow );
-
-my $cufflinksconfigfile = $root_dir . "/" . $config->{general}->{task_name} . ".cufflinks.config";
-write_config $config, $cufflinksconfigfile;
