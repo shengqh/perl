@@ -319,15 +319,15 @@ sub cuffmerge_by_pbs {
 
 	my $root_dir = $config->{general}{root_dir}
 	  or die "define general::root_dir first";
-	my $cuffmergeparam = $config->{cuffmerge}{option}
-	  or die "define cuffmerge::option first";
 	my $task_name = $config->{general}{task_name}
 	  or die "define general::task_name first";
 
 	my $path_file =
 	  get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs = $config->{pbs} or die "define pbs parameters first";
-	my $assemblies_file = get_param_file( $config->{general}{assemblies_file},
+	my $cuffmergeparam = $config->{cuffmerge}{option}
+	  or die "define cuffmerge::option first";
+	my $assemblies_file = get_param_file( $config->{cuffmerge}{assemblies_file},
 		"assemblies_file", 1 );
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
