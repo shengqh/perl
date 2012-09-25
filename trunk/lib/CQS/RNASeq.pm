@@ -387,21 +387,7 @@ sub cuffdiff_by_pbs {
 	  or die "define cuffdiff::option first";
 
 	my $transcript_gtf =
-	  get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
-	my $transcript_gtf_index = $config->{general}{transcript_gtf_index};
-
-	if ( ( !defined($transcript_gtf) ) && ( !defined($transcript_gtf_index) ) )
-	{
-		die
-"define general::transcript_gtf or general::transcript_gtf_index first";
-	}
-
-	if ( defined $transcript_gtf_index ) {
-		my $gff_file = $transcript_gtf_index . ".gff";
-		if ( -e $gff_file ) {
-			$transcript_gtf = $gff_file;
-		}
-	}
+	  get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 1 );
 
 	my @labels = ();
 	my @files  = ();
