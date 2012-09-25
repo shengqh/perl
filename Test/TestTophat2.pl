@@ -21,7 +21,7 @@ my $config = {
 	},
 	tophat2 => {
 		option    => "--segment-length 25 -r 0 -p 8",
-		batchmode => 0
+		batchmode => 1
 	},
 	pbs => {
 		"email"    => "quanhu.sheng\@vanderbilt.edu",
