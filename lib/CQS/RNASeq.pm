@@ -319,7 +319,7 @@ sub cuffmerge_by_pbs {
 
 	my $root_dir = $config->{general}{root_dir}
 	  or die "define general::root_dir first";
-	my $cuffmergeparam = $config->{cufflinks}{option}
+	my $cuffmergeparam = $config->{cuffmerge}{option}
 	  or die "define cuffmerge::option first";
 	my $task_name = $config->{general}{task_name}
 	  or die "define general::task_name first";
