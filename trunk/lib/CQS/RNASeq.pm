@@ -321,14 +321,19 @@ sub cuffmerge_by_pbs {
 	  or die "define general::root_dir first";
 	my $task_name = $config->{general}{task_name}
 	  or die "define general::task_name first";
+	my $transcript_gtf =
+	  get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
+	my $bowtie2_index = $config->{general}{bowtie2_index}
+	  or die "define general::bowtie2_index first";
+	my $bowtie2_fasta =
+	  get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
 	my $path_file =
 	  get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs = $config->{pbs} or die "define pbs parameters first";
 	my $cuffmergeparam = $config->{cuffmerge}{option}
 	  or die "define cuffmerge::option first";
-	  
-	  print $config->{cuffmerge}{assemblies_file};
+
 	my $assemblies_file = get_param_file( $config->{cuffmerge}{assemblies_file},
 		"assemblies_file", 1 );
 
@@ -342,7 +347,15 @@ sub cuffmerge_by_pbs {
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
 	print OUT "echo cuffmerge=`date` \n";
-	print OUT "cuffmerge $cuffmergeparam -o $cuffmergeDir $assemblies_file \n";
+
+	my $gtfparam = "";
+	if ($transcript_gtf) {
+		$gtfparam = "-g $transcript_gtf";
+	}
+
+	print OUT
+"cuffmerge $cuffmergeparam $gtfparam -s $bowtie2_fasta -o $cuffmergeDir $assemblies_file \n"
+	  ;
 
 	output_footer();
 
