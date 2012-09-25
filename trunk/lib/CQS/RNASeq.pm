@@ -365,48 +365,6 @@ sub cuffdiff_by_pbs {
 	}
 }
 
-sub cufflinks_by_pbs_old {
-	my (
-		$cufflinksparam, $root_dir,        $refSampleNames,
-		$refSampleFiles, $refPbsParamHash, $runNow
-	) = @_;
-
-	my @sampleNames     = @{$refSampleNames};
-	my @sampleFiles     = @{$refSampleFiles};
-	my $sampleNameCount = scalar(@sampleNames);
-
-	my $path_file = '/home/shengq1/bin/path.txt';
-
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
-	my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
-
-	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
-		my $sampleName = $sampleNames[$index];
-		my $sampleFile = $sampleFiles[$index];
-
-		my $pbsFile = $pbsDir . "/${sampleName}_cufflinks.pbs";
-		my $log     = $logDir . "/${sampleName}_cufflinks.log";
-
-		output_header( $pbsFile, $pbsDesc, $path_file, $log );
-
-		my $curDir = create_directory_or_die( $cufflinkDir . "/$sampleName" );
-
-		print OUT "echo cufflinks=`date` \n";
-		print OUT "cufflinks $cufflinksparam -o $curDir $sampleFile \n";
-
-		output_footer();
-
-		if ($runNow) {
-			`qsub $pbsFile`;
-			print "$pbsFile submitted\n";
-		}
-		else {
-			print "$pbsFile created\n";
-		}
-	}
-}
-
 sub output_tophat2_script {
 	my (
 		$genome_db,     $gtf_file,  $gtfIndex,
