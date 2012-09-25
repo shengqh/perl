@@ -184,8 +184,7 @@ sub output_tophat2 {
 	for my $sampleFile (@sampleFiles) {
 		print OUT "$sampleFile ";
 	}
-	print OUT "\n";
-	print OUT "fi\n";
+	print OUT "\nfi\n\n";
 }
 
 #get parameter which indicates a file. If required, not defined or not exists, die. If defined but not exists, die.
@@ -240,7 +239,8 @@ sub tophat2_by_pbs {
 	}
 
 	my $sampleNameCount = 0;
-	while ( my ( $groupName, $sampleMap ) = each( %{ $config->{fastqfiles} } ) ) {
+	my %fqFiles         = %{ $config->{fastqfiles} };
+	while ( my ( $groupName, $sampleMap ) = each(%fqFiles) ) {
 		$sampleNameCount = $sampleNameCount + scalar( keys %{$sampleMap} );
 	}
 
@@ -275,8 +275,10 @@ sub tophat2_by_pbs {
 		output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
 		my $index = 0;
-		while ( my ( $groupName, $sampleMap ) = each( %{ $config->{fastqfiles} } ) ) {
-			while ( my ( $sampleName, $sampleFile ) = each( %{$sampleMap} ) ) {
+		for my $groupName ( sort keys %fqFiles ) {
+			my %sampleMap = %{ $fqFiles{$groupName} };
+			for my $sampleName ( sort keys %sampleMap ) {
+				my $sampleFile  = $sampleMap{$sampleName};
 				my @sampleFiles = ();
 				if ($paired_data) {
 					@sampleFiles = @{$sampleFile};
@@ -301,9 +303,10 @@ sub tophat2_by_pbs {
 		}
 	}
 	else {
-		while ( my ( $groupName, $sampleMap ) = each( %{ $config->{fastqfiles} } ) ) {
-			while ( my ( $sampleName, $sampleFile ) = each( %{$sampleMap} ) ) {
-
+		for my $groupName ( sort keys %fqFiles ) {
+			my %sampleMap = %{ $fqFiles{$groupName} };
+			for my $sampleName ( sort keys %sampleMap ) {
+				my $sampleFile  = $sampleMap{$sampleName};
 				my @sampleFiles = ();
 				if ($paired_data) {
 					@sampleFiles = @{$sampleFile};
