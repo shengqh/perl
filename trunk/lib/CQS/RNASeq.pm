@@ -327,6 +327,8 @@ sub cuffmerge_by_pbs {
 	my $refPbs = $config->{pbs} or die "define pbs parameters first";
 	my $cuffmergeparam = $config->{cuffmerge}{option}
 	  or die "define cuffmerge::option first";
+	  
+	  print $config->{cuffmerge}{assemblies_file};
 	my $assemblies_file = get_param_file( $config->{cuffmerge}{assemblies_file},
 		"assemblies_file", 1 );
 
