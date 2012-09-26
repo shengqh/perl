@@ -6,7 +6,6 @@ use CQS::RNASeq;
 use CQS::SystemUtils;
 use CQS::FileUtils;
 use XML::Simple;
-use Data::Dumper;
 
 my $runNow = get_run_now();
 
@@ -47,15 +46,11 @@ our $config = {
 	}
 };
 
-#print Dumper $config;
-
-create_directory_or_die($config->{tophat2}{target_dir});
+create_directory_or_die( $config->{tophat2}{target_dir} );
 
 my $configfile = $config->{tophat2}{target_dir} . "/" . $config->{general}{task_name} . ".xml";
-my $xml = XMLout( $config, OutputFile => $configfile, RootName => "RNASeqPipeline" );
+XMLout( $config, OutputFile => $configfile, RootName => "RNASeqPipeline" );
 
-print $xml;
-
-#tophat2_by_pbs( $config, $runNow );
+tophat2_by_pbs( $config, $runNow );
 
 1;
