@@ -36,7 +36,7 @@ my $config = {
 	fastqc => {
 		target_dir => "${target_dir}/fastqc",
 		option     => "",
-		source     => "fastqfiles",
+		source_ref => "fastqfiles",
 		pbs        => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "2",
@@ -48,7 +48,7 @@ my $config = {
 		target_dir => "${target_dir}/tophat2",
 		option     => "--segment-length 25 -r 0 -p 8",
 		batchmode  => 0,
-		source     => "fastqfiles",
+		source_ref => "fastqfiles",
 		pbs        => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
@@ -59,7 +59,7 @@ my $config = {
 	cufflinks => {
 		target_dir => "${target_dir}/cufflinks",
 		option     => "-p 8",
-		source     => "tophat2",
+		source_ref => "tophat2",
 		pbs        => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
@@ -68,9 +68,9 @@ my $config = {
 		},
 	},
 	cufflinks2 => {
-		target_dir  => "${target_dir}/cufflinks2",
-		option      => "-p 8",
-		sourcefiles => {
+		target_dir => "${target_dir}/cufflinks2",
+		option     => "-p 8",
+		source     => {
 			"G1" => {
 				"1769-DPC-1" => "${target_dir}/tophat2/result/1769-DPC-1/accepted_hits.bam",
 				"1769-DPC-3" => "${target_dir}/tophat2/result/1769-DPC-3/accepted_hits.bam",
@@ -94,7 +94,7 @@ my $config = {
 	cuffmerge => {
 		target_dir => "${target_dir}/cuffmerge",
 		option     => "-p 8",
-		source     => "cufflinks",
+		source_ref => "cufflinks",
 		pbs        => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
@@ -103,10 +103,10 @@ my $config = {
 		},
 	},
 	cuffmerge2 => {
-		target_dir      => "${target_dir}/cuffmerge2",
-		option          => "-p 8",
-		assemblies_file => "${target_dir}/cuffmerge2/assemblies.txt",
-		pbs             => {
+		target_dir => "${target_dir}/cuffmerge2",
+		option     => "-p 8",
+		source     => "${target_dir}/cuffmerge2/assemblies.txt",
+		pbs        => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
 			"walltime" => "72",
@@ -117,7 +117,7 @@ my $config = {
 		target_dir     => "${target_dir}/cuffdiff",
 		option         => "-p 8 -N",
 		transcript_gtf => $transcript_gtf,
-		source         => "tophat2",
+		source_ref     => "tophat2",
 		pbs            => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
@@ -129,7 +129,7 @@ my $config = {
 		target_dir     => "${target_dir}/cuffdiff2",
 		option         => "-p 8 -N",
 		transcript_gtf => $transcript_gtf,
-		sourcefiles    => {
+		source         => {
 			"G1" => {
 				"1769-DPC-1" => "${target_dir}/tophat2/result/1769-DPC-1/accepted_hits.bam",
 				"1769-DPC-3" => "${target_dir}/tophat2/result/1769-DPC-3/accepted_hits.bam",
@@ -154,7 +154,7 @@ my $config = {
 		target_dir         => "${target_dir}/cufflinks_cuffdiff",
 		option             => "-p 8 -N",
 		transcript_gtf_ref => "cuffmerge",
-		source             => "tophat2",
+		source_ref         => "tophat2",
 		pbs                => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
@@ -168,18 +168,19 @@ fastqc_by_pbs( $config, "fastqc" );
 
 tophat2_by_pbs( $config, "tophat2" );
 
-cufflinks_by_pbs( $config, "cufflinks" );
+#run cuffdiff directly
+cuffdiff_by_pbs( $config, "cuffdiff" );
 
-#cufflinks_by_pbs( $config, "cufflinks2" );
+#run cufflinks-cuffmerge-cuffdiff
+cufflinks_by_pbs( $config, "cufflinks" );
 
 cuffmerge_by_pbs( $config, "cuffmerge" );
 
-#cuffmerge_by_pbs( $config, "cuffmerge2" );
-
-cuffdiff_by_pbs( $config, "cuffdiff" );
-
-#cuffdiff_by_pbs( $config, "cuffdiff2" );
-
 cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+
+#define source data directly
+#cufflinks_by_pbs( $config, "cufflinks2" );
+#cuffmerge_by_pbs( $config, "cuffmerge2" );
+#cuffdiff_by_pbs( $config, "cuffdiff2" );
 
 1;
