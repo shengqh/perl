@@ -188,8 +188,9 @@ sub get_tophat2_map {
 	if ( defined $config->{$section}{sourcefiles} ) {
 		$result = $config->{$section}{sourcefiles};
 	}
-	elsif ( defined $config->{$section}{source} ) {
-		my $tophat_dir = $config->{$section}{target_dir} or die "${section}::target_dir not defined.";
+	elsif ( defined  ) {
+		my $source = $config->{$section}{source};
+		my $tophat_dir = $config->{$source}{target_dir} or die "${source}::target_dir not defined.";
 		my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
 		my %fqFiles = %{ $config->{ $config->{$section}{source} } };
 		for my $groupName ( sort keys %fqFiles ) {
