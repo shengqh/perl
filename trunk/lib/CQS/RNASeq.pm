@@ -188,7 +188,7 @@ sub get_tophat2_map {
 	if ( defined $config->{$section}{sourcefiles} ) {
 		$result = $config->{$section}{sourcefiles};
 	}
-	elsif ( defined  ) {
+	elsif ( defined $config->{$section}{source} ) {
 		my $source = $config->{$section}{source};
 		my $tophat_dir = $config->{$source}{target_dir} or die "${source}::target_dir not defined.";
 		my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
@@ -201,7 +201,7 @@ sub get_tophat2_map {
 		}
 	}
 	else {
-		die "either {$section}::sourcefiles or {$section}::source should be defined.";
+		die "either ${section}::sourcefiles or ${section}::source should be defined.";
 	}
 
 	return ($result);
