@@ -100,7 +100,7 @@ our $config = {
 		},
 	},
 	cuffdiff => {
-		target         => "${target_dir}/cuffdiff",
+		target_dir     => "${target_dir}/cuffdiff",
 		option         => "-p 8 -N",
 		transcript_gtf => $transcript_gtf,
 		source         => "tophat2",
@@ -111,31 +111,31 @@ our $config = {
 			"mem"      => "20000mb"
 		},
 	},
-    cuffdiff2 => {
-        target         => "${target_dir}/cuffdiff2",
-        option         => "-p 8 -N",
-        transcript_gtf => $transcript_gtf,
-        sourcefiles => {
-            "G1" => {
-                "1769-DPC-1" => "${target_dir}/tophat2/result/1769-DPC-1/accepted_hits.bam",
-                "1769-DPC-3" => "${target_dir}/tophat2/result/1769-DPC-3/accepted_hits.bam",
-                "1769-DPC-4" => "${target_dir}/tophat2/result/1769-DPC-4/accepted_hits.bam",
-                "1769-DPC-5" => "${target_dir}/tophat2/result/1769-DPC-5/accepted_hits.bam",
-            },
-            "G2" => {
-                "1769-DPC-10" => "${target_dir}/tophat2/result/1769-DPC-10/accepted_hits.bam",
-                "1769-DPC-11" => "${target_dir}/tophat2/result/1769-DPC-11/accepted_hits.bam",
-                "1769-DPC-13" => "${target_dir}/tophat2/result/1769-DPC-13/accepted_hits.bam",
-                "1769-DPC-16" => "${target_dir}/tophat2/result/1769-DPC-16/accepted_hits.bam",
-            },
-        },
-        pbs            => {
-            "email"    => "quanhu.sheng\@vanderbilt.edu",
-            "nodes"    => "8",
-            "walltime" => "72",
-            "mem"      => "20000mb"
-        },
-    },
+	cuffdiff2 => {
+		target_dir     => "${target_dir}/cuffdiff2",
+		option         => "-p 8 -N",
+		transcript_gtf => $transcript_gtf,
+		sourcefiles    => {
+			"G1" => {
+				"1769-DPC-1" => "${target_dir}/tophat2/result/1769-DPC-1/accepted_hits.bam",
+				"1769-DPC-3" => "${target_dir}/tophat2/result/1769-DPC-3/accepted_hits.bam",
+				"1769-DPC-4" => "${target_dir}/tophat2/result/1769-DPC-4/accepted_hits.bam",
+				"1769-DPC-5" => "${target_dir}/tophat2/result/1769-DPC-5/accepted_hits.bam",
+			},
+			"G2" => {
+				"1769-DPC-10" => "${target_dir}/tophat2/result/1769-DPC-10/accepted_hits.bam",
+				"1769-DPC-11" => "${target_dir}/tophat2/result/1769-DPC-11/accepted_hits.bam",
+				"1769-DPC-13" => "${target_dir}/tophat2/result/1769-DPC-13/accepted_hits.bam",
+				"1769-DPC-16" => "${target_dir}/tophat2/result/1769-DPC-16/accepted_hits.bam",
+			},
+		},
+		pbs => {
+			"email"    => "quanhu.sheng\@vanderbilt.edu",
+			"nodes"    => "8",
+			"walltime" => "72",
+			"mem"      => "20000mb"
+		},
+	},
 	cufflinks_cuffdiff => {
 		target         => "${target_dir}/cufflinks_cuffdiff",
 		option         => "-p 8 -N",
