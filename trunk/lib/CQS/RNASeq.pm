@@ -224,6 +224,24 @@ sub get_tophat2_bam {
 	return ($result);
 }
 
+sub get_cufflinks_tophat2_map {
+	my ( $config, $section ) = @_;
+
+	my $result;
+
+	if ( defined $config->{$section}{sourcefiles} ) {
+		$result = $config->{$section}{sourcefiles};
+	}
+	elsif ( defined $config->{$section}{source} ) {
+		$result = get_tophat2_bam( $config, $config->{$section}{source} );
+	}
+	else {
+		die "either {$section}::sourcefiles or {$section}::source should be defined.";
+	}
+
+	return ($result);
+}
+
 sub cufflinks_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
@@ -236,18 +254,7 @@ sub cufflinks_by_pbs {
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cufflinkDir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
-	my $tophat2map;
-
-	if ( defined $config->{$section}{sourcefiles} ) {
-		$tophat2map = $config->{$section}{sourcefiles};
-	}
-	elsif ( defined $config->{$section}{source} ) {
-		$tophat2map = get_tophat2_bam( $config, $config->{$section}{source} );
-	}
-	else {
-		die "either {$section}::sourcefiles or {$section}::source should be defined.";
-	}
-
+	my $tophat2map = get_cufflinks_tophat2_map( $config, $section );
 	for my $groupName ( sort keys %{$tophat2map} ) {
 		my %sampleMap = %{ $tophat2map->{$groupName} };
 		for my $sampleName ( sort keys %sampleMap ) {
@@ -284,16 +291,13 @@ sub get_cufflinks_gtf {
 	#get cufflinks result directory
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $cufflinks_dir, 0 );
 
-	#get tophat2 section
-	my $tophatsection = $config->{$section}{source};
+	my $tophat2map = get_cufflinks_tophat2_map( $config, $section );
 
-	#get tophat2 bam file map
-	my %tophat2map = %{ get_tophat2_bam( $config, $config->{$section}{source} ) };
+	my @result = ();
 
 	#get expected gtf file list
-	my @result = ();
-	for my $groupName ( sort keys %tophat2map ) {
-		my %sampleMap = %{ $tophat2map{$groupName} };
+	for my $groupName ( sort keys %{$tophat2map} ) {
+		my %sampleMap = %{ $tophat2map->{$groupName} };
 		for my $sampleName ( sort keys %sampleMap ) {
 			push( @result, "${resultDir}/${sampleName}/transcripts.gtf" );
 		}
