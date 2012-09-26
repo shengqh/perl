@@ -137,7 +137,7 @@ our $config = {
 		},
 	},
 	cufflinks_cuffdiff => {
-		target         => "${target_dir}/cufflinks_cuffdiff",
+		target_dir     => "${target_dir}/cufflinks_cuffdiff",
 		option         => "-p 8 -N",
 		transcript_gtf => "${target_dir}/cuffmerge/result/merged.gtf",
 		source         => "tophat2",
