@@ -157,15 +157,15 @@ tophat2_by_pbs( $config, "tophat2" );
 
 cufflinks_by_pbs( $config, "cufflinks" );
 
-cufflinks_by_pbs( $config, "cufflinks2" );
+#cufflinks_by_pbs( $config, "cufflinks2" );
 
 cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffmerge_by_pbs( $config, "cuffmerge2" );
+#cuffmerge_by_pbs( $config, "cuffmerge2" );
 
 cuffdiff_by_pbs( $config, "cuffdiff" );
 
-cuffdiff_by_pbs( $config, "cuffdiff2" );
+#cuffdiff_by_pbs( $config, "cuffdiff2" );
 
 cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
