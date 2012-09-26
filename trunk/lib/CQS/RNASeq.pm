@@ -214,7 +214,10 @@ sub get_tophat2_result {
 	my %fqFiles = %{ $config->{ $config->{$section}{source} } };
 	my $result  = {};
 	for my $groupName ( sort keys %fqFiles ) {
-		$result->{$groupName} = "${resultDir}/${groupName}/accepted_hits.bam";
+		my %sampleMap = %{ $fqFiles{$groupName} };
+		for my $sampleName ( sort keys %sampleMap ) {
+			$result->{$groupName}{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
+		}
 	}
 	return ($result);
 }
@@ -222,38 +225,40 @@ sub get_tophat2_result {
 sub cufflinks_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my $root_dir = $config->{general}{root_dir}
-	  or die "define general::root_dir first";
-	my $cufflinksparam = $config->{$section}{option}
-	  or die "define ${section}::option first";
+	my $cufflinksparam = $config->{$section}{option} or die "define ${section}::option first";
 
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
 
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
-	my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
+	my $cufflinkDir = $config->{$section}{target_dir};
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cufflinkDir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
-	for my $sampleName ( sort keys %{ $config->{tophat2_result} } ) {
-		my $sampleFile = $config->{tophat2_result}{$sampleName};
-		my $pbsFile    = $pbsDir . "/${sampleName}_cufflinks.pbs";
-		my $log        = $logDir . "/${sampleName}_cufflinks.log";
+	my $tophat2map = get_tophat2_result( $config, $config->{$section}{source} );
 
-		output_header( $pbsFile, $pbsDesc, $path_file, $log );
+	for my $groupName ( sort keys $tophat2map ) {
+		my %tophat2result = %{ $tophat2map->{$groupName} };
+		for my $sampleName ( sort keys %tophat2result ) {
+			my $tophat2File = $tophat2result{$sampleName};
+			my $pbsFile     = $pbsDir . "/${sampleName}_cufflinks.pbs";
+			my $log         = $logDir . "/${sampleName}_cufflinks.log";
 
-		my $curDir = create_directory_or_die( $cufflinkDir . "/$sampleName" );
+			output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
-		print OUT "echo cufflinks=`date` \n";
-		print OUT "cufflinks $cufflinksparam -o $curDir $sampleFile \n";
+			my $curDir = create_directory_or_die( $cufflinkDir . "/$sampleName" );
 
-		output_footer();
+			print OUT "echo cufflinks=`date` \n";
+			print OUT "cufflinks $cufflinksparam -o $curDir $tophat2File \n";
 
-		if ($runNow) {
-			`qsub $pbsFile`;
-			print "$pbsFile submitted\n";
-		}
-		else {
-			print "$pbsFile created\n";
+			output_footer();
+
+			if ($runNow) {
+				`qsub $pbsFile`;
+				print "$pbsFile submitted\n";
+			}
+			else {
+				print "$pbsFile created\n";
+			}
 		}
 	}
 }

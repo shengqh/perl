@@ -17,17 +17,23 @@ our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 our $VERSION = '0.01';
 
 sub init_dir {
-	my $rootDir = shift;
+	my ( $rootDir, $create ) = @_;
+
+	if ( !defined $create ) {
+		$create = 1;
+	}
 
 	#defined several folders
 	my $pbsDir    = "$rootDir/pbs";
 	my $resultDir = "$rootDir/result";
 	my $logDir    = "$rootDir/log";
 
-    create_directory_or_die($rootDir);
-    create_directory_or_die($pbsDir);
-    create_directory_or_die($resultDir);
-    create_directory_or_die($logDir);
+	if ($create) {
+		create_directory_or_die($rootDir);
+		create_directory_or_die($pbsDir);
+		create_directory_or_die($resultDir);
+		create_directory_or_die($logDir);
+	}
 
 	return ( $logDir, $pbsDir, $resultDir );
 }
