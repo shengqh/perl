@@ -67,7 +67,7 @@ my $config = {
 	},
 	tophat2 => {
 		target_dir => "${target_dir}/tophat2",
-		option     => "--segment-length 25 -r 0 -p 8",
+		option     => "--segment-length 25 -r 150 -p 8",
 		batchmode  => 0,
 		source_ref => "fastqfiles",
 		pbs        => {
