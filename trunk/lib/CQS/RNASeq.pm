@@ -77,19 +77,14 @@ sub output_tophat2 {
 sub tophat2_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 
 	my $batchmode = $config->{$section}{batchmode};
-	my $task_name = $config->{general}{task_name};
+	
 	if ( !defined($batchmode) ) {
 		$batchmode = 0;
-	}
-	if ($batchmode) {
-		if ( !defined $task_name ) {
-			die "define general::task_name for batchmode first!";
-		}
 	}
 
 	my %fqFiles = %{ get_raw_files( $config, $section ) };
@@ -119,8 +114,8 @@ sub tophat2_by_pbs {
 	}
 
 	if ($batchmode) {
-		my $pbsFile = $pbsDir . "/${task_name}_tophat2.pbs";
-		my $log     = $logDir . "/${task_name}_tophat2.log";
+		my $pbsFile = $pbsDir . "/${task_name}_th2.pbs";
+		my $log     = $logDir . "/${task_name}_th2.log";
 
 		output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
@@ -145,7 +140,7 @@ sub tophat2_by_pbs {
 		}
 	}
 	else {
-		my $shfile = $pbsDir . "/submit.sh";
+		my $shfile = $pbsDir . "/${task_name}.sh";
 		open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
 		for my $groupName ( sort keys %fqFiles ) {
@@ -153,9 +148,9 @@ sub tophat2_by_pbs {
 			for my $sampleName ( sort keys %sampleMap ) {
 				my @sampleFiles = @{ $sampleMap{$sampleName} };
 
-				my $pbsName = "${sampleName}_tophat2.pbs";
+				my $pbsName = "${sampleName}_th2.pbs";
 				my $pbsFile = $pbsDir . "/$pbsName";
-				my $log     = $logDir . "/${sampleName}_tophat2.log";
+				my $log     = $logDir . "/${sampleName}_th2.log";
 
 				output_header( $pbsFile, $pbsDesc, $path_file, $log );
 				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, @sampleFiles );
@@ -206,11 +201,11 @@ sub get_tophat2_map {
 sub cufflinks_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+    my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $tophat2map = get_tophat2_map( $config, $section );
 
-	my $shfile = $pbsDir . "/submit.sh";
+	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
 	for my $groupName ( sort keys %{$tophat2map} ) {
@@ -218,12 +213,12 @@ sub cufflinks_by_pbs {
 		for my $sampleName ( sort keys %sampleMap ) {
 			my $tophat2File = $sampleMap{$sampleName};
 
-			my $pbsName = "${sampleName}_cufflinks.pbs";
+			my $pbsName = "${sampleName}_clinks.pbs";
 			my $pbsFile = $pbsDir . "/$pbsName";
 
 			print SH "qsub ./$pbsName \n";
 
-			my $log = $logDir . "/${sampleName}_cufflinks.log";
+			my $log = $logDir . "/${sampleName}_clinks.log";
 
 			output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
@@ -299,17 +294,16 @@ sub get_assemblies_file {
 sub cuffmerge_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+    my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $task_name = $config->{general}{task_name} or die "define general::task_name first";
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
 	my $assembliesfile = get_assemblies_file( $config, $section, $resultDir );
 
-	my $pbsFile = $pbsDir . "/${task_name}_cuffmerge.pbs";
-	my $log     = $logDir . "/${task_name}_cuffmerge.log";
+	my $pbsFile = $pbsDir . "/${task_name}_cmerge.pbs";
+	my $log     = $logDir . "/${task_name}_cmerge.log";
 
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
@@ -359,9 +353,8 @@ sub get_cuffdiff_gtf {
 sub cuffdiff_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+    my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $task_name     = $config->{general}{task_name}     or die "define general::task_name first";
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
@@ -385,8 +378,8 @@ sub cuffdiff_by_pbs {
 
 	my $labels = merge_string( ",", @labels );
 
-	my $pbsFile = $pbsDir . "/${task_name}_cuffdiff.pbs";
-	my $log     = $logDir . "/${task_name}_cuffdiff.log";
+	my $pbsFile = $pbsDir . "/${task_name}_cdiff.pbs";
+	my $log     = $logDir . "/${task_name}_cdiff.log";
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
 	print OUT "cuffdiff $option -o $resultDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
 
