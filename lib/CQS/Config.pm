@@ -10,7 +10,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_parameter)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -28,4 +28,36 @@ sub get_parameter {
 
     return ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option );
 }
+
+#get parameter which indicates a file. If required, not defined or not exists, die. If defined but not exists, die.
+#returned file either undefined or exists.
+sub get_param_file {
+    my ( $file, $name, $required ) = @_;
+
+    my $result = $file;
+
+    if ($required) {
+        if ( !defined $file ) {
+            die "$name was not defined!";
+        }
+
+        if ( !-e $file ) {
+            die "$name $file defined but not exists!";
+        }
+    }
+    else {
+        if ( defined($file) ) {
+            if ( $file eq "" ) {
+                undef($result);
+            }
+            elsif ( !-e $file ) {
+                die "$name $file defined but not exists!";
+            }
+        }
+    }
+    return ($result);
+}
+
+1;
+
 

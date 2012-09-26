@@ -79,35 +79,6 @@ sub output_tophat2 {
 	print OUT "\nfi\n\n";
 }
 
-#get parameter which indicates a file. If required, not defined or not exists, die. If defined but not exists, die.
-#returned file either undefined or exists.
-sub get_param_file {
-	my ( $file, $name, $required ) = @_;
-
-	my $result = $file;
-
-	if ($required) {
-		if ( !defined $file ) {
-			die "$name was not defined!";
-		}
-
-		if ( !-e $file ) {
-			die "$name $file defined but not exists!";
-		}
-	}
-	else {
-		if ( defined($file) ) {
-			if ( $file eq "" ) {
-				undef($result);
-			}
-			elsif ( !-e $file ) {
-				die "$name $file defined but not exists!";
-			}
-		}
-	}
-	return ($result);
-}
-
 sub tophat2_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
