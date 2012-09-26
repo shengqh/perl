@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use File::Basename;
 use CQS::FileUtils;
+use CQS::PBS;
 
 require Exporter;
 
