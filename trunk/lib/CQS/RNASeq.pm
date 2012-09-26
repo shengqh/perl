@@ -199,7 +199,7 @@ sub tophat2_by_pbs {
 			for my $sampleName ( sort keys %sampleMap ) {
 				my @sampleFiles = @{ $sampleMap{$sampleName} };
 
-                my $pbsName = "${sampleName}_tophat2.pbs";
+				my $pbsName = "${sampleName}_tophat2.pbs";
 				my $pbsFile = $pbsDir . "/$pbsName";
 				my $log     = $logDir . "/${sampleName}_tophat2.log";
 
@@ -261,12 +261,21 @@ sub cufflinks_by_pbs {
 	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $tophat2map = get_tophat2_map( $config, $section );
+
+	my $shfile = $pbsDir . "/submit.sh";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+
 	for my $groupName ( sort keys %{$tophat2map} ) {
 		my %sampleMap = %{ $tophat2map->{$groupName} };
 		for my $sampleName ( sort keys %sampleMap ) {
 			my $tophat2File = $sampleMap{$sampleName};
-			my $pbsFile     = $pbsDir . "/${sampleName}_cufflinks.pbs";
-			my $log         = $logDir . "/${sampleName}_cufflinks.log";
+
+			my $pbsName = "${sampleName}_cufflinks.pbs";
+			my $pbsFile = $pbsDir . "/$pbsName";
+
+			print SH "qsub ./$pbsName \n";
+
+			my $log = $logDir . "/${sampleName}_cufflinks.log";
 
 			output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
@@ -286,6 +295,7 @@ sub cufflinks_by_pbs {
 			}
 		}
 	}
+	close(SH);
 }
 
 sub get_cufflinks_gtf {
