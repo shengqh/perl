@@ -10,6 +10,6 @@ require "Config.pl";
 
 my $section = "cuffdiff";
 
-cuffdiff_by_pbs( $Task::config, $runNow );
+cuffdiff_by_pbs( $Task::config, $section, $runNow );
 
 1;
