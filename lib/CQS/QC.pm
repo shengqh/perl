@@ -24,11 +24,11 @@ use Cwd;
 sub fastqc_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my ($task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-	my $shfile = $pbsDir . "/submit.sh";
+	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
 	for my $groupName ( sort keys %rawFiles ) {
@@ -36,12 +36,12 @@ sub fastqc_by_pbs {
 		for my $sampleName ( sort keys %sampleMap ) {
 			my @sampleFiles = @{ $sampleMap{$sampleName} };
 
-			my $pbsName = "${sampleName}_fastqc.pbs";
+			my $pbsName = "${sampleName}_fq.pbs";
 			my $pbsFile = "${pbsDir}/$pbsName";
 
 			print SH "qsub ./$pbsName \n";
 
-			my $log = "${logDir}/${sampleName}_fastqc.log";
+			my $log = "${logDir}/${sampleName}_fq.log";
 
 			open( OUT, ">$pbsFile" ) or die $!;
 			print OUT $pbsDesc;
