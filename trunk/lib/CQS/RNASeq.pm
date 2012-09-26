@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs_batch tophat2_by_pbs_individual tophat2_create_config tophat2_by_pbs cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -150,9 +150,9 @@ sub tophat2_by_pbs {
 		}
 	}
 
-	my $tophat_dir    = $config->{$section}{target_dir} or die "define tophat2::target_dir first";
-	my $tophat2_param = $config->{$section}{option}     or die "define tophat2::option first";
-	my $refPbs        = $config->{$section}{pbs}        or die "define tophat2::pbs parameters first";
+	my $tophat_dir   = $config->{$section}{target_dir} or die "define ${section}::target_dir first";
+	my $tophat_param = $config->{$section}{option}     or die "define ${section}::option first";
+	my $refPbs       = $config->{$section}{pbs}        or die "define ${section}::pbs parameters first";
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($tophat_dir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
@@ -167,7 +167,7 @@ sub tophat2_by_pbs {
 			my %sampleMap = %{ $fqFiles{$groupName} };
 			for my $sampleName ( sort keys %sampleMap ) {
 				my @sampleFiles = @{ $sampleMap{$sampleName} };
-				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $resultDir, $sampleName, $index, @sampleFiles );
+				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat_param, $resultDir, $sampleName, $index, @sampleFiles );
 				$index++;
 			}
 		}
@@ -192,7 +192,7 @@ sub tophat2_by_pbs {
 				my $log     = $logDir . "/${sampleName}_tophat2.log";
 
 				output_header( $pbsFile, $pbsDesc, $path_file, $log );
-				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $resultDir, $sampleName, 0, @sampleFiles );
+				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat_param, $resultDir, $sampleName, 0, @sampleFiles );
 				output_footer();
 
 				if ($runNow) {
@@ -207,16 +207,28 @@ sub tophat2_by_pbs {
 	}
 }
 
+sub get_tophat2_result {
+	my ( $config, $section ) = @_;
+	my $tophat_dir = $config->{$section}{target_dir} or die "${section}::target_dir not defined.";
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
+	my %fqFiles = %{ $config->{ $config->{$section}{source} } };
+	my $result  = {};
+	for my $groupName ( sort keys %fqFiles ) {
+		$result->{$groupName} = "${resultDir}/${groupName}/accepted_hits.bam";
+	}
+	return ($result);
+}
+
 sub cufflinks_by_pbs {
-	my ( $config, $runNow ) = @_;
+	my ( $config, $section, $runNow ) = @_;
 
 	my $root_dir = $config->{general}{root_dir}
 	  or die "define general::root_dir first";
-	my $cufflinksparam = $config->{cufflinks}{option}
-	  or die "define cufflinks::option first";
+	my $cufflinksparam = $config->{$section}{option}
+	  or die "define ${section}::option first";
 
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
-	my $refPbs = $config->{pbs} or die "define pbs parameters first";
+	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
 
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
 	my $cufflinkDir = create_directory_or_die( $resultDir . "/cufflinks" );
