@@ -108,12 +108,12 @@ sub get_param_file {
 }
 
 sub tophat2_by_pbs {
-	my ( $config, $runNow ) = @_;
+	my ( $config, $section, $runNow ) = @_;
 
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 
-	my $batchmode = $config->{tophat2}{batchmode};
+	my $batchmode = $config->{$section}{batchmode};
 	my $task_name = $config->{general}{task_name};
 	if ( !defined($batchmode) ) {
 		$batchmode = 0;
@@ -125,7 +125,7 @@ sub tophat2_by_pbs {
 	}
 
 	my $sampleNameCount = 0;
-	my %fqFiles         = %{ $config->{fastqfiles} };
+	my %fqFiles         = %{ $config->{ $config->{$section}{source} } };
 	while ( my ( $groupName, $sampleMap ) = each(%fqFiles) ) {
 		$sampleNameCount = $sampleNameCount + scalar( keys %{$sampleMap} );
 	}
@@ -150,9 +150,9 @@ sub tophat2_by_pbs {
 		}
 	}
 
-	my $tophat_dir    = $config->{tophat2}{target_dir} or die "define tophat2::target_dir first";
-	my $tophat2_param = $config->{tophat2}{option}     or die "define tophat2::option first";
-	my $refPbs        = $config->{tophat2}{pbs}        or die "define tophat2::pbs parameters first";
+	my $tophat_dir    = $config->{$section}{target_dir} or die "define tophat2::target_dir first";
+	my $tophat2_param = $config->{$section}{option}     or die "define tophat2::option first";
+	my $refPbs        = $config->{$section}{pbs}        or die "define tophat2::pbs parameters first";
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($tophat_dir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
@@ -211,9 +211,9 @@ sub cufflinks_by_pbs {
 	my ( $config, $runNow ) = @_;
 
 	my $root_dir = $config->{general}{root_dir}
-		or die "define general::root_dir first";
+	  or die "define general::root_dir first";
 	my $cufflinksparam = $config->{cufflinks}{option}
-		or die "define cufflinks::option first";
+	  or die "define cufflinks::option first";
 
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs = $config->{pbs} or die "define pbs parameters first";
@@ -250,18 +250,18 @@ sub cuffmerge_by_pbs {
 	my ( $config, $runNow ) = @_;
 
 	my $root_dir = $config->{general}{root_dir}
-		or die "define general::root_dir first";
+	  or die "define general::root_dir first";
 	my $task_name = $config->{general}{task_name}
-		or die "define general::task_name first";
+	  or die "define general::task_name first";
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
 	my $bowtie2_index = $config->{general}{bowtie2_index}
-		or die "define general::bowtie2_index first";
+	  or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs = $config->{pbs} or die "define pbs parameters first";
 	my $cuffmergeparam = $config->{cuffmerge}{option}
-		or die "define cuffmerge::option first";
+	  or die "define cuffmerge::option first";
 
 	my $assemblies_file = get_param_file( $config->{cuffmerge}{assemblies_file}, "assemblies_file", 1 );
 
@@ -298,18 +298,18 @@ sub cuffdiff_by_pbs {
 	my ( $config, $runNow ) = @_;
 
 	my $root_dir = $config->{general}{root_dir}
-		or die "define general::root_dir first";
+	  or die "define general::root_dir first";
 	my $task_name = $config->{general}{task_name}
-		or die "define general::task_name first";
+	  or die "define general::task_name first";
 	my $bowtie2_index = $config->{general}{bowtie2_index}
-		or die "define general::bowtie2_index first";
+	  or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs = $config->{pbs} or die "define pbs parameters first";
 
 	my $cuffdiffparam = $config->{cuffdiff}{option}
-		or die "define cuffdiff::option first";
+	  or die "define cuffdiff::option first";
 
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 1 );
 
