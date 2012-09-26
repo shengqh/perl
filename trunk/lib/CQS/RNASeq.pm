@@ -308,7 +308,7 @@ sub cuffmerge_by_pbs {
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cuffmergeDir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
-	my $assembliesfile = $config->{$section}{assemblies_file};
+	my $assembliesfile = get_param_file( $config->{$section}{assemblies_file}, "${section}::assemblies_file", 0 );
 	if ( !defined $assembliesfile ) {
 		my $cufflinks_gtf = get_cufflinks_gtf( $config, $config->{$section}{source} );
 		$assembliesfile = $cuffmergeDir . "/assemblies.txt";
