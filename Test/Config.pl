@@ -33,7 +33,7 @@ our $config = {
 			"1769-DPC-11" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-11_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-11_2_sequence.txt" ],
 			"1769-DPC-13" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-13_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-13_2_sequence.txt" ],
 			"1769-DPC-16" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-16_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-16_2_sequence.txt" ]
-		}
+		},
 	},
 	tophat2 => {
 		target_dir => $tophat2_dir,
@@ -73,7 +73,7 @@ our $config = {
 				"1769-DPC-11" => "${tophat2_dir}/1769-DPC-11/accepted_hits.bam",
 				"1769-DPC-13" => "${tophat2_dir}/1769-DPC-13/accepted_hits.bam",
 				"1769-DPC-16" => "${tophat2_dir}/1769-DPC-16/accepted_hits.bam",
-			  }
+			},
 		},
 		pbs => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
@@ -91,7 +91,7 @@ our $config = {
 			"nodes"    => "8",
 			"walltime" => "72",
 			"mem"      => "20000mb"
-		}
+		},
 	},
 	cuffdiff => {
 		target         => $cuffdiff_dir,
