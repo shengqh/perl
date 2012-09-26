@@ -207,7 +207,8 @@ sub tophat2_by_pbs {
 	}
 }
 
-sub get_tophat2_result {
+#get expected tophat2 result based on tophat2 definition
+sub get_tophat2_bam {
 	my ( $config, $section ) = @_;
 	my $tophat_dir = $config->{$section}{target_dir} or die "${section}::target_dir not defined.";
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
@@ -234,12 +235,12 @@ sub cufflinks_by_pbs {
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cufflinkDir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
-	my $tophat2map = get_tophat2_result( $config, $config->{$section}{source} );
+	my $tophat2map = get_tophat2_bam( $config, $config->{$section}{source} );
 
-	for my $groupName ( sort keys $tophat2map ) {
-		my %tophat2result = %{ $tophat2map->{$groupName} };
-		for my $sampleName ( sort keys %tophat2result ) {
-			my $tophat2File = $tophat2result{$sampleName};
+	for my $groupName ( sort keys %{$tophat2map} ) {
+		my %sampleMap = %{ $tophat2map->{$groupName} };
+		for my $sampleName ( sort keys %sampleMap ) {
+			my $tophat2File = $sampleMap{$sampleName};
 			my $pbsFile     = $pbsDir . "/${sampleName}_cufflinks.pbs";
 			my $log         = $logDir . "/${sampleName}_cufflinks.log";
 
