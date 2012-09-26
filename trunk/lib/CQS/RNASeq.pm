@@ -191,6 +191,9 @@ sub tophat2_by_pbs {
 		}
 	}
 	else {
+		my $shfile = $pbsDir . "/submit.sh";
+		open( SH, ">$shfile" ) or die "Cannot create $shfile";
+
 		for my $groupName ( sort keys %fqFiles ) {
 			my %sampleMap = %{ $fqFiles{$groupName} };
 			for my $sampleName ( sort keys %sampleMap ) {
@@ -203,6 +206,7 @@ sub tophat2_by_pbs {
 				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, @sampleFiles );
 				output_footer();
 
+				print SH "qsub $pbsFile \n";
 				if ($runNow) {
 					`qsub $pbsFile`;
 					print "$pbsFile submitted\n";
@@ -212,6 +216,7 @@ sub tophat2_by_pbs {
 				}
 			}
 		}
+		close(SH);
 	}
 }
 
