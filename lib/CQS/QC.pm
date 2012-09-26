@@ -26,7 +26,7 @@ sub fastqc_by_pbs {
 
 	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my %rawFiles = %{ $config->{ $config->{$section}{source} } };
+	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
 	my $shfile = $pbsDir . "/submit.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";

@@ -74,24 +74,6 @@ sub output_tophat2 {
 	print OUT "\nfi\n\n";
 }
 
-sub get_raw_files {
-	my ( $config, $section ) = @_;
-
-	if ( defined $config->{$section}{source} ) {
-		return ( $config->{$section}{source} );
-	}
-
-	if ( defined $config->{$section}{source_ref} ) {
-		my $result = $config->{ $config->{$section}{source_ref} };
-		if ( !defined $result ) {
-			die "section ${result} was not defined!";
-		}
-		return ($result);
-	}
-
-	die "define ${section}::source or ${section}::source_ref first!";
-}
-
 sub tophat2_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
@@ -110,8 +92,8 @@ sub tophat2_by_pbs {
 		}
 	}
 
-	my $sampleNameCount = 0;
 	my %fqFiles = %{ get_raw_files( $config, $section ) };
+	my $sampleNameCount = 0;
 	while ( my ( $groupName, $sampleMap ) = each(%fqFiles) ) {
 		$sampleNameCount = $sampleNameCount + scalar( keys %{$sampleMap} );
 	}
