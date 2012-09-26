@@ -288,7 +288,7 @@ sub get_cufflinks_gtf {
 	#get cufflinks result directory
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $cufflinks_dir, 0 );
 
-	my $tophat2map = get_cufflinks_tophat2_map( $config, $section );
+	my $tophat2map = get_tophat2_map( $config, $section );
 
 	my @result = ();
 
