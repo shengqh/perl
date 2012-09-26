@@ -246,7 +246,7 @@ sub cufflinks_by_pbs {
 
 			output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
-			my $curDir = create_directory_or_die( $cufflinkDir . "/$sampleName" );
+			my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
 			print OUT "echo cufflinks=`date` \n";
 			print OUT "cufflinks $cufflinksparam -o $curDir $tophat2File \n";
