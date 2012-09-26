@@ -378,7 +378,10 @@ sub cuffdiff_by_pbs {
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
-	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 1 );
+	my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
+	if ( !defined $transcript_gtf ) {
+		$transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 1 );
+	}
 
 	my $tophat2map = get_tophat2_map( $config, $section );
 
