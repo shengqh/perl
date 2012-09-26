@@ -88,17 +88,4 @@ sub create_directory_or_die {
 	return ($result);
 }
 
-sub save_xml {
-	my ( $filename, $obj ) = @_;
-	open( OUT, ">$filename" ) or die $!;
-	print OUT XMLOut($obj);
-	print OUT "\n";
-	close OUT;
-}
-
-sub load_xml{
-	my $filename = shift;
-	my $config = XMLIn
-}
-
 1;
