@@ -20,6 +20,7 @@ our $VERSION = '0.01';
 sub get_parameter {
 	my ( $config, $section ) = @_;
 
+    my $task_name = $config->{general}{task_name} or die "define general::task_name first";
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs     = $config->{$section}{pbs}        or die "define ${section}::pbs parameters first";
 	my $target_dir = $config->{$section}{target_dir} or die "define ${section}::target_dir parameters first";
