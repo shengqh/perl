@@ -30,7 +30,7 @@ sub get_parameter {
 	die "define ${section}::option first" if ( !defined $config->{$section}{option} );
 	my $option = $config->{$section}{option};
 
-	return ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option );
+	return ($task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option );
 }
 
 #get parameter which indicates a file. If required, not defined or not exists, die. If defined but not exists, die.
