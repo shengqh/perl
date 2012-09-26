@@ -8,6 +8,7 @@ use Config::Std;
 use CQS::PBS;
 use CQS::FileUtils;
 use CQS::StringUtils;
+use CQS::Config;
 
 require Exporter;
 
@@ -105,19 +106,6 @@ sub get_param_file {
 		}
 	}
 	return ($result);
-}
-
-sub get_parameter {
-	my ( $config, $section ) = @_;
-
-	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
-	my $refPbs     = $config->{$section}{pbs}        or die "define ${section}::pbs parameters first";
-	my $target_dir = $config->{$section}{target_dir} or die "define ${section}::target_dir parameters first";
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($target_dir);
-	my ($pbsDesc) = get_pbs_desc($refPbs);
-	my $option = $config->{$section}{option} or die "define ${section}::option first";
-
-	return ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option );
 }
 
 sub tophat2_by_pbs {
@@ -222,31 +210,23 @@ sub tophat2_by_pbs {
 }
 
 #get expected tophat2 result based on tophat2 definition
-sub get_tophat2_bam {
-	my ( $config, $section ) = @_;
-	my $tophat_dir = $config->{$section}{target_dir} or die "${section}::target_dir not defined.";
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
-	my %fqFiles = %{ $config->{ $config->{$section}{source} } };
-	my $result  = {};
-	for my $groupName ( sort keys %fqFiles ) {
-		my %sampleMap = %{ $fqFiles{$groupName} };
-		for my $sampleName ( sort keys %sampleMap ) {
-			$result->{$groupName}{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
-		}
-	}
-	return ($result);
-}
-
 sub get_tophat2_map {
 	my ( $config, $section ) = @_;
 
 	my $result;
-
 	if ( defined $config->{$section}{sourcefiles} ) {
 		$result = $config->{$section}{sourcefiles};
 	}
 	elsif ( defined $config->{$section}{source} ) {
-		$result = get_tophat2_bam( $config, $config->{$section}{source} );
+		my $tophat_dir = $config->{$section}{target_dir} or die "${section}::target_dir not defined.";
+		my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
+		my %fqFiles = %{ $config->{ $config->{$section}{source} } };
+		for my $groupName ( sort keys %fqFiles ) {
+			my %sampleMap = %{ $fqFiles{$groupName} };
+			for my $sampleName ( sort keys %sampleMap ) {
+				$result->{$groupName}{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
+			}
+		}
 	}
 	else {
 		die "either {$section}::sourcefiles or {$section}::source should be defined.";

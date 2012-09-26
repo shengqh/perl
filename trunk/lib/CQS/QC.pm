@@ -7,6 +7,7 @@ use File::Basename;
 use CQS::PBS;
 use CQS::SystemUtils;
 use CQS::FileUtils;
+use CQS::Config;
 
 require Exporter;
 
@@ -21,44 +22,57 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub fastqc_by_pbs {
-	my ( $rootDir, $refSampleNames, $refSampleFiles, $refPbsParamHash, $runNow ) = @_;
+	my ( $config, $section, $runNow ) = @_;
 
-	my @sampleNames = @{$refSampleNames};
-	my @sampleFiles = @{$refSampleFiles};
+	my ( $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $sampleNameCount = scalar(@sampleNames);
+	my %rawFiles = %{ $config->{ $config->{$section}{source} } };
 
-	my $pathFile = '/home/shengq1/bin/path.txt';
+	my $shfile = $pbsDir . "/submit.sh";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	for my $groupName ( sort keys %rawFiles ) {
+		my %sampleMap = %{ $rawFiles{$groupName} };
+		for my $sampleName ( sort keys %sampleMap ) {
+			my @sampleFiles = @{ $sampleMap{$sampleName} };
 
-	my ($pbsDesc) = get_pbs_desc($refPbsParamHash);
+			my $pbsName = "${sampleName}_fastqc.pbs";
+			my $pbsFile = "${pbsDir}/$pbsName";
 
-	my $fastqcDir = create_directory_or_die( $resultDir . "/fastqc" );
-	for ( my $index = 0 ; $index < $sampleNameCount ; $index++ ) {
-		my $sampleName = $sampleNames[$index];
+			print SH "qsub ./$pbsName \n";
 
-		my $pbsFile = $pbsDir . "/${sampleName}_fastqc.pbs";
-		my $log     = $logDir . "/${sampleName}_fastqc.log";
+			my $log = "${logDir}/${sampleName}_fastqc.log";
 
-		open( OUT, ">$pbsFile" ) or die $!;
-		print OUT $pbsDesc;
-		print OUT "#PBS -o $log\n";
-		print OUT "#PBS -j oe\n\n";
-		print OUT "source $pathFile\n";
-		print OUT "echo fastqc=`date`\n";
-		print OUT "fastqc -o $fastqcDir $sampleFiles[$index]\n";
-		print OUT "echo finished=`date`\n";
-		close OUT;
+			open( OUT, ">$pbsFile" ) or die $!;
+			print OUT $pbsDesc;
+			print OUT "#PBS -o $log\n";
+			print OUT "#PBS -j oe\n\n";
 
-		if ($runNow) {
-			`qsub $pbsFile`;
-			print "$pbsFile submitted\n";
-		}
-		else {
-			print "$pbsFile created\n";
+			if ( -e $path_file ) {
+				print OUT "source $path_file\n";
+			}
+			print OUT "echo fastqc=`date`\n";
+
+			my $sampleCount = scalar(@sampleFiles);
+
+			print OUT "fastqc $option -t $sampleCount -o $resultDir ";
+			for my $sampleFile (@sampleFiles) {
+				print OUT "$sampleFile ";
+			}
+			print OUT "\n";
+			print OUT "echo finished=`date`\n";
+			close OUT;
+
+			if ($runNow) {
+				`qsub $pbsFile`;
+				print "$pbsFile submitted\n";
+			}
+			else {
+				print "$pbsFile created\n";
+			}
 		}
 	}
+	close(SH);
 }
 
 1;
