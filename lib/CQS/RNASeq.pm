@@ -48,9 +48,9 @@ sub output_tophat2 {
 
 	print OUT "echo tophat2=`date` \n";
 
-	my $hasgtf_file = file_exists($transcript_gtf);
+	my $has_gtf_file = file_exists($transcript_gtf);
 
-	my $hasIndexFile = transcript_gtf_index_exists($transcript_gtf_index);
+	my $has_index_file = transcript_gtf_index_exists($transcript_gtf_index);
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
 
@@ -58,15 +58,10 @@ sub output_tophat2 {
 	print OUT "then\n";
 	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
 	print OUT "else\n";
-	if ($hasgtf_file) {
-		if ( ( $index == 0 ) && ( !$hasIndexFile ) ) {
-			print OUT "  tophat2 $tophat2_param -G $transcript_gtf --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
-		}
-		else {
-			print OUT "  tophat2 $tophat2_param --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
-		}
+	if ($has_gtf_file) {
+		print OUT "  tophat2 $tophat2_param -G $transcript_gtf --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
 	}
-	elsif ($hasIndexFile) {
+	elsif ($has_index_file) {
 		print OUT "  tophat2 $tophat2_param --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
 	}
 	else {
@@ -77,6 +72,24 @@ sub output_tophat2 {
 		print OUT "$sampleFile ";
 	}
 	print OUT "\nfi\n\n";
+}
+
+sub get_raw_files {
+	my ( $config, $section ) = @_;
+
+	if ( defined $config->{$section}{source} ) {
+		return ( $config->{$section}{source} );
+	}
+
+	if ( defined $config->{$section}{source_ref} ) {
+		my $result = $config->{ $config->{$section}{source_ref} };
+		if ( !defined $result ) {
+			die "section ${result} was not defined!";
+		}
+		return ($result);
+	}
+
+	die "define ${section}::source or ${section}::source_ref first!";
 }
 
 sub tophat2_by_pbs {
@@ -98,7 +111,7 @@ sub tophat2_by_pbs {
 	}
 
 	my $sampleNameCount = 0;
-	my %fqFiles         = %{ $config->{ $config->{$section}{source} } };
+	my %fqFiles = %{ get_raw_files( $config, $section ) };
 	while ( my ( $groupName, $sampleMap ) = each(%fqFiles) ) {
 		$sampleNameCount = $sampleNameCount + scalar( keys %{$sampleMap} );
 	}
@@ -184,27 +197,28 @@ sub tophat2_by_pbs {
 sub get_tophat2_map {
 	my ( $config, $section ) = @_;
 
-	my $result;
-	if ( defined $config->{$section}{sourcefiles} ) {
-		$result = $config->{$section}{sourcefiles};
+	if ( defined $config->{$section}{source} ) {
+		return $config->{$section}{source};
 	}
-	elsif ( defined $config->{$section}{source} ) {
-		my $tophatsection = $config->{$section}{source};
+
+	if ( defined $config->{$section}{source_ref} ) {
+		my $result = {};
+
+		my $tophatsection = $config->{$section}{source_ref};
 		my $tophat_dir = $config->{$tophatsection}{target_dir} or die "${tophatsection}::target_dir not defined.";
 		my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
-		my %fqFiles = %{ $config->{ $config->{$tophatsection}{source} } };
-		for my $groupName ( sort keys %fqFiles ) {
+		my %fqFiles = %{ get_raw_files( $config, $tophatsection ) };
+		for my $groupName ( keys %fqFiles ) {
 			my %sampleMap = %{ $fqFiles{$groupName} };
-			for my $sampleName ( sort keys %sampleMap ) {
+			for my $sampleName ( keys %sampleMap ) {
 				$result->{$groupName}{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
 			}
 		}
-	}
-	else {
-		die "either ${section}::sourcefiles or ${section}::source should be defined.";
+
+		return $result;
 	}
 
-	return ($result);
+	die "define ${section}::source or ${section}::source_ref first!";
 }
 
 sub cufflinks_by_pbs {
@@ -275,6 +289,31 @@ sub get_cufflinks_gtf {
 	return ( \@result );
 }
 
+sub get_assemblies_file {
+	my ( $config, $section, $target_dir ) = @_;
+
+	my $result = get_param_file( $config->{$section}{source}, "${section}::source", 0 );
+
+	if ( defined $result ) {
+		return $result;
+	}
+
+	my $cufflinkssection = $config->{$section}{source_ref};
+	if ( defined $cufflinkssection ) {
+		my $cufflinks_gtf = get_cufflinks_gtf( $config, $cufflinkssection );
+		$result = $target_dir . "/assemblies.txt";
+		open( OUT, ">$result" ) or die $!;
+		for my $gtf ( @{$cufflinks_gtf} ) {
+			print OUT "${gtf}\n";
+		}
+		close OUT;
+
+		return $result;
+	}
+
+	die "define ${section}::source or ${section}::source_ref first!";
+}
+
 sub cuffmerge_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
@@ -285,16 +324,7 @@ sub cuffmerge_by_pbs {
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
-	my $assembliesfile = get_param_file( $config->{$section}{assemblies_file}, "${section}::assemblies_file", 0 );
-	if ( !defined $assembliesfile ) {
-		my $cufflinks_gtf = get_cufflinks_gtf( $config, $config->{$section}{source} );
-		$assembliesfile = $target_dir . "/assemblies.txt";
-		open( OUT, ">$assembliesfile" ) or die $!;
-		for my $gtf ( @{$cufflinks_gtf} ) {
-			print OUT "${gtf}\n";
-		}
-		close OUT;
-	}
+	my $assembliesfile = get_assemblies_file( $config, $section, $resultDir );
 
 	my $pbsFile = $pbsDir . "/${task_name}_cuffmerge.pbs";
 	my $log     = $logDir . "/${task_name}_cuffmerge.log";
@@ -354,7 +384,7 @@ sub cuffdiff_by_pbs {
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
 	my $transcript_gtf = get_cuffdiff_gtf( $config, $section );
-	
+
 	my $tophat2map = get_tophat2_map( $config, $section );
 
 	my @labels = ();
