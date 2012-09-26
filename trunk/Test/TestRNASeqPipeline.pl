@@ -7,15 +7,15 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = "/scratch/cqs/shengq1/rnaseq/1769_test2";
+my $target_dir = "/scratch/cqs/shengq1/rnaseq/1769";
 
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 
 my $config = {
 	general => {
 		bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
-		transcript_gtf       => $transcript_gtf,
-		transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
+		#transcript_gtf       => $transcript_gtf,
+		#transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
 		path_file            => "/home/shengq1/bin/path.txt",
 		task_name            => "1769-DPC"
 	},
@@ -164,19 +164,19 @@ my $config = {
 	},
 };
 
-fastqc_by_pbs( $config, "fastqc" );
+#fastqc_by_pbs( $config, "fastqc" );
 
 tophat2_by_pbs( $config, "tophat2" );
 
 #run cuffdiff directly
-cuffdiff_by_pbs( $config, "cuffdiff" );
+#cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "cufflinks" );
+#cufflinks_by_pbs( $config, "cufflinks" );
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+#cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 #define source data directly
 #cufflinks_by_pbs( $config, "cufflinks2" );
