@@ -151,11 +151,11 @@ my $config = {
 		},
 	},
 	cufflinks_cuffdiff => {
-		target_dir     => "${target_dir}/cufflinks_cuffdiff",
-		option         => "-p 8 -N",
-		transcript_gtf => "${target_dir}/cuffmerge/result/merged.gtf",
-		source         => "tophat2",
-		pbs            => {
+		target_dir         => "${target_dir}/cufflinks_cuffdiff",
+		option             => "-p 8 -N",
+		transcript_gtf_ref => "cuffmerge",
+		source             => "tophat2",
+		pbs                => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
 			"walltime" => "72",
