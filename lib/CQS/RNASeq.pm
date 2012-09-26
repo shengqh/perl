@@ -321,6 +321,29 @@ sub cuffmerge_by_pbs {
 	}
 }
 
+sub get_cuffdiff_gtf {
+	my ( $config, $section ) = @_;
+
+	my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
+	if ( defined $transcript_gtf ) {
+		return ($transcript_gtf);
+	}
+
+	my $cuffmergesection = $config->{$section}{transcript_gtf_ref};
+	if ( defined $cuffmergesection ) {
+		my $cuffmerge_target_dir = $config->{$cuffmergesection}{target_dir};
+		my ( $logDir, $pbsDir, $resultDir ) = init_dir($cuffmerge_target_dir);
+		return ("${resultDir}/merged.gtf");
+	}
+
+	$transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
+	if ( defined $transcript_gtf ) {
+		return ($transcript_gtf);
+	}
+
+	die "define ${section}::transcript_gtf or ${section}::transcript_gtf_ref or general::transcript_gtf first!";
+}
+
 sub cuffdiff_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
@@ -330,11 +353,8 @@ sub cuffdiff_by_pbs {
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
-	my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
-	if ( !defined $transcript_gtf ) {
-		$transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 1 );
-	}
-
+	my $transcript_gtf = get_cuffdiff_gtf( $config, $section );
+	
 	my $tophat2map = get_tophat2_map( $config, $section );
 
 	my @labels = ();
