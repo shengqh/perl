@@ -8,8 +8,8 @@ my $runNow = get_run_now();
 
 require "Config.pl";
 
-my $section = "cufflinks";
+cufflinks_by_pbs( $Task::config, "cufflinks", $runNow );
 
-cufflinks_by_pbs( $Task::config, $section, $runNow );
+cufflinks_by_pbs( $Task::config, "cufflinks2", $runNow );
 
 1;
