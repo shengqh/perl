@@ -4,7 +4,6 @@ package CQS::RNASeq;
 use strict;
 use warnings;
 use File::Basename;
-use Config::Std;
 use CQS::PBS;
 use CQS::FileUtils;
 use CQS::StringUtils;
