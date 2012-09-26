@@ -199,14 +199,15 @@ sub tophat2_by_pbs {
 			for my $sampleName ( sort keys %sampleMap ) {
 				my @sampleFiles = @{ $sampleMap{$sampleName} };
 
-				my $pbsFile = $pbsDir . "/${sampleName}_tophat2.pbs";
+                my $pbsName = "${sampleName}_tophat2.pbs";
+				my $pbsFile = $pbsDir . "/$pbsName";
 				my $log     = $logDir . "/${sampleName}_tophat2.log";
 
 				output_header( $pbsFile, $pbsDesc, $path_file, $log );
 				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, @sampleFiles );
 				output_footer();
 
-				print SH "qsub $pbsFile \n";
+				print SH "qsub ./$pbsName \n";
 				if ($runNow) {
 					`qsub $pbsFile`;
 					print "$pbsFile submitted\n";
