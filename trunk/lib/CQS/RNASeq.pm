@@ -313,7 +313,7 @@ sub cuffmerge_by_pbs {
 		my $cufflinks_gtf = get_cufflinks_gtf( $config, $config->{$section}{source} );
 		$assembliesfile = $cuffmergeDir . "/assemblies.txt";
 		open( OUT, ">$assembliesfile" ) or die $!;
-		for my $gtf ( @{$assembliesfile} ) {
+		for my $gtf ( @{$cufflinks_gtf} ) {
 			print OUT "${gtf}\n";
 		}
 		close OUT;
