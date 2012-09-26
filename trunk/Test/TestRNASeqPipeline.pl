@@ -33,6 +33,17 @@ my $config = {
 			"1769-DPC-16" => [ "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-16_1_sequence.txt", "/scratch/cqs/guoy1/1769/rawdata/1769-DPC-16_2_sequence.txt" ]
 		},
 	},
+	fastqc => {
+		target_dir => "${target_dir}/fastqc",
+		option     => "",
+		source     => "fastqfiles",
+		pbs        => {
+			"email"    => "quanhu.sheng\@vanderbilt.edu",
+			"nodes"    => "2",
+			"walltime" => "72",
+			"mem"      => "20000mb"
+		},
+	},
 	tophat2 => {
 		target_dir => "${target_dir}/tophat2",
 		option     => "--segment-length 25 -r 0 -p 8",
@@ -152,6 +163,8 @@ my $config = {
 		},
 	},
 };
+
+fastqc_by_pbs( $config, "fastqc" );
 
 tophat2_by_pbs( $config, "tophat2" );
 
