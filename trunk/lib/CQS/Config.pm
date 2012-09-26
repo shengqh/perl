@@ -11,7 +11,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file get_raw_files)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -59,6 +59,25 @@ sub get_param_file {
 		}
 	}
 	return ($result);
+}
+
+
+sub get_raw_files {
+    my ( $config, $section ) = @_;
+
+    if ( defined $config->{$section}{source} ) {
+        return ( $config->{$section}{source} );
+    }
+
+    if ( defined $config->{$section}{source_ref} ) {
+        my $result = $config->{ $config->{$section}{source_ref} };
+        if ( !defined $result ) {
+            die "section ${result} was not defined!";
+        }
+        return ($result);
+    }
+
+    die "define ${section}::source or ${section}::source_ref first!";
 }
 
 1;
