@@ -110,8 +110,10 @@ sub get_param_file {
 sub tophat2_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
+	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
+
+	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 
 	my $batchmode = $config->{$section}{batchmode};
 	my $task_name = $config->{general}{task_name};
@@ -152,7 +154,6 @@ sub tophat2_by_pbs {
 
 	my $tophat_dir   = $config->{$section}{target_dir} or die "define ${section}::target_dir first";
 	my $tophat_param = $config->{$section}{option}     or die "define ${section}::option first";
-	my $refPbs       = $config->{$section}{pbs}        or die "define ${section}::pbs parameters first";
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($tophat_dir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
@@ -226,16 +227,26 @@ sub get_tophat2_bam {
 sub cufflinks_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-	my $cufflinksparam = $config->{$section}{option} or die "define ${section}::option first";
-
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
+
+	my $cufflinksparam = $config->{$section}{option} or die "define ${section}::option first";
 
 	my $cufflinkDir = $config->{$section}{target_dir};
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cufflinkDir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
-	my $tophat2map = get_tophat2_bam( $config, $config->{$section}{source} );
+	my $tophat2map;
+
+	if ( defined $config->{$section}{sourcefiles} ) {
+		$tophat2map = $config->{$section}{sourcefiles};
+	}
+	elsif ( defined $config->{$section}{source} ) {
+		$tophat2map = get_tophat2_bam( $config, $config->{$section}{source} );
+	}
+	else {
+		die "either {$section}::sourcefiles or {$section}::source should be defined.";
+	}
 
 	for my $groupName ( sort keys %{$tophat2map} ) {
 		my %sampleMap = %{ $tophat2map->{$groupName} };
@@ -295,14 +306,14 @@ sub get_cufflinks_gtf {
 sub cuffmerge_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
+	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
+	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
+
 	my $cuffmergeparam = $config->{$section}{option}   or die "define ${section}::option first";
 	my $task_name      = $config->{general}{task_name} or die "define general::task_name first";
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
-
-	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
-	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
 
 	my $cuffmergeDir = $config->{$section}{target_dir};
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cuffmergeDir);
@@ -345,21 +356,16 @@ sub cuffmerge_by_pbs {
 }
 
 sub cuffdiff_by_pbs {
-	my ( $config, $runNow ) = @_;
+	my ( $config, $section, $runNow ) = @_;
 
-	my $root_dir = $config->{general}{root_dir}
-	  or die "define general::root_dir first";
-	my $task_name = $config->{general}{task_name}
-	  or die "define general::task_name first";
-	my $bowtie2_index = $config->{general}{bowtie2_index}
-	  or die "define general::bowtie2_index first";
+	my $task_name     = $config->{general}{task_name}     or die "define general::task_name first";
+	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
-	my $refPbs = $config->{pbs} or die "define pbs parameters first";
+	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
 
-	my $cuffdiffparam = $config->{cuffdiff}{option}
-	  or die "define cuffdiff::option first";
+	my $cuffdiffparam = $config->{cuffdiff}{option} or die "define cuffdiff::option first";
 
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 1 );
 
@@ -373,14 +379,14 @@ sub cuffdiff_by_pbs {
 
 	my $labels = merge_string( ",", @labels );
 
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
-	my $cuffdiffDir = create_directory_or_die( $resultDir . "/cuffdiff" );
+	my $cuffdiffDir = $config->{$section}{target_dir};
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cuffdiffDir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
 	my $pbsFile = $pbsDir . "/${task_name}_cuffdiff.pbs";
 	my $log     = $logDir . "/${task_name}_cuffdiff.log";
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
-	print OUT "cuffdiff $cuffdiffparam -o $cuffdiffDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
+	print OUT "cuffdiff $cuffdiffparam -o $resultDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
 
 	foreach my $file (@files) {
 		print OUT "$file ";
