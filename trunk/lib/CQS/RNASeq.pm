@@ -264,28 +264,60 @@ sub cufflinks_by_pbs {
 	}
 }
 
-sub cuffmerge_by_pbs {
-	my ( $config, $runNow ) = @_;
+sub get_cufflinks_gtf {
+	my ( $config, $section ) = @_;
 
-	my $root_dir = $config->{general}{root_dir}
-	  or die "define general::root_dir first";
-	my $task_name = $config->{general}{task_name}
-	  or die "define general::task_name first";
+	#get cufflinks root directory
+	my $cufflinks_dir = $config->{$section}{target_dir} or die "${section}::target_dir not defined.";
+
+	#get cufflinks result directory
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $cufflinks_dir, 0 );
+
+	#get tophat2 section
+	my $tophatsection = $config->{$section}{source};
+
+	#get tophat2 bam file map
+	my %tophat2map = %{ get_tophat2_bam( $config, $config->{$section}{source} ) };
+
+	#get expected gtf file list
+	my @result = ();
+	for my $groupName ( sort keys %tophat2map ) {
+		my %sampleMap = %{ $tophat2map{$groupName} };
+		for my $sampleName ( sort keys %sampleMap ) {
+			push( @result, "${resultDir}/${sampleName}/transcripts.gtf" );
+		}
+	}
+
+	#return expected gtf file list
+	return ( \@result );
+}
+
+sub cuffmerge_by_pbs {
+	my ( $config, $section, $runNow ) = @_;
+
+	my $cuffmergeparam = $config->{$section}{option}   or die "define ${section}::option first";
+	my $task_name      = $config->{general}{task_name} or die "define general::task_name first";
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
-	my $bowtie2_index = $config->{general}{bowtie2_index}
-	  or die "define general::bowtie2_index first";
+	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
-	my $refPbs = $config->{pbs} or die "define pbs parameters first";
-	my $cuffmergeparam = $config->{cuffmerge}{option}
-	  or die "define cuffmerge::option first";
+	my $refPbs = $config->{$section}{pbs} or die "define ${section}::pbs parameters first";
 
-	my $assemblies_file = get_param_file( $config->{cuffmerge}{assemblies_file}, "assemblies_file", 1 );
-
-	my ( $logDir, $pbsDir, $resultDir ) = init_dir($root_dir);
-	my $cuffmergeDir = create_directory_or_die( $resultDir . "/cuffmerge" );
+	my $cuffmergeDir = $config->{$section}{target_dir};
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($cuffmergeDir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
+
+	my $assembliesfile = $config->{$section}{assemblies_file};
+	if ( !defined $assembliesfile ) {
+		my $cufflinks_gtf = get_cufflinks_gtf( $config, $config->{$section}{source} );
+		$assembliesfile = $cuffmergeDir . "/assemblies.txt";
+		open( OUT, ">$assembliesfile" ) or die $!;
+		for my $gtf ( @{$assembliesfile} ) {
+			print OUT "${gtf}\n";
+		}
+		close OUT;
+	}
 
 	my $pbsFile = $pbsDir . "/${task_name}_cuffmerge.pbs";
 	my $log     = $logDir . "/${task_name}_cuffmerge.log";
@@ -299,7 +331,7 @@ sub cuffmerge_by_pbs {
 		$gtfparam = "-g $transcript_gtf";
 	}
 
-	print OUT "cuffmerge $cuffmergeparam $gtfparam -s $bowtie2_fasta -o $cuffmergeDir $assemblies_file \n";
+	print OUT "cuffmerge $cuffmergeparam $gtfparam -s $bowtie2_fasta -o $cuffmergeDir $assembliesfile \n";
 
 	output_footer();
 
