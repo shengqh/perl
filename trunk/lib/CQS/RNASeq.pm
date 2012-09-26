@@ -111,8 +111,6 @@ sub tophat2_by_pbs {
 	my ( $config, $runNow ) = @_;
 
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
-	my $refPbs = $config->{pbs} or die "define pbs parameters first";
-
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 
 	my $batchmode = $config->{tophat2}{batchmode};
@@ -154,6 +152,7 @@ sub tophat2_by_pbs {
 
 	my $tophat_dir    = $config->{tophat2}{target_dir} or die "define tophat2::target_dir first";
 	my $tophat2_param = $config->{tophat2}{option}     or die "define tophat2::option first";
+	my $refPbs        = $config->{tophat2}{pbs}        or die "define tophat2::pbs parameters first";
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($tophat_dir);
 	my ($pbsDesc) = get_pbs_desc($refPbs);
 
