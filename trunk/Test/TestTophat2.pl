@@ -4,7 +4,7 @@ use warnings;
 
 use CQS::RNASeq;
 use CQS::SystemUtils;
-use Config::Any;
+use XML::Simple;
 use Data::Dumper;
 
 my $runNow = get_run_now();
@@ -47,7 +47,11 @@ our $config = {
 	},
 };
 
-print Dumper $config;
+#print Dumper $config;
+
+my $xml = XMLout($config);
+
+print $xml;
 
 #tophat2_by_pbs( $config, $runNow );
 
