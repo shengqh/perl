@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::Config;
+package CQS::ConfigUtils;
 
 use strict;
 use warnings;

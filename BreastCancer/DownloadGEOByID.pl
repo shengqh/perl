@@ -26,6 +26,8 @@ my @datasets = (
   "GSE25066"
 );
 
+my $targetdir   = "D:/projects/BreastCancer/Test/";
+
 DownloadGeoDatasets(@datasets);
 
 print "Finished!\n";

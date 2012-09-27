@@ -4,11 +4,10 @@ use warnings;
 use CQS::GEO;
 use CQS::FileUtils;
 
-my $targetdir   = "I:/projects/BreastCancer/Dataset/";
 my $excludeddir = "I:/projects/BreastCancer/Excluded/";
 
 sub DownloadGeoDatasets {
-  my @datasets = @_;
+  my ($targetdir, @datasets) = @_;
 
   foreach my $dataset (@datasets) {
     my $localdir       = $targetdir . $dataset;
