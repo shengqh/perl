@@ -3,6 +3,7 @@ package CQS::GEO;
 use strict;
 use warnings;
 use IO::Uncompress::Gunzip qw(gunzip $GunzipError);
+use Net::FTP;
 
 require Exporter;
 
@@ -19,8 +20,6 @@ our %EXPORT_TAGS = (
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.01';
-
-use Net::FTP;
 
 my $ftp_site = "ftp.ncbi.nlm.nih.gov";
 
@@ -55,7 +54,7 @@ sub download_geo_dir {
   if ( $ftp->cwd($curftpdir) ) {
     my @remote_files = $ftp->ls($glob);
 
-    print "DIRECTORY : $curftpdir\n";
+    print "$curftpdir => $localdir\n";
 
     $ftp->binary();
 
@@ -83,7 +82,7 @@ sub download_geo_dir {
         }
       }
 
-      print "\tDownloading : $file\n";
+      print "\tDownloading : $localdir/$file\n";
       $ftp->get( $file, $localfile )
         or die "failed to download file $dataset/$file";
 
@@ -91,7 +90,7 @@ sub download_geo_dir {
         uncompress_file( $localfile, $uncompressedfile );
       }
 
-      print "\tDownloaded : $file\n";
+      print "\tDownloaded : $localdir/$file\n";
     }
   }
   else {

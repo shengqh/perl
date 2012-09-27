@@ -7,7 +7,7 @@ use File::Basename;
 use CQS::PBS;
 use CQS::SystemUtils;
 use CQS::FileUtils;
-use CQS::Config;
+use CQS::ConfigUtils;
 
 require Exporter;
 

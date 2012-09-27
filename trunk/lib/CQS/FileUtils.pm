@@ -2,7 +2,6 @@ package CQS::FileUtils;
 
 use strict;
 use warnings;
-use XML::Simple;
 
 require Exporter;
 
