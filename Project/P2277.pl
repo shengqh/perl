@@ -137,6 +137,6 @@ cufflinks_by_pbs( $config, "cufflinks" );
 
 cuffmerge_by_pbs( $config, "cuffmerge" );
 
-#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
