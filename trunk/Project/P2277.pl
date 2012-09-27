@@ -61,8 +61,8 @@ my $config = {
 		pbs        => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "2",
-			"walltime" => "72",
-			"mem"      => "20000mb"
+			"walltime" => "2",
+			"mem"      => "10gb"
 		},
 	},
 	tophat2 => {
@@ -85,7 +85,7 @@ my $config = {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
 			"walltime" => "72",
-			"mem"      => "20000mb"
+			"mem"      => "20gb"
 		},
 	},
 	cuffmerge => {
@@ -96,7 +96,7 @@ my $config = {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
 			"walltime" => "72",
-			"mem"      => "20000mb"
+			"mem"      => "40gb"
 		},
 	},
 	cuffdiff => {
@@ -107,8 +107,8 @@ my $config = {
 		pbs            => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
-			"walltime" => "72",
-			"mem"      => "20000mb"
+			"walltime" => "240",
+			"mem"      => "40gb"
 		},
 	},
 	cufflinks_cuffdiff => {
@@ -119,8 +119,8 @@ my $config = {
 		pbs                => {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
-			"walltime" => "72",
-			"mem"      => "20000mb"
+			"walltime" => "240",
+			"mem"      => "40gb"
 		},
 	},
 };
@@ -130,7 +130,7 @@ my $config = {
 #tophat2_by_pbs( $config, "tophat2" );
 
 #run cuffdiff directly
-#cuffdiff_by_pbs( $config, "cuffdiff" );
+cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
 cufflinks_by_pbs( $config, "cufflinks" );
