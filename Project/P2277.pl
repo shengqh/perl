@@ -74,7 +74,7 @@ my $config = {
 			"email"    => "quanhu.sheng\@vanderbilt.edu",
 			"nodes"    => "8",
 			"walltime" => "72",
-			"mem"      => "20000mb"
+			"mem"      => "40gb"
 		},
 	},
 	cufflinks => {
