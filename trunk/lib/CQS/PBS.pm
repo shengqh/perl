@@ -78,7 +78,7 @@ sub get_pbs_desc {
 #Total job memory required (specify how many megabytes)
 #PBS -l walltime=${walltime}:00:00
 #You must specify Wall Clock time (hh:mm:ss) [Maximum allowed 30 days = 720:00:00]
-#PBS -q batch
+#PBS -q all
 PBS
 
 	return ($pbsDesc);
