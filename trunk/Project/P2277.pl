@@ -132,13 +132,13 @@ my $config = {
 #tophat2_by_pbs( $config, "tophat2" );
 
 #run cuffdiff directly
-cuffdiff_by_pbs( $config, "cuffdiff" );
+#cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
 cufflinks_by_pbs( $config, "cufflinks" );
 
 cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
