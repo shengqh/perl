@@ -22,9 +22,9 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub fastqc_by_pbs {
-	my ( $config, $section, $runNow ) = @_;
+	my ( $config, $section ) = @_;
 
-	my ($task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -63,16 +63,11 @@ sub fastqc_by_pbs {
 			print OUT "echo finished=`date`\n";
 			close OUT;
 
-			if ($runNow) {
-				`qsub $pbsFile`;
-				print "$pbsFile submitted\n";
-			}
-			else {
-				print "$pbsFile created\n";
-			}
+			print "$pbsFile created\n";
 		}
 	}
 	close(SH);
+    print "!!!shell file $shfile created, you can run this shell file to submit all fastqc tasks.\n";
 }
 
 1;
