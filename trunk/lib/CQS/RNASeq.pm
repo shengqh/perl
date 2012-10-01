@@ -138,7 +138,7 @@ sub tophat2_by_pbs {
 		print "$pbsFile created\n";
 	}
 	else {
-		my $shfile = $pbsDir . "/${task_name}.sh";
+		my $shfile = $pbsDir . "/${task_name}.submit";
 		open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
 		for my $groupName ( sort keys %fqFiles ) {
@@ -155,6 +155,7 @@ sub tophat2_by_pbs {
 				output_footer();
 
 				print SH "qsub ./$pbsName \n";
+                print SH "echo $pbsName was submitted. \n\n";
 				print "$pbsFile created\n";
 			}
 		}
@@ -163,7 +164,7 @@ sub tophat2_by_pbs {
 		if ( is_linux() ) {
 			chmod 0755, $shfile;
 		}
-		print "!!!shell file $shfile created, you can run this shell file to submit all tophat2 tasks.";
+		print "!!!shell file $shfile created, you can run this shell file to submit all tophat2 tasks.\n";
 	}
 }
 
@@ -202,7 +203,7 @@ sub cufflinks_by_pbs {
 
 	my $tophat2map = get_tophat2_map( $config, $section );
 
-	my $shfile = $pbsDir . "/${task_name}.sh";
+	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
 	for my $groupName ( sort keys %{$tophat2map} ) {
@@ -222,6 +223,7 @@ sub cufflinks_by_pbs {
 			print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
 			print SH "  else\n";
 			print SH "    qsub ./$pbsName \n";
+            print SH "    echo $pbsName was submitted. \n";
 			print SH "  fi\n";
 			print SH "fi\n";
 
@@ -244,7 +246,7 @@ sub cufflinks_by_pbs {
 	if ( is_linux() ) {
 		chmod 0755, $shfile;
 	}
-	print "!!!shell file $shfile created, you can run this shell file to submit all cufflinks tasks.";
+	print "!!!shell file $shfile created, you can run this shell file to submit all cufflinks tasks.\n";
 }
 
 sub get_cufflinks_gtf {
@@ -330,7 +332,7 @@ sub cuffmerge_by_pbs {
 	my @data = <FILE>;
 	close(FILE);
 
-	my $shfile = $pbsDir . "/${task_name}.sh";
+	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 	for my $gtf (@data) {
 		chomp($gtf);
@@ -346,7 +348,7 @@ sub cuffmerge_by_pbs {
 	if ( is_linux() ) {
 		chmod 0755, $shfile;
 	}
-	print "!!!shell file $shfile created, you can run this shell file to submit cuffmerge task.";
+	print "!!!shell file $shfile created, you can run this shell file to submit cuffmerge task.\n";
 }
 
 sub get_cuffdiff_gtf {
