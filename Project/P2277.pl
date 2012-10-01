@@ -129,7 +129,7 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
+tophat2_by_pbs( $config, "tophat2" );
 
 #run cuffdiff directly
 #cuffdiff_by_pbs( $config, "cuffdiff" );
