@@ -163,10 +163,10 @@ my $config = {
 #cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "cufflinks2" );
+#cufflinks_by_pbs( $config, "cufflinks2" );
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+#cuffmerge_by_pbs( $config, "cuffmerge" );
 
-#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
