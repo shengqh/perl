@@ -218,11 +218,11 @@ sub cufflinks_by_pbs {
 			print SH "if [ -s ${resultDir}/${sampleName}/transcripts.gtf ];\n";
 			print SH "then\n";
 			print SH "  echo job has already been done. if you want to do again, delete ${sampleName}/transcripts.gtf and submit job again.\n";
-			print SH "elif [ ! -s $tophat2File ]\n";
-			print SH "  echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
-			print SH "else\n";
-			print SH "  qsub ./$pbsName \n";
-			print SH "fi;\n\n";
+			print SH "else\n  if [ ! -s $tophat2File ]\n";
+			print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
+			print SH "  else\n";
+			print SH "    qsub ./$pbsName \n";
+			print SH "  fi;\nfi;\n\n";
 
 			my $log = $logDir . "/${sampleName}_clinks.log";
 
