@@ -404,12 +404,16 @@ sub cuffdiff_by_pbs {
 			my $tophat2File = $sampleMap{$sampleName};
 			push( @gfiles, $tophat2File );
 		}
-		$groups{$groupName} = merge_string( ",", @gfiles );
+		$groups{$groupName} = @gfiles;
 		
 		#print " $groupName => $groups{$groupName} \n";
 	}
 
 	my $pairs = $config->{$section}{pairs};
+	
+#    my $shfile = $pbsDir . "/${task_name}.submit";
+#    open( SH, ">$shfile" ) or die "Cannot create $shfile";
+	
 	for my $pairName ( sort keys %{$pairs} ) {
 		my @groupNames = @{ $pairs->{$pairName} };
 
@@ -424,8 +428,9 @@ sub cuffdiff_by_pbs {
 		print OUT "cuffdiff $option -o $curDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
 
 		foreach my $groupName (@groupNames) {
-			my $gtfFiles = $groups{$groupName}; 
-			print OUT "$gtfFiles ";
+			my @gtfFiles = $groups{$groupName}; 
+            my $gtfs = merge_string( ",", @gtfFiles );
+			print OUT "$gtfs ";
 		}
 		print OUT "\n";
 
