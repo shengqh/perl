@@ -407,7 +407,7 @@ sub cuffdiff_by_pbs {
 		$groups{$groupName} = merge_string( ",", @gfiles );
 	}
 
-	my $pairs = $config->{pairs};
+	my $pairs = $config->{$section}{pairs};
 	for my $pairName ( sort keys %{$pairs} ) {
 		my @groupNames = @{ $pairs->{$pairName} };
 
