@@ -406,7 +406,7 @@ sub cuffdiff_by_pbs {
 		}
 		$groups{$groupName} = merge_string( ",", @gfiles );
 		
-		print " $groupName => $groups{$groupName} \n";
+		#print " $groupName => $groups{$groupName} \n";
 	}
 
 	my $pairs = $config->{$section}{pairs};
@@ -430,6 +430,8 @@ sub cuffdiff_by_pbs {
 		print OUT "\n";
 
 		output_footer();
+		
+		print "$pbsFile created. \n";
 	}
 }
 
