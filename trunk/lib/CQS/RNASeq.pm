@@ -339,6 +339,7 @@ sub cuffmerge_by_pbs {
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 	for my $gtf (@data) {
+		chomp($gtf);
 		print SH "if [ ! -s $gtf ];\n";
 		print SH "then\n";
 		print SH "  echo $gtf is not exists, cannot submit the job.\n";
