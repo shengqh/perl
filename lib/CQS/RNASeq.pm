@@ -81,7 +81,7 @@ sub tophat2_by_pbs {
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 
 	my $batchmode = $config->{$section}{batchmode};
-	
+
 	if ( !defined($batchmode) ) {
 		$batchmode = 0;
 	}
@@ -200,7 +200,7 @@ sub get_tophat2_map {
 sub cufflinks_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-    my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $tophat2map = get_tophat2_map( $config, $section );
 
@@ -222,7 +222,7 @@ sub cufflinks_by_pbs {
 			print SH "  qsub ./$pbsName \n";
 			print SH "else\n";
 			print SH "  echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
-			print SH "fi;\n";
+			print SH "fi;\n\n";
 
 			my $log = $logDir . "/${sampleName}_clinks.log";
 
@@ -300,7 +300,7 @@ sub get_assemblies_file {
 sub cuffmerge_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-    my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
@@ -331,6 +331,22 @@ sub cuffmerge_by_pbs {
 	else {
 		print "$pbsFile created\n";
 	}
+
+	open( FILE, $assembliesfile ) or die("Unable to open file $assembliesfile");
+	my @data = <FILE>;
+	close(FILE);
+
+	my $shfile = $pbsDir . "/${task_name}.sh";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+	for my $gtf (@data) {
+		print SH "if [ ! -s $gtf ];\n";
+		print SH "then\n";
+		print SH "  echo $gtf is not exists, cannot submit the job.\n";
+		print SH "  exit;\n";
+		print SH "fi;\n\n";
+	}
+	print SH "qsub $pbsFile\n";
+	close(SH);
 }
 
 sub get_cuffdiff_gtf {
@@ -359,7 +375,7 @@ sub get_cuffdiff_gtf {
 sub cuffdiff_by_pbs {
 	my ( $config, $section, $runNow ) = @_;
 
-    my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 	my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
