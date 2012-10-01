@@ -155,7 +155,7 @@ sub tophat2_by_pbs {
 				output_footer();
 
 				print SH "qsub ./$pbsName \n";
-                print SH "echo $pbsName was submitted. \n\n";
+				print SH "echo $pbsName was submitted. \n\n";
 				print "$pbsFile created\n";
 			}
 		}
@@ -201,12 +201,11 @@ sub cufflinks_by_pbs {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-    my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
-            my $gtf = "";
-            if(defined $transcript_gtf){
-                $gtf = "-G $transcript_gtf";                
-            }
-            
+	my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
+	my $gtf = "";
+	if ( defined $transcript_gtf ) {
+		$gtf = "-G $transcript_gtf";
+	}
 
 	my $tophat2map = get_tophat2_map( $config, $section );
 
@@ -230,7 +229,7 @@ sub cufflinks_by_pbs {
 			print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
 			print SH "  else\n";
 			print SH "    qsub ./$pbsName \n";
-            print SH "    echo $pbsName was submitted. \n";
+			print SH "    echo $pbsName was submitted. \n";
 			print SH "  fi\n";
 			print SH "fi\n";
 
@@ -241,7 +240,7 @@ sub cufflinks_by_pbs {
 			my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
 			print OUT "echo cufflinks=`date` \n";
-			
+
 			print OUT "cufflinks $option $gtf -o $curDir $tophat2File \n";
 
 			output_footer();
@@ -396,33 +395,40 @@ sub cuffdiff_by_pbs {
 
 	my @labels = ();
 	my @files  = ();
-	for my $groupName ( sort keys %{$tophat2map} ) {
-		push( @labels, $groupName );
 
+	my %groups = ();
+	for my $groupName ( sort keys %{$tophat2map} ) {
 		my @gfiles    = ();
 		my %sampleMap = %{ $tophat2map->{$groupName} };
 		for my $sampleName ( sort keys %sampleMap ) {
 			my $tophat2File = $sampleMap{$sampleName};
 			push( @gfiles, $tophat2File );
 		}
-		push( @files, merge_string( ",", @gfiles ) );
+		$groups{$groupName} = merge_string( ",", @gfiles );
 	}
 
-	my $labels = merge_string( ",", @labels );
+	my $pairs = $config->{pairs};
+	for my $pairName ( sort keys %{$pairs} ) {
+		my @groupNames = @{ $pairs->{$pairName} };
 
-	my $pbsFile = $pbsDir . "/${task_name}_cdiff.pbs";
-	my $log     = $logDir . "/${task_name}_cdiff.log";
-	output_header( $pbsFile, $pbsDesc, $path_file, $log );
-	print OUT "cuffdiff $option -o $resultDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
+		my $pbsFile = $pbsDir . "/${pairName}_cdiff.pbs";
+		my $log     = $logDir . "/${pairName}_cdiff.log";
 
-	foreach my $file (@files) {
-		print OUT "$file ";
+		my $curDir = create_directory_or_die( $resultDir . "/$pairName" );
+
+		my $labels = merge_string( ",", @groupNames );
+
+		output_header( $pbsFile, $pbsDesc, $path_file, $log );
+		print OUT "cuffdiff $option -o $curDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
+
+		foreach my $groupName (@groupNames) {
+			my $gtfFiles = $groups{$groupName}; 
+			print OUT "$gtfFiles ";
+		}
+		print OUT "\n";
+
+		output_footer();
 	}
-	print OUT "\n";
-
-	output_footer();
-
-    print "$pbsFile created\n";
 }
 
 sub output_tophat2_script {
