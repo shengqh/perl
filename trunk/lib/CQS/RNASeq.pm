@@ -405,6 +405,8 @@ sub cuffdiff_by_pbs {
 			push( @gfiles, $tophat2File );
 		}
 		$groups{$groupName} = merge_string( ",", @gfiles );
+		
+		print " $groupName => $groups{$groupName} \n";
 	}
 
 	my $pairs = $config->{$section}{pairs};
