@@ -21,6 +21,11 @@ our $VERSION = '0.01';
 
 use Cwd;
 
+sub is_linux {
+	my $os = $^O;
+	return ( $os eq "linux" );
+}
+
 sub file_exists {
 	my $file   = shift;
 	my $result = 0;
@@ -74,7 +79,7 @@ sub output_tophat2 {
 }
 
 sub tophat2_by_pbs {
-	my ( $config, $section, $runNow ) = @_;
+	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
@@ -130,13 +135,7 @@ sub tophat2_by_pbs {
 
 		output_footer();
 
-		if ($runNow) {
-			`qsub $pbsFile`;
-			print "$pbsFile submitted\n";
-		}
-		else {
-			print "$pbsFile created\n";
-		}
+		print "$pbsFile created\n";
 	}
 	else {
 		my $shfile = $pbsDir . "/${task_name}.sh";
@@ -156,16 +155,15 @@ sub tophat2_by_pbs {
 				output_footer();
 
 				print SH "qsub ./$pbsName \n";
-				if ($runNow) {
-					`qsub $pbsFile`;
-					print "$pbsFile submitted\n";
-				}
-				else {
-					print "$pbsFile created\n";
-				}
+				print "$pbsFile created\n";
 			}
 		}
 		close(SH);
+
+		if ( is_linux() ) {
+			chmod 0755, $shfile;
+		}
+		print "!!!shell file $shfile created, you can run this shell file to submit all tophat2 tasks.";
 	}
 }
 
@@ -198,7 +196,7 @@ sub get_tophat2_map {
 }
 
 sub cufflinks_by_pbs {
-	my ( $config, $section, $runNow ) = @_;
+	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
@@ -238,16 +236,15 @@ sub cufflinks_by_pbs {
 
 			output_footer();
 
-			if ($runNow) {
-				`qsub $pbsFile`;
-				print "$pbsFile submitted\n";
-			}
-			else {
-				print "$pbsFile created\n";
-			}
+			print "$pbsFile created\n";
 		}
 	}
 	close(SH);
+
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
+	print "!!!shell file $shfile created, you can run this shell file to submit all cufflinks tasks.";
 }
 
 sub get_cufflinks_gtf {
@@ -301,7 +298,7 @@ sub get_assemblies_file {
 }
 
 sub cuffmerge_by_pbs {
-	my ( $config, $section, $runNow ) = @_;
+	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
@@ -327,13 +324,7 @@ sub cuffmerge_by_pbs {
 
 	output_footer();
 
-	if ($runNow) {
-		`qsub $pbsFile`;
-		print "$pbsFile submitted\n";
-	}
-	else {
-		print "$pbsFile created\n";
-	}
+	print "$pbsFile created\n";
 
 	open( FILE, $assembliesfile ) or die("Unable to open file $assembliesfile");
 	my @data = <FILE>;
@@ -351,6 +342,11 @@ sub cuffmerge_by_pbs {
 	}
 	print SH "qsub $pbsFile\n";
 	close(SH);
+
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
+	print "!!!shell file $shfile created, you can run this shell file to submit cuffmerge task.";
 }
 
 sub get_cuffdiff_gtf {
@@ -377,7 +373,7 @@ sub get_cuffdiff_gtf {
 }
 
 sub cuffdiff_by_pbs {
-	my ( $config, $section, $runNow ) = @_;
+	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
@@ -416,13 +412,7 @@ sub cuffdiff_by_pbs {
 
 	output_footer();
 
-	if ($runNow) {
-		`qsub $pbsFile`;
-		print "$pbsFile submitted\n";
-	}
-	else {
-		print "$pbsFile created\n";
-	}
+    print "$pbsFile created\n";
 }
 
 sub output_tophat2_script {
