@@ -22,38 +22,50 @@ my $config = {
 		task_name            => "P2277"
 	},
 	fastqfiles => {
-		"G1" => {
-			"P2277-01"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-1_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-1_2_sequence.txt" ],
-            "P2277-02"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-2_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-2_2_sequence.txt" ],
-            "P2277-03"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-3_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-3_2_sequence.txt" ],
-            "P2277-04"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-4_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-4_2_sequence.txt" ],
-            "P2277-05"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-5_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-5_2_sequence.txt" ],
-            "P2277-06"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-6_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-6_2_sequence.txt" ],
-            "P2277-07"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-7_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-7_2_sequence.txt" ],
-            "P2277-08"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-8_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-8_2_sequence.txt" ],
-            "P2277-09"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-9_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-9_2_sequence.txt" ],
-            "P2277-10"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-10_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-10_2_sequence.txt" ],
-            "P2277-11"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-11_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-11_2_sequence.txt" ],
-            "P2277-12"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-12_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-12_2_sequence.txt" ],
-            "P2277-13"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-13_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-13_2_sequence.txt" ],
-            "P2277-14"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-14_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-14_2_sequence.txt" ],
-            "P2277-15"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-15_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-15_2_sequence.txt" ],
-            "P2277-16"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-16_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-16_2_sequence.txt" ],
-            "P2277-17"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-17_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-17_2_sequence.txt" ],
-            "P2277-18"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-18_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-18_2_sequence.txt" ],
-            "P2277-19"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-19_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-19_2_sequence.txt" ],
-            "P2277-20"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-20_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-20_2_sequence.txt" ],
-            "P2277-21"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-21_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-21_2_sequence.txt" ],
-            "P2277-22"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-22_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-22_2_sequence.txt" ],
-            "P2277-23"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-23_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-23_2_sequence.txt" ],
-            "P2277-24"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-24_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-24_2_sequence.txt" ],
-            "P2277-25"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-25_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-25_2_sequence.txt" ],
-            "P2277-26"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-26_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-26_2_sequence.txt" ],
-            "P2277-27"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-27_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-27_2_sequence.txt" ],
-            "P2277-28"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-28_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-28_2_sequence.txt" ],
-            "P2277-29"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-29_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-29_2_sequence.txt" ],
-            "P2277-30"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-30_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-30_2_sequence.txt" ],
-            "P2277-31"   => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-31_1_sequence.txt",   "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-31_2_sequence.txt" ],
+		"IGNORE" => {
+			"P2277-01" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-1_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-1_2_sequence.txt" ],
+			"P2277-02" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-2_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-2_2_sequence.txt" ],
+			"P2277-03" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-3_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-3_2_sequence.txt" ],
+			"P2277-04" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-4_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-4_2_sequence.txt" ],
+			"P2277-05" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-5_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-5_2_sequence.txt" ],
+			"P2277-06" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-6_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-6_2_sequence.txt" ],
+			"P2277-07" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-7_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-7_2_sequence.txt" ],
+			"P2277-08" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-8_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-8_2_sequence.txt" ],
+			"P2277-31" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-31_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-31_2_sequence.txt" ],
+		},
+		"B_CON" => {
+			"P2277-12" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-12_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-12_2_sequence.txt" ],
+			"P2277-17" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-17_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-17_2_sequence.txt" ],
+			"P2277-22" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-22_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-22_2_sequence.txt" ],
+		},
+		"B_TAAS_LAP"     => { "P2277-15" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-15_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-15_2_sequence.txt" ], },
+		"B_TAAS_LAP_BKM" => { "P2277-18" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-18_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-18_2_sequence.txt" ], },
+		"B_LAP_BKM"      => {
+			"P2277-21" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-21_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-21_2_sequence.txt" ],
+			"P2277-24" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-24_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-24_2_sequence.txt" ],
+		},
+		"B_BKM"      => { "P2277-27" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-27_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-27_2_sequence.txt" ], },
+		"B_TAAS_BKM" => { "P2277-28" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-28_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-28_2_sequence.txt" ], },
+		"HCC_CON"    => {
+			"P2277-11" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-11_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-11_2_sequence.txt" ],
+			"P2277-19" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-19_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-19_2_sequence.txt" ],
+			"P2277-30" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-30_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-30_2_sequence.txt" ],
+		},
+		"HCC_LAP"      => { "P2277-09" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-9_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-9_2_sequence.txt" ], },
+		"HCC_TAAS_LAP" => {
+			"P2277-10" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-10_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-10_2_sequence.txt" ],
+			"P2277-14" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-14_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-14_2_sequence.txt" ],
+			"P2277-20" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-20_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-20_2_sequence.txt" ],
+		},
+		"HCC_TAAS_LAP_BKM" => {
+			"P2277-13" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-13_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-13_2_sequence.txt" ],
+			"P2277-16" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-16_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-16_2_sequence.txt" ],
+			"P2277-29" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-29_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-29_2_sequence.txt" ],
+		},
+		"HCC_BKM" => {
+			"P2277-23" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-23_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-23_2_sequence.txt" ],
+			"P2277-25" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-25_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-25_2_sequence.txt" ],
+			"P2277-26" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-26_1_sequence.txt", "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-26_2_sequence.txt" ],
 		},
 	},
 	fastqc => {
@@ -79,7 +91,7 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cufflinks => {
+	cufflinks => {    #Will assemble novel transcripts
 		target_dir => "${target_dir}/cufflinks",
 		option     => "-p 8",
 		source_ref => "tophat2",
@@ -90,26 +102,26 @@ my $config = {
 			"mem"      => "20gb"
 		},
 	},
+	cufflinks2 => {    #Will not assemble novel transcripts
+		target_dir     => "${target_dir}/cufflinks2",
+		option         => "-p 8",
+		source_ref     => "tophat2",
+		transcript_gtf => $transcript_gtf,
+		pbs            => {
+			"email"    => $email,
+			"nodes"    => "8",
+			"walltime" => "72",
+			"mem"      => "20gb"
+		},
+	},
 	cuffmerge => {
 		target_dir => "${target_dir}/cuffmerge",
 		option     => "-p 8",
-		source_ref => "cufflinks",
+		source_ref => "cufflinks2",
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "8",
 			"walltime" => "72",
-			"mem"      => "40gb"
-		},
-	},
-	cuffdiff => {
-		target_dir     => "${target_dir}/cuffdiff",
-		option         => "-p 8 -N",
-		transcript_gtf => $transcript_gtf,
-		source_ref     => "tophat2",
-		pbs            => {
-			"email"    => $email,
-			"nodes"    => "8",
-			"walltime" => "240",
 			"mem"      => "40gb"
 		},
 	},
@@ -118,6 +130,22 @@ my $config = {
 		option             => "-p 8 -N",
 		transcript_gtf_ref => "cuffmerge",
 		source_ref         => "tophat2",
+		pairs=>{
+			"BC1"=>{"B_TAAS_LAP", "B_CON"},
+            "BC2"=>{"B_TAAS_LAP_BKM", "B_CON"},
+            "BC3"=>{"B_LAP_BKM", "B_CON"},
+            "BC4"=>{"B_BKM", "B_CON"},
+            "BC5"=>{"B_TAAS_BKM", "B_CON"},
+            "BS1"=>{"B_TAAS_LAP", "B_TAAS_LAP_BKM"},
+            "BS2"=>{"B_TAAS_LAP_BKM", "B_LAP_BKM"},
+            "HC1"=>{"HCC_LAP", "HCC_CON"},
+            "HC2"=>{"HCC_TAAS_LAP", "HCC_CON"},
+            "HC3"=>{"HCC_TAAS_LAP_BKM", "HCC_CON"},
+            "HC4"=>{"HCC_BKM", "HCC_CON"},
+            "HS1"=>{"HCC_TAAS_LAP", "HCC_TAAS_LAP_BKM"},
+            "HS2"=>{"HCC_TAAS_LAP_BKM", "HCC_BKM"},
+            "HS3"=>{"HCC_BKM", "HCC_TAAS_LAP"},
+		},
 		pbs                => {
 			"email"    => $email,
 			"nodes"    => "8",
@@ -129,13 +157,13 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-tophat2_by_pbs( $config, "tophat2" );
+#tophat2_by_pbs( $config, "tophat2" );
 
 #run cuffdiff directly
 #cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "cufflinks" );
+cufflinks_by_pbs( $config, "cufflinks2" );
 
 cuffmerge_by_pbs( $config, "cuffmerge" );
 

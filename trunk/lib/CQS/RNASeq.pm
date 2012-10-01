@@ -201,6 +201,13 @@ sub cufflinks_by_pbs {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
+    my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
+            my $gtf = "";
+            if(defined $transcript_gtf){
+                $gtf = "-G $transcript_gtf";                
+            }
+            
+
 	my $tophat2map = get_tophat2_map( $config, $section );
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
@@ -234,7 +241,8 @@ sub cufflinks_by_pbs {
 			my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
 			print OUT "echo cufflinks=`date` \n";
-			print OUT "cufflinks $option -o $curDir $tophat2File \n";
+			
+			print OUT "cufflinks $option $gtf -o $curDir $tophat2File \n";
 
 			output_footer();
 
@@ -249,7 +257,7 @@ sub cufflinks_by_pbs {
 	print "!!!shell file $shfile created, you can run this shell file to submit all cufflinks tasks.\n";
 }
 
-sub get_cufflinks_gtf {
+sub get_cufflinks_result_gtf {
 	my ( $config, $section ) = @_;
 
 	#get cufflinks root directory
@@ -285,7 +293,7 @@ sub get_assemblies_file {
 
 	my $cufflinkssection = $config->{$section}{source_ref};
 	if ( defined $cufflinkssection ) {
-		my $cufflinks_gtf = get_cufflinks_gtf( $config, $cufflinkssection );
+		my $cufflinks_gtf = get_cufflinks_result_gtf( $config, $cufflinkssection );
 		$result = $target_dir . "/assemblies.txt";
 		open( OUT, ">$result" ) or die $!;
 		for my $gtf ( @{$cufflinks_gtf} ) {
