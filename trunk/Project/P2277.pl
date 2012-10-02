@@ -118,7 +118,7 @@ my $config = {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "72",
-			"mem"      => "20gb"
+			"mem"      => "10gb"
 		},
 	},
 	cuffmerge => {
