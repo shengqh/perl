@@ -405,19 +405,21 @@ sub cuffdiff_by_pbs {
 			push( @gfiles, $tophat2File );
 		}
 		$groups{$groupName} = @gfiles;
-		
+
 		#print " $groupName => $groups{$groupName} \n";
 	}
 
 	my $pairs = $config->{$section}{pairs};
-	
-#    my $shfile = $pbsDir . "/${task_name}.submit";
-#    open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	
+
+	my $shfile = $pbsDir . "/${task_name}.submit";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+
 	for my $pairName ( sort keys %{$pairs} ) {
 		my @groupNames = @{ $pairs->{$pairName} };
 
-		my $pbsFile = $pbsDir . "/${pairName}_cdiff.pbs";
+		my $pbsName = "${pairName}_cdiff.pbs";
+
+		my $pbsFile = $pbsDir . "/$pbsName";
 		my $log     = $logDir . "/${pairName}_cdiff.log";
 
 		my $curDir = create_directory_or_die( $resultDir . "/$pairName" );
@@ -428,16 +430,27 @@ sub cuffdiff_by_pbs {
 		print OUT "cuffdiff $option -o $curDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
 
 		foreach my $groupName (@groupNames) {
-			my @gtfFiles = $groups{$groupName}; 
-            my $gtfs = merge_string( ",", @gtfFiles );
+			my @gtfFiles = $groups{$groupName};
+			my $gtfs = merge_string( ",", @gtfFiles );
 			print OUT "$gtfs ";
 		}
 		print OUT "\n";
 
 		output_footer();
-		
+
 		print "$pbsFile created. \n";
+
+		print SH "if [ -s ${curDir}/gene_exp.diff ]\n";
+		print SH "then\n";
+		print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
+		print SH "else\n";
+		print SH "  qsub ./$pbsName \n";
+		print SH "  echo $pbsName was submitted. \n";
+		print SH "fi\n";
 	}
+
+	close(SH);
+	print "!!!shell file $shfile created, you can run this shell file to submit cuffdiff task.\n";
 }
 
 sub output_tophat2_script {
