@@ -91,19 +91,8 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cufflinks => {    #Will assemble novel transcripts
-		target_dir => "${target_dir}/cufflinks",
-		option     => "-p 8",
-		source_ref => "tophat2",
-		pbs        => {
-			"email"    => $email,
-			"nodes"    => "8",
-			"walltime" => "72",
-			"mem"      => "20gb"
-		},
-	},
-	cufflinks2 => {    #Will not assemble novel transcripts
-		target_dir     => "${target_dir}/cufflinks2",
+	cufflinks => {    #Will not assemble novel transcripts
+		target_dir     => "${target_dir}/cufflinks",
 		option         => "-p 8",
 		source_ref     => "tophat2",
 		transcript_gtf => $transcript_gtf,
@@ -117,7 +106,7 @@ my $config = {
 	cuffmerge => {
 		target_dir => "${target_dir}/cuffmerge",
 		option     => "-p 8",
-		source_ref => "cufflinks2",
+		source_ref => "cufflinks",
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "8",
@@ -125,8 +114,8 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cufflinks_cuffdiff => {
-		target_dir         => "${target_dir}/cufflinks_cuffdiff",
+	cuffdiff => {
+		target_dir         => "${target_dir}/cuffdiff",
 		option             => "-p 8 -N",
 		transcript_gtf_ref => "cuffmerge",
 		source_ref         => "tophat2",
@@ -159,14 +148,11 @@ my $config = {
 
 #tophat2_by_pbs( $config, "tophat2" );
 
-#run cuffdiff directly
-#cuffdiff_by_pbs( $config, "cuffdiff" );
-
 #run cufflinks-cuffmerge-cuffdiff
-#cufflinks_by_pbs( $config, "cufflinks2" );
+cufflinks_by_pbs( $config, "cufflinks" );
 
-#cuffmerge_by_pbs( $config, "cuffmerge" );
+cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+cuffdiff_by_pbs( $config, "cuffdiff" );
 
 1;
