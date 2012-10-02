@@ -404,7 +404,7 @@ sub cuffdiff_by_pbs {
 			my $tophat2File = $sampleMap{$sampleName};
 			push( @gfiles, $tophat2File );
 		}
-		$groups{$groupName} = @gfiles;
+		$groups{$groupName} = \@gfiles;
 
 		#print " $groupName => $groups{$groupName} \n";
 	}
@@ -429,10 +429,15 @@ sub cuffdiff_by_pbs {
 		output_header( $pbsFile, $pbsDesc, $path_file, $log );
 		print OUT "cuffdiff $option -o $curDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
 
+        my @conditions = ();
 		foreach my $groupName (@groupNames) {
-			my @gtfFiles = $groups{$groupName};
-			my $gtfs = merge_string( ",", @gtfFiles );
-			print OUT "$gtfs ";
+			my @bamfiles = @{$groups{$groupName}};
+			my $bams = merge_string( ",", @bamfiles );
+			print OUT "$bams ";
+			
+			foreach my $bam (@bamfiles){
+				push(@conditions, "[ -s $bam ]");
+			}
 		}
 		print OUT "\n";
 
@@ -440,12 +445,16 @@ sub cuffdiff_by_pbs {
 
 		print "$pbsFile created. \n";
 
-		print SH "if [ -s ${curDir}/gene_exp.diff ]\n";
-		print SH "then\n";
-		print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
-		print SH "else\n";
-		print SH "  qsub ./$pbsName \n";
-		print SH "  echo $pbsName was submitted. \n";
+        my $condition = merge_string( " && ", @conditions );
+        print SH "if [ -s ${curDir}/gene_exp.diff ]; then\n";
+        print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
+        print SH "else\n";
+        print SH "  if $condition ; then\n";
+		print SH "    qsub ./$pbsName \n";
+		print SH "    echo $pbsName was submitted. \n";
+        print SH "  else\n";
+        print SH "    echo some required file not exists! $pbsName will be ignored.\n";
+        print SH "  fi\n";
 		print SH "fi\n";
 	}
 
