@@ -134,26 +134,26 @@ my $config = {
 	},
 	cuffdiff => {
 		target_dir     => "${target_dir}/cuffdiff",
-		option         => "-p 12 -u -N",
+		option         => "-p 8 -u -N",
 		transcript_gtf => $transcript_gtf,
 		source_ref     => "tophat2",
 		pairs          => $pairs,
 		pbs => {
 			"email"    => $email,
-			"nodes"    => "1:ppn=12",
+			"nodes"    => "1:ppn=8",
 			"walltime" => "720",
 			"mem"      => "40gb"
 		},
 	},
 	cufflinks_cuffdiff => {
 		target_dir         => "${target_dir}/cufflinks_cuffdiff",
-		option             => "-p 12 -u -N",
+		option             => "-p 8 -u -N",
 		transcript_gtf_ref => "cuffmerge",
 		source_ref         => "tophat2",
 		pairs              => $pairs,
 		pbs => {
 			"email"    => $email,
-			"nodes"    => "1:ppn=12",
+			"nodes"    => "1:ppn=8",
 			"walltime" => "720",
 			"mem"      => "40gb"
 		},
