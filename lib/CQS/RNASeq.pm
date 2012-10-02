@@ -449,13 +449,13 @@ sub cuffdiff_by_pbs {
         print SH "if [ -s ${curDir}/gene_exp.diff ]; then\n";
         print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
         print SH "else\n";
-        print SH "  if $condition ; then\n";
+        print SH "  if $condition; then\n";
 		print SH "    qsub ./$pbsName \n";
 		print SH "    echo $pbsName was submitted. \n";
         print SH "  else\n";
         print SH "    echo some required file not exists! $pbsName will be ignored.\n";
         print SH "  fi\n";
-		print SH "fi\n";
+		print SH "fi\n\n";
 	}
 
 	close(SH);
