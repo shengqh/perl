@@ -13,6 +13,24 @@ my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GR
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
+my $pairs =  {
+            "BC1" => [ "B_TAAS_LAP",       "B_CON" ],
+            "BC2" => [ "B_TAAS_LAP_BKM",   "B_CON" ],
+            "BC3" => [ "B_LAP_BKM",        "B_CON" ],
+            "BC4" => [ "B_BKM",            "B_CON" ],
+            "BC5" => [ "B_TAAS_BKM",       "B_CON" ],
+            "BS1" => [ "B_TAAS_LAP",       "B_TAAS_LAP_BKM" ],
+            "BS2" => [ "B_TAAS_LAP_BKM",   "B_LAP_BKM" ],
+            "HC1" => [ "HCC_LAP",          "HCC_CON" ],
+            "HC2" => [ "HCC_TAAS_LAP",     "HCC_CON" ],
+            "HC3" => [ "HCC_TAAS_LAP_BKM", "HCC_CON" ],
+            "HC4" => [ "HCC_BKM",          "HCC_CON" ],
+            "HS1" => [ "HCC_TAAS_LAP",     "HCC_TAAS_LAP_BKM" ],
+            "HS2" => [ "HCC_TAAS_LAP_BKM", "HCC_BKM" ],
+            "HS3" => [ "HCC_BKM",          "HCC_TAAS_LAP" ],
+        };
+
+
 my $config = {
 	general => {
 		bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
@@ -91,9 +109,9 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cufflinks => {    #Will not assemble novel transcripts
+	cufflinks => {
 		target_dir     => "${target_dir}/cufflinks",
-		option         => "-p 8 -u -N ",
+		option         => "-p 8 -u -N",
 		source_ref     => "tophat2",
 		transcript_gtf => $transcript_gtf,
 		pbs            => {
@@ -115,26 +133,24 @@ my $config = {
 		},
 	},
 	cuffdiff => {
-		target_dir         => "${target_dir}/cuffdiff",
-		option             => "-p 8 -N",
+		target_dir     => "${target_dir}/cuffdiff",
+		option         => "-p 8 -u -N",
+		transcript_gtf => $transcript_gtf,
+		source_ref     => "tophat2",
+		pairs          => $pairs,
+		pbs => {
+			"email"    => $email,
+			"nodes"    => "24",
+			"walltime" => "720",
+			"mem"      => "40gb"
+		},
+	},
+	cufflinks_cuffdiff => {
+		target_dir         => "${target_dir}/cufflinks_cuffdiff",
+		option             => "-p 8 -u -N",
 		transcript_gtf_ref => "cuffmerge",
 		source_ref         => "tophat2",
-		pairs              => {
-			"BC1" => [ "B_TAAS_LAP",       "B_CON" ],
-			"BC2" => [ "B_TAAS_LAP_BKM",   "B_CON" ],
-			"BC3" => [ "B_LAP_BKM",        "B_CON" ],
-			"BC4" => [ "B_BKM",            "B_CON" ],
-			"BC5" => [ "B_TAAS_BKM",       "B_CON" ],
-			"BS1" => [ "B_TAAS_LAP",       "B_TAAS_LAP_BKM" ],
-			"BS2" => [ "B_TAAS_LAP_BKM",   "B_LAP_BKM" ],
-			"HC1" => [ "HCC_LAP",          "HCC_CON" ],
-			"HC2" => [ "HCC_TAAS_LAP",     "HCC_CON" ],
-			"HC3" => [ "HCC_TAAS_LAP_BKM", "HCC_CON" ],
-			"HC4" => [ "HCC_BKM",          "HCC_CON" ],
-			"HS1" => [ "HCC_TAAS_LAP",     "HCC_TAAS_LAP_BKM" ],
-			"HS2" => [ "HCC_TAAS_LAP_BKM", "HCC_BKM" ],
-			"HS3" => [ "HCC_BKM",          "HCC_TAAS_LAP" ],
-		},
+		pairs              => $pairs,
 		pbs => {
 			"email"    => $email,
 			"nodes"    => "8",
@@ -148,11 +164,13 @@ my $config = {
 
 #tophat2_by_pbs( $config, "tophat2" );
 
+cuffdiff_by_pbs( $config, "cuffdiff" );
+
 #run cufflinks-cuffmerge-cuffdiff
 cufflinks_by_pbs( $config, "cufflinks" );
 
 cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cuffdiff" );
+cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
