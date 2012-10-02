@@ -92,7 +92,7 @@ my $config = {
 		source_ref => "fastqfiles",
 		pbs        => {
 			"email"    => $email,
-			"nodes"    => "2",
+			"nodes"    => "1:ppn=2",
 			"walltime" => "2",
 			"mem"      => "10gb"
 		},
@@ -104,7 +104,7 @@ my $config = {
 		source_ref => "fastqfiles",
 		pbs        => {
 			"email"    => $email,
-			"nodes"    => "8",
+			"nodes"    => "1:ppn=8",
 			"walltime" => "240",
 			"mem"      => "40gb"
 		},
@@ -116,7 +116,7 @@ my $config = {
 		transcript_gtf => $transcript_gtf,
 		pbs            => {
 			"email"    => $email,
-			"nodes"    => "8",
+			"nodes"    => "1:ppn=8",
 			"walltime" => "72",
 			"mem"      => "20gb"
 		},
@@ -127,33 +127,33 @@ my $config = {
 		source_ref => "cufflinks",
 		pbs        => {
 			"email"    => $email,
-			"nodes"    => "8",
+			"nodes"    => "1:ppn=8",
 			"walltime" => "72",
 			"mem"      => "40gb"
 		},
 	},
 	cuffdiff => {
 		target_dir     => "${target_dir}/cuffdiff",
-		option         => "-p 16 -u -N",
+		option         => "-p 12 -u -N",
 		transcript_gtf => $transcript_gtf,
 		source_ref     => "tophat2",
 		pairs          => $pairs,
 		pbs => {
 			"email"    => $email,
-			"nodes"    => "16",
+			"nodes"    => "1:ppn=12",
 			"walltime" => "720",
 			"mem"      => "40gb"
 		},
 	},
 	cufflinks_cuffdiff => {
 		target_dir         => "${target_dir}/cufflinks_cuffdiff",
-		option             => "-p 16 -u -N",
+		option             => "-p 12 -u -N",
 		transcript_gtf_ref => "cuffmerge",
 		source_ref         => "tophat2",
 		pairs              => $pairs,
 		pbs => {
 			"email"    => $email,
-			"nodes"    => "16",
+			"nodes"    => "1:ppn=12",
 			"walltime" => "720",
 			"mem"      => "40gb"
 		},
