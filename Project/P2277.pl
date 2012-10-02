@@ -93,7 +93,7 @@ my $config = {
 	},
 	cufflinks => {    #Will not assemble novel transcripts
 		target_dir     => "${target_dir}/cufflinks",
-		option         => "-p 8",
+		option         => "-p 8 -u -N ",
 		source_ref     => "tophat2",
 		transcript_gtf => $transcript_gtf,
 		pbs            => {
