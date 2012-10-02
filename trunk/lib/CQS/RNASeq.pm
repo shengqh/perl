@@ -204,7 +204,7 @@ sub cufflinks_by_pbs {
 	my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
 	my $gtf = "";
 	if ( defined $transcript_gtf ) {
-		$gtf = "-G $transcript_gtf";
+		$gtf = "-g $transcript_gtf";
 	}
 
 	my $tophat2map = get_tophat2_map( $config, $section );
