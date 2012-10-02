@@ -450,6 +450,10 @@ sub cuffdiff_by_pbs {
 	}
 
 	close(SH);
+
+    if ( is_linux() ) {
+        chmod 0755, $shfile;
+    }
 	print "!!!shell file $shfile created, you can run this shell file to submit cuffdiff task.\n";
 }
 
