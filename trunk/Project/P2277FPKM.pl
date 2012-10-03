@@ -16,6 +16,8 @@ my $alldata = {};
 my @genes   = ();
 foreach my $subdir (@subdirs) {
 	my $file = "${cufflinksdir}/${subdir}/genes.fpkm_tracking";
+	print "Reading $file ...\n";
+	
 	my $data = read_cufflinks_fpkm($file);
 
 	my @keys = keys %{$data};
@@ -35,6 +37,8 @@ foreach my $subdir (@subdirs) {
 }
 
 my $resultfile = $cufflinksdir . "/fpkm.tsv";
+
+print "Saving $resultfile ...\n";
 open OUT, ">$resultfile" or die "Cannot create file $resultfile";
 
 print OUT "gene";
@@ -54,6 +58,8 @@ foreach my $gene (@genes) {
 }
 
 close(OUT);
+
+print "Done\n";
 
 1;
 
