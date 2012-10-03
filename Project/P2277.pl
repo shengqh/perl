@@ -135,8 +135,8 @@ my $config = {
 		option         => "-p 8 -u -N",
 		transcript_gtf => $transcript_gtf,
 		source_ref     => "tophat2",
-		groups_ref      => "groups",
-		pairs_ref       => "pairs",
+		groups_ref     => "groups",
+		pairs_ref      => "pairs",
 		pbs            => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
@@ -149,8 +149,8 @@ my $config = {
 		option             => "-p 8 -u -N",
 		transcript_gtf_ref => "cuffmerge",
 		source_ref         => "tophat2",
-		groups_ref          => "groups",
-		pairs_ref           => "pairs",
+		groups_ref         => "groups",
+		pairs_ref          => "pairs",
 		pbs                => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
