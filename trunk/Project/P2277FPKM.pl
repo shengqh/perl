@@ -80,7 +80,8 @@ sub save {
 
 	print OUT "gene";
 	foreach my $subdir (@subdirs) {
-		print OUT "\t${map}->{$subdir}";
+		my $name = $map->{$subdir};
+		print OUT "\t$name";
 	}
 	print OUT "\n";
 
