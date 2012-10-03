@@ -6,7 +6,7 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $groups => {
+my $groups = {
 	"B_CON"          => [ "P2277-12", "P2277-17", "P2277-22" ],
 	"B_TAAS_LAP"     => ["P2277-15"],
 	"B_TAAS_LAP_BKM" => ["P2277-18"],
@@ -21,11 +21,11 @@ my $groups => {
 };
 
 my $map = {};
-foreach my $groupName (sort keys %{$groups}){
-	my @samples = @{$groups->{$groupName}};
-	foreach my $sample (@samples){
+foreach my $groupName ( sort keys %{$groups} ) {
+	my @samples = @{ $groups->{$groupName} };
+	foreach my $sample (@samples) {
 		$map->{$sample} = $groupName . "_" . $sample;
-	} 
+	}
 }
 
 my $cufflinksdir;
@@ -43,6 +43,10 @@ my @subdirs = list_directories($cufflinksdir);
 my $alldata = {};
 my @genes   = ();
 foreach my $subdir (@subdirs) {
+	if ( !defined $map->{$subdir} ) {
+		next;
+	}
+
 	my $file = "${cufflinksdir}/${subdir}/genes.fpkm_tracking";
 	print "Reading $file ...\n";
 
