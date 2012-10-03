@@ -93,8 +93,8 @@ sub tophat2_by_pbs {
 
 	my %fqFiles = %{ get_raw_files( $config, $section ) };
 	my $sampleNameCount = 0;
-	while ( my ( $groupName, $sampleMap ) = each(%fqFiles) ) {
-		$sampleNameCount = $sampleNameCount + scalar( keys %{$sampleMap} );
+	while ( my ( $sampleName, $sampleFiles ) = each(%fqFiles) ) {
+		$sampleNameCount = $sampleNameCount + scalar( @{$sampleFiles} );
 	}
 
 	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
@@ -124,13 +124,10 @@ sub tophat2_by_pbs {
 		output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
 		my $index = 0;
-		for my $groupName ( sort keys %fqFiles ) {
-			my %sampleMap = %{ $fqFiles{$groupName} };
-			for my $sampleName ( sort keys %sampleMap ) {
-				my @sampleFiles = @{ $sampleMap{$sampleName} };
-				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, $index, @sampleFiles );
-				$index++;
-			}
+		for my $sampleName ( sort keys %fqFiles ) {
+			my @sampleFiles = @{ $fqFiles{$sampleName} };
+			output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, $index, @sampleFiles );
+			$index++;
 		}
 
 		output_footer();
@@ -141,23 +138,20 @@ sub tophat2_by_pbs {
 		my $shfile = $pbsDir . "/${task_name}.submit";
 		open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
-		for my $groupName ( sort keys %fqFiles ) {
-			my %sampleMap = %{ $fqFiles{$groupName} };
-			for my $sampleName ( sort keys %sampleMap ) {
-				my @sampleFiles = @{ $sampleMap{$sampleName} };
+		for my $sampleName ( sort keys %fqFiles ) {
+			my @sampleFiles = @{ $fqFiles{$sampleName} };
 
-				my $pbsName = "${sampleName}_th2.pbs";
-				my $pbsFile = $pbsDir . "/$pbsName";
-				my $log     = $logDir . "/${sampleName}_th2.log";
+			my $pbsName = "${sampleName}_th2.pbs";
+			my $pbsFile = $pbsDir . "/$pbsName";
+			my $log     = $logDir . "/${sampleName}_th2.log";
 
-				output_header( $pbsFile, $pbsDesc, $path_file, $log );
-				output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, @sampleFiles );
-				output_footer();
+			output_header( $pbsFile, $pbsDesc, $path_file, $log );
+			output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, @sampleFiles );
+			output_footer();
 
-				print SH "qsub ./$pbsName \n";
-				print SH "echo $pbsName was submitted. \n\n";
-				print "$pbsFile created\n";
-			}
+			print SH "qsub ./$pbsName \n";
+			print SH "echo $pbsName was submitted. \n\n";
+			print "$pbsFile created\n";
 		}
 		close(SH);
 
@@ -183,11 +177,8 @@ sub get_tophat2_map {
 		my $tophat_dir = $config->{$tophatsection}{target_dir} or die "${tophatsection}::target_dir not defined.";
 		my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
 		my %fqFiles = %{ get_raw_files( $config, $tophatsection ) };
-		for my $groupName ( keys %fqFiles ) {
-			my %sampleMap = %{ $fqFiles{$groupName} };
-			for my $sampleName ( keys %sampleMap ) {
-				$result->{$groupName}{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
-			}
+		for my $sampleName ( keys %fqFiles ) {
+			$result->{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
 		}
 
 		return $result;
@@ -207,46 +198,43 @@ sub cufflinks_by_pbs {
 		$gtf = "-g $transcript_gtf";
 	}
 
-	my $tophat2map = get_tophat2_map( $config, $section );
+	my %tophat2map = %{ get_tophat2_map( $config, $section ) };
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
-	for my $groupName ( sort keys %{$tophat2map} ) {
-		my %sampleMap = %{ $tophat2map->{$groupName} };
-		for my $sampleName ( sort keys %sampleMap ) {
-			my $tophat2File = $sampleMap{$sampleName};
+	for my $sampleName ( sort keys %tophat2map ) {
+		my $tophat2File = $tophat2map{$sampleName};
 
-			my $pbsName = "${sampleName}_clinks.pbs";
-			my $pbsFile = $pbsDir . "/$pbsName";
+		my $pbsName = "${sampleName}_clinks.pbs";
+		my $pbsFile = $pbsDir . "/$pbsName";
 
-			print SH "if [ -s ${resultDir}/${sampleName}/transcripts.gtf ]\n";
-			print SH "then\n";
-			print SH "  echo job has already been done. if you want to do again, delete ${sampleName}/transcripts.gtf and submit job again.\n";
-			print SH "else\n";
-			print SH "  if [ ! -s $tophat2File ]\n";
-			print SH "  then";
-			print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
-			print SH "  else\n";
-			print SH "    qsub ./$pbsName \n";
-			print SH "    echo $pbsName was submitted. \n";
-			print SH "  fi\n";
-			print SH "fi\n";
+		print SH "if [ -s ${resultDir}/${sampleName}/transcripts.gtf ]\n";
+		print SH "then\n";
+		print SH "  echo job has already been done. if you want to do again, delete ${sampleName}/transcripts.gtf and submit job again.\n";
+		print SH "else\n";
+		print SH "  if [ ! -s $tophat2File ]\n";
+		print SH "  then";
+		print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
+		print SH "  else\n";
+		print SH "    qsub ./$pbsName \n";
+		print SH "    echo $pbsName was submitted. \n";
+		print SH "  fi\n";
+		print SH "fi\n";
 
-			my $log = $logDir . "/${sampleName}_clinks.log";
+		my $log = $logDir . "/${sampleName}_clinks.log";
 
-			output_header( $pbsFile, $pbsDesc, $path_file, $log );
+		output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
-			my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
-			print OUT "echo cufflinks=`date` \n";
+		print OUT "echo cufflinks=`date` \n";
 
-			print OUT "cufflinks $option $gtf -o $curDir $tophat2File \n";
+		print OUT "cufflinks $option $gtf -o $curDir $tophat2File \n";
 
-			output_footer();
+		output_footer();
 
-			print "$pbsFile created\n";
-		}
+		print "$pbsFile created\n";
 	}
 	close(SH);
 
@@ -265,16 +253,13 @@ sub get_cufflinks_result_gtf {
 	#get cufflinks result directory
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $cufflinks_dir, 0 );
 
-	my $tophat2map = get_tophat2_map( $config, $section );
+	my %tophat2map = %{ get_tophat2_map( $config, $section ) };
 
 	my @result = ();
 
 	#get expected gtf file list
-	for my $groupName ( sort keys %{$tophat2map} ) {
-		my %sampleMap = %{ $tophat2map->{$groupName} };
-		for my $sampleName ( sort keys %sampleMap ) {
-			push( @result, "${resultDir}/${sampleName}/transcripts.gtf" );
-		}
+	for my $sampleName ( sort keys %tophat2map ) {
+		push( @result, "${resultDir}/${sampleName}/transcripts.gtf" );
 	}
 
 	#return expected gtf file list
@@ -381,6 +366,48 @@ sub get_cuffdiff_gtf {
 	die "define ${section}::transcript_gtf or ${section}::transcript_gtf_ref or general::transcript_gtf first!";
 }
 
+sub get_cuffdiff_groups {
+	my ( $config, $section ) = @_;
+
+	my $result = $config->{$section}{groups};
+
+	if ( defined $result ) {
+		return $result;
+	}
+
+	if ( !defined $config->{$section}{groups_ref} ) {
+		die "define ${section}::groups or ${section}::groups_ref first!";
+	}
+
+	$result = $config->{ $config->{$section}{groups_ref} };
+	if ( !defined $result ) {
+		die "$config->{$section}{groups_ref} was not defined!";
+	}
+
+	return $result;
+}
+
+sub get_cuffdiff_pairs {
+	my ( $config, $section ) = @_;
+
+	my $result = $config->{$section}{pairs};
+
+	if ( defined $result ) {
+		return $result;
+	}
+
+	if ( !defined $config->{$section}{pairs_ref} ) {
+		die "define ${section}::pairs or ${section}::pairs_ref first!";
+	}
+
+	$result = $config->{ $config->{$section}{pairs_ref} };
+	if ( !defined $result ) {
+		die "$config->{$section}{pairs_ref} was not defined!";
+	}
+
+	return $result;
+}
+
 sub cuffdiff_by_pbs {
 	my ( $config, $section ) = @_;
 
@@ -393,23 +420,25 @@ sub cuffdiff_by_pbs {
 
 	my $tophat2map = get_tophat2_map( $config, $section );
 
+	my $groups = get_cuffdiff_groups( $config, $section );
+
+	my $pairs = get_cuffdiff_pairs( $config, $section );
+
 	my @labels = ();
 	my @files  = ();
 
-	my %groups = ();
-	for my $groupName ( sort keys %{$tophat2map} ) {
-		my @gfiles    = ();
-		my %sampleMap = %{ $tophat2map->{$groupName} };
-		for my $sampleName ( sort keys %sampleMap ) {
-			my $tophat2File = $sampleMap{$sampleName};
+	my %tpgroups = ();
+	for my $groupName ( sort keys %{$groups} ) {
+		my @samples = @{ $groups->{$groupName} };
+		my @gfiles  = ();
+		foreach my $sampleName (@samples) {
+			my $tophat2File = $tophat2map->{$sampleName};
 			push( @gfiles, $tophat2File );
 		}
-		$groups{$groupName} = \@gfiles;
+		$tpgroups{$groupName} = \@gfiles;
 
-		#print " $groupName => $groups{$groupName} \n";
+		#print " $groupName => $tpgroups{$groupName} \n";
 	}
-
-	my $pairs = $config->{$section}{pairs};
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -429,14 +458,14 @@ sub cuffdiff_by_pbs {
 		output_header( $pbsFile, $pbsDesc, $path_file, $log );
 		print OUT "cuffdiff $option -o $curDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
 
-        my @conditions = ();
+		my @conditions = ();
 		foreach my $groupName (@groupNames) {
-			my @bamfiles = @{$groups{$groupName}};
+			my @bamfiles = @{ $tpgroups{$groupName} };
 			my $bams = merge_string( ",", @bamfiles );
 			print OUT "$bams ";
-			
-			foreach my $bam (@bamfiles){
-				push(@conditions, "[ -s $bam ]");
+
+			foreach my $bam (@bamfiles) {
+				push( @conditions, "[ -s $bam ]" );
 			}
 		}
 		print OUT "\n";
@@ -445,24 +474,24 @@ sub cuffdiff_by_pbs {
 
 		print "$pbsFile created. \n";
 
-        my $condition = merge_string( " && ", @conditions );
-        print SH "if [ -s ${curDir}/gene_exp.diff ]; then\n";
-        print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
-        print SH "else\n";
-        print SH "  if $condition; then\n";
+		my $condition = merge_string( " && ", @conditions );
+		print SH "if [ -s ${curDir}/gene_exp.diff ]; then\n";
+		print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
+		print SH "else\n";
+		print SH "  if $condition; then\n";
 		print SH "    qsub ./$pbsName \n";
 		print SH "    echo $pbsName was submitted. \n";
-        print SH "  else\n";
-        print SH "    echo some required file not exists! $pbsName will be ignored.\n";
-        print SH "  fi\n";
+		print SH "  else\n";
+		print SH "    echo some required file not exists! $pbsName will be ignored.\n";
+		print SH "  fi\n";
 		print SH "fi\n\n";
 	}
 
 	close(SH);
 
-    if ( is_linux() ) {
-        chmod 0755, $shfile;
-    }
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
 	print "!!!shell file $shfile created, you can run this shell file to submit cuffdiff task.\n";
 }
 
