@@ -4,10 +4,15 @@ use warnings;
 
 use CQS::RNASeq;
 use CQS::FileUtils;
+use CQS::SystemUtils;
 
-#my $cufflinksdir = "/scratch/cqs/shengq1/rnaseq/P2277/cufflinks/result";
-
-my $cufflinksdir = "d:/tmp";
+my $cufflinksdir;
+if ( is_linux() ) {
+	$cufflinksdir = "/scratch/cqs/shengq1/rnaseq/P2277/cufflinks/result";
+}
+else {
+	$cufflinksdir = "d:/tmp";
+}
 
 my @subdirs = list_directories($cufflinksdir);
 
@@ -94,7 +99,7 @@ save( $resultfile, \@subdirs, \@genes, $alldata );
 my @counts = ( 2, 3, 4, 5 );
 foreach my $i (@counts) {
 	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
-	my $file = $cufflinksdir . "/fpkm_{i}.tsv";
+	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
 	save( $resultfile, \@subdirs, \@filteredgenes, $alldata );
 }
 
