@@ -31,43 +31,40 @@ sub fastqc_by_pbs {
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
-	for my $groupName ( sort keys %rawFiles ) {
-		my %sampleMap = %{ $rawFiles{$groupName} };
-		for my $sampleName ( sort keys %sampleMap ) {
-			my @sampleFiles = @{ $sampleMap{$sampleName} };
+	for my $sampleName ( sort keys %rawFiles ) {
+		my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-			my $pbsName = "${sampleName}_fq.pbs";
-			my $pbsFile = "${pbsDir}/$pbsName";
+		my $pbsName = "${sampleName}_fq.pbs";
+		my $pbsFile = "${pbsDir}/$pbsName";
 
-			print SH "qsub ./$pbsName \n";
+		print SH "qsub ./$pbsName \n";
 
-			my $log = "${logDir}/${sampleName}_fq.log";
+		my $log = "${logDir}/${sampleName}_fq.log";
 
-			open( OUT, ">$pbsFile" ) or die $!;
-			print OUT $pbsDesc;
-			print OUT "#PBS -o $log\n";
-			print OUT "#PBS -j oe\n\n";
+		open( OUT, ">$pbsFile" ) or die $!;
+		print OUT $pbsDesc;
+		print OUT "#PBS -o $log\n";
+		print OUT "#PBS -j oe\n\n";
 
-			if ( -e $path_file ) {
-				print OUT "source $path_file\n";
-			}
-			print OUT "echo fastqc=`date`\n";
-
-			my $sampleCount = scalar(@sampleFiles);
-
-			print OUT "fastqc $option -t $sampleCount -o $resultDir ";
-			for my $sampleFile (@sampleFiles) {
-				print OUT "$sampleFile ";
-			}
-			print OUT "\n";
-			print OUT "echo finished=`date`\n";
-			close OUT;
-
-			print "$pbsFile created\n";
+		if ( -e $path_file ) {
+			print OUT "source $path_file\n";
 		}
+		print OUT "echo fastqc=`date`\n";
+
+		my $sampleCount = scalar(@sampleFiles);
+
+		print OUT "fastqc $option -t $sampleCount -o $resultDir ";
+		for my $sampleFile (@sampleFiles) {
+			print OUT "$sampleFile ";
+		}
+		print OUT "\n";
+		print OUT "echo finished=`date`\n";
+		close OUT;
+
+		print "$pbsFile created\n";
 	}
 	close(SH);
-    print "!!!shell file $shfile created, you can run this shell file to submit all fastqc tasks.\n";
+	print "!!!shell file $shfile created, you can run this shell file to submit all fastqc tasks.\n";
 }
 
 1;
