@@ -5,8 +5,8 @@ use warnings;
 use CQS::RNASeq;
 use CQS::FileUtils;
 
-#my $cufflinksdir = "/scratch/cqs/shengq1/rnaseq/P2277/cufflinks/result";
-my $cufflinksdir = "d:/tmp";
+my $cufflinksdir = "/scratch/cqs/shengq1/rnaseq/P2277/cufflinks/result";
+#my $cufflinksdir = "d:/tmp";
 
 my @subdirs = list_directories($cufflinksdir);
 
