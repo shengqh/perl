@@ -573,8 +573,8 @@ sub read_cufflinks_fpkm {
 	open GF, "<$genefile" or die "Cannot open file $genefile";
 	my $header    = <GF>;
 	my @headers   = split( /\t/, $header );
-	my $geneindex = grep { $headers[$_] eq "gene_id" } 0 .. $#headers;
-	my $fpkmindex = grep { $headers[$_] eq "FPKM" } 0 .. $#headers;
+	my ($geneindex) = grep { $headers[$_] eq "gene_id" } 0 .. $#headers;
+	my ($fpkmindex) = grep { $headers[$_] eq "FPKM" } 0 .. $#headers;
 
 	my $result = {};
 	while ( my $line = <GF> ) {
