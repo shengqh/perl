@@ -153,6 +153,8 @@ sub tophat2_by_pbs {
 			print SH "echo $pbsName was submitted. \n\n";
 			print "$pbsFile created\n";
 		}
+
+        print SH "exit 0\n";
 		close(SH);
 
 		if ( is_linux() ) {
@@ -236,6 +238,7 @@ sub cufflinks_by_pbs {
 
 		print "$pbsFile created\n";
 	}
+    print SH "exit 0\n";
 	close(SH);
 
 	if ( is_linux() ) {
@@ -335,6 +338,7 @@ sub cuffmerge_by_pbs {
 		print SH "fi;\n\n";
 	}
 	print SH "qsub $pbsFile\n";
+    print SH "exit 0\n";
 	close(SH);
 
 	if ( is_linux() ) {
@@ -443,6 +447,11 @@ sub cuffdiff_by_pbs {
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
+	print SH "if [ ! -s $transcript_gtf ]; then\n";
+	print SH "  echo $transcript_gtf is not exists! all job will be ignored.\n";
+	print SH "  exit 1\n";
+	print SH "fi\n\n";
+
 	for my $pairName ( sort keys %{$pairs} ) {
 		my @groupNames = @{ $pairs->{$pairName} };
 
@@ -487,6 +496,7 @@ sub cuffdiff_by_pbs {
 		print SH "fi\n\n";
 	}
 
+    print SH "exit 0\n";
 	close(SH);
 
 	if ( is_linux() ) {
