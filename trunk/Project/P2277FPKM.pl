@@ -6,6 +6,28 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
+my $groups => {
+	"B_CON"          => [ "P2277-12", "P2277-17", "P2277-22" ],
+	"B_TAAS_LAP"     => ["P2277-15"],
+	"B_TAAS_LAP_BKM" => ["P2277-18"],
+	"B_LAP_BKM"  => [ "P2277-21", "P2277-24", ],
+	"B_BKM"      => ["P2277-27"],
+	"B_TAAS_BKM" => ["P2277-28"],
+	"HCC_CON"          => [ "P2277-11", "P2277-19", "P2277-30", ],
+	"HCC_LAP"          => ["P2277-09"],
+	"HCC_TAAS_LAP"     => [ "P2277-10", "P2277-14", "P2277-20", ],
+	"HCC_TAAS_LAP_BKM" => [ "P2277-13", "P2277-16", "P2277-29", ],
+	"HCC_BKM"          => [ "P2277-23", "P2277-25", "P2277-26", ],
+};
+
+my $map = {};
+foreach my $groupName (sort keys %{$groups}){
+	my @samples = @{$groups->{$groupName}};
+	foreach my $sample (@samples){
+		$map->{$sample} = $groupName . "_" . $sample;
+	} 
+}
+
 my $cufflinksdir;
 if ( is_linux() ) {
 	$cufflinksdir = "/scratch/cqs/shengq1/rnaseq/P2277/cufflinks/result";
@@ -43,7 +65,7 @@ foreach my $subdir (@subdirs) {
 }
 
 sub save {
-	my ( $resultfile, $subdirs_ref, $genes_ref, $alldata ) = @_;
+	my ( $resultfile, $subdirs_ref, $genes_ref, $alldata, $map ) = @_;
 
 	my @subdirs = @{$subdirs_ref};
 	my @genes   = sort @{$genes_ref};
@@ -53,7 +75,7 @@ sub save {
 
 	print OUT "gene";
 	foreach my $subdir (@subdirs) {
-		print OUT "\t$subdir";
+		print OUT "\t" . $map->{$subdir};
 	}
 	print OUT "\n";
 
@@ -94,13 +116,13 @@ sub filter {
 
 my $resultfile = $cufflinksdir . "/fpkm.tsv";
 
-save( $resultfile, \@subdirs, \@genes, $alldata );
+save( $resultfile, \@subdirs, \@genes, $alldata, $map );
 
 my @counts = ( 2, 3, 4, 5 );
 foreach my $i (@counts) {
 	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
 	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
-	save( $file, \@subdirs, \@filteredgenes, $alldata );
+	save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
 }
 
 print "Done\n";
