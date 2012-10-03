@@ -21,11 +21,6 @@ our $VERSION = '0.01';
 
 use Cwd;
 
-sub is_linux {
-	my $os = $^O;
-	return ( $os eq "linux" );
-}
-
 sub file_exists {
 	my $file   = shift;
 	my $result = 0;
