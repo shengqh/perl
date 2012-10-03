@@ -121,14 +121,14 @@ sub filter {
 	return (@result);
 }
 
-my $resultfile = $cufflinksdir . "/fpkm.tsv";
+my $resultfile = $cufflinksdir . "/fpkm.txt";
 
 save( $resultfile, \@subdirs, \@genes, $alldata, $map );
 
 my @counts = (1, 2, 3, 4, 5 );
 foreach my $i (@counts) {
 	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
-	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
+	my $file = $cufflinksdir . "/fpkm_${i}.txt";
 	save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
 }
 
