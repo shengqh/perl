@@ -37,17 +37,21 @@ else {
 	$cufflinksdir = "d:/tmp";
 }
 
-my @subdirs = list_directories($cufflinksdir);
+my @allsubdirs = list_directories($cufflinksdir);
+
+my @subdirs = ();
+foreach my $subdir (@allsubdirs) {
+    if ( !defined $map->{$subdir} ) {
+        next;
+    }
+    push(@subdirs, $subdir);
+}
 
 @subdirs = sort @subdirs;
 
 my $alldata = {};
 my @genes   = ();
 foreach my $subdir (@subdirs) {
-	if ( !defined $map->{$subdir} ) {
-		next;
-	}
-
 	my $file = "${cufflinksdir}/${subdir}/genes.fpkm_tracking";
 	print "Reading $file ...\n";
 
