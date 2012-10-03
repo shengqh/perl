@@ -74,8 +74,9 @@ sub save {
 
 	my @subdirs = @{$subdirs_ref};
 	my @genes   = sort @{$genes_ref};
+	my $genecount = scalar(@genes);
 
-	print "Saving $resultfile ...\n";
+	print "Saving $resultfile ($genecount) ...\n";
 	open OUT, ">$resultfile" or die "Cannot create file $resultfile";
 
 	print OUT "gene";
@@ -108,7 +109,7 @@ sub filter {
 	foreach my $gene (@genes) {
 		my $count = 0;
 		foreach my $subdir (@subdirs) {
-			if ( $alldata->{$subdir}->{$gene} > 0 ) {
+			if ( $alldata->{$subdir}->{$gene} >= 1 ) {
 				$count++;
 			}
 		}
@@ -124,12 +125,12 @@ my $resultfile = $cufflinksdir . "/fpkm.tsv";
 
 save( $resultfile, \@subdirs, \@genes, $alldata, $map );
 
-#my @counts = ( 2, 3, 4, 5 );
-#foreach my $i (@counts) {
-#	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
-#	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
-#	save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
-#}
+my @counts = (1, 2, 3, 4, 5 );
+foreach my $i (@counts) {
+	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
+	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
+	save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
+}
 
 print "Done\n";
 
