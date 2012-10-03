@@ -100,7 +100,7 @@ my @counts = ( 2, 3, 4, 5 );
 foreach my $i (@counts) {
 	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
 	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
-	save( $resultfile, \@subdirs, \@filteredgenes, $alldata );
+	save( $file, \@subdirs, \@filteredgenes, $alldata );
 }
 
 print "Done\n";
