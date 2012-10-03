@@ -7,12 +7,13 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 
 my $groups = {
-	"B_CON"          => [ "P2277-12", "P2277-17", "P2277-22" ],
-	"B_TAAS_LAP"     => ["P2277-15"],
-	"B_TAAS_LAP_BKM" => ["P2277-18"],
-	"B_LAP_BKM"  => [ "P2277-21", "P2277-24", ],
-	"B_BKM"      => ["P2277-27"],
-	"B_TAAS_BKM" => ["P2277-28"],
+	"OTHER" => [ "P2277-01", "P2277-02", "P2277-03", "P2277-04", "P2277-05", "P2277-06", "P2277-07", "P2277-08", "P2277-31" ],
+	"B_CON" => [ "P2277-12", "P2277-17", "P2277-22" ],
+	"B_TAAS_LAP"       => ["P2277-15"],
+	"B_TAAS_LAP_BKM"   => ["P2277-18"],
+	"B_LAP_BKM"        => [ "P2277-21", "P2277-24", ],
+	"B_BKM"            => ["P2277-27"],
+	"B_TAAS_BKM"       => ["P2277-28"],
 	"HCC_CON"          => [ "P2277-11", "P2277-19", "P2277-30", ],
 	"HCC_LAP"          => ["P2277-09"],
 	"HCC_TAAS_LAP"     => [ "P2277-10", "P2277-14", "P2277-20", ],
@@ -79,7 +80,7 @@ sub save {
 
 	print OUT "gene";
 	foreach my $subdir (@subdirs) {
-		print OUT "\t" . $map->{$subdir};
+		print OUT "\t${map}->{$subdir}";
 	}
 	print OUT "\n";
 
@@ -122,12 +123,12 @@ my $resultfile = $cufflinksdir . "/fpkm.tsv";
 
 save( $resultfile, \@subdirs, \@genes, $alldata, $map );
 
-my @counts = ( 2, 3, 4, 5 );
-foreach my $i (@counts) {
-	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
-	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
-	save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
-}
+#my @counts = ( 2, 3, 4, 5 );
+#foreach my $i (@counts) {
+#	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $i );
+#	my $file = $cufflinksdir . "/fpkm_${i}.tsv";
+#	save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
+#}
 
 print "Done\n";
 
