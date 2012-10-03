@@ -25,7 +25,7 @@ my $map = {};
 foreach my $groupName ( sort keys %{$groups} ) {
 	my @samples = @{ $groups->{$groupName} };
 	foreach my $sample (@samples) {
-		$map->{$sample} = $groupName . "-" . $sample;
+		$map->{$sample} = $groupName . "_" . $sample;
 	}
 }
 
