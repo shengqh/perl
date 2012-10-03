@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -154,7 +154,7 @@ sub tophat2_by_pbs {
 			print "$pbsFile created\n";
 		}
 
-        print SH "exit 0\n";
+		print SH "exit 0\n";
 		close(SH);
 
 		if ( is_linux() ) {
@@ -238,7 +238,7 @@ sub cufflinks_by_pbs {
 
 		print "$pbsFile created\n";
 	}
-    print SH "exit 0\n";
+	print SH "exit 0\n";
 	close(SH);
 
 	if ( is_linux() ) {
@@ -338,7 +338,7 @@ sub cuffmerge_by_pbs {
 		print SH "fi;\n\n";
 	}
 	print SH "qsub $pbsFile\n";
-    print SH "exit 0\n";
+	print SH "exit 0\n";
 	close(SH);
 
 	if ( is_linux() ) {
@@ -496,7 +496,7 @@ sub cuffdiff_by_pbs {
 		print SH "fi\n\n";
 	}
 
-    print SH "exit 0\n";
+	print SH "exit 0\n";
 	close(SH);
 
 	if ( is_linux() ) {
@@ -566,6 +566,24 @@ sub check_is_single() {
 	}
 
 	return ($isSingle);
+}
+
+sub read_cufflinks_fpkm {
+	my $genefile = shift;
+	open GF, "<$genefile" or die "Cannot open file $genefile";
+	my $header    = <GF>;
+	my @headers   = split( /\t/, $header );
+	my $geneindex = grep { $headers[$_] eq "gene_id" } 0 .. $#headers;
+	my $fpkmindex = grep { $headers[$_] eq "FPKM" } 0 .. $#headers;
+
+	my $result = {};
+	while ( my $line = <GF> ) {
+		my @values = split( /\t/, $line );
+		$result->{ $values[$geneindex] } = $values[$fpkmindex];
+	}
+	close(GF);
+
+	return $result;
 }
 
 sub output_header {
