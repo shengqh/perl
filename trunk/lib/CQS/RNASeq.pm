@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -579,6 +579,23 @@ sub read_cufflinks_fpkm {
 	close(GF);
 
 	return $result;
+}
+
+sub read_cuffdiff_significant_genes{
+    my $file = shift;
+
+    my $result = {};
+    open IN, "<$file" or die "Cannot open file $file";
+    my $header = <IN>;
+    while ( my $line = <IN> ) {
+        my @part = split( $line, '\t' );
+        if ( $part[14] eq "yes" ) {
+            $result->{ $part[3] } = $line;
+        }
+    }
+    close IN;
+    
+    return ($result, $header);
 }
 
 sub output_header {
