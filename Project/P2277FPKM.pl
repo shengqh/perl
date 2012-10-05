@@ -5,10 +5,10 @@ use warnings;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-use Math::NumberCruncher;
+use Statistics::Descriptive;
 
 my $groups = {
-	#"OTHER" => [ "P2277-01", "P2277-02", "P2277-03", "P2277-04", "P2277-05", "P2277-06", "P2277-07", "P2277-08", "P2277-31" ],
+	"OTHER"          => [ "P2277-01", "P2277-02", "P2277-03", "P2277-04", "P2277-05", "P2277-06", "P2277-07", "P2277-08", "P2277-31" ],
 	"B_CON"          => [ "P2277-12", "P2277-17", "P2277-22" ],
 	"B_TAAS_LAP"     => ["P2277-15"],
 	"B_TAAS_LAP_BKM" => ["P2277-18"],
@@ -113,23 +113,22 @@ sub filter {
 
 	my %sdmap = {};
 	foreach my $gene (@genes) {
-		my $count  = 0;
-		my @values = ();
+		my $count = 0;
+		my $stat  = Statistics::Descriptive::Full->new();
 		foreach my $subdir (@subdirs) {
 			if ( $alldata->{$subdir}->{$gene} >= 1 ) {
 				$count++;
 			}
-			push( @values, $alldata->{$subdir}->{$gene} );
+			$stat->add_data( $alldata->{$subdir}->{$gene} );
 		}
 		if ( $count >= $mincount ) {
-			my $sd = Math::NumberCruncher::StandardDeviation( \@values );
-			$sdmap{$gene} = $sd;
+			$sdmap{$gene} = $stat->standard_deviation();
 		}
 	}
 
-	my @sortedkeys = sort { $sdmap{$b} <=> $sdmap{$a} } keys %sdmap;
+	my @sortedkeys = ( sort { $sdmap{$b} <=> $sdmap{$a} } keys %sdmap );
 	my $number = $top * scalar(@sortedkeys);
-	
+
 	my @result = ();
 	for ( my $i = 0 ; $i < $number ; $i++ ) {
 		push( @result, $sortedkeys[$i] );
@@ -142,14 +141,11 @@ my $resultfile = $cufflinksdir . "/fpkm.txt";
 
 save( $resultfile, \@subdirs, \@genes, $alldata, $map );
 
-my @counts = ( 1, 2, 3, 4, 5 );
 my @tops = ( 0.05, 0.1, 0.2 );
-foreach my $count (@counts) {
-	foreach my $top (@tops) {
-		my @filteredgenes = filter( \@subdirs, \@genes, $alldata, $count, $top );
-		my $file = $cufflinksdir . "/fpkm_${count}_${top}.txt";
-		save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
-	}
+foreach my $top (@tops) {
+	my @filteredgenes = filter( \@subdirs, \@genes, $alldata, 1, $top );
+	my $file = $cufflinksdir . "/fpkm_${top}.txt";
+	save( $file, \@subdirs, \@filteredgenes, $alldata, $map );
 }
 
 print "Done\n";
