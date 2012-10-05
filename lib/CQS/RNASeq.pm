@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -598,6 +598,45 @@ sub read_cuffdiff_significant_genes{
     close IN;
     
     return ($result, $header);
+}
+
+#use CQS::RNASeq;
+#my $root = "/home/xxx/cuffdiff/result";
+#my $targetdir = create_directory_or_die( $root . "/comparison" );
+#my $config    = {
+#    "RenameDiff" => {
+#        target_dir => $targetdir,
+#        root_dir   => $root
+#    }
+#}
+#copy_and_rename_cuffdiff_file($config, "RenameDiff");
+sub copy_and_rename_cuffdiff_file {
+    my ( $config, $section ) = @_;
+    my $targetdir = $config->{$section}{"target_dir"} or die "define ${section}::target_dir first";
+    my $dir       = $config->{$section}{"root_dir"} or die "define ${section}::root_dir first";
+    if( ! -d $dir) {
+        die "directory $dir is not exists";
+    }
+    
+    my @subdirs = list_directories($dir);
+    if (0 == scalar(@subdirs)){
+        die "$dir has no sub CuffDiff directories";
+    }
+    
+    for my $subdir (@subdirs) {
+        my $file = "${dir}/${subdir}/gene_exp.diff";
+        if ( -s $file ) {
+            open IN, "<$file" or die "Cannot open file $file";
+            my $line = <IN>;
+            $line = <IN>;
+            close(IN);
+
+            my @parts = split( /\t/, $line );
+            my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . ".gene_exp.diff";
+
+            copy( $file, $targetname ) or die "copy failed : $!";
+        }
+    }
 }
 
 sub output_header {
