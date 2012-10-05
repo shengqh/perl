@@ -62,7 +62,6 @@ sub get_param_file {
 	return ($result);
 }
 
-
 sub get_raw_files {
     my ( $config, $section ) = @_;
 
