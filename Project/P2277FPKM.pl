@@ -36,7 +36,7 @@ if ( is_linux() ) {
 	$cufflinksdir = "/scratch/cqs/shengq1/rnaseq/P2277/cufflinks/result";
 }
 else {
-	$cufflinksdir = "d:/tmp";
+	$cufflinksdir = "D:/projects/P2277/cufflinks";
 }
 
 my @allsubdirs = list_directories($cufflinksdir);
@@ -111,7 +111,7 @@ sub filter {
 
 	my $allcount = scalar(@genes);
 
-	my %sdmap = {};
+	my %sdmap = ();
 	foreach my $gene (@genes) {
 		my $count = 0;
 		my $stat  = Statistics::Descriptive::Full->new();
