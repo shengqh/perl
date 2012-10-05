@@ -587,10 +587,12 @@ sub read_cuffdiff_significant_genes{
     my $result = {};
     open IN, "<$file" or die "Cannot open file $file";
     my $header = <IN>;
+    chomp($header);
     while ( my $line = <IN> ) {
-        my @part = split( $line, '\t' );
-        if ( $part[14] eq "yes" ) {
-            $result->{ $part[3] } = $line;
+        chomp($line);
+        my @part = split( /\t/, $line );
+        if ( $part[13] eq "yes" ) {
+            $result->{ $part[2] } = $line;
         }
     }
     close IN;
