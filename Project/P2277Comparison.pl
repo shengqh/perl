@@ -114,7 +114,7 @@ my $config    = {
     }
 };
 
-#rename_diff( $config, "RenameDiff" );
+rename_diff( $config, "RenameDiff" );
 
 compare_diff( $config, "B_TAAS_LAP_BKM_minus_TAAS_LAP" );
 
