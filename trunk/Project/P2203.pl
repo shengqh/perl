@@ -130,4 +130,13 @@ cufflinks_by_pbs( $config, "cufflinks" );
 
 #cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
+use CQS::DNASeq;
+
+my $fastqFile1 = "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt";
+my $fastqFile2 = "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt";
+my $fastaFile  = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
+
+bwa_by_pbs_double( $fastaFile, $fastqFile1, $fastqFile2, "P2203-01", "${target_dir}/bwa" );
+
+
 1;
