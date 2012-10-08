@@ -70,7 +70,7 @@ sub bwa_by_pbs_single {
   print OUT "echo finished=`date`\n";
   close OUT;
 
-  `qsub $pbsFile`;
+  #`qsub $pbsFile`;
 }
 
 sub bwa_by_pbs_double {
@@ -129,7 +129,7 @@ sub bwa_by_pbs_double {
   print OUT "echo finished=`date`\n";
   close OUT;
 
-  `qsub $pbsFile`;
+  #`qsub $pbsFile`;
 }
 
 1;
