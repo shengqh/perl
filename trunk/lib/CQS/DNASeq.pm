@@ -74,13 +74,13 @@ sub bwa_by_pbs_single {
 }
 
 sub bwa_by_pbs_double {
-  my ( $faFile, $sampleFile1, $sampleFile2, $sampleName, $rootDir ) = @_;
+  my ( $faFile, $sampleFile1, $sampleFile2, $sampleName, $rootDir, $pbs ) = @_;
 
   my $pathFile = '/data/cqs/bin/path.txt';
 
   my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 
-  my ($pbsDesc) = get_pbs_desc();
+  my ($pbsDesc) = get_pbs_desc($pbs);
 
   my ( $sampleName1, $directories1, $suffix1 ) = fileparse($sampleFile1);
   my $saiFile1 = $sampleName1 . ".sai";
