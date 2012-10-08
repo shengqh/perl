@@ -22,19 +22,24 @@ my $config = {
 		task_name            => "P2277"
 	},
 	fastqfiles => {
-		"P2203-01" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt",  "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt" ],
-        "P2203-02" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-2_1_sequence.txt",  "/data/cqs/shengq1/2203/rawdata/2203-WE-2_2_sequence.txt" ],
-        "P2203-03" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-3_1_sequence.txt",  "/data/cqs/shengq1/2203/rawdata/2203-WE-3_2_sequence.txt" ],
-        "P2203-04" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-4_1_sequence.txt",  "/data/cqs/shengq1/2203/rawdata/2203-WE-4_2_sequence.txt" ],
+		"P2203-01" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt" ],
+		"P2203-02" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-2_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-2_2_sequence.txt" ],
+		"P2203-03" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-3_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-3_2_sequence.txt" ],
+		"P2203-04" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-4_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-4_2_sequence.txt" ],
 	},
 	groups => {
-		"FLO-1"          => [ "P2203-01"],
-        "FLO-1_MLN"          => [ "P2203-02"],
-        "FLO-1_R"          => [ "P2203-03"],
-        "FLO-1_R_MLN"          => [ "P2203-04"],
+		"FLO-1"       => ["P2203-01"],
+		"FLO-1_MLN"   => ["P2203-02"],
+		"FLO-1_R"     => ["P2203-03"],
+		"FLO-1_R_MLN" => ["P2203-04"],
 	},
 	pairs => {
-		"ALL" => [ "FLO-1",       "FLO-1_MLN", "FLO-1_R","FLO-1_R_MLN" ],
+		"MLN_vs_None"   => [ "FLO-1_MLN",   "FLO-1" ],
+		"R_vs_None"     => [ "FLO-1_R",     "FLO-1" ],
+		"R_MLN_vs_None" => [ "FLO-1_R_MLN", "FLO-1" ],
+		"R_vs_MLN"      => [ "FLO-1_R",     "FLO-1_MLN" ],
+		"R_MLN_vs_MLN"  => [ "FLO-1_R_MLN", "FLO-1_MLN" ],
+		"R_MLN_vs_R"    => [ "FLO-1_R_MLN", "FLO-1_R" ]
 	},
 	fastqc => {
 		target_dir => "${target_dir}/fastqc",
