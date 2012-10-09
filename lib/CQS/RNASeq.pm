@@ -207,11 +207,11 @@ sub cufflinks_by_pbs {
 		my $pbsName = "${sampleName}_clinks.pbs";
 		my $pbsFile = $pbsDir . "/$pbsName";
 
-		print SH "if [ -s ${resultDir}/${sampleName}/transcripts.gtf ]\n";
+		print SH "if [ -s ${resultDir}/${sampleName}/transcripts.gtf ];\n";
 		print SH "then\n";
 		print SH "  echo job has already been done. if you want to do again, delete ${sampleName}/transcripts.gtf and submit job again.\n";
 		print SH "else\n";
-		print SH "  if [ ! -s $tophat2File ]\n";
+		print SH "  if [ ! -s $tophat2File ];\n";
 		print SH "  then";
 		print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
 		print SH "  else\n";
@@ -443,7 +443,8 @@ sub cuffdiff_by_pbs {
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
-	print SH "if [ ! -s $transcript_gtf ]; then\n";
+	print SH "if [ ! -s $transcript_gtf ];\n";
+	print SH "then\n";
 	print SH "  echo $transcript_gtf is not exists! all job will be ignored.\n";
 	print SH "  exit 1\n";
 	print SH "fi\n\n";
@@ -480,10 +481,12 @@ sub cuffdiff_by_pbs {
 		print "$pbsFile created. \n";
 
 		my $condition = merge_string( " && ", @conditions );
-		print SH "if [ -s ${curDir}/gene_exp.diff ]; then\n";
+		print SH "if [ -s ${curDir}/gene_exp.diff ];\n";
+		print SH "then\n";
 		print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
 		print SH "else\n";
-		print SH "  if $condition; then\n";
+		print SH "  if $condition;\n";
+		print SH "  then\n";
 		print SH "    qsub ./$pbsName \n";
 		print SH "    echo $pbsName was submitted. \n";
 		print SH "  else\n";
