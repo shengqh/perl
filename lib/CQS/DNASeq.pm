@@ -82,7 +82,6 @@ sub bwa_by_pbs_double {
 
 	my $faFile       = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
 	my $inserts      = $config->{$section}{estimate_insert};
-	my $option_aln   = $config->{$section}{option_aln} or die "define ${section}::option_aln first";
 	my $option_sampe = $config->{$section}{option_sampe} or die "define ${section}::option_sampe first";
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -130,11 +129,11 @@ sub bwa_by_pbs_double {
 		print OUT "    if [ ! -s $samFile ]; then\n";
 		print OUT "      if [ ! -s $saiFile1 ]; then\n";
 		print OUT "        echo sai1=`date` \n";
-		print OUT "        bwa aln $option_aln $faFile $sampleFile1 >$saiFile1 \n";
+		print OUT "        bwa aln $option $faFile $sampleFile1 >$saiFile1 \n";
 		print OUT "      fi\n";
 		print OUT "      if [ ! -s $saiFile2 ]; then\n";
 		print OUT "        echo sai2=`date` \n";
-		print OUT "        bwa aln $option_aln $faFile $sampleFile2 >$saiFile2 \n";
+		print OUT "        bwa aln $option $faFile $sampleFile2 >$saiFile2 \n";
 		print OUT "      fi\n";
 		print OUT "      echo aln=`date` \n";
 		print OUT "      bwa sampe $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n";
