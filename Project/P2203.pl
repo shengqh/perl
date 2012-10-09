@@ -63,9 +63,9 @@ my $config = {
 		},
 		pbs => {
 			"email"    => $email,
-			"nodes"    => "1:ppn=2",
-			"walltime" => "2",
-			"mem"      => "10gb"
+			"nodes"    => "1:ppn=1",
+			"walltime" => "24",
+			"mem"      => "20gb"
 		},
 	},
 	tophat2 => {
