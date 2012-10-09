@@ -80,7 +80,8 @@ sub bwa_by_pbs_double {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $faFile = get_param_file( $config->{$section}{fasta_file}, "Fasta Database", 1 );
+	my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
+	my $inserts = $config->{$section}{generate_insert};
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -124,28 +125,32 @@ sub bwa_by_pbs_double {
 		print OUT "if [ -s ${sortedBamFile}.bam ]; then\n";
 		print OUT "  echo job has already been done. if you want to do again, delete ${sortedBamFile}.bam and submit job again.\n";
 		print OUT "else\n";
-        print OUT "  if [ ! -s $bamFile ]; then\n";
-        print OUT "    if [ ! -s $samFile ]; then\n";
-        print OUT "      if [ ! -s $saiFile1 ]; then\n";
+		print OUT "  if [ ! -s $bamFile ]; then\n";
+		print OUT "    if [ ! -s $samFile ]; then\n";
+		print OUT "      if [ ! -s $saiFile1 ]; then\n";
 		print OUT "        echo sai1=`date` \n";
 		print OUT "        bwa aln -q 15 $faFile $sampleFile1 >$saiFile1 \n";
-        print OUT "      fi\n";
-        print OUT "      if [ ! -s $saiFile2 ]; then\n";
-        print OUT "        echo sai2=`date` \n";
-        print OUT "        bwa aln -q 15 $faFile $sampleFile2 >$saiFile2 \n";
-        print OUT "      fi\n";
-    	print OUT "      echo aln=`date` \n";
+		print OUT "      fi\n";
+		print OUT "      if [ ! -s $saiFile2 ]; then\n";
+		print OUT "        echo sai2=`date` \n";
+		print OUT "        bwa aln -q 15 $faFile $sampleFile2 >$saiFile2 \n";
+		print OUT "      fi\n";
+		print OUT "      echo aln=`date` \n";
 		print OUT "      bwa sampe -n 3 $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n";
 		print OUT "    fi\n";
-    	print OUT "    echo sam2bam=`date`\n";
+		print OUT "    echo sam2bam=`date`\n";
 		print OUT "    samtools view -b -S $samFile -o $bamFile\n";
 		print OUT "  fi\n";
 		print OUT "  echo sortbam=`date`\n";
 		print OUT "  samtools sort $bamFile $sortedBamFile\n";
 		print OUT "  echo bamstat=`date`\n";
 		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat\n";
-        print OUT "  echo insertsize=`date`\n";
-		print OUT "  samtools view ${sortedBamFile}.bam | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamFile}.len \n";
+
+		if ($inserts) {
+			print OUT "  echo insertsize=`date`\n";
+			print OUT "  samtools view ${sortedBamFile}.bam | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamFile}.len \n";
+			print OUT "  sort -n ${sortedBamFile}.len | awk ' { x[NR]=$1; } END { for (i in x){ss+=(x[i]-a)^2; s+=x[i];}; mean=s/NR; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd; \"; median=\"median }' \n";
+		}
 		print OUT "fi\n\n";
 
 		print OUT "echo finished=`date`\n";
@@ -158,7 +163,7 @@ sub bwa_by_pbs_double {
 	if ( is_linux() ) {
 		chmod 0755, $shfile;
 	}
-	
+
 	print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
 
 	#`qsub $pbsFile`;
