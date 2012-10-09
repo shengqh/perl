@@ -70,8 +70,7 @@ my $config = {
 	},
 	tophat2 => {
 		target_dir => "${target_dir}/tophat2",
-#		option     => "--segment-length 25 -r 150 -p 8",
-        option     => "--segment-length 25 -r 5 -p 8",
+        option     => "--segment-length 25 -r 0 -p 8",
 		batchmode  => 0,
 		source_ref => "fastqfiles",
 		pbs        => {
@@ -134,16 +133,16 @@ my $config = {
 	},
 };
 
-bwa_by_pbs_double( $config, "bwa" );
+#bwa_by_pbs_double( $config, "bwa" );
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
+tophat2_by_pbs( $config, "tophat2" );
 
-#cuffdiff_by_pbs( $config, "cuffdiff" );
+cuffdiff_by_pbs( $config, "cuffdiff" );
 
 ####run cufflinks-cuffmerge-cuffdiff
-#cufflinks_by_pbs( $config, "cufflinks" );
+cufflinks_by_pbs( $config, "cufflinks" );
 
 #cuffmerge_by_pbs( $config, "cuffmerge" );
 
