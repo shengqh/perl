@@ -645,7 +645,10 @@ sub copy_and_rename_cuffdiff_file {
 			copy( $file, $targetname ) or die "copy failed : $!";
 
             my $target_sign_name = $targetname . ".sig";
-            `cat $targetname | awk '$14=="yes"' > $target_sign_name`;
+            my $cmd = "cat $targetname | awk '$14==\"yes\"' > $target_sign_name"; 
+            
+            print $cmd . "\n";
+            `$cmd`;
 		}
 	}
 }
