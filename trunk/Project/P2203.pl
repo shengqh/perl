@@ -19,7 +19,7 @@ my $config = {
 		transcript_gtf       => $transcript_gtf,
 		transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
 		path_file            => "/home/shengq1/bin/path.txt",
-		task_name            => "P2277"
+		task_name            => "P2203"
 	},
 	fastqfiles => {
 		"P2203-01" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt" ],
