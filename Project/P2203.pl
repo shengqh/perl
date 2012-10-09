@@ -8,7 +8,7 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/P2203");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/P2203_2");
 
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 
@@ -70,8 +70,7 @@ my $config = {
 	},
 	tophat2 => {
 		target_dir => "${target_dir}/tophat2",
-#        option     => "--segment-length 25 -r 0 -p 8",
-        option     => "--segment-length 25 -r 150 -p 8",
+        option     => "--segment-length 25 -r 0 -p 8",
 		batchmode  => 0,
 		source_ref => "fastqfiles",
 		pbs        => {
