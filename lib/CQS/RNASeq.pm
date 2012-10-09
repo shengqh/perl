@@ -643,6 +643,9 @@ sub copy_and_rename_cuffdiff_file {
 			my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . ".gene_exp.diff";
 
 			copy( $file, $targetname ) or die "copy failed : $!";
+
+            my $target_sign_name = $targetname . ".sig";
+            `cat $targetname | awk '$14=="yes"' > $target_sign_name`;
 		}
 	}
 }
