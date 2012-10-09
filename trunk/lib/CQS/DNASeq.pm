@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use File::Basename;
 use CQS::PBS;
+use CQS::ConfigUtils;
 
 require Exporter;
 
@@ -19,117 +20,142 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub bwa_by_pbs_single {
-  my ( $faFile, $sampleFile, $rootDir ) = @_;
+	my ( $faFile, $sampleFile, $rootDir ) = @_;
 
-  my ( $sampleName, $directories, $suffix ) = fileparse($sampleFile);
+	my ( $sampleName, $directories, $suffix ) = fileparse($sampleFile);
 
-  $sampleName =~ s/\.(\w+)$//;
+	$sampleName =~ s/\.(\w+)$//;
 
-  my $pathFile = '/data/cqs/bin/path.txt';
+	my $pathFile = '/data/cqs/bin/path.txt';
 
-  my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
 
-  my ($pbsDesc) = get_pbs_desc();
+	my ($pbsDesc) = get_pbs_desc();
 
-  my $saiFile       = $sampleName . ".sai";
-  my $samFile       = $sampleName . ".sam";
-  my $bamFile       = $sampleName . ".bam";
-  my $sortedBamFile = $sampleName . "_sort";
-  my $log           = $logDir . "/" . $sampleName . ".log";
+	my $saiFile       = $sampleName . ".sai";
+	my $samFile       = $sampleName . ".sam";
+	my $bamFile       = $sampleName . ".bam";
+	my $sortedBamFile = $sampleName . "_sort";
+	my $log           = $logDir . "/" . $sampleName . ".log";
 
-  if ( -e $resultDir . "/" . $sortedBamFile ) {
-    next;
-  }
+	if ( -e $resultDir . "/" . $sortedBamFile ) {
+		next;
+	}
 
-  #my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
-  my $pbsFile = $pbsDir . "/${sampleName}.pbs";
-  print "$pbsDir\n";
-  open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
-  print OUT "source $pathFile\n";
-  print OUT "cd $resultDir\n\n";
+	#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
+	my $pbsFile = $pbsDir . "/${sampleName}.pbs";
+	print "$pbsDir\n";
+	open( OUT, ">$pbsFile" ) or die $!;
+	print OUT $pbsDesc;
+	print OUT "#PBS -o $log\n";
+	print OUT "#PBS -j oe\n\n";
+	print OUT "source $pathFile\n";
+	print OUT "cd $resultDir\n\n";
 
-  if ( !( -e $resultDir . "/" . $bamFile ) ) {
-    if ( !( -e $resultDir . "/" . $samFile ) ) {
-      if ( !( -e $resultDir . "/" . $sampleFile ) ) {
-        print OUT "echo sai=`date` \n";
-        print OUT "bwa aln -q 15 $faFile $sampleFile >$saiFile \n";
-      }
-      print OUT "echo aln=`date` \n";
-      print OUT "bwa sampe -n 3 $faFile $saiFile $sampleFile > $samFile \n";
-    }
-    print OUT "echo sam2bam=`date`\n";
-    print OUT "samtools view -b -S $samFile -o $bamFile\n";
-  }
-  print OUT "echo sortbam=`date`\n";
-  print OUT "samtools sort $bamFile $sortedBamFile\n";
-  print OUT "echo bamstat=`date`\n";
-  print OUT "samtools flagstat $sortedBamFile.bam > $sortedBamFile.bam.stat\n";
-  print OUT "echo finished=`date`\n";
-  close OUT;
+	if ( !( -e $resultDir . "/" . $bamFile ) ) {
+		if ( !( -e $resultDir . "/" . $samFile ) ) {
+			if ( !( -e $resultDir . "/" . $sampleFile ) ) {
+				print OUT "echo sai=`date` \n";
+				print OUT "bwa aln -q 15 $faFile $sampleFile >$saiFile \n";
+			}
+			print OUT "echo aln=`date` \n";
+			print OUT "bwa sampe -n 3 $faFile $saiFile $sampleFile > $samFile \n";
+		}
+		print OUT "echo sam2bam=`date`\n";
+		print OUT "samtools view -b -S $samFile -o $bamFile\n";
+	}
+	print OUT "echo sortbam=`date`\n";
+	print OUT "samtools sort $bamFile $sortedBamFile\n";
+	print OUT "echo bamstat=`date`\n";
+	print OUT "samtools flagstat $sortedBamFile.bam > $sortedBamFile.bam.stat\n";
+	print OUT "echo finished=`date`\n";
+	close OUT;
 
-  #`qsub $pbsFile`;
+	#`qsub $pbsFile`;
 }
 
 sub bwa_by_pbs_double {
-  my ( $faFile, $sampleFile1, $sampleFile2, $sampleName, $rootDir, $pbs ) = @_;
+	my ( $config, $section ) = @_;
 
-  my $pathFile = '/data/cqs/bin/path.txt';
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-  my ( $logDir, $pbsDir, $resultDir ) = init_dir($rootDir);
+	my $faFile = get_param_file( $config->{$section}{fastaFile}, "Fasta Database", 1 );
 
-  my ($pbsDesc) = get_pbs_desc($pbs);
+	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my ( $sampleName1, $directories1, $suffix1 ) = fileparse($sampleFile1);
-  my $saiFile1 = $sampleName1 . ".sai";
-  my ( $sampleName2, $directories2, $suffix2 ) = fileparse($sampleFile2);
-  my $saiFile2      = $sampleName2 . ".sai";
-  my $samFile       = $sampleName . ".sam";
-  my $bamFile       = $sampleName . ".bam";
-  my $sortedBamFile = $sampleName . "_sort";
-  my $log           = $logDir . "/" . $sampleName . ".log";
+	my $shfile = $pbsDir . "/${task_name}.sh";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
-  if ( -e $resultDir . "/" . $sortedBamFile ) {
-    next;
-  }
+	for my $sampleName ( sort keys %rawFiles ) {
+		my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-  #my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
-  my $pbsFile = $pbsDir . "/${sampleName}.pbs";
-  print "$pbsDir\n";
-  open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
-  print OUT "source $pathFile\n";
-  print OUT "cd $resultDir\n\n";
+		my $sampleFile1 = $sampleFiles[0];
+		my $sampleFile2 = $sampleFiles[1];
 
-  if ( !( -e $resultDir . "/" . $bamFile ) ) {
-    if ( !( -e $resultDir . "/" . $samFile ) ) {
-      if ( !( -e $resultDir . "/" . $saiFile1 ) ) {
-        print OUT "echo sai=`date` \n";
-        print OUT "bwa aln -q 15 $faFile $sampleFile1 >$saiFile1 \n";
-      }
-      if ( !( -e $resultDir . "/" . $saiFile2 ) ) {
-        print OUT "echo sai=`date` \n";
-        print OUT "bwa aln -q 15 $faFile $sampleFile2 >$saiFile2 \n";
-      }
-      print OUT "echo aln=`date` \n";
-      print OUT
-"bwa sampe -n 3 $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n";
-    }
-    print OUT "echo sam2bam=`date`\n";
-    print OUT "samtools view -b -S $samFile -o $bamFile\n";
-  }
-  print OUT "echo sortbam=`date`\n";
-  print OUT "samtools sort $bamFile $sortedBamFile\n";
-  print OUT "echo bamstat=`date`\n";
-  print OUT "samtools flagstat $sortedBamFile.bam > $sortedBamFile.bam.stat\n";
-  print OUT "echo finished=`date`\n";
-  close OUT;
+		my ( $sampleName1, $directories1, $suffix1 ) = fileparse($sampleFile1);
+		my $saiFile1 = $sampleName1 . ".sai";
+		my ( $sampleName2, $directories2, $suffix2 ) = fileparse($sampleFile2);
+		my $saiFile2      = $sampleName2 . ".sai";
+		my $samFile       = $sampleName . ".sam";
+		my $bamFile       = $sampleName . ".bam";
+		my $sortedBamFile = $sampleName . "_sort";
 
-  #`qsub $pbsFile`;
+		my $pbsName = "${sampleName}_bwa.pbs";
+		my $pbsFile = "${pbsDir}/$pbsName";
+
+		print SH "qsub ./$pbsName \n";
+
+		my $log = "${logDir}/${sampleName}_bwa.log";
+
+		open( OUT, ">$pbsFile" ) or die $!;
+		print OUT $pbsDesc;
+		print OUT "#PBS -o $log\n";
+		print OUT "#PBS -j oe\n\n";
+
+		if ( -e $path_file ) {
+			print OUT "source $path_file\n";
+		}
+		print OUT "echo bwa=`date`\n";
+
+		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
+		print OUT "cd $resultDir\n\n";
+
+		print OUT "if [ -s $sortedBamFile ];\n";
+		print OUT "then\n";
+		print OUT "  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.\n";
+		print OUT "else\n";
+
+		if ( !( -e $resultDir . "/" . $bamFile ) ) {
+			if ( !( -e $resultDir . "/" . $samFile ) ) {
+				if ( !( -e $resultDir . "/" . $saiFile1 ) ) {
+					print OUT "  echo sai=`date` \n";
+					print OUT "  bwa aln -q 15 $faFile $sampleFile1 >$saiFile1 \n";
+				}
+				if ( !( -e $resultDir . "/" . $saiFile2 ) ) {
+					print OUT "  echo sai=`date` \n";
+					print OUT "  bwa aln -q 15 $faFile $sampleFile2 >$saiFile2 \n";
+				}
+				print OUT "  echo aln=`date` \n";
+				print OUT "  bwa sampe -n 3 $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n";
+			}
+			print OUT "  echo sam2bam=`date`\n";
+			print OUT "  samtools view -b -S $samFile -o $bamFile\n";
+		}
+		print OUT "  echo sortbam=`date`\n";
+		print OUT "  samtools sort $bamFile $sortedBamFile\n";
+		print OUT "  echo bamstat=`date`\n";
+		print OUT "  samtools flagstat $sortedBamFile.bam > $sortedBamFile.bam.stat\n";
+		print OUT "\nfi\n\n";
+
+		print OUT "echo finished=`date`\n";
+		close OUT;
+
+		print "$pbsFile created\n";
+	}
+	close(SH);
+	print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+
+	#`qsub $pbsFile`;
 }
 
 1;
