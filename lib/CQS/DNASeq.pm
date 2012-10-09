@@ -120,32 +120,30 @@ sub bwa_by_pbs_double {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $resultDir\n\n";
 
-		print OUT "if [ -s $sortedBamFile ];\n";
-		print OUT "then\n";
+		print OUT "if [ -s $sortedBamFile ] then\n";
 		print OUT "  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.\n";
 		print OUT "else\n";
-
-		if ( !( -e $resultDir . "/" . $bamFile ) ) {
-			if ( !( -e $resultDir . "/" . $samFile ) ) {
-				if ( !( -e $resultDir . "/" . $saiFile1 ) ) {
-					print OUT "  echo sai=`date` \n";
-					print OUT "  bwa aln -q 15 $faFile $sampleFile1 >$saiFile1 \n";
-				}
-				if ( !( -e $resultDir . "/" . $saiFile2 ) ) {
-					print OUT "  echo sai=`date` \n";
-					print OUT "  bwa aln -q 15 $faFile $sampleFile2 >$saiFile2 \n";
-				}
-				print OUT "  echo aln=`date` \n";
-				print OUT "  bwa sampe -n 3 $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n";
-			}
-			print OUT "  echo sam2bam=`date`\n";
-			print OUT "  samtools view -b -S $samFile -o $bamFile\n";
-		}
+        print OUT "  if [ ! -s $bamFile ] then\n";
+        print OUT "    if [ ! -s $samFile ] then\n";
+        print OUT "      if [ ! -s $saiFile1 ] then\n";
+		print OUT "        echo sai1=`date` \n";
+		print OUT "        bwa aln -q 15 $faFile $sampleFile1 >$saiFile1 \n";
+        print OUT "      fi\n";
+        print OUT "      if [ ! -s $saiFile2 ] then\n";
+        print OUT "        echo sai2=`date` \n";
+        print OUT "        bwa aln -q 15 $faFile $sampleFile2 >$saiFile2 \n";
+        print OUT "      fi\n";
+    	print OUT "      echo aln=`date` \n";
+		print OUT "      bwa sampe -n 3 $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n";
+		print OUT "    fi\n";
+    	print OUT "    echo sam2bam=`date`\n";
+		print OUT "    samtools view -b -S $samFile -o $bamFile\n";
+		print OUT "  fi\n";
 		print OUT "  echo sortbam=`date`\n";
 		print OUT "  samtools sort $bamFile $sortedBamFile\n";
 		print OUT "  echo bamstat=`date`\n";
 		print OUT "  samtools flagstat $sortedBamFile.bam > $sortedBamFile.bam.stat\n";
-		print OUT "\nfi\n\n";
+		print OUT "fi\n\n";
 
 		print OUT "echo finished=`date`\n";
 		close OUT;
@@ -153,6 +151,11 @@ sub bwa_by_pbs_double {
 		print "$pbsFile created\n";
 	}
 	close(SH);
+
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
+	
 	print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
 
 	#`qsub $pbsFile`;
