@@ -82,7 +82,11 @@ sub bwa_by_pbs_double {
 
 	my $faFile       = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
 	my $inserts      = $config->{$section}{estimate_insert};
-	my $option_sampe = $config->{$section}{option_sampe} or die "define ${section}::option_sampe first";
+	my $option_sampe = $config->{$section}{option_sampe};
+	if ( !defined $option_sampe ) {
+		die "define ${section}::option_sampe first";
+	}
+
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
