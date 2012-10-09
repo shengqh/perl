@@ -55,7 +55,8 @@ my $config = {
 	},
 	bwa => {
 		target_dir      => "${target_dir}/bwa",
-		option          => "-t 8",
+		option_aln      => "-q 15 -t 8",
+		option_sampe    => "",
 		source_ref      => "fastqfiles",
 		fasta_file      => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
 		estimate_insert => 1,
