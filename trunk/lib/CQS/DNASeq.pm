@@ -121,16 +121,16 @@ sub bwa_by_pbs_double {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $resultDir\n\n";
 
-		print OUT "if [ -s $sortedBamFile ] then\n";
+		print OUT "if [ -s $sortedBamFile ]; then\n";
 		print OUT "  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.\n";
 		print OUT "else\n";
-        print OUT "  if [ ! -s $bamFile ] then\n";
-        print OUT "    if [ ! -s $samFile ] then\n";
-        print OUT "      if [ ! -s $saiFile1 ] then\n";
+        print OUT "  if [ ! -s $bamFile ]; then\n";
+        print OUT "    if [ ! -s $samFile ]; then\n";
+        print OUT "      if [ ! -s $saiFile1 ]; then\n";
 		print OUT "        echo sai1=`date` \n";
 		print OUT "        bwa aln -q 15 $faFile $sampleFile1 >$saiFile1 \n";
         print OUT "      fi\n";
-        print OUT "      if [ ! -s $saiFile2 ] then\n";
+        print OUT "      if [ ! -s $saiFile2 ]; then\n";
         print OUT "        echo sai2=`date` \n";
         print OUT "        bwa aln -q 15 $faFile $sampleFile2 >$saiFile2 \n";
         print OUT "      fi\n";
