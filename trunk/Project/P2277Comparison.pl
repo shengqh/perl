@@ -2,8 +2,6 @@
 use strict;
 use warnings;
 
-use File::Basename;
-use File::Copy;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
