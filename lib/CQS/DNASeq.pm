@@ -122,7 +122,7 @@ sub bwa_by_pbs_double {
 		print OUT "cd $resultDir\n\n";
 
 		print OUT "if [ -s ${sortedBamFile}.bam ]; then\n";
-		print OUT "  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.\n";
+		print OUT "  echo job has already been done. if you want to do again, delete ${sortedBamFile}.bam and submit job again.\n";
 		print OUT "else\n";
         print OUT "  if [ ! -s $bamFile ]; then\n";
         print OUT "    if [ ! -s $samFile ]; then\n";
@@ -145,7 +145,7 @@ sub bwa_by_pbs_double {
 		print OUT "  echo bamstat=`date`\n";
 		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat\n";
         print OUT "  echo insertsize=`date`\n";
-		print OUT "  samtools view ${sortedBamFile}.bam | awk 'and ($2, 0x0002) && and ($2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamFile}.len";
+		print OUT "  samtools view ${sortedBamFile}.bam | awk 'and ($2, 0x0002) && and ($2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamFile}.len \n";
 		print OUT "fi\n\n";
 
 		print OUT "echo finished=`date`\n";
