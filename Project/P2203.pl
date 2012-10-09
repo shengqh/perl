@@ -54,14 +54,13 @@ my $config = {
 		},
 	},
 	bwa => {
-		target_dir => "${target_dir}/bwa",
-		option     => "",
-		source_ref => "fastqfiles",
-		fasta_file => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
-		source     => {
-			"P2203-01" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt" ],
-		},
-		pbs => {
+		target_dir      => "${target_dir}/bwa",
+		option          => "",
+		source_ref      => "fastqfiles",
+		fasta_file      => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
+		estimate_insert => 1,
+		source          => { "P2203-01" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt" ], },
+		pbs             => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
 			"walltime" => "24",
@@ -70,7 +69,7 @@ my $config = {
 	},
 	tophat2 => {
 		target_dir => "${target_dir}/tophat2",
-        option     => "--segment-length 25 -r 0 -p 8",
+		option     => "--segment-length 25 -r 0 -p 8",
 		batchmode  => 0,
 		source_ref => "fastqfiles",
 		pbs        => {

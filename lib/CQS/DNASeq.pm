@@ -81,7 +81,7 @@ sub bwa_by_pbs_double {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
-	my $inserts = $config->{$section}{generate_insert};
+	my $inserts = $config->{$section}{estimate_insert};
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
