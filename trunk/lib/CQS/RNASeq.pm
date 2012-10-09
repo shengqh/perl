@@ -4,6 +4,7 @@ package CQS::RNASeq;
 use strict;
 use warnings;
 use File::Basename;
+use List::Compare;
 use CQS::PBS;
 use CQS::FileUtils;
 use CQS::StringUtils;
@@ -14,7 +15,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file)] );
+our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -641,6 +642,53 @@ sub copy_and_rename_cuffdiff_file {
             copy( $file, $targetname ) or die "copy failed : $!";
         }
     }
+}
+
+sub output_compare_cuffdiff_file {
+    my ( $data1, $data2, $fileName, $header, @genes ) = @_;
+    open OUT, ">$fileName" or die "Cannot create file $fileName";
+    print OUT "$header\n";
+    my @sortedgenes = sort @genes;
+    for my $gene (@sortedgenes) {
+        if ( defined $data1->{$gene} ) {
+            print OUT "$data1->{$gene}\n";
+        }
+        if ( defined $data2->{$gene} ) {
+            print OUT "$data2->{$gene}\n";
+        }
+    }
+    close(OUT);
+}
+
+sub compare_cuffdiff {
+    my ( $config, $section ) = @_;
+
+    my $info = $config->{$section};
+
+    my ( $file1, $file2 ) = @{ $info->{"files"} };
+
+    my ( $data1, $header )  = read_cuffdiff_significant_genes($file1);
+    my ( $data2, $header2 ) = read_cuffdiff_significant_genes($file2);
+
+    my @genes1 = keys %{$data1};
+    my @genes2 = keys %{$data2};
+
+    my $lc = List::Compare->new( \@genes1, \@genes2 );
+
+    my @resultgenes = ();
+    if ( $info->{operation} eq "minus" ) {
+        @resultgenes = $lc->get_Lonly();
+    }
+    elsif ( $info->{operation} eq "intersect" ) {
+        @resultgenes = $lc->get_intersection();
+    }
+    else {
+        die "Only minus or intersect is supported.";
+    }
+
+    my $resultFileName = $info->{"target_file"};
+
+    output_compare_cuffdiff_file( $data1, $data2, $resultFileName, $header, @resultgenes );
 }
 
 sub output_header {
