@@ -4,6 +4,7 @@ package CQS::RNASeq;
 use strict;
 use warnings;
 use File::Basename;
+use File::Copy;
 use List::Compare;
 use CQS::PBS;
 use CQS::FileUtils;
@@ -15,7 +16,9 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff)] );
+our %EXPORT_TAGS =
+  ( 'all' =>
+	  [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -571,8 +574,8 @@ sub check_is_single() {
 sub read_cufflinks_fpkm {
 	my $genefile = shift;
 	open GF, "<$genefile" or die "Cannot open file $genefile";
-	my $header    = <GF>;
-	my @headers   = split( /\t/, $header );
+	my $header = <GF>;
+	my @headers = split( /\t/, $header );
 	my ($geneindex) = grep { $headers[$_] eq "gene_id" } 0 .. $#headers;
 	my ($fpkmindex) = grep { $headers[$_] eq "FPKM" } 0 .. $#headers;
 
@@ -586,23 +589,23 @@ sub read_cufflinks_fpkm {
 	return $result;
 }
 
-sub read_cuffdiff_significant_genes{
-    my $file = shift;
+sub read_cuffdiff_significant_genes {
+	my $file = shift;
 
-    my $result = {};
-    open IN, "<$file" or die "Cannot open file $file";
-    my $header = <IN>;
-    chomp($header);
-    while ( my $line = <IN> ) {
-        chomp($line);
-        my @part = split( /\t/, $line );
-        if ( $part[13] eq "yes" ) {
-            $result->{ $part[2] } = $line;
-        }
-    }
-    close IN;
-    
-    return ($result, $header);
+	my $result = {};
+	open IN, "<$file" or die "Cannot open file $file";
+	my $header = <IN>;
+	chomp($header);
+	while ( my $line = <IN> ) {
+		chomp($line);
+		my @part = split( /\t/, $line );
+		if ( $part[13] eq "yes" ) {
+			$result->{ $part[2] } = $line;
+		}
+	}
+	close IN;
+
+	return ( $result, $header );
 }
 
 #use CQS::RNASeq;
@@ -616,79 +619,79 @@ sub read_cuffdiff_significant_genes{
 #}
 #copy_and_rename_cuffdiff_file($config, "RenameDiff");
 sub copy_and_rename_cuffdiff_file {
-    my ( $config, $section ) = @_;
-    my $targetdir = $config->{$section}{"target_dir"} or die "define ${section}::target_dir first";
-    my $dir       = $config->{$section}{"root_dir"} or die "define ${section}::root_dir first";
-    if( ! -d $dir) {
-        die "directory $dir is not exists";
-    }
-    
-    my @subdirs = list_directories($dir);
-    if (0 == scalar(@subdirs)){
-        die "$dir has no sub CuffDiff directories";
-    }
-    
-    for my $subdir (@subdirs) {
-        my $file = "${dir}/${subdir}/gene_exp.diff";
-        if ( -s $file ) {
-            open IN, "<$file" or die "Cannot open file $file";
-            my $line = <IN>;
-            $line = <IN>;
-            close(IN);
+	my ( $config, $section ) = @_;
+	my $targetdir = $config->{$section}{"target_dir"} or die "define ${section}::target_dir first";
+	my $dir       = $config->{$section}{"root_dir"}   or die "define ${section}::root_dir first";
+	if ( !-d $dir ) {
+		die "directory $dir is not exists";
+	}
 
-            my @parts = split( /\t/, $line );
-            my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . ".gene_exp.diff";
+	my @subdirs = list_directories($dir);
+	if ( 0 == scalar(@subdirs) ) {
+		die "$dir has no sub CuffDiff directories";
+	}
 
-            copy( $file, $targetname ) or die "copy failed : $!";
-        }
-    }
+	for my $subdir (@subdirs) {
+		my $file = "${dir}/${subdir}/gene_exp.diff";
+		if ( -s $file ) {
+			open IN, "<$file" or die "Cannot open file $file";
+			my $line = <IN>;
+			$line = <IN>;
+			close(IN);
+
+			my @parts = split( /\t/, $line );
+			my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . ".gene_exp.diff";
+
+			copy( $file, $targetname ) or die "copy failed : $!";
+		}
+	}
 }
 
 sub output_compare_cuffdiff_file {
-    my ( $data1, $data2, $fileName, $header, @genes ) = @_;
-    open OUT, ">$fileName" or die "Cannot create file $fileName";
-    print OUT "$header\n";
-    my @sortedgenes = sort @genes;
-    for my $gene (@sortedgenes) {
-        if ( defined $data1->{$gene} ) {
-            print OUT "$data1->{$gene}\n";
-        }
-        if ( defined $data2->{$gene} ) {
-            print OUT "$data2->{$gene}\n";
-        }
-    }
-    close(OUT);
+	my ( $data1, $data2, $fileName, $header, @genes ) = @_;
+	open OUT, ">$fileName" or die "Cannot create file $fileName";
+	print OUT "$header\n";
+	my @sortedgenes = sort @genes;
+	for my $gene (@sortedgenes) {
+		if ( defined $data1->{$gene} ) {
+			print OUT "$data1->{$gene}\n";
+		}
+		if ( defined $data2->{$gene} ) {
+			print OUT "$data2->{$gene}\n";
+		}
+	}
+	close(OUT);
 }
 
 sub compare_cuffdiff {
-    my ( $config, $section ) = @_;
+	my ( $config, $section ) = @_;
 
-    my $info = $config->{$section};
+	my $info = $config->{$section};
 
-    my ( $file1, $file2 ) = @{ $info->{"files"} };
+	my ( $file1, $file2 ) = @{ $info->{"files"} };
 
-    my ( $data1, $header )  = read_cuffdiff_significant_genes($file1);
-    my ( $data2, $header2 ) = read_cuffdiff_significant_genes($file2);
+	my ( $data1, $header )  = read_cuffdiff_significant_genes($file1);
+	my ( $data2, $header2 ) = read_cuffdiff_significant_genes($file2);
 
-    my @genes1 = keys %{$data1};
-    my @genes2 = keys %{$data2};
+	my @genes1 = keys %{$data1};
+	my @genes2 = keys %{$data2};
 
-    my $lc = List::Compare->new( \@genes1, \@genes2 );
+	my $lc = List::Compare->new( \@genes1, \@genes2 );
 
-    my @resultgenes = ();
-    if ( $info->{operation} eq "minus" ) {
-        @resultgenes = $lc->get_Lonly();
-    }
-    elsif ( $info->{operation} eq "intersect" ) {
-        @resultgenes = $lc->get_intersection();
-    }
-    else {
-        die "Only minus or intersect is supported.";
-    }
+	my @resultgenes = ();
+	if ( $info->{operation} eq "minus" ) {
+		@resultgenes = $lc->get_Lonly();
+	}
+	elsif ( $info->{operation} eq "intersect" ) {
+		@resultgenes = $lc->get_intersection();
+	}
+	else {
+		die "Only minus or intersect is supported.";
+	}
 
-    my $resultFileName = $info->{"target_file"};
+	my $resultFileName = $info->{"target_file"};
 
-    output_compare_cuffdiff_file( $data1, $data2, $resultFileName, $header, @resultgenes );
+	output_compare_cuffdiff_file( $data1, $data2, $resultFileName, $header, @resultgenes );
 }
 
 sub output_header {
