@@ -149,7 +149,7 @@ sub bwa_by_pbs_double {
 		if ($inserts) {
 			print OUT "  echo insertsize=`date`\n";
 			print OUT "  samtools view ${sortedBamFile}.bam | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamFile}.len \n";
-			print OUT "  sort -n ${sortedBamFile}.len | awk ' { x[NR]=$1; } END { for (i in x){ss+=(x[i]-a)^2; s+=x[i];}; mean=s/NR; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd; \"; median=\"median }' \n";
+			print OUT "  sort -n ${sortedBamFile}.len | awk ' { x[NR]=\$1; } END { for (i in x){ss+=(x[i]-a)^2; s+=x[i];}; mean=s/NR; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd; \"; median=\"median }' \n";
 		}
 		print OUT "fi\n\n";
 
