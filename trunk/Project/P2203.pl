@@ -59,7 +59,7 @@ my $config = {
 		source_ref      => "fastqfiles",
 		fasta_file      => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
 		estimate_insert => 1,
-		source          => { "P2203-01" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt" ], },
+		source_ref      => "fastqfiles",
 		pbs             => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
