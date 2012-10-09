@@ -7,54 +7,6 @@ use File::Copy;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-use List::Compare;
-
-sub output_file {
-	my ( $data1, $data2, $fileName, $header, @genes ) = @_;
-	open OUT, ">$fileName" or die "Cannot create file $fileName";
-	print OUT "$header\n";
-	my @sortedgenes = sort @genes;
-	for my $gene (@sortedgenes) {
-		if ( defined $data1->{$gene} ) {
-			print OUT "$data1->{$gene}\n";
-		}
-		if ( defined $data2->{$gene} ) {
-			print OUT "$data2->{$gene}\n";
-		}
-	}
-	close(OUT);
-}
-
-sub compare_cuffdiff {
-	my ( $config, $section ) = @_;
-
-	my $info = $config->{$section};
-
-	my ( $file1, $file2 ) = @{ $info->{"files"} };
-
-	my ( $data1, $header )  = read_cuffdiff_significant_genes($file1);
-	my ( $data2, $header2 ) = read_cuffdiff_significant_genes($file2);
-
-	my @genes1 = keys %{$data1};
-	my @genes2 = keys %{$data2};
-
-	my $lc = List::Compare->new( \@genes1, \@genes2 );
-
-	my @resultgenes = ();
-	if ( $info->{operation} eq "minus" ) {
-		@resultgenes = $lc->get_Lonly();
-	}
-	elsif ( $info->{operation} eq "intersect" ) {
-		@resultgenes = $lc->get_intersection();
-	}
-	else {
-		die "Only minus or intersect is supported.";
-	}
-
-	my $resultFileName = $info->{"target_file"};
-
-	output_file( $data1, $data2, $resultFileName, $header, @resultgenes );
-}
 
 my $root;
 if ( is_linux() ) {
