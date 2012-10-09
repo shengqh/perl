@@ -133,16 +133,16 @@ my $config = {
 	},
 };
 
-#bwa_by_pbs_double( $config, "bwa" );
+bwa_by_pbs_double( $config, "bwa" );
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-tophat2_by_pbs( $config, "tophat2" );
+#tophat2_by_pbs( $config, "tophat2" );
 
-cuffdiff_by_pbs( $config, "cuffdiff" );
+#cuffdiff_by_pbs( $config, "cuffdiff" );
 
 ####run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "cufflinks" );
+#cufflinks_by_pbs( $config, "cufflinks" );
 
 #cuffmerge_by_pbs( $config, "cuffmerge" );
 
