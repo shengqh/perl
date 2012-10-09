@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use CQS::QC;
+use CQS::DNASeq;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
@@ -46,6 +47,21 @@ my $config = {
 		option     => "",
 		source_ref => "fastqfiles",
 		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=2",
+			"walltime" => "2",
+			"mem"      => "10gb"
+		},
+	},
+	bwa => {
+		target_dir => "${target_dir}/bwa",
+		option     => "",
+		source_ref => "fastqfiles",
+		fasta_file => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
+		source     => {
+			"P2203-01" => [ "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt", "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt" ],
+		},
+		pbs => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=2",
 			"walltime" => "2",
@@ -117,26 +133,19 @@ my $config = {
 	},
 };
 
-fastqc_by_pbs( $config, "fastqc" );
+bwa_by_pbs_double( $config, "bwa" );
 
-tophat2_by_pbs( $config, "tophat2" );
+#fastqc_by_pbs( $config, "fastqc" );
 
-cuffdiff_by_pbs( $config, "cuffdiff" );
+#tophat2_by_pbs( $config, "tophat2" );
 
-#run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "cufflinks" );
+#cuffdiff_by_pbs( $config, "cuffdiff" );
+
+####run cufflinks-cuffmerge-cuffdiff
+#cufflinks_by_pbs( $config, "cufflinks" );
 
 #cuffmerge_by_pbs( $config, "cuffmerge" );
 
 #cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
-
-use CQS::DNASeq;
-
-my $fastqFile1 = "/data/cqs/shengq1/2203/rawdata/2203-WE-1_1_sequence.txt";
-my $fastqFile2 = "/data/cqs/shengq1/2203/rawdata/2203-WE-1_2_sequence.txt";
-my $fastaFile  = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
-
-bwa_by_pbs_double( $fastaFile, $fastqFile1, $fastqFile2, "P2203-01", "${target_dir}/bwa" );
-
 
 1;

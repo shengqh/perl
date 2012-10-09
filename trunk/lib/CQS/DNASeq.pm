@@ -79,7 +79,7 @@ sub bwa_by_pbs_double {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $faFile = get_param_file( $config->{$section}{fastaFile}, "Fasta Database", 1 );
+	my $faFile = get_param_file( $config->{$section}{fasta_file}, "Fasta Database", 1 );
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
