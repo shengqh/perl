@@ -23,7 +23,7 @@ my $config    = {
 	"MLN_vs_None_minus_R_MLN_vs_R" => {
 		target_file => "${targetdir}/MLN_vs_None_minus_R_MLN_vs_R.gene_exp.diff",
 		operation   => "minus",
-		files       => [ "${targetdir}/MLN_vs_None.gene_exp.diff", "${targetdir}/R_MLN_vs_R.gene_exp.diff" ]
+		files       => [ "${targetdir}/FLO-1_MLN_vs_FLO-1.gene_exp.diff", "${targetdir}/FLO-1_R_MLN_vs_FLO-1_R.gene_exp.diff" ]
 	},
 };
 
