@@ -8,7 +8,7 @@ use CQS::SystemUtils;
 
 my $root;
 if ( is_linux() ) {
-	$root = "/scratch/cqs/shengq1/rnaseq/P2203/cuffdiff/result";
+	$root = "/scratch/cqs/shengq1/rnaseq/P2203_2/cuffdiff/result";
 }
 else {
 	$root = "D:/projects/P2203/Cuffdiff";
