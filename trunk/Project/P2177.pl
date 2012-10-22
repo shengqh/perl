@@ -24,10 +24,20 @@ my $config = {
 	fastqfiles => {
 		"P2177-01" => [ "/data/cqs/shengq1/2177/2177-WE-1_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-1_2_sequence.txt" ],
 		"P2177-02" => [ "/data/cqs/shengq1/2177/2177-WE-2_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-2_2_sequence.txt" ],
-		"P2177-15" => [ "/data/cqs/shengq1/2177/2177-WE-15_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-15_2_sequence.txt" ],
-		"P2177-16" => [ "/data/cqs/shengq1/2177/2177-WE-16_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-16_2_sequence.txt" ],
-		"P2177-17" => [ "/data/cqs/shengq1/2177/2177-WE-17_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-17_2_sequence.txt" ],
-		"P2177-18" => [ "/data/cqs/shengq1/2177/2177-WE-18_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-18_2_sequence.txt" ],
+		"P2177-15" => [ "/data/cqs/shengq1/2177/2177-WE-15_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-15_2_sequence.txt" ],
+		"P2177-16" => [ "/data/cqs/shengq1/2177/2177-WE-16_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-16_2_sequence.txt" ],
+		"P2177-17" => [ "/data/cqs/shengq1/2177/2177-WE-17_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-17_2_sequence.txt" ],
+		"P2177-18" => [ "/data/cqs/shengq1/2177/2177-WE-18_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-18_2_sequence.txt" ],
+	},
+	groups => {
+		"MKN45"          => [ "P2177-01", "P2177-02" ],
+		"AGS_CTRL"       => ["P2177-15"],
+		"AGS_DP32"       => ["P2177-16"],
+		"MKN45_SC"       => ["P2177-17"],
+		"MKN45_DP_SHRNA" => ["P2177-18"],
+	},
+	pairs => {
+		"ALL" => [ "MKN45", "AGS_CTRL", "AGS_DP32", "MKN45_SC", "MKN45_DP_SHRNA" ]
 	},
 	fastqc => {
 		target_dir => "${target_dir}/fastqc",
@@ -55,7 +65,7 @@ my $config = {
 	cufflinks => {
 		target_dir     => "${target_dir}/cufflinks",
 		option         => "-p 8 -u -N",
-		transcript_gtf       => $transcript_gtf,
+		transcript_gtf => $transcript_gtf,
 		source_ref     => "tophat2",
 		pbs            => {
 			"email"    => $email,
@@ -72,20 +82,6 @@ my $config = {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "72",
-			"mem"      => "40gb"
-		},
-	},
-	cuffdiff => {
-		target_dir     => "${target_dir}/cuffdiff",
-		option         => "-p 8 -u -N",
-		transcript_gtf => $transcript_gtf,
-		source_ref     => "tophat2",
-		groups_ref     => "groups",
-		pairs_ref      => "pairs",
-		pbs            => {
-			"email"    => $email,
-			"nodes"    => "1:ppn=8",
-			"walltime" => "720",
 			"mem"      => "40gb"
 		},
 	},
@@ -114,8 +110,8 @@ my $config = {
 #run cufflinks-cuffmerge-cuffdiff
 #cufflinks_by_pbs( $config, "cufflinks" );
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+#cuffmerge_by_pbs( $config, "cuffmerge" );
 
-#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
