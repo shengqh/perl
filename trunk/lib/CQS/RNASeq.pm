@@ -109,7 +109,7 @@ sub tophat2_by_pbs {
 		}
 	}
 
-	if ( -e $transcript_gtf ) {
+	if ((defined $transcript_gtf) && (-e $transcript_gtf) ) {
 		if ( !defined $transcript_gtf_index ) {
 			die "transcript_gtf was defined but transcript_gtf_index was not defined, you should defined transcript_gtf_index to cache the parsing result.";
 		}
