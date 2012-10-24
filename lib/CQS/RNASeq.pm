@@ -97,8 +97,17 @@ sub tophat2_by_pbs {
 		$sampleNameCount = $sampleNameCount + scalar( @{$sampleFiles} );
 	}
 
-	my $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "transcript_gtf", 0 );
-	my $transcript_gtf_index = $config->{general}{transcript_gtf_index};
+	my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
+	my $transcript_gtf_index;
+	if (defined $transcript_gtf){
+	   $transcript_gtf_index = $config->{$section}{transcript_gtf_index};
+	}
+	elsif(defined $config->{$section}{transcript_gtf_ref}){
+			$transcript_gtf = get_param_file( $config->{general}{$config->{$section}{transcript_gtf_ref}}, "general::$config->{$section}{transcript_gtf_ref}", 1 );
+            if(defined $config->{$section}{transcript_gtf_index_ref}){
+            $transcript_gtf_index = $config->{general}{$config->{$section}{transcript_gtf_index_ref}};
+		}
+	}
 
 	if ( -e $transcript_gtf ) {
 		if ( !defined $transcript_gtf_index ) {

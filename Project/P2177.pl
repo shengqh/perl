@@ -36,9 +36,7 @@ my $config = {
 		"MKN45_SC"       => ["P2177-17"],
 		"MKN45_DP_SHRNA" => ["P2177-18"],
 	},
-	pairs => {
-		"ALL" => [ "MKN45", "AGS_CTRL", "AGS_DP32", "MKN45_SC", "MKN45_DP_SHRNA" ]
-	},
+	pairs  => { "ALL" => [ "MKN45", "AGS_CTRL", "AGS_DP32", "MKN45_SC", "MKN45_DP_SHRNA" ] },
 	fastqc => {
 		target_dir => "${target_dir}/fastqc",
 		option     => "",
@@ -51,7 +49,7 @@ my $config = {
 		},
 	},
 	tophat2 => {
-		target_dir => "${target_dir}/tophat2",
+		target_dir => "${target_dir}/tophat2_2",
 		option     => "--segment-length 25 -r 0 -p 8",
 		batchmode  => 0,
 		source_ref => "fastqfiles",
@@ -63,10 +61,10 @@ my $config = {
 		},
 	},
 	cufflinks => {
-		target_dir     => "${target_dir}/cufflinks",
+		target_dir     => "${target_dir}/cufflinks_2",
 		option         => "-p 8 -u -N",
 		transcript_gtf => $transcript_gtf,
-		source_ref     => "tophat2",
+		source_ref     => "tophat2_2",
 		pbs            => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
@@ -75,9 +73,9 @@ my $config = {
 		},
 	},
 	cuffmerge => {
-		target_dir => "${target_dir}/cuffmerge",
+		target_dir => "${target_dir}/cuffmerge_2",
 		option     => "-p 8",
-		source_ref => "cufflinks",
+		source_ref => "cufflinks_2",
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
@@ -86,10 +84,10 @@ my $config = {
 		},
 	},
 	cufflinks_cuffdiff => {
-		target_dir         => "${target_dir}/cufflinks_cuffdiff",
+		target_dir         => "${target_dir}/cufflinks_cuffdiff_2",
 		option             => "-p 8 -u -N",
-		transcript_gtf_ref => "cuffmerge",
-		source_ref         => "tophat2",
+		transcript_gtf_ref => "cuffmerge_2",
+		source_ref         => "tophat2_2",
 		groups_ref         => "groups",
 		pairs_ref          => "pairs",
 		pbs                => {
@@ -103,14 +101,14 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
+tophat2_by_pbs( $config, "tophat2" );
 
 #cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
-#cufflinks_by_pbs( $config, "cufflinks" );
+cufflinks_by_pbs( $config, "cufflinks" );
 
-#cuffmerge_by_pbs( $config, "cuffmerge" );
+cuffmerge_by_pbs( $config, "cuffmerge" );
 
 cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
