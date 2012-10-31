@@ -30,13 +30,18 @@ my $config = {
 		"P2177-18" => [ "/data/cqs/shengq1/2177/2177-WE-18_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-18_2_sequence.txt" ],
 	},
 	groups => {
-		"MKN45"          => [ "P2177-01", "P2177-02" ],
 		"AGS_CTRL"       => ["P2177-15"],
 		"AGS_DP32"       => ["P2177-16"],
+		"MKN45"          => [ "P2177-01", "P2177-02" ],
 		"MKN45_SC"       => ["P2177-17"],
 		"MKN45_DP_SHRNA" => ["P2177-18"],
 	},
-	pairs  => { "ALL" => [ "MKN45", "AGS_CTRL", "AGS_DP32", "MKN45_SC", "MKN45_DP_SHRNA" ] },
+	pairs => {
+		"AGS_DP32_vs_AGS_CTRL"       => [ "AGS_DP32",       "AGS_CTRL" ],
+		"MKN45_SC_vs_MKN45"          => [ "MKN45_SC",       "MKN45" ],
+		"MKN45_DP_SHRNA_vs_MKN45"    => [ "MKN45_DP_SHRNA", "MKN45" ],
+		"MKN45_DP_SHRNA_vs_MKN45_SC" => [ "MKN45_DP_SHRNA", "MKN45_SC" ]
+	},
 	fastqc => {
 		target_dir => "${target_dir}/fastqc",
 		option     => "",
@@ -133,60 +138,60 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-    NG_DEFAULT_cufflinks => {
-        target_dir => "${target_dir}/NG_DEFAULT_cufflinks",
-        option     => "-p 8",
-        source_ref => "tophat2",
-        pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=8",
-            "walltime" => "72",
-            "mem"      => "10gb"
-        },
-    },
-    NG_DEFAULT_cuffmerge => {
-        target_dir => "${target_dir}/NG_DEFAULT_cuffmerge",
-        option     => "-p 8",
-        source_ref => "NG_DEFAULT_cufflinks",
-        pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=8",
-            "walltime" => "72",
-            "mem"      => "40gb"
-        },
-    },
-    NG_DEFAULT_cufflinks_cuffdiff => {
-        target_dir         => "${target_dir}/NG_DEFAULT_cufflinks_cuffdiff",
-        option             => "-p 8",
-        transcript_gtf_ref => "NG_DEFAULT_cuffmerge",
-        source_ref         => "tophat2",
-        groups_ref         => "groups",
-        pairs_ref          => "pairs",
-        pbs                => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=8",
-            "walltime" => "720",
-            "mem"      => "40gb"
-        },
-    },
+	NG_DEFAULT_cufflinks => {
+		target_dir => "${target_dir}/NG_DEFAULT_cufflinks",
+		option     => "-p 8",
+		source_ref => "tophat2",
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=8",
+			"walltime" => "72",
+			"mem"      => "10gb"
+		},
+	},
+	NG_DEFAULT_cuffmerge => {
+		target_dir => "${target_dir}/NG_DEFAULT_cuffmerge",
+		option     => "-p 8",
+		source_ref => "NG_DEFAULT_cufflinks",
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=8",
+			"walltime" => "72",
+			"mem"      => "40gb"
+		},
+	},
+	NG_DEFAULT_cufflinks_cuffdiff => {
+		target_dir         => "${target_dir}/NG_DEFAULT_cufflinks_cuffdiff",
+		option             => "-p 8",
+		transcript_gtf_ref => "NG_DEFAULT_cuffmerge",
+		source_ref         => "tophat2",
+		groups_ref         => "groups",
+		pairs_ref          => "pairs",
+		pbs                => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=8",
+			"walltime" => "720",
+			"mem"      => "40gb"
+		},
+	},
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
 
 #tophat2_by_pbs( $config, "tophat2" );
 
-#cuffdiff_by_pbs( $config, "cuffdiff" );
+cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "NG_cufflinks" );
+#cufflinks_by_pbs( $config, "NG_cufflinks" );
 
-cuffmerge_by_pbs( $config, "NG_cuffmerge" );
+#cuffmerge_by_pbs( $config, "NG_cuffmerge" );
 
 cuffdiff_by_pbs( $config, "NG_cufflinks_cuffdiff" );
 
-cufflinks_by_pbs( $config, "NG_DEFAULT_cufflinks" );
+#cufflinks_by_pbs( $config, "NG_DEFAULT_cufflinks" );
 
-cuffmerge_by_pbs( $config, "NG_DEFAULT_cuffmerge" );
+#cuffmerge_by_pbs( $config, "NG_DEFAULT_cuffmerge" );
 
 cuffdiff_by_pbs( $config, "NG_DEFAULT_cufflinks_cuffdiff" );
 
