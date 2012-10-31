@@ -98,7 +98,7 @@ my $config = {
 		},
 	},
 	cufflinks_NG => {
-		target_dir => "${target_dir}/cufflinks_NG",
+		target_dir => "${target_dir}/NG_cufflinks",
 		option     => "-p 8 -u -N",
 		source_ref => "tophat2",
 		pbs        => {
@@ -109,9 +109,9 @@ my $config = {
 		},
 	},
 	cuffmerge_NG => {
-		target_dir => "${target_dir}/cuffmerge_NG",
+		target_dir => "${target_dir}/NG_cuffmerge",
 		option     => "-p 8",
-		source_ref => "cufflinks_NG",
+		source_ref => "NG_cufflinks",
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
@@ -120,9 +120,9 @@ my $config = {
 		},
 	},
 	cufflinks_cuffdiff_NG => {
-		target_dir         => "${target_dir}/cufflinks_cuffdiff_NG",
+		target_dir         => "${target_dir}/NG_cufflinks_cuffdiff",
 		option             => "-p 8 -u -N",
-		transcript_gtf_ref => "cuffmerge_NG",
+		transcript_gtf_ref => "NG_cuffmerge",
 		source_ref         => "tophat2",
 		groups_ref         => "groups",
 		pairs_ref          => "pairs",
@@ -134,7 +134,7 @@ my $config = {
 		},
 	},
     cufflinks_NG_DEFAULT => {
-        target_dir => "${target_dir}/cufflinks_NG_DEFAULT",
+        target_dir => "${target_dir}/NG_DEFAULT_cufflinks",
         option     => "-p 8",
         source_ref => "tophat2",
         pbs        => {
@@ -145,9 +145,9 @@ my $config = {
         },
     },
     cuffmerge_NG_DEFAULT => {
-        target_dir => "${target_dir}/cuffmerge_NG_DEFAULT",
+        target_dir => "${target_dir}/NG_DEFAULT_cuffmerge",
         option     => "-p 8",
-        source_ref => "cufflinks_NG_DEFAULT",
+        source_ref => "NG_DEFAULT_cufflinks",
         pbs        => {
             "email"    => $email,
             "nodes"    => "1:ppn=8",
@@ -156,9 +156,9 @@ my $config = {
         },
     },
     cufflinks_cuffdiff_NG_DEFAULT => {
-        target_dir         => "${target_dir}/cufflinks_cuffdiff_NG_DEFAULT",
+        target_dir         => "${target_dir}/NG_DEFAULT_cufflinks_cuffdiff",
         option             => "-p 8",
-        transcript_gtf_ref => "cuffmerge_NG_DEFAULT",
+        transcript_gtf_ref => "NG_DEFAULT_cuffmerge",
         source_ref         => "tophat2",
         groups_ref         => "groups",
         pairs_ref          => "pairs",
