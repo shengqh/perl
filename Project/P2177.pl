@@ -97,7 +97,7 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cufflinks_NG => {
+	NG_cufflinks => {
 		target_dir => "${target_dir}/NG_cufflinks",
 		option     => "-p 8 -u -N",
 		source_ref => "tophat2",
@@ -108,7 +108,7 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
-	cuffmerge_NG => {
+	NG_cuffmerge => {
 		target_dir => "${target_dir}/NG_cuffmerge",
 		option     => "-p 8",
 		source_ref => "NG_cufflinks",
@@ -119,7 +119,7 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cufflinks_cuffdiff_NG => {
+	NG_cufflinks_cuffdiff => {
 		target_dir         => "${target_dir}/NG_cufflinks_cuffdiff",
 		option             => "-p 8 -u -N",
 		transcript_gtf_ref => "NG_cuffmerge",
@@ -133,7 +133,7 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-    cufflinks_NG_DEFAULT => {
+    NG_DEFAULT_cufflinks => {
         target_dir => "${target_dir}/NG_DEFAULT_cufflinks",
         option     => "-p 8",
         source_ref => "tophat2",
@@ -144,7 +144,7 @@ my $config = {
             "mem"      => "10gb"
         },
     },
-    cuffmerge_NG_DEFAULT => {
+    NG_DEFAULT_cuffmerge => {
         target_dir => "${target_dir}/NG_DEFAULT_cuffmerge",
         option     => "-p 8",
         source_ref => "NG_DEFAULT_cufflinks",
@@ -155,7 +155,7 @@ my $config = {
             "mem"      => "40gb"
         },
     },
-    cufflinks_cuffdiff_NG_DEFAULT => {
+    NG_DEFAULT_cufflinks_cuffdiff => {
         target_dir         => "${target_dir}/NG_DEFAULT_cufflinks_cuffdiff",
         option             => "-p 8",
         transcript_gtf_ref => "NG_DEFAULT_cuffmerge",
@@ -178,16 +178,16 @@ my $config = {
 #cuffdiff_by_pbs( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "cufflinks_NG" );
+cufflinks_by_pbs( $config, "NG_cufflinks" );
 
-cuffmerge_by_pbs( $config, "cuffmerge_NG" );
+cuffmerge_by_pbs( $config, "NG_cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff_NG" );
+cuffdiff_by_pbs( $config, "NG_cufflinks_cuffdiff" );
 
-cufflinks_by_pbs( $config, "cufflinks_NG_DEFAULT" );
+cufflinks_by_pbs( $config, "NG_DEFAULT_cufflinks" );
 
-cuffmerge_by_pbs( $config, "cuffmerge_NG_DEFAULT" );
+cuffmerge_by_pbs( $config, "NG_DEFAULT_cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff_NG_DEFAULT" );
+cuffdiff_by_pbs( $config, "NG_DEFAULT_cufflinks_cuffdiff" );
 
 1;
