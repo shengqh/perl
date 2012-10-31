@@ -180,7 +180,11 @@ my $config = {
 
 #tophat2_by_pbs( $config, "tophat2" );
 
-cuffdiff_by_pbs( $config, "cuffdiff" );
+#cufflinks_by_pbs( $config, "cufflinks" );
+
+#cuffmerge_by_pbs( $config, "cuffmerge" );
+
+cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
 #cufflinks_by_pbs( $config, "NG_cufflinks" );
