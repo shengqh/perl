@@ -99,17 +99,17 @@ sub tophat2_by_pbs {
 
 	my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
 	my $transcript_gtf_index;
-	if (defined $transcript_gtf){
-	   $transcript_gtf_index = $config->{$section}{transcript_gtf_index};
+	if ( defined $transcript_gtf ) {
+		$transcript_gtf_index = $config->{$section}{transcript_gtf_index};
 	}
-	elsif(defined $config->{$section}{transcript_gtf_ref}){
-			$transcript_gtf = get_param_file( $config->{general}{$config->{$section}{transcript_gtf_ref}}, "general::$config->{$section}{transcript_gtf_ref}", 1 );
-            if(defined $config->{$section}{transcript_gtf_index_ref}){
-            $transcript_gtf_index = $config->{general}{$config->{$section}{transcript_gtf_index_ref}};
+	elsif ( defined $config->{$section}{transcript_gtf_ref} ) {
+		$transcript_gtf = get_param_file( $config->{general}{ $config->{$section}{transcript_gtf_ref} }, "general::$config->{$section}{transcript_gtf_ref}", 1 );
+		if ( defined $config->{$section}{transcript_gtf_index_ref} ) {
+			$transcript_gtf_index = $config->{general}{ $config->{$section}{transcript_gtf_index_ref} };
 		}
 	}
 
-	if ((defined $transcript_gtf) && (-e $transcript_gtf) ) {
+	if ( ( defined $transcript_gtf ) && ( -e $transcript_gtf ) ) {
 		if ( !defined $transcript_gtf_index ) {
 			die "transcript_gtf was defined but transcript_gtf_index was not defined, you should defined transcript_gtf_index to cache the parsing result.";
 		}
@@ -640,23 +640,27 @@ sub copy_and_rename_cuffdiff_file {
 		die "$dir has no sub CuffDiff directories";
 	}
 
+	my @filenames = ( "gene_exp.diff", "splicing.diff" );
 	for my $subdir (@subdirs) {
-		my $file = "${dir}/${subdir}/gene_exp.diff";
-		if ( -s $file ) {
-			open IN, "<$file" or die "Cannot open file $file";
-			my $line = <IN>;
-			$line = <IN>;
-			close(IN);
+		foreach my $filename (@filenames) {
+			my $file = "${dir}/${subdir}/${filename}";
+			if ( -s $file ) {
+				open IN, "<$file" or die "Cannot open file $file";
+				my $line = <IN>;
+				$line = <IN>;
+				close(IN);
 
-			my @parts = split( /\t/, $line );
-			my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . ".gene_exp.diff";
+				my @parts = split( /\t/, $line );
+				my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . "." . ${filename};
 
-			copy( $file, $targetname ) or die "copy failed : $!";
+				copy( $file, $targetname ) or die "copy failed : $!";
 
-            my $target_sign_name = $targetname . ".sig";
-            my $cmd = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name"; 
-            #print $cmd . "\n";
-            `$cmd`;
+				my $target_sign_name = $targetname . ".sig";
+				my $cmd              = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name";
+
+				#print $cmd . "\n";
+				`$cmd`;
+			}
 		}
 	}
 }
