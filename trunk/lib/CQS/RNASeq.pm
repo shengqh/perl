@@ -658,7 +658,7 @@ sub copy_and_rename_cuffdiff_file {
 				my $target_sign_name = $targetname . ".sig";
 				my $cmd              = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name";
 
-				#print $cmd . "\n";
+				print $cmd . "\n";
 				`$cmd`;
 			}
 		}
