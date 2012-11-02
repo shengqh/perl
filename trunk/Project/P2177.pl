@@ -7,7 +7,7 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/P2177_2");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/P2177");
 
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 
@@ -191,12 +191,12 @@ cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 #cuffmerge_by_pbs( $config, "NG_cuffmerge" );
 
-cuffdiff_by_pbs( $config, "NG_cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "NG_cufflinks_cuffdiff" );
 
 #cufflinks_by_pbs( $config, "NG_DEFAULT_cufflinks" );
 
 #cuffmerge_by_pbs( $config, "NG_DEFAULT_cuffmerge" );
 
-cuffdiff_by_pbs( $config, "NG_DEFAULT_cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "NG_DEFAULT_cufflinks_cuffdiff" );
 
 1;
