@@ -6,8 +6,10 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my @roots =
-  ( "/scratch/cqs/shengq1/rnaseq/P2177_2/cufflinks_cuffdiff/result", "/scratch/cqs/shengq1/rnaseq/P2177_2/NG_cufflinks_cuffdiff/result", "/scratch/cqs/shengq1/rnaseq/P2177_2/NG_DEFAULT_cufflinks_cuffdiff/result" );
+my @roots = ("/scratch/cqs/shengq1/rnaseq/P2177/cufflinks_cuffdiff/result");
+
+#my @roots =
+#  ( "/scratch/cqs/shengq1/rnaseq/P2177_2/cufflinks_cuffdiff/result", "/scratch/cqs/shengq1/rnaseq/P2177_2/NG_cufflinks_cuffdiff/result", "/scratch/cqs/shengq1/rnaseq/P2177_2/NG_DEFAULT_cufflinks_cuffdiff/result" );
 
 foreach my $root (@roots) {
 	my $targetdir = create_directory_or_die( $root . "/comparison" );
