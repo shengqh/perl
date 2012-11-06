@@ -175,11 +175,11 @@ my $config = {
 		},
 	},
 	miso => {
-		target_dir  => "${target_dir}/MISO",
-		option      => "",
-		indexed_gff => "/scratch/cqs/shengq1/gff3/hg19/indexed/",
-		source_ref  => "tophat2",
-		pbs         => {
+		target_dir     => "${target_dir}/MISO",
+		option         => "",
+		gff3_file      => "/scratch/cqs/shengq1/gff3/Homo_sapiens.GRCh37.68.gff3",
+		source_ref     => "tophat2",
+		pbs            => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
 			"walltime" => "720",
@@ -211,6 +211,6 @@ my $config = {
 
 #cuffdiff_by_pbs( $config, "NG_DEFAULT_cufflinks_cuffdiff" );
 
-miso_by_pbs($config, "miso");
+miso_by_pbs( $config, "miso" );
 
 1;
