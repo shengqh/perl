@@ -771,8 +771,11 @@ sub miso_by_pbs {
 		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
 		print OUT "echo MISO=`date` \n";
-
-		print OUT "samtools index $tophat2File \n";
+		
+		print OUT "if [ ! -e $tophat2indexFile ];\n";
+		print OUT "then\n";
+		print OUT "  samtools index $tophat2File \n";
+		print OUT "fi\n";
 		
 		print OUT "run_events_analysis.py --compute-genes-psi $gff3index $tophat2File --output-dir $curDir --read-len 35 \n";
 
