@@ -744,9 +744,10 @@ sub miso_by_pbs {
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 	
-	print SH "if [! -d $gff3index ]; then \n";
+	print SH "if [ ! -d $gff3index ];\n";
+	print SH "then\n";
 	print SH "  index_gff.py --index $gff3file $gff3index \n";
-	print SH "fi \n\n";
+	print SH "fi\n\n";
 
 	for my $sampleName ( sort keys %tophat2map ) {
 		my $tophat2File      = $tophat2map{$sampleName};
@@ -755,13 +756,13 @@ sub miso_by_pbs {
 		my $pbsName = "${sampleName}_miso.pbs";
 		my $pbsFile = $pbsDir . "/$pbsName";
 
-		print SH "  if [ ! -s $tophat2File ];\n";
-		print SH "  then";
-		print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
-		print SH "  else\n";
-		print SH "    qsub ./$pbsName \n";
-		print SH "    echo $pbsName was submitted. \n";
-		print SH "  fi\n";
+		print SH "if [ ! -s $tophat2File ];\n";
+		print SH "then";
+		print SH "  echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
+		print SH "else\n";
+		print SH "  qsub ./$pbsName \n";
+		print SH "  echo $pbsName was submitted. \n";
+		print SH "fi\n";
 
 		my $log = $logDir . "/${sampleName}_miso.log";
 
@@ -779,7 +780,7 @@ sub miso_by_pbs {
 
 		print "$pbsFile created\n";
 	}
-	print SH "exit 0\n";
+	print SH "\nexit 0\n";
 	close(SH);
 
 	if ( is_linux() ) {
