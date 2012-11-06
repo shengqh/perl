@@ -736,12 +736,17 @@ sub miso_by_pbs {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $indexed = $config->{$section}{indexed_gff};
+	my $gff3file = get_param_file($config->{$section}{gff3_file}, "gff3_file", 1);
+	my $gff3index = $gff3file . "indexed";
 
 	my %tophat2map = %{ get_tophat2_map( $config, $section ) };
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+	
+	print SH "  if [! -d $gff3index ]; \n";
+	print SH "     python index_gff.py --index $gff3file $gff3index \n";
+	print SH "	fi \n";
 
 	for my $sampleName ( sort keys %tophat2map ) {
 		my $tophat2File      = $tophat2map{$sampleName};
@@ -767,8 +772,8 @@ sub miso_by_pbs {
 		print OUT "echo MISO=`date` \n";
 
 		print OUT "samtools index $tophat2File \n";
-
-		print OUT "run_events_analysis.py --compute-genes-psi $indexed $tophat2File --output-dir $curDir --read-len 35 \n";
+		
+		print OUT "run_events_analysis.py --compute-genes-psi $gff3index $tophat2File --output-dir $curDir --read-len 35 \n";
 
 		output_footer();
 
