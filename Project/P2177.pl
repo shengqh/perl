@@ -174,6 +174,18 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
+	miso => {
+		target_dir  => "${target_dir}/MISO",
+		option      => "",
+		indexed_gff => "/scratch/cqs/shengq1/gff3/hg19/indexed/",
+		source_ref  => "tophat2",
+		pbs         => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "720",
+			"mem"      => "30gb"
+		},
+	},
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
@@ -184,7 +196,7 @@ my $config = {
 
 #cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
 #cufflinks_by_pbs( $config, "NG_cufflinks" );
@@ -198,5 +210,7 @@ cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 #cuffmerge_by_pbs( $config, "NG_DEFAULT_cuffmerge" );
 
 #cuffdiff_by_pbs( $config, "NG_DEFAULT_cufflinks_cuffdiff" );
+
+miso_by_pbs($config, "miso");
 
 1;
