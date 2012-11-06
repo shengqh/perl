@@ -16,9 +16,11 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS =
-  ( 'all' =>
-	  [qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff)] );
+our %EXPORT_TAGS = (
+	'all' => [
+		qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs)
+	]
+);
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -727,6 +729,58 @@ sub output_header {
 sub output_footer() {
 	print OUT "echo finished=`date`\n";
 	close OUT;
+}
+
+sub miso_by_pbs {
+	my ( $config, $section ) = @_;
+
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+
+	my $indexed = $config->{$section}{indexed_gff};
+
+	my %tophat2map = %{ get_tophat2_map( $config, $section ) };
+
+	my $shfile = $pbsDir . "/${task_name}.submit";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+
+	for my $sampleName ( sort keys %tophat2map ) {
+		my $tophat2File      = $tophat2map{$sampleName};
+		my $tophat2indexFile = $tophat2File . ".bai";
+
+		my $pbsName = "${sampleName}_clinks.pbs";
+		my $pbsFile = $pbsDir . "/$pbsName";
+
+		print SH "  if [ ! -s $tophat2File ];\n";
+		print SH "  then";
+		print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
+		print SH "  else\n";
+		print SH "    qsub ./$pbsName \n";
+		print SH "    echo $pbsName was submitted. \n";
+		print SH "  fi\n";
+
+		my $log = $logDir . "/${sampleName}_miso.log";
+
+		output_header( $pbsFile, $pbsDesc, $path_file, $log );
+
+		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+
+		print OUT "echo MISO=`date` \n";
+
+		print OUT "samtools index $tophat2File \n";
+
+		print OUT "run_events_analysis.py --compute-genes-psi $indexed $tophat2File --output-dir $curDir --read-len 35 \n";
+
+		output_footer();
+
+		print "$pbsFile created\n";
+	}
+	print SH "exit 0\n";
+	close(SH);
+
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
+	print "!!!shell file $shfile created, you can run this shell file to submit all miso tasks.\n";
 }
 
 1;
