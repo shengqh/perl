@@ -747,7 +747,7 @@ sub miso_by_pbs {
 		my $tophat2File      = $tophat2map{$sampleName};
 		my $tophat2indexFile = $tophat2File . ".bai";
 
-		my $pbsName = "${sampleName}_clinks.pbs";
+		my $pbsName = "${sampleName}_miso.pbs";
 		my $pbsFile = $pbsDir . "/$pbsName";
 
 		print SH "  if [ ! -s $tophat2File ];\n";
