@@ -148,6 +148,7 @@ sub tophat2_by_pbs {
 	else {
 		my $shfile = $pbsDir . "/${task_name}.submit";
 		open( SH, ">$shfile" ) or die "Cannot create $shfile";
+		print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\"";
 
 		for my $sampleName ( sort keys %fqFiles ) {
 			my @sampleFiles = @{ $fqFiles{$sampleName} };
@@ -160,7 +161,7 @@ sub tophat2_by_pbs {
 			output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, @sampleFiles );
 			output_footer();
 
-			print SH "qsub ./$pbsName \n";
+			print SH "\$mycmd ./$pbsName \n";
 			print SH "echo $pbsName was submitted. \n\n";
 			print "$pbsFile created\n";
 		}
@@ -215,6 +216,7 @@ sub cufflinks_by_pbs {
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\"";
 
 	for my $sampleName ( sort keys %tophat2map ) {
 		my $tophat2File = $tophat2map{$sampleName};
@@ -230,7 +232,7 @@ sub cufflinks_by_pbs {
 		print SH "  then";
 		print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
 		print SH "  else\n";
-		print SH "    qsub ./$pbsName \n";
+		print SH "    \$mycmd ./$pbsName \n";
 		print SH "    echo $pbsName was submitted. \n";
 		print SH "  fi\n";
 		print SH "fi\n";
@@ -464,6 +466,8 @@ sub cuffdiff_by_pbs {
 	print SH "  exit 1\n";
 	print SH "fi\n\n";
 
+	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\"";
+
 	for my $pairName ( sort keys %{$pairs} ) {
 		my @groupNames = @{ $pairs->{$pairName} };
 
@@ -502,7 +506,7 @@ sub cuffdiff_by_pbs {
 		print SH "else\n";
 		print SH "  if $condition;\n";
 		print SH "  then\n";
-		print SH "    qsub ./$pbsName \n";
+		print SH "    \$mycmd ./$pbsName \n";
 		print SH "    echo $pbsName was submitted. \n";
 		print SH "  else\n";
 		print SH "    echo some required file not exists! $pbsName will be ignored.\n";

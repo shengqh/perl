@@ -8,16 +8,16 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = create_directory_or_die("/home/shengq1/rnaseq");
+my $target_dir = create_directory_or_die("/home/shengq1/rnaseq/modules");
 
 my $transcript_gtf =
   "/home/shengq1/rnaseq/references/mm10/annotation/Mus_musculus.GRCm38.68.gtf";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
-my $bowtie2_index = "/home/shengq1/rnaseq/references/mm10/bowtie2_index";
+my $bowtie2_index = "/home/shengq1/rnaseq/references/mm10/bowtie2_index/mm10";
 
-my $fasta = $bowtie2_index . "/mm10.fa";
+my $bwa_fasta = "/home/shengq1/rnaseq/references/mm10/mm10.fa";
 
 my $config = {
 	general => {
@@ -26,15 +26,15 @@ my $config = {
 		transcript_gtf_index =>
 		  "/home/shengq1/rnaseq/references/mm10/annotation/index",
 		path_file => "/home/shengq1/bin/path.txt",
-		task_name => "Tourtual"
+		task_name => "Tutorial"
 	},
 	fastqfiles => {
-		"S1" => ["/data/home/shengq1/rnaseq/rawdata/s1_sequence.txt"],
-		"S2" => ["/data/home/shengq1/rnaseq/rawdata/s2_sequence.txt"],
-		"S3" => ["/data/home/shengq1/rnaseq/rawdata/s3_sequence.txt"],
-		"S4" => ["/data/home/shengq1/rnaseq/rawdata/s4_sequence.txt"],
-		"S5" => ["/data/home/shengq1/rnaseq/rawdata/s5_sequence.txt"],
-		"S6" => ["/data/home/shengq1/rnaseq/rawdata/s6_sequence.txt"],
+		"S1" => ["/home/shengq1/rnaseq/rawdata/s1_sequence.txt"],
+		"S2" => ["/home/shengq1/rnaseq/rawdata/s2_sequence.txt"],
+		"S3" => ["/home/shengq1/rnaseq/rawdata/s3_sequence.txt"],
+		"S4" => ["/home/shengq1/rnaseq/rawdata/s4_sequence.txt"],
+		"S5" => ["/home/shengq1/rnaseq/rawdata/s5_sequence.txt"],
+		"S6" => ["/home/shengq1/rnaseq/rawdata/s6_sequence.txt"],
 	},
 	groups => {
 		"CONTROL" => [ "S1", "S2", "S3" ],
@@ -57,7 +57,7 @@ my $config = {
 		option          => "-q 15 -t 8",
 		option_sampe    => "",
 		source_ref      => "fastqfiles",
-		fasta_file      => $fasta,
+		fasta_file      => $bwa_fasta,
 		estimate_insert => 1,
 		source_ref      => "fastqfiles",
 		pbs             => {
@@ -132,7 +132,7 @@ my $config = {
 	},
 };
 
-bwa_by_pbs_double( $config, "bwa" );
+bwa_by_pbs_single( $config, "bwa" );
 
 fastqc_by_pbs( $config, "fastqc" );
 
