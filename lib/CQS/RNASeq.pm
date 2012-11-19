@@ -148,7 +148,7 @@ sub tophat2_by_pbs {
 	else {
 		my $shfile = $pbsDir . "/${task_name}.submit";
 		open( SH, ">$shfile" ) or die "Cannot create $shfile";
-		print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\"";
+		print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
 
 		for my $sampleName ( sort keys %fqFiles ) {
 			my @sampleFiles = @{ $fqFiles{$sampleName} };
@@ -216,7 +216,7 @@ sub cufflinks_by_pbs {
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\"";
+	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
 
 	for my $sampleName ( sort keys %tophat2map ) {
 		my $tophat2File = $tophat2map{$sampleName};
@@ -342,6 +342,7 @@ sub cuffmerge_by_pbs {
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
 	for my $gtf (@data) {
 		chomp($gtf);
 		print SH "if [ ! -s $gtf ];\n";
@@ -350,7 +351,7 @@ sub cuffmerge_by_pbs {
 		print SH "  exit;\n";
 		print SH "fi;\n\n";
 	}
-	print SH "qsub $pbsFile\n";
+	print SH "\$mycmd $pbsFile\n";
 	print SH "exit 0\n";
 	close(SH);
 
@@ -466,7 +467,7 @@ sub cuffdiff_by_pbs {
 	print SH "  exit 1\n";
 	print SH "fi\n\n";
 
-	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\"";
+	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
 
 	for my $pairName ( sort keys %{$pairs} ) {
 		my @groupNames = @{ $pairs->{$pairName} };
