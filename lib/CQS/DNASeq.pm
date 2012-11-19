@@ -27,10 +27,9 @@ sub bwa_by_pbs_single {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $faFile       = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
-	my $inserts      = $config->{$section}{estimate_insert};
 	
-    die "define ${section}::option_sampe first" if ( !defined $config->{$section}{option_sampe} );
-	my $option_sampe = $config->{$section}{option_sampe};
+    die "define ${section}::option_samse first" if ( !defined $config->{$section}{option_samse} );
+	my $option_samse = $config->{$section}{option_samse};
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -81,7 +80,7 @@ sub bwa_by_pbs_single {
 		print OUT "        bwa aln $option $faFile $sampleFile1 >$saiFile1 \n";
 		print OUT "      fi\n";
 		print OUT "      echo aln=`date` \n";
-		print OUT "      bwa sampe $option_sampe $faFile $saiFile1 $sampleFile1 > $samFile \n";
+		print OUT "      bwa samse $option_samse $faFile $saiFile1 $sampleFile1 > $samFile \n";
 		print OUT "    fi\n";
 		print OUT "    echo sam2bam=`date`\n";
 		print OUT "    samtools view -b -S $samFile -o $bamFile\n";
@@ -90,13 +89,6 @@ sub bwa_by_pbs_single {
 		print OUT "  samtools sort $bamFile $sortedBamFile\n";
 		print OUT "  echo bamstat=`date`\n";
 		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat\n";
-
-		if ($inserts) {
-			print OUT "  echo insertsize=`date`\n";
-			print OUT "  samtools view ${sortedBamFile}.bam | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamFile}.len \n";
-			print OUT
-"  sort -n ${sortedBamFile}.len | awk ' { x[NR]=\$1; s+=\$1; } END {mean=s/NR; for (i in x){ss+=(x[i]-mean)^2}; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd \"; median=\"median }' > ${sortedBamFile}.inserts \n";
-		}
 		print OUT "fi\n\n";
 
 		print OUT "echo finished=`date`\n";
