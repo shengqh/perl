@@ -30,7 +30,7 @@ sub fastqc_by_pbs {
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\"";
+	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
 
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
