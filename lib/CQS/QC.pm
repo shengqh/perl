@@ -67,6 +67,11 @@ sub fastqc_by_pbs {
 
 	#print SH "type -P qsub &>/dev/null || { cd $resultDir; qcimg2pdf.sh -o ${task_name}; }\n";
 	close(SH);
+	
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
+	
 	print "!!!shell file $shfile created, you can run this shell file to submit all fastqc tasks.\n";
 }
 
