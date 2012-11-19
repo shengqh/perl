@@ -36,7 +36,6 @@ sub bwa_by_pbs_single {
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
 
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -52,7 +51,7 @@ sub bwa_by_pbs_single {
 		my $pbsName = "${sampleName}_bwa.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
 
-		print SH "\$mycmd ./$pbsName \n";
+		print SH "qsub ./$pbsName \n";
 
 		my $log = "${logDir}/${sampleName}_bwa.log";
 
@@ -130,7 +129,6 @@ sub bwa_by_pbs_double {
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
 
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -149,7 +147,7 @@ sub bwa_by_pbs_double {
 		my $pbsName = "${sampleName}_bwa.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
 
-		print SH "\$mycmd ./$pbsName \n";
+		print SH "qsub ./$pbsName \n";
 
 		my $log = "${logDir}/${sampleName}_bwa.log";
 

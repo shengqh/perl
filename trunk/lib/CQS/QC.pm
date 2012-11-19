@@ -30,7 +30,7 @@ sub fastqc_by_pbs {
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && mycmd=\"qsub\" || mycmd=\"sh\" \n";
+	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"sh\" \n";
 
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -38,7 +38,7 @@ sub fastqc_by_pbs {
 		my $pbsName = "${sampleName}_fq.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
 
-		print SH "\$mycmd ./$pbsName \n";
+		print SH "\$MYCMD ./$pbsName \n";
 
 		my $log = "${logDir}/${sampleName}_fq.log";
 
@@ -64,6 +64,8 @@ sub fastqc_by_pbs {
 
 		print "$pbsFile created\n";
 	}
+
+	#print SH "type -P qsub &>/dev/null || { cd $resultDir; qcimg2pdf.sh -o ${task_name}; }\n";
 	close(SH);
 	print "!!!shell file $shfile created, you can run this shell file to submit all fastqc tasks.\n";
 }
