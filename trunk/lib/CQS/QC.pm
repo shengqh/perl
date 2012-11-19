@@ -30,7 +30,7 @@ sub fastqc_by_pbs {
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"sh\" \n";
+	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -48,9 +48,9 @@ sub fastqc_by_pbs {
 		print OUT "#PBS -j oe\n\n";
 
 		if ( -e $path_file ) {
-			print OUT "source $path_file\n";
+			print OUT "source $path_file \n";
 		}
-		print OUT "echo fastqc=`date`\n";
+		print OUT "echo fastqc=`date` \n";
 
 		my $sampleCount = scalar(@sampleFiles);
 
@@ -59,10 +59,10 @@ sub fastqc_by_pbs {
 			print OUT "$sampleFile ";
 		}
 		print OUT "\n";
-		print OUT "echo finished=`date`\n";
+		print OUT "echo finished=`date` \n";
 		close OUT;
 
-		print "$pbsFile created\n";
+		print "$pbsFile created \n";
 	}
 
 	#print SH "type -P qsub &>/dev/null || { cd $resultDir; qcimg2pdf.sh -o ${task_name}; }\n";
