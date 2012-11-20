@@ -66,8 +66,37 @@ my $config = {
 			"mem"      => "20gb"
 		},
 	},
-	tophat2 => {
-		target_dir => "${target_dir}/tophat2",
+	gene_comparison_tophat2 => {
+		target_dir => "${target_dir}/gene_comparison_tophat2",
+		option     => "-p 8",
+		batchmode  => 0,
+		source_ref => "fastqfiles",
+		transcript_gtf => $transcript_gtf,
+		transcript_gtf_index =>
+		  "/home/shengq1/rnaseq/references/mm10/annotation/index",
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=8",
+			"walltime" => "240",
+			"mem"      => "40gb"
+		},
+	},
+	gene_comparison_cuffdiff => {
+		target_dir     => "${target_dir}/gene_comparison_cuffdiff",
+		option         => "-p 8",
+		transcript_gtf => $transcript_gtf,
+		source_ref     => "gene_comparison_tophat2",
+		groups_ref     => "groups",
+		pairs_ref      => "pairs",
+		pbs            => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=8",
+			"walltime" => "720",
+			"mem"      => "40gb"
+		},
+	},
+	splicing_comparison_tophat2 => {
+		target_dir => "${target_dir}/splicing_comparison_tophat2",
 		option     => "-p 8",
 		batchmode  => 0,
 		source_ref => "fastqfiles",
@@ -78,10 +107,10 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cufflinks => {
-		target_dir     => "${target_dir}/cufflinks",
+	splicing_comparison_cufflinks => {
+		target_dir     => "${target_dir}/splicing_comparison_cufflinks",
 		option         => "-p 8",
-		source_ref     => "tophat2",
+		source_ref     => "splicing_comparison_tophat2",
 		transcript_gtf => $transcript_gtf,
 		pbs            => {
 			"email"    => $email,
@@ -90,10 +119,10 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
-	cuffmerge => {
-		target_dir => "${target_dir}/cuffmerge",
+	splicing_comparison_cuffmerge => {
+		target_dir => "${target_dir}/splicing_comparison_cuffmerge",
 		option     => "-p 8",
-		source_ref => "cufflinks",
+		source_ref => "splicing_comparison_cufflinks",
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
@@ -101,25 +130,11 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-	cuffdiff => {
-		target_dir     => "${target_dir}/cuffdiff",
-		option         => "-p 8",
-		transcript_gtf => $transcript_gtf,
-		source_ref     => "tophat2",
-		groups_ref     => "groups",
-		pairs_ref      => "pairs",
-		pbs            => {
-			"email"    => $email,
-			"nodes"    => "1:ppn=8",
-			"walltime" => "720",
-			"mem"      => "40gb"
-		},
-	},
-	cufflinks_cuffdiff => {
-		target_dir         => "${target_dir}/cufflinks_cuffdiff",
+	splicing_comparison_cuffdiff => {
+		target_dir         => "${target_dir}/splicing_comparison_cuffdiff",
 		option             => "-p 8",
-		transcript_gtf_ref => "cuffmerge",
-		source_ref         => "tophat2",
+		transcript_gtf_ref => "splicing_comparison_cuffmerge",
+		source_ref         => "splicing_comparison_tophat2",
 		groups_ref         => "groups",
 		pairs_ref          => "pairs",
 		pbs                => {
@@ -135,15 +150,18 @@ bwa_by_pbs_single( $config, "bwa" );
 
 fastqc_by_pbs( $config, "fastqc" );
 
-tophat2_by_pbs( $config, "tophat2" );
+####comparison
+tophat2_by_pbs( $config, "gene_comparison_tophat2" );
 
-cuffdiff_by_pbs( $config, "cuffdiff" );
+cuffdiff_by_pbs( $config, "gene_comparison_cuffdiff" );
 
-####run cufflinks-cuffmerge-cuffdiff
-cufflinks_by_pbs( $config, "cufflinks" );
+####splicing
+tophat2_by_pbs( $config, "splicing_comparison_tophat2" );
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+cufflinks_by_pbs( $config, "splicing_comparison_cufflinks" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+cuffmerge_by_pbs( $config, "splicing_comparison_cuffmerge" );
+
+cuffdiff_by_pbs( $config, "splicing_comparison_cufflinks_cuffdiff" );
 
 1;
