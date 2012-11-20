@@ -118,7 +118,7 @@ sub tophat2_by_pbs {
 
 		if ( ( !$batchmode ) && ( $sampleNameCount > 1 ) ) {
 			if ( !-e ( $transcript_gtf_index . ".rev.1.bt2" ) ) {
-				die "transcript_gtf was defined but transcript_gtf_index has not been built, you should run only one job to build index first!";
+				print "transcript_gtf was defined but transcript_gtf_index has not been built, you should run only one job to build index first!";
 			}
 		}
 	}
