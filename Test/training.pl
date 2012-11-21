@@ -10,10 +10,11 @@ use CQS::SystemUtils;
 
 my $target_dir = create_directory_or_die("/home/shengq1/rnaseq/modules");
 
-my $transcript_gtf =
-  "/home/shengq1/rnaseq/references/mm10/annotation/Mus_musculus.GRCm38.68.gtf";
-
 my $email = "quanhu.sheng\@vanderbilt.edu";
+
+my $transcript_gtf = "/home/shengq1/rnaseq/references/mm10/annotation/Mus_musculus.GRCm38.68.gtf";
+
+my $transcript_gtf_index = "/home/shengq1/rnaseq/references/mm10/annotation/index";
 
 my $bowtie2_index = "/home/shengq1/rnaseq/references/mm10/bowtie2_index/mm10";
 
@@ -21,12 +22,11 @@ my $bwa_fasta = "/home/shengq1/rnaseq/references/mm10/mm10.fa";
 
 my $config = {
 	general => {
-		bowtie2_index  => $bowtie2_index,
-		transcript_gtf => $transcript_gtf,
-		transcript_gtf_index =>
-		  "/home/shengq1/rnaseq/references/mm10/annotation/index",
-		path_file => "/home/shengq1/bin/path.txt",
-		task_name => "tutorial"
+		bowtie2_index        => $bowtie2_index,
+		transcript_gtf       => $transcript_gtf,
+		transcript_gtf_index => $transcript_gtf_index,
+		path_file            => "/home/shengq1/bin/path.txt",
+		task_name            => "tutorial"
 	},
 	fastqfiles => {
 		"S1" => ["/home/shengq1/rnaseq/rawdata/s1_sequence.txt"],
@@ -53,13 +53,12 @@ my $config = {
 		},
 	},
 	bwa => {
-		target_dir      => "${target_dir}/bwa",
-		option          => "-q 15 -t 8",
-		option_samse    => "",
-		source_ref      => "fastqfiles",
-		fasta_file      => $bwa_fasta,
-		source_ref      => "fastqfiles",
-		pbs             => {
+		target_dir   => "${target_dir}/bwa",
+		option       => "-q 15 -t 8",
+		option_samse => "",
+		source_ref   => "fastqfiles",
+		fasta_file   => $bwa_fasta,
+		pbs          => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "24",
@@ -67,14 +66,13 @@ my $config = {
 		},
 	},
 	gene_comparison_tophat2 => {
-		target_dir => "${target_dir}/gene_comparison_tophat2",
-		option     => "-p 8",
-		batchmode  => 0,
-		source_ref => "fastqfiles",
-		transcript_gtf => $transcript_gtf,
-		transcript_gtf_index =>
-		  "/home/shengq1/rnaseq/references/mm10/annotation/index",
-		pbs        => {
+		target_dir           => "${target_dir}/gene_comparison_tophat2",
+		option               => "-p 8",
+		batchmode            => 0,
+		source_ref           => "fastqfiles",
+		transcript_gtf       => $transcript_gtf,
+		transcript_gtf_index => $transcript_gtf_index,
+		pbs                  => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "240",
