@@ -26,7 +26,7 @@ my $config = {
 		transcript_gtf_index =>
 		  "/home/shengq1/rnaseq/references/mm10/annotation/index",
 		path_file => "/home/shengq1/bin/path.txt",
-		task_name => "Tutorial"
+		task_name => "tutorial"
 	},
 	fastqfiles => {
 		"S1" => ["/home/shengq1/rnaseq/rawdata/s1_sequence.txt"],
