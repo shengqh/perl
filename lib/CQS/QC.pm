@@ -28,7 +28,7 @@ sub fastqc_by_pbs {
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-	my $shfile = $pbsDir . "/${task_name}.sh";
+	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
