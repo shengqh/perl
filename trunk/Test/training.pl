@@ -21,15 +21,17 @@ my $bowtie2_index = "/home/shengq1/rnaseq/references/mm10/bowtie2_index/mm10";
 my $bwa_fasta = "/home/shengq1/rnaseq/references/mm10/mm10.fa";
 
 my $config = {
+
 	#some parameters may be used globally
-	general => { 
+	general => {
 		bowtie2_index        => $bowtie2_index,
 		transcript_gtf       => $transcript_gtf,
 		transcript_gtf_index => $transcript_gtf_index,
 		path_file            => "/home/shengq1/bin/path.txt",
 		task_name            => "tutorial"
 	},
-    #raw file definition, the name "fastqfiles" will be used in the following definition
+
+	#raw file definition, the name "fastqfiles" will be used in the following definition
 	fastqfiles => {
 		"S1" => ["/home/shengq1/rnaseq/rawdata/s1_sequence.txt"],
 		"S2" => ["/home/shengq1/rnaseq/rawdata/s2_sequence.txt"],
@@ -38,48 +40,56 @@ my $config = {
 		"S5" => ["/home/shengq1/rnaseq/rawdata/s5_sequence.txt"],
 		"S6" => ["/home/shengq1/rnaseq/rawdata/s6_sequence.txt"],
 	},
+
 	#group definition, which will be used at comparison analysis, one raw file can be put into multiple groups based on comparison purpose
 	groups => {
 		"CONTROL" => [ "S1", "S2", "S3" ],
 		"SAMPLE"  => [ "S4", "S5", "S6" ],
 	},
+
 	#pair definition, which will be used at comparison analysis
-	pairs  => { "SAMPLE_vs_CONTROL" => [ "SAMPLE", "CONTROL" ], },
+	pairs => { "SAMPLE_vs_CONTROL" => [ "SAMPLE", "CONTROL" ], },
+
 	#fastqc definition
 	fastqc => {
 		target_dir => "${target_dir}/fastqc",
+
 		#if you have any additional option...
-		option     => "",
+		option => "",
+
 		#source files by link
 		source_ref => "fastqfiles",
+
 		#pbs parameter
-		pbs        => {
+		pbs => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
 			"walltime" => "2",
 			"mem"      => "10gb"
 		},
 	},
-	#duplicated fastqc definition, define source file in section itself rather than link 
-    fastqc_dup => {
-        target_dir => "${target_dir}/fastqc",
-        option     => "",
-        #source files directly
-        source => {
-            "S1" => ["/home/shengq1/rnaseq/rawdata/s1_sequence.txt"],
-            "S2" => ["/home/shengq1/rnaseq/rawdata/s2_sequence.txt"],
-            "S3" => ["/home/shengq1/rnaseq/rawdata/s3_sequence.txt"],
-            "S4" => ["/home/shengq1/rnaseq/rawdata/s4_sequence.txt"],
-            "S5" => ["/home/shengq1/rnaseq/rawdata/s5_sequence.txt"],
-            "S6" => ["/home/shengq1/rnaseq/rawdata/s6_sequence.txt"],
-        },
-        pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "2",
-            "mem"      => "10gb"
-        },
-    },
+
+	#duplicated fastqc definition, define source file in section itself rather than link
+	fastqc_dup => {
+		target_dir => "${target_dir}/fastqc",
+		option     => "",
+
+		#source files directly
+		source => {
+			"S1" => ["/home/shengq1/rnaseq/rawdata/s1_sequence.txt"],
+			"S2" => ["/home/shengq1/rnaseq/rawdata/s2_sequence.txt"],
+			"S3" => ["/home/shengq1/rnaseq/rawdata/s3_sequence.txt"],
+			"S4" => ["/home/shengq1/rnaseq/rawdata/s4_sequence.txt"],
+			"S5" => ["/home/shengq1/rnaseq/rawdata/s5_sequence.txt"],
+			"S6" => ["/home/shengq1/rnaseq/rawdata/s6_sequence.txt"],
+		},
+		pbs => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "2",
+			"mem"      => "10gb"
+		},
+	},
 	bwa => {
 		target_dir   => "${target_dir}/bwa",
 		option       => "-q 15 -t 8",
@@ -122,11 +132,13 @@ my $config = {
 		},
 	},
 	splicing_comparison_tophat2 => {
-		target_dir => "${target_dir}/splicing_comparison_tophat2",
-		option     => "-p 8",
-		batchmode  => 0,
-		source_ref => "fastqfiles",
-		pbs        => {
+		target_dir           => "${target_dir}/splicing_comparison_tophat2",
+		option               => "-p 8",
+		batchmode            => 0,
+		source_ref           => "fastqfiles",
+		transcript_gtf       => $transcript_gtf,
+		transcript_gtf_index => $transcript_gtf_index,
+		pbs                  => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "240",
@@ -146,10 +158,11 @@ my $config = {
 		},
 	},
 	splicing_comparison_cuffmerge => {
-		target_dir => "${target_dir}/splicing_comparison_cuffmerge",
-		option     => "-p 8",
-		source_ref => "splicing_comparison_cufflinks",
-		pbs        => {
+		target_dir     => "${target_dir}/splicing_comparison_cuffmerge",
+		option         => "-p 8",
+		source_ref     => "splicing_comparison_cufflinks",
+		transcript_gtf => $transcript_gtf,
+		pbs            => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "72",
