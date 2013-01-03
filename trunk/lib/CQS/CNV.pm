@@ -52,7 +52,6 @@ sub cnvnator {
 		if ( -e $path_file ) {
 			print OUT "source $path_file\n";
 		}
-		print OUT "echo cnvnator=`date`\n";
 
 		my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
 		my $rootFile = $sampleName . ".root";
