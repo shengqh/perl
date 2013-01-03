@@ -6,7 +6,7 @@ use CQS::CNV;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/P2110");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/2110");
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
