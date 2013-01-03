@@ -39,9 +39,9 @@ my $config = {
 		source_ref => "bamfiles",
 		pbs        => {
 			"email"    => $email,
-			"nodes"    => "1:ppn=8",
+			"nodes"    => "1:ppn=1",
 			"walltime" => "720",
-			"mem"      => "40gb"
+			"mem"      => "10gb"
 		},
 	},
 };
