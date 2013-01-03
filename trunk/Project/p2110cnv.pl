@@ -35,7 +35,7 @@ my $config = {
 	},
 	cnvnator => {
 		target_dir => "${target_dir}/cnvnator",
-		option     => "",
+		option     => "-call 100",
 		source_ref => "bamfiles",
 		pbs        => {
 			"email"    => $email,

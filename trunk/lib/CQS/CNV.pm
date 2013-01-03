@@ -56,14 +56,19 @@ sub cnvnator {
 
 		my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
 		my $rootFile = $sampleName . ".root";
+        my $callFile = $sampleName . ".call";
 
 		print OUT "cd $curDir\n\n";
 
-		print OUT "if [ -s $rootFile ]; then\n";
-		print OUT "  echo job has already been done. if you want to do again, delete $rootFile and submit job again.\n";
+		print OUT "if [ -s $callFile ]; then\n";
+		print OUT "  echo job has already been done. if you want to do again, delete $callFile and submit job again.\n";
 		print OUT "else\n";
-		print OUT "  echo extract=`date`\n";
-		print OUT "  cnvnator -root $rootFile -tree $bamFile\n";
+        print OUT "  if [ ! -s $rootFile ]; then\n";
+		print OUT "    echo extract=`date`\n";
+		print OUT "    cnvnator -root $rootFile -tree $bamFile\n";
+        print OUT "  fi\n";
+        print OUT "  echo call=`date`\n";
+        print OUT "  cnvnator -root $rootFile $option > $callFile\n";
 		print OUT "fi\n\n";
 
 		print OUT "echo finished=`date`\n";
