@@ -125,6 +125,7 @@ sub conifer {
 	create_directory_or_die( $resultDir . "/rpkm" );
     create_directory_or_die( $resultDir . "/call_images" );
 
+    my $conifier="conifer.py";
 	print OUT "cd $resultDir\n\n";
 
 	print OUT "\n";
@@ -137,21 +138,21 @@ sub conifer {
 		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
 		print OUT "if [ ! -s $rpkm ]; then\n";
-		print OUT "  python conifer.py rpkm $probedef --input $bamFile --output $rpkm \n";
+		print OUT "  python $conifier rpkm $probedef --input $bamFile --output $rpkm \n";
 		print OUT "fi\n";
 	}
 
 	print OUT "\n";
 	print OUT "#2 analysis\n";
 	print OUT "echo analyze=`date`\n";
-	print OUT "python conifier.py analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
+	print OUT "python $conifier analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
     print OUT "\n";
     print OUT "#3 call\n";
     print OUT "echo call=`date`\n";
-    print OUT "python conifier.py call --input $hdf5File --output $callFile \n";
+    print OUT "python $conifier call --input $hdf5File --output $callFile \n";
     print OUT "\n";
     print OUT "#4 plot\n";
-    print OUT "python conifier.py plotcalls --input $hdf5File --calls $callFile --output call_images \n";
+    print OUT "python $conifier plotcalls --input $hdf5File --calls $callFile --output call_images \n";
 	close OUT;
 
 	print "$pbsFile created\n";
