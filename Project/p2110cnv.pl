@@ -51,6 +51,7 @@ my $config = {
 		target_dir => "${target_dir}/conifer",
 		option     => "",
 		source_ref => "bamfiles",
+		conifer    => "/home/shengq1/pylibs/bin/conifer.py",
 		probefile  => $probefile,
 		pbs        => {
 			"email"    => $email,
