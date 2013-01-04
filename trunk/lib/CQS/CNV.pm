@@ -122,7 +122,8 @@ sub conifer {
 		print OUT "source $path_file\n";
 	}
 
-	my $rpkmdir = create_directory_or_die( $resultDir . "/rpkm" );
+	create_directory_or_die( $resultDir . "/rpkm" );
+    create_directory_or_die( $resultDir . "/call_images" );
 
 	print OUT "cd $resultDir\n\n";
 
@@ -148,6 +149,9 @@ sub conifer {
     print OUT "#3 call\n";
     print OUT "echo call=`date`\n";
     print OUT "python conifier.py call --input $hdf5File --output $callFile \n";
+    print OUT "\n";
+    print OUT "#4 plot\n";
+    print OUT "python conifier.py plotcalls --input $hdf5File --calls $callFile --output call_images \n";
 	close OUT;
 
 	print "$pbsFile created\n";
