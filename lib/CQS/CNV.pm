@@ -143,11 +143,11 @@ sub conifer {
 	print OUT "\n";
 	print OUT "#2 analysis\n";
 	print OUT "echo analyze=`date`\n";
-	print OUT "python conifier.py analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile";
+	print OUT "python conifier.py analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
     print OUT "\n";
     print OUT "#3 call\n";
     print OUT "echo call=`date`\n";
-    print OUT "python conifier.py call --input $hdf5File --output $callFile";
+    print OUT "python conifier.py call --input $hdf5File --output $callFile \n";
 	close OUT;
 
 	print "$pbsFile created\n";
