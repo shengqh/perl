@@ -56,22 +56,22 @@ sub cnvnator {
 
 		my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
 		my $rootFile = $sampleName . ".root";
-        my $callFile = $sampleName . ".call";
+		my $callFile = $sampleName . ".call";
 
 		print OUT "cd $curDir\n\n";
 
 		print OUT "if [ -s $callFile ]; then\n";
 		print OUT "  echo job has already been done. if you want to do again, delete $callFile and submit job again.\n";
 		print OUT "else\n";
-        print OUT "  if [ ! -s $rootFile ]; then\n";
+		print OUT "  if [ ! -s $rootFile ]; then\n";
 		print OUT "    echo extract=`date`\n";
 		print OUT "    cnvnator -root $rootFile -tree $bamFile \n";
-        print OUT "  fi\n";
-        print OUT "  echo call=`date`\n";
-        print OUT "  cnvnator -root $rootFile -his $binsize \n";
-        print OUT "  cnvnator -root $rootFile -stat $binsize \n";
-        print OUT "  cnvnator -root $rootFile -partition $binsize \n";
-        print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n";
+		print OUT "  fi\n";
+		print OUT "  echo call=`date`\n";
+		print OUT "  cnvnator -root $rootFile -his $binsize \n";
+		print OUT "  cnvnator -root $rootFile -stat $binsize \n";
+		print OUT "  cnvnator -root $rootFile -partition $binsize \n";
+		print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n";
 		print OUT "fi\n\n";
 
 		print OUT "echo finished=`date`\n";
@@ -85,7 +85,79 @@ sub cnvnator {
 		chmod 0755, $shfile;
 	}
 
-	print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+	print "!!!shell file $shfile created, you can run this shell file to submit all cnvnator tasks.\n";
+
+	#`qsub $pbsFile`;
+}
+
+sub conifer {
+	my ( $config, $section ) = @_;
+
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my $probefile = $config->{$section}{probefile};
+	my $probedef  = "";
+	if ( defined $probefile ) {
+		$probedef = "--probes $probefile";
+	}
+
+	my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+	my $shfile = $pbsDir . "/${task_name}.sh";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+
+	my $pbsName  = "${task_name}_conifer.pbs";
+	my $pbsFile  = "${pbsDir}/$pbsName";
+	my $hdf5File = "${task_name}.hdf5";
+    my $svalsFile = "${task_name}.svals";
+    my $callFile = "${task_name}.call";
+
+	print SH "\$MYCMD ./$pbsName \n";
+	open( OUT, ">$pbsFile" ) or die $!;
+	print OUT $pbsDesc;
+	my $log = "${logDir}/${task_name}_conifer.log";
+	print OUT "#PBS -o $log\n";
+	print OUT "#PBS -j oe\n\n";
+	if ( -e $path_file ) {
+		print OUT "source $path_file\n";
+	}
+
+	my $rpkmdir = create_directory_or_die( $resultDir . "/rpkm" );
+
+	print OUT "cd $resultDir\n\n";
+
+	print OUT "\n";
+	print OUT "#1 calculate rpkm\n";
+	print OUT "echo rpkm=`date`\n";
+	for my $sampleName ( sort keys %rawFiles ) {
+		my @sampleFiles = @{ $rawFiles{$sampleName} };
+		my $bamFile     = $sampleFiles[0];
+
+		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
+
+		print OUT "if [ ! -s $rpkm ]; then\n";
+		print OUT "  python conifer.py rpkm $probedef --input $bamFile --output $rpkm \n";
+		print OUT "fi\n";
+	}
+
+	print OUT "\n";
+	print OUT "#2 analysis\n";
+	print OUT "echo analyze=`date`\n";
+	print OUT "python conifier.py analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile";
+    print OUT "\n";
+    print OUT "#3 call\n";
+    print OUT "echo call=`date`\n";
+    print OUT "python conifier.py call --input $hdf5File --output $callFile";
+	close OUT;
+
+	print "$pbsFile created\n";
+	close(SH);
+
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
+
+	print "!!!shell file $shfile created, you can run this shell file to submit all conifer tasks.\n";
 
 	#`qsub $pbsFile`;
 }

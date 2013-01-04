@@ -7,6 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/2110");
+my $probefile  = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_lite.bed";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -33,23 +34,12 @@ my $config = {
 		"2110-JP-15" => ["/scratch/cqs/shengq1/dnaseq/2110/bwa_markdup/2110-JP-15_realigned_recal_rmdup.bam"],
 		"2110-JP-16" => ["/scratch/cqs/shengq1/dnaseq/2110/bwa_markdup/2110-JP-16_realigned_recal_rmdup.bam"],
 	},
-    cnvnator050 => {
-        target_dir => "${target_dir}/cnvnator050",
-        option     => "",
-        source_ref => "bamfiles",
-        binsize    => 50,
-        pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "72",
-            "mem"      => "10gb"
-        },
-    },
 	cnvnator100 => {
 		target_dir => "${target_dir}/cnvnator100",
 		option     => "",
 		source_ref => "bamfiles",
-        binsize    => 100,
+		binsize    => 100,
+		probefile  => $probefile,
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
@@ -57,35 +47,21 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
-    cnvnator200 => {
-        target_dir => "${target_dir}/cnvnator200",
-        option     => "",
-        source_ref => "bamfiles",
-        binsize    => 200,
-        pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "72",
-            "mem"      => "10gb"
-        },
-    },
-    cnvnator300 => {
-        target_dir => "${target_dir}/cnvnator300",
-        option     => "",
-        source_ref => "bamfiles",
-        binsize    => 300,
-        pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "72",
-            "mem"      => "10gb"
-        },
-    },
+	conifer => {
+		target_dir => "${target_dir}/conifer",
+		option     => "",
+		source_ref => "bamfiles",
+		probefile  => $probefile,
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "72",
+			"mem"      => "10gb"
+		},
+	},
 };
 
-#cnvnator($config, "cnvnator050");
-cnvnator($config, "cnvnator100");
-#cnvnator($config, "cnvnator200");
-#cnvnator($config, "cnvnator300");
+#cnvnator( $config, "cnvnator100" );
+conifer( $config, "conifer" );
 
 1;
