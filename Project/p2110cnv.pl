@@ -83,9 +83,9 @@ my $config = {
     },
 };
 
-cnvnator($config, "cnvnator050");
+#cnvnator($config, "cnvnator050");
 cnvnator($config, "cnvnator100");
-cnvnator($config, "cnvnator200");
-cnvnator($config, "cnvnator300");
+#cnvnator($config, "cnvnator200");
+#cnvnator($config, "cnvnator300");
 
 1;
