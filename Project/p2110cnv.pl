@@ -33,8 +33,19 @@ my $config = {
 		"2110-JP-15" => ["/scratch/cqs/shengq1/dnaseq/2110/bwa_markdup/2110-JP-15_realigned_recal_rmdup.bam"],
 		"2110-JP-16" => ["/scratch/cqs/shengq1/dnaseq/2110/bwa_markdup/2110-JP-16_realigned_recal_rmdup.bam"],
 	},
-	cnvnator => {
-		target_dir => "${target_dir}/cnvnator",
+    cnvnator50 => {
+        target_dir => "${target_dir}/cnvnator050",
+        option     => "-call 50",
+        source_ref => "bamfiles",
+        pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "10gb"
+        },
+    },
+	cnvnator100 => {
+		target_dir => "${target_dir}/cnvnator100",
 		option     => "-call 100",
 		source_ref => "bamfiles",
 		pbs        => {
@@ -44,8 +55,33 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
+    cnvnator200 => {
+        target_dir => "${target_dir}/cnvnator200",
+        option     => "-call 200",
+        source_ref => "bamfiles",
+        pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "10gb"
+        },
+    },
+    cnvnator300 => {
+        target_dir => "${target_dir}/cnvnator300",
+        option     => "-call 300",
+        source_ref => "bamfiles",
+        pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "10gb"
+        },
+    },
 };
 
-cnvnator($config, "cnvnator");
+cnvnator($config, "cnvnator50");
+cnvnator($config, "cnvnator100");
+cnvnator($config, "cnvnator200");
+cnvnator($config, "cnvnator300");
 
 1;
