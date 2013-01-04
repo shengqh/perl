@@ -25,6 +25,7 @@ sub cnvnator {
 	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my $binsize = $config->{$section}{binsize} or die "define ${section}::binsize first";
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -64,10 +65,13 @@ sub cnvnator {
 		print OUT "else\n";
         print OUT "  if [ ! -s $rootFile ]; then\n";
 		print OUT "    echo extract=`date`\n";
-		print OUT "    cnvnator -root $rootFile -tree $bamFile\n";
+		print OUT "    cnvnator -root $rootFile -tree $bamFile \n";
         print OUT "  fi\n";
         print OUT "  echo call=`date`\n";
-        print OUT "  cnvnator -root $rootFile $option > $callFile\n";
+        print OUT "  cnvnator -root $rootFile -his $binsize \n";
+        print OUT "  cnvnator -root $rootFile -stat $binsize \n";
+        print OUT "  cnvnator -root $rootFile -partition $binsize \n";
+        print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n";
 		print OUT "fi\n\n";
 
 		print OUT "echo finished=`date`\n";
