@@ -33,10 +33,11 @@ my $config = {
 		"2110-JP-15" => ["/scratch/cqs/shengq1/dnaseq/2110/bwa_markdup/2110-JP-15_realigned_recal_rmdup.bam"],
 		"2110-JP-16" => ["/scratch/cqs/shengq1/dnaseq/2110/bwa_markdup/2110-JP-16_realigned_recal_rmdup.bam"],
 	},
-    cnvnator50 => {
+    cnvnator050 => {
         target_dir => "${target_dir}/cnvnator050",
-        option     => "-call 50",
+        option     => "",
         source_ref => "bamfiles",
+        binsize    => 50,
         pbs        => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
@@ -46,8 +47,9 @@ my $config = {
     },
 	cnvnator100 => {
 		target_dir => "${target_dir}/cnvnator100",
-		option     => "-call 100",
+		option     => "",
 		source_ref => "bamfiles",
+        binsize    => 100,
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
@@ -57,8 +59,9 @@ my $config = {
 	},
     cnvnator200 => {
         target_dir => "${target_dir}/cnvnator200",
-        option     => "-call 200",
+        option     => "",
         source_ref => "bamfiles",
+        binsize    => 200,
         pbs        => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
@@ -68,8 +71,9 @@ my $config = {
     },
     cnvnator300 => {
         target_dir => "${target_dir}/cnvnator300",
-        option     => "-call 300",
+        option     => "",
         source_ref => "bamfiles",
+        binsize    => 300,
         pbs        => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
@@ -79,7 +83,7 @@ my $config = {
     },
 };
 
-cnvnator($config, "cnvnator50");
+cnvnator($config, "cnvnator050");
 cnvnator($config, "cnvnator100");
 cnvnator($config, "cnvnator200");
 cnvnator($config, "cnvnator300");
