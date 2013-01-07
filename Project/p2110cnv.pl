@@ -53,6 +53,7 @@ my $config = {
 		source_ref => "bamfiles",
 		binsize    => 100,
 		probefile  => $probefile,
+        isbamsorted  => 0,
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
