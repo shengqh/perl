@@ -64,6 +64,9 @@ sub get_param_file {
 
 sub get_raw_files {
 	my ( $config, $section ) = @_;
+	if ( !defined $config->{$section} ) {
+		die "section $section was not defined!";
+	}
 
 	if ( defined $config->{$section}{source} ) {
 		return ( $config->{$section}{source} );
@@ -71,14 +74,10 @@ sub get_raw_files {
 
 	if ( defined $config->{$section}{source_ref} ) {
 		my $sectionName = $config->{$section}{source_ref};
-		my $result      = $config->{$sectionName};
-		if ( !defined $result ) {
-			die "section ${result} was not defined!";
-		}
-		return ($result);
+		return get_raw_files( $config, $sectionName );
 	}
 
-	die "define ${section}::source or ${section}::source_ref first!";
+	return $config->{$section};
 }
 
 1;
