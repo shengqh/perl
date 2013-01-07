@@ -139,7 +139,7 @@ sub conifer {
 
 		if ( !$isbamsorted ) {
 			($bamFile, my $bamSorted) = get_sorted_bam($bamFile);
-			print $bamFile . "\n";
+			#print $bamFile . "\n";
 		}
 		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
