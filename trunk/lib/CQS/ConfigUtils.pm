@@ -20,7 +20,7 @@ our $VERSION = '0.01';
 sub get_parameter {
 	my ( $config, $section ) = @_;
 
-    my $task_name = $config->{general}{task_name} or die "define general::task_name first";
+	my $task_name = $config->{general}{task_name} or die "define general::task_name first";
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
 	my $refPbs     = $config->{$section}{pbs}        or die "define ${section}::pbs parameters first";
 	my $target_dir = $config->{$section}{target_dir} or die "define ${section}::target_dir parameters first";
@@ -30,7 +30,7 @@ sub get_parameter {
 	die "define ${section}::option first" if ( !defined $config->{$section}{option} );
 	my $option = $config->{$section}{option};
 
-	return ($task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option );
+	return ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option );
 }
 
 #get parameter which indicates a file. If required, not defined or not exists, die. If defined but not exists, die.
@@ -63,21 +63,22 @@ sub get_param_file {
 }
 
 sub get_raw_files {
-    my ( $config, $section ) = @_;
+	my ( $config, $section ) = @_;
 
-    if ( defined $config->{$section}{source} ) {
-        return ( $config->{$section}{source} );
-    }
+	if ( defined $config->{$section}{source} ) {
+		return ( $config->{$section}{source} );
+	}
 
-    if ( defined $config->{$section}{source_ref} ) {
-        my $result = $config->{ $config->{$section}{source_ref} };
-        if ( !defined $result ) {
-            die "section ${result} was not defined!";
-        }
-        return ($result);
-    }
+	if ( defined $config->{$section}{source_ref} ) {
+		my $sectionName = $config->{$section}{source_ref};
+		my $result      = $config->{$sectionName};
+		if ( !defined $result ) {
+			die "section ${result} was not defined!";
+		}
+		return ($result);
+	}
 
-    die "define ${section}::source or ${section}::source_ref first!";
+	die "define ${section}::source or ${section}::source_ref first!";
 }
 
 1;
