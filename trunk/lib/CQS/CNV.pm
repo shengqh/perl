@@ -101,7 +101,10 @@ sub conifer {
 		$probedef = "--probes $probefile";
 	}
 
-	my $bampattern = $config->{$section}{sorted_bam_replace_pattern};
+	my $isbamsorted = $config->{$section}{isbamsorted};
+	if ( !defined($isbamsorted) ) {
+		$isbamsorted = 0;
+	}
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -132,12 +135,11 @@ sub conifer {
 		print OUT "echo rpkm=`date`\n";
 
 		my $bamFile = $sampleFiles[0];
-		if ( defined $bampattern ) {
-			$bamFile =~ $bampattern;
-            print $bamFile . "\n";
+
+		if ( !$isbamsorted ) {
+			$bamFile = get_sorted_bam($bamFile);
+			print $bamFile . "\n";
 		}
-
-
 		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
 		print OUT "if [ ! -s $rpkm ]; then\n";
