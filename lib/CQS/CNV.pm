@@ -134,9 +134,9 @@ sub conifer {
 		my $bamFile = $sampleFiles[0];
 		if ( defined $bampattern ) {
 			$bamFile =~ $bampattern;
+            print $bamFile . "\n";
 		}
 
-		print $bamFile . "\n";
 
 		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
