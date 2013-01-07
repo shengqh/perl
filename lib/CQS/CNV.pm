@@ -137,6 +137,8 @@ sub conifer {
 		my $rpkm        = "rpkm/" . $sampleName . ".rpkm";
 
 		print OUT "if [ ! -s $rpkm ]; then\n";
+        print OUT "  if [ ! -s $bamFile ]; then\n";
+        print OUT "  fi\n";
 		print OUT "  echo conifer=`date`\n";
 		print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
 		print OUT "fi\n";
