@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_index)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -208,12 +208,25 @@ sub bwa_by_pbs_double {
 	#`qsub $pbsFile`;
 }
 
+sub get_sorted_bam {
+	my $bamFile = shift;
+	my ( $name, $path, $suffix ) = fileparse( $bamFile, qr/\Q.bam\E/ );
+	my $bamSorted     = $path . $name . ".sorted";
+	my $bamSortedFile = $bamSorted . ".bam";
+	return ( $bamSortedFile, $bamSorted );
+}
+
 sub samtools_index {
 	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+	my $isbamsorted = $config->{$section}{isbamsorted};
+	if ( !defined($isbamsorted) ) {
+		$isbamsorted = 0;
+	}
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -240,7 +253,20 @@ sub samtools_index {
 		print OUT "echo index=`date`\n";
 
 		my $bamFile = $sampleFiles[0];
-		my $bamIndexFile = $bamFile . ".bai";
+
+		my $bamSortedFile;
+		if ($isbamsorted) {
+			$bamSortedFile = $bamFile;
+		}
+		else {
+			( $bamSortedFile, my $bamSorted ) = get_sorted_bam($bamFile);
+			print OUT "if [ ! -s $bamSortedFile ]; then\n";
+			print OUT "  echo samtools_sort=`date`\n";
+			print OUT "  samtools sort $bamFile $bamSorted \n";
+			print OUT "fi\n";
+		}
+
+		my $bamIndexFile = $bamSortedFile . ".bai";
 		print OUT "if [ ! -s $bamIndexFile ]; then\n";
 		print OUT "  echo samtools_index=`date`\n";
 		print OUT "  samtools index $bamFile \n";
