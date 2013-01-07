@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use File::Basename;
 use CQS::PBS;
+use CQS::DNASeq;
 use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::FileUtils;
