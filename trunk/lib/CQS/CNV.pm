@@ -134,11 +134,24 @@ sub conifer {
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
 		my $bamFile     = $sampleFiles[0];
+		my ($name,$path,$suffix) = fileparse($bamFile,qr/\Q.bam\E/);
+		my $bamSort= $path . $name . ".sorted";
+		my $bamSortFile = $bamSort . ".bam";
+		my $bamIndexFile   = $bamSortFile . ".bai";
 
 		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
 		print OUT "if [ ! -s $rpkm ]; then\n";
-		print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
+		print OUT "  if [ ! -s $bamSortFile ]; then\n";
+		print OUT "    echo samtools_sort=`date`\n";
+		print OUT "    samtools sort $bamFile $bamSort \n";
+		print OUT "  fi\n";
+		print OUT "  if [ ! -s $bamIndexFile ]; then\n";
+		print OUT "    echo samtools_index=`date`\n";
+		print OUT "    samtools index $bamSortFile \n";
+		print OUT "  fi\n";
+		print OUT "  echo conifer=`date`\n";
+		print OUT "  python $conifer rpkm $probedef --input $bamSortFile --output $rpkm \n";
 		print OUT "fi\n";
 	}
 
