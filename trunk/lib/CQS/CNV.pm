@@ -28,6 +28,11 @@ sub cnvnator {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 	my $binsize = $config->{$section}{binsize} or die "define ${section}::binsize first";
 
+	my $isbamsorted = $config->{$section}{isbamsorted};
+	if ( !defined($isbamsorted) ) {
+		$isbamsorted = 0;
+	}
+
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
 	my $shfile = $pbsDir . "/${task_name}.sh";
@@ -39,6 +44,9 @@ sub cnvnator {
 
 		my $bamFile = $sampleFiles[0];
 
+		if ( !$isbamsorted ) {
+			( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
+		}
 		my $pbsName = "${sampleName}_cnvnator.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
 
@@ -138,7 +146,8 @@ sub conifer {
 		my $bamFile = $sampleFiles[0];
 
 		if ( !$isbamsorted ) {
-			($bamFile, my $bamSorted) = get_sorted_bam($bamFile);
+			( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
+
 			#print $bamFile . "\n";
 		}
 		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
