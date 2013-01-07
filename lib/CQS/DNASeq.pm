@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_sort_index get_samtools_sort_index_files)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_index)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -208,14 +208,10 @@ sub bwa_by_pbs_double {
 	#`qsub $pbsFile`;
 }
 
-sub samtools_sort_index {
+sub samtools_index {
 	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-	my $bamsorted = $config->{$section}{bam_sorted};
-	if ( !defined $bamsorted ) {
-		$bamsorted = 0;
-	}
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -244,25 +240,10 @@ sub samtools_sort_index {
 		print OUT "echo index=`date`\n";
 
 		my $bamFile = $sampleFiles[0];
-		my $bamSortedFile;
-
-		if ($bamsorted) {
-			$bamSortedFile = $bamFile;
-		}
-		else {
-			my ( $name, $path, $suffix ) = fileparse( $bamFile, qr/\Q.bam\E/ );
-			my $bamSorted = $path . $name . ".sorted";
-			$bamSortedFile = $bamSorted . ".bam";
-
-			print OUT "if [ ! -s $bamSortedFile ]; then\n";
-			print OUT "  echo samtools_sort=`date`\n";
-			print OUT "  samtools sort $bamFile $bamSorted \n";
-			print OUT "fi\n";
-		}
-		my $bamIndexFile = $bamSortedFile . ".bai";
+		my $bamIndexFile = $bamFile . ".bai";
 		print OUT "if [ ! -s $bamIndexFile ]; then\n";
 		print OUT "  echo samtools_index=`date`\n";
-		print OUT "  samtools index $bamSortedFile \n";
+		print OUT "  samtools index $bamFile \n";
 		print OUT "fi\n";
 		print OUT "echo finished=`date`\n";
 		close OUT;
@@ -278,38 +259,6 @@ sub samtools_sort_index {
 	print "!!!shell file $shfile created, you can run this shell file to submit all samtools index tasks.\n";
 
 	#`qsub $pbsFile`;
-}
-
-sub get_samtools_sort_index_files {
-	my ( $config, $section ) = @_;
-
-	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-	my $bamsorted = $config->{$section}{bam_sorted};
-	if ( !defined $bamsorted ) {
-		$bamsorted = 0;
-	}
-
-	my %rawFiles = %{ get_raw_files( $config, $section ) };
-
-	my %result = {};
-
-	for my $sampleName ( sort keys %rawFiles ) {
-		my @sampleFiles = @{ $rawFiles{$sampleName} };
-		my $bamFile     = $sampleFiles[0];
-		my $bamSortedFile;
-
-		if ($bamsorted) {
-			$bamSortedFile = $bamFile;
-		}
-		else {
-			my ( $name, $path, $suffix ) = fileparse( $bamFile, qr/\Q.bam\E/ );
-			my $bamSorted = $path . $name . ".sorted";
-			$bamSortedFile = $bamSorted . ".bam";
-		}
-		$result{$sampleName} = $bamSortedFile;
-	}
-
-	return \%result;
 }
 
 1;
