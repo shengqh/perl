@@ -94,7 +94,7 @@ sub conifer {
 	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-    my $conifer = $config->{$section}{conifer} or die "define conifer program location first.\nconifer => \"location\"";
+	my $conifer   = $config->{$section}{conifer} or die "define conifer program location first.\nconifer => \"location\"";
 	my $probefile = $config->{$section}{probefile};
 	my $probedef  = "";
 	if ( defined $probefile ) {
@@ -107,11 +107,11 @@ sub conifer {
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
-	my $pbsName  = "${task_name}_conifer.pbs";
-	my $pbsFile  = "${pbsDir}/$pbsName";
-	my $hdf5File = "${task_name}.hdf5";
-    my $svalsFile = "${task_name}.svals";
-    my $callFile = "${task_name}.call";
+	my $pbsName   = "${task_name}_conifer.pbs";
+	my $pbsFile   = "${pbsDir}/$pbsName";
+	my $hdf5File  = "${task_name}.hdf5";
+	my $svalsFile = "${task_name}.svals";
+	my $callFile  = "${task_name}.call";
 
 	print SH "\$MYCMD ./$pbsName \n";
 	open( OUT, ">$pbsFile" ) or die $!;
@@ -124,7 +124,7 @@ sub conifer {
 	}
 
 	create_directory_or_die( $resultDir . "/rpkm" );
-    create_directory_or_die( $resultDir . "/call_images" );
+	create_directory_or_die( $resultDir . "/call_images" );
 
 	print OUT "cd $resultDir\n\n";
 
@@ -134,24 +134,11 @@ sub conifer {
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
 		my $bamFile     = $sampleFiles[0];
-		my ($name,$path,$suffix) = fileparse($bamFile,qr/\Q.bam\E/);
-		my $bamSort= $path . $name . ".sorted";
-		my $bamSortFile = $bamSort . ".bam";
-		my $bamIndexFile   = $bamSortFile . ".bai";
-
-		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
+		my $rpkm        = "rpkm/" . $sampleName . ".rpkm";
 
 		print OUT "if [ ! -s $rpkm ]; then\n";
-		print OUT "  if [ ! -s $bamSortFile ]; then\n";
-		print OUT "    echo samtools_sort=`date`\n";
-		print OUT "    samtools sort $bamFile $bamSort \n";
-		print OUT "  fi\n";
-		print OUT "  if [ ! -s $bamIndexFile ]; then\n";
-		print OUT "    echo samtools_index=`date`\n";
-		print OUT "    samtools index $bamSortFile \n";
-		print OUT "  fi\n";
 		print OUT "  echo conifer=`date`\n";
-		print OUT "  python $conifer rpkm $probedef --input $bamSortFile --output $rpkm \n";
+		print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
 		print OUT "fi\n";
 	}
 
@@ -159,13 +146,13 @@ sub conifer {
 	print OUT "#2 analysis\n";
 	print OUT "echo analyze=`date`\n";
 	print OUT "python $conifer analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
-    print OUT "\n";
-    print OUT "#3 call\n";
-    print OUT "echo call=`date`\n";
-    print OUT "python $conifer call --input $hdf5File --output $callFile \n";
-    print OUT "\n";
-    print OUT "#4 plot\n";
-    print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
+	print OUT "\n";
+	print OUT "#3 call\n";
+	print OUT "echo call=`date`\n";
+	print OUT "python $conifer call --input $hdf5File --output $callFile \n";
+	print OUT "\n";
+	print OUT "#4 plot\n";
+	print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
 	close OUT;
 
 	print "$pbsFile created\n";

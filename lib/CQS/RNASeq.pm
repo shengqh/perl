@@ -180,25 +180,21 @@ sub tophat2_by_pbs {
 sub get_tophat2_map {
 	my ( $config, $section ) = @_;
 
-	if ( defined $config->{$section}{source} ) {
-		return $config->{$section}{source};
+	my ( $result, $issource ) = get_raw_files( $config, $section );
+	if ($issource) {
+		retun $result;
 	}
 
-	if ( defined $config->{$section}{source_ref} ) {
-		my $result = {};
+	my $tophatsection = $config->{$section}{source_ref};
+	my $tophat_dir = $config->{$tophatsection}{target_dir} or die "${tophatsection}::target_dir not defined.";
+	my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
+	my %fqFiles = %{$result};
 
-		my $tophatsection = $config->{$section}{source_ref};
-		my $tophat_dir = $config->{$tophatsection}{target_dir} or die "${tophatsection}::target_dir not defined.";
-		my ( $logDir, $pbsDir, $resultDir ) = init_dir( $tophat_dir, 0 );
-		my %fqFiles = %{ get_raw_files( $config, $tophatsection ) };
-		for my $sampleName ( keys %fqFiles ) {
-			$result->{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
-		}
-
-		return $result;
+	my $tpresult = {};
+	for my $sampleName ( keys %fqFiles ) {
+		$tpresult->{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
 	}
-
-	die "define ${section}::source or ${section}::source_ref first!";
+	return $tpresult;
 }
 
 sub cufflinks_by_pbs {
@@ -741,14 +737,14 @@ sub miso_by_pbs {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $gff3file = get_param_file($config->{$section}{gff3_file}, "gff3_file", 1);
+	my $gff3file = get_param_file( $config->{$section}{gff3_file}, "gff3_file", 1 );
 	my $gff3index = $gff3file . "indexed";
 
 	my %tophat2map = %{ get_tophat2_map( $config, $section ) };
 
 	my $shfile = $pbsDir . "/${task_name}.submit";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	
+
 	print SH "if [ ! -d $gff3index ];\n";
 	print SH "then\n";
 	print SH "  index_gff.py --index $gff3file $gff3index \n";
@@ -776,12 +772,12 @@ sub miso_by_pbs {
 		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
 		print OUT "echo MISO=`date` \n";
-		
+
 		print OUT "if [ ! -e $tophat2indexFile ];\n";
 		print OUT "then\n";
 		print OUT "  samtools index $tophat2File \n";
 		print OUT "fi\n";
-		
+
 		print OUT "run_events_analysis.py --compute-genes-psi $gff3index $tophat2File --output-dir $curDir --read-len 35 \n";
 
 		output_footer();

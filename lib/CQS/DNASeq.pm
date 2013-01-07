@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_sort_index get_samtools_sort_index_files)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -26,9 +26,9 @@ sub bwa_by_pbs_single {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $faFile       = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
-	
-    die "define ${section}::option_samse first" if ( !defined $config->{$section}{option_samse} );
+	my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
+
+	die "define ${section}::option_samse first" if ( !defined $config->{$section}{option_samse} );
 	my $option_samse = $config->{$section}{option_samse};
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
@@ -43,7 +43,7 @@ sub bwa_by_pbs_single {
 		my $sampleFile1 = $sampleFiles[0];
 
 		my ( $sampleName1, $directories1, $suffix1 ) = fileparse($sampleFile1);
-		my $saiFile1 = $sampleName1 . ".sai";
+		my $saiFile1      = $sampleName1 . ".sai";
 		my $samFile       = $sampleName . ".sam";
 		my $bamFile       = $sampleName . ".bam";
 		my $sortedBamFile = $sampleName . "_sort";
@@ -64,7 +64,7 @@ sub bwa_by_pbs_single {
 			print OUT "source $path_file\n";
 		}
 		print OUT "echo bwa=`date`\n";
-		
+
 		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
@@ -112,10 +112,10 @@ sub bwa_by_pbs_double {
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $faFile       = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
-	my $inserts      = $config->{$section}{estimate_insert};
-	
-    die "define ${section}::option_sampe first" if ( !defined $config->{$section}{option_sampe} );
+	my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
+	my $inserts = $config->{$section}{estimate_insert};
+
+	die "define ${section}::option_sampe first" if ( !defined $config->{$section}{option_sampe} );
 	my $option_sampe = $config->{$section}{option_sampe};
 
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
@@ -206,6 +206,110 @@ sub bwa_by_pbs_double {
 	print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
 
 	#`qsub $pbsFile`;
+}
+
+sub samtools_sort_index {
+	my ( $config, $section ) = @_;
+
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my $bamsorted = $config->{$section}{bam_sorted};
+	if ( !defined $bamsorted ) {
+		$bamsorted = 0;
+	}
+
+	my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+	my $shfile = $pbsDir . "/${task_name}.sh";
+	open( SH, ">$shfile" ) or die "Cannot create $shfile";
+	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+
+	for my $sampleName ( sort keys %rawFiles ) {
+		my @sampleFiles = @{ $rawFiles{$sampleName} };
+
+		my $pbsName = "${sampleName}_index.pbs";
+		my $pbsFile = "${pbsDir}/$pbsName";
+
+		print SH "\$MYCMD ./$pbsName \n";
+
+		my $log = "${logDir}/${sampleName}_index.log";
+
+		open( OUT, ">$pbsFile" ) or die $!;
+		print OUT $pbsDesc;
+		print OUT "#PBS -o $log\n";
+		print OUT "#PBS -j oe\n\n";
+
+		if ( -e $path_file ) {
+			print OUT "source $path_file\n";
+		}
+		print OUT "echo index=`date`\n";
+
+		my $bamFile = $sampleFiles[0];
+		my $bamSortedFile;
+
+		if ($bamsorted) {
+			$bamSortedFile = $bamFile;
+		}
+		else {
+			my ( $name, $path, $suffix ) = fileparse( $bamFile, qr/\Q.bam\E/ );
+			my $bamSorted = $path . $name . ".sorted";
+			$bamSortedFile = $bamSorted . ".bam";
+
+			print OUT "if [ ! -s $bamSortedFile ]; then\n";
+			print OUT "  echo samtools_sort=`date`\n";
+			print OUT "  samtools sort $bamFile $bamSorted \n";
+			print OUT "fi\n";
+		}
+		my $bamIndexFile = $bamSortedFile . ".bai";
+		print OUT "if [ ! -s $bamIndexFile ]; then\n";
+		print OUT "  echo samtools_index=`date`\n";
+		print OUT "  samtools index $bamSortedFile \n";
+		print OUT "fi\n";
+		print OUT "echo finished=`date`\n";
+		close OUT;
+
+		print "$pbsFile created\n";
+	}
+	close(SH);
+
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
+
+	print "!!!shell file $shfile created, you can run this shell file to submit all samtools index tasks.\n";
+
+	#`qsub $pbsFile`;
+}
+
+sub get_samtools_sort_index_files {
+	my ( $config, $section ) = @_;
+
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my $bamsorted = $config->{$section}{bam_sorted};
+	if ( !defined $bamsorted ) {
+		$bamsorted = 0;
+	}
+
+	my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+	my %result = {};
+
+	for my $sampleName ( sort keys %rawFiles ) {
+		my @sampleFiles = @{ $rawFiles{$sampleName} };
+		my $bamFile     = $sampleFiles[0];
+		my $bamSortedFile;
+
+		if ($bamsorted) {
+			$bamSortedFile = $bamFile;
+		}
+		else {
+			my ( $name, $path, $suffix ) = fileparse( $bamFile, qr/\Q.bam\E/ );
+			my $bamSorted = $path . $name . ".sorted";
+			$bamSortedFile = $bamSorted . ".bam";
+		}
+		$result{$sampleName} = $bamSortedFile;
+	}
+
+	return \%result;
 }
 
 1;
