@@ -106,41 +106,66 @@ sub conifer {
 	my $shfile = $pbsDir . "/${task_name}.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+	
+    create_directory_or_die( $resultDir . "/rpkm" );
+    for my $sampleName ( sort keys %rawFiles ) {
+        my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-	my $pbsName   = "${task_name}_conifer.pbs";
+        my $pbsName = "${sampleName}_rpkm.pbs";
+        my $pbsFile = "${pbsDir}/$pbsName";
+
+        print SH "\$MYCMD ./$pbsName \n";
+
+        my $log = "${logDir}/${sampleName}_rpkm.log";
+
+        open( OUT, ">$pbsFile" ) or die $!;
+        print OUT $pbsDesc;
+        print OUT "#PBS -o $log\n";
+        print OUT "#PBS -j oe\n\n";
+
+        if ( -e $path_file ) {
+            print OUT "source $path_file\n";
+        }
+        print OUT "cd $resultDir\n\n";
+        print OUT "echo rpkm=`date`\n";
+    
+        my $bamFile = $sampleFiles[0];
+        my $rpkm        = "rpkm/" . $sampleName . ".rpkm";
+
+        print OUT "if [ ! -s $rpkm ]; then\n";
+        print OUT "  echo conifer=`date`\n";
+        print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
+        print OUT "fi\n";
+
+        print OUT "echo finished=`date`\n";
+        close OUT;
+
+        print "$pbsFile created\n";
+    }
+    close(SH);
+
+    if ( is_linux() ) {
+        chmod 0755, $shfile;
+    }
+
+	my $pbsName   = "${task_name}_after_rpkm.pbs";
 	my $pbsFile   = "${pbsDir}/$pbsName";
 	my $hdf5File  = "${task_name}.hdf5";
 	my $svalsFile = "${task_name}.svals";
 	my $callFile  = "${task_name}.call";
 
-	print SH "\$MYCMD ./$pbsName \n";
 	open( OUT, ">$pbsFile" ) or die $!;
 	print OUT $pbsDesc;
-	my $log = "${logDir}/${task_name}_conifer.log";
+	my $log = "${logDir}/${task_name}_after_rpkm.log";
 	print OUT "#PBS -o $log\n";
 	print OUT "#PBS -j oe\n\n";
 	if ( -e $path_file ) {
 		print OUT "source $path_file\n";
 	}
 
-	create_directory_or_die( $resultDir . "/rpkm" );
 	create_directory_or_die( $resultDir . "/call_images" );
 
 	print OUT "cd $resultDir\n\n";
-
-	print OUT "\n";
-	print OUT "#1 calculate rpkm\n";
-	print OUT "echo rpkm=`date`\n";
-	for my $sampleName ( sort keys %rawFiles ) {
-		my @sampleFiles = @{ $rawFiles{$sampleName} };
-		my $bamFile     = $sampleFiles[0];
-		my $rpkm        = "rpkm/" . $sampleName . ".rpkm";
-
-		print OUT "if [ ! -s $rpkm ]; then\n";
-		print OUT "  echo conifer=`date`\n";
-		print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
-		print OUT "fi\n";
-	}
 
 	print OUT "\n";
 	print OUT "#2 analysis\n";
@@ -156,13 +181,8 @@ sub conifer {
 	close OUT;
 
 	print "$pbsFile created\n";
-	close(SH);
 
-	if ( is_linux() ) {
-		chmod 0755, $shfile;
-	}
-
-	print "!!!shell file $shfile created, you can run this shell file to submit all conifer tasks.\n";
+	print "!!!shell file $shfile created, you can run this shell file to submit all conifer rpkm tasks.\n";
 
 	#`qsub $pbsFile`;
 }
