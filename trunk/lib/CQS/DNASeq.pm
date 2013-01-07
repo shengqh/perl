@@ -269,7 +269,7 @@ sub samtools_index {
 		my $bamIndexFile = $bamSortedFile . ".bai";
 		print OUT "if [ ! -s $bamIndexFile ]; then\n";
 		print OUT "  echo samtools_index=`date`\n";
-		print OUT "  samtools index $bamFile \n";
+		print OUT "  samtools index $bamSortedFile \n";
 		print OUT "fi\n";
 		print OUT "echo finished=`date`\n";
 		close OUT;
