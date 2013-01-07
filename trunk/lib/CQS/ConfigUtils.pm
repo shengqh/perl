@@ -62,22 +62,33 @@ sub get_param_file {
 	return ($result);
 }
 
-sub get_raw_files {
-	my ( $config, $section ) = @_;
+sub do_get_raw_files {
+	my ( $config, $section, $returnself ) = @_;
 	if ( !defined $config->{$section} ) {
 		die "section $section was not defined!";
 	}
 
 	if ( defined $config->{$section}{source} ) {
-		return ( $config->{$section}{source} );
+		return ( $config->{$section}{source}, 1 );
 	}
 
 	if ( defined $config->{$section}{source_ref} ) {
 		my $sectionName = $config->{$section}{source_ref};
-		return get_raw_files( $config, $sectionName );
+		my ( $result, $issource ) = do_get_raw_files( $config, $sectionName, 1 );
+		return ( $result, 0 );
 	}
 
-	return $config->{$section};
+	if ($returnself) {
+		return ( $config->{$section}, 0 );
+	}
+	else {
+		die "define source or source_ref for $section";
+	}
+}
+
+sub get_raw_files {
+	my ( $config, $section ) = @_;
+	return do_get_raw_files( $config, $section, 0 );
 }
 
 1;
