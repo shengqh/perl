@@ -11,7 +11,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file get_raw_files)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file get_raw_files get_raw_files2)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -88,7 +88,14 @@ sub do_get_raw_files {
 
 sub get_raw_files {
 	my ( $config, $section ) = @_;
-	return do_get_raw_files( $config, $section, 0 );
+	my ($result, $issource) = do_get_raw_files( $config, $section, 0 );
+	return $result;
+}
+
+#return raw files and if the raw files are extracted from source directly
+sub get_raw_files2 {
+    my ( $config, $section ) = @_;
+    return do_get_raw_files( $config, $section, 0 );
 }
 
 1;

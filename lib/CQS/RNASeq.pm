@@ -180,7 +180,7 @@ sub tophat2_by_pbs {
 sub get_tophat2_map {
 	my ( $config, $section ) = @_;
 
-	my ( $result, $issource ) = get_raw_files( $config, $section );
+	my ( $result, $issource ) = get_raw_files2( $config, $section );
 	if ($issource) {
 		retun $result;
 	}
