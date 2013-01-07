@@ -101,52 +101,60 @@ sub conifer {
 		$probedef = "--probes $probefile";
 	}
 
+	my $bampattern = $config->{$section}{sorted_bam_replace_pattern};
+
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-	my $shfile = $pbsDir . "/${task_name}.sh";
+	my $shfile = $pbsDir . "/${task_name}_rpkm.sh";
 	open( SH, ">$shfile" ) or die "Cannot create $shfile";
 	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-	
-    create_directory_or_die( $resultDir . "/rpkm" );
-    for my $sampleName ( sort keys %rawFiles ) {
-        my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-        my $pbsName = "${sampleName}_rpkm.pbs";
-        my $pbsFile = "${pbsDir}/$pbsName";
+	create_directory_or_die( $resultDir . "/rpkm" );
+	for my $sampleName ( sort keys %rawFiles ) {
+		my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-        print SH "\$MYCMD ./$pbsName \n";
+		my $pbsName = "${sampleName}_rpkm.pbs";
+		my $pbsFile = "${pbsDir}/$pbsName";
 
-        my $log = "${logDir}/${sampleName}_rpkm.log";
+		print SH "\$MYCMD ./$pbsName \n";
 
-        open( OUT, ">$pbsFile" ) or die $!;
-        print OUT $pbsDesc;
-        print OUT "#PBS -o $log\n";
-        print OUT "#PBS -j oe\n\n";
+		my $log = "${logDir}/${sampleName}_rpkm.log";
 
-        if ( -e $path_file ) {
-            print OUT "source $path_file\n";
-        }
-        print OUT "cd $resultDir\n\n";
-        print OUT "echo rpkm=`date`\n";
-    
-        my $bamFile = $sampleFiles[0];
-        my $rpkm        = "rpkm/" . $sampleName . ".rpkm";
+		open( OUT, ">$pbsFile" ) or die $!;
+		print OUT $pbsDesc;
+		print OUT "#PBS -o $log\n";
+		print OUT "#PBS -j oe\n\n";
 
-        print OUT "if [ ! -s $rpkm ]; then\n";
-        print OUT "  echo conifer=`date`\n";
-        print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
-        print OUT "fi\n";
+		if ( -e $path_file ) {
+			print OUT "source $path_file\n";
+		}
+		print OUT "cd $resultDir\n\n";
+		print OUT "echo rpkm=`date`\n";
 
-        print OUT "echo finished=`date`\n";
-        close OUT;
+		my $bamFile = $sampleFiles[0];
+		if ( defined $bampattern ) {
+			$bamFile =~ $bampattern;
+		}
 
-        print "$pbsFile created\n";
-    }
-    close(SH);
+		print $bamFile . "\n";
 
-    if ( is_linux() ) {
-        chmod 0755, $shfile;
-    }
+		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
+
+		print OUT "if [ ! -s $rpkm ]; then\n";
+		print OUT "  echo conifer=`date`\n";
+		print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
+		print OUT "fi\n";
+
+		print OUT "echo finished=`date`\n";
+		close OUT;
+
+		print "$pbsFile created\n";
+	}
+	close(SH);
+
+	if ( is_linux() ) {
+		chmod 0755, $shfile;
+	}
 
 	my $pbsName   = "${task_name}_after_rpkm.pbs";
 	my $pbsFile   = "${pbsDir}/$pbsName";

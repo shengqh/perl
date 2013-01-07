@@ -66,6 +66,7 @@ my $config = {
 		source_ref => "bamfiles",
 		conifer    => "/home/shengq1/pylibs/bin/conifer.py",
 		probefile  => $probefile,
+		sorted_bam_replace_pattern => "s/.bam$/.sorted.bam",
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
