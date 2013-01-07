@@ -8,7 +8,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/2110");
-my $probefile  = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_lite.bed";
+my $probefile  = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_withoutY_lite.bed";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
