@@ -207,4 +207,73 @@ sub conifer {
 	#`qsub $pbsFile`;
 }
 
+sub cnmops {
+	my ( $config, $section ) = @_;
+
+	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+	my $probefile = $config->{$section}{probefile};
+
+	my $isbamsorted = $config->{$section}{isbamsorted};
+	if ( !defined($isbamsorted) ) {
+		$isbamsorted = 0;
+	}
+
+	my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+	my $rfile = $pbsDir . "/${task_name}_cnmops.r";
+	open( R, ">$rfile" ) or die "Cannot create $rfile";
+	print R "library(cn.mops) \n";
+	print R "setwd(\"$resultDir\") \n";
+    print R "SampleNames <- c( \n";
+    for my $sampleName ( sort keys %rawFiles ) {
+        print R "\"$sampleName\", \n";
+    }
+    print R ") \n";
+	print R "BAMFiles <- c( \n";
+	for my $sampleName ( sort keys %rawFiles ) {
+		my @sampleFiles = @{ $rawFiles{$sampleName} };
+		my $bamFile     = $sampleFiles[0];
+
+		if ( !$isbamsorted ) {
+			( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
+		}
+		print R "\"$bamFile\", \n";
+	}
+	print R ") \n";
+
+	if ( defined $probefile ) {
+		print R "segments <- read.table(\"$probefile\", sep=\"\t\", as.is=TRUE) \n";
+		print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3])) \n";
+		print R "X <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"unpaired\") \n";
+		print R "resCNMOPS <- exomecn.mops(X) \n";
+	}
+	else{
+        print R "X <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"unpaired\") \n";
+        print R "resCNMOPS <- cn.mops(X) \n";
+	}
+	
+	print R "save(resCNMOPS, file=\"${task_name}_cnmaps.Rdata\") \n";
+	close R;
+
+    my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
+    my $log     = "${logDir}/${task_name}_cnmops.log";
+
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT $pbsDesc;
+    print OUT "#PBS -o $log\n";
+    print OUT "#PBS -j oe\n\n";
+
+    if ( -e $path_file ) {
+        print OUT "source $path_file\n";
+    }
+
+    print OUT "cd $pbsDir\n\n";
+    print OUT "echo cnmops=`date`\n";
+    print OUT "R --vanilla < $rfile \n";
+	print OUT "echo finished=`date`\n";
+	close OUT;
+
+	print "$pbsFile created\n";
+}
+
 1;

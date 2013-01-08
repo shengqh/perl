@@ -75,11 +75,26 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
+    cnmops => {
+        target_dir => "${target_dir}/cnmops",
+        option     => "",
+        source_ref => "bamfiles",
+        probefile  => $probefile,
+        isbamsorted  => 0,
+        pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "720",
+            "mem"      => "40gb"
+        },
+    },
 };
 
 samtools_index($config, "samtoolsindex");
 
-cnvnator( $config, "cnvnator100" );
+#cnvnator( $config, "cnvnator100" );
 conifer( $config, "conifer" );
+
+cnmops($config, "cnmops");
 
 1;
