@@ -258,7 +258,7 @@ sub cnmops {
 	print R ") \n";
 
 	if ( defined $probefile ) {
-		print R "segments <- read.table(\"$probefile\", sep=\"\t\", as.is=TRUE) \n";
+		print R "segments <- read.table(\"$probefile\", sep=\"\\t\", as.is=TRUE) \n";
 		print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3])) \n";
 		print R "X <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"unpaired\") \n";
 		print R "resCNMOPS <- exomecn.mops(X) \n";
