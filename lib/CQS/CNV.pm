@@ -14,7 +14,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(cnvnator conifer)] );
+our %EXPORT_TAGS = ( 'all' => [qw(cnvnator conifer cnmops)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
