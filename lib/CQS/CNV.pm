@@ -224,12 +224,21 @@ sub cnmops {
 	open( R, ">$rfile" ) or die "Cannot create $rfile";
 	print R "library(cn.mops) \n";
 	print R "setwd(\"$resultDir\") \n";
-    print R "SampleNames <- c( \n";
-    for my $sampleName ( sort keys %rawFiles ) {
-        print R "\"$sampleName\", \n";
-    }
-    print R ") \n";
+	print R "SampleNames <- c( \n";
+	my $isfirst = 1;
+	for my $sampleName ( sort keys %rawFiles ) {
+		if ($isfirst) {
+			print R "\"$sampleName\"\n";
+			$isfirst = 0;
+		}
+		else {
+			print R ",\"$sampleName\"\n";
+		}
+	}
+	print R ") \n";
 	print R "BAMFiles <- c( \n";
+
+	$isfirst = 1;
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
 		my $bamFile     = $sampleFiles[0];
@@ -237,7 +246,14 @@ sub cnmops {
 		if ( !$isbamsorted ) {
 			( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
 		}
-		print R "\"$bamFile\", \n";
+
+		if ($isfirst) {
+			print R "\"$bamFile\"\n";
+			$isfirst = 0;
+		}
+		else {
+			print R ",\"$bamFile\"\n";
+		}
 	}
 	print R ") \n";
 
@@ -247,29 +263,29 @@ sub cnmops {
 		print R "X <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"unpaired\") \n";
 		print R "resCNMOPS <- exomecn.mops(X) \n";
 	}
-	else{
-        print R "X <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"unpaired\") \n";
-        print R "resCNMOPS <- cn.mops(X) \n";
+	else {
+		print R "X <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"unpaired\") \n";
+		print R "resCNMOPS <- cn.mops(X) \n";
 	}
-	
+
 	print R "save(resCNMOPS, file=\"${task_name}_cnmaps.Rdata\") \n";
 	close R;
 
-    my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
-    my $log     = "${logDir}/${task_name}_cnmops.log";
+	my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
+	my $log     = "${logDir}/${task_name}_cnmops.log";
 
-    open( OUT, ">$pbsFile" ) or die $!;
-    print OUT $pbsDesc;
-    print OUT "#PBS -o $log\n";
-    print OUT "#PBS -j oe\n\n";
+	open( OUT, ">$pbsFile" ) or die $!;
+	print OUT $pbsDesc;
+	print OUT "#PBS -o $log\n";
+	print OUT "#PBS -j oe\n\n";
 
-    if ( -e $path_file ) {
-        print OUT "source $path_file\n";
-    }
+	if ( -e $path_file ) {
+		print OUT "source $path_file\n";
+	}
 
-    print OUT "cd $pbsDir\n\n";
-    print OUT "echo cnmops=`date`\n";
-    print OUT "R --vanilla < $rfile \n";
+	print OUT "cd $pbsDir\n\n";
+	print OUT "echo cnmops=`date`\n";
+	print OUT "R --vanilla < $rfile \n";
 	print OUT "echo finished=`date`\n";
 	close OUT;
 
