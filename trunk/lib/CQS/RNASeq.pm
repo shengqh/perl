@@ -4,7 +4,6 @@ package CQS::RNASeq;
 use strict;
 use warnings;
 use File::Basename;
-use File::Copy;
 use List::Compare;
 use CQS::PBS;
 use CQS::FileUtils;
