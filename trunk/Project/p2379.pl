@@ -22,16 +22,16 @@ my $config = {
 		task_name            => "2379"
 	},
 	fastqfiles => {
-		"P2379_P1" => [ "/data/cqs/shengq1/2177/2177-WE-1_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-1_2_sequence.txt" ],
-		"P2379_P2" => [ "/data/cqs/shengq1/2177/2177-WE-2_1_sequence.txt",  "/data/cqs/shengq1/2177/2177-WE-2_2_sequence.txt" ],
-		"P2379_P3" => [ "/data/cqs/shengq1/2177/2177-WE-15_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-15_2_sequence.txt" ],
-		"P2379_N1" => [ "/data/cqs/shengq1/2177/2177-WE-16_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-16_2_sequence.txt" ],
-		"P2379_N2" => [ "/data/cqs/shengq1/2177/2177-WE-17_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-17_2_sequence.txt" ],
-		"P2379_N3" => [ "/data/cqs/shengq1/2177/2177-WE-18_1_sequence.txt", "/data/cqs/shengq1/2177/2177-WE-18_2_sequence.txt" ],
+		"2379_P1" => ["/scratch/cqs/shengq1/rnaseq/2379/rawdata/2379-JRG-1_1_sequence.txt"],
+		"2379_P3" => ["/scratch/cqs/shengq1/rnaseq/2379/rawdata/2379-JRG-3_1_sequence.txt"],
+		"2379_P5" => ["/scratch/cqs/shengq1/rnaseq/2379/rawdata/2379-JRG-5_1_sequence.txt"],
+		"2379_N2" => ["/scratch/cqs/shengq1/rnaseq/2379/rawdata/2379-JRG-2_1_sequence.txt"],
+		"2379_N4" => ["/scratch/cqs/shengq1/rnaseq/2379/rawdata/2379-JRG-4_1_sequence.txt"],
+		"2379_N6" => ["/scratch/cqs/shengq1/rnaseq/2379/rawdata/2379-JRG-6_1_sequence.txt"],
 	},
 	groups => {
-		"POSITIVE"  => [ "P2379_P1", "P2379_P2", "P2379_P3" ],
-		"NEGATIVE" => [ "P2379_N1", "P2379_N3", "P2379_N3" ],
+		"POSITIVE" => [ "2379_P1", "2379_P3", "2379_P5" ],
+		"NEGATIVE" => [ "2379_N2", "2379_N4", "2379_N6" ],
 	},
 	pairs  => { "POSITIVE_vs_NEGATIVE" => [ "POSITIVE", "NEGATIVE" ], },
 	fastqc => {
