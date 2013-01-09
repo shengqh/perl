@@ -53,7 +53,7 @@ my $config = {
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
-			"walltime" => "240",
+			"walltime" => "72",
 			"mem"      => "40gb"
 		},
 	},
@@ -77,7 +77,7 @@ my $config = {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "72",
-			"mem"      => "40gb"
+			"mem"      => "30gb"
 		},
 	},
 	cufflinks_cuffdiff => {
@@ -90,13 +90,13 @@ my $config = {
 		pbs                => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
-			"walltime" => "720",
-			"mem"      => "40gb"
+			"walltime" => "72",
+			"mem"      => "30gb"
 		},
 	},
 };
 
-fastqc_by_pbs( $config, "fastqc" );
+#fastqc_by_pbs( $config, "fastqc" );
 
 tophat2_by_pbs( $config, "tophat2" );
 
