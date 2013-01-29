@@ -63,8 +63,8 @@ sub tcga_download {
 
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
-	my $rawdir        = create_dir_or_die( $resultDir . "/raw" );
-	my $coordinatedir = create_dir_or_die( $resultDir . "/coordindates" );
+	my $rawdir        = create_directory_or_die( $resultDir . "/raw" );
+	my $coordinatedir = create_directory_or_die( $resultDir . "/coordindates" );
 
 	print OUT "echo download=`date` \n";
 
