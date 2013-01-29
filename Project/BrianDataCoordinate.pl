@@ -15,7 +15,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
     general => {
         path_file            => "/home/shengq1/bin/path.txt",
-        task_name            => "DataDownload"
+        task_name            => "Lung"
     },
     lung => {
         target_dir => "${target_dir}/lung",
