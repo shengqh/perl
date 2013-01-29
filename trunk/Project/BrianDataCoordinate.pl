@@ -15,7 +15,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
     general => {
         path_file            => "/home/shengq1/bin/path.txt",
-        task_name            => "Lung"
+        task_name            => "lung"
     },
     lung => {
         target_dir => "${target_dir}/lung",
