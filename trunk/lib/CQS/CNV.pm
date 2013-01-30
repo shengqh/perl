@@ -261,14 +261,16 @@ sub cnmops {
 		print R "segments <- read.table(\"$probefile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
 		print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3])) \n";
 		print R "X <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"unpaired\") \n";
+        print R "save(X, file=\"${task_name}_X_cnmops.Rdata\") \n";
 		print R "resCNMOPS <- exomecn.mops(X) \n";
 	}
 	else {
 		print R "X <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"unpaired\") \n";
+        print R "save(X, file=\"${task_name}_X_cnmops.Rdata\") \n";
 		print R "resCNMOPS <- cn.mops(X) \n";
 	}
 
-	print R "save(resCNMOPS, file=\"${task_name}_cnmaps.Rdata\") \n";
+	print R "save(resCNMOPS, file=\"${task_name}_cnmops.Rdata\") \n";
 	close R;
 
 	my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
