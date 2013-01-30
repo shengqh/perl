@@ -17,10 +17,10 @@ my $config = {
         path_file            => "/home/shengq1/bin/path.txt",
         task_name            => "lung"
     },
-    lung => {
-        target_dir => "${target_dir}/lung",
+    tcga => {
+        target_dir => "${target_dir}/tcga",
         option     => "",
-        idfile =>"${target_dir}/Lung.txt",
+        idfile =>"${target_dir}/tcga.txt",
         tcgaidindex =>1,
         analysisidindex => 5,
         coordinateindex => 13,
@@ -33,6 +33,6 @@ my $config = {
     },
 };
 
-tcga_download($config, "lung");
+tcga_download($config, "tcga");
 
 1;
