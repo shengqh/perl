@@ -115,11 +115,11 @@ sub tcga_get_coordinate {
         my $coordinate = $parts[$coordinateindex];
         
         if(!defined($coordinate) ){
-        	continue;
+        	next;
         }
         
         if(length($coordinate) == 0){
-            continue;
+            next;
         }
         
         print $coordinate . "\n";
