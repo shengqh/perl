@@ -264,18 +264,19 @@ sub cnmops {
 
 	if ( defined $probefile ) {
 		print R "segments <- read.table(\"$probefile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
-		print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3])) \n";
-		print R "X <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") \n";
-        print R "save(X, file=\"${task_name}_X_cnmops.Rdata\") \n";
-		print R "resCNMOPS <- exomecn.mops(X) \n";
+		print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3]), gene=segments[,4]) \n";
+		print R "x <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") \n";
+        print R "save(x, file=\"${task_name}_x_SegmentReadCounts.Rdata\") \n";
+		print R "resCNMOPS <- exomecn.mops(x) \n";
+        print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_exomecn.mops.Rdata\") \n";
 	}
 	else {
-		print R "X <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"$pairmode\") \n";
-        print R "save(X, file=\"${task_name}_X_cnmops.Rdata\") \n";
-		print R "resCNMOPS <- cn.mops(X) \n";
+		print R "x <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"$pairmode\") \n";
+        print R "save(x, file=\"${task_name}_x_SegmentReadCounts.Rdata\") \n";
+		print R "resCNMOPS <- cn.mops(x) \n";
+        print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_cn.mops.Rdata\") \n";
 	}
 
-	print R "save(resCNMOPS, file=\"${task_name}_cnmops.Rdata\") \n";
 	close R;
 
 	my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
