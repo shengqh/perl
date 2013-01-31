@@ -56,8 +56,8 @@ sub tcga_download {
 	my @raw_data = <DAT>;
 	close(DAT);
 
-	my $pbsFile = $pbsDir . "/${task_name}_tcgadownload.pbs";
-	my $log     = $logDir . "/${task_name}_tcgadownload.log";
+	my $pbsFile = $pbsDir . "/${task_name}_download.pbs";
+	my $log     = $logDir . "/${task_name}_download.log";
 
 	output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
@@ -94,8 +94,8 @@ sub tcga_get_coordinate {
     my @raw_data = <DAT>;
     close(DAT);
 
-    my $pbsFile = $pbsDir . "/${task_name}_tcgacoordidate.pbs";
-    my $log     = $logDir . "/${task_name}_tcgacoordidate.log";
+    my $pbsFile = $pbsDir . "/${task_name}_coordidate.pbs";
+    my $log     = $logDir . "/${task_name}_coordidate.log";
 
     output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
