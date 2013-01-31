@@ -23,7 +23,7 @@ my $config = {
         idfile =>"${target_dir}/tcga.txt",
         tcgaidindex =>1,
         analysisidindex => 5,
-        coordinateindex => 13,
+        coordinateindex => 12,
         pbs        => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
