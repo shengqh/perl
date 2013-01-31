@@ -111,6 +111,8 @@ sub tcga_get_coordinate {
         my $tcga       = $parts[$tcgaidindex];
         my $analysisid = $parts[$analysisidindex];
         my $coordinate = $parts[$coordinateindex];
+        
+        print $coordinate . "\n";
 
         my $subdir = $rawdir . '/' . $analysisid;
 
