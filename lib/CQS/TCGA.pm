@@ -70,9 +70,11 @@ sub tcga_download {
 		chomp($line);
 		my @parts      = split( '\t', $line );
 		my $partSize   = @parts;
+        my $tcga       = $parts[$tcgaidindex];
 		my $analysisid = $parts[$analysisidindex];
 
 		my $url = "https://cghub.ucsc.edu/cghub/data/analysis/download/" . $analysisid;
+        print OUT "echo $tcga `date` \n";
 		print OUT "GeneTorrent -v -c ~/.ssh/mykey.pem -C ~/pylibs/share/GeneTorrent -d $url \n";
 	}
 	output_footer();
@@ -111,6 +113,14 @@ sub tcga_get_coordinate {
         my $tcga       = $parts[$tcgaidindex];
         my $analysisid = $parts[$analysisidindex];
         my $coordinate = $parts[$coordinateindex];
+        
+        if(!defined($coordinate) ){
+        	continue;
+        }
+        
+        if(length($coordinate) == 0){
+            continue;
+        }
         
         print $coordinate . "\n";
 
