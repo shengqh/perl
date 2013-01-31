@@ -78,8 +78,9 @@ sub tcga_download {
                 output_footer();
 			}
 			$dindex = $dindex+1;
-            my $pbsFile = $pbsDir . "/${task_name}_${dindex}_download.pbs";
-            my $log     = $logDir . "/${task_name}_${dindex}_download.log";
+            my $pbsName = "${task_name}_${dindex}_download.pbs";
+            my $pbsFile = "${pbsDir}/$pbsName";
+            my $log     = "${logDir}/${task_name}_${dindex}_download.log";
             
             print SH "\$MYCMD ./$pbsName \n";
 
