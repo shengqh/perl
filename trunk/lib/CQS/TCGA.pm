@@ -49,6 +49,7 @@ sub tcga_download {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
+    my $tcgaidindex     = $config->{$section}{tcgaidindex}     or die "Define tcgaidindex at section $section";
 	my $analysisidindex = $config->{$section}{analysisidindex} or die "Define analysisidindex at section $section";
 
 	open( DAT, $idfile ) || die("Could not open file $idfile!");
