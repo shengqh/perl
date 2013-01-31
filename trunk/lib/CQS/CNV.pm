@@ -218,6 +218,11 @@ sub cnmops {
 		$isbamsorted = 0;
 	}
 
+    my $pairmode = $config->{$section}{pairmode};
+    if ( !defined($pairmode) ) {
+        $pairmode = "unpaired";
+    }
+
 	my %rawFiles = %{ get_raw_files( $config, $section ) };
 
 	my $rfile = $pbsDir . "/${task_name}_cnmops.r";
@@ -265,7 +270,7 @@ sub cnmops {
 		print R "resCNMOPS <- exomecn.mops(X) \n";
 	}
 	else {
-		print R "X <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"unpaired\") \n";
+		print R "X <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"$pairmode\") \n";
         print R "save(X, file=\"${task_name}_X_cnmops.Rdata\") \n";
 		print R "resCNMOPS <- cn.mops(X) \n";
 	}
