@@ -138,6 +138,14 @@ sub tcga_get_coordinate {
         my $analysisid = $parts[$analysisidindex];
         my $coordinate = $parts[$coordinateindex];
         
+        if(!defined($analysisid)){
+            next;
+        }
+        
+        if(length($analysisid) == 0){
+            next;
+        }
+        
         if(!defined($coordinate) ){
         	next;
         }
