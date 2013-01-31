@@ -265,7 +265,7 @@ sub cnmops {
 	if ( defined $probefile ) {
 		print R "segments <- read.table(\"$probefile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
 		print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3])) \n";
-		print R "X <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"unpaired\") \n";
+		print R "X <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") \n";
         print R "save(X, file=\"${task_name}_X_cnmops.Rdata\") \n";
 		print R "resCNMOPS <- exomecn.mops(X) \n";
 	}
