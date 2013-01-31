@@ -154,7 +154,7 @@ sub tcga_get_coordinate {
             next;
         }
         
-        print $coordinate . "\n";
+        #print $coordinate . "\n";
 
         my $subdir = $rawdir . '/' . $analysisid;
 
