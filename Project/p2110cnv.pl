@@ -36,11 +36,11 @@ my $config = {
 		"2110_JP_16" => ["/scratch/cqs/shengq1/dnaseq/2110/bwa_markdup/2110-JP-16_realigned_recal_rmdup.bam"],
 	},
 	samtoolsindex => {
-		target_dir => "${target_dir}/samtoolsindex",
-		option     => "",
-		source_ref => "bamfiles",
-		isbamsorted  => 0,
-		pbs        => {
+		target_dir  => "${target_dir}/samtoolsindex",
+		option      => "",
+		source_ref  => "bamfiles",
+		isbamsorted => 0,
+		pbs         => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
 			"walltime" => "72",
@@ -48,13 +48,13 @@ my $config = {
 		},
 	},
 	cnvnator100 => {
-		target_dir => "${target_dir}/cnvnator100",
-		option     => "",
-		source_ref => "bamfiles",
-		binsize    => 100,
-		probefile  => $probefile,
-        isbamsorted  => 0,
-		pbs        => {
+		target_dir  => "${target_dir}/cnvnator100",
+		option      => "",
+		source_ref  => "bamfiles",
+		binsize     => 100,
+		probefile   => $probefile,
+		isbamsorted => 0,
+		pbs         => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
 			"walltime" => "72",
@@ -62,32 +62,33 @@ my $config = {
 		},
 	},
 	conifer => {
-		target_dir => "${target_dir}/conifer",
-		option     => "",
-		source_ref => "bamfiles",
-		conifer    => "/home/shengq1/pylibs/bin/conifer.py",
-		probefile  => $probefile,
-        isbamsorted  => 0,
-		pbs        => {
+		target_dir  => "${target_dir}/conifer",
+		option      => "",
+		source_ref  => "bamfiles",
+		conifer     => "/home/shengq1/pylibs/bin/conifer.py",
+		probefile   => $probefile,
+		isbamsorted => 0,
+		pbs         => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
 			"walltime" => "720",
 			"mem"      => "10gb"
 		},
 	},
-    cnmops => {
-        target_dir => "${target_dir}/cnmops",
-        option     => "",
-        source_ref => "bamfiles",
-        probefile  => $probefile,
-        isbamsorted  => 0,
-        pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "720",
-            "mem"      => "40gb"
-        },
-    },
+	cnmops => {
+		target_dir  => "${target_dir}/cnmops",
+		option      => "",
+		source_ref  => "bamfiles",
+		probefile   => $probefile,
+		pairmode    => "paired",
+		isbamsorted => 0,
+		pbs         => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "720",
+			"mem"      => "40gb"
+		},
+	},
 };
 
 #samtools_index($config, "samtoolsindex");
@@ -95,6 +96,6 @@ my $config = {
 #cnvnator( $config, "cnvnator100" );
 #conifer( $config, "conifer" );
 
-cnmops($config, "cnmops");
+cnmops( $config, "cnmops" );
 
 1;
