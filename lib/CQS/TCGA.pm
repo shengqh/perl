@@ -57,29 +57,51 @@ sub tcga_download {
 	my @raw_data = <DAT>;
 	close(DAT);
 
-	my $pbsFile = $pbsDir . "/${task_name}_download.pbs";
-	my $log     = $logDir . "/${task_name}_download.log";
-
-	output_header( $pbsFile, $pbsDesc, $path_file, $log );
-
 	my $rawdir        = create_directory_or_die( $resultDir . "/raw" );
 
-	print OUT "echo download=`date` \n";
-    print OUT "cd $rawdir \n";
+    my $shfile = $pbsDir . "/${task_name}.sh";
+    open( SH, ">$shfile" ) or die "Cannot create $shfile";
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
+    my $index = 0;
+    my $dindex = 0;
 	foreach $line (@raw_data) {
 		chomp($line);
 		my @parts      = split( '\t', $line );
 		my $partSize   = @parts;
         my $tcga       = $parts[$tcgaidindex];
 		my $analysisid = $parts[$analysisidindex];
-
 		my $url = "https://cghub.ucsc.edu/cghub/data/analysis/download/" . $analysisid;
+		
+		if (0 == $index % 10){
+			if ($dindex != 0){
+                output_footer();
+			}
+			$dindex = $dindex+1;
+            my $pbsFile = $pbsDir . "/${task_name}_${dindex}_download.pbs";
+            my $log     = $logDir . "/${task_name}_${dindex}_download.log";
+            
+            print SH "\$MYCMD ./$pbsName \n";
+
+            output_header( $pbsFile, $pbsDesc, $path_file, $log );
+    
+            print OUT "echo download=`date` \n";
+            print OUT "cd $rawdir \n";
+		}
+		
+        $index = $index + 1;
         print OUT "echo $tcga `date` \n";
 		print OUT "GeneTorrent -v -c ~/.ssh/mykey.pem -C ~/pylibs/share/GeneTorrent -d $url \n";
+
+        print "$pbsFile created\n";
 	}
 	output_footer();
-	print "$pbsFile created\n";
+	
+    close(SH);
+
+    if ( is_linux() ) {
+        chmod 0755, $shfile;
+    }
 }
 
 sub tcga_get_coordinate {
