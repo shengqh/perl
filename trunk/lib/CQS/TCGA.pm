@@ -88,13 +88,13 @@ sub tcga_download {
     
             print OUT "echo download=`date` \n";
             print OUT "cd $rawdir \n";
+
+            print "$pbsFile created\n";
 		}
 		
         $index = $index + 1;
         print OUT "echo $tcga `date` \n";
 		print OUT "GeneTorrent -v -c ~/.ssh/mykey.pem -C ~/pylibs/share/GeneTorrent -d $url \n";
-
-        print "$pbsFile created\n";
 	}
 	output_footer();
 	
