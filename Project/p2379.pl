@@ -47,14 +47,14 @@ my $config = {
 	},
 	tophat2 => {
 		target_dir => "${target_dir}/tophat2",
-		option     => "--segment-length 25 -r 0 -p 8",
+		option     => "--segment-length 25 -r 0 -p 6",
 		batchmode  => 0,
 		source_ref => "fastqfiles",
 		pbs        => {
 			"email"    => $email,
-			"nodes"    => "1:ppn=8",
+			"nodes"    => "1:ppn=6",
 			"walltime" => "72",
-			"mem"      => "40gb"
+			"mem"      => "30gb"
 		},
 	},
 	cufflinks => {
@@ -100,9 +100,9 @@ my $config = {
 
 tophat2_by_pbs( $config, "tophat2" );
 
-cufflinks_by_pbs( $config, "cufflinks" );
+#cufflinks_by_pbs( $config, "cufflinks" );
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+#cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 1;
