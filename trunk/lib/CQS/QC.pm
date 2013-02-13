@@ -47,8 +47,10 @@ sub fastqc_by_pbs {
 		print OUT "#PBS -o $log\n";
 		print OUT "#PBS -j oe\n\n";
 
-		if ( -e $path_file ) {
-			print OUT "source $path_file \n";
+		if ( defined $path_file ){
+			if (-e $path_file ) {
+				print OUT "source $path_file \n";
+			}
 		}
 		print OUT "echo fastqc=`date` \n";
 
