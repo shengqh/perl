@@ -75,7 +75,7 @@ sub tcga_download {
 	my @raw_data = <DAT>;
 	close(DAT);
 	
-	print @raw_data;
+	#print @raw_data;
 
 	my $rawdir = create_directory_or_die( $resultDir . "/raw" );
 
@@ -90,13 +90,14 @@ sub tcga_download {
 		my @parts = split( '\t', $line );
 
 		my $batch = $parts[$batchindex];
+		
+		print $batch . "\n";
 		if ( scalar(@batches) > 0 ) {
 			if ( !exists( $batchmap{$batch} ) ) {
 				next;
 			}
 		}
 
-        print $line .  " \n";
 		my $partSize = @parts;
 
 		my $tcga       = $parts[$tcgaidindex];
