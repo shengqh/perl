@@ -23,6 +23,7 @@ use Cwd;
 
 sub output_header {
 	my ( $pbsFile, $pbsDesc, $path_file, $log ) = @_;
+	print "writing file " . $pbsFile . "\n";
 	open( OUT, ">$pbsFile" ) or die $!;
 	print OUT $pbsDesc;
 	print OUT "#PBS -o $log\n";
@@ -35,6 +36,7 @@ sub output_header {
 sub output_footer() {
 	print OUT "echo finished=`date`\n";
 	close OUT;
+    print "close file \n";
 }
 
 my $bamfilter = sub {
