@@ -49,11 +49,24 @@ sub tcga_download {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
-	my $batchindex = $config->{$section}{batchidindex} or die "Define batchidindex at section $section";
+    
+    my $batchindex = $config->{$section}{batchidindex};
+    if(!defined $batchindex) {
+        die "Define batchidindex at section $section";
+    }
+	
 	my @batches    = $config->{$section}{batches}    or die "Define batches at section $section";
 	my %batchmap = map { $_ => 1 } @batches;
-	my $tcgaidindex     = $config->{$section}{tcgaidindex}     or die "Define tcgaidindex at section $section";
-	my $analysisidindex = $config->{$section}{analysisidindex} or die "Define analysisidindex at section $section";
+	
+	my $tcgaidindex     = $config->{$section}{tcgaidindex};
+    if(!defined $tcgaidindex) {
+        die "Define tcgaidindex at section $section";
+    }
+    
+	my $analysisidindex = $config->{$section}{analysisidindex};
+    if(!defined $analysisidindex) {
+        die "Define analysisidindex at section $section";
+    }
 
 	open( DAT, $idfile ) || die("Could not open file $idfile!");
 	my $line     = <DAT>;
@@ -123,12 +136,29 @@ sub tcga_get_coordinate {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
-    my $batchindex = $config->{$section}{batchidindex} or die "Define batchidindex at section $section";
+    
+    my $batchindex = $config->{$section}{batchidindex};
+    if(!defined $batchindex) {
+        die "Define batchidindex at section $section";
+    }
+    
     my @batches    = $config->{$section}{batches}    or die "Define batches at section $section";
     my %batchmap = map { $_ => 1 } @batches;
-	my $tcgaidindex     = $config->{$section}{tcgaidindex}     or die "Define tcgaidindex at section $section";
-	my $analysisidindex = $config->{$section}{analysisidindex} or die "Define analysisidindex at section $section";
-	my $coordinateindex = $config->{$section}{coordinateindex} or die "Define coordinateindex at section $section";
+    
+    my $tcgaidindex     = $config->{$section}{tcgaidindex};
+    if(!defined $tcgaidindex) {
+        die "Define tcgaidindex at section $section";
+    }
+    
+    my $analysisidindex = $config->{$section}{analysisidindex};
+    if(!defined $analysisidindex) {
+        die "Define analysisidindex at section $section";
+    }
+
+	my $coordinateindex = $config->{$section}{coordinateindex};
+    if(!defined $coordinateindex) {
+        die "Define coordinateindex at section $section";
+    }
 
 	open( DAT, $idfile ) || die("Could not open file $idfile!");
 	my $line     = <DAT>;

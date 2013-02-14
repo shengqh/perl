@@ -21,7 +21,7 @@ my $config = {
 		target_dir      => "${target_dir}/tcga",
 		option          => "",
 		idfile          => "${target_dir}/tcga.txt",
-		batchidindex      => 0,
+		batchidindex    => 0,
 		batches         => [2],
 		tcgaidindex     => 2,
 		analysisidindex => 6,
@@ -35,7 +35,8 @@ my $config = {
 	},
 };
 
-tcga_download($config, "tcga");
+tcga_download( $config, "tcga" );
+
 #tcga_get_coordinate( $config, "tcga" );
 
 1;
