@@ -74,6 +74,8 @@ sub tcga_download {
 	my $line     = <DAT>;
 	my @raw_data = <DAT>;
 	close(DAT);
+	
+	print @raw_data;
 
 	my $rawdir = create_directory_or_die( $resultDir . "/raw" );
 
@@ -83,7 +85,6 @@ sub tcga_download {
 
 	my $index  = 0;
 	my $dindex = 0;
-        print " start \n";
 	foreach $line (@raw_data) {
 		chomp($line);
 		my @parts = split( '\t', $line );
@@ -125,7 +126,9 @@ sub tcga_download {
 		print OUT "echo $tcga `date` \n";
 		print OUT "GeneTorrent -v -c ~/.ssh/mykey.pem -C ~/pylibs/share/GeneTorrent -d $url \n";
 	}
-	output_footer();
+    if ( $dindex != 0 ) {
+        output_footer();
+    }
 
 	close(SH);
 
