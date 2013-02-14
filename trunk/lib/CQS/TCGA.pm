@@ -49,7 +49,7 @@ sub tcga_download {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
-	my $batchindex = $config->{$section}{batchindex} or die "Define batchindex at section $section";
+	my $batchindex = $config->{$section}{"batchindex"} or die "Define batchindex at section $section";
 	my @batches    = $config->{$section}{batches}    or die "Define batches at section $section";
 	my %batchmap = map { $_ => 1 } @batches;
 	my $tcgaidindex     = $config->{$section}{tcgaidindex}     or die "Define tcgaidindex at section $section";
