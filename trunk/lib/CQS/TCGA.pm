@@ -58,6 +58,8 @@ sub tcga_download {
     }
 	
 	my @batches    = $config->{$section}{batches}    or die "Define batches at section $section";
+	print @batches;
+	
 	my %batchmap = map { $_ => 1 } @batches;
 	
 	my $tcgaidindex     = $config->{$section}{tcgaidindex};
