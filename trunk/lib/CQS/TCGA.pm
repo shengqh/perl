@@ -83,6 +83,7 @@ sub tcga_download {
 
 	my $index  = 0;
 	my $dindex = 0;
+        print " start \n";
 	foreach $line (@raw_data) {
 		chomp($line);
 		my @parts = split( '\t', $line );
