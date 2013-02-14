@@ -76,6 +76,8 @@ sub tcga_download {
 	close(DAT);
 	
 	#print @raw_data;
+	
+	print %batchmap;
 
 	my $rawdir = create_directory_or_die( $resultDir . "/raw" );
 
