@@ -36,7 +36,7 @@ sub output_header {
 sub output_footer() {
 	print OUT "echo finished=`date`\n";
 	close OUT;
-    print "close file \n";
+	print "close file \n";
 }
 
 my $bamfilter = sub {
@@ -51,35 +51,37 @@ sub tcga_download {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
+
+	my $batchindex = $config->{$section}{batchidindex};
+	if ( !defined $batchindex ) {
+		die "Define batchidindex at section $section";
+	}
+
+    my $batches = $config->{$section}{batches} or die "Define batches at section $section";
+    my @batches = @{$batches};
     
-    my $batchindex = $config->{$section}{batchidindex};
-    if(!defined $batchindex) {
-        die "Define batchidindex at section $section";
-    }
-	
-	my @batches    = @{$config->{$section}{batches}}    or die "Define batches at section $section";
-	print @batches;
-	
+	#print @batches;
+
 	my %batchmap = map { $_ => 1 } @batches;
-	
-	my $tcgaidindex     = $config->{$section}{tcgaidindex};
-    if(!defined $tcgaidindex) {
-        die "Define tcgaidindex at section $section";
-    }
-    
+
+	my $tcgaidindex = $config->{$section}{tcgaidindex};
+	if ( !defined $tcgaidindex ) {
+		die "Define tcgaidindex at section $section";
+	}
+
 	my $analysisidindex = $config->{$section}{analysisidindex};
-    if(!defined $analysisidindex) {
-        die "Define analysisidindex at section $section";
-    }
+	if ( !defined $analysisidindex ) {
+		die "Define analysisidindex at section $section";
+	}
 
 	open( DAT, $idfile ) || die("Could not open file $idfile!");
 	my $line     = <DAT>;
 	my @raw_data = <DAT>;
 	close(DAT);
-	
+
 	#print @raw_data;
-	
-	print %batchmap;
+
+	#print %batchmap;
 
 	my $rawdir = create_directory_or_die( $resultDir . "/raw" );
 
@@ -94,8 +96,8 @@ sub tcga_download {
 		my @parts = split( '\t', $line );
 
 		my $batch = $parts[$batchindex];
-		
-		print $batch . "\n";
+
+		#print $batch . "\n";
 		if ( scalar(@batches) > 0 ) {
 			if ( !exists( $batchmap{$batch} ) ) {
 				next;
@@ -131,9 +133,9 @@ sub tcga_download {
 		print OUT "echo $tcga `date` \n";
 		print OUT "GeneTorrent -v -c ~/.ssh/mykey.pem -C ~/pylibs/share/GeneTorrent -d $url \n";
 	}
-    if ( $dindex != 0 ) {
-        output_footer();
-    }
+	if ( $dindex != 0 ) {
+		output_footer();
+	}
 
 	close(SH);
 
@@ -148,29 +150,31 @@ sub tcga_get_coordinate {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
-    
-    my $batchindex = $config->{$section}{batchidindex};
-    if(!defined $batchindex) {
-        die "Define batchidindex at section $section";
-    }
-    
-    my @batches    = $config->{$section}{batches}    or die "Define batches at section $section";
-    my %batchmap = map { $_ => 1 } @batches;
-    
-    my $tcgaidindex     = $config->{$section}{tcgaidindex};
-    if(!defined $tcgaidindex) {
-        die "Define tcgaidindex at section $section";
-    }
-    
-    my $analysisidindex = $config->{$section}{analysisidindex};
-    if(!defined $analysisidindex) {
-        die "Define analysisidindex at section $section";
-    }
+
+	my $batchindex = $config->{$section}{batchidindex};
+	if ( !defined $batchindex ) {
+		die "Define batchidindex at section $section";
+	}
+
+	my $batches = $config->{$section}{batches} or die "Define batches at section $section";
+	my @batches = @{$batches};
+	
+	my %batchmap = map { $_ => 1 } @batches;
+
+	my $tcgaidindex = $config->{$section}{tcgaidindex};
+	if ( !defined $tcgaidindex ) {
+		die "Define tcgaidindex at section $section";
+	}
+
+	my $analysisidindex = $config->{$section}{analysisidindex};
+	if ( !defined $analysisidindex ) {
+		die "Define analysisidindex at section $section";
+	}
 
 	my $coordinateindex = $config->{$section}{coordinateindex};
-    if(!defined $coordinateindex) {
-        die "Define coordinateindex at section $section";
-    }
+	if ( !defined $coordinateindex ) {
+		die "Define coordinateindex at section $section";
+	}
 
 	open( DAT, $idfile ) || die("Could not open file $idfile!");
 	my $line     = <DAT>;
@@ -189,15 +193,15 @@ sub tcga_get_coordinate {
 
 	foreach $line (@raw_data) {
 		chomp($line);
-		my @parts      = split( '\t', $line );
+		my @parts = split( '\t', $line );
 
-        my $batch = $parts[$batchindex];
-        if ( scalar(@batches) > 0 ) {
-            if ( !exists( $batchmap{$batch} ) ) {
-                next;
-            }
-        }
-		
+		my $batch = $parts[$batchindex];
+		if ( scalar(@batches) > 0 ) {
+			if ( !exists( $batchmap{$batch} ) ) {
+				next;
+			}
+		}
+
 		my $partSize   = @parts;
 		my $tcga       = $parts[$tcgaidindex];
 		my $analysisid = $parts[$analysisidindex];
