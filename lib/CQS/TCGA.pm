@@ -94,6 +94,7 @@ sub tcga_download {
 			}
 		}
 
+        print $line .  " \n";
 		my $partSize = @parts;
 
 		my $tcga       = $parts[$tcgaidindex];
