@@ -75,7 +75,7 @@ sub tcga_download {
 		my $batch = $parts[$batchindex];
 		if ( scalar(@batches) > 0 ) {
 			if ( !exists( $batchmap{$batch} ) ) {
-				continue;
+				next;
 			}
 		}
 
