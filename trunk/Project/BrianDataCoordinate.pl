@@ -35,8 +35,8 @@ my $config = {
 	},
 };
 
-tcga_download( $config, "tcga" );
+#tcga_download( $config, "tcga" );
 
-#tcga_get_coordinate( $config, "tcga" );
+tcga_get_coordinate( $config, "tcga" );
 
 1;
