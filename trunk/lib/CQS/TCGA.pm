@@ -22,227 +22,236 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub output_header {
-	my ( $pbsFile, $pbsDesc, $path_file, $log ) = @_;
-	#print "writing file " . $pbsFile . "\n";
-	open( OUT, ">$pbsFile" ) or die $!;
-	print OUT $pbsDesc;
-	print OUT "#PBS -o $log\n";
-	print OUT "#PBS -j oe\n\n";
-	if ( defined $path_file ) {
-		print OUT "source $path_file\n";
-	}
+  my ( $pbsFile, $pbsDesc, $path_file, $log ) = @_;
+
+  #print "writing file " . $pbsFile . "\n";
+  open( OUT, ">$pbsFile" ) or die $!;
+  print OUT $pbsDesc;
+  print OUT "#PBS -o $log\n";
+  print OUT "#PBS -j oe\n\n";
+  if ( defined $path_file ) {
+    print OUT "source $path_file\n";
+  }
 }
 
 sub output_footer() {
-	print OUT "echo finished=`date`\n";
-	close OUT;
-	#print "close file \n";
+  print OUT "echo finished=`date`\n";
+  close OUT;
+
+  #print "close file \n";
 }
 
 my $bamfilter = sub {
-	my $filename = shift;
+  my $filename = shift;
 
-	return ( $filename =~ /.bam$/ );
+  return ( $filename =~ /.bam$/ );
 };
 
 sub tcga_download {
-	my ( $config, $section ) = @_;
+  my ( $config, $section ) = @_;
 
-	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
+  my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
 
-	my $batchindex = $config->{$section}{batchidindex};
-	if ( !defined $batchindex ) {
-		die "Define batchidindex at section $section";
-	}
+  my $batchindex = $config->{$section}{batchidindex};
+  if ( !defined $batchindex ) {
+    die "Define batchidindex at section $section";
+  }
 
-    my $batches = $config->{$section}{batches} or die "Define batches at section $section";
-    my @batches = @{$batches};
-    
-	#print @batches;
+  my $batches = $config->{$section}{batches} or die "Define batches at section $section";
+  my @batches = @{$batches};
 
-	my %batchmap = map { $_ => 1 } @batches;
+  #print @batches;
 
-	my $tcgaidindex = $config->{$section}{tcgaidindex};
-	if ( !defined $tcgaidindex ) {
-		die "Define tcgaidindex at section $section";
-	}
+  my %batchmap = map { $_ => 1 } @batches;
 
-	my $analysisidindex = $config->{$section}{analysisidindex};
-	if ( !defined $analysisidindex ) {
-		die "Define analysisidindex at section $section";
-	}
+  my $tcgaidindex = $config->{$section}{tcgaidindex};
+  if ( !defined $tcgaidindex ) {
+    die "Define tcgaidindex at section $section";
+  }
 
-	open( DAT, $idfile ) || die("Could not open file $idfile!");
-	my $line     = <DAT>;
-	my @raw_data = <DAT>;
-	close(DAT);
+  my $analysisidindex = $config->{$section}{analysisidindex};
+  if ( !defined $analysisidindex ) {
+    die "Define analysisidindex at section $section";
+  }
 
-	#print @raw_data;
+  open( DAT, $idfile ) || die("Could not open file $idfile!");
+  my $line     = <DAT>;
+  my @raw_data = <DAT>;
+  close(DAT);
 
-	#print %batchmap;
+  #print @raw_data;
 
-	my $rawdir = create_directory_or_die( $resultDir . "/raw" );
+  #print %batchmap;
 
-	my $shfile = $pbsDir . "/${task_name}.sh";
-	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  my $rawdir = create_directory_or_die( $resultDir . "/raw" );
 
-	my $index  = 0;
-	my $dindex = 0;
-	foreach $line (@raw_data) {
-		chomp($line);
-		my @parts = split( '\t', $line );
+  my $shfile = $pbsDir . "/${task_name}.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
-		my $batch = $parts[$batchindex];
+  my $index  = 0;
+  my $dindex = 0;
+  foreach $line (@raw_data) {
+    chomp($line);
+    my @parts = split( '\t', $line );
 
-		#print $batch . "\n";
-		if ( scalar(@batches) > 0 ) {
-			if ( !exists( $batchmap{$batch} ) ) {
-				next;
-			}
-		}
+    my $batch = $parts[$batchindex];
 
-		my $partSize = @parts;
+    #print $batch . "\n";
+    if ( scalar(@batches) > 0 ) {
+      if ( !exists( $batchmap{$batch} ) ) {
+        next;
+      }
+    }
 
-		my $tcga       = $parts[$tcgaidindex];
-		my $analysisid = $parts[$analysisidindex];
-		my $url        = "https://cghub.ucsc.edu/cghub/data/analysis/download/" . $analysisid;
+    my $partSize = @parts;
 
-		if ( 0 == $index % 10 ) {
-			if ( $dindex != 0 ) {
-				output_footer();
-			}
-			$dindex = $dindex + 1;
-			my $pbsName = "${task_name}_${dindex}_download.pbs";
-			my $pbsFile = "${pbsDir}/$pbsName";
-			my $log     = "${logDir}/${task_name}_${dindex}_download.log";
+    my $tcga       = $parts[$tcgaidindex];
+    my $analysisid = $parts[$analysisidindex];
+    my $url        = "https://cghub.ucsc.edu/cghub/data/analysis/download/" . $analysisid;
 
-			print SH "\$MYCMD ./$pbsName \n";
+    if ( 0 == $index % 10 ) {
+      if ( $dindex != 0 ) {
+        output_footer();
+      }
+      $dindex = $dindex + 1;
+      my $pbsName = "${task_name}_${dindex}_download.pbs";
+      my $pbsFile = "${pbsDir}/$pbsName";
+      my $log     = "${logDir}/${task_name}_${dindex}_download.log";
 
-			output_header( $pbsFile, $pbsDesc, $path_file, $log );
+      print SH "\$MYCMD ./$pbsName \n";
 
-			print OUT "echo download=`date` \n";
-			print OUT "cd $rawdir \n";
+      output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
-			print "$pbsFile created\n";
-		}
+      print OUT "echo download=`date` \n";
+      print OUT "cd $rawdir \n";
 
-		$index = $index + 1;
-		print OUT "echo $tcga `date` \n";
-		print OUT "GeneTorrent -v -c ~/.ssh/mykey.pem -C ~/pylibs/share/GeneTorrent -d $url \n";
-	}
-	if ( $dindex != 0 ) {
-		output_footer();
-	}
+      print "$pbsFile created\n";
+    }
 
-	close(SH);
+    $index = $index + 1;
+    print OUT "echo $tcga `date` \n";
+    print OUT "GeneTorrent -v -c ~/.ssh/mykey.pem -C ~/pylibs/share/GeneTorrent -d $url \n";
+  }
+  if ( $dindex != 0 ) {
+    output_footer();
+  }
 
-	if ( is_linux() ) {
-		chmod 0755, $shfile;
-	}
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
 }
 
 sub tcga_get_coordinate {
-	my ( $config, $section ) = @_;
+  my ( $config, $section ) = @_;
 
-	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-	my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
+  my $idfile = get_param_file( $config->{$section}{idfile}, "analysis id file", 1 );
 
-	my $batchindex = $config->{$section}{batchidindex};
-	if ( !defined $batchindex ) {
-		die "Define batchidindex at section $section";
-	}
+  my $batchindex = $config->{$section}{batchidindex};
+  if ( !defined $batchindex ) {
+    die "Define batchidindex at section $section";
+  }
 
-	my $batches = $config->{$section}{batches} or die "Define batches at section $section";
-	my @batches = @{$batches};
-	
-	my %batchmap = map { $_ => 1 } @batches;
+  my $batches = $config->{$section}{batches} or die "Define batches at section $section";
+  my @batches = @{$batches};
 
-	my $tcgaidindex = $config->{$section}{tcgaidindex};
-	if ( !defined $tcgaidindex ) {
-		die "Define tcgaidindex at section $section";
-	}
+  my %batchmap = map { $_ => 1 } @batches;
 
-	my $analysisidindex = $config->{$section}{analysisidindex};
-	if ( !defined $analysisidindex ) {
-		die "Define analysisidindex at section $section";
-	}
+  my $tcgaidindex = $config->{$section}{tcgaidindex};
+  if ( !defined $tcgaidindex ) {
+    die "Define tcgaidindex at section $section";
+  }
 
-	my $coordinateindex = $config->{$section}{coordinateindex};
-	if ( !defined $coordinateindex ) {
-		die "Define coordinateindex at section $section";
-	}
+  my $analysisidindex = $config->{$section}{analysisidindex};
+  if ( !defined $analysisidindex ) {
+    die "Define analysisidindex at section $section";
+  }
 
-	open( DAT, $idfile ) || die("Could not open file $idfile!");
-	my $line     = <DAT>;
-	my @raw_data = <DAT>;
-	close(DAT);
+  my $coordinateindex = $config->{$section}{coordinateindex};
+  if ( !defined $coordinateindex ) {
+    die "Define coordinateindex at section $section";
+  }
 
-	my $pbsFile = $pbsDir . "/${task_name}_coordidate.pbs";
-	my $log     = $logDir . "/${task_name}_coordidate.log";
+  open( DAT, $idfile ) || die("Could not open file $idfile!");
+  my $line     = <DAT>;
+  my @raw_data = <DAT>;
+  close(DAT);
 
-	output_header( $pbsFile, $pbsDesc, $path_file, $log );
+  my $pbsFile = $pbsDir . "/${task_name}_coordidate.pbs";
+  my $log     = $logDir . "/${task_name}_coordidate.log";
 
-	my $rawdir        = create_directory_or_die( $resultDir . "/raw" );
-	my $coordinatedir = create_directory_or_die( $resultDir . "/coordindates" );
+  output_header( $pbsFile, $pbsDesc, $path_file, $log );
 
-	print OUT "echo download=`date` \n";
+  my $rawdir        = create_directory_or_die( $resultDir . "/raw" );
+  my $coordinatedir = create_directory_or_die( $resultDir . "/coordindates" );
 
-	foreach $line (@raw_data) {
-		chomp($line);
-		my @parts = split( '\t', $line );
+  print OUT "echo download=`date` \n";
 
-		my $batch = $parts[$batchindex];
-		if ( scalar(@batches) > 0 ) {
-			if ( !exists( $batchmap{$batch} ) ) {
-				next;
-			}
-		}
+  foreach $line (@raw_data) {
+    chomp($line);
+    my @parts = split( '\t', $line );
 
-		my $partSize   = @parts;
-		my $tcga       = $parts[$tcgaidindex];
-		my $analysisid = $parts[$analysisidindex];
-		my $coordinate = $parts[$coordinateindex];
+    my $batch = $parts[$batchindex];
+    if ( scalar(@batches) > 0 ) {
+      if ( !exists( $batchmap{$batch} ) ) {
+        next;
+      }
+    }
 
-		if ( !defined($analysisid) ) {
-			next;
-		}
+    my $partSize   = @parts;
+    my $tcga       = $parts[$tcgaidindex];
+    my $analysisid = $parts[$analysisidindex];
+    my $coordinate = $parts[$coordinateindex];
 
-		if ( length($analysisid) == 0 ) {
-			next;
-		}
+    if ( !defined($analysisid) ) {
+      next;
+    }
 
-		if ( !defined($coordinate) ) {
-			next;
-		}
+    if ( length($analysisid) == 0 ) {
+      next;
+    }
 
-		if ( length($coordinate) == 0 ) {
-			next;
-		}
+    if ( !defined($coordinate) ) {
+      next;
+    }
 
-		#print $coordinate . "\n";
+    if ( length($coordinate) == 0 ) {
+      next;
+    }
 
-		my $subdir = $rawdir . '/' . $analysisid;
+    if ( $coordinate =~ /(.+):(.+)-(.+)$/ ) {
+      if ( $2 > $3 ) {
+        print $coordinate . "\n";
+        $coordinate = "$1:$3-$2";
+      }
+    }
 
-		my $targetfile = $coordinatedir . '/' . $tcga . ".coordinates.sam";
+    #print $coordinate . "\n";
 
-		my @bamfiles     = list_files( $subdir, $bamfilter );
-		my $bamfile      = $subdir . "/" . $bamfiles[0];
-		my $bamfileindex = $bamfile . ".bai";
+    my $subdir = $rawdir . '/' . $analysisid;
 
-		if ( !-e $bamfileindex ) {
-			my $cmd = "samtools index " . $bamfile . " ";
-			print OUT $cmd . "\n";
-		}
+    my $targetfile = $coordinatedir . '/' . $tcga . ".coordinates.sam";
 
-		my $cmd = "samtools view " . $bamfile . " " . $coordinate . " > " . $targetfile . " ";
-		print OUT $cmd . "\n";
-	}
-	output_footer();
-	print "$pbsFile created\n";
+    my @bamfiles     = list_files( $subdir, $bamfilter );
+    my $bamfile      = $subdir . "/" . $bamfiles[0];
+    my $bamfileindex = $bamfile . ".bai";
+
+    if ( !-e $bamfileindex ) {
+      my $cmd = "samtools index " . $bamfile . " ";
+      print OUT $cmd . "\n";
+    }
+
+    my $cmd = "samtools view " . $bamfile . " " . $coordinate . " > " . $targetfile . " ";
+    print OUT $cmd . "\n";
+  }
+  output_footer();
+  print "$pbsFile created\n";
 }
 
 1;
