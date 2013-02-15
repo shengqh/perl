@@ -226,8 +226,9 @@ sub tcga_get_coordinate {
     }
 
     if ( $coordinate =~ /(.+):(.+)-(.+)$/ ) {
+      print "$2 $3 \n";
       if ( $2 > $3 ) {
-        print $coordinate . "\n";
+        print "wrong : $coordinate \n";
         $coordinate = "$1:$3-$2";
       }
     }
