@@ -26,8 +26,8 @@ sub mpileup {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
-  my $fafile = get_param_file( $config->{general}{reference_sequence}, "reference_sequence", 0 );
-  my $mincount = $config->{minimum_count};
+  my $fafile = get_param_file( $config->{$section}{reference_sequence}, "reference_sequence", 0 );
+  my $mincount = $config->{$section}{minimum_count};
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
