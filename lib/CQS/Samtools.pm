@@ -55,6 +55,8 @@ sub mpileup {
         print OUT "source $path_file \n";
       }
     }
+    
+    print OUT "cd $target_dir \n\n";
     print OUT "echo mpileup=`date` \n\n";
 
     my $sampleCount = scalar(@sampleFiles);
