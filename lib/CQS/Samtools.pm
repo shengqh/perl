@@ -52,11 +52,11 @@ sub mpileup {
 
     if ( defined $path_file ) {
       if ( -e $path_file ) {
-        print OUT "source $path_file \n";
+        print OUT "source $path_file \n\n";
       }
     }
     
-    print OUT "cd $target_dir \n\n";
+    print OUT "cd $resultDir \n\n";
     print OUT "echo mpileup=`date` \n\n";
 
     my $sampleCount = scalar(@sampleFiles);
@@ -74,7 +74,7 @@ sub mpileup {
       print OUT " -f $fafile";
     }
     for my $sampleFile (@sampleFiles) {
-      print OUT " $sampleFile ";
+      print OUT " $sampleFile";
     }
 
     if ( defined $mincount ) {
