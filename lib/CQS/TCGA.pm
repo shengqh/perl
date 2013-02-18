@@ -226,7 +226,7 @@ sub tcga_get_coordinate {
     }
 
     #remove the character '"' and ','
-    $coordinate =~ s/[",]//g;
+    $coordinate =~ s/[", ]//g;
     if ( $coordinate =~ /(.+):(.+)-(.+)$/ ) {
       if ( $2 > $3 ) {
         print "$coordinate => ";
