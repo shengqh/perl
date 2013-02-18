@@ -228,14 +228,12 @@ sub tcga_get_coordinate {
     #remove the character '"' and ','
     $coordinate =~ s/[",]//g;
     if ( $coordinate =~ /(.+):(.+)-(.+)$/ ) {
-      print "$2 $3 \n";
       if ( $2 > $3 ) {
-        print "wrong : $coordinate \n";
+        print "$coordinate => ";
         $coordinate = "$1:$3-$2";
+        print "$coordinate \n";
       }
     }
-
-    #print $coordinate . "\n";
 
     my $subdir = $rawdir . '/' . $analysisid;
 
