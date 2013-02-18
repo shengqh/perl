@@ -237,7 +237,7 @@ sub tcga_get_coordinate {
 
     my $subdir = $rawdir . '/' . $analysisid;
 
-    my $targetfile = $coordinatedir . '/' . $tcga . ".coordinates.sam";
+    my $targetfile = "${coordinatedir}/${tcga}.${coordinate}.sam";
 
     my @bamfiles     = list_files( $subdir, $bamfilter );
     my $bamfile      = $subdir . "/" . $bamfiles[0];
