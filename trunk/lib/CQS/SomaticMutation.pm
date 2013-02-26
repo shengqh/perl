@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::Samtools;
+package CQS::SomaticMutation;
 
 use strict;
 use warnings;
