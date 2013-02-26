@@ -34,9 +34,16 @@ sub call_wsmdetector {
 
   my $mpileupfile      = "";
   my $fafile           = "";
+  my $mpileupParameter = "";
   my $isbam            = lc($source_type) eq "bam";
   if ($isbam) {
     $fafile = get_param_file( $config->{$section}{mpileup_sequence}, "mpileup_sequence", 1 );
+    $mpileupParameter = $config->{$section}{mpileup_option};
+    if ( defined $mpileupParameter ) {
+      if ( $mpileupParameter eq "" ) {
+        undef($$mpileupParameter);
+      }
+    }
   }
   else {
     $mpileupfile = get_param_file( $config->{$section}{mpileup_file}, "mpileup_file", 1 );
@@ -82,21 +89,30 @@ sub call_wsmdetector {
         print OUT "fi \n\n";
       }
 
-      print OUT "mono $wsmfile -s bam $option -f $fafile";
-
-      my $first = 1;
-      for my $sampleFile (@sampleFiles) {
-        if ($first) {
-          print OUT " -b $sampleFile";
-          $first = 0;
+      if ( defined $mpileupParameter ) {
+        print OUT "samtools mpileup -f $fafile $mpileupParameter";
+        for my $sampleFile (@sampleFiles) {
+          print OUT " $sampleFile";
         }
-        else {
-          print OUT ",$sampleFile";
+        print OUT " | mono $wsmfile -s console $option";
+      }
+      else {
+        print OUT "mono $wsmfile -s bam -f $fafile $option";
+
+        my $first = 1;
+        for my $sampleFile (@sampleFiles) {
+          if ($first) {
+            print OUT " -b $sampleFile";
+            $first = 0;
+          }
+          else {
+            print OUT ",$sampleFile";
+          }
         }
       }
     }
     else {
-      print OUT "mono $wsmfile -s mpileup $option -m $mpileupfile";
+      print OUT "mono $wsmfile -s mpileup -m $mpileupfile $option";
     }
 
     print OUT " -o $curDir -r $rfile > ${curDir}/${sampleName}.snp \n\n";
@@ -114,5 +130,4 @@ sub call_wsmdetector {
 
   print "!!!shell file $shfile created, you can run this shell file to submit all samtools mpileup tasks.\n";
 }
-
 1;
