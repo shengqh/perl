@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(wsmdetector)] );
+our %EXPORT_TAGS = ( 'all' => [qw(call_wsmdetector)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -21,7 +21,7 @@ our $VERSION = '0.01';
 
 use Cwd;
 
-sub wsmdetector {
+sub call_wsmdetector {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );

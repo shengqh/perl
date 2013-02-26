@@ -76,6 +76,6 @@ my $config = {
   },
 };
 
-wsmdetector( $config, "wsmdetector" );
+call_wsmdetector( $config, "wsmdetector" );
 
 1;
