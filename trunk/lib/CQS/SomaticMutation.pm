@@ -69,7 +69,6 @@ sub call_wsmdetector {
       }
     }
 
-    print OUT "cd $resultDir \n\n";
     print OUT "echo wsmdetector=`date` \n\n";
 
     my $sampleCount = scalar(@sampleFiles);
