@@ -84,7 +84,7 @@ sub call_wsmdetector {
         print OUT "fi \n\n";
       }
 
-      print OUT "mono $wsmfile -s bam -f $fafile $option";
+      print OUT "mono $wsmfile -s bam -f $fafile -p $mpileupParameter $option";
 
       my $first = 1;
       for my $sampleFile (@sampleFiles) {
