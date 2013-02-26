@@ -98,7 +98,7 @@ sub call_wsmdetector {
 
      my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
      
-    print OUT " -o $curDir > ${sampleName}.summary \n\n";
+    print OUT " -o $curDir > ${curDir}/${sampleName}.snp \n\n";
     print OUT "echo finished=`date` \n";
     close OUT;
 
