@@ -34,11 +34,9 @@ sub call_wsmdetector {
 
   my $mpileupfile      = "";
   my $fafile           = "";
-  my $mpileupParameter = "";
   my $isbam            = lc($source_type) eq "bam";
   if ($isbam) {
     $fafile = get_param_file( $config->{$section}{mpileup_sequence}, "mpileup_sequence", 1 );
-    $mpileupParameter = $config->{$section}{mpileup_option} or die "mpileup_option is not defined in $section";
   }
   else {
     $mpileupfile = get_param_file( $config->{$section}{mpileup_file}, "mpileup_file", 1 );
@@ -84,7 +82,7 @@ sub call_wsmdetector {
         print OUT "fi \n\n";
       }
 
-      print OUT "mono $wsmfile -s bam -f $fafile -p \"$mpileupParameter\" $option";
+      print OUT "mono $wsmfile -s bam $option -f $fafile";
 
       my $first = 1;
       for my $sampleFile (@sampleFiles) {
@@ -98,7 +96,7 @@ sub call_wsmdetector {
       }
     }
     else {
-      print OUT "mono $wsmfile -s mpileup -m $mpileupfile $option";
+      print OUT "mono $wsmfile -s mpileup $option -m $mpileupfile";
     }
 
     print OUT " -o $curDir -r $rfile > ${curDir}/${sampleName}.snp \n\n";
