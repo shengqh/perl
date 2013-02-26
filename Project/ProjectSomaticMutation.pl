@@ -61,7 +61,7 @@ my $config = {
   },
   wsmdetector => {
     target_dir       => "${target_dir}/wsmdetector",
-    option           => "",
+    option           => "-c 5 -q 20",
     source_ref       => "bamfiles",
     source_type      => "bam",                                                    #source_type can be bam/mpileup/console
     mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
