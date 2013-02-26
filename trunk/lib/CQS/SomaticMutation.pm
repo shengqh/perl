@@ -72,7 +72,7 @@ sub call_wsmdetector {
       print OUT "fi \n\n";
     }
     
-    print OUT "mono $wsmfile -g $fafile";
+    print OUT "mono $wsmfile -f $fafile";
     if ( defined $minimumEventCount ) {
       if ( $minimumEventCount > 0 ) {
         print OUT " -c $minimumEventCount"
