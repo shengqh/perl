@@ -14,7 +14,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => {
-    path_file => "/home/shengq1/bin/path.txt",
+    path_file => "",
     task_name => "wsmdetector"
   },
   bamfiles => {
