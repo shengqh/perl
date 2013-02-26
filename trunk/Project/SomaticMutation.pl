@@ -6,7 +6,7 @@ use CQS::QC;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-use CQS::Samtools;
+use CQS::SomaticMutation;
 
 my $target_dir = "/scratch/cqs/shengq1/somaticmutation";
 
@@ -15,7 +15,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
   general => {
     path_file => "/home/shengq1/bin/path.txt",
-    task_name => "mpileup"
+    task_name => "wsmdetector"
   },
   bamfiles => {
     "TCGA-A7-A0D9" => [
@@ -59,13 +59,15 @@ my $config = {
       "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0H7/TCGA-BH-A0H7-RNA_NT_sorted.bam"
     ],
   },
-  mpileup => {
-    target_dir         => "${target_dir}/mpileup",
-    option             => "-q 20 -Q 20 -r 1",
-    source_ref         => "bamfiles",
-    minimum_count      => 4,
-    reference_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
-    pbs                => {
+  wsmdetector => {
+    target_dir              => "${target_dir}/wsmdetector",
+    option                  => "-q 20 -Q 20 -r 1",
+    source_ref              => "bamfiles",
+    reference_sequence      => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
+    execute_file            => "/home/shengq1/wsmdetector/wsmdetector.exe",
+    minimum_event_count     => 4,
+    minimum_mapping_quality => 20,
+    pbs                     => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -74,6 +76,6 @@ my $config = {
   },
 };
 
-mpileup( $config, "mpileup" );
+wsmdetector( $config, "wsmdetector" );
 
 1;
