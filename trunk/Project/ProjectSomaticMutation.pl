@@ -60,14 +60,15 @@ my $config = {
     ],
   },
   wsmdetector => {
-    target_dir              => "${target_dir}/wsmdetector",
-    option                  => "-q 20 -Q 20 -r 1",
-    source_ref              => "bamfiles",
-    reference_sequence      => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
-    execute_file            => "/home/shengq1/wsmdetector/wsmdetector.exe",
-    minimum_event_count     => 5,
-    minimum_mapping_quality => 20,
-    pbs                     => {
+    target_dir       => "${target_dir}/wsmdetector",
+    option           => "",
+    source_ref       => "bamfiles",
+    source_type      => "bam",                                                    #source_type can be bam/mpileup/console
+    mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
+    mpileup_option   => "-q 20 -Q 20 -r 1",
+    execute_file     => "/home/shengq1/wsmdetector/wsmdetector.exe",
+    r_file           => "/home/shengq1/wsmdetector/wsmdetector.r",
+    pbs              => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
