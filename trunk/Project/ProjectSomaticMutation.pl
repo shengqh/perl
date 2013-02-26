@@ -65,6 +65,7 @@ my $config = {
     source_ref       => "bamfiles",
     source_type      => "bam",                                                    #source_type can be bam/mpileup
     mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
+    mpileup_option   => "-q 20 -Q 20",
     execute_file     => "/home/shengq1/wsmdetector/wsmdetector.exe",
     r_file           => "/home/shengq1/wsmdetector/wsmdetector.r",
     pbs              => {
