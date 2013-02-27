@@ -17,6 +17,12 @@ my $config = {
     path_file => "",
     task_name => "wsmdetector"
   },
+  bamlocal=>{
+    "TCGA-A7-A0D9" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.bam"
+    ],
+  },
   bamfiles => {
     "TCGA-A7-A0D9" => [
       "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_TP_sorted.bam",
@@ -62,7 +68,7 @@ my $config = {
   wsmdetector => {
     target_dir       => "${target_dir}/wsmdetector",
     option           => "-c 5 -q 20",
-    source_ref       => "bamfiles",
+    source_ref       => "bamlocal",
     source_type      => "bam",                                                    #source_type can be bam/mpileup
     mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     #mpileup_option   => "-q 20 -Q 20",
