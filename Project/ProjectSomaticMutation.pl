@@ -24,10 +24,10 @@ my $config = {
     ],
   },
   bamfiles => {
-    "TCGA-A7-A0D9" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_TP_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_NT_sorted.bam"
-    ],
+#    "TCGA-A7-A0D9" => [
+#      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_TP_sorted.bam",
+#      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_NT_sorted.bam"
+#    ],
     "TCGA-BH-A0B3" => [
       "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_TP_sorted.bam",
       "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_NT_sorted.bam"
@@ -68,7 +68,7 @@ my $config = {
   wsmdetector => {
     target_dir       => "${target_dir}/wsmdetector",
     option           => "",
-    source_ref       => "bamlocal",
+    source_ref       => "bamfiles",
     source_type      => "bam",                                                    #source_type can be bam/mpileup
     mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     #mpileup_option   => "-q 20 -Q 20",
