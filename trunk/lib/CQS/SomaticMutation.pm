@@ -115,7 +115,7 @@ sub call_wsmdetector {
       print OUT "mono $wsmfile -s mpileup -m $mpileupfile $option";
     }
 
-    print OUT " -o $curDir -r $rfile > ${curDir}/${sampleName}.snp \n\n";
+    print OUT " -o $curDir -r $rfile &> ${curDir}/${sampleName}.snp \n\n";
     print OUT "echo finished=`date` \n";
     close OUT;
 
