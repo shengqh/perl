@@ -17,7 +17,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
 	'all' => [
-		qw(tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs)
+		qw(call_tophat2 tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs)
 	]
 );
 
@@ -173,6 +173,10 @@ sub tophat2_by_pbs {
 		}
 		print "!!!shell file $shfile created, you can run this shell file to submit all tophat2 tasks.\n";
 	}
+}
+
+sub call_tophat2 {
+  tophat2_by_pbs(@_);
 }
 
 #get expected tophat2 result based on tophat2 definition
