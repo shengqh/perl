@@ -17,6 +17,14 @@ my $config = {
     path_file => "",
     task_name => "wsmdetector"
   },
+  fastqfiles=>{
+    "TCGA-A7-A0D9-TP" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.fastq"
+    ],
+    "TCGA-A7-A0D9-NT" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.fastq"
+    ],
+  },
   bamlocal=>{
     "TCGA-A7-A0D9" => [
       "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam",
@@ -65,6 +73,18 @@ my $config = {
       "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0H7/TCGA-BH-A0H7-RNA_NT_sorted.bam"
     ],
   },
+  tophat2 => {
+    target_dir => "${target_dir}/tophat2",
+    option     => "--segment-length 25 -r 0 -p 8",
+    batchmode  => 0,
+    source_ref => "fastqfiles",
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
   wsmdetector => {
     target_dir       => "${target_dir}/wsmdetector",
     option           => "",
@@ -83,6 +103,8 @@ my $config = {
   },
 };
 
-call_wsmdetector( $config, "wsmdetector" );
+call_tophat2($config, "tophat2");
+
+#call_wsmdetector( $config, "wsmdetector" );
 
 1;
