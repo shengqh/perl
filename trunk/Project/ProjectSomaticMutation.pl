@@ -35,12 +35,48 @@ my $config = {
       "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam",
       "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.bam"
     ],
+    "TCGA-BH-A0B3" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B3-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B3-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0B8" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B8-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B8-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0BJ" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BJ-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BJ-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0BM" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BM-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BM-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0C0" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0C0-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0C0-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0DK" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DK-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DK-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0DP" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DP-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DP-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0E0" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0E0-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0E0-RNA_NT_sorted.bam"
+    ],
+    "TCGA-BH-A0H7" => [
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0H7-RNA_TP_sorted.bam",
+      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0H7-RNA_NT_sorted.bam"
+    ],
   },
   bamfiles => {
-#    "TCGA-A7-A0D9" => [
-#      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_TP_sorted.bam",
-#      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_NT_sorted.bam"
-#    ],
+    "TCGA-A7-A0D9" => [
+      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_TP_sorted.bam",
+      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_NT_sorted.bam"
+    ],
     "TCGA-BH-A0B3" => [
       "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_TP_sorted.bam",
       "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_NT_sorted.bam"
@@ -108,8 +144,8 @@ my $config = {
   },
 };
 
-call_tophat2($config, "tophat2");
+#call_tophat2($config, "tophat2");
 
-#call_wsmdetector( $config, "wsmdetector" );
+call_wsmdetector( $config, "wsmdetector" );
 
 1;
