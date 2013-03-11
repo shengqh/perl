@@ -27,7 +27,6 @@ sub call_wsmdetector {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
   my $wsmfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
-  my $rfile   = get_param_file( $config->{$section}{r_file},       "r_file",       1 );
   my $source_type = $config->{$section}{source_type} or die "source_type is not defined in $section";
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
@@ -115,7 +114,7 @@ sub call_wsmdetector {
       print OUT "mono $wsmfile -s mpileup -m $mpileupfile $option";
     }
 
-    print OUT " -o $curDir -r $rfile &> ${curDir}/${sampleName}.snp \n\n";
+    print OUT " -o $curDir \n\n";
     print OUT "echo finished=`date` \n";
     close OUT;
 
