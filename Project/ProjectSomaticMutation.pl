@@ -31,10 +31,10 @@ my $config = {
     ],
   },
   bamlocal=>{
-#    "TCGA-A7-A0D9" => [
-#      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam",
-#      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.bam"
-#    ],
+    "TCGA-A7-A0D9-TOPHAT2" => [
+      "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-TP/accepted_hits.bam",
+      "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-NT/accepted_hits.bam"
+    ],
     "TCGA-BH-A0B3" => [
       "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B3-RNA_TP_sorted.bam",
       "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B3-RNA_NT_sorted.bam"
