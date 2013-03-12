@@ -89,7 +89,7 @@ sub cnvnator {
     my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
     my $rootFile = $sampleName . ".root";
 
-    print CALL "$rootFile ";
+    print CALL "${curDir}/${rootFile} ";
 
     print OUT "cd $curDir\n\n";
 
