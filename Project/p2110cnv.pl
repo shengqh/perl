@@ -94,9 +94,9 @@ my $config = {
 
 #samtools_index($config, "samtoolsindex");
 
-#cnvnator( $config, "cnvnator100" );
+cnvnator( $config, "cnvnator100" );
 #conifer( $config, "conifer" );
 
-cnmops( $config, "cnmops" );
+#cnmops( $config, "cnmops" );
 
 1;
