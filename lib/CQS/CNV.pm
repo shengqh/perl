@@ -23,281 +23,306 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub cnvnator {
-	my ( $config, $section ) = @_;
+  my ( $config, $section ) = @_;
 
-	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-	my $binsize = $config->{$section}{binsize} or die "define ${section}::binsize first";
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my $binsize        = $config->{$section}{binsize}         or die "define ${section}::binsize first";
+  my $chromosome_dir = $config ->{$section}{chromosome_dir} or die "define ${section}::chromosome_dir first";
 
-	my $isbamsorted = $config->{$section}{isbamsorted};
-	if ( !defined($isbamsorted) ) {
-		$isbamsorted = 0;
-	}
+  my $genome    = $config->{$section}{genome};
+  my $genomestr = "";
 
-	my %rawFiles = %{ get_raw_files( $config, $section ) };
+  if ( defined $genome ) {
+    $genomestr = "-genome " . $genome;
+  }
 
-	my $shfile = $pbsDir . "/${task_name}.sh";
-	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  my $isbamsorted = $config->{$section}{isbamsorted};
+  if ( !defined($isbamsorted) ) {
+    $isbamsorted = 0;
+  }
 
-	for my $sampleName ( sort keys %rawFiles ) {
-		my @sampleFiles = @{ $rawFiles{$sampleName} };
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-		my $bamFile = $sampleFiles[0];
+  my $shfile = $pbsDir . "/${task_name}.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
-		if ( !$isbamsorted ) {
-			( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
-		}
-		my $pbsName = "${sampleName}_cnvnator.pbs";
-		my $pbsFile = "${pbsDir}/$pbsName";
+  my $callfile    = $pbsDir . "/${task_name}_call.pbs";
+  my $calllogfile = $logDir . "/${task_name}_call.log";
+  open( CALL, ">$callfile" ) or die $!;
+  print CALL $pbsDesc;
+  print CALL "#PBS -o $calllogfile\n";
+  print CALL "#PBS -j oe\n\n";
+  if ( -e $path_file ) {
+    print CALL "source $path_file\n";
+  }
+  my $callDir        = create_directory_or_die( $resultDir . "/call" );
+  my $mergedfile     = $callDir . "/" . ${task_name} . ".root";
+  my $mergedCallfile = $callDir . "/" . ${task_name} . ".call";
+  print CALL "echo call=`date`\n";
+  print CALL "cnvnator -root $mergedfile -merge ";
 
-		print SH "\$MYCMD ./$pbsName \n";
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-		my $log = "${logDir}/${sampleName}_cnvnator.log";
+    my $bamFile = $sampleFiles[0];
 
-		open( OUT, ">$pbsFile" ) or die $!;
-		print OUT $pbsDesc;
-		print OUT "#PBS -o $log\n";
-		print OUT "#PBS -j oe\n\n";
+    if ( !$isbamsorted ) {
+      ( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
+    }
+    my $pbsName = "${sampleName}_cnvnator.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
 
-		if ( -e $path_file ) {
-			print OUT "source $path_file\n";
-		}
+    print SH "\$MYCMD ./$pbsName \n";
 
-		my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
-		my $rootFile = $sampleName . ".root";
-		my $callFile = $sampleName . ".call";
+    my $log = "${logDir}/${sampleName}_cnvnator.log";
 
-		print OUT "cd $curDir\n\n";
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT $pbsDesc;
+    print OUT "#PBS -o $log\n";
+    print OUT "#PBS -j oe\n\n";
 
-		print OUT "if [ -s $callFile ]; then\n";
-		print OUT "  echo job has already been done. if you want to do again, delete $callFile and submit job again.\n";
-		print OUT "else\n";
-		print OUT "  if [ ! -s $rootFile ]; then\n";
-		print OUT "    echo extract=`date`\n";
-		print OUT "    cnvnator -root $rootFile -tree $bamFile \n";
-		print OUT "  fi\n";
-		print OUT "  echo call=`date`\n";
-		print OUT "  cnvnator -root $rootFile -his $binsize \n";
-		print OUT "  cnvnator -root $rootFile -stat $binsize \n";
-		print OUT "  cnvnator -root $rootFile -partition $binsize \n";
-		print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n";
-		print OUT "fi\n\n";
+    if ( -e $path_file ) {
+      print OUT "source $path_file\n";
+    }
 
-		print OUT "echo finished=`date`\n";
-		close OUT;
+    my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
+    my $rootFile = $sampleName . ".root";
 
-		print "$pbsFile created\n";
-	}
-	close(SH);
+    print CALL "$rootFile ";
 
-	if ( is_linux() ) {
-		chmod 0755, $shfile;
-	}
+    print OUT "cd $curDir\n\n";
 
-	print "!!!shell file $shfile created, you can run this shell file to submit all cnvnator tasks.\n";
+    print OUT "if [ ! -s $rootFile ]; then\n";
+    print OUT "  echo extract=`date`\n";
+    print OUT "  cnvnator -root $rootFile $genomestr -unique -tree $bamFile \n";
+    print OUT "fi\n";
 
-	#`qsub $pbsFile`;
+    print OUT "echo finished=`date`\n";
+    close OUT;
+
+    print "$pbsFile created\n";
+  }
+  close(SH);
+
+  print CALL "\n";
+  print CALL "cnvnator -root $mergedfile -his $binsize -d $chromosome_dir\n";
+  print CALL "cnvnator -root $mergedfile -stat $binsize \n";
+  print CALL "cnvnator -root $mergedfile -partition $binsize \n";
+  print CALL "cnvnator -root $mergedfile -call $binsize > $mergedCallfile \n";
+  print CALL "echo finished=`date`\n";
+  close(CALL);
+
+  print "$callfile created\n";
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+
+  print "!!!shell file $shfile created, you can run this shell file to submit all cnvnator tasks.\n";
+
+  #`qsub $pbsFile`;
 }
 
 sub conifer {
-	my ( $config, $section ) = @_;
+  my ( $config, $section ) = @_;
 
-	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-	my $conifer   = $config->{$section}{conifer} or die "define conifer program location first.\nconifer => \"location\"";
-	my $probefile = $config->{$section}{probefile};
-	my $probedef  = "";
-	if ( defined $probefile ) {
-		$probedef = "--probes $probefile";
-	}
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my $conifer   = $config->{$section}{conifer} or die "define conifer program location first.\nconifer => \"location\"";
+  my $probefile = $config->{$section}{probefile};
+  my $probedef  = "";
+  if ( defined $probefile ) {
+    $probedef = "--probes $probefile";
+  }
 
-	my $isbamsorted = $config->{$section}{isbamsorted};
-	if ( !defined($isbamsorted) ) {
-		$isbamsorted = 0;
-	}
+  my $isbamsorted = $config->{$section}{isbamsorted};
+  if ( !defined($isbamsorted) ) {
+    $isbamsorted = 0;
+  }
 
-	my %rawFiles = %{ get_raw_files( $config, $section ) };
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-	my $shfile = $pbsDir . "/${task_name}_rpkm.sh";
-	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  my $shfile = $pbsDir . "/${task_name}_rpkm.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
-	create_directory_or_die( $resultDir . "/rpkm" );
-	for my $sampleName ( sort keys %rawFiles ) {
-		my @sampleFiles = @{ $rawFiles{$sampleName} };
+  create_directory_or_die( $resultDir . "/rpkm" );
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-		my $pbsName = "${sampleName}_rpkm.pbs";
-		my $pbsFile = "${pbsDir}/$pbsName";
+    my $pbsName = "${sampleName}_rpkm.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
 
-		print SH "\$MYCMD ./$pbsName \n";
+    print SH "\$MYCMD ./$pbsName \n";
 
-		my $log = "${logDir}/${sampleName}_rpkm.log";
+    my $log = "${logDir}/${sampleName}_rpkm.log";
 
-		open( OUT, ">$pbsFile" ) or die $!;
-		print OUT $pbsDesc;
-		print OUT "#PBS -o $log\n";
-		print OUT "#PBS -j oe\n\n";
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT $pbsDesc;
+    print OUT "#PBS -o $log\n";
+    print OUT "#PBS -j oe\n\n";
 
-		if ( -e $path_file ) {
-			print OUT "source $path_file\n";
-		}
-		print OUT "cd $resultDir\n\n";
-		print OUT "echo rpkm=`date`\n";
+    if ( -e $path_file ) {
+      print OUT "source $path_file\n";
+    }
+    print OUT "cd $resultDir\n\n";
+    print OUT "echo rpkm=`date`\n";
 
-		my $bamFile = $sampleFiles[0];
+    my $bamFile = $sampleFiles[0];
 
-		if ( !$isbamsorted ) {
-			( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
+    if ( !$isbamsorted ) {
+      ( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
 
-			#print $bamFile . "\n";
-		}
-		my $rpkm = "rpkm/" . $sampleName . ".rpkm";
+      #print $bamFile . "\n";
+    }
+    my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
-		print OUT "if [ ! -s $rpkm ]; then\n";
-		print OUT "  echo conifer=`date`\n";
-		print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
-		print OUT "fi\n";
+    print OUT "if [ ! -s $rpkm ]; then\n";
+    print OUT "  echo conifer=`date`\n";
+    print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
+    print OUT "fi\n";
 
-		print OUT "echo finished=`date`\n";
-		close OUT;
+    print OUT "echo finished=`date`\n";
+    close OUT;
 
-		print "$pbsFile created\n";
-	}
-	close(SH);
+    print "$pbsFile created\n";
+  }
+  close(SH);
 
-	if ( is_linux() ) {
-		chmod 0755, $shfile;
-	}
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
 
-	my $pbsName   = "${task_name}_after_rpkm.pbs";
-	my $pbsFile   = "${pbsDir}/$pbsName";
-	my $hdf5File  = "${task_name}.hdf5";
-	my $svalsFile = "${task_name}.svals";
-	my $callFile  = "${task_name}.call";
+  my $pbsName   = "${task_name}_after_rpkm.pbs";
+  my $pbsFile   = "${pbsDir}/$pbsName";
+  my $hdf5File  = "${task_name}.hdf5";
+  my $svalsFile = "${task_name}.svals";
+  my $callFile  = "${task_name}.call";
 
-	open( OUT, ">$pbsFile" ) or die $!;
-	print OUT $pbsDesc;
-	my $log = "${logDir}/${task_name}_after_rpkm.log";
-	print OUT "#PBS -o $log\n";
-	print OUT "#PBS -j oe\n\n";
-	if ( -e $path_file ) {
-		print OUT "source $path_file\n";
-	}
+  open( OUT, ">$pbsFile" ) or die $!;
+  print OUT $pbsDesc;
+  my $log = "${logDir}/${task_name}_after_rpkm.log";
+  print OUT "#PBS -o $log\n";
+  print OUT "#PBS -j oe\n\n";
+  if ( -e $path_file ) {
+    print OUT "source $path_file\n";
+  }
 
-	create_directory_or_die( $resultDir . "/call_images" );
+  create_directory_or_die( $resultDir . "/call_images" );
 
-	print OUT "cd $resultDir\n\n";
+  print OUT "cd $resultDir\n\n";
 
-	print OUT "\n";
-	print OUT "#2 analysis\n";
-	print OUT "echo analyze=`date`\n";
-	print OUT "python $conifer analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
-	print OUT "\n";
-	print OUT "#3 call\n";
-	print OUT "echo call=`date`\n";
-	print OUT "python $conifer call --input $hdf5File --output $callFile \n";
-	print OUT "\n";
-	print OUT "#4 plot\n";
-	print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
-	close OUT;
+  print OUT "\n";
+  print OUT "#2 analysis\n";
+  print OUT "echo analyze=`date`\n";
+  print OUT "python $conifer analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
+  print OUT "\n";
+  print OUT "#3 call\n";
+  print OUT "echo call=`date`\n";
+  print OUT "python $conifer call --input $hdf5File --output $callFile \n";
+  print OUT "\n";
+  print OUT "#4 plot\n";
+  print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
+  close OUT;
 
-	print "$pbsFile created\n";
+  print "$pbsFile created\n";
 
-	print "!!!shell file $shfile created, you can run this shell file to submit all conifer rpkm tasks.\n";
+  print "!!!shell file $shfile created, you can run this shell file to submit all conifer rpkm tasks.\n";
 
-	#`qsub $pbsFile`;
+  #`qsub $pbsFile`;
 }
 
 sub cnmops {
-	my ( $config, $section ) = @_;
+  my ( $config, $section ) = @_;
 
-	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-	my $probefile = $config->{$section}{probefile};
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my $probefile = $config->{$section}{probefile};
 
-	my $isbamsorted = $config->{$section}{isbamsorted};
-	if ( !defined($isbamsorted) ) {
-		$isbamsorted = 0;
-	}
+  my $isbamsorted = $config->{$section}{isbamsorted};
+  if ( !defined($isbamsorted) ) {
+    $isbamsorted = 0;
+  }
 
-    my $pairmode = $config->{$section}{pairmode};
-    if ( !defined($pairmode) ) {
-        $pairmode = "unpaired";
+  my $pairmode = $config->{$section}{pairmode};
+  if ( !defined($pairmode) ) {
+    $pairmode = "unpaired";
+  }
+
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+  my $rfile = $pbsDir . "/${task_name}_cnmops.r";
+  open( R, ">$rfile" ) or die "Cannot create $rfile";
+  print R "library(cn.mops) \n";
+  print R "setwd(\"$resultDir\") \n";
+  print R "SampleNames <- c( \n";
+  my $isfirst = 1;
+  for my $sampleName ( sort keys %rawFiles ) {
+    if ($isfirst) {
+      print R "\"$sampleName\"\n";
+      $isfirst = 0;
+    }
+    else {
+      print R ",\"$sampleName\"\n";
+    }
+  }
+  print R ") \n";
+  print R "BAMFiles <- c( \n";
+
+  $isfirst = 1;
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $bamFile     = $sampleFiles[0];
+
+    if ( !$isbamsorted ) {
+      ( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
     }
 
-	my %rawFiles = %{ get_raw_files( $config, $section ) };
+    if ($isfirst) {
+      print R "\"$bamFile\"\n";
+      $isfirst = 0;
+    }
+    else {
+      print R ",\"$bamFile\"\n";
+    }
+  }
+  print R ") \n";
 
-	my $rfile = $pbsDir . "/${task_name}_cnmops.r";
-	open( R, ">$rfile" ) or die "Cannot create $rfile";
-	print R "library(cn.mops) \n";
-	print R "setwd(\"$resultDir\") \n";
-	print R "SampleNames <- c( \n";
-	my $isfirst = 1;
-	for my $sampleName ( sort keys %rawFiles ) {
-		if ($isfirst) {
-			print R "\"$sampleName\"\n";
-			$isfirst = 0;
-		}
-		else {
-			print R ",\"$sampleName\"\n";
-		}
-	}
-	print R ") \n";
-	print R "BAMFiles <- c( \n";
+  if ( defined $probefile ) {
+    print R "segments <- read.table(\"$probefile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
+    print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3]), gene=segments[,4]) \n";
+    print R "x <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") \n";
+    print R "save(x, file=\"${task_name}_x_getSegmentReadCountsFromBAM.Rdata\") \n";
+    print R "resCNMOPS <- exomecn.mops(x) \n";
+    print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_exomecn.mops.Rdata\") \n";
+  }
+  else {
+    print R "x <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"$pairmode\") \n";
+    print R "save(x, file=\"${task_name}_x_getReadCountsFromBAM.Rdata\") \n";
+    print R "resCNMOPS <- cn.mops(x) \n";
+    print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_cn.mops.Rdata\") \n";
+  }
 
-	$isfirst = 1;
-	for my $sampleName ( sort keys %rawFiles ) {
-		my @sampleFiles = @{ $rawFiles{$sampleName} };
-		my $bamFile     = $sampleFiles[0];
+  close R;
 
-		if ( !$isbamsorted ) {
-			( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
-		}
+  my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
+  my $log     = "${logDir}/${task_name}_cnmops.log";
 
-		if ($isfirst) {
-			print R "\"$bamFile\"\n";
-			$isfirst = 0;
-		}
-		else {
-			print R ",\"$bamFile\"\n";
-		}
-	}
-	print R ") \n";
+  open( OUT, ">$pbsFile" ) or die $!;
+  print OUT $pbsDesc;
+  print OUT "#PBS -o $log\n";
+  print OUT "#PBS -j oe\n\n";
 
-	if ( defined $probefile ) {
-		print R "segments <- read.table(\"$probefile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
-		print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3]), gene=segments[,4]) \n";
-		print R "x <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") \n";
-        print R "save(x, file=\"${task_name}_x_getSegmentReadCountsFromBAM.Rdata\") \n";
-		print R "resCNMOPS <- exomecn.mops(x) \n";
-        print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_exomecn.mops.Rdata\") \n";
-	}
-	else {
-		print R "x <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"$pairmode\") \n";
-        print R "save(x, file=\"${task_name}_x_getReadCountsFromBAM.Rdata\") \n";
-		print R "resCNMOPS <- cn.mops(x) \n";
-        print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_cn.mops.Rdata\") \n";
-	}
+  if ( -e $path_file ) {
+    print OUT "source $path_file\n";
+  }
 
-	close R;
+  print OUT "cd $pbsDir\n\n";
+  print OUT "echo cnmops=`date`\n";
+  print OUT "R --vanilla < $rfile \n";
+  print OUT "echo finished=`date`\n";
+  close OUT;
 
-	my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
-	my $log     = "${logDir}/${task_name}_cnmops.log";
-
-	open( OUT, ">$pbsFile" ) or die $!;
-	print OUT $pbsDesc;
-	print OUT "#PBS -o $log\n";
-	print OUT "#PBS -j oe\n\n";
-
-	if ( -e $path_file ) {
-		print OUT "source $path_file\n";
-	}
-
-	print OUT "cd $pbsDir\n\n";
-	print OUT "echo cnmops=`date`\n";
-	print OUT "R --vanilla < $rfile \n";
-	print OUT "echo finished=`date`\n";
-	close OUT;
-
-	print "$pbsFile created\n";
+  print "$pbsFile created\n";
 }
 
 1;

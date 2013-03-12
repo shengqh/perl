@@ -54,6 +54,7 @@ my $config = {
 		binsize     => 100,
 		probefile   => $probefile,
 		isbamsorted => 0,
+		chromosome_dir =>"/scratch/cqs/shengq1/references/hg19chromosome",
 		pbs         => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
