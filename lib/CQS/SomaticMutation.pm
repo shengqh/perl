@@ -93,10 +93,10 @@ sub call_wsmdetector {
         for my $sampleFile (@sampleFiles) {
           print OUT " $sampleFile";
         }
-        print OUT " | mono $wsmfile -s console $option";
+        print OUT " | mono $wsmfile -t console $option";
       }
       else {
-        print OUT "mono $wsmfile -s bam -f $fafile $option";
+        print OUT "mono $wsmfile -t bam -f $fafile $option";
 
         my $first = 1;
         for my $sampleFile (@sampleFiles) {
@@ -111,7 +111,7 @@ sub call_wsmdetector {
       }
     }
     else {
-      print OUT "mono $wsmfile -s mpileup -m $mpileupfile $option";
+      print OUT "mono $wsmfile -t mpileup -m $mpileupfile $option";
     }
 
     print OUT " -o $curDir \n\n";
