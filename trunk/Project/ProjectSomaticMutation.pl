@@ -23,8 +23,8 @@ my $config = {
     task_name            => "somaticmutation"
   },
   fastqfiles => {
-    "TCGA-A7-A0D9-TP" => [ "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.fastq" ],
-    "TCGA-A7-A0D9-NT" => [ "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.fastq" ],
+    "TCGA-A7-A0D9-TP" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.fastq"],
+    "TCGA-A7-A0D9-NT" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.fastq"],
   },
   bamlocal => {
     "TCGA-A7-A0D9-TOPHAT2" =>
@@ -124,16 +124,16 @@ my $config = {
   },
   wsmdetector => {
     target_dir       => "${target_dir}/wsmdetector",
-    option           => "",
+    option           => "-c 8",                                                   #thread mode
     source_ref       => "bamlocal",
     source_type      => "bam",                                                    #source_type can be bam/mpileup
     mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
 
-    #mpileup_option   => "-q 20 -Q 20",
+    #mpileup_option   => "-q 20",
     execute_file => "/home/shengq1/wsmdetector/wsmdetector.exe",
     pbs          => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "10gb"
     },
