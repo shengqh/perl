@@ -26,6 +26,11 @@ my $config = {
     "TCGA-A7-A0D9-TP" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.fastq"],
     "TCGA-A7-A0D9-NT" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.fastq"],
   },
+  bam_single => {
+    "TCGA-A7-A0D9-TOPHAT2-SINGLE" =>
+      [ "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-TP/accepted_hits.bam", "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-NT/accepted_hits.bam" ],
+    "TCGA-A7-A0D9-SINGLE" => [ "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam", "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.bam" ]
+  },
   bamlocal => {
     "TCGA-A7-A0D9-TOPHAT2-THREAD" =>
       [ "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-TP/accepted_hits.bam", "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-NT/accepted_hits.bam" ],
@@ -138,10 +143,26 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  wsmdetector_single => {
+    target_dir       => "${target_dir}/wsmdetector",
+    option           => "",                                                   #thread mode
+    source_ref       => "bam_single",
+    source_type      => "bam",                                                    #source_type can be bam/mpileup
+    mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
+
+    #mpileup_option   => "-q 20",
+    execute_file => "/home/shengq1/wsmdetector/wsmdetector.exe",
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 };
 
 #call_tophat2($config, "tophat2");
 
-call_wsmdetector( $config, "wsmdetector" );
+call_wsmdetector( $config, "wsmdetector_single" );
 
 1;
