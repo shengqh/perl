@@ -163,6 +163,6 @@ my $config = {
 
 #call_tophat2($config, "tophat2");
 
-call_wsmdetector( $config, "wsmdetector_single" );
+call_wsmdetector( $config, "wsmdetector" );
 
 1;
