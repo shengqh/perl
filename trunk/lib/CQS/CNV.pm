@@ -27,6 +27,14 @@ sub cnvnator {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
   my $binsize = $config->{$section}{binsize} or die "define ${section}::binsize first";
+  my $chromosome_dir = $config ->{$section}{chromosome_dir} or die "define ${section}::chromosome_dir first";
+
+  my $genome    = $config->{$section}{genome};
+  my $genomestr = "";
+
+  if ( defined $genome ) {
+    $genomestr = "-genome " . $genome;
+  }
 
   my $isbamsorted = $config->{$section}{isbamsorted};
   if ( !defined($isbamsorted) ) {
@@ -74,7 +82,7 @@ sub cnvnator {
     print OUT "else\n";
     print OUT "  if [ ! -s $rootFile ]; then\n";
     print OUT "    echo extract=`date`\n";
-    print OUT "    cnvnator -root $rootFile -tree $bamFile \n";
+    print OUT "    cnvnator -root $rootFile $genomestr -unique -tree $bamFile \n";
     print OUT "  fi\n";
     print OUT "  echo call=`date`\n";
     print OUT "  cnvnator -root $rootFile -his $binsize \n";
