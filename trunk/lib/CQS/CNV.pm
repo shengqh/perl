@@ -26,8 +26,8 @@ sub cnvnator {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-  my $binsize = $config->{$section}{binsize} or die "define ${section}::binsize first";
-  my $chromosome_dir = $config ->{$section}{chromosome_dir} or die "define ${section}::chromosome_dir first";
+  my $binsize        = $config->{$section}{binsize}        or die "define ${section}::binsize first";
+  my $chromosome_dir = $config->{$section}{chromosome_dir} or die "define ${section}::chromosome_dir first";
 
   my $genome    = $config->{$section}{genome};
   my $genomestr = "";
@@ -55,12 +55,12 @@ sub cnvnator {
     if ( !$isbamsorted ) {
       ( $bamFile, my $bamSorted ) = get_sorted_bam($bamFile);
     }
-    my $pbsName = "${sampleName}_cnvnator.pbs";
+    my $pbsName = "cnvnator_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_cnvnator.log";
+    my $log = "${logDir}/cnvnator_${sampleName}.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT $pbsDesc;
@@ -125,7 +125,7 @@ sub conifer {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $shfile = $pbsDir . "/${task_name}_conifer.sh";
+  my $shfile = $pbsDir . "/${task_name}.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
@@ -133,12 +133,12 @@ sub conifer {
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-    my $pbsName = "${sampleName}_conifer.pbs";
+    my $pbsName = "conifer_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_conifer.log";
+    my $log = "${logDir}/conifer_${sampleName}.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT $pbsDesc;
@@ -148,7 +148,14 @@ sub conifer {
     if ( -e $path_file ) {
       print OUT "source $path_file\n";
     }
-    print OUT "cd $resultDir\n\n";
+
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+    
+    my $rpkmDir = "rpkm/";
+    
+    create_directory_or_die($curDir . "/" . $rpkmDir);
+
+    print OUT "cd $curDir\n\n";
     print OUT "echo rpkm=`date`\n";
 
     my $bamFile = $sampleFiles[0];
@@ -158,13 +165,13 @@ sub conifer {
 
       #print $bamFile . "\n";
     }
-    my $rpkm = "rpkm/" . $sampleName . ".rpkm";
+    my $rpkm = $rpkmDir . $sampleName . ".rpkm";
 
     print OUT "#1 rpkm\n";
     print OUT "if [ ! -s $rpkm ]; then\n";
     print OUT "  echo conifer=`date`\n";
     print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
-    print OUT "fi\n";
+    print OUT "fi\n\n";
 
     my $hdf5File  = "${sampleName}.hdf5";
     my $svalsFile = "${sampleName}.svals";
@@ -172,12 +179,12 @@ sub conifer {
 
     print OUT "#2 analysis\n";
     print OUT "echo analyze=`date`\n";
-    print OUT "python $conifer analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
-    print OUT "\n";
+    print OUT "python $conifer analyze $probedef --rpkm_dir $rpkmDir --output $hdf5File --svd 6 --write_svals $svalsFile \n\n";
+
     print OUT "#3 call\n";
     print OUT "echo call=`date`\n";
-    print OUT "python $conifer call --input $hdf5File --output $callFile \n";
-    print OUT "\n";
+    print OUT "python $conifer call --input $hdf5File --output $callFile \n\n";
+
     print OUT "#4 plot\n";
     print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
     print OUT "echo finished=`date`\n";
@@ -191,7 +198,7 @@ sub conifer {
     chmod 0755, $shfile;
   }
 
-  print "!!!shell file $shfile created, you can run this shell file to submit all conifer rpkm tasks.\n";
+  print "!!!shell file $shfile created, you can run this shell file to submit all conifer tasks.\n";
 
   #`qsub $pbsFile`;
 }
@@ -214,7 +221,7 @@ sub cnmops {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $rfile = $pbsDir . "/${task_name}_cnmops.r";
+  my $rfile = $pbsDir . "/cnmops_${task_name}.r";
   open( R, ">$rfile" ) or die "Cannot create $rfile";
   print R "library(cn.mops) \n";
   print R "setwd(\"$resultDir\") \n";
@@ -268,8 +275,8 @@ sub cnmops {
 
   close R;
 
-  my $pbsFile = "${pbsDir}/${task_name}_cnmops.pbs";
-  my $log     = "${logDir}/${task_name}_cnmops.log";
+  my $pbsFile = "${pbsDir}/cnmops_${task_name}.pbs";
+  my $log     = "${logDir}/cnmops_${task_name}.log";
 
   open( OUT, ">$pbsFile" ) or die $!;
   print OUT $pbsDesc;
