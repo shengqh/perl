@@ -26,15 +26,7 @@ sub cnvnator {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-  my $binsize        = $config->{$section}{binsize}         or die "define ${section}::binsize first";
-  my $chromosome_dir = $config ->{$section}{chromosome_dir} or die "define ${section}::chromosome_dir first";
-
-  my $genome    = $config->{$section}{genome};
-  my $genomestr = "";
-
-  if ( defined $genome ) {
-    $genomestr = "-genome " . $genome;
-  }
+  my $binsize = $config->{$section}{binsize} or die "define ${section}::binsize first";
 
   my $isbamsorted = $config->{$section}{isbamsorted};
   if ( !defined($isbamsorted) ) {
@@ -46,21 +38,6 @@ sub cnvnator {
   my $shfile = $pbsDir . "/${task_name}.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-
-  my $callfile    = $pbsDir . "/${task_name}_call.pbs";
-  my $calllogfile = $logDir . "/${task_name}_call.log";
-  open( CALL, ">$callfile" ) or die $!;
-  print CALL $pbsDesc;
-  print CALL "#PBS -o $calllogfile\n";
-  print CALL "#PBS -j oe\n\n";
-  if ( -e $path_file ) {
-    print CALL "source $path_file\n";
-  }
-  my $callDir        = create_directory_or_die( $resultDir . "/call" );
-  my $mergedfile     = $callDir . "/" . ${task_name} . ".root";
-  my $mergedCallfile = $callDir . "/" . ${task_name} . ".call";
-  print CALL "echo call=`date`\n";
-  print CALL "cnvnator -root $mergedfile -merge ";
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -88,15 +65,23 @@ sub cnvnator {
 
     my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
     my $rootFile = $sampleName . ".root";
-
-    print CALL "${curDir}/${rootFile} ";
+    my $callFile = $sampleName . ".call";
 
     print OUT "cd $curDir\n\n";
 
-    print OUT "if [ ! -s $rootFile ]; then\n";
-    print OUT "  echo extract=`date`\n";
-    print OUT "  cnvnator -root $rootFile $genomestr -unique -tree $bamFile \n";
-    print OUT "fi\n";
+    print OUT "if [ -s $callFile ]; then\n";
+    print OUT "  echo job has already been done. if you want to do again, delete $callFile and submit job again.\n";
+    print OUT "else\n";
+    print OUT "  if [ ! -s $rootFile ]; then\n";
+    print OUT "    echo extract=`date`\n";
+    print OUT "    cnvnator -root $rootFile -tree $bamFile \n";
+    print OUT "  fi\n";
+    print OUT "  echo call=`date`\n";
+    print OUT "  cnvnator -root $rootFile -his $binsize \n";
+    print OUT "  cnvnator -root $rootFile -stat $binsize \n";
+    print OUT "  cnvnator -root $rootFile -partition $binsize \n";
+    print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n";
+    print OUT "fi\n\n";
 
     print OUT "echo finished=`date`\n";
     close OUT;
@@ -104,16 +89,6 @@ sub cnvnator {
     print "$pbsFile created\n";
   }
   close(SH);
-
-  print CALL "\n";
-  print CALL "cnvnator -root $mergedfile -his $binsize -d $chromosome_dir\n";
-  print CALL "cnvnator -root $mergedfile -stat $binsize \n";
-  print CALL "cnvnator -root $mergedfile -partition $binsize \n";
-  print CALL "cnvnator -root $mergedfile -call $binsize > $mergedCallfile \n";
-  print CALL "echo finished=`date`\n";
-  close(CALL);
-
-  print "$callfile created\n";
 
   if ( is_linux() ) {
     chmod 0755, $shfile;
@@ -142,7 +117,7 @@ sub conifer {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $shfile = $pbsDir . "/${task_name}_rpkm.sh";
+  my $shfile = $pbsDir . "/${task_name}_conifer.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
@@ -150,12 +125,12 @@ sub conifer {
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-    my $pbsName = "${sampleName}_rpkm.pbs";
+    my $pbsName = "${sampleName}_conifer.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_rpkm.log";
+    my $log = "${logDir}/${sampleName}_conifer.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT $pbsDesc;
@@ -177,11 +152,26 @@ sub conifer {
     }
     my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
+    print OUT "#1 rpkm\n";
     print OUT "if [ ! -s $rpkm ]; then\n";
     print OUT "  echo conifer=`date`\n";
     print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
     print OUT "fi\n";
 
+    my $hdf5File  = "${sampleName}.hdf5";
+    my $svalsFile = "${sampleName}.svals";
+    my $callFile  = "${sampleName}.call";
+
+    print OUT "#2 analysis\n";
+    print OUT "echo analyze=`date`\n";
+    print OUT "python $conifer analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
+    print OUT "\n";
+    print OUT "#3 call\n";
+    print OUT "echo call=`date`\n";
+    print OUT "python $conifer call --input $hdf5File --output $callFile \n";
+    print OUT "\n";
+    print OUT "#4 plot\n";
+    print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
     print OUT "echo finished=`date`\n";
     close OUT;
 
@@ -192,40 +182,6 @@ sub conifer {
   if ( is_linux() ) {
     chmod 0755, $shfile;
   }
-
-  my $pbsName   = "${task_name}_after_rpkm.pbs";
-  my $pbsFile   = "${pbsDir}/$pbsName";
-  my $hdf5File  = "${task_name}.hdf5";
-  my $svalsFile = "${task_name}.svals";
-  my $callFile  = "${task_name}.call";
-
-  open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
-  my $log = "${logDir}/${task_name}_after_rpkm.log";
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
-  if ( -e $path_file ) {
-    print OUT "source $path_file\n";
-  }
-
-  create_directory_or_die( $resultDir . "/call_images" );
-
-  print OUT "cd $resultDir\n\n";
-
-  print OUT "\n";
-  print OUT "#2 analysis\n";
-  print OUT "echo analyze=`date`\n";
-  print OUT "python $conifer analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
-  print OUT "\n";
-  print OUT "#3 call\n";
-  print OUT "echo call=`date`\n";
-  print OUT "python $conifer call --input $hdf5File --output $callFile \n";
-  print OUT "\n";
-  print OUT "#4 plot\n";
-  print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
-  close OUT;
-
-  print "$pbsFile created\n";
 
   print "!!!shell file $shfile created, you can run this shell file to submit all conifer rpkm tasks.\n";
 
