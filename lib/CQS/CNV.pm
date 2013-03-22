@@ -80,18 +80,16 @@ sub cnvnator {
     print OUT "if [ -s $callFile ]; then\n";
     print OUT "  echo job has already been done. if you want to do again, delete $callFile and submit job again.\n";
     print OUT "else\n";
-    print OUT "  if [ ! -s $rootFile ]; then\n";
-    print OUT "    echo \"EXTRACTING READ MAPPING FROM BAM/SAM FILES =\" `date`\n";
-    print OUT "    cnvnator -root $rootFile $genomestr -unique -tree $bamFile \n";
-    print OUT "  fi\n";
+    print OUT "  echo \"EXTRACTING READ MAPPING FROM BAM/SAM FILES =\" `date`\n";
+    print OUT "  cnvnator -root $rootFile $genomestr -unique -tree $bamFile \n\n";
     print OUT "  echo \"GENERATING HISTOGRAM =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -d $chromosome_dir -his $binsize \n";
+    print OUT "  cnvnator -root $rootFile -d $chromosome_dir -his $binsize \n\n";
     print OUT "  echo \"CALCULATING STATISTICS =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -stat $binsize \n";
+    print OUT "  cnvnator -root $rootFile -stat $binsize \n\n";
     print OUT "  echo \"RD SIGNAL PARTITIONING =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -partition $binsize \n";
+    print OUT "  cnvnator -root $rootFile -partition $binsize \n\n";
     print OUT "  echo \"CNV CALLING =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n";
+    print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n\n";
     print OUT "fi\n\n";
 
     print OUT "echo finished=`date`\n";
