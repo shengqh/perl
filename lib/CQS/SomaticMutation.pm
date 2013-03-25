@@ -59,12 +59,12 @@ sub call_wsmdetector {
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-    my $pbsName = "${sampleName}_wsmdetector.pbs";
+    my $pbsName = "wsmdetector_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_wsmdetector.log";
+    my $log = "${logDir}/wsmdetector_${sampleName}.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT $pbsDesc;
