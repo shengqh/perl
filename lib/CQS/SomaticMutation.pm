@@ -28,6 +28,10 @@ sub call_wsmdetector {
 
   my $wsmfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
   my $source_type = $config->{$section}{source_type} or die "source_type is not defined in $section";
+  my $annovarLocation = $config->{$section}{annovar_database_location} or die "annovar_database_location is not defined in $section";
+  my $annovarBuildver = $config->{$section}{annovar_buildver} or die "annovar_buildver is not defined in $section";
+  
+  $option = $option . " -v $annovarBuildver -l $annovarLocation ";
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -93,10 +97,10 @@ sub call_wsmdetector {
         for my $sampleFile (@sampleFiles) {
           print OUT " $sampleFile";
         }
-        print OUT " | mono $wsmfile -t console $option";
+        print OUT " | mono $wsmfile all -t console $option";
       }
       else {
-        print OUT "mono $wsmfile -t bam -f $fafile $option";
+        print OUT "mono $wsmfile all -t bam -f $fafile $option";
 
         my $first = 1;
         for my $sampleFile (@sampleFiles) {
@@ -111,7 +115,7 @@ sub call_wsmdetector {
       }
     }
     else {
-      print OUT "mono $wsmfile -t mpileup -m $mpileupfile $option";
+      print OUT "mono $wsmfile all -t mpileup -m $mpileupfile $option";
     }
 
     print OUT " -o $curDir \n\n";
