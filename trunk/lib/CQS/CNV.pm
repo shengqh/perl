@@ -317,7 +317,6 @@ sub freec {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
   my $chrLenFile        = $config->{$section}{chrLenFile}        or die "define ${section}::chrLenFile first";
   my $ploidy = $config->{$section}{ploidy} or die "define ${section}::ploidy first";
-  my $chromosome_dir = $config->{$section}{chromosome_dir} or die "define ${section}::chromosome_dir first";
   my $coefficientOfVariation = $config->{$section}{coefficientOfVariation} or die "define ${section}::coefficientOfVariation first";
   my $chrFiles = $config->{$section}{chrFiles} or die "define ${section}::chrFiles first";
   my $inputFormat = $config->{$section}{inputFormat} or die "define ${section}::inputFormat first";
