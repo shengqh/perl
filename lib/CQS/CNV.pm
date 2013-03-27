@@ -238,7 +238,7 @@ sub cnmops {
   
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $rfile = $pbsDir . "/cnmops_${task_name}.r";
+  my $rfile = $resultDir . "/cnmops_${task_name}.r";
   open( R, ">$rfile" ) or die "Cannot create $rfile";
   print R "library(cn.mops) \n";
   print R "setwd(\"$resultDir\") \n";
