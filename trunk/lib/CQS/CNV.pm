@@ -353,7 +353,7 @@ sub freec {
 
     print OUT "cd $curDir\n\n";
 
-    my $configfile = $curDir . "/" . $sampleName + ".conf";
+    my $configfile = "${curDir}/${sampleName}.conf";
     open (CON, ">$configfile") or die $!;
     
     print CON "[general] \n\n";
