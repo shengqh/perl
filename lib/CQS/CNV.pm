@@ -14,7 +14,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(cnvnator conifer cnmops)] );
+our %EXPORT_TAGS = ( 'all' => [qw(cnvnator conifer cnmops freec)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -309,6 +309,84 @@ sub cnmops {
   close OUT;
 
   print "$pbsFile created\n";
+}
+
+sub freec {
+  my ( $config, $section ) = @_;
+
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my $chrLenFile        = $config->{$section}{chrLenFile}        or die "define ${section}::chrLenFile first";
+  my $ploidy = $config->{$section}{ploidy} or die "define ${section}::ploidy first";
+  my $chromosome_dir = $config->{$section}{chromosome_dir} or die "define ${section}::chromosome_dir first";
+  my $coefficientOfVariation = $config->{$section}{coefficientOfVariation} or die "define ${section}::coefficientOfVariation first";
+  my $chrFiles = $config->{$section}{chrFiles} or die "define ${section}::chrFiles first";
+  my $inputFormat = $config->{$section}{inputFormat} or die "define ${section}::inputFormat first";
+  my $mateOrientation = $config->{$section}{mateOrientation} or die "define ${section}::mateOrientation first";
+
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+  my $shfile = $pbsDir . "/${task_name}.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+
+    my $bamFile = $sampleFiles[0];
+
+    my $pbsName = "freec_${sampleName}.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
+
+    print SH "\$MYCMD ./$pbsName \n";
+
+    my $log = "${logDir}/freec_${sampleName}.log";
+
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT $pbsDesc;
+    print OUT "#PBS -o $log\n";
+    print OUT "#PBS -j oe\n\n";
+
+    if ( -e $path_file ) {
+      print OUT "source $path_file\n";
+    }
+
+    my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
+
+    print OUT "cd $curDir\n\n";
+
+    my $configfile = $curDir . "/" . $sampleName + ".conf";
+    open (CON, ">$configfile") or die $!;
+    
+    print CON "[general] \n\n";
+    print CON "chrLenFile = $chrLenFile \n";
+    print CON "ploidy = $ploidy \n";
+    print CON "coefficientOfVariation = $coefficientOfVariation \n";
+    print CON "chrFiles = $chrFiles \n\n";
+    
+    print CON "[sample] \n\n";
+    print CON "mateFile = $bamFile \n";
+    print CON "inputFormat  = $inputFormat \n";
+    print CON "mateOrientation = $mateOrientation \n";
+    
+    close(CON);
+    
+    print OUT "echo \"CNV CALLING =\" `date`\n";
+    print OUT "freec -config $configfile \n\n";
+
+    print OUT "echo finished=`date`\n";
+    close OUT;
+
+    print "$pbsFile created\n";
+  }
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+
+  print "!!!shell file $shfile created, you can run this shell file to submit all freec tasks.\n";
+
+  #`qsub $pbsFile`;
 }
 
 1;
