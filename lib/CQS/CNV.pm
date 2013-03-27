@@ -234,7 +234,7 @@ sub cnmops {
     $pairmode = "unpaired";
   }
 
-  my $callFile = $target_dir . "/${task_name}.call";
+  my $callFile = "${task_name}.call";
   
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
