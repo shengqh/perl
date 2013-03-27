@@ -394,7 +394,7 @@ sub freec {
     close(CON);
 
     print OUT "echo \"CNV CALLING =\" `date`\n";
-    print OUT "freec -config $configName \n\n";
+    print OUT "freec -conf $configName \n\n";
 
     print OUT "echo finished=`date`\n";
     close OUT;
