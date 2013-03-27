@@ -70,7 +70,7 @@ my $config = {
     source_ref  => "bamfiles",
     conifer     => "/home/shengq1/pylibs/bin/conifer.py",
     probefile   => $probefile,
-    isbamsorted => 0,
+    isbamsorted => 1,
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
