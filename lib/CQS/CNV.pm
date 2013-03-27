@@ -234,6 +234,8 @@ sub cnmops {
     $pairmode = "unpaired";
   }
 
+  my $callFile = $target_dir . "/${task_name}.call";
+  
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
   my $rfile = $pbsDir . "/cnmops_${task_name}.r";
@@ -288,6 +290,27 @@ sub cnmops {
     print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_cn.mops.Rdata\") \n";
   }
 
+  print R "cnvs<-resCNMOPS\@cnvs \n";
+
+  print R "d<-cbind(substring(as.character(cnvs\@elementMetadata\@listData\$sampleName),2), \n";
+  print R "         as.character(cnvs\@seqnames),  \n";
+  print R "         as.character(cnvs\@ranges\@start), \n";
+  print R "         as.character(as.numeric(cnvs\@ranges\@start) + as.numeric(cnvs\@ranges\@width) - 1), \n";
+  print R "         as.character(cnvs\@ranges\@width), \n";
+  print R "         as.character(cnvs\@elementMetadata\@listData\$CN), \n";
+  print R "         as.character(cnvs\@elementMetadata\@listData\$median), \n";
+  print R "         as.character(cnvs\@elementMetadata\@listData\$mean)) \n";
+  print R "colnames(d)<-c(\"sample\",\"chr\",\"start\",\"end\", \"length\",\"type\",\"median\",\"mean\") \n";
+  print R "d<-d[order(d[,\"sample\"], as.numeric(d[,\"chr\"]), as.numeric(d[,\"start\"])),] \n";
+  print R "d[,\"chr\"]<-paste0(\"chr\",d[,\"chr\"]) \n";
+  print R "d[,\"type\"]<-apply(d,1,function(x){ \n";
+  print R "  if(as.numeric(x[\"median\"]) < 0){ \n";
+  print R "    return (\"DELETION\") \n";
+  print R "  }else{ \n";
+  print R "    return (\"DUPLICATION\") \n";
+  print R "  } \n";
+  print R "}) \n";
+  print R "write.table(d, file=\"$callFile\",sep=\"\\t\",col.names=T,row.names=F,quote=F) \n";
   close R;
 
   my $pbsFile = "${pbsDir}/cnmops_${task_name}.pbs";
@@ -315,12 +338,12 @@ sub freec {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-  my $chrLenFile        = $config->{$section}{chrLenFile}        or die "define ${section}::chrLenFile first";
-  my $ploidy = $config->{$section}{ploidy} or die "define ${section}::ploidy first";
+  my $chrLenFile             = $config->{$section}{chrLenFile}             or die "define ${section}::chrLenFile first";
+  my $ploidy                 = $config->{$section}{ploidy}                 or die "define ${section}::ploidy first";
   my $coefficientOfVariation = $config->{$section}{coefficientOfVariation} or die "define ${section}::coefficientOfVariation first";
-  my $chrFiles = $config->{$section}{chrFiles} or die "define ${section}::chrFiles first";
-  my $inputFormat = $config->{$section}{inputFormat} or die "define ${section}::inputFormat first";
-  my $mateOrientation = $config->{$section}{mateOrientation} or die "define ${section}::mateOrientation first";
+  my $chrFiles               = $config->{$section}{chrFiles}               or die "define ${section}::chrFiles first";
+  my $inputFormat            = $config->{$section}{inputFormat}            or die "define ${section}::inputFormat first";
+  my $mateOrientation        = $config->{$section}{mateOrientation}        or die "define ${section}::mateOrientation first";
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -349,27 +372,27 @@ sub freec {
       print OUT "source $path_file\n";
     }
 
-    my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
     print OUT "cd $curDir\n\n";
 
     my $configName = "${sampleName}.conf";
     my $configFile = ${curDir} . "/$configName";
-    open (CON, ">$configFile") or die $!;
-    
+    open( CON, ">$configFile" ) or die $!;
+
     print CON "[general] \n\n";
     print CON "chrLenFile = $chrLenFile \n";
     print CON "ploidy = $ploidy \n";
     print CON "coefficientOfVariation = $coefficientOfVariation \n";
     print CON "chrFiles = $chrFiles \n\n";
-    
+
     print CON "[sample] \n\n";
     print CON "mateFile = $bamFile \n";
     print CON "inputFormat  = $inputFormat \n";
     print CON "mateOrientation = $mateOrientation \n";
-    
+
     close(CON);
-    
+
     print OUT "echo \"CNV CALLING =\" `date`\n";
     print OUT "freec -config $configName \n\n";
 
