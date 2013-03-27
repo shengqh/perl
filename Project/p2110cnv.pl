@@ -117,8 +117,8 @@ my $config = {
 
 #conifer( $config, "conifer" );
 
-cnmops( $config, "cnmops" );
+#cnmops( $config, "cnmops" );
 
-#freec( $config, "freec" );
+freec( $config, "freec" );
 
 1;
