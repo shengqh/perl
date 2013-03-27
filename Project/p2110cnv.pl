@@ -16,7 +16,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => {
-    path_file => "/home/shengq1/bin/path.txt",
+    path_file => "/home/shengq1/local/bin/path.txt",
     task_name => "2110"
   },
   bamfiles => {
