@@ -160,8 +160,7 @@ sub tophat2_by_pbs {
 			output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, @sampleFiles );
 			output_footer();
 
-			print SH "\$MYCMD ./$pbsName \n";
-			print SH "echo $pbsName was submitted. \n\n";
+			print SH "\$MYCMD ./$pbsName \n\n";
 			print "$pbsFile created\n";
 		}
 
