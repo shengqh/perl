@@ -124,12 +124,12 @@ my $config = {
 
 fastqc_by_pbs( $config, "fastqc" );
 
-tophat2_by_pbs( $config, "tophat2" );
+#tophat2_by_pbs( $config, "tophat2" );
 
-cufflinks_by_pbs( $config, "cufflinks" );
+#cufflinks_by_pbs( $config, "cufflinks" );
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+#cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
