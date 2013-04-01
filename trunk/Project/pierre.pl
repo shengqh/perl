@@ -18,7 +18,7 @@ my $config = {
     bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
-    path_file            => "/home/shengq1/bin/path.txt",
+    path_file            => "/home/shengq1/local/bin/path.txt",
     task_name            => "pierre"
   },
   fastqfiles => {
