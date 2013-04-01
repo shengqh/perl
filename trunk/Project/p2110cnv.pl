@@ -49,11 +49,11 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  cnvnator100 => {
-    target_dir     => "${target_dir}/cnvnator100",
+  cnvnator1000 => {
+    target_dir     => "${target_dir}/cnvnator1000",
     option         => "",
     source_ref     => "bamfiles",
-    binsize        => 100,
+    binsize        => 1000,
     probefile      => $probefile,
     isbamsorted    => 1,
     chromosome_dir => "/scratch/cqs/shengq1/references/hg19chromosome",
@@ -113,7 +113,7 @@ my $config = {
 
 #samtools_index($config, "samtoolsindex");
 
-cnvnator( $config, "cnvnator100" );
+cnvnator( $config, "cnvnator1000" );
 
 #conifer( $config, "conifer" );
 
