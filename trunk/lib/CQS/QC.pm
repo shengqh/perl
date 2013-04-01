@@ -55,8 +55,9 @@ sub fastqc_by_pbs {
 		print OUT "echo fastqc=`date` \n";
 
 		my $sampleCount = scalar(@sampleFiles);
+		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
-		print OUT "fastqc $option -t $sampleCount -o $resultDir ";
+		print OUT "fastqc $option -t $sampleCount -o $curDir ";
 		for my $sampleFile (@sampleFiles) {
 			print OUT "$sampleFile ";
 		}
