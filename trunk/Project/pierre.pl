@@ -83,6 +83,20 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  rnaseqc => {
+    target_dir     => "${target_dir}/RNASeQC",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    genome_fasta   => "/data/cqs/guoy1/reference/hg19/hg19.fa",
+    rnaseqc_jar    => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
+    source_ref     => "tophat2",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   cufflinks => {
     target_dir     => "${target_dir}/cufflinks",
     option         => "-p 8 -u -N",
@@ -122,14 +136,16 @@ my $config = {
   },
 };
 
-fastqc_by_pbs( $config, "fastqc" );
+#fastqc_by_pbs( $config, "fastqc" );
 
-tophat2_by_pbs( $config, "tophat2" );
+#tophat2_by_pbs( $config, "tophat2" );
 
-cufflinks_by_pbs( $config, "cufflinks" );
+call_RNASeQC($config, "rnaseqc");
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+#cufflinks_by_pbs( $config, "cufflinks" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+#cuffmerge_by_pbs( $config, "cuffmerge" );
+
+#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
