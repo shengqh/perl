@@ -217,6 +217,9 @@ sub call_RNASeQC {
   for my $sampleName ( sort keys %tophat2map ) {
     my $tophat2File = $tophat2map{$sampleName};
 
+    my ( $sampleName, $directories, $suffix ) = fileparse($tophat2File);
+    my $sortedBamFile = $sampleName . "_sort";
+    
     my $pbsName = "RNASeQC_${sampleName}.pbs";
     my $pbsFile = $pbsDir . "/$pbsName";
 
@@ -228,8 +231,13 @@ sub call_RNASeQC {
 
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
+    print OUT "if [ ! -e ${sortedBamFile}.bam ];\n";
+    print OUT "then\n";
+    print OUT "  samtools sort $tophat2File $sortedBamFile \n";
+    print OUT "  samtools index ${sortedBamFile}.bam \n";
+    print OUT "fi\n";
     print OUT "echo RNASeQC=`date` \n";
-    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${tophat2File}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
+    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${sortedBamFile}.bam|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
 
     output_footer();
 
