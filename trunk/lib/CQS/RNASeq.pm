@@ -238,7 +238,7 @@ sub call_RNASeQC {
     print OUT "  samtools index $sortedBamFile \n";
     print OUT "fi\n";
     print OUT "echo RNASeQC=`date` \n";
-    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${sortedBamFile}.bam|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
+    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${sortedBamFile}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
 
     output_footer();
 
