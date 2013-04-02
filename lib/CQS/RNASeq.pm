@@ -17,7 +17,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
 	'all' => [
-		qw(call_tophat2 tophat2_by_pbs get_tophat2_result cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs)
+		qw(call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs)
 	]
 );
 
@@ -197,6 +197,51 @@ sub get_tophat2_map {
 		$tpresult->{$sampleName} = "${resultDir}/${sampleName}/accepted_hits.bam";
 	}
 	return $tpresult;
+}
+
+sub call_RNASeQC {
+  my ( $config, $section ) = @_;
+
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+
+  my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 1 );
+  my $genome_fasta = get_param_file( $config->{$section}{genome_fasta}, "genome_fasta", 1 );
+  my $rnaseqc_jar = get_param_file( $config->{$section}{rnaseqc_jar}, "rnaseqc_jar", 1 );
+
+  my %tophat2map = %{ get_tophat2_map( $config, $section ) };
+
+  my $shfile = $pbsDir . "/${task_name}.submit";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+
+  for my $sampleName ( sort keys %tophat2map ) {
+    my $tophat2File = $tophat2map{$sampleName};
+
+    my $pbsName = "RNASeQC_${sampleName}.pbs";
+    my $pbsFile = $pbsDir . "/$pbsName";
+
+    print SH "\$MYCMD ./$pbsName \n";
+
+    my $log = $logDir . "/RNASeQC_${sampleName}.log";
+
+    output_header( $pbsFile, $pbsDesc, $path_file, $log );
+
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+
+    print OUT "echo RNASeQC=`date` \n";
+    print OUT "java -jar RNASeQC.jar -s \"${sampleName}|${tophat2File}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
+
+    output_footer();
+
+    print "$pbsFile created\n";
+  }
+  print SH "exit 0\n";
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+  print "!!!shell file $shfile created, you can run this shell file to submit all RNASeQC tasks.\n";
 }
 
 sub cufflinks_by_pbs {
