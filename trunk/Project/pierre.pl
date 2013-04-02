@@ -22,36 +22,36 @@ my $config = {
     task_name            => "pierre"
   },
   fastqfiles => {
-    "G1S1" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_3_2_sequence.txt.gz" ],
-    "G1S2" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_2_2_sequence.txt.gz" ],
-    "G2S1" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_1_2_sequence.txt.gz" ],
-    "G2S2" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_5_2_sequence.txt.gz" ],
-    "G2S3" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_4_2_sequence.txt.gz" ],
-    "G2S4" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_2_2_sequence.txt.gz" ],
-    "G3S1" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_4_2_sequence.txt.gz" ],
-    "G4S1" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_1_2_sequence.txt.gz" ],
-    "G4S2" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_3_2_sequence.txt.gz" ],
-    "G4S3" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_4_2_sequence.txt.gz" ],
-    "G4S4" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_5_2_sequence.txt.gz" ],
-    "G4S5" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_2_2_sequence.txt.gz" ],
-    "G5S1" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_3_2_sequence.txt.gz" ],
-    "G5S2" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_5_2_sequence.txt.gz" ],
-    "G5S3" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_1_2_sequence.txt.gz" ],
-    "G5S4" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_4_2_sequence.txt.gz" ],
-    "G6S1" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_2_2_sequence.txt.gz" ],
-    "G6S2" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_3_2_sequence.txt.gz" ],
-    "G6S3" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_5_2_sequence.txt.gz" ],
+    "G1_7071" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_3_2_sequence.txt.gz" ],
+    "G1_7143" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_2_2_sequence.txt.gz" ],
+    "G2_7030" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_1_2_sequence.txt.gz" ],
+    "G2_7178" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_5_2_sequence.txt.gz" ],
+    "G2_7222" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_4_2_sequence.txt.gz" ],
+    "G2_7228" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_2_2_sequence.txt.gz" ],
+    "G3_7089" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_4_2_sequence.txt.gz" ],
+    "G4_7448" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_1_2_sequence.txt.gz" ],
+    "G4_7485" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_3_2_sequence.txt.gz" ],
+    "G4_7522" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_4_2_sequence.txt.gz" ],
+    "G4_7617" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_5_2_sequence.txt.gz" ],
+    "G4_7697" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_2_2_sequence.txt.gz" ],
+    "G5_6820" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_3_2_sequence.txt.gz" ],
+    "G5_7080" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_5_2_sequence.txt.gz" ],
+    "G5_7176" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_1_2_sequence.txt.gz" ],
+    "G5_7182" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_4_2_sequence.txt.gz" ],
+    "G6_7134" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_2_2_sequence.txt.gz" ],
+    "G6_7053" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_3_2_sequence.txt.gz" ],
+    "G6_7116" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_5_2_sequence.txt.gz" ],
   },
   groups => {
-    "NOCANCER"  => [ "G1S1", "G1S2", "G2S1", "G2S2", "G2S3", "G2S4", "G3S1" ],
-    "CANCER"    => [ "G4S1", "G4S2", "G4S3", "G4S4", "G4S5", "G5S1", "G5S2", "G5S3", "G5S4", "G6S1", "G6S2", "G6S3" ],
-    "NONSMOKER" => [ "G1S1", "G1S2", "G4S1", "G4S2", "G4S3", "G4S4", "G4S5" ],
-    "SMOKER"             => [ "G2S1", "G2S2", "G2S3", "G2S4", "G3S1", "G5S2", "G5S3", "G5S4", "G6S1", "G6S2", "G6S3" ],
-    "NONSMOKER_NOCANCER" => [ "G1S1", "G1S2" ],
-    "NONSMOKER_CANCER" => [ "G4S1", "G4S2", "G4S3", "G4S4", "G4S5" ],
-    "LOWRISK_NOCANCER" => [ "G2S1", "G2S2", "G2S3", "G2S4" ],
-    "LOWRISK_CANCER"   => [ "G5S1", "G5S2", "G5S3", "G5S4" ],
-    "HIGHRISK_CANCER"  => [ "G6S1", "G6S2", "G6S3" ],
+    "NOCANCER"  => [ "G1_7071", "G1_7143", "G2_7030", "G2_7178", "G2_7222", "G2_7228", "G3_7089", ],
+    "CANCER"    => [ "G4_7448", "G4_7485", "G4_7522", "G4_7617", "G4_7697", "G5_6820", "G5_7080", "G5_7176", "G5_7182", "G6_7134", "G6_7053", "G6_7116", ],
+    "NONSMOKER" => [ "G1_7071", "G1_7143", "G4_7448", "G4_7485", "G4_7522", "G4_7617", "G4_7697", ],
+    "SMOKER"    => [ "G2_7030", "G2_7178", "G2_7222", "G2_7228", "G3_7089", "G5_6820", "G5_7080", "G5_7176", "G5_7182", "G6_7134", "G6_7053", "G6_7116", ],
+    "NONSMOKER_NOCANCER" => [ "G1_7071", "G1_7143", ],
+    "NONSMOKER_CANCER"   => [ "G4_7448", "G4_7485", "G4_7522", "G4_7617", "G4_7697", ],
+    "LOWRISK_NOCANCER" => [ "G2_7030", "G2_7178", "G2_7222", "G2_7228", ],
+    "LOWRISK_CANCER"   => [ "G5_6820", "G5_7080", "G5_7176", "G5_7182", ],
+    "HIGHRISK_CANCER"  => [ "G6_7134", "G6_7053", "G6_7116", ],
   },
   pairs => {
     "NOCANCER_vs_CANCER"                     => [ "NOCANCER",           "CANCER" ],
@@ -124,12 +124,12 @@ my $config = {
 
 fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
+tophat2_by_pbs( $config, "tophat2" );
 
-#cufflinks_by_pbs( $config, "cufflinks" );
+cufflinks_by_pbs( $config, "cufflinks" );
 
-#cuffmerge_by_pbs( $config, "cuffmerge" );
+cuffmerge_by_pbs( $config, "cuffmerge" );
 
-#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
 1;
