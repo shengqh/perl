@@ -217,7 +217,7 @@ sub call_RNASeQC {
   for my $sampleName ( sort keys %tophat2map ) {
     my $tophat2File = $tophat2map{$sampleName};
 
-    my $filename = fileparse($tophat2File, qr/\Q.bam\E/);
+    my $filename = fileparse($tophat2File, qr/\.[^.]*/);
     my $sortedBamFile = $filename . "_sort";
     
     my $pbsName = "RNASeQC_${sampleName}.pbs";
