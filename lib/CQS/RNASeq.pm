@@ -229,7 +229,7 @@ sub call_RNASeQC {
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
     print OUT "echo RNASeQC=`date` \n";
-    print OUT "java -jar RNASeQC.jar -s \"${sampleName}|${tophat2File}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
+    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${tophat2File}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
 
     output_footer();
 
