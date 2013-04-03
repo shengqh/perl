@@ -235,11 +235,11 @@ sub call_RNASeQC {
     print OUT "if [ ! -e $sortedBamFile ];\n";
     print OUT "then\n";
     print OUT "  cd $dirs \n";
-    print OUT "  samtools sort $tophat2File $sortedBamPrefix \n";
-    print OUT "  samtools index $sortedBamFile \n";
+    print OUT "  samtools sort $filename $sortedBamPrefix \n";
+    print OUT "  samtools index ${sortedBamPrefix}.bam \n";
     print OUT "fi\n";
     print OUT "echo RNASeQC=`date` \n";
-    print OUT "cd $curDir";
+    print OUT "cd $curDir \n";
     print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${sortedBamFile}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
 
     output_footer();
