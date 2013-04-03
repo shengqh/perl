@@ -72,7 +72,7 @@ my $config = {
     },
   },
   tophat2 => {
-    target_dir => "${target_dir}/tophat2",
+    target_dir => "${target_dir}/tophat2_RG",
     option     => "-p 8",
     batchmode  => 0,
     source_ref => "fastqfiles",
