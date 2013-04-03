@@ -240,7 +240,7 @@ sub call_RNASeQC {
     print OUT "fi\n";
     print OUT "echo RNASeQC=`date` \n";
     print OUT "cd $curDir \n";
-    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${sortedBamFile}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o $curDir \n";
+    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${sortedBamFile}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o . \n";
 
     output_footer();
 
