@@ -235,7 +235,7 @@ sub call_RNASeQC {
     print OUT "if [ ! -e $sortedBamFile ];\n";
     print OUT "then\n";
     print OUT "  cd $dirs \n";
-    print OUT "  samtools sort $filename $sortedBamPrefix \n";
+    print OUT "  samtools sort ${filename}${suffix} $sortedBamPrefix \n";
     print OUT "  samtools index ${sortedBamPrefix}.bam \n";
     print OUT "fi\n";
     print OUT "echo RNASeQC=`date` \n";
