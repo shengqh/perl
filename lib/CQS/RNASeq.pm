@@ -58,19 +58,21 @@ sub output_tophat2 {
 	my $has_index_file = transcript_gtf_index_exists($transcript_gtf_index);
 
 	my $tophat2file = $curDir . "/accepted_hits.bam";
+	
+	my $rgline = "--rg-id $sampleName --rg-sample $sampleName --rg-library $sampleName";
 
 	print OUT "if [ -s $tophat2file ];\n";
 	print OUT "then\n";
 	print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
 	print OUT "else\n";
 	if ($has_gtf_file) {
-		print OUT "  tophat2 $tophat2_param -G $transcript_gtf --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
+		print OUT "  tophat2 $tophat2_param $rgline -G $transcript_gtf --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
 	}
 	elsif ($has_index_file) {
-		print OUT "  tophat2 $tophat2_param --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
+		print OUT "  tophat2 $tophat2_param $rgline --transcriptome-index=$transcript_gtf_index -o $curDir $bowtie2_index ";
 	}
 	else {
-		print OUT "  tophat2 $tophat2_param -o $curDir $bowtie2_index ";
+		print OUT "  tophat2 $tophat2_param $rgline -o $curDir $bowtie2_index ";
 	}
 
 	for my $sampleFile (@sampleFiles) {
