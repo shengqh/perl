@@ -234,7 +234,7 @@ sub call_RNASeQC {
 
     print OUT "if [ ! -e $sortedBamFile ];\n";
     print OUT "then\n";
-    print OUT "  cd $dirs";
+    print OUT "  cd $dirs \n";
     print OUT "  samtools sort $tophat2File $sortedBamPrefix \n";
     print OUT "  samtools index $sortedBamFile \n";
     print OUT "fi\n";
