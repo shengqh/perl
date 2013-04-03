@@ -138,9 +138,9 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
+tophat2_by_pbs( $config, "tophat2" );
 
-call_RNASeQC($config, "rnaseqc");
+#call_RNASeQC($config, "rnaseqc");
 
 #cufflinks_by_pbs( $config, "cufflinks" );
 
