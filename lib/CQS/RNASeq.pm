@@ -91,6 +91,7 @@ sub output_tophat2 {
   for my $sampleFile (@sampleFiles) {
     print OUT "$sampleFile ";
   }
+  print OUT "\n\n";
 
   if ($sortbam) {
     my $sortedbam     = get_sorted_bam_prefix($tophat2file);
@@ -98,7 +99,7 @@ sub output_tophat2 {
     print OUT "  samtools sort $tophat2file $sortedbam \n";
     print OUT "  samtools index $sortedbamfile \n";
   }
-  print OUT "\nfi\n\n";
+  print OUT "fi\n\n";
 }
 
 sub tophat2_by_pbs {
