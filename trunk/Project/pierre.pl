@@ -73,8 +73,9 @@ my $config = {
   },
   tophat2 => {
     target_dir => "${target_dir}/tophat2_RG",
-    option     => "-p 8 --keep-fasta-order",
+    option     => "-p 8",
     batchmode  => 0,
+    sortbam    => 1,
     source_ref => "fastqfiles",
     pbs        => {
       "email"    => $email,
