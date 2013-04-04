@@ -47,13 +47,13 @@ sub transcript_gtf_index_exists {
 }
 
 sub get_sorted_bam_prefix {
-  my $oldbam = @_;
+  my ($oldbam) = @_;
   my ( $filename, $dirs, $suffix ) = fileparse( $oldbam, qr/\.[^.]*/ );
   return ( $filename . "_sorted" );
 }
 
 sub get_sorted_bam {
-  my $oldbam = @_;
+  my ($oldbam) = @_;
   my ( $filename, $dirs, $suffix ) = fileparse( $oldbam, qr/\.[^.]*/ );
   my $result = $dirs . get_sorted_bam_prefix($oldbam) . $suffix;
   return ($result);
