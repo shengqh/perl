@@ -106,6 +106,8 @@ sub tophat2_by_pbs {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
+  $option = $option . " --keep-fasta-order";
+  
   my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 
   my $batchmode = $config->{$section}{batchmode};
@@ -512,7 +514,7 @@ sub cuffdiff_by_pbs {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-
+  
   my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
   my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
