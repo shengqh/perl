@@ -391,7 +391,7 @@ sub freec {
     print CON "mateOrientation = $mateOrientation \n\n";
 
     if ( defined $bedfile ) {
-      print CON "[target]\n";
+      print CON "[target] \n\n";
       print CON "captureRegions = $bedfile \n\n";
     }
 
