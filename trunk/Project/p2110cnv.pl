@@ -11,6 +11,7 @@ my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/2110")
 my $bedfile        = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_withoutY_lite.bed";
 my $chromosome_dir = "/scratch/cqs/shengq1/references/hg19chromosome";
 my $chromosome_len = "/scratch/cqs/shengq1/references/hg19chromosome/hg19.len";
+my $genome_fasta        = "/data/cqs/guoy1/reference/hg19/hg19_chr.fa";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -56,7 +57,7 @@ my $config = {
     binsize        => 1000,
     isbamsorted    => 1,
     chromosome_dir => "/scratch/cqs/shengq1/references/hg19chromosome",
-    genome         => "hg19",
+    genome         => $genome_fasta,
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
