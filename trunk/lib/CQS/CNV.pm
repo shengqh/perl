@@ -392,7 +392,7 @@ sub freec {
 
     if ( defined $bedfile ) {
       print CON "[target]\n";
-      print "captureRegions = $bedfile \n\n";
+      print CON "captureRegions = $bedfile \n\n";
     }
 
     close(CON);
