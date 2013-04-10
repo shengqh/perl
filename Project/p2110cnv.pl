@@ -8,7 +8,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 
 my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/2110");
-my $probefile      = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_withoutY_lite.bed";
+my $bedfile        = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_withoutY_lite.bed";
 my $chromosome_dir = "/scratch/cqs/shengq1/references/hg19chromosome";
 my $chromosome_len = "/scratch/cqs/shengq1/references/hg19chromosome/hg19.len";
 
@@ -54,7 +54,6 @@ my $config = {
     option         => "",
     source_ref     => "bamfiles",
     binsize        => 1000,
-    probefile      => $probefile,
     isbamsorted    => 1,
     chromosome_dir => "/scratch/cqs/shengq1/references/hg19chromosome",
     genome         => "hg19",
@@ -70,7 +69,7 @@ my $config = {
     option      => "",
     source_ref  => "bamfiles",
     conifer     => "/home/shengq1/pylibs/bin/conifer.py",
-    probefile   => $probefile,
+    bedfile     => $bedfile,
     isbamsorted => 1,
     pbs         => {
       "email"    => $email,
@@ -83,7 +82,7 @@ my $config = {
     target_dir  => "${target_dir}/cnmops",
     option      => "",
     source_ref  => "bamfiles",
-    probefile   => $probefile,
+    bedfile     => $bedfile,
     pairmode    => "paired",
     isbamsorted => 1,
     pbs         => {
@@ -103,6 +102,7 @@ my $config = {
     chrFiles               => $chromosome_dir,
     inputFormat            => "BAM",
     mateOrientation        => "FR",
+    bedfile                => $bedfile,
     pbs                    => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -114,12 +114,12 @@ my $config = {
 
 #samtools_index($config, "samtoolsindex");
 
-cnvnator( $config, "cnvnator1000" );
+#cnvnator( $config, "cnvnator1000" );
 
-#conifer( $config, "conifer" );
+conifer( $config, "conifer" );
 
 #cnmops( $config, "cnmops" );
 
-#freec( $config, "freec" );
+freec( $config, "freec" );
 
 1;

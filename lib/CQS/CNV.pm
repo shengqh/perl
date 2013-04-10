@@ -114,12 +114,8 @@ sub conifer {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-  my $conifer   = $config->{$section}{conifer} or die "define conifer program location first.\nconifer => \"location\"";
-  my $probefile = $config->{$section}{probefile};
-  my $probedef  = "";
-  if ( defined $probefile ) {
-    $probedef = "--probes $probefile";
-  }
+  my $conifer = $config->{$section}{conifer} or die "define conifer program location first.\nconifer => \"location\"";
+  my $bedfile = $config->{$section}{bedfile} or die "define $section:bedfile first";
 
   my $isbamsorted = $config->{$section}{isbamsorted};
   if ( !defined($isbamsorted) ) {
@@ -165,7 +161,7 @@ sub conifer {
 
     print OUT "if [ ! -s $rpkm ]; then\n";
     print OUT "  echo conifer=`date`\n";
-    print OUT "  python $conifer rpkm $probedef --input $bamFile --output $rpkm \n";
+    print OUT "  python $conifer rpkm --probes $bedfile --input $bamFile --output $rpkm \n";
     print OUT "fi\n";
 
     print OUT "echo finished=`date`\n";
@@ -183,6 +179,8 @@ sub conifer {
   my $pbsFile   = "${pbsDir}/$pbsName";
   my $hdf5File  = "${task_name}.hdf5";
   my $svalsFile = "${task_name}.svals";
+  my $plotFile  = "${task_name}.png";
+  my $sdFile  = "${task_name}.sd";
   my $callFile  = "${task_name}.call";
 
   open( OUT, ">$pbsFile" ) or die $!;
@@ -201,7 +199,7 @@ sub conifer {
   print OUT "\n";
   print OUT "#2 analysis\n";
   print OUT "echo analyze=`date`\n";
-  print OUT "python $conifer analyze $probedef --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile \n";
+  print OUT "python $conifer analyze --probes $bedfile --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile --plot_scree $plotFile --write_sd $sdFile \n";
   print OUT "\n";
   print OUT "#3 call\n";
   print OUT "echo call=`date`\n";
@@ -222,7 +220,7 @@ sub cnmops {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-  my $probefile = $config->{$section}{probefile};
+  my $bedfile = $config->{$section}{bedfile};
 
   my $isbamsorted = $config->{$section}{isbamsorted};
   if ( !defined($isbamsorted) ) {
@@ -235,7 +233,7 @@ sub cnmops {
   }
 
   my $callFile = "${task_name}.call";
-  
+
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
   my $rfile = $resultDir . "/cnmops_${task_name}.r";
@@ -275,8 +273,8 @@ sub cnmops {
   }
   print R ") \n";
 
-  if ( defined $probefile ) {
-    print R "segments <- read.table(\"$probefile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
+  if ( defined $bedfile ) {
+    print R "segments <- read.table(\"$bedfile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
     print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3]), gene=segments[,4]) \n";
     print R "x <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") \n";
     print R "save(x, file=\"${task_name}_x_getSegmentReadCountsFromBAM.Rdata\") \n";
@@ -344,6 +342,7 @@ sub freec {
   my $chrFiles               = $config->{$section}{chrFiles}               or die "define ${section}::chrFiles first";
   my $inputFormat            = $config->{$section}{inputFormat}            or die "define ${section}::inputFormat first";
   my $mateOrientation        = $config->{$section}{mateOrientation}        or die "define ${section}::mateOrientation first";
+  my $bedfile = $config->{$section}{bedfile};
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -389,7 +388,12 @@ sub freec {
     print CON "[sample] \n\n";
     print CON "mateFile = $bamFile \n";
     print CON "inputFormat  = $inputFormat \n";
-    print CON "mateOrientation = $mateOrientation \n";
+    print CON "mateOrientation = $mateOrientation \n\n";
+
+    if ( defined $bedfile ) {
+      print CON "[target]\n";
+      print "captureRegions = $bedfile \n\n";
+    }
 
     close(CON);
 
