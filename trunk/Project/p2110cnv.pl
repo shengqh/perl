@@ -115,12 +115,12 @@ my $config = {
 
 #samtools_index($config, "samtoolsindex");
 
-#cnvnator( $config, "cnvnator1000" );
+cnvnator( $config, "cnvnator1000" );
 
 #conifer( $config, "conifer" );
 
 #cnmops( $config, "cnmops" );
 
-freec( $config, "freec" );
+#freec( $config, "freec" );
 
 1;
