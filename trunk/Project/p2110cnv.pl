@@ -102,7 +102,7 @@ my $config = {
     chrFiles               => $chromosome_dir,
     inputFormat            => "BAM",
     mateOrientation        => "FR",
-    bedfile                => $bedfile,
+    #bedfile                => $bedfile, #provide bed file will make freec asking for the control samples
     pbs                    => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
