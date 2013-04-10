@@ -82,10 +82,10 @@ sub cnvnator {
     print OUT "else\n";
     print OUT "  if [ ! -s $rootFile ]; then\n";
     print OUT "    echo \"EXTRACTING READ MAPPING FROM BAM/SAM FILES =\" `date`\n";
-    print OUT "    cnvnator -root $rootFile $genomestr -unique -tree $bamFile \n";
+    print OUT "    cnvnator $genomestr -unique -root $rootFile -tree $bamFile \n";
     print OUT "  fi\n\n";
     print OUT "  echo \"GENERATING HISTOGRAM =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -d $chromosome_dir -his $binsize \n\n";
+    print OUT "  cnvnator $genomestr -root $rootFile -d $chromosome_dir -his $binsize \n\n";
     print OUT "  echo \"CALCULATING STATISTICS =\" `date`\n";
     print OUT "  cnvnator -root $rootFile -stat $binsize \n\n";
     print OUT "  echo \"RD SIGNAL PARTITIONING =\" `date`\n";
