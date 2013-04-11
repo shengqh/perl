@@ -133,11 +133,9 @@ sub tophat2_by_pbs {
   if ( defined $transcript_gtf ) {
     $transcript_gtf_index = $config->{$section}{transcript_gtf_index};
   }
-  elsif ( defined $config->{$section}{transcript_gtf_ref} ) {
-    $transcript_gtf = get_param_file( $config->{ $config->{$section}{transcript_gtf_ref} }{transcript_gtf}, "$config->{$section}{transcript_gtf_ref}::transcript_gtf", 1 );
-    if ( defined $config->{$section}{transcript_gtf_index_ref} ) {
-      $transcript_gtf_index = $config->{ $config->{$section}{transcript_gtf_index_ref} }{transcript_gtf_index_ref};
-    }
+  elsif ( defined $config->{general}{transcript_gtf} ) {
+    $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "general::transcript_gtf", 1 );
+    $transcript_gtf_index = $config->{general}{transcript_gtf_index_ref};
   }
 
   if ( ( defined $transcript_gtf ) && ( -e $transcript_gtf ) ) {
