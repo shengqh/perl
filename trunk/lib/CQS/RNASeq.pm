@@ -134,9 +134,9 @@ sub tophat2_by_pbs {
     $transcript_gtf_index = $config->{$section}{transcript_gtf_index};
   }
   elsif ( defined $config->{$section}{transcript_gtf_ref} ) {
-    $transcript_gtf = get_param_file( $config->{general}{ $config->{$section}{transcript_gtf_ref} }, "general::$config->{$section}{transcript_gtf_ref}", 1 );
+    $transcript_gtf = get_param_file( $config->{ $config->{$section}{transcript_gtf_ref} }{transcript_gtf}, "$config->{$section}{transcript_gtf_ref}::transcript_gtf", 1 );
     if ( defined $config->{$section}{transcript_gtf_index_ref} ) {
-      $transcript_gtf_index = $config->{general}{ $config->{$section}{transcript_gtf_index_ref} };
+      $transcript_gtf_index = $config->{ $config->{$section}{transcript_gtf_index_ref} }{ranscript_gtf_index};
     }
   }
 
@@ -266,13 +266,13 @@ sub call_RNASeQC {
 
     print SF "${sampleName}\t${sortedBamFile}\t${sampleName}\n";
   }
-  
+
   close SF;
 
   print OUT "cd $resultDir \n";
   print OUT "java -jar $rnaseqc_jar -s $sampleFile -t $transcript_gtf -r $genome_fasta -o . \n";
   output_footer();
-  
+
   print "$pbsFile created\n";
 }
 
@@ -711,13 +711,13 @@ sub read_cuffdiff_significant_genes {
 #copy_and_rename_cuffdiff_file($config, "RenameDiff");
 sub copy_and_rename_cuffdiff_file {
   my ( $config, $section ) = @_;
-  my $dir       = $config->{$section}{"root_dir"}   or die "define ${section}::root_dir first";
+  my $dir = $config->{$section}{"root_dir"} or die "define ${section}::root_dir first";
   if ( !-d $dir ) {
     die "directory $dir is not exists";
   }
 
   my $targetdir = $config->{$section}{"target_dir"} or die "define ${section}::target_dir first";
-  if(! -d $targetdir){
+  if ( !-d $targetdir ) {
     create_directory_or_die($targetdir);
   }
 
