@@ -108,7 +108,7 @@ sub tophat2_by_pbs {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
   $option = $option . " --keep-fasta-order";
-  
+
   my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
 
   my $batchmode = $config->{$section}{batchmode};
@@ -223,7 +223,7 @@ sub get_tophat2_map {
 
   my $tpresult = {};
   for my $sampleName ( keys %fqFiles ) {
-    my $bam       = "${resultDir}/${sampleName}/accepted_hits.bam";
+    my $bam = "${resultDir}/${sampleName}/accepted_hits.bam";
     $tpresult->{$sampleName} = $bam;
   }
   return $tpresult;
@@ -240,24 +240,17 @@ sub call_RNASeQC {
 
   my %tophat2map = %{ get_tophat2_map( $config, $section ) };
 
-  my $shfile = $pbsDir . "/${task_name}.submit";
-  open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  my $pbsFile = "${pbsDir}/${task_name}_RNASeQC.pbs";
+  my $log     = $logDir . "/${task_name}_RNASeQC.log";
+  output_header( $pbsFile, $pbsDesc, $path_file, $log );
+
+  my $sampleFile = $resultDir . "/sample.list";
+  open( SF, ">$sampleFile" ) or die "Cannot create $sampleFile";
+  print SF "Sample ID\tBam File\tNotes\n";
 
   for my $sampleName ( sort keys %tophat2map ) {
-    my $tophat2File = $tophat2map{$sampleName};
+    my $tophat2File   = $tophat2map{$sampleName};
     my $sortedBamFile = get_sorted_bam($tophat2File);
-
-    my $pbsName = "RNASeQC_${sampleName}.pbs";
-    my $pbsFile = $pbsDir . "/$pbsName";
-
-    print SH "\$MYCMD ./$pbsName \n";
-
-    my $log = $logDir . "/RNASeQC_${sampleName}.log";
-
-    output_header( $pbsFile, $pbsDesc, $path_file, $log );
-
-    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
     print OUT "if [ ! -e $sortedBamFile ];\n";
     print OUT "then\n";
@@ -269,21 +262,16 @@ sub call_RNASeQC {
     print OUT "  samtools sort ${filename}${suffix} $sortedBamPrefix \n";
     print OUT "  samtools index ${sortedBamPrefix}.bam \n";
     print OUT "fi\n\n";
-    print OUT "echo RNASeQC=`date` \n";
-    print OUT "cd $curDir \n";
-    print OUT "java -jar $rnaseqc_jar -s \"${sampleName}|${sortedBamFile}|${sampleName}\" -t $transcript_gtf -r $genome_fasta -o . \n";
 
-    output_footer();
-
-    print "$pbsFile created\n";
+    print SF "${sampleName}\t${sortedBamFile}\t${sampleName}\n";
   }
-  print SH "exit 0\n";
-  close(SH);
+  
+  close SF;
 
-  if ( is_linux() ) {
-    chmod 0755, $shfile;
-  }
-  print "!!!shell file $shfile created, you can run this shell file to submit all RNASeQC tasks.\n";
+  print OUT "java -jar $rnaseqc_jar -s $sampleFile -t $transcript_gtf -r $genome_fasta -o . \n";
+  output_footer();
+  
+  print "$pbsFile created\n";
 }
 
 sub cufflinks_by_pbs {
@@ -515,7 +503,7 @@ sub cuffdiff_by_pbs {
   my ( $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-  
+
   my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
   my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
