@@ -73,11 +73,12 @@ my $config = {
   },
   tophat2 => {
     target_dir => "${target_dir}/tophat2_RG",
-    transcript_gtf => $transcript_gtf,
     option     => "-p 8",
     batchmode  => 0,
     sortbam    => 1,
     source_ref => "fastqfiles",
+    transcript_gtf_ref => "general",
+    transcript_gtf_index_ref => "general",
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
