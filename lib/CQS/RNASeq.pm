@@ -128,7 +128,7 @@ sub tophat2_by_pbs {
     $sampleNameCount = $sampleNameCount + scalar( @{$sampleFiles} );
   }
 
-  my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
+  my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "${section}::transcript_gtf", 0 );
   my $transcript_gtf_index;
   if ( defined $transcript_gtf ) {
     $transcript_gtf_index = $config->{$section}{transcript_gtf_index};
