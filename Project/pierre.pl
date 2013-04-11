@@ -135,6 +135,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  rename_diff => {
+        target_dir => "${target_dir}/cufflinks_cuffdiff/result/comparison",
+        root_dir   => "${target_dir}/cufflinks_cuffdiff/result",
+    },
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
@@ -149,6 +153,6 @@ my $config = {
 
 #cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
-copy_and_rename_cuffdiff_file($config, "cufflinks_cuffdiff");
+copy_and_rename_cuffdiff_file($config, "rename_diff");
 
 1;
