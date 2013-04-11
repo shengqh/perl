@@ -268,6 +268,7 @@ sub call_RNASeQC {
   
   close SF;
 
+  print OUT "cd $resultDir \n";
   print OUT "java -jar $rnaseqc_jar -s $sampleFile -t $transcript_gtf -r $genome_fasta -o . \n";
   output_footer();
   
