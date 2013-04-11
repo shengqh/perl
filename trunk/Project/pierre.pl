@@ -95,7 +95,7 @@ my $config = {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
-      "mem"      => "10gb"
+      "mem"      => "40gb"
     },
   },
   cufflinks => {
