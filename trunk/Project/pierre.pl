@@ -9,7 +9,8 @@ use CQS::SystemUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/pierre");
 
-my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -17,7 +18,7 @@ my $config = {
   general => {
     bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
+    transcript_gtf_index => $transcript_gtf_index,
     path_file            => "/home/shengq1/local/bin/path.txt",
     task_name            => "pierre"
   },
@@ -72,14 +73,14 @@ my $config = {
     },
   },
   tophat2 => {
-    target_dir => "${target_dir}/tophat2_RG",
-    option     => "-p 8",
-    batchmode  => 0,
-    sortbam    => 1,
-    source_ref => "fastqfiles",
-    transcript_gtf_ref => "general",
-    transcript_gtf_index_ref => "general",
-    pbs        => {
+    target_dir           => "${target_dir}/tophat2",
+    option               => "-p 8",
+    batchmode            => 0,
+    sortbam              => 1,
+    source_ref           => "fastqfiles",
+    transcript_gtf       => $transcript_gtf,
+    transcript_gtf_index => $transcript_gtf_index,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "240",
@@ -138,9 +139,9 @@ my $config = {
     },
   },
   rename_diff => {
-        target_dir => "${target_dir}/cufflinks_cuffdiff/result/comparison",
-        root_dir   => "${target_dir}/cufflinks_cuffdiff/result",
-    },
+    target_dir => "${target_dir}/cufflinks_cuffdiff/result/comparison",
+    root_dir   => "${target_dir}/cufflinks_cuffdiff/result",
+  },
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
