@@ -711,10 +711,14 @@ sub read_cuffdiff_significant_genes {
 #copy_and_rename_cuffdiff_file($config, "RenameDiff");
 sub copy_and_rename_cuffdiff_file {
   my ( $config, $section ) = @_;
-  my $targetdir = $config->{$section}{"target_dir"} or die "define ${section}::target_dir first";
   my $dir       = $config->{$section}{"root_dir"}   or die "define ${section}::root_dir first";
   if ( !-d $dir ) {
     die "directory $dir is not exists";
+  }
+
+  my $targetdir = $config->{$section}{"target_dir"} or die "define ${section}::target_dir first";
+  if(! -d $targetdir){
+    create_directory_or_die($targetdir);
   }
 
   my @subdirs = list_directories($dir);
