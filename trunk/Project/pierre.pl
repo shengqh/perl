@@ -73,6 +73,7 @@ my $config = {
   },
   tophat2 => {
     target_dir => "${target_dir}/tophat2_RG",
+    transcript_gtf => $transcript_gtf,
     option     => "-p 8",
     batchmode  => 0,
     sortbam    => 1,
@@ -143,7 +144,7 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
+tophat2_by_pbs( $config, "tophat2" );
 
 #call_RNASeQC($config, "rnaseqc");
 
@@ -153,6 +154,6 @@ my $config = {
 
 #cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
-copy_and_rename_cuffdiff_file($config, "rename_diff");
+#copy_and_rename_cuffdiff_file($config, "rename_diff");
 
 1;
