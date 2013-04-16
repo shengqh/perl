@@ -73,7 +73,7 @@ for ( my $index = 0 ; $index < $filecount ; $index++ ) {
   push( @bedfiles, *FILE );
 }
 
-open( OUT_FILE, '>$outped' );
+open( OUT_FILE, '>$outped' ) || die $!;
 while ( my $line = <FIRST_FILE> ) {
   chomp($line);
   if ( $line =~ m/^\S+\s\S+\s\S+\s\S+\s\S+\s\S+\s.+$/ ) {
@@ -95,7 +95,7 @@ foreach my $file (@bedfiles) {
 
 print "merging map files ... \n";
 
-open( OUT_FILE, '>$outmap' );
+open( OUT_FILE, '>$outmap' ) || die $!;
 foreach my $mapfile (@maps) {
   open FILE, $mapfile || die $!;
   while ( my $line = <FILE> ) {
