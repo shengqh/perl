@@ -61,6 +61,7 @@ while (<LIST_FILE>) {
     print "$parts[0] $parts[1] \n";
   }
 }
+close (LIST_FILE);
 
 print "merging bed files to $outped ... \n";
 
