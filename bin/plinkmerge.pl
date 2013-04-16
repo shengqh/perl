@@ -75,12 +75,12 @@ for ( my $index = 0 ; $index < $filecount ; $index++ ) {
 
 open( OUT_FILE, '>$outped' );
 while ( my $line = <FIRST_FILE> ) {
-  chmod($line);
+  chomp($line);
   if ( $line =~ m/^\S+\s\S+\s\S+\s\S+\s\S+\s\S+\s.+$/ ) {
     print OUT_FILE $line;
     foreach my $file (@bedfiles) {
       my $otherline = <$file>;
-      chmod($otherline);
+      chomp($otherline);
       $otherline =~ m/^\S+\s\S+\s\S+\s\S+\s\S+\s\S+\s(.+)$/;
       print OUT_FILE ' $1';
     }
