@@ -62,7 +62,7 @@ while (<LIST_FILE>) {
   }
 }
 
-print "merging bed files ... \n";
+print "merging bed files to $outped ... \n";
 
 my @bedfiles = ();
 open FIRST_FILE, $firstped || die $!;
@@ -93,7 +93,7 @@ foreach my $file (@bedfiles) {
   close($file);
 }
 
-print "merging map files ... \n";
+print "merging map files to $outmap ... \n";
 
 open( OUT_FILE, '>$outmap' ) || die $!;
 foreach my $mapfile (@maps) {
