@@ -141,6 +141,7 @@ my $config = {
   rename_diff => {
     target_dir => "${target_dir}/cufflinks_cuffdiff/result/comparison",
     root_dir   => "${target_dir}/cufflinks_cuffdiff/result",
+    gene_only => true
   },
 };
 
