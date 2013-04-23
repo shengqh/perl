@@ -719,12 +719,24 @@ sub copy_and_rename_cuffdiff_file {
     create_directory_or_die($targetdir);
   }
 
+  my $gene_only = $config->{$section}{"gene_only"};
+  if ( !defined($gene_only) ) {
+    $gene_only = 0;
+  }
+
   my @subdirs = list_directories($dir);
   if ( 0 == scalar(@subdirs) ) {
     die "$dir has no sub CuffDiff directories";
   }
 
-  my @filenames = ( "gene_exp.diff", "splicing.diff" );
+  my @filenames;
+  if ($gene_only) {
+    @filenames = ("gene_exp.diff");
+  }
+  else {
+    @filenames = ( "gene_exp.diff", "splicing.diff" );
+  }
+
   for my $subdir (@subdirs) {
     foreach my $filename (@filenames) {
       my $file = "${dir}/${subdir}/${filename}";
@@ -741,7 +753,13 @@ sub copy_and_rename_cuffdiff_file {
         copy( $file, $targetname ) or die "copy failed : $!";
 
         my $target_sign_name = $targetname . ".sig";
-        my $cmd              = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name";
+        my $cmd;
+        if ($gene_only) {
+          $cmd = "cat $targetname | awk '(\$3 != \"-\") && (\$14==\"yes\" || \$14==\"significant\")' > $target_sign_name";
+        }
+        else {
+          $cmd = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name";
+        }
 
         print $cmd . "\n";
         `$cmd`;
