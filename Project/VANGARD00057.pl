@@ -23,14 +23,12 @@ my $config = {
     task_name            => "VANGARD00057"
   },
   fastqfiles => {
-    "WE1" => [ "/blue/sequencer/Runs/projects/2203-WE/2012-08-07/2203-WE-1_1.fastq.gz", "/blue/sequencer/Runs/projects/2203-WE/2012-08-07/2203-WE-1_2.fastq.gz", ],
     "WE5" => [ "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-5_1.fastq.gz", "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-5_2.fastq.gz", ],
     "WE6" => [ "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-6_1.fastq.gz", "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-6_2.fastq.gz", ],
     "WE7" => [ "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-7_1.fastq.gz", "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-7_2.fastq.gz", ],
     "WE8" => [ "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-8_1.fastq.gz", "/blue/sequencer/Runs/projects/2203-WE/2013-03-21/2203-WE-8_2.fastq.gz", ],
   },
   groups => {
-    "WE1" => ["WE1"],
     "WE5" => ["WE5"],
     "WE6" => ["WE6"],
     "WE7" => ["WE7"],
