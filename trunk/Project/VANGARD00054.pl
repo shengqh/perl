@@ -133,9 +133,9 @@ my $config = {
   },
 };
 
-#fastqc_by_pbs( $config, "fastqc" );
+fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
+tophat2_by_pbs( $config, "tophat2" );
 
 cuffdiff_by_pbs( $config, "cuffdiff" );
 
