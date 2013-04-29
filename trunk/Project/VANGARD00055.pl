@@ -10,6 +10,8 @@ use CQS::SystemUtils;
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/miRNA/VANGARD00055");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 my $task_name  = "VANGARD00055";
+my $bwa_option = "-q 15 -l 8 -n 3";
+my $bwa_option_wholegenome = $bwa_option . " -t 8";
 
 my $config_rat = {
   general => {
@@ -29,7 +31,7 @@ my $config_rat = {
   },
   bwa => {
     target_dir      => "${target_dir}/bwa_genome",
-    option          => "-q 15 -t 8",
+    option          => $bwa_option_wholegenome,
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/rn5/rn5.fa",
@@ -92,7 +94,7 @@ my $config_human = {
   },
   bwa => {
     target_dir      => "${target_dir}/bwa_genome",
-    option          => "-q 15 -t 8",
+    option          => $bwa_option_wholegenome,
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
@@ -164,7 +166,7 @@ my $config_mirna = {
   },
   bwa => {
     target_dir      => "${target_dir}/bwa_miRBase",
-    option          => "-q 15 -t 1",
+    option          => $bwa_option,
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/miRBase19/mature.dna.fa",
