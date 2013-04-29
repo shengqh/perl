@@ -43,11 +43,12 @@ print "outfile = $outfile \n";
 my @subdirs = list_directories($dirroot);
 
 foreach my $subdir (@subdirs){
-  print $subdir;
   my $path = $dirroot . "/" . $subdir;
-  print `cat $path/*.stat|grep "in total ("| cut -d ' ' -f1`;
-  print `cat $path/*.stat|grep "mapped ("| cut -d ' ' -f1`;
-  print "\n";
+  my $total = `cat $path/*.stat|grep "in total ("| cut -d ' ' -f1`;
+  chmop($total);
+  my $mapped = `cat $path/*.stat|grep "mapped ("| cut -d ' ' -f1`;
+  chmop($mapped);
+  print $subdir . "\t" . $total . "\t" . $mapped . "\n";
 }
 
 print "done\n";
