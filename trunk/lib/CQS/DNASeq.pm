@@ -71,9 +71,9 @@ sub bwa_by_pbs_single {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
-    print OUT "if [ ! -e $saiFile1; then\n";
+    print OUT "if [ ! -e $saiFile1 ]; then\n";
 		print OUT "  echo sai1=`date` \n";
-		print OUT "  bwa aln $option $faFile $sampleFile1 > $saiFile1 \n\n";
+		print OUT "  bwa aln $option $faFile $sampleFile1 > $saiFile1 \n";
 		print OUT "fi\n\n";
 		
 		print OUT "echo aln=`date` \n";
@@ -164,14 +164,14 @@ sub bwa_by_pbs_double {
 		print OUT "if [ -e $sortedBamFile ]; then\n";
 		print OUT "  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.\n";
 		print OUT "else\n";
-    print OUT "  if [ ! -e $saiFile1; then\n";
+    print OUT "  if [ ! -e $saiFile1 ]; then\n";
 		print OUT "    echo sai1=`date` \n";
-		print OUT "    bwa aln $option $faFile $sampleFile1 >$saiFile1 \n\n";
+		print OUT "    bwa aln $option $faFile $sampleFile1 >$saiFile1 \n";
     print OUT "  fi\n\n";
     
-    print OUT "  if [ ! -e $saiFile2; then\n";
+    print OUT "  if [ ! -e $saiFile2 ]; then\n";
 		print OUT "    echo sai2=`date` \n";
-		print OUT "    bwa aln $option $faFile $sampleFile2 >$saiFile2 \n\n";
+		print OUT "    bwa aln $option $faFile $sampleFile2 >$saiFile2 \n";
     print OUT "  fi\n\n";
 		
 		print OUT "  echo aln=`date` \n";
