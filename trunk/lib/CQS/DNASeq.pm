@@ -191,8 +191,8 @@ sub bwa_by_pbs_double {
 
 		if ($inserts) {
 			print OUT "  echo insertsize=`date`\n";
-			print OUT "  samtools view $sortedBamFile | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${$sortedBamPrefix}.len \n";
-			print OUT "  sort -n ${$sortedBamPrefix}.len | awk ' { x[NR]=\$1; s+=\$1; } END {mean=s/NR; for (i in x){ss+=(x[i]-mean)^2}; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd \"; median=\"median }' > ${$sortedBamPrefix}.inserts \n";
+			print OUT "  samtools view $sortedBamFile | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamPrefix}.len \n";
+			print OUT "  sort -n ${sortedBamPrefix}.len | awk ' { x[NR]=\$1; s+=\$1; } END {mean=s/NR; for (i in x){ss+=(x[i]-mean)^2}; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd \"; median=\"median }' > ${sortedBamPrefix}.inserts \n";
 		}
 		print OUT "fi\n\n";
 
