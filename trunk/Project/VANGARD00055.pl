@@ -10,7 +10,7 @@ use CQS::SystemUtils;
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/miRNA/VANGARD00055");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 my $task_name  = "VANGARD00055";
-my $bwa_option = "-q 15 -l 8 -n 3";
+my $bwa_option = "-l 15";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 
 my $config_rat = {
@@ -196,9 +196,9 @@ my $config_mirna = {
   },
 };
 
-bwa_by_pbs_single( $config_rat, "bwa" );
-bwa_by_pbs_single( $config_human, "bwa" );
-bwa_by_pbs_single( $config_mirna, "bwa" );
+#bwa_by_pbs_single( $config_rat, "bwa" );
+#bwa_by_pbs_single( $config_human, "bwa" );
+#bwa_by_pbs_single( $config_mirna, "bwa" );
 bwa_by_pbs_single( $config_mirna, "bwa2" );
 
 1;
