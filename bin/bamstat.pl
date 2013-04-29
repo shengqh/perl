@@ -45,9 +45,9 @@ my @subdirs = list_directories($dirroot);
 foreach my $subdir (@subdirs){
   my $path = $dirroot . "/" . $subdir;
   my $total = `cat $path/*.stat|grep "in total ("| cut -d ' ' -f1`;
-  chmop($total);
+  chomp($total);
   my $mapped = `cat $path/*.stat|grep "mapped ("| cut -d ' ' -f1`;
-  chmop($mapped);
+  chomp($mapped);
   print $subdir . "\t" . $total . "\t" . $mapped . "\n";
 }
 
