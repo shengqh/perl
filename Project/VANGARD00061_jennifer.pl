@@ -61,7 +61,7 @@ my $config = {
   },
 };
 
-fastqc_by_pbs( $config, "fastqc" );
+#fastqc_by_pbs( $config, "fastqc" );
 bwa_by_pbs_double( $config, "bwa" );
 
 1;
