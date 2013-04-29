@@ -46,7 +46,8 @@ sub bwa_by_pbs_single {
 		my $saiFile1      = $sampleName1 . ".sai";
 		my $samFile       = $sampleName . ".sam";
 		my $bamFile       = $sampleName . ".bam";
-		my $sortedBamFile = $sampleName . "_sort";
+    my $sortedBamPrefix = $sampleName . "_sort";
+    my $sortedBamFile = $sortedBamPrefix . ".bam";
 
 		my $pbsName = "${sampleName}_bwa.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
@@ -70,18 +71,26 @@ sub bwa_by_pbs_single {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
-		print OUT "echo sai1=`date` \n";
-		print OUT "bwa aln $option $faFile $sampleFile1 > $saiFile1 \n\n";
+    print OUT "if [ ! -e $saiFile1; then\n";
+		print OUT "  echo sai1=`date` \n";
+		print OUT "  bwa aln $option $faFile $sampleFile1 > $saiFile1 \n\n";
+		print OUT "fi\n\n";
+		
 		print OUT "echo aln=`date` \n";
 		print OUT "bwa samse -r '\@RG\tID:${sampleName}\tLB:${sampleName}\tSM:${sampleName}\tPL:ILLUMINA' $option_samse $faFile $saiFile1 $sampleFile1 > $samFile \n\n";
+		
 		print OUT "echo sam2bam=`date`\n";
 		print OUT "samtools view -b -S $samFile -o $bamFile \n\n";
+		
 		print OUT "echo sortbam=`date`\n";
-		print OUT "samtools sort $bamFile $sortedBamFile \n\n";
+		print OUT "samtools sort $bamFile $sortedBamPrefix \n\n";
+    
     print OUT "echo indexbam=`date`\n";
-    print OUT "samtools index ${sortedBamFile}.bam \n\n";
+    print OUT "samtools index $sortedBamFile \n\n";
+		
 		print OUT "echo bamstat=`date`\n";
-		print OUT "samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat \n\n";
+		print OUT "samtools flagstat $sortedBamFile > ${sortedBamFile}.stat \n\n";
+		
 		print OUT "echo finished=`date` \n";
 		close OUT;
 
@@ -127,7 +136,8 @@ sub bwa_by_pbs_double {
 		my $saiFile2      = $sampleName2 . ".sai";
 		my $samFile       = $sampleName . ".sam";
 		my $bamFile       = $sampleName . ".bam";
-		my $sortedBamFile = $sampleName . "_sort";
+    my $sortedBamPrefix = $sampleName . "_sort";
+		my $sortedBamFile = $sortedBamPrefix . ".bam";
 
 		my $pbsName = "${sampleName}_bwa.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
@@ -151,27 +161,38 @@ sub bwa_by_pbs_double {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
-		print OUT "if [ -e ${sortedBamFile}.bam ]; then\n";
-		print OUT "  echo job has already been done. if you want to do again, delete ${sortedBamFile}.bam and submit job again.\n";
+		print OUT "if [ -e $sortedBamFile ]; then\n";
+		print OUT "  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.\n";
 		print OUT "else\n";
-		print OUT "  echo sai1=`date` \n";
-		print OUT "  bwa aln $option $faFile $sampleFile1 >$saiFile1 \n\n";
-		print OUT "  echo sai2=`date` \n";
-		print OUT "  bwa aln $option $faFile $sampleFile2 >$saiFile2 \n\n";
+    print OUT "  if [ ! -e $saiFile1; then\n";
+		print OUT "    echo sai1=`date` \n";
+		print OUT "    bwa aln $option $faFile $sampleFile1 >$saiFile1 \n\n";
+    print OUT "  fi\n\n";
+    
+    print OUT "  if [ ! -e $saiFile2; then\n";
+		print OUT "    echo sai2=`date` \n";
+		print OUT "    bwa aln $option $faFile $sampleFile2 >$saiFile2 \n\n";
+    print OUT "  fi\n\n";
+		
 		print OUT "  echo aln=`date` \n";
 		print OUT "  bwa sampe -r '\@RG\tID:${sampleName}\tLB:${sampleName}\tSM:${sampleName}\tPL:ILLUMINA' $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n\n";
+		
 		print OUT "  echo sam2bam=`date`\n";
 		print OUT "  samtools view -b -S $samFile -o $bamFile \n\n";
+		
 		print OUT "  echo sortbam=`date`\n";
-		print OUT "  samtools sort $bamFile $sortedBamFile \n\n";
+		print OUT "  samtools sort $bamFile $sortedBamPrefix \n\n";
+		
+    print OUT "  echo indexbam=`date`\n";
+    print OUT "  samtools index $sortedBamFile \n\n";
+    
 		print OUT "  echo bamstat=`date`\n";
-		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat \n\n";
+		print OUT "  samtools flagstat $sortedBamFile > ${sortedBamFile}.stat \n\n";
 
 		if ($inserts) {
 			print OUT "  echo insertsize=`date`\n";
-			print OUT "  samtools view ${sortedBamFile}.bam | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${sortedBamFile}.len \n";
-			print OUT
-"  sort -n ${sortedBamFile}.len | awk ' { x[NR]=\$1; s+=\$1; } END {mean=s/NR; for (i in x){ss+=(x[i]-mean)^2}; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd \"; median=\"median }' > ${sortedBamFile}.inserts \n";
+			print OUT "  samtools view $sortedBamFile | awk 'and (\$2, 0x0002) && and (\$2, 0x0040)' | cut -f 9 | sed 's/^-//' > ${$sortedBamPrefix}.len \n";
+			print OUT "  sort -n ${$sortedBamPrefix}.len | awk ' { x[NR]=\$1; s+=\$1; } END {mean=s/NR; for (i in x){ss+=(x[i]-mean)^2}; sd=sqrt(ss/NR); if(NR %2) {median=x[(NR+1)/2];}else{median=(x[(NR/2)]+x[(NR/2)+1])/2.0;} print \"mean=\"mean \"; stdev=\"sd \"; median=\"median }' > ${$sortedBamPrefix}.inserts \n";
 		}
 		print OUT "fi\n\n";
 
