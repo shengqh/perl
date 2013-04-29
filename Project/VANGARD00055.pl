@@ -179,10 +179,26 @@ my $config_mirna = {
       "mem"      => "20gb"
     },
   },
+  bwa2 => {
+    target_dir      => "${target_dir}/bwa_illumina_miRNA",
+    option          => $bwa_option,
+    option_samse    => "",
+    source_ref      => "fastqfiles",
+    fasta_file      => "/data/cqs/shengq1/reference/miRNA_illumina/mir.fa",
+    estimate_insert => 1,
+    source_ref      => "fastqfiles",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
 };
 
-bwa_by_pbs_single( $config_rat, "bwa" );
-bwa_by_pbs_single( $config_human, "bwa" );
-bwa_by_pbs_single( $config_mirna, "bwa" );
+#bwa_by_pbs_single( $config_rat, "bwa" );
+#bwa_by_pbs_single( $config_human, "bwa" );
+#bwa_by_pbs_single( $config_mirna, "bwa" );
+bwa_by_pbs_single( $config_mirna, "bwa2" );
 
 1;
