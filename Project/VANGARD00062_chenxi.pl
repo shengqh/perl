@@ -16,7 +16,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => {
-    bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
+    bowtie2_index        => "/data/cqs/guoy1/reference/mm10/mm10",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     path_file            => "/home/shengq1/local/bin/path.txt",
