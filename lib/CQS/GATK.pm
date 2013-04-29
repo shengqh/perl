@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::DNASeq;
+package CQS::GATK;
 
 use strict;
 use warnings;
@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam)] );
+our %EXPORT_TAGS = ( 'all' => [qw(IndelRealigner)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -21,7 +21,7 @@ our $VERSION = '0.01';
 
 use Cwd;
 
-sub bwa_by_pbs_single {
+sub IndelRealigner {
 	my ( $config, $section ) = @_;
 
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
@@ -70,31 +70,31 @@ sub bwa_by_pbs_single {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
-		print OUT "if [ -e ${sortedBamFile}.bam ]; then \n";
-		print OUT "  echo job has already been done. if you want to do again, delete ${sortedBamFile}.bam and submit job again. \n";
+		print OUT "if [ -s ${sortedBamFile}.bam ]; then\n";
+		print OUT "  echo job has already been done. if you want to do again, delete ${sortedBamFile}.bam and submit job again.\n";
 		print OUT "else\n";
-		print OUT "  if [ ! -e $bamFile ]; then \n";
-		print OUT "    if [ ! -e $samFile ]; then \n";
-		print OUT "      if [ ! -e $saiFile1 ]; then \n";
+		print OUT "  if [ ! -s $bamFile ]; then\n";
+		print OUT "    if [ ! -s $samFile ]; then\n";
+		print OUT "      if [ ! -s $saiFile1 ]; then\n";
 		print OUT "        echo sai1=`date` \n";
-		print OUT "        bwa aln $option $faFile $sampleFile1 > $saiFile1 \n";
-		print OUT "      fi \n";
+		print OUT "        bwa aln $option $faFile $sampleFile1 >$saiFile1 \n";
+		print OUT "      fi\n";
 		print OUT "      echo aln=`date` \n";
 		print OUT "      bwa samse $option_samse $faFile $saiFile1 $sampleFile1 > $samFile \n";
-		print OUT "    fi \n";
+		print OUT "    fi\n";
 		print OUT "    echo sam2bam=`date`\n";
-		print OUT "    samtools view -b -S $samFile -o $bamFile \n";
-		print OUT "  fi \n";
+		print OUT "    samtools view -b -S $samFile -o $bamFile\n";
+		print OUT "  fi\n";
 		print OUT "  echo sortbam=`date`\n";
-		print OUT "  samtools sort $bamFile $sortedBamFile \n";
+		print OUT "  samtools sort $bamFile $sortedBamFile\n";
 		print OUT "  echo bamstat=`date`\n";
-		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat \n";
-		print OUT "fi \n\n";
+		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat\n";
+		print OUT "fi\n\n";
 
-		print OUT "echo finished=`date` \n";
+		print OUT "echo finished=`date`\n";
 		close OUT;
 
-		print "$pbsFile created \n";
+		print "$pbsFile created\n";
 	}
 	close(SH);
 
