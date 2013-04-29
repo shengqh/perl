@@ -95,7 +95,7 @@ my $config_human = {
     option          => "-q 15 -t 8",
     option_samse    => "",
     source_ref      => "fastqfiles",
-    fasta_file      => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
+    fasta_file      => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
     estimate_insert => 1,
     source_ref      => "fastqfiles",
     pbs             => {
@@ -180,7 +180,7 @@ my $config_mirna = {
 };
 
 #bwa_by_pbs_single( $config_rat, "bwa" );
-#bwa_by_pbs_single( $config_human, "bwa" );
-bwa_by_pbs_single( $config_mirna, "bwa" );
+bwa_by_pbs_single( $config_human, "bwa" );
+#bwa_by_pbs_single( $config_mirna, "bwa" );
 
 1;
