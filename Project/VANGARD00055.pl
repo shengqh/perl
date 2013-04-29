@@ -167,7 +167,7 @@ my $config_mirna = {
     option          => "-q 15 -t 1",
     option_samse    => "",
     source_ref      => "fastqfiles",
-    fasta_file      => "/data/cqs/shengq1/reference/miRBase19/mature.fa",
+    fasta_file      => "/data/cqs/shengq1/reference/miRBase19/mature.dna.fa",
     estimate_insert => 1,
     source_ref      => "fastqfiles",
     pbs             => {
@@ -179,8 +179,8 @@ my $config_mirna = {
   },
 };
 
-bwa_by_pbs_single( $config_rat, "bwa" );
-bwa_by_pbs_single( $config_human, "bwa" );
+#bwa_by_pbs_single( $config_rat, "bwa" );
+#bwa_by_pbs_single( $config_human, "bwa" );
 bwa_by_pbs_single( $config_mirna, "bwa" );
 
 1;
