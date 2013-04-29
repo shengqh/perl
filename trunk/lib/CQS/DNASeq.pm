@@ -70,27 +70,18 @@ sub bwa_by_pbs_single {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
-		print OUT "if [ -e ${sortedBamFile}.bam ]; then \n";
-		print OUT "  echo job has already been done. if you want to do again, delete ${sortedBamFile}.bam and submit job again. \n";
-		print OUT "else\n";
-		print OUT "  if [ ! -e $bamFile ]; then \n";
-		print OUT "    if [ ! -e $samFile ]; then \n";
-		print OUT "      if [ ! -e $saiFile1 ]; then \n";
-		print OUT "        echo sai1=`date` \n";
-		print OUT "        bwa aln $option $faFile $sampleFile1 > $saiFile1 \n";
-		print OUT "      fi \n";
-		print OUT "      echo aln=`date` \n";
-		print OUT "      bwa samse $option_samse $faFile $saiFile1 $sampleFile1 > $samFile \n";
-		print OUT "    fi \n";
-		print OUT "    echo sam2bam=`date`\n";
-		print OUT "    samtools view -b -S $samFile -o $bamFile \n";
-		print OUT "  fi \n";
-		print OUT "  echo sortbam=`date`\n";
-		print OUT "  samtools sort $bamFile $sortedBamFile \n";
-		print OUT "  echo bamstat=`date`\n";
-		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat \n";
-		print OUT "fi \n\n";
-
+		print OUT "echo sai1=`date` \n";
+		print OUT "bwa aln $option $faFile $sampleFile1 > $saiFile1 \n\n";
+		print OUT "echo aln=`date` \n";
+		print OUT "bwa samse -r '\@RG\tID:${sampleName}\tLB:${sampleName}\tSM:${sampleName}\tPL:ILLUMINA' $option_samse $faFile $saiFile1 $sampleFile1 > $samFile \n\n";
+		print OUT "echo sam2bam=`date`\n";
+		print OUT "samtools view -b -S $samFile -o $bamFile \n\n";
+		print OUT "echo sortbam=`date`\n";
+		print OUT "samtools sort $bamFile $sortedBamFile \n\n";
+    print OUT "echo indexbam=`date`\n";
+    print OUT "samtools index ${sortedBamFile}.bam \n\n";
+		print OUT "echo bamstat=`date`\n";
+		print OUT "samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat \n\n";
 		print OUT "echo finished=`date` \n";
 		close OUT;
 
@@ -163,26 +154,18 @@ sub bwa_by_pbs_double {
 		print OUT "if [ -e ${sortedBamFile}.bam ]; then\n";
 		print OUT "  echo job has already been done. if you want to do again, delete ${sortedBamFile}.bam and submit job again.\n";
 		print OUT "else\n";
-		print OUT "  if [ ! -e $bamFile ]; then\n";
-		print OUT "    if [ ! -e $samFile ]; then\n";
-		print OUT "      if [ ! -e $saiFile1 ]; then\n";
-		print OUT "        echo sai1=`date` \n";
-		print OUT "        bwa aln $option $faFile $sampleFile1 >$saiFile1 \n";
-		print OUT "      fi\n";
-		print OUT "      if [ ! -e $saiFile2 ]; then\n";
-		print OUT "        echo sai2=`date` \n";
-		print OUT "        bwa aln $option $faFile $sampleFile2 >$saiFile2 \n";
-		print OUT "      fi\n";
-		print OUT "      echo aln=`date` \n";
-		print OUT "      bwa sampe $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n";
-		print OUT "    fi\n";
-		print OUT "    echo sam2bam=`date`\n";
-		print OUT "    samtools view -b -S $samFile -o $bamFile\n";
-		print OUT "  fi\n";
+		print OUT "  echo sai1=`date` \n";
+		print OUT "  bwa aln $option $faFile $sampleFile1 >$saiFile1 \n\n";
+		print OUT "  echo sai2=`date` \n";
+		print OUT "  bwa aln $option $faFile $sampleFile2 >$saiFile2 \n\n";
+		print OUT "  echo aln=`date` \n";
+		print OUT "  bwa sampe -r '\@RG\tID:${sampleName}\tLB:${sampleName}\tSM:${sampleName}\tPL:ILLUMINA' $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n\n";
+		print OUT "  echo sam2bam=`date`\n";
+		print OUT "  samtools view -b -S $samFile -o $bamFile \n\n";
 		print OUT "  echo sortbam=`date`\n";
-		print OUT "  samtools sort $bamFile $sortedBamFile\n";
+		print OUT "  samtools sort $bamFile $sortedBamFile \n\n";
 		print OUT "  echo bamstat=`date`\n";
-		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat\n";
+		print OUT "  samtools flagstat ${sortedBamFile}.bam > ${sortedBamFile}.bam.stat \n\n";
 
 		if ($inserts) {
 			print OUT "  echo insertsize=`date`\n";
