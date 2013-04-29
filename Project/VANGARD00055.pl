@@ -196,9 +196,9 @@ my $config_mirna = {
   },
 };
 
-#bwa_by_pbs_single( $config_rat, "bwa" );
-#bwa_by_pbs_single( $config_human, "bwa" );
-#bwa_by_pbs_single( $config_mirna, "bwa" );
+bwa_by_pbs_single( $config_rat, "bwa" );
+bwa_by_pbs_single( $config_human, "bwa" );
+bwa_by_pbs_single( $config_mirna, "bwa" );
 bwa_by_pbs_single( $config_mirna, "bwa2" );
 
 1;
