@@ -352,8 +352,8 @@ $pbsDesc
   my $knownsitesvcf="";
   
   foreach my $vcf(@vcfFiles){
-    $knownvcf = $knownvcf + " -known $vcf";
-    $knownsitesvcf = $knownsitesvcf + " -knownSites $vcf";
+    $knownvcf = $knownvcf . " -known $vcf";
+    $knownsitesvcf = $knownsitesvcf . " -knownSites $vcf";
   }
   
     print OUT "
