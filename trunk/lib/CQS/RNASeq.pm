@@ -600,10 +600,7 @@ fi
 use strict;
 use warnings;
 
-use CQS::QC;
 use CQS::RNASeq;
-use CQS::FileUtils;
-use CQS::SystemUtils;
 
 my \$config = {
   rename_diff => {
