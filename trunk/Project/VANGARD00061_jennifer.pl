@@ -4,7 +4,6 @@ use warnings;
 
 use CQS::QC;
 use CQS::DNASeq;
-use CQS::GATK;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
