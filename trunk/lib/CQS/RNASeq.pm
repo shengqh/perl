@@ -18,7 +18,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(get_sorted_bam call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs)
+    qw(get_sorted_bam call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs novoalign)
   ]
 );
 
@@ -919,6 +919,81 @@ sub miso_by_pbs {
     chmod 0755, $shfile;
   }
   print "!!!shell file $shfile created, you can run this shell file to submit all miso tasks.\n";
+}
+
+sub novoalign {
+  my ( $config, $section ) = @_;
+
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+
+  my $novoindex = get_param_file( $config->{$section}{novoindex}, "novoindex", 1 );
+
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+  my $shfile = $pbsDir . "/${task_name}.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+
+    my $sampleFile = $sampleFiles[0];
+
+    my ( $sampleName, $directories, $suffix ) = fileparse($sampleFile);
+    my $samFile       = $sampleName . ".sam";
+    my $bamFile       = $sampleName . ".bam";
+    my $sortedBamPrefix = $sampleName . "_sorted";
+    my $sortedBamFile = $sortedBamPrefix . ".bam";
+
+    my $pbsName = "${sampleName}_nalign.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
+
+    print SH "\$MYCMD ./$pbsName \n";
+
+    my $log = "${logDir}/${sampleName}_nalign.log";
+
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT $pbsDesc;
+    print OUT "#PBS -o $log\n";
+    print OUT "#PBS -j oe\n\n";
+
+    if ( -e $path_file ) {
+      print OUT "source $path_file\n";
+    }
+    print OUT "echo novoalign=`date`\n";
+
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+
+    #my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
+    print OUT "
+cd $curDir
+
+novoalign -d $novoindex -f $sampleFile $option -o SAM > $samFile
+
+samtools view -b -S $samFile -o $bamFile 
+
+samtools sort $bamFile $sortedBamPrefix 
+
+samtools index $sortedBamFile 
+
+samtools flagstat $sortedBamFile > ${sortedBamFile}.stat 
+
+echo finished=`date` 
+";
+
+    close OUT;
+
+    print "$pbsFile created \n";
+  }
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+
+  print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+
+  #`qsub $pbsFile`;
 }
 
 1;
