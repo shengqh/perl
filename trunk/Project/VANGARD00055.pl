@@ -219,6 +219,32 @@ my $config_mirna = {
       "mem"      => "20gb"
     },
   },
+  novoalign_hairpin => {
+    target_dir      => "${target_dir}/novoalign_miRBase_hairpin",
+    option          => $novoalign_option,
+    option_samse    => "",
+    source_ref      => "fastqfiles",
+    novoindex      => "/data/cqs/shengq1/reference/miRBase19/hairpin.dna.nix",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  novoalign_illumina => {
+    target_dir      => "${target_dir}/novoalign_illumina",
+    option          => $novoalign_option,
+    option_samse    => "",
+    source_ref      => "fastqfiles",
+    novoindex      => "/data/cqs/shengq1/reference/miRNA_illumina/mir.nix",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   
 };
 
@@ -227,6 +253,8 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
 #bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
 #bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
-novoalign( $config_mirna, "novoalign_mature" );
+#novoalign( $config_mirna, "novoalign_mature" );
+novoalign( $config_mirna, "novoalign_hairpin" );
+novoalign( $config_mirna, "novoalign_illumina" );
 
 1;
