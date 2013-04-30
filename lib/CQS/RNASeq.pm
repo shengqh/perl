@@ -775,7 +775,7 @@ sub copy_and_rename_cuffdiff_file {
         
         if(defined($line)){
           my @parts = split( /\t/, $line );
-          my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . "." . ${filename};
+          my $targetname = "${targetdir}/${subdir}.${filename}";
 
           copy( $file, $targetname ) or die "copy failed : $!";
 
