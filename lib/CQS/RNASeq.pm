@@ -605,7 +605,7 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $config = {
+my \$config = {
   rename_diff => {
     target_dir => \"${target_dir}/result/comparison\",
     root_dir   => \"${target_dir}/result\",
@@ -613,7 +613,7 @@ my $config = {
   },
 };
 
-copy_and_rename_cuffdiff_file($config, \"rename_diff\");
+copy_and_rename_cuffdiff_file(\$config, \"rename_diff\");
 
 1;
 
