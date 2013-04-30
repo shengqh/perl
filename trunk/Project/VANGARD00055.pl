@@ -13,6 +13,8 @@ my $task_name  = "VANGARD00055";
 my $bwa_option = "-q 15 -l 8 -n 3";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 
+my $novoalign_option = "-l 15 -t 30 -r Random -m";
+
 my $config_rat = {
   general => {
     path_file => "/home/shengq1/local/bin/path.txt",
@@ -170,8 +172,6 @@ my $config_mirna = {
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/miRBase19/mature.dna.fa",
-    estimate_insert => 1,
-    source_ref      => "fastqfiles",
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -185,8 +185,6 @@ my $config_mirna = {
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/miRBase19/hairpin.dna.fa",
-    estimate_insert => 1,
-    source_ref      => "fastqfiles",
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -200,8 +198,6 @@ my $config_mirna = {
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/miRNA_illumina/mir.fa",
-    estimate_insert => 1,
-    source_ref      => "fastqfiles",
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -209,12 +205,27 @@ my $config_mirna = {
       "mem"      => "20gb"
     },
   },
+  novoalign_mature => {
+    target_dir      => "${target_dir}/novoalign_miRBase_mature",
+    option          => $novoalign_option,
+    option_samse    => "",
+    source_ref      => "fastqfiles",
+    novoindex      => "/data/cqs/shengq1/reference/miRBase19/mature.dna.nix",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  
 };
 
-bwa_by_pbs_single( $config_rat, "bwa" );
-bwa_by_pbs_single( $config_human, "bwa" );
-bwa_by_pbs_single( $config_mirna, "bwa_mature" );
-bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
-bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
+#bwa_by_pbs_single( $config_rat, "bwa" );
+#bwa_by_pbs_single( $config_human, "bwa" );
+#bwa_by_pbs_single( $config_mirna, "bwa_mature" );
+#bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
+#bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
+novoalign( $config_mirna, "novoalign_mature" );
 
 1;
