@@ -79,17 +79,25 @@ mkdir tmpdir
 echo RemoveDuplicate=`date` 
 java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true 
 
-echo RealignerTargetCreator=`date` 
-java $option -jar $gatk_jar -I $redupFile -R $faFile -T RealignerTargetCreator -o $intervalFile --known $vcfFile -nt $thread_count
+if [ -e $redupFile] then;
+  echo RealignerTargetCreator=`date` 
+  java $option -jar $gatk_jar -I $redupFile -R $faFile -T RealignerTargetCreator -o $intervalFile --known $vcfFile -nt $thread_count
+fi
 
-echo IndelRealigner=`date` 
-java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -I $sampleFile1 -R $faFile -T IndelRealigner -targetIntervals $intervalFile -o $realignedFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 
+if [ -e $intervalFile] then;
+  echo IndelRealigner=`date` 
+  java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -I $sampleFile1 -R $faFile -T IndelRealigner -targetIntervals $intervalFile -o $realignedFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 
+fi
 
-echo CountCovariates=`date` 
-java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T CountCovariates -cov QualityScoreCovariate -cov CycleCovariate -cov DinucCovariate --known $vcfFile -recalFile $csvFile
+if [ -e $intervalFile] then;
+  echo CountCovariates=`date` 
+  java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T CountCovariates -cov QualityScoreCovariate -cov CycleCovariate -cov DinucCovariate --known $vcfFile -recalFile $csvFile
+fi
 
-echo TableRecalibration=`date`
-java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T TableRecalibration --out $recalFile -recalFile $csvFile
+if [ -e $csvFile] then;
+  echo TableRecalibration=`date`
+  java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T TableRecalibration --out $recalFile -recalFile $csvFile
+fi
 
 echo finished=`date`\n";
 
