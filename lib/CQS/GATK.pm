@@ -42,11 +42,19 @@ sub refine_bam_file {
 	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
 	for my $sampleName ( sort keys %rawFiles ) {
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
 
 		my $sampleFile   = $sampleFiles[0];
-		my $intervalFile  = $sampleFile . ".intervals";
-		my $realignedFile = change_extension( $sampleFile, ".realigned.bam" );
+		
+		my $sFile = $curDir . "/" . basename($sampleFile);
+		if($sFile == $sampleFile){
+		  $sFile = basename($sampleFile);
+		}
+		
+		my $intervalFile  = $sFile . ".intervals";
+		my $realignedFile = change_extension( $sFile, ".realigned.bam" );
 		my $grpFile       = $realignedFile . ".grp";
 		my $recalFile     = change_extension( $realignedFile, ".recal.bam" );
     my $redupFile     = change_extension( $recalFile, ".redup.bam" );
@@ -57,7 +65,6 @@ sub refine_bam_file {
 		print SH "\$MYCMD ./$pbsName \n";
 
 		my $log    = "${logDir}/${sampleName}_refine.log";
-		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
 		open( OUT, ">$pbsFile" ) or die $!;
 
@@ -81,12 +88,12 @@ fi
 
 if [ ! -e $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
-  java $option -jar $gatk_jar -T RealignerTargetCreator -I $sampleFile -R $faFile --known $vcfFile -nt $thread_count -o $intervalFile
+  java $option -jar $gatk_jar -T RealignerTargetCreator -I $sFile -R $faFile --known $vcfFile -nt $thread_count -o $intervalFile
 fi
 
 if [[ -e $intervalFile && ! -e $realignedFile ]]; then
   echo IndelRealigner=`date` 
-  java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -T IndelRealigner -I $sampleFile -R $faFile -targetIntervals $intervalFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 -o $realignedFile 
+  java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -T IndelRealigner -I $sFile -R $faFile -targetIntervals $intervalFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 -o $realignedFile 
 fi
 
 if [[ -e $realignedFile && ! -e $grpFile ]]; then
