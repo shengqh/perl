@@ -49,7 +49,7 @@ sub refine_bam_file {
 		my $sampleFile   = $sampleFiles[0];
 		
 		my $sFile = $curDir . "/" . basename($sampleFile);
-		if($sFile == $sampleFile){
+		if($sFile eq $sampleFile){
 		  $sFile = basename($sampleFile);
 		}
 		
