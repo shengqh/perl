@@ -84,17 +84,17 @@ if [ ! -e $redupFile ]; then
   java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true 
 fi
 
-if [ -e $redupFile ]; then
+if [ -e $redupFile and ! -e $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
   java $option -jar $gatk_jar -I $redupFile -R $faFile -T RealignerTargetCreator -o $intervalFile --known $vcfFile -nt $thread_count
 fi
 
-if [ -e $intervalFile ]; then
+if [ -e $intervalFile and ! -e $realignedFile ]; then
   echo IndelRealigner=`date` 
   java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -I $sampleFile1 -R $faFile -T IndelRealigner -targetIntervals $intervalFile -o $realignedFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 
 fi
 
-if [ -e $intervalFile ]; then
+if [ -e $realignedFile ]; then
   echo CountCovariates=`date` 
   java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T CountCovariates -cov QualityScoreCovariate -cov CycleCovariate -cov DinucCovariate --known $vcfFile -recalFile $csvFile
 fi
