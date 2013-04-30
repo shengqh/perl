@@ -766,8 +766,8 @@ sub copy_and_rename_cuffdiff_file {
   for my $subdir (@subdirs) {
     foreach my $filename (@filenames) {
       my $file = "${dir}/${subdir}/${filename}";
-      print "Dealing " . $file . "\n";
       if ( -s $file ) {
+        print "Dealing " . $file . "\n";
         open IN, "<$file" or die "Cannot open file $file";
         my $line = <IN>;
         $line = <IN>;
