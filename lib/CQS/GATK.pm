@@ -74,7 +74,10 @@ $pbsDesc
 		print OUT "
 echo bwa=`date`
 cd $curDir
-mkdir tmpdir
+
+if [ ! -s tmpdir] then;
+  mkdir tmpdir
+fi
 
 if [ ! -e $redupFile] then;
   echo RemoveDuplicate=`date` 
@@ -101,7 +104,8 @@ if [ -e $csvFile] then;
   java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T TableRecalibration --out $recalFile -recalFile $csvFile
 fi
 
-echo finished=`date`\n";
+echo finished=`date`
+";
 
 		close OUT;
 
