@@ -164,8 +164,8 @@ my $config_mirna = {
     "2516-47" => ["/scratch/cqs/shengq1/miRNA/VANGARD00055/clipped/2516-KCV-47_1_clipped.fastq"],
     "2516-48" => ["/scratch/cqs/shengq1/miRNA/VANGARD00055/clipped/2516-KCV-48_1_clipped.fastq"],
   },
-  bwa => {
-    target_dir      => "${target_dir}/bwa_miRBase",
+  bwa_mature => {
+    target_dir      => "${target_dir}/bwa_miRBase_mature",
     option          => $bwa_option,
     option_samse    => "",
     source_ref      => "fastqfiles",
@@ -179,7 +179,22 @@ my $config_mirna = {
       "mem"      => "20gb"
     },
   },
-  bwa2 => {
+  bwa_hairpin => {
+    target_dir      => "${target_dir}/bwa_miRBase_hairpin",
+    option          => $bwa_option,
+    option_samse    => "",
+    source_ref      => "fastqfiles",
+    fasta_file      => "/data/cqs/shengq1/reference/miRBase19/hairpin.dna.fa",
+    estimate_insert => 1,
+    source_ref      => "fastqfiles",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bwa_illumina => {
     target_dir      => "${target_dir}/bwa_illumina_miRNA",
     option          => $bwa_option,
     option_samse    => "",
@@ -198,7 +213,8 @@ my $config_mirna = {
 
 bwa_by_pbs_single( $config_rat, "bwa" );
 bwa_by_pbs_single( $config_human, "bwa" );
-bwa_by_pbs_single( $config_mirna, "bwa" );
-bwa_by_pbs_single( $config_mirna, "bwa2" );
+bwa_by_pbs_single( $config_mirna, "bwa_mature" );
+bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
+bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
 
 1;
