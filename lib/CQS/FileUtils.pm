@@ -7,11 +7,17 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw( list_directories list_files has_file create_directory_or_die)] );
+our %EXPORT_TAGS = ( 'all' => [qw( list_directories list_files has_file create_directory_or_die change_extension)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.01';
+
+sub change_extension{
+  my ($filename, $newextension) = @_;
+  $filename =~ s{\.[^.]*$}{$newextension};
+  return ($filename);
+}
 
 sub list_directories {
 	my $root = shift;
