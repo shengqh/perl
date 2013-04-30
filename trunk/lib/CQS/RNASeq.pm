@@ -772,23 +772,25 @@ sub copy_and_rename_cuffdiff_file {
         my $line = <IN>;
         $line = <IN>;
         close(IN);
+        
+        if(assigned($line)){
+          my @parts = split( /\t/, $line );
+          my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . "." . ${filename};
 
-        my @parts = split( /\t/, $line );
-        my $targetname = "${targetdir}/" . $parts[4] . "_vs_" . $parts[5] . "." . ${filename};
+          copy( $file, $targetname ) or die "copy failed : $!";
 
-        copy( $file, $targetname ) or die "copy failed : $!";
+          my $target_sign_name = $targetname . ".sig";
+          my $cmd;
+          if ($gene_only) {
+            $cmd = "cat $targetname | awk '(\$3 != \"-\") && (\$14==\"yes\" || \$14==\"significant\")' > $target_sign_name";
+          }
+          else {
+            $cmd = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name";
+          }
 
-        my $target_sign_name = $targetname . ".sig";
-        my $cmd;
-        if ($gene_only) {
-          $cmd = "cat $targetname | awk '(\$3 != \"-\") && (\$14==\"yes\" || \$14==\"significant\")' > $target_sign_name";
+          print $cmd . "\n";
+          `$cmd`;
         }
-        else {
-          $cmd = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name";
-        }
-
-        print $cmd . "\n";
-        `$cmd`;
       }
     }
   }
