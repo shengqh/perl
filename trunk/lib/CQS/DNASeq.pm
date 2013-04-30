@@ -158,7 +158,7 @@ sub bwa_by_pbs_double {
 
 		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
-		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
+		my $tag="'\@RG\tID:$sampleName\tLB:$sampleName\tSM:$sampleName\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
 		print OUT "if [ -e $sortedBamFile ]; then\n";
@@ -175,7 +175,7 @@ sub bwa_by_pbs_double {
     print OUT "  fi\n\n";
 		
 		print OUT "  echo aln=`date` \n";
-		print OUT "  bwa sampe -r '\@RG\tID:${sampleName}\tLB:${sampleName}\tSM:${sampleName}\tPL:ILLUMINA' $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n\n";
+		print OUT "  bwa sampe -r $tag $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile \n\n";
 		
 		print OUT "  echo sam2bam=`date`\n";
 		print OUT "  samtools view -b -S $samFile -o $bamFile \n\n";
