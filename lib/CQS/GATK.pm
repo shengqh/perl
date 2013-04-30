@@ -84,22 +84,22 @@ if [ ! -e $redupFile ]; then
   java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true 
 fi
 
-if [ -e $redupFile and ! -e $intervalFile ]; then
+if [ -e $redupFile && ! -e $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
   java $option -jar $gatk_jar -I $redupFile -R $faFile -T RealignerTargetCreator -o $intervalFile --known $vcfFile -nt $thread_count
 fi
 
-if [ -e $intervalFile and ! -e $realignedFile ]; then
+if [ -e $intervalFile && ! -e $realignedFile ]; then
   echo IndelRealigner=`date` 
   java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -I $sampleFile1 -R $faFile -T IndelRealigner -targetIntervals $intervalFile -o $realignedFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 
 fi
 
-if [ -e $realignedFile and ! -e $grpFile ]; then
+if [ -e $realignedFile && ! -e $grpFile ]; then
   echo BaseRecalibrator=`date` 
   java $option -jar $gatk_jar -R $faFile -I $realignedFile -T BaseRecalibrator -knownSites $vcfFile -o $grpFile
 fi
 
-if [ -e $grpFile and ! -e $recalFile ]; then
+if [ -e $grpFile && ! -e $recalFile ]; then
   echo TableRecalibration=`date`
   java $option -jar $gatk_jar -R $faFile -I $realignedFile -T PrintReads -o $recalFile -BQSR $grpFile
 fi
