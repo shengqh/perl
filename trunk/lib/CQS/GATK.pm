@@ -48,7 +48,7 @@ sub refine_bam_file {
 		my $redupFile     = change_extension( $sampleFile1, ".redup.bam" );
 		my $intervalFile  = $redupFile . ".intervals";
 		my $realignedFile = change_extension( $redupFile, ".realigned.bam" );
-		my $csvFile       = $realignedFile + ".csv";
+		my $csvFile       = $realignedFile . ".csv";
 		my $recalFile     = change_extension( $sampleFile1, ".recal.bam" );
 
 		my $pbsName = "${sampleName}_refine.pbs";
