@@ -297,7 +297,7 @@ sub refine_bam_file {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
   my $faFile             = get_param_file( $config->{$section}{fasta_file},         "fasta_file",         1 );
-  my @vcfFiles           = $config->{$section}{vcf_files};
+  my @vcfFiles           = @{$config->{$section}{vcf_files}};
   my $gatk_jar           = get_param_file( $config->{$section}{gatk_jar},           "gatk_jar",           1 );
   my $markDuplicates_jar = get_param_file( $config->{$section}{markDuplicates_jar}, "markDuplicates_jar", 1 );
   my $thread_count       = $config->{$section}{thread_count};
