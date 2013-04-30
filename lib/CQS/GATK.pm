@@ -75,27 +75,31 @@ $pbsDesc
 echo bwa=`date`
 cd $curDir
 
-if [ ! -e $redupFile ] then;
+if [ ! -s tmpdir ]; then
+  mkdir tmpdir
+fi
+
+if [ ! -e $redupFile ]; then
   echo RemoveDuplicate=`date` 
   java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true 
 fi
 
-if [ -e $redupFile ] then;
+if [ -e $redupFile ]; then
   echo RealignerTargetCreator=`date` 
   java $option -jar $gatk_jar -I $redupFile -R $faFile -T RealignerTargetCreator -o $intervalFile --known $vcfFile -nt $thread_count
 fi
 
-if [ -e $intervalFile ] then;
+if [ -e $intervalFile ]; then
   echo IndelRealigner=`date` 
   java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -I $sampleFile1 -R $faFile -T IndelRealigner -targetIntervals $intervalFile -o $realignedFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 
 fi
 
-if [ -e $intervalFile ] then;
+if [ -e $intervalFile ]; then
   echo CountCovariates=`date` 
   java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T CountCovariates -cov QualityScoreCovariate -cov CycleCovariate -cov DinucCovariate --known $vcfFile -recalFile $csvFile
 fi
 
-if [ -e $csvFile ] then;
+if [ -e $csvFile ]; then
   echo TableRecalibration=`date`
   java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T TableRecalibration --out $recalFile -recalFile $csvFile
 fi
