@@ -939,7 +939,6 @@ sub novoalign {
 
     my $sampleFile = $sampleFiles[0];
 
-    my ( $sampleName, $directories, $suffix ) = fileparse($sampleFile);
     my $samFile       = $sampleName . ".sam";
     my $bamFile       = $sampleName . ".bam";
     my $sortedBamPrefix = $sampleName . "_sorted";
