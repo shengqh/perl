@@ -81,7 +81,8 @@ fi
 
 if [ ! -e $redupFile ]; then
   echo RemoveDuplicate=`date` 
-  java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true 
+  java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true
+  samtools index $redupFile
 fi
 
 if [[ -e $redupFile && ! -e $intervalFile ]]; then
