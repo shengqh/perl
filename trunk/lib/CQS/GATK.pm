@@ -44,12 +44,12 @@ sub refine_bam_file {
 	for my $sampleName ( sort keys %rawFiles ) {
 		my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-		my $sampleFile1   = $sampleFiles[0];
-		my $redupFile     = change_extension( $sampleFile1, ".redup.bam" );
-		my $intervalFile  = $redupFile . ".intervals";
-		my $realignedFile = change_extension( $redupFile, ".realigned.bam" );
+		my $sampleFile   = $sampleFiles[0];
+		my $intervalFile  = $sampleFile . ".intervals";
+		my $realignedFile = change_extension( $sampleFile, ".realigned.bam" );
 		my $grpFile       = $realignedFile . ".grp";
-		my $recalFile     = change_extension( $sampleFile1, ".recal.bam" );
+		my $recalFile     = change_extension( $realignedFile, ".recal.bam" );
+    my $redupFile     = change_extension( $recalFile, ".redup.bam" );
 
 		my $pbsName = "${sampleName}_refine.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
@@ -79,34 +79,34 @@ if [ ! -s tmpdir ]; then
   mkdir tmpdir
 fi
 
-if [ ! -e $redupFile ]; then
-  echo RemoveDuplicate=`date` 
-  java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true
-fi
-
-if [ ! -e ${redupFile}.bai ]; then
-  echo BamIndex=`date` 
-  samtools index $redupFile
-fi
-
-if [[ -e $redupFile && ! -e $intervalFile ]]; then
+if [ ! -e $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
-  java $option -jar $gatk_jar -I $redupFile -R $faFile -T RealignerTargetCreator -o $intervalFile --known $vcfFile -nt $thread_count
+  java $option -jar $gatk_jar -T RealignerTargetCreator -I $sampleFile -R $faFile --known $vcfFile -nt $thread_count -o $intervalFile
 fi
 
 if [[ -e $intervalFile && ! -e $realignedFile ]]; then
   echo IndelRealigner=`date` 
-  java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -I $sampleFile1 -R $faFile -T IndelRealigner -targetIntervals $intervalFile -o $realignedFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 
+  java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -T IndelRealigner -I $sampleFile -R $faFile -targetIntervals $intervalFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 -o $realignedFile 
 fi
 
 if [[ -e $realignedFile && ! -e $grpFile ]]; then
   echo BaseRecalibrator=`date` 
-  java $option -jar $gatk_jar -R $faFile -I $realignedFile -T BaseRecalibrator -knownSites $vcfFile -o $grpFile
+  java $option -jar $gatk_jar -T BaseRecalibrator -R $faFile -I $realignedFile -knownSites $vcfFile -o $grpFile -plots ${grpFile}.pdf
 fi
 
 if [[ -e $grpFile && ! -e $recalFile ]]; then
   echo TableRecalibration=`date`
-  java $option -jar $gatk_jar -R $faFile -I $realignedFile -T PrintReads -o $recalFile -BQSR $grpFile
+  java $option -jar $gatk_jar -T PrintReads -R $faFile -I $realignedFile -BQSR $grpFile -o $recalFile 
+fi
+
+if [[ -e $recalFile && ! -e $redupFile ]]; then
+  echo RemoveDuplicate=`date` 
+  java $option -jar $markDuplicates_jar I=$recalFile O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true
+fi
+
+if [[ -e $redupFile && ! -e ${redupFile}.bai ]]; then
+  echo BamIndex=`date` 
+  samtools index $redupFile
 fi
 
 echo finished=`date`
