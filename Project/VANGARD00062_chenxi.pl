@@ -42,6 +42,7 @@ my $config = {
      "HET_vs_WT" => [ "HET", "WT" ], 
      "HET_vs_NULL" => [ "HET", "NULL" ], 
      "WT_vs_NULL" => [ "WT", "NULL" ], 
+     "HET_vs_WT_vs_NULL" => [ "HET", "WT", "NULL" ], 
   },
   fastqc => {
     target_dir => "${target_dir}/fastqc",
