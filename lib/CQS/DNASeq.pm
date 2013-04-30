@@ -79,7 +79,7 @@ sub bwa_by_pbs_single {
 		#my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
-    print OUT "if [ ! -e $saiFile1 ]; then\n";
+    print OUT "if [ ! -s $saiFile1 ]; then\n";
 		print OUT "  echo sai1=`date` \n";
 		print OUT "  bwa aln $option $faFile $sampleFile1 > $saiFile1 \n";
 		print OUT "fi\n\n";
@@ -169,15 +169,15 @@ sub bwa_by_pbs_double {
 		my $tag="'\@RG\tID:$sampleName\tLB:$sampleName\tSM:$sampleName\tPL:ILLUMINA'";
 		print OUT "cd $curDir\n\n";
 
-		print OUT "if [ -e $sortedBamFile ]; then\n";
+		print OUT "if [ -s $sortedBamFile ]; then\n";
 		print OUT "  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.\n";
 		print OUT "else\n";
-    print OUT "  if [ ! -e $saiFile1 ]; then\n";
+    print OUT "  if [ ! -s $saiFile1 ]; then\n";
 		print OUT "    echo sai1=`date` \n";
 		print OUT "    bwa aln $option $faFile $sampleFile1 >$saiFile1 \n";
     print OUT "  fi\n\n";
     
-    print OUT "  if [ ! -e $saiFile2 ]; then\n";
+    print OUT "  if [ ! -s $saiFile2 ]; then\n";
 		print OUT "    echo sai2=`date` \n";
 		print OUT "    bwa aln $option $faFile $sampleFile2 >$saiFile2 \n";
     print OUT "  fi\n\n";
@@ -360,36 +360,36 @@ $pbsDesc
 echo bwa=`date`
 cd $curDir
 
-if [ ! -s tmpdir ]; then
+if [ ! -e tmpdir ]; then
   mkdir tmpdir
 fi
 
-if [ ! -e $intervalFile ]; then
+if [ ! -s $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
   java $option -jar $gatk_jar -T RealignerTargetCreator -I $sFile -R $faFile $knownvcf -nt $thread_count -o $intervalFile
 fi
 
-if [[ -e $intervalFile && ! -e $realignedFile ]]; then
+if [[ -s $intervalFile && ! -e $realignedFile ]]; then
   echo IndelRealigner=`date` 
   java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -T IndelRealigner -I $sFile -R $faFile -targetIntervals $intervalFile $knownvcf --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 -o $realignedFile 
 fi
 
-if [[ -e $realignedFile && ! -e $grpFile ]]; then
+if [[ -s $realignedFile && ! -e $grpFile ]]; then
   echo BaseRecalibrator=`date` 
   java $option -jar $gatk_jar -T BaseRecalibrator -R $faFile -I $realignedFile $knownsitesvcf -o $grpFile -plots ${grpFile}.pdf
 fi
 
-if [[ -e $grpFile && ! -e $recalFile ]]; then
+if [[ -s $grpFile && ! -e $recalFile ]]; then
   echo PrintReads=`date`
   java $option -jar $gatk_jar -T PrintReads -R $faFile -I $realignedFile -BQSR $grpFile -o $recalFile 
 fi
 
-if [[ -e $recalFile && ! -e $rmdupFile ]]; then
+if [[ -s $recalFile && ! -e $rmdupFile ]]; then
   echo RemoveDuplicate=`date` 
   java $option -jar $markDuplicates_jar I=$recalFile O=$rmdupFile M=${rmdupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true
 fi
 
-if [[ -e $rmdupFile && ! -e ${rmdupFile}.bai ]]; then
+if [[ -s $rmdupFile && ! -e ${rmdupFile}.bai ]]; then
   echo BamIndex=`date` 
   samtools index $rmdupFile
 fi
