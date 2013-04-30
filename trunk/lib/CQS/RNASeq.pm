@@ -775,6 +775,7 @@ sub copy_and_rename_cuffdiff_file {
         
         if(defined($line)){
           my @parts = split( /\t/, $line );
+          my $partcount = scalar(@parts);
           my $targetname = "${targetdir}/${subdir}.${filename}";
 
           copy( $file, $targetname ) or die "copy failed : $!";
@@ -782,10 +783,10 @@ sub copy_and_rename_cuffdiff_file {
           my $target_sign_name = $targetname . ".sig";
           my $cmd;
           if ($gene_only) {
-            $cmd = "cat $targetname | awk '(\$3 != \"-\") && (\$14==\"yes\" || \$14==\"significant\")' > $target_sign_name";
+            $cmd = "cat $targetname | awk '(\$3 != \"-\") && (\$$partcount==\"yes\" || \$$partcount==\"significant\")' > $target_sign_name";
           }
           else {
-            $cmd = "cat $targetname | awk '\$14==\"yes\" || \$14==\"significant\"' > $target_sign_name";
+            $cmd = "cat $targetname | awk '\$$partcount==\"yes\" || \$$partcount==\"significant\"' > $target_sign_name";
           }
 
           print $cmd . "\n";
