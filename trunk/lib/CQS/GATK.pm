@@ -48,7 +48,7 @@ sub refine_bam_file {
 		my $redupFile     = change_extension( $sampleFile1, ".redup.bam" );
 		my $intervalFile  = $redupFile . ".intervals";
 		my $realignedFile = change_extension( $redupFile, ".realigned.bam" );
-		my $csvFile       = $realignedFile . ".csv";
+		my $grpFile       = $realignedFile . ".grp";
 		my $recalFile     = change_extension( $sampleFile1, ".recal.bam" );
 
 		my $pbsName = "${sampleName}_refine.pbs";
@@ -94,14 +94,14 @@ if [ -e $intervalFile and ! -e $realignedFile ]; then
   java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -I $sampleFile1 -R $faFile -T IndelRealigner -targetIntervals $intervalFile -o $realignedFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 
 fi
 
-if [ -e $realignedFile ]; then
-  echo CountCovariates=`date` 
-  java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T CountCovariates -cov QualityScoreCovariate -cov CycleCovariate -cov DinucCovariate --known $vcfFile -recalFile $csvFile
+if [ -e $realignedFile and ! -e $grpFile ]; then
+  echo BaseRecalibrator=`date` 
+  java $option -jar $gatk_jar -R $faFile -I $realignedFile -T BaseRecalibrator -knownSites $vcfFile -o $grpFile
 fi
 
-if [ -e $csvFile ]; then
+if [ -e $grpFile and ! -e $recalFile ]; then
   echo TableRecalibration=`date`
-  java $option -jar $gatk_jar -l INFO -R $faFile -I $realignedFile -T TableRecalibration --out $recalFile -recalFile $csvFile
+  java $option -jar $gatk_jar -R $faFile -I $realignedFile -T PrintReads -o $recalFile -BQSR $grpFile
 fi
 
 echo finished=`date`
