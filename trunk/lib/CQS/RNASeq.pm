@@ -534,13 +534,14 @@ sub cuffdiff_by_pbs {
   my $shfile = $pbsDir . "/${task_name}.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
 
-  print SH "if [ ! -s $transcript_gtf ];\n";
-  print SH "then\n";
-  print SH "  echo $transcript_gtf is not exists! all job will be ignored.\n";
-  print SH "  exit 1\n";
-  print SH "fi\n\n";
+  print SH "
+if [ ! -s $transcript_gtf ]; then
+  echo $transcript_gtf is not exists! all job will be ignored.
+  exit 1
+fi
 
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" 
+";
 
   for my $pairName ( sort keys %{$pairs} ) {
     my @groupNames = @{ $pairs->{$pairName} };
@@ -574,22 +575,50 @@ sub cuffdiff_by_pbs {
     print "$pbsFile created. \n";
 
     my $condition = merge_string( " && ", @conditions );
-    print SH "if [ -s ${curDir}/gene_exp.diff ];\n";
-    print SH "then\n";
-    print SH "  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.\n";
-    print SH "else\n";
-    print SH "  if $condition;\n";
-    print SH "  then\n";
-    print SH "    \$MYCMD ./$pbsName \n";
-    print SH "    echo $pbsName was submitted. \n";
-    print SH "  else\n";
-    print SH "    echo some required file not exists! $pbsName will be ignored.\n";
-    print SH "  fi\n";
-    print SH "fi\n\n";
+    print SH "
+if [ -s ${curDir}/gene_exp.diff ];then
+  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.
+else
+  if $condition;then
+    \$MYCMD ./$pbsName 
+    echo $pbsName was submitted. 
+  else
+    echo some required file not exists! $pbsName will be ignored.
+  fi
+fi
+
+";
   }
 
   print SH "exit 0\n";
   close(SH);
+  
+  my $sigfile = $pbsDir . "/${task_name}_sig.pl";
+  open( SH, ">$sigfile" ) or die "Cannot create $sigfile";
+
+  print SH "#!/usr/bin/perl
+use strict;
+use warnings;
+
+use CQS::QC;
+use CQS::RNASeq;
+use CQS::FileUtils;
+use CQS::SystemUtils;
+
+my $config = {
+  rename_diff => {
+    target_dir => \"${target_dir}/result/comparison\",
+    root_dir   => \"${target_dir}/result\",
+    gene_only  => 0
+  },
+};
+
+copy_and_rename_cuffdiff_file($config, \"rename_diff\");
+
+1;
+
+";
+	close(SH);
 
   if ( is_linux() ) {
     chmod 0755, $shfile;
