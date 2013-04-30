@@ -297,7 +297,7 @@ sub refine_bam_file {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
   my $faFile             = get_param_file( $config->{$section}{fasta_file},         "fasta_file",         1 );
-  my $vcfFile            = get_param_file( $config->{$section}{vcf_file},           "vcf_file",           1 );
+  my @vcfFiles           = $config->{$section}{vcf_files};
   my $gatk_jar           = get_param_file( $config->{$section}{gatk_jar},           "gatk_jar",           1 );
   my $markDuplicates_jar = get_param_file( $config->{$section}{markDuplicates_jar}, "markDuplicates_jar", 1 );
   my $thread_count       = $config->{$section}{thread_count};
@@ -348,6 +348,14 @@ $pbsDesc
       print OUT "source $path_file\n";
     }
 
+  my $knownvcf = "";
+  my $knownsitesvcf="";
+  
+  foreach my $vcf(@vcfFiles){
+    $knownvcf = $knownvcf + " -known $vcf";
+    $knownsitesvcf = $knownsitesvcf + " -knownSites $vcf";
+  }
+  
     print OUT "
 echo bwa=`date`
 cd $curDir
@@ -358,21 +366,21 @@ fi
 
 if [ ! -e $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
-  java $option -jar $gatk_jar -T RealignerTargetCreator -I $sFile -R $faFile --known $vcfFile -nt $thread_count -o $intervalFile
+  java $option -jar $gatk_jar -T RealignerTargetCreator -I $sFile -R $faFile $knownvcf -nt $thread_count -o $intervalFile
 fi
 
 if [[ -e $intervalFile && ! -e $realignedFile ]]; then
   echo IndelRealigner=`date` 
-  java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -T IndelRealigner -I $sFile -R $faFile -targetIntervals $intervalFile -known $vcfFile --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 -o $realignedFile 
+  java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -T IndelRealigner -I $sFile -R $faFile -targetIntervals $intervalFile $knownvcf --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 -o $realignedFile 
 fi
 
 if [[ -e $realignedFile && ! -e $grpFile ]]; then
   echo BaseRecalibrator=`date` 
-  java $option -jar $gatk_jar -T BaseRecalibrator -R $faFile -I $realignedFile -knownSites $vcfFile -o $grpFile -plots ${grpFile}.pdf
+  java $option -jar $gatk_jar -T BaseRecalibrator -R $faFile -I $realignedFile $knownsitesvcf -o $grpFile -plots ${grpFile}.pdf
 fi
 
 if [[ -e $grpFile && ! -e $recalFile ]]; then
-  echo TableRecalibration=`date`
+  echo PrintReads=`date`
   java $option -jar $gatk_jar -T PrintReads -R $faFile -I $realignedFile -BQSR $grpFile -o $recalFile 
 fi
 
