@@ -76,8 +76,10 @@ echo bwa=`date`
 cd $curDir
 mkdir tmpdir
 
-echo RemoveDuplicate=`date` 
-java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true 
+if [ ! -e $redupFile] then;
+  echo RemoveDuplicate=`date` 
+  java $option -jar $markDuplicates_jar I=$sampleFile1 O=$redupFile M=${redupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true 
+fi
 
 if [ -e $redupFile] then;
   echo RealignerTargetCreator=`date` 
