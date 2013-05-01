@@ -369,27 +369,27 @@ if [ ! -s $intervalFile ]; then
   java $option -jar $gatk_jar -T RealignerTargetCreator -I $sFile -R $faFile $knownvcf -nt $thread_count -o $intervalFile
 fi
 
-if [[ -s $intervalFile && ! -e $realignedFile ]]; then
+if [[ -s $intervalFile && ! -s $realignedFile ]]; then
   echo IndelRealigner=`date` 
   java $option -Djava.io.tmpdir=tmpdir -jar $gatk_jar -T IndelRealigner -I $sFile -R $faFile -targetIntervals $intervalFile $knownvcf --consensusDeterminationModel KNOWNS_ONLY -LOD 0.4 -o $realignedFile 
 fi
 
-if [[ -s $realignedFile && ! -e $grpFile ]]; then
+if [[ -s $realignedFile && ! -s $grpFile ]]; then
   echo BaseRecalibrator=`date` 
   java $option -jar $gatk_jar -T BaseRecalibrator -R $faFile -I $realignedFile $knownsitesvcf -o $grpFile -plots ${grpFile}.pdf
 fi
 
-if [[ -s $grpFile && ! -e $recalFile ]]; then
+if [[ -s $grpFile && ! -s $recalFile ]]; then
   echo PrintReads=`date`
   java $option -jar $gatk_jar -T PrintReads -R $faFile -I $realignedFile -BQSR $grpFile -o $recalFile 
 fi
 
-if [[ -s $recalFile && ! -e $rmdupFile ]]; then
+if [[ -s $recalFile && ! -s $rmdupFile ]]; then
   echo RemoveDuplicate=`date` 
   java $option -jar $markDuplicates_jar I=$recalFile O=$rmdupFile M=${rmdupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true
 fi
 
-if [[ -s $rmdupFile && ! -e ${rmdupFile}.bai ]]; then
+if [[ -s $rmdupFile && ! -s ${rmdupFile}.bai ]]; then
   echo BamIndex=`date` 
   samtools index $rmdupFile
 fi
