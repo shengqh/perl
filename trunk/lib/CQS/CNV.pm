@@ -61,26 +61,23 @@ sub cnvnator {
     print SH "\$MYCMD ./$pbsName \n";
 
     my $log = "${logDir}/cnvnator_${sampleName}.log";
-
-    open( OUT, ">$pbsFile" ) or die $!;
-    print OUT $pbsDesc;
-    print OUT "#PBS -o $log\n";
-    print OUT "#PBS -j oe\n\n";
-
-    if ( -e $path_file ) {
-      print OUT "source $path_file\n";
-    }
-
     my $curDir   = create_directory_or_die( $resultDir . "/$sampleName" );
     my $rootFile = $sampleName . ".root";
     my $callFile = $sampleName . ".call";
 
-    print OUT "cd $curDir\n\n";
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-    print OUT "if [ -s $callFile ]; then\n";
-    print OUT "  echo job has already been done. if you want to do again, delete $callFile and submit job again.\n";
-    print OUT "else\n";
-    print OUT "  if [ ! -s $rootFile ]; then\n";
+$path_file
+
+cd $curDir
+
+if [ -s $callFile ]; then
+  echo job has already been done. if you want to do again, delete $callFile and submit job again.
+else
+  if [ ! -s $rootFile ]; then\n";
     print OUT "    echo \"EXTRACTING READ MAPPING FROM BAM/SAM FILES =\" `date`\n";
     print OUT "    cnvnator $genomestr -unique -root $rootFile -tree $bamFile \n";
     print OUT "  fi\n\n";
