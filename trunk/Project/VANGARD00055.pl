@@ -278,15 +278,15 @@ my $config_mirna = {
 
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
-#bwa_by_pbs_single( $config_mirna, "bwa_mature" );
-#bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
-#bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
+bwa_by_pbs_single( $config_mirna, "bwa_mature" );
+bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
+bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
 #novoalign( $config_mirna, "novoalign_mature" );
 #novoalign( $config_mirna, "novoalign_hairpin" );
 #novoalign( $config_mirna, "novoalign_illumina" );
 
-bwa_by_pbs_single( $config_rat, "bwa_mature" );
-bwa_by_pbs_single( $config_human, "bwa_mature" );
+#bwa_by_pbs_single( $config_rat, "bwa_mature" );
+#bwa_by_pbs_single( $config_human, "bwa_mature" );
 
 
 1;
