@@ -26,12 +26,12 @@ sub output_header {
 
   #print "writing file " . $pbsFile . "\n";
   open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
-  if ( defined $path_file ) {
-    print OUT "source $path_file\n";
-  }
+  print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file
+";
 }
 
 sub output_footer() {
