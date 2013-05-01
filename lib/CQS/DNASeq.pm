@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam refine_bam_file)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam refine_bam_file gatk_snpindel)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -376,12 +376,12 @@ fi
 
 if [[ -s $realignedFile && ! -s $grpFile ]]; then
   echo BaseRecalibrator=`date` 
-  java $option -jar $gatk_jar -T BaseRecalibrator -R $faFile -I $realignedFile $knownsitesvcf -o $grpFile -plots ${grpFile}.pdf
+  java $option -jar $gatk_jar -T BaseRecalibrator -rf BadCigar -R $faFile -I $realignedFile $knownsitesvcf -o $grpFile -plots ${grpFile}.pdf
 fi
 
 if [[ -s $grpFile && ! -s $recalFile ]]; then
   echo PrintReads=`date`
-  java $option -jar $gatk_jar -T PrintReads -R $faFile -I $realignedFile -BQSR $grpFile -o $recalFile 
+  java $option -jar $gatk_jar -T PrintReads -rf BadCigar -R $faFile -I $realignedFile -BQSR $grpFile -o $recalFile 
 fi
 
 if [[ -s $recalFile && ! -s $rmdupFile ]]; then
@@ -411,5 +411,98 @@ echo finished=`date`
 
   #`qsub $pbsFile`;
 }
+
+sub gatk_snpindel {
+  my ( $config, $section ) = @_;
+
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  if ( -e $path_file ) {
+    $path_file = "source $path_file";
+  }
+  else{
+    $path_file = "";
+  }
+
+  my $faFile             = get_param_file( $config->{$section}{fasta_file},         "fasta_file",         1 );
+
+  my @vcfFiles           = @{$config->{$section}{vcf_files}};
+  my $knownvcf = "";
+  foreach my $vcf(@vcfFiles){
+    if ($knownvcf eq ""){
+      $knownvcf = "-D $vcf";
+    }
+    else{
+      $knownvcf = $knownvcf . " -comp $vcf";
+    }
+  }
+
+  my $gatk_jar           = get_param_file( $config->{$section}{gatk_jar},           "gatk_jar",           1 );
+  my $gatk_option           = $config->{$section}{gatk_option} or die "define ${section}::gatk_option first";
+
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+  my $shfile = $pbsDir . "/${task_name}.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+
+  for my $sampleName ( sort keys %rawFiles ) {
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+    my $listfilename = "${sampleName}.list";
+    my $listfile = $curDir . "/$listfilename";
+    open (LIST, ">$listfile") or die "Cannot create $listfile";
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    foreach my $sampleFile(@sampleFiles){
+      print LIST $sampleFile . "\n";
+    }
+    close(LIST);
+
+    my $indelOut = $sampleName . "_indel.vcf";
+    my $indelStat = $sampleName . "_indel.stat";
+        
+    my $snpOut = $sampleName . "_snp.vcf";
+    my $snpStat = $sampleName . "_snp.stat";
+        
+    my $pbsName = "${sampleName}_indelsnp.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
+
+    print SH "\$MYCMD ./$pbsName \n";
+
+    my $log    = "${logDir}/${sampleName}_indelsnp.log";
+
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "
+$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file
+
+echo indelsnp=`date`
+cd $curDir
+
+echo InDel=`date` 
+java -jar $option $gatk_jar -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $indelOut -metrics $indelStat -glm INDEL $gatk_option
+
+echo SNP=`date` 
+java -jar $option $gatk_jar -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $snpOut -metrics $snpStat -glm SNP $gatk_option
+
+echo finished=`date`
+";
+
+    close OUT;
+
+    print "$pbsFile created\n";
+  }
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+
+  print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+
+  #`qsub $pbsFile`;
+}
+
 
 1;
