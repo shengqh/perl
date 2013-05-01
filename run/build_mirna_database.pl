@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+chdir("/data/cqs/shengq1/reference/miRBase19");
+
 my @dbs = ( "mature", "hairpin" );
 foreach my $db (@dbs) {
   `cat ${db}.fa | perl -lane 'unless(/^>/){s/U/T/g;} print' >${db}.dna.fa `;
