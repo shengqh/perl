@@ -46,12 +46,7 @@ sub fastqc_by_pbs {
 		print OUT $pbsDesc;
 		print OUT "#PBS -o $log\n";
 		print OUT "#PBS -j oe\n\n";
-
-		if ( defined $path_file ){
-			if (-e $path_file ) {
-				print OUT "source $path_file \n";
-			}
-		}
+  	print OUT "$path_file \n";
 		print OUT "echo fastqc=`date` \n";
 
 		my $sampleCount = scalar(@sampleFiles);

@@ -46,18 +46,16 @@ sub mpileup {
     my $log = "${logDir}/${sampleName}_mpileup.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
-    print OUT $pbsDesc;
-    print OUT "#PBS -o $log\n";
-    print OUT "#PBS -j oe\n\n";
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-    if ( defined $path_file ) {
-      if ( -e $path_file ) {
-        print OUT "source $path_file \n\n";
-      }
-    }
-    
-    print OUT "cd $resultDir \n\n";
-    print OUT "echo mpileup=`date` \n\n";
+$path_file 
+
+cd $resultDir 
+
+echo mpileup=`date` 
+";
 
     my $sampleCount = scalar(@sampleFiles);
 

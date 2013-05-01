@@ -847,12 +847,12 @@ sub compare_cuffdiff {
 sub output_header {
   my ( $pbsFile, $pbsDesc, $path_file, $log ) = @_;
   open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
-  if ( defined $path_file ) {
-    print OUT "source $path_file\n";
-  }
+  print OUT "$pbsDesc
+PBS -o $log
+#PBS -j oe
+
+$path_file
+";
 }
 
 sub output_footer() {
@@ -950,21 +950,17 @@ sub novoalign {
     print SH "\$MYCMD ./$pbsName \n";
 
     my $log = "${logDir}/${sampleName}_nalign.log";
-
-    open( OUT, ">$pbsFile" ) or die $!;
-    print OUT $pbsDesc;
-    print OUT "#PBS -o $log\n";
-    print OUT "#PBS -j oe\n\n";
-
-    if ( -e $path_file ) {
-      print OUT "source $path_file\n";
-    }
-    print OUT "echo novoalign=`date`\n";
-
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
-    #my $tag="'\@RG\tID:$sample\tLB:$sample\tSM:$sample\tPL:ILLUMINA'";
-    print OUT "
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file
+
+echo novoalign=`date`
+
 cd $curDir
 
 novoalign -d $novoindex -f $sampleFile $option -o SAM > $samFile

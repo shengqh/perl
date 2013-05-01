@@ -77,21 +77,26 @@ cd $curDir
 if [ -s $callFile ]; then
   echo job has already been done. if you want to do again, delete $callFile and submit job again.
 else
-  if [ ! -s $rootFile ]; then\n";
-    print OUT "    echo \"EXTRACTING READ MAPPING FROM BAM/SAM FILES =\" `date`\n";
-    print OUT "    cnvnator $genomestr -unique -root $rootFile -tree $bamFile \n";
-    print OUT "  fi\n\n";
-    print OUT "  echo \"GENERATING HISTOGRAM =\" `date`\n";
-    print OUT "  cnvnator $genomestr -root $rootFile -d $chromosome_dir -his $binsize \n\n";
-    print OUT "  echo \"CALCULATING STATISTICS =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -stat $binsize \n\n";
-    print OUT "  echo \"RD SIGNAL PARTITIONING =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -partition $binsize \n\n";
-    print OUT "  echo \"CNV CALLING =\" `date`\n";
-    print OUT "  cnvnator -root $rootFile -call $binsize > $callFile \n\n";
-    print OUT "fi\n\n";
+  if [ ! -s $rootFile ]; then
+    echo \"EXTRACTING READ MAPPING FROM BAM/SAM FILES =\" `date`
+    cnvnator $genomestr -unique -root $rootFile -tree $bamFile 
+  fi
 
-    print OUT "echo finished=`date`\n";
+  echo \"GENERATING HISTOGRAM =\" `date`
+  cnvnator $genomestr -root $rootFile -d $chromosome_dir -his $binsize 
+
+  echo \"CALCULATING STATISTICS =\" `date`
+  cnvnator -root $rootFile -stat $binsize 
+
+  echo \"RD SIGNAL PARTITIONING =\" `date`
+  cnvnator -root $rootFile -partition $binsize 
+
+  echo \"CNV CALLING =\" `date`
+  cnvnator -root $rootFile -call $binsize > $callFile 
+fi
+
+echo finished=`date`
+";
     close OUT;
 
     print "$pbsFile created\n";
@@ -135,18 +140,6 @@ sub conifer {
     print SH "\$MYCMD ./$pbsName \n";
 
     my $log = "${logDir}/${sampleName}_rpkm.log";
-
-    open( OUT, ">$pbsFile" ) or die $!;
-    print OUT $pbsDesc;
-    print OUT "#PBS -o $log\n";
-    print OUT "#PBS -j oe\n\n";
-
-    if ( -e $path_file ) {
-      print OUT "source $path_file\n";
-    }
-    print OUT "cd $resultDir\n\n";
-    print OUT "echo rpkm=`date`\n";
-
     my $bamFile = $sampleFiles[0];
 
     if ( !$isbamsorted ) {
@@ -156,12 +149,24 @@ sub conifer {
     }
     my $rpkm = "rpkm/" . $sampleName . ".rpkm";
 
-    print OUT "if [ ! -s $rpkm ]; then\n";
-    print OUT "  echo conifer=`date`\n";
-    print OUT "  python $conifer rpkm --probes $bedfile --input $bamFile --output $rpkm \n";
-    print OUT "fi\n";
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-    print OUT "echo finished=`date`\n";
+$path_file
+
+cd $resultDir
+
+echo rpkm=`date`
+
+if [ ! -s $rpkm ]; then
+  echo conifer=`date`
+  python $conifer rpkm --probes $bedfile --input $bamFile --output $rpkm 
+fi
+
+echo finished=`date`
+";
     close OUT;
 
     print "$pbsFile created\n";
@@ -180,30 +185,29 @@ sub conifer {
   my $sdFile  = "${task_name}.sd";
   my $callFile  = "${task_name}.call";
 
-  open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
   my $log = "${logDir}/${task_name}_after_rpkm.log";
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
-  if ( -e $path_file ) {
-    print OUT "source $path_file\n";
-  }
-
   create_directory_or_die( $resultDir . "/call_images" );
 
-  print OUT "cd $resultDir\n\n";
+  open( OUT, ">$pbsFile" ) or die $!;
+  print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-  print OUT "\n";
-  print OUT "#2 analysis\n";
-  print OUT "echo analyze=`date`\n";
-  print OUT "python $conifer analyze --probes $bedfile --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile --plot_scree $plotFile --write_sd $sdFile \n";
-  print OUT "\n";
-  print OUT "#3 call\n";
-  print OUT "echo call=`date`\n";
-  print OUT "python $conifer call --input $hdf5File --output $callFile \n";
-  print OUT "\n";
-  print OUT "#4 plot\n";
-  print OUT "python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images \n";
+$path_file
+
+cd $resultDir
+
+#2 analysis
+echo analyze=`date`
+python $conifer analyze --probes $bedfile --rpkm_dir rpkm/ --output $hdf5File --svd 6 --write_svals $svalsFile --plot_scree $plotFile --write_sd $sdFile 
+
+#3 call
+echo call=`date`
+python $conifer call --input $hdf5File --output $callFile 
+
+#4 plot
+python $conifer plotcalls --input $hdf5File --calls $callFile --output call_images 
+";
   close OUT;
 
   print "$pbsFile created\n";
@@ -271,59 +275,63 @@ sub cnmops {
   print R ") \n";
 
   if ( defined $bedfile ) {
-    print R "segments <- read.table(\"$bedfile\", sep=\"\\t\", as.is=TRUE, header=T) \n";
-    print R "gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3]), gene=segments[,4]) \n";
-    print R "x <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") \n";
-    print R "save(x, file=\"${task_name}_x_getSegmentReadCountsFromBAM.Rdata\") \n";
-    print R "resCNMOPS <- exomecn.mops(x) \n";
-    print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_exomecn.mops.Rdata\") \n";
+    print R "
+segments <- read.table(\"$bedfile\", sep=\"\\t\", as.is=TRUE, header=T) 
+gr <- GRanges(segments[,1], IRanges(segments[,2],segments[,3]), gene=segments[,4]) 
+x <- getSegmentReadCountsFromBAM(BAMFiles, GR=gr, sampleNames=SampleNames, mode=\"$pairmode\") 
+save(x, file=\"${task_name}_x_getSegmentReadCountsFromBAM.Rdata\") 
+resCNMOPS <- exomecn.mops(x) 
+save(resCNMOPS, file=\"${task_name}_resCNMOPS_exomecn.mops.Rdata\")
+";
   }
   else {
-    print R "x <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"$pairmode\") \n";
-    print R "save(x, file=\"${task_name}_x_getReadCountsFromBAM.Rdata\") \n";
-    print R "resCNMOPS <- cn.mops(x) \n";
-    print R "save(resCNMOPS, file=\"${task_name}_resCNMOPS_cn.mops.Rdata\") \n";
+    print R "
+x <- getReadCountsFromBAM(BAMFiles, sampleNames=SampleNames, mode=\"$pairmode\") 
+save(x, file=\"${task_name}_x_getReadCountsFromBAM.Rdata\") 
+resCNMOPS <- cn.mops(x) 
+save(resCNMOPS, file=\"${task_name}_resCNMOPS_cn.mops.Rdata\") 
+";
   }
 
-  print R "cnvs<-resCNMOPS\@cnvs \n";
-
-  print R "d<-cbind(substring(as.character(cnvs\@elementMetadata\@listData\$sampleName),2), \n";
-  print R "         as.character(cnvs\@seqnames),  \n";
-  print R "         as.character(cnvs\@ranges\@start), \n";
-  print R "         as.character(as.numeric(cnvs\@ranges\@start) + as.numeric(cnvs\@ranges\@width) - 1), \n";
-  print R "         as.character(cnvs\@ranges\@width), \n";
-  print R "         as.character(cnvs\@elementMetadata\@listData\$CN), \n";
-  print R "         as.character(cnvs\@elementMetadata\@listData\$median), \n";
-  print R "         as.character(cnvs\@elementMetadata\@listData\$mean)) \n";
-  print R "colnames(d)<-c(\"sample\",\"chr\",\"start\",\"end\", \"length\",\"type\",\"median\",\"mean\") \n";
-  print R "d<-d[order(d[,\"sample\"], as.numeric(d[,\"chr\"]), as.numeric(d[,\"start\"])),] \n";
-  print R "d[,\"chr\"]<-paste0(\"chr\",d[,\"chr\"]) \n";
-  print R "d[,\"type\"]<-apply(d,1,function(x){ \n";
-  print R "  if(as.numeric(x[\"median\"]) < 0){ \n";
-  print R "    return (\"DELETION\") \n";
-  print R "  }else{ \n";
-  print R "    return (\"DUPLICATION\") \n";
-  print R "  } \n";
-  print R "}) \n";
-  print R "write.table(d, file=\"$callFile\",sep=\"\\t\",col.names=T,row.names=F,quote=F) \n";
+  print R "
+cnvs<-resCNMOPS\@cnvs 
+d<-cbind(substring(as.character(cnvs\@elementMetadata\@listData\$sampleName),2), 
+         as.character(cnvs\@seqnames),  
+         as.character(cnvs\@ranges\@start), 
+         as.character(as.numeric(cnvs\@ranges\@start) + as.numeric(cnvs\@ranges\@width) - 1), 
+         as.character(cnvs\@ranges\@width), 
+         as.character(cnvs\@elementMetadata\@listData\$CN), 
+         as.character(cnvs\@elementMetadata\@listData\$median), 
+         as.character(cnvs\@elementMetadata\@listData\$mean)) 
+colnames(d)<-c(\"sample\",\"chr\",\"start\",\"end\", \"length\",\"type\",\"median\",\"mean\") 
+d<-d[order(d[,\"sample\"], as.numeric(d[,\"chr\"]), as.numeric(d[,\"start\"])),] 
+d[,\"chr\"]<-paste0(\"chr\",d[,\"chr\"]) 
+d[,\"type\"]<-apply(d,1,function(x){ 
+  if(as.numeric(x[\"median\"]) < 0){ 
+    return (\"DELETION\") 
+  }else{ 
+    return (\"DUPLICATION\") 
+  } 
+}) 
+write.table(d, file=\"$callFile\",sep=\"\\t\",col.names=T,row.names=F,quote=F) 
+";
   close R;
 
   my $pbsFile = "${pbsDir}/cnmops_${task_name}.pbs";
   my $log     = "${logDir}/cnmops_${task_name}.log";
 
   open( OUT, ">$pbsFile" ) or die $!;
-  print OUT $pbsDesc;
-  print OUT "#PBS -o $log\n";
-  print OUT "#PBS -j oe\n\n";
+  print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-  if ( -e $path_file ) {
-    print OUT "source $path_file\n";
-  }
+$path_file
 
-  print OUT "cd $pbsDir\n\n";
-  print OUT "echo cnmops=`date`\n";
-  print OUT "R --vanilla < $rfile \n";
-  print OUT "echo finished=`date`\n";
+cd $pbsDir
+echo cnmops=`date`
+R --vanilla < $rfile 
+echo finished=`date`
+";
   close OUT;
 
   print "$pbsFile created\n";
@@ -358,34 +366,24 @@ sub freec {
     print SH "\$MYCMD ./$pbsName \n";
 
     my $log = "${logDir}/freec_${sampleName}.log";
-
-    open( OUT, ">$pbsFile" ) or die $!;
-    print OUT $pbsDesc;
-    print OUT "#PBS -o $log\n";
-    print OUT "#PBS -j oe\n\n";
-
-    if ( -e $path_file ) {
-      print OUT "source $path_file\n";
-    }
-
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
-
-    print OUT "cd $curDir\n\n";
-
     my $configName = "${sampleName}.conf";
     my $configFile = ${curDir} . "/$configName";
+
     open( CON, ">$configFile" ) or die $!;
 
-    print CON "[general] \n\n";
-    print CON "chrLenFile = $chrLenFile \n";
-    print CON "ploidy = $ploidy \n";
-    print CON "coefficientOfVariation = $coefficientOfVariation \n";
-    print CON "chrFiles = $chrFiles \n\n";
+    print CON "[general] 
+chrLenFile = $chrLenFile 
+ploidy = $ploidy 
+coefficientOfVariation = $coefficientOfVariation 
+chrFiles = $chrFiles 
 
-    print CON "[sample] \n\n";
-    print CON "mateFile = $bamFile \n";
-    print CON "inputFormat  = $inputFormat \n";
-    print CON "mateOrientation = $mateOrientation \n\n";
+[sample] 
+mateFile = $bamFile 
+inputFormat  = $inputFormat 
+mateOrientation = $mateOrientation 
+
+";
 
     if ( defined $bedfile ) {
       print CON "[target] \n\n";
@@ -394,10 +392,20 @@ sub freec {
 
     close(CON);
 
-    print OUT "echo \"CNV CALLING =\" `date`\n";
-    print OUT "freec -conf $configName \n\n";
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-    print OUT "echo finished=`date`\n";
+$path_file
+
+cd $curDir
+
+echo CNV_CALLING=`date`
+freec -conf $configName 
+
+echo finished=`date`
+";
     close OUT;
 
     print "$pbsFile created\n";

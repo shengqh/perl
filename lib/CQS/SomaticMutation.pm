@@ -67,17 +67,14 @@ sub call_wsmdetector {
     my $log = "${logDir}/wsmdetector_${sampleName}.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
-    print OUT $pbsDesc;
-    print OUT "#PBS -o $log\n";
-    print OUT "#PBS -j oe\n\n";
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-    if ( defined $path_file ) {
-      if ( -e $path_file ) {
-        print OUT "source $path_file \n\n";
-      }
-    }
+$path_file 
 
-    print OUT "echo wsmdetector=`date` \n\n";
+echo wsmdetector=`date` 
+";
 
     my $sampleCount = scalar(@sampleFiles);
     my $curDir      = create_directory_or_die( $resultDir . "/$sampleName" );
