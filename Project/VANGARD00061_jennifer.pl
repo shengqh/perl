@@ -8,8 +8,8 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/VANGARD00061_jennifer");
-my $bwa_dir = "${target_dir}/bwa";
-#my $bwa_dir = "${target_dir}/bwa_git";
+#my $bwa_dir = "${target_dir}/bwa";
+my $bwa_dir = "${target_dir}/bwa_git";
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
