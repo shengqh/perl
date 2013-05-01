@@ -43,7 +43,7 @@ my $config = {
 		},
 	},
 	bwa => {
-		target_dir      => "${target_dir}/bwa",
+		target_dir      => "${target_dir}/bwa_git",
 		option          => "-q 15 -t 8",
 		option_sampe    => "",
 		source_ref      => "fastqfiles",
@@ -58,7 +58,7 @@ my $config = {
 		},
 	},
 	refine => {
-		target_dir => "${target_dir}/bwa",
+		target_dir => "${target_dir}/bwa_git",
 		option     => "-Xmx40g",
 		thread_count => 8,
 		source_ref => "fastqfiles",
@@ -80,7 +80,7 @@ my $config = {
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
-#bwa_by_pbs_double( $config, "bwa" );
+bwa_by_pbs_double( $config, "bwa" );
 refine_bam_file( $config, "refine" );
 
 1;
