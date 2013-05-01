@@ -22,6 +22,13 @@ sub get_parameter {
 
 	my $task_name = $config->{general}{task_name} or die "define general::task_name first";
 	my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
+	if ( -e $path_file ) {
+    $path_file = "source $path_file";
+  }
+  else{
+    $path_file = "";
+  }
+	
 	my $refPbs     = $config->{$section}{pbs}        or die "define ${section}::pbs parameters first";
 	my $target_dir = $config->{$section}{target_dir} or die "define ${section}::target_dir parameters first";
 	my ( $logDir, $pbsDir, $resultDir ) = init_dir($target_dir);
