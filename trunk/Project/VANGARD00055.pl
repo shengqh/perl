@@ -14,6 +14,8 @@ my $task_name  = "VANGARD00055";
 my $bwa_option = "-q 15 -l 8 -n 3";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 
+my $option_samse_mirna = "-n 100";
+
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
 
 my $config_rat = {
@@ -47,6 +49,20 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
+  bwa_mature => {
+    target_dir      => "${target_dir}/bwa_miRBase_species",
+    option          => $bwa_option,
+    option_samse    => $option_samse_mirna,
+    source_ref      => "fastqfiles",
+    fasta_file      => "/data/cqs/shengq1/reference/miRBase19/mature.dna.fa",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  
 };
 
 my $config_human = {
@@ -170,7 +186,7 @@ my $config_mirna = {
   bwa_mature => {
     target_dir      => "${target_dir}/bwa_miRBase_mature",
     option          => $bwa_option,
-    option_samse    => "",
+    option_samse    => $option_samse_mirna,
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/miRBase19/mature.dna.fa",
     pbs             => {
@@ -183,7 +199,7 @@ my $config_mirna = {
   bwa_hairpin => {
     target_dir      => "${target_dir}/bwa_miRBase_hairpin",
     option          => $bwa_option,
-    option_samse    => "",
+    option_samse    => $option_samse_mirna,
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/miRBase19/hairpin.dna.fa",
     pbs             => {
@@ -196,7 +212,7 @@ my $config_mirna = {
   bwa_illumina => {
     target_dir      => "${target_dir}/bwa_illumina_miRNA",
     option          => $bwa_option,
-    option_samse    => "",
+    option_samse    => $option_samse_mirna,
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/miRNA_illumina/mir.fa",
     pbs             => {
