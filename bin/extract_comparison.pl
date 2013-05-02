@@ -35,7 +35,7 @@ GetOptions( 'h|help' => \$help,
   'g|geneonly' => \$gene_only, 
   'i|input=s' => \$input_root, 
   'o|output=s' => \$output_dir, 
-  'f|foldchange=d' => \$fold_change,  
+  'f|foldchange=s' => \$fold_change,  
   's|significant' => \$significant );
 
 if ( defined $help ) {
