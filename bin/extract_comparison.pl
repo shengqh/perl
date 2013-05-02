@@ -18,6 +18,7 @@ Options:
   -g|--geneonly                Gene only (default false)
   -f|--foldchange {double}     Filter by absolute value of log2(fold_change)
   -s|--significant             Filter by significant and foldchange (only work with -f)
+  -d|--different {double}      Filter by difference of value between two samples (only work with -f and only check with the one has inf or -inf fold change)
 
   -h|--help                    This page.
 
@@ -31,13 +32,17 @@ my $help;
 my $gene_only;
 my $fold_change;
 my $significant;
+my $different;
 
-GetOptions( 'h|help' => \$help, 
-  'g|geneonly' => \$gene_only, 
-  'i|input=s' => \$input_root, 
-  'o|output=s' => \$output_dir, 
-  'f|foldchange=s' => \$fold_change,  
-  's|significant' => \$significant );
+GetOptions(
+  'h|help'         => \$help,
+  'g|geneonly'     => \$gene_only,
+  'i|input=s'      => \$input_root,
+  'o|output=s'     => \$output_dir,
+  'f|foldchange=s' => \$fold_change,
+  's|significant'  => \$significant,
+  's|different=s'  => \$different,
+);
 
 if ( defined $help ) {
   print $usage;
@@ -71,13 +76,18 @@ else {
 }
 
 my $filter;
-if(defined($fold_change)){
-  $filter = "(\$10 <= -$fold_change || \$10 >= $fold_change)";
-  if($significant){
+if ( defined($fold_change) ) {
+  $filter = "(\$10 != \"inf\" && \$10 != \"-inf\" && (\$10 <= -$fold_change || \$10 >= $fold_change))";
+
+  if ( defined($different) ) {
+    $filter = "($filter || (\$10 == \"inf\" &&  (\$9-\$8) >= $different) || (\$10 == \"-inf\" &&  (\$8-\$9) >= $different))";
+  }
+
+  if ( defined($significant) ) {
     $filter = $filter . " && (\$14==\"yes\")";
   }
 }
-else{
+else {
   $filter = "(\$14==\"yes\")";
 }
 
@@ -99,7 +109,7 @@ for my $subdir (@subdirs) {
         copy( $file, $targetname ) or die "copy failed : $!";
 
         my $target_sign_name = $targetname . ".sig";
-        my $cmd = "cat $targetname | awk '$gene_only ((\$14==\"significant\") || ($filter))' > $target_sign_name";
+        my $cmd              = "cat $targetname | awk '$gene_only ((\$14==\"significant\") || ($filter))' > $target_sign_name";
 
         print $cmd . "\n";
         `$cmd`;
