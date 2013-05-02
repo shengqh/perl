@@ -8,8 +8,8 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/VANGARD00061_jennifer");
-my $bwa_dir = "${target_dir}/bwa";
-#my $bwa_dir = "${target_dir}/bwa_git";
+#my $bwa_dir = "${target_dir}/bwa";
+my $bwa_dir = "${target_dir}/bwa_git";
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
@@ -48,9 +48,7 @@ my $config = {
 		target_dir      => $bwa_dir,
 		option          => "-q 15 -t 8",
 		option_sampe    => "",
-		source_ref      => "fastqfiles",
 		fasta_file      => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
-		estimate_insert => 1,
 		source_ref      => "fastqfiles",
 		pbs             => {
 			"email"    => $email,
@@ -98,8 +96,8 @@ my $config = {
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
-#bwa_by_pbs_double( $config, "bwa" );
-#refine_bam_file( $config, "refine" );
+bwa_by_pbs_double( $config, "bwa" );
+refine_bam_file( $config, "refine" );
 gatk_snpindel($config, "snpindel");
 
 1;
