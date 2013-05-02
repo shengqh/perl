@@ -41,7 +41,7 @@ GetOptions(
   'o|output=s'     => \$output_dir,
   'f|foldchange=s' => \$fold_change,
   's|significant'  => \$significant,
-  's|different=s'  => \$different,
+  'd|different=s'  => \$different,
 );
 
 if ( defined $help ) {
