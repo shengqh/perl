@@ -365,7 +365,7 @@ sub refine_bam_file {
 		my $grpFile       = $realignedFile . ".grp";
 		my $recalFile     = change_extension( $realignedFile, ".recal.bam" );
 		my $rmdupFile     = change_extension( $recalFile, ".rmdup.bam" );
-		my $sortedPrefix     = change_extension( $rmdupFile, ".sorted" );
+		my $sortedPrefix     = change_extension( $rmdupFile, "_sorted" );
 		my $sortedFile = $sortedPrefix . ".bam";
 
 		my $pbsName = "${sampleName}_refine.pbs";
