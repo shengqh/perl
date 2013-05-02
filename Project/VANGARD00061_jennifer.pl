@@ -86,7 +86,7 @@ my $config = {
     gatk_jar   => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
     gatk_option => "-l INFO -A DepthOfCoverage -A AlleleBalance -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -mbq 20 -deletions 0.05 -dcov 1000 -nct 8",
     source     => {
-      "2510-DH" => ["${bwa_dir}/result/2510-DH-2/2510-DH-2_sort.realigned.recal.rmdup.bam", "${bwa_dir}/result/2510-DH-3/2510-DH-3_sort.realigned.recal.rmdup.bam"],
+      "2510-DH" => ["${bwa_dir}/result/2510-DH-2/2510-DH-2.realigned.recal.rmdup_sorted.bam", "${bwa_dir}/result/2510-DH-3/2510-DH-3.realigned.recal.rmdup_sorted.bam"],
     },
     pbs => {
       "email"    => $email,
@@ -98,8 +98,8 @@ my $config = {
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
-bwa_by_pbs_double( $config, "bwa" );
-refine_bam_file( $config, "refine" );
+#bwa_by_pbs_double( $config, "bwa" );
+#refine_bam_file( $config, "refine" );
 gatk_snpindel($config, "snpindel");
 
 1;
