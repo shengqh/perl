@@ -41,6 +41,6 @@ if ( !defined($outputfile) ) {
   $outputfile = change_extension($inputfile, ".filtered.vcf");
 }
 
-`cat $inputfile | awk '(\$1 ~ \"#\") || \$7==\"PASS\")' > $outputfile`;
+`cat $inputfile | awk '(\$1 ~ \"#\") || (\$7==\"PASS\")' > $outputfile`;
 
 1;
