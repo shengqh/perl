@@ -96,8 +96,8 @@ my $config = {
 };
 
 #fastqc_by_pbs( $config, "fastqc" );
-bwa_by_pbs_double( $config, "bwa" );
-refine_bam_file( $config, "refine" );
+#bwa_by_pbs_double( $config, "bwa" );
+#refine_bam_file( $config, "refine" );
 gatk_snpindel($config, "snpindel");
 
 1;
