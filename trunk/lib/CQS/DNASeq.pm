@@ -365,6 +365,8 @@ sub refine_bam_file {
 		my $grpFile       = $realignedFile . ".grp";
 		my $recalFile     = change_extension( $realignedFile, ".recal.bam" );
 		my $rmdupFile     = change_extension( $recalFile, ".rmdup.bam" );
+		my $sortedPrefix     = change_extension( $recalFile, ".sorted" );
+		my $sortedFile = $sortedPrefix + ".bam";
 
 		my $pbsName = "${sampleName}_refine.pbs";
 		my $pbsFile = "${pbsDir}/$pbsName";
@@ -421,9 +423,14 @@ if [[ -s $recalFile && ! -s $rmdupFile ]]; then
   java $option -jar $markDuplicates_jar I=$recalFile O=$rmdupFile M=${rmdupFile}.matrix VALIDATION_STRINGENCY=SILENT ASSUME_SORTED=true REMOVE_DUPLICATES=true
 fi
 
-if [[ -s $rmdupFile && ! -s ${rmdupFile}.bai ]]; then
+if [[ -s $rmdupFile && ! -s $sortedFile ]]; then
+  echo BamSort=`date` 
+  samtools sort $rmdupFile $sortedPrefix 
+fi
+
+if [[ -s $sortedFile && ! -s ${sortedFile}.bai ]]; then
   echo BamIndex=`date` 
-  samtools index $rmdupFile
+  samtools index $sortedFile
 fi
 
 echo finished=`date`
