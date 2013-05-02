@@ -469,6 +469,7 @@ java -jar $option $gatk_jar -T UnifiedGenotyper -R $faFile -I $listfilename $kno
 echo finished=`date`
 ";
     close OUT;
+    print "$pbsFile created\n";
 
     my $indelOut  = $sampleName . "_indel.vcf";
     my $indelStat = $sampleName . "_indel.stat";
