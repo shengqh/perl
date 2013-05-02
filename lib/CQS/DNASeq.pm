@@ -35,8 +35,8 @@ sub bwa_by_pbs_single {
 	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
 	my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
-
-	my $option_samse = $config->{$section}{option_samse} or die "define ${section}::option_samse first";
+	die "define ${section}::option_samse first" if !defined( $config->{$section}{option_samse} );
+	my $option_samse = $config->{$section}{option_samse};
 	my $sort_bam;
 	$sort_bam = $config->{$section}{sort_bam} or $sort_bam = 0;
 
@@ -139,7 +139,8 @@ sub bwa_by_pbs_double {
 	my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
 	my $inserts = $config->{$section}{estimate_insert};
 
-	my $option_sampe = $config->{$section}{option_sampe} or die "define ${section}::option_sampe first";
+	die "define ${section}::option_sampe first" if !defined( $config->{$section}{option_sampe} );
+	my $option_sampe = $config->{$section}{option_sampe};
 	my $sort_bam;
 	$sort_bam = $config->{$section}{sort_bam} or $sort_bam = 0;
 
@@ -212,8 +213,8 @@ else
   samtools view -b -S $samFile -o $bamFile 
 ";
 
-if($sort_bam){
-print OUT "
+		if ($sort_bam) {
+			print OUT "
   echo sortbam=`date`
   samtools sort $bamFile $sortedBamPrefix 
 
@@ -228,9 +229,9 @@ fi
 
 echo finished=`date`
 ";
-}
-else{
-print OUT "
+		}
+		else {
+			print OUT "
   echo indexbam=`date`
   samtools index $bamFile 
 
@@ -241,8 +242,8 @@ print OUT "
 fi
 
 echo finished=`date`
-";	
-}
+";
+		}
 		close OUT;
 
 		print "$pbsFile created\n";
