@@ -1,6 +1,7 @@
 #!/usr/bin/perl 
 use strict;
 use warnings;
+use File::Copy;
 use Getopt::Long;
 use CQS::FileUtils;
 
