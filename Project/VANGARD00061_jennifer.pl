@@ -66,8 +66,8 @@ my $config = {
 		gatk_jar   => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
 		markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
 		source     => {
-			"2510-DH-2" => ["${bwa_dir}/result/2510-DH-2/2510-DH-2_sort.bam"],
-			"2510-DH-3" => ["${bwa_dir}/result/2510-DH-3/2510-DH-3_sort.bam"],
+			"2510-DH-2" => ["${bwa_dir}/result/2510-DH-2/2510-DH-2.bam"],
+			"2510-DH-3" => ["${bwa_dir}/result/2510-DH-3/2510-DH-3.bam"],
 		},
 		pbs => {
 			"email"    => $email,
