@@ -51,9 +51,9 @@ open( OUT_FILE, ">$outfile" ) || die $!;
 print OUT_FILE "sample\ttotal_reads\tmapped_reads\tpercentage\tmapped_20_reads\tmapped_20_reads_percentage\n";
 foreach my $subdir (@subdirs){
   my $path = $dirroot . "/" . $subdir;
-  my $total = `cat $path/*.stat|grep "in total ("| cut -d ' ' -f1`;
+  my $total = `cat $path/*_sorted.bam.stat|grep "in total ("| cut -d ' ' -f1`;
   chomp($total);
-  my $mapped = `cat $path/*.stat|grep "mapped ("| cut -d ' ' -f1`;
+  my $mapped = `cat $path/*_sorted.bam.stat|grep "mapped ("| cut -d ' ' -f1`;
   chomp($mapped);
   my $scoremapped = `samtools view -q $score $path/*_sorted.bam |wc -l`;
   chomp($scoremapped);
