@@ -76,25 +76,39 @@ echo bwa=`date`
 
 cd $curDir
 
-if [ ! -s $saiFile1 ]; then
-  echo sai1=`date` 
-  bwa aln $option $faFile $sampleFile1 > $saiFile1 
+if [ -s $sortedBamFile ]; then
+  echo job has already been done. if you want to do again, delete $sortedBamFile and submit job again.
+else
+  if [ ! -s $saiFile1 ]; then
+    echo sai1=`date` 
+    bwa aln $option $faFile $sampleFile1 > $saiFile1 
+  fi
+
+  if [[ -s $saiFile1 && ! -s $samFile ]]; then
+    echo aln=`date` 
+    bwa samse -r $tag $option_samse $faFile $saiFile1 $sampleFile1 > $samFile
+  fi 
+
+  if [[ -s $samFile && ! -s $bamFile]]; then
+    echo sam2bam=`date`
+    samtools view -b -S $samFile -o $bamFile
+  fi 
+
+  if [[ -s $bamFile && ! -s $sortedBamFile]]; then
+    echo sortbam=`date`
+    samtools sort $bamFile $sortedBamPrefix
+  fi 
+
+  if [[ -s $sortedBamFile && ! -s ${sortedBamFile}.bai ]]; then
+    echo indexbam=`date`
+    samtools index $sortedBamFile
+  fi 
+
+  if [[ -s $sortedBamFile && ! -s ${sortedBamFile}.stat ]]; then
+    echo bamstat=`date`
+    samtools flagstat $sortedBamFile > ${sortedBamFile}.stat 
+  fi
 fi
-
-echo aln=`date` 
-bwa samse -r $tag $option_samse $faFile $saiFile1 $sampleFile1 > $samFile 
-
-echo sam2bam=`date`
-samtools view -b -S $samFile -o $bamFile 
-
-echo sortbam=`date`
-samtools sort $bamFile $sortedBamPrefix 
-
-echo indexbam=`date`
-samtools index $sortedBamFile 
-
-echo bamstat=`date`
-samtools flagstat $sortedBamFile > ${sortedBamFile}.stat 
 
 echo finished=`date` 
 ";
@@ -187,20 +201,30 @@ else
     bwa aln $option $faFile $sampleFile2 >$saiFile2 
   fi
 
-  echo aln=`date` 
-  bwa sampe -r $tag $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile 
+  if [[[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]]; then
+    echo aln=`date` 
+    bwa sampe -r $tag $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile
+  fi 
 
-  echo sam2bam=`date`
-  samtools view -b -S $samFile -o $bamFile 
+  if [[ -s $samFile && ! -s $bamFile]]; then
+    echo sam2bam=`date`
+    samtools view -b -S $samFile -o $bamFile
+  fi 
 
-  echo sortbam=`date`
-  samtools sort $bamFile $sortedBamPrefix 
+  if [[ -s $bamFile && ! -s $sortedBamFile]]; then
+    echo sortbam=`date`
+    samtools sort $bamFile $sortedBamPrefix
+  fi 
 
-  echo indexbam=`date`
-  samtools index $sortedBamFile 
+  if [[ -s $sortedBamFile && ! -s ${sortedBamFile}.bai ]]; then
+    echo indexbam=`date`
+    samtools index $sortedBamFile
+  fi 
 
-  echo bamstat=`date`
-  samtools flagstat $sortedBamFile > ${sortedBamFile}.stat 
+  if [[ -s $sortedBamFile && ! -s ${sortedBamFile}.stat ]]; then
+    echo bamstat=`date`
+    samtools flagstat $sortedBamFile > ${sortedBamFile}.stat 
+  fi
   
   $inserts_str
 fi
