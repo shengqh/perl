@@ -49,8 +49,7 @@ fi";
 
 sub get_sorted_bam {
   my $bamFile = shift;
-  my ( $name, $path, $suffix ) = fileparse( $bamFile, qr/\Q.bam\E/ );
-  my $bamSortedPrefix = $path . $name . "_sorted";
+  my $bamSortedPrefix = change_extension($bamFile, "_sorted");
   my $bamSortedFile   = $bamSortedPrefix . ".bam";
   return ( $bamSortedFile, $bamSortedPrefix );
 }
