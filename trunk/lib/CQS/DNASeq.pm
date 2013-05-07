@@ -85,8 +85,7 @@ sub get_stat_command {
 "if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
   echo bamstat=`date`
   samtools flagstat $bamSortedFile > ${bamSortedFile}.stat 
-fi
-";
+fi";
 
   return ($command);
 }
@@ -395,12 +394,12 @@ sub bwa_refine {
     my $sampleFile1 = $sampleFiles[0];
     my ( $bwaaln_command1, $saiFile1 ) = get_bwa_aln_command( $sampleFile1, $option, $faFile );
 
-    my $bwa_command;
+    my $bwa_aln_command;
     if ( scalar(@sampleFiles) == 2 ) {
       my $sampleFile2 = $sampleFiles[1];
       my ( $bwaaln_command2, $saiFile2 ) = get_bwa_aln_command( $sampleFile2, $option, $faFile );
 
-      $bwa_command = 
+      $bwa_aln_command = 
 "$bwaaln_command1
 
 $bwaaln_command2
@@ -411,7 +410,7 @@ if [[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]; then
 fi";
     }
     else {
-      $bwa_command = 
+      $bwa_aln_command = 
 "$bwaaln_command1
 
 if [[ -s $saiFile1 && ! -s $samFile ]]; then
@@ -448,7 +447,7 @@ if [ -s $bamSortedFile ]; then
   exit 0
 fi
 
-$bwa_command
+$bwa_aln_command
 
 $sam2bam_command
 
