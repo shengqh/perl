@@ -22,27 +22,36 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub get_bwa_aln_command {
-  my ( $sampleFile, $option,      $faFile ) = @_;
+  my ( $sampleFile, $option,      $faFile , $indent ) = @_;
+
+  if (!defined($indent)){
+    $indent = "";
+  }
+  
   my ( $sampleName, $directories, $suffix ) = fileparse($sampleFile);
   my $saiFile = $sampleName . ".sai";
 
   my $command = 
-"if [ ! -s $saiFile ]; then
-  echo sai=`date` 
-  bwa aln $option $faFile $sampleFile >$saiFile 
-fi";
+"${indent}if [ ! -s $saiFile ]; then
+${indent}  echo sai=`date` 
+${indent}  bwa aln $option $faFile $sampleFile >$saiFile 
+${indent}fi";
 
   return ( $command, $saiFile );
 }
 
 sub get_sam2bam_command {
-  my ( $samFile, $bamFile ) = @_;
+  my ( $samFile, $bamFile, $indent ) = @_;
 
+  if (!defined($indent)){
+    $indent = "";
+  }
+  
   my $command = 
-"if [[ -s $samFile && ! -s $bamFile ]]; then
-  echo sam2bam=`date`
-  samtools view -b -S $samFile -o $bamFile
-fi";
+"${indent}if [[ -s $samFile && ! -s $bamFile ]]; then
+${indent}  echo sam2bam=`date`
+${indent}  samtools view -b -S $samFile -o $bamFile
+${indent}fi";
 
   return ($command);
 }
@@ -55,7 +64,11 @@ sub get_sorted_bam {
 }
 
 sub get_sort_index_command {
-  my ( $bamFile, $bamSortedPrefix ) = @_;
+  my ( $bamFile, $bamSortedPrefix, $indent ) = @_;
+
+  if (!defined($indent)){
+    $indent = "";
+  }
 
   my $bamSortedFile;
   if ( !defined $bamSortedPrefix ) {
@@ -66,26 +79,30 @@ sub get_sort_index_command {
   }
 
   my $command = 
-"if [[ -s $bamFile && ! -s $bamSortedFile ]]; then
-  echo BamSort=`date` 
-  samtools sort $bamFile $bamSortedPrefix 
-fi
+"${indent}if [[ -s $bamFile && ! -s $bamSortedFile ]]; then
+${indent}  echo BamSort=`date` 
+${indent}  samtools sort $bamFile $bamSortedPrefix 
+${indent}fi
 
-if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.bai ]]; then
-  echo BamIndex=`date` 
-  samtools index $bamSortedFile
-fi";
+${indent}if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.bai ]]; then
+${indent}  echo BamIndex=`date` 
+${indent}  samtools index $bamSortedFile
+${indent}fi";
   return ($command);
 }
 
 sub get_stat_command {
-  my ($bamSortedFile) = @_;
+  my ($bamSortedFile, $indent ) = @_;
+
+  if (!defined($indent)){
+    $indent = "";
+  }
 
   my $command = 
-"if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
-  echo bamstat=`date`
-  samtools flagstat $bamSortedFile > ${bamSortedFile}.stat 
-fi";
+"${indent}if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
+${indent}  echo bamstat=`date`
+${indent}  samtools flagstat $bamSortedFile > ${bamSortedFile}.stat 
+${indent}fi";
 
   return ($command);
 }
@@ -391,39 +408,40 @@ sub bwa_refine {
     my $bamFile     = $sampleName . ".bam";
     my $tag         = get_bam_tag($sampleName);
 
+    my $bwa_indent="  ";
     my $sampleFile1 = $sampleFiles[0];
-    my ( $bwaaln_command1, $saiFile1 ) = get_bwa_aln_command( $sampleFile1, $option, $faFile );
+    my ( $bwaaln_command1, $saiFile1 ) = get_bwa_aln_command( $sampleFile1, $option, $faFile, $bwa_indent );
 
     my $bwa_aln_command;
     if ( scalar(@sampleFiles) == 2 ) {
       my $sampleFile2 = $sampleFiles[1];
-      my ( $bwaaln_command2, $saiFile2 ) = get_bwa_aln_command( $sampleFile2, $option, $faFile );
+      my ( $bwaaln_command2, $saiFile2 ) = get_bwa_aln_command( $sampleFile2, $option, $faFile,$bwa_indent );
 
       $bwa_aln_command = 
 "$bwaaln_command1
 
 $bwaaln_command2
 
-if [[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]; then
-  echo aln=`date` 
-  bwa sampe -r $tag $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile
-fi";
+  if [[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]; then
+    echo aln=`date` 
+    bwa sampe -r $tag $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile
+  fi";
     }
     else {
       $bwa_aln_command = 
 "$bwaaln_command1
 
-if [[ -s $saiFile1 && ! -s $samFile ]]; then
-  echo aln=`date` 
-  bwa samse -r $tag $option_samse $faFile $saiFile1 $sampleFile1 > $samFile
-fi";
+  if [[ -s $saiFile1 && ! -s $samFile ]]; then
+    echo aln=`date` 
+    bwa samse -r $tag $option_samse $faFile $saiFile1 $sampleFile1 > $samFile
+  fi";
     }
 
-    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile);
+    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile,$bwa_indent);
 
-    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile );
-    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix );
-    my $stat_command       = get_stat_command($bamSortedFile);
+    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile,$bwa_indent );
+    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix,$bwa_indent );
+    my $stat_command       = get_stat_command($bamSortedFile,$bwa_indent);
     my ($refine_command, $final_bam)     = get_refine_command( $config, $section, $option_gatk, $bamSortedFile );
 
     my $pbsName = "${sampleName}_bwa.pbs";
@@ -455,7 +473,6 @@ $sam2bam_command
 $sort_index_command
 
 $stat_command
-
 fi
 
 $refine_command
