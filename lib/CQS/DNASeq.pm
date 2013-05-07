@@ -150,7 +150,7 @@ if [[ -s $sortedFile && ! -s ${sortedFile}.bai ]]; then
   echo BamIndex=`date` 
   samtools index $sortedFile
 fi";
-  return ($command);
+  return ($command, $sortedFile);
 }
 
 sub get_bam_tag {
@@ -424,7 +424,7 @@ fi";
     my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile );
     my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix );
     my $stat_command       = get_stat_command($bamSortedFile);
-    my $refine_command     = get_refine_command( $config, $section, $option_gatk, $bamSortedFile );
+    my ($refine_command, $final_bam)     = get_refine_command( $config, $section, $option_gatk, $bamSortedFile );
 
     my $pbsName = "${sampleName}_bwa.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -442,8 +442,8 @@ $path_file
 
 cd $curDir
 
-if [ -s $bamSortedFile ]; then
-  echo job has already been done. if you want to do again, delete $bamSortedFile and submit job again.
+if [ -s $final_bam ]; then
+  echo job has already been done. if you want to do again, delete $final_bam and submit job again.
   exit 0
 fi
 
