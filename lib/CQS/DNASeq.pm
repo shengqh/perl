@@ -315,8 +315,6 @@ sub bwa_by_pbs_double {
 
 $path_file
 
-echo bwa=`date`
-
 cd $curDir
 
 if [ -s $bamSortedFile ]; then
@@ -415,8 +413,7 @@ $bwaaln_command2
 if [[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]; then
   echo aln=`date` 
   bwa sampe -r $tag $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile
-fi 
-
+fi
 ";
     }
     else {
@@ -426,8 +423,7 @@ $bwaaln_command1
 if [[ -s $saiFile1 && ! -s $samFile ]]; then
   echo aln=`date` 
   bwa samse -r $tag $option_samse $faFile $saiFile1 $sampleFile1 > $samFile
-fi 
-
+fi
 ";
     }
 
@@ -451,8 +447,6 @@ fi
 #PBS -j oe
 
 $path_file
-
-echo bwa=`date`
 
 cd $curDir
 
