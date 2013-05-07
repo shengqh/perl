@@ -65,7 +65,7 @@ sub get_sort_index_command {
     ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile);
   }
   else {
-    $bamSortedFile = $bamSortedPrefix + ".bam";
+    $bamSortedFile = $bamSortedPrefix . ".bam";
   }
 
   my $command = "
