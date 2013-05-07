@@ -26,12 +26,11 @@ sub get_bwa_aln_command {
   my ( $sampleName, $directories, $suffix ) = fileparse($sampleFile);
   my $saiFile = $sampleName . ".sai";
 
-  my $command = "
-if [ ! -s $saiFile ]; then
+  my $command = 
+"if [ ! -s $saiFile ]; then
   echo sai=`date` 
   bwa aln $option $faFile $sampleFile >$saiFile 
-fi
-";
+fi";
 
   return ( $command, $saiFile );
 }
@@ -39,12 +38,11 @@ fi
 sub get_sam2bam_command {
   my ( $samFile, $bamFile ) = @_;
 
-  my $command = "
-if [[ -s $samFile && ! -s $bamFile ]]; then
+  my $command = 
+"if [[ -s $samFile && ! -s $bamFile ]]; then
   echo sam2bam=`date`
   samtools view -b -S $samFile -o $bamFile
-fi
-";
+fi";
 
   return ($command);
 }
@@ -68,8 +66,8 @@ sub get_sort_index_command {
     $bamSortedFile = $bamSortedPrefix . ".bam";
   }
 
-  my $command = "
-if [[ -s $bamFile && ! -s $bamSortedFile ]]; then
+  my $command = 
+"if [[ -s $bamFile && ! -s $bamSortedFile ]]; then
   echo BamSort=`date` 
   samtools sort $bamFile $bamSortedPrefix 
 fi
@@ -77,16 +75,15 @@ fi
 if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.bai ]]; then
   echo BamIndex=`date` 
   samtools index $bamSortedFile
-fi
-";
+fi";
   return ($command);
 }
 
 sub get_stat_command {
   my ($bamSortedFile) = @_;
 
-  my $command = "
-if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
+  my $command = 
+"if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
   echo bamstat=`date`
   samtools flagstat $bamSortedFile > ${bamSortedFile}.stat 
 fi
@@ -120,8 +117,8 @@ sub get_refine_command {
   my $sortedPrefix  = change_extension( $rmdupFile, "_sorted" );
   my $sortedFile    = $sortedPrefix . ".bam";
 
-  my $command = "
-if [ ! -s $intervalFile ]; then
+  my $command = 
+"if [ ! -s $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
   java $gatkoption -jar $gatk_jar -T RealignerTargetCreator -I $bamFile -R $faFile $knownvcf -nt $thread_count -o $intervalFile
 fi
@@ -154,8 +151,7 @@ fi
 if [[ -s $sortedFile && ! -s ${sortedFile}.bai ]]; then
   echo BamIndex=`date` 
   samtools index $sortedFile
-fi
-";
+fi";
   return ($command);
 }
 
@@ -405,26 +401,24 @@ sub bwa_refine {
       my $sampleFile2 = $sampleFiles[1];
       my ( $bwaaln_command2, $saiFile2 ) = get_bwa_aln_command( $sampleFile2, $option, $faFile );
 
-      $bwa_command = "
-$bwaaln_command1
+      $bwa_command = 
+"$bwaaln_command1
 
 $bwaaln_command2
 
 if [[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]; then
   echo aln=`date` 
   bwa sampe -r $tag $option_sampe $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile
-fi
-";
+fi";
     }
     else {
-      $bwa_command = "
-$bwaaln_command1
+      $bwa_command = 
+"$bwaaln_command1
 
 if [[ -s $saiFile1 && ! -s $samFile ]]; then
   echo aln=`date` 
   bwa samse -r $tag $option_samse $faFile $saiFile1 $sampleFile1 > $samFile
-fi
-";
+fi";
     }
 
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile);
