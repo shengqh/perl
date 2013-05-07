@@ -447,6 +447,7 @@ if [ -s $final_bam ]; then
   exit 0
 fi
 
+if [ ! -s $bamSortedFile]; then
 $bwa_aln_command
 
 $sam2bam_command
@@ -454,6 +455,8 @@ $sam2bam_command
 $sort_index_command
 
 $stat_command
+
+fi
 
 $refine_command
   
