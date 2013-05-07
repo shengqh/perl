@@ -117,7 +117,7 @@ my $config = {
 #bwa_by_pbs_double( $config, "bwa" );
 #refine_bam_file( $config, "refine" );
 
-bwa_refine( $config, "refine" );
+bwa_refine( $config, "bwa_refine" );
 #gatk_snpindel($config, "snpindel");
 
 1;
