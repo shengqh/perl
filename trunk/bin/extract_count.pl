@@ -53,7 +53,7 @@ my %data;
 foreach my $subdir (@subdirs) {
   my $path = "${dirroot}/${subdir}";
   my $f    = "${path}/${subdir}.count";
-  `samtools view -q $score $path/*_sorted.bam | cut -f3 | sort |uniq -c |awk 'BEGIN{OFS="\t"} {print $2,$1}' |sort > $f`;
+  `samtools view -q $score $path/*_sorted.bam | cut -f3 | sort |uniq -c |awk 'BEGIN{OFS="\t"} {print \$2,\$1}' |sort > $f`;
 
   print "Reading $f...\n";
   open( IN, $f ) or die $!;
