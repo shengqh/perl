@@ -113,12 +113,12 @@ my $config = {
 
 #tophat2_by_pbs( $config, "tophat2" );
 
-cufflinks_by_pbs( $config, "cufflinks" );
+#cufflinks_by_pbs( $config, "cufflinks" );
 
-cuffmerge_by_pbs( $config, "cuffmerge" );
+#cuffmerge_by_pbs( $config, "cuffmerge" );
 
-cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
-#copy_and_rename_cuffdiff_file($config, "rename_diff");
+copy_and_rename_cuffdiff_file($config, "rename_diff");
 
 1;
