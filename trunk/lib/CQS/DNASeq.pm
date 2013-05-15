@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam refine_bam_file gatk_snpindel)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam refine_bam_file gatk_snpindel bowtie2)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -476,6 +476,85 @@ $stat_command
 fi
 
 $refine_command
+  
+echo finished=`date`
+
+exit 1;
+";
+
+    close OUT;
+
+    print "$pbsFile created\n";
+  }
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+
+  print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+}
+
+sub bowtie2 {
+  my ( $config, $section ) = @_;
+
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+
+  my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
+  my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
+
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+  my $shfile = $pbsDir . "/${task_name}.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $samFile     = $sampleName . ".sam";
+    my $bamFile     = $sampleName . ".bam";
+    my $alignedFile     = $sampleName . ".aligned";
+    my $unalignedFile     = $sampleName . ".unaligned";
+
+    my $indent="  ";
+    
+    my $fastqs=join(',', @sampleFiles);
+    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -q $fastqs -S $samFile --un $unalignedFile --al $alignedFile";
+
+    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile,$indent);
+
+    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile,$indent );
+    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix,$indent );
+    my $stat_command       = get_stat_command($bamSortedFile,$indent);
+
+    my $pbsName = "${sampleName}_bowtie.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
+    my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
+    my $log = "${logDir}/${sampleName}_bowtie.log";
+
+    print SH "\$MYCMD ./$pbsName \n";
+
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file
+
+cd $curDir
+
+if [ -s $bamSortedFile ]; then
+  echo job has already been done. if you want to do again, delete $bamSortedFile and submit job again.
+  exit 0
+fi
+
+$bowtie2_aln_command
+
+$sam2bam_command
+
+$sort_index_command
+
+$stat_command
   
 echo finished=`date`
 
