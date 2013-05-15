@@ -517,15 +517,17 @@ sub bowtie2 {
     my $unalignedFile     = $sampleName . ".unaligned";
 
     my $indent="";
+    my $tag = "'LB:$sampleName\tSM:$sampleName\tPL:ILLUMINA'";
     
     my $fastqs=join(',', @sampleFiles);
-    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -q $fastqs -S $samFile --un $unalignedFile --al $alignedFile";
+    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs -S $samFile --un $unalignedFile --al $alignedFile --rg-id $sampleName --rg $tag";
 
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile,$indent);
 
     my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile,$indent );
     my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix,$indent );
     my $stat_command       = get_stat_command($bamSortedFile,$indent);
+
 
     my $pbsName = "${sampleName}_bowtie.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
