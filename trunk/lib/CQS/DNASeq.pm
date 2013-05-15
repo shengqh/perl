@@ -516,7 +516,7 @@ sub bowtie2 {
     my $alignedFile     = $sampleName . ".aligned";
     my $unalignedFile     = $sampleName . ".unaligned";
 
-    my $indent="  ";
+    my $indent="";
     
     my $fastqs=join(',', @sampleFiles);
     my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -q $fastqs -S $samFile --un $unalignedFile --al $alignedFile";
