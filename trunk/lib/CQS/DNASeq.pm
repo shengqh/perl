@@ -22,17 +22,16 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub get_bwa_aln_command {
-  my ( $sampleFile, $option,      $faFile , $indent ) = @_;
+  my ( $sampleFile, $option, $faFile, $indent ) = @_;
 
-  if (!defined($indent)){
+  if ( !defined($indent) ) {
     $indent = "";
   }
-  
+
   my ( $sampleName, $directories, $suffix ) = fileparse($sampleFile);
   my $saiFile = $sampleName . ".sai";
 
-  my $command = 
-"${indent}if [ ! -s $saiFile ]; then
+  my $command = "${indent}if [ ! -s $saiFile ]; then
 ${indent}  echo sai=`date` 
 ${indent}  bwa aln $option $faFile $sampleFile >$saiFile 
 ${indent}fi";
@@ -43,12 +42,11 @@ ${indent}fi";
 sub get_sam2bam_command {
   my ( $samFile, $bamFile, $indent ) = @_;
 
-  if (!defined($indent)){
+  if ( !defined($indent) ) {
     $indent = "";
   }
-  
-  my $command = 
-"${indent}if [[ -s $samFile && ! -s $bamFile ]]; then
+
+  my $command = "${indent}if [[ -s $samFile && ! -s $bamFile ]]; then
 ${indent}  echo sam2bam=`date`
 ${indent}  samtools view -b -S $samFile -o $bamFile
 ${indent}fi";
@@ -57,8 +55,8 @@ ${indent}fi";
 }
 
 sub get_sorted_bam {
-  my $bamFile = shift;
-  my $bamSortedPrefix = change_extension($bamFile, "_sorted");
+  my $bamFile         = shift;
+  my $bamSortedPrefix = change_extension( $bamFile, "_sorted" );
   my $bamSortedFile   = $bamSortedPrefix . ".bam";
   return ( $bamSortedFile, $bamSortedPrefix );
 }
@@ -66,7 +64,7 @@ sub get_sorted_bam {
 sub get_sort_index_command {
   my ( $bamFile, $bamSortedPrefix, $indent ) = @_;
 
-  if (!defined($indent)){
+  if ( !defined($indent) ) {
     $indent = "";
   }
 
@@ -78,8 +76,7 @@ sub get_sort_index_command {
     $bamSortedFile = $bamSortedPrefix . ".bam";
   }
 
-  my $command = 
-"${indent}if [[ -s $bamFile && ! -s $bamSortedFile ]]; then
+  my $command = "${indent}if [[ -s $bamFile && ! -s $bamSortedFile ]]; then
 ${indent}  echo BamSort=`date` 
 ${indent}  samtools sort $bamFile $bamSortedPrefix 
 ${indent}fi
@@ -92,14 +89,13 @@ ${indent}fi";
 }
 
 sub get_stat_command {
-  my ($bamSortedFile, $indent ) = @_;
+  my ( $bamSortedFile, $indent ) = @_;
 
-  if (!defined($indent)){
+  if ( !defined($indent) ) {
     $indent = "";
   }
 
-  my $command = 
-"${indent}if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
+  my $command = "${indent}if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
 ${indent}  echo bamstat=`date`
 ${indent}  samtools flagstat $bamSortedFile > ${bamSortedFile}.stat 
 ${indent}fi";
@@ -132,8 +128,7 @@ sub get_refine_command {
   my $sortedPrefix  = change_extension( $rmdupFile, "_sorted" );
   my $sortedFile    = $sortedPrefix . ".bam";
 
-  my $command = 
-"if [ ! -s $intervalFile ]; then
+  my $command = "if [ ! -s $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
   java $gatkoption -jar $gatk_jar -T RealignerTargetCreator -I $bamFile -R $faFile $knownvcf -nt $thread_count -o $intervalFile
 fi
@@ -167,7 +162,7 @@ if [[ -s $sortedFile && ! -s ${sortedFile}.bai ]]; then
   echo BamIndex=`date` 
   samtools index $sortedFile
 fi";
-  return ($command, $sortedFile);
+  return ( $command, $sortedFile );
 }
 
 sub get_bam_tag {
@@ -408,17 +403,16 @@ sub bwa_refine {
     my $bamFile     = $sampleName . ".bam";
     my $tag         = get_bam_tag($sampleName);
 
-    my $bwa_indent="  ";
+    my $bwa_indent  = "  ";
     my $sampleFile1 = $sampleFiles[0];
     my ( $bwaaln_command1, $saiFile1 ) = get_bwa_aln_command( $sampleFile1, $option, $faFile, $bwa_indent );
 
     my $bwa_aln_command;
     if ( scalar(@sampleFiles) == 2 ) {
       my $sampleFile2 = $sampleFiles[1];
-      my ( $bwaaln_command2, $saiFile2 ) = get_bwa_aln_command( $sampleFile2, $option, $faFile,$bwa_indent );
+      my ( $bwaaln_command2, $saiFile2 ) = get_bwa_aln_command( $sampleFile2, $option, $faFile, $bwa_indent );
 
-      $bwa_aln_command = 
-"$bwaaln_command1
+      $bwa_aln_command = "$bwaaln_command1
 
 $bwaaln_command2
 
@@ -428,8 +422,7 @@ $bwaaln_command2
   fi";
     }
     else {
-      $bwa_aln_command = 
-"$bwaaln_command1
+      $bwa_aln_command = "$bwaaln_command1
 
   if [[ -s $saiFile1 && ! -s $samFile ]]; then
     echo aln=`date` 
@@ -437,17 +430,17 @@ $bwaaln_command2
   fi";
     }
 
-    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile,$bwa_indent);
+    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam( $bamFile, $bwa_indent );
 
-    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile,$bwa_indent );
-    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix,$bwa_indent );
-    my $stat_command       = get_stat_command($bamSortedFile,$bwa_indent);
-    my ($refine_command, $final_bam)     = get_refine_command( $config, $section, $option_gatk, $bamSortedFile );
+    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile, $bwa_indent );
+    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix, $bwa_indent );
+    my $stat_command = get_stat_command( $bamSortedFile, $bwa_indent );
+    my ( $refine_command, $final_bam ) = get_refine_command( $config, $section, $option_gatk, $bamSortedFile );
 
     my $pbsName = "${sampleName}_bwa.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
-    my $log = "${logDir}/${sampleName}_bwa.log";
+    my $log     = "${logDir}/${sampleName}_bwa.log";
 
     print SH "\$MYCMD ./$pbsName \n";
 
@@ -502,6 +495,10 @@ sub bowtie2 {
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
   my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
+  my $samonly = $config->{$section}{samonly};
+  if ( !defined $samonly ) {
+    $samonly = 0;
+  }
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -510,29 +507,28 @@ sub bowtie2 {
   print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my @sampleFiles = @{ $rawFiles{$sampleName} };
-    my $samFile     = $sampleName . ".sam";
-    my $bamFile     = $sampleName . ".bam";
-    my $alignedFile     = $sampleName . ".aligned";
-    my $unalignedFile     = $sampleName . ".unaligned";
+    my @sampleFiles   = @{ $rawFiles{$sampleName} };
+    my $samFile       = $sampleName . ".sam";
+    my $bamFile       = $sampleName . ".bam";
+    my $alignedFile   = $sampleName . ".aligned";
+    my $unalignedFile = $sampleName . ".unaligned";
 
-    my $indent="";
-    my $tag = "--sam-RG ID:$sampleName --sam-RG LB:$sampleName --sam-RG SM:$sampleName --sam-RG PL:ILLUMINA";
-    
-    my $fastqs=join(',', @sampleFiles);
-    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs -S $samFile --un $unalignedFile --al $alignedFile $tag";
+    my $indent = "";
+    my $tag    = "--sam-RG ID:$sampleName --sam-RG LB:$sampleName --sam-RG SM:$sampleName --sam-RG PL:ILLUMINA";
 
-    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile,$indent);
+    my $fastqs = join( ',', @sampleFiles );
+    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs -S $samFile $tag";
 
-    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile,$indent );
-    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix,$indent );
-    my $stat_command       = get_stat_command($bamSortedFile,$indent);
+    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam( $bamFile, $indent );
 
+    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile, $indent );
+    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix, $indent );
+    my $stat_command = get_stat_command( $bamSortedFile, $indent );
 
     my $pbsName = "${sampleName}_bowtie.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
-    my $log = "${logDir}/${sampleName}_bowtie.log";
+    my $log     = "${logDir}/${sampleName}_bowtie.log";
 
     print SH "\$MYCMD ./$pbsName \n";
 
@@ -544,7 +540,19 @@ sub bowtie2 {
 $path_file
 
 cd $curDir
+";
+    if ($samonly) {
+      print OUT "
+if [ -s $samFile ]; then
+  echo job has already been done. if you want to do again, delete $samFile and submit job again.
+  exit 0
+fi
 
+$bowtie2_aln_command
+";
+    }
+    else {
+      print OUT "
 if [ -s $bamSortedFile ]; then
   echo job has already been done. if you want to do again, delete $bamSortedFile and submit job again.
   exit 0
@@ -557,7 +565,10 @@ $sam2bam_command
 $sort_index_command
 
 $stat_command
-  
+";
+    }
+
+    print OUT "
 echo finished=`date`
 
 exit 1;

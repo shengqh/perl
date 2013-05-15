@@ -8,7 +8,7 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $root = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+my $root                   = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 my $target_dir             = create_directory_or_die($root);
 my $email                  = "quanhu.sheng\@vanderbilt.edu";
 my $task_name              = "VANGARD00055";
@@ -71,6 +71,7 @@ my $config_rat = {
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/rn4.fa",
+    samonly       => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -160,6 +161,7 @@ my $config_human = {
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     fasta_file    => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
+    samonly       => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -318,7 +320,7 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat,   "bwa_mature" );
 #bwa_by_pbs_single( $config_human, "bwa_mature" );
 
-bowtie2($config_rat, "bowtie2");
-bowtie2($config_human, "bowtie2");
+bowtie2( $config_rat,   "bowtie2" );
+bowtie2( $config_human, "bowtie2" );
 
 1;
