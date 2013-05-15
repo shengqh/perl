@@ -520,7 +520,7 @@ sub bowtie2 {
     my $tag = "'LB:$sampleName\tSM:$sampleName\tPL:ILLUMINA'";
     
     my $fastqs=join(',', @sampleFiles);
-    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs -S $samFile --un $unalignedFile --al $alignedFile --rg-id $sampleName --rg $tag";
+    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs -S $samFile --un $unalignedFile --al $alignedFile --rg-id '$sampleName' --rg $tag";
 
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile,$indent);
 
