@@ -17,7 +17,7 @@ my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "-n 100";
 
 my $bowtie2_option             = "-N 0 --phred33 -k 10";
-my $bowtie2_option_wholegenome = $bowtie2_option . " -t 8";
+my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
 
