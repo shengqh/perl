@@ -12,9 +12,9 @@ my $root                   = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_m
 my $target_dir             = create_directory_or_die($root);
 my $email                  = "quanhu.sheng\@vanderbilt.edu";
 my $task_name              = "VANGARD00055";
-my $bwa_option             = "-q 15 -l 8 -n 2";
+my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
-my $option_samse_mirna     = "-n 100";
+my $option_samse_mirna     = "";
 
 #my $bowtie2_option             = "-N 0 --phred33 -a";
 my $bowtie2_option             = "-N 0 --phred33";
@@ -43,7 +43,7 @@ my $config_rat = {
     option          => $bwa_option_wholegenome,
     option_samse    => "",
     source_ref      => "fastqfiles",
-    fasta_file      => "/data/cqs/shengq1/reference/rn5/rn5.fa",
+    fasta_file      => "/data/cqs/shengq1/reference/rn4/rn4.fa",
     estimate_insert => 1,
     source_ref      => "fastqfiles",
     pbs             => {
@@ -308,8 +308,8 @@ my $config_mirna = {
 
 };
 
-#bwa_by_pbs_single( $config_rat, "bwa" );
-#bwa_by_pbs_single( $config_human, "bwa" );
+bwa_by_pbs_single( $config_rat, "bwa" );
+bwa_by_pbs_single( $config_human, "bwa" );
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
 #bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
 #bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
@@ -321,7 +321,7 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat,   "bwa_mature" );
 #bwa_by_pbs_single( $config_human, "bwa_mature" );
 
-bowtie2( $config_rat,   "bowtie2" );
-bowtie2( $config_human, "bowtie2" );
+#bowtie2( $config_rat,   "bowtie2" );
+#bowtie2( $config_human, "bowtie2" );
 
 1;
