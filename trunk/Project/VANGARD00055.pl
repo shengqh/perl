@@ -67,7 +67,7 @@ my $config_rat = {
     },
   },
   bowtie2 => {
-    target_dir    => "${target_dir}/bowtie2_genome2",
+    target_dir    => "${target_dir}/bowtie2_genome",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/rn4",
@@ -157,7 +157,7 @@ my $config_human = {
     },
   },
   bowtie2 => {
-    target_dir    => "${target_dir}/bowtie2_genome2",
+    target_dir    => "${target_dir}/bowtie2_genome",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
