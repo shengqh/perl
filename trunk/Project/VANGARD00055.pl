@@ -16,9 +16,11 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-#my $bowtie2_option             = "-N 0 --phred33 -a";
 my $bowtie2_option             = "-N 0 --phred33";
 my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
+
+my $bowtie1_option             = "-v 0 --best --strata";
+my $bowtie1_option_wholegenome = $bowtie1_option . " -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
 
@@ -44,7 +46,7 @@ my $config_rat = {
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/rn4/rn4.fa",
-    estimate_insert => 1,
+    estimate_insert => 0,
     source_ref      => "fastqfiles",
     pbs             => {
       "email"    => $email,
@@ -71,6 +73,20 @@ my $config_rat = {
     option        => $bowtie2_option_wholegenome,
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/rn4.fa",
+    samonly       => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie1 => {
+    target_dir    => "${target_dir}/bowtie1_genome",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "fastqfiles",
+    bowtie1_index => "/data/cqs/shengq1/reference/rn4/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/rn4.fa",
     samonly       => 1,
     pbs           => {
@@ -134,7 +150,7 @@ my $config_human = {
     option_samse    => "",
     source_ref      => "fastqfiles",
     fasta_file      => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
-    estimate_insert => 1,
+    estimate_insert => 0,
     source_ref      => "fastqfiles",
     pbs             => {
       "email"    => $email,
@@ -308,8 +324,6 @@ my $config_mirna = {
 
 };
 
-bwa_by_pbs_single( $config_rat, "bwa" );
-bwa_by_pbs_single( $config_human, "bwa" );
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
 #bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
 #bwa_by_pbs_single( $config_mirna, "bwa_illumina" );
@@ -321,7 +335,13 @@ bwa_by_pbs_single( $config_human, "bwa" );
 #bwa_by_pbs_single( $config_rat,   "bwa_mature" );
 #bwa_by_pbs_single( $config_human, "bwa_mature" );
 
+#bwa_by_pbs_single( $config_rat, "bwa" );
+#bwa_by_pbs_single( $config_human, "bwa" );
+
 #bowtie2( $config_rat,   "bowtie2" );
 #bowtie2( $config_human, "bowtie2" );
+
+bowtie1( $config_rat,   "bowtie1" );
+bowtie1( $config_human, "bowtie1" );
 
 1;
