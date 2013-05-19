@@ -352,8 +352,8 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
 
-bowtie2( $config_rat,   "bowtie2" );
-bowtie2( $config_human, "bowtie2" );
+#bowtie2( $config_rat,   "bowtie2" );
+#bowtie2( $config_human, "bowtie2" );
 
 bowtie1( $config_rat,   "bowtie1" );
 bowtie1( $config_human, "bowtie1" );
