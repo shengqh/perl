@@ -515,7 +515,7 @@ sub bowtie1 {
     my $indent = "";
 
     my $fastqs = join( ',', @sampleFiles );
-    my $bowtie1_aln_command = "bowtie $option $bowtie1_index $fastqs $samFile";
+    my $bowtie1_aln_command = "bowtie $option -S $bowtie1_index $fastqs $samFile";
 
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam( $bamFile, $indent );
 
