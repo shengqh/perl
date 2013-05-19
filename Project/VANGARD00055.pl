@@ -19,7 +19,7 @@ my $option_samse_mirna     = "";
 my $bowtie2_option             = "-N 0 --phred33";
 my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
-my $bowtie1_option             = "-v 0 --best --strata";
+my $bowtie1_option             = "-v 0 -k 10 --best --strata";
 my $bowtie1_option_wholegenome = $bowtie1_option . " -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
@@ -74,7 +74,7 @@ my $config_rat = {
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/rn4.fa",
-    samonly       => 1,
+    samonly       => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -88,7 +88,7 @@ my $config_rat = {
     source_ref    => "fastqfiles",
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/rn4.fa",
-    samonly       => 1,
+    samonly       => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -176,12 +176,26 @@ my $config_human = {
     target_dir    => "${target_dir}/bowtie2_genome",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "fastqfiles",
-    bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
-    fasta_file    => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
-    samonly       => 1,
+    bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie_index2/hg19",
+    fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie_index2/hg19.fa",
+    samonly       => 0,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie1 => {
+    target_dir    => "${target_dir}/bowtie1_genome",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "fastqfiles",
+    bowtie1_index => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19",
+    fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
       "walltime" => "24",
       "mem"      => "20gb"
     },
@@ -338,8 +352,8 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
 
-#bowtie2( $config_rat,   "bowtie2" );
-#bowtie2( $config_human, "bowtie2" );
+bowtie2( $config_rat,   "bowtie2" );
+bowtie2( $config_human, "bowtie2" );
 
 bowtie1( $config_rat,   "bowtie1" );
 bowtie1( $config_human, "bowtie1" );
