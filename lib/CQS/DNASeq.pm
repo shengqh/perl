@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam refine_bam_file gatk_snpindel bowtie2)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam refine_bam_file gatk_snpindel bowtie1 bowtie2)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -495,7 +495,7 @@ sub bowtie1 {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
-  my $bowtie2_index = $config->{$section}{bowtie1_index} or die "define ${section}::bowtie1_index first";
+  my $bowtie1_index = $config->{$section}{bowtie1_index} or die "define ${section}::bowtie1_index first";
   my $samonly = $config->{$section}{samonly};
   if ( !defined $samonly ) {
     $samonly = 0;
@@ -513,10 +513,9 @@ sub bowtie1 {
     my $bamFile       = $sampleName . ".bam";
 
     my $indent = "";
-    my $tag    = "--sam-RG ID:$sampleName --sam-RG LB:$sampleName --sam-RG SM:$sampleName --sam-RG PL:ILLUMINA";
 
     my $fastqs = join( ',', @sampleFiles );
-    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs -S $samFile $tag";
+    my $bowtie1_aln_command = "bowtie $option $bowtie1_index $fastqs";
 
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam( $bamFile, $indent );
 
@@ -524,10 +523,10 @@ sub bowtie1 {
     my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix, $indent );
     my $stat_command = get_stat_command( $bamSortedFile, $indent );
 
-    my $pbsName = "${sampleName}_bowtie.pbs";
+    my $pbsName = "${sampleName}_bowtie1.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
-    my $log     = "${logDir}/${sampleName}_bowtie.log";
+    my $log     = "${logDir}/${sampleName}_bowtie1.log";
 
     print SH "\$MYCMD ./$pbsName \n";
 
@@ -547,7 +546,7 @@ if [ -s $samFile ]; then
   exit 0
 fi
 
-$bowtie2_aln_command
+$bowtie1_aln_command
 ";
     }
     else {
@@ -557,7 +556,7 @@ if [ -s $bamSortedFile ]; then
   exit 0
 fi
 
-$bowtie2_aln_command
+$bowtie1_aln_command
 
 $sam2bam_command
 
