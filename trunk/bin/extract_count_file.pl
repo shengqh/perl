@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use CQS::FileUtils;
+use Scalar::Util qw(looks_like_number);
 
 my $usage = "
 
@@ -58,7 +59,9 @@ foreach my $subdir (@subdirs) {
   while (<IN>) {
     s/\r|\n//g;
     my ( $g, $location, $count ) = split "\t";
-    $data{$g}->{$subdir} = $count;
+    if ( looks_like_number($count) ) {
+      $data{$g}->{$subdir} = $count;
+    }
   }
 }
 
