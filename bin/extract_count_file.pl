@@ -47,6 +47,10 @@ my %data;
 foreach my $subdir (@subdirs) {
   my $path = "${dirroot}/${subdir}";
   my $f    = "${path}/${subdir}.sam.count";
+  
+  if ( ! -s $f){
+    continue;
+  }
 
   print "Reading $f...\n";
   open( IN, $f ) or die $!;
