@@ -57,7 +57,7 @@ foreach my $subdir (@subdirs) {
   $samples{$subdir} = 1;
   while (<IN>) {
     s/\r|\n//g;
-    my ( $g, $count ) = split "\t";
+    my ( $g, $location, $count ) = split "\t";
     $data{$g}->{$subdir} = $count;
   }
 }
