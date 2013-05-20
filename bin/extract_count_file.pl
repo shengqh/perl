@@ -49,7 +49,7 @@ foreach my $subdir (@subdirs) {
   my $f    = "${path}/${subdir}.sam.count";
   
   if ( ! -s $f){
-    continue;
+    next;
   }
 
   print "Reading $f...\n";
