@@ -219,6 +219,19 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
+  mirna_count_bowtie1 => {
+    target_dir => "${target_dir}/bowtie1_genome",
+    option     => "",
+    source_ref => "bowtie1",
+    cqs_tools  => $cqs_tools,
+    gff_file   => $hsa_gffs,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
 };
 
 my $config_mirna = {
@@ -377,6 +390,7 @@ my $config_mirna = {
 #bowtie1( $config_rat,   "bowtie1" );
 #bowtie1( $config_human, "bowtie1" );
 
-mirna_count($config_rat, "mirna_count_bowtie1");
+#mirna_count($config_rat, "mirna_count_bowtie1");
+mirna_count($config_human, "mirna_count_bowtie1");
 
 1;
