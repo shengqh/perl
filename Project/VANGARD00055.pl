@@ -46,6 +46,19 @@ my $config_rat = {
     "2516-08" => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
     "2516-09" => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
   },
+  bwa_mature => {
+    target_dir   => "${target_dir}/bwa_miRBase_species",
+    option       => $bwa_option,
+    option_samse => $option_samse_mirna,
+    source_ref   => "fastqfiles",
+    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna.fa",
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   bwa => {
     target_dir      => "${target_dir}/bwa_genome",
     option          => $bwa_option_wholegenome,
@@ -61,15 +74,16 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  bwa_mature => {
-    target_dir   => "${target_dir}/bwa_miRBase_species",
-    option       => $bwa_option,
-    option_samse => $option_samse_mirna,
-    source_ref   => "fastqfiles",
-    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna.fa",
-    pbs          => {
+  bowtie1 => {
+    target_dir    => "${target_dir}/bowtie1_genome",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "fastqfiles",
+    bowtie1_index => "/data/cqs/shengq1/reference/rn4/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/rn4.fa",
+    samonly       => 0,
+    pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "24",
       "mem"      => "20gb"
     },
@@ -88,16 +102,15 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  bowtie1 => {
-    target_dir    => "${target_dir}/bowtie1_genome",
-    option        => $bowtie1_option_wholegenome,
-    source_ref    => "fastqfiles",
-    bowtie1_index => "/data/cqs/shengq1/reference/rn4/rn4",
-    fasta_file    => "/data/cqs/shengq1/reference/rn4/rn4.fa",
-    samonly       => 0,
-    pbs           => {
+  mirna_count_bwa => {
+    target_dir => "${target_dir}/bwa_genome",
+    option     => "",
+    source_ref => "bwa",
+    cqs_tools  => $cqs_tools,
+    gff_file   => $rno_gffs,
+    pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "24",
       "mem"      => "20gb"
     },
@@ -176,6 +189,19 @@ my $config_human = {
     "2516-47" => ["${root}/cutadapt/2516-KCV-47_1_clipped.fastq"],
     "2516-48" => ["${root}/cutadapt/2516-KCV-48_1_clipped.fastq"],
   },
+  bwa_mature => {
+    target_dir   => "${target_dir}/bwa_miRBase_species",
+    option       => $bwa_option,
+    option_samse => $option_samse_mirna,
+    source_ref   => "fastqfiles",
+    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   bwa => {
     target_dir      => "${target_dir}/bwa_genome",
     option          => $bwa_option_wholegenome,
@@ -191,13 +217,14 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
-  bwa_mature => {
-    target_dir   => "${target_dir}/bwa_miRBase_species",
-    option       => $bwa_option,
-    option_samse => $option_samse_mirna,
-    source_ref   => "fastqfiles",
-    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
-    pbs          => {
+  bowtie1 => {
+    target_dir    => "${target_dir}/bowtie1_genome",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "fastqfiles",
+    bowtie1_index => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19",
+    fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19.fa",
+    samonly       => 0,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -218,14 +245,13 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
-  bowtie1 => {
-    target_dir    => "${target_dir}/bowtie1_genome",
-    option        => $bowtie1_option_wholegenome,
-    source_ref    => "fastqfiles",
-    bowtie1_index => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19",
-    fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19.fa",
-    samonly       => 0,
-    pbs           => {
+  mirna_count_bwa => {
+    target_dir => "${target_dir}/bwa_genome",
+    option     => "",
+    source_ref => "bwa",
+    cqs_tools  => $cqs_tools,
+    gff_file   => $hsa_gffs,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -416,10 +442,13 @@ my $config_mirna = {
 #bowtie1( $config_rat,   "bowtie1" );
 #bowtie1( $config_human, "bowtie1" );
 
+mirna_count($config_rat, "mirna_count_bwa");
+mirna_count($config_human, "mirna_count_bwa");
+
 #mirna_count($config_rat, "mirna_count_bowtie1");
 #mirna_count($config_human, "mirna_count_bowtie1");
 
-mirna_count($config_rat, "mirna_count_bowtie2");
-mirna_count($config_human, "mirna_count_bowtie2");
+#mirna_count($config_rat, "mirna_count_bowtie2");
+#mirna_count($config_human, "mirna_count_bowtie2");
 
 1;
