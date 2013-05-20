@@ -59,11 +59,14 @@ sub mirna_count {
 
   for my $sampleName ( sort keys %rawFiles ) {
     my $samFile = $rawFiles{$sampleName} ;
-    my $countFile = $samFile . ".count";
+    
+    my $curDir = dirname($samFile);
+    my $fileName = basename($samFile);
+    
+    my $countFile = $fileName . ".count";
 
     my $pbsName = "${sampleName}_count.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
-    my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
 
     print SH "\$MYCMD ./$pbsName \n";
 
@@ -83,7 +86,7 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
-mono-sgen $cqsFile mirna_count -s $samFile -g $gffFile
+mono-sgen $cqsFile mirna_count -s $fileName -g $gffFile
 
 echo finished=`date`
 
