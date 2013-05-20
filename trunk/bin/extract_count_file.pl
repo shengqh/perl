@@ -47,8 +47,8 @@ my %data;
 foreach my $subdir (@subdirs) {
   my $path = "${dirroot}/${subdir}";
   my $f    = "${path}/${subdir}.sam.count";
-  
-  if ( ! -s $f){
+
+  if ( !-s $f ) {
     next;
   }
 
