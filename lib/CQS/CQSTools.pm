@@ -58,9 +58,7 @@ sub mirna_count {
   print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my @sampleFiles = @{ $rawFiles{$sampleName} };
-
-    my $samFile   = $sampleFiles[0];
+    my $samFile = $rawFiles{$sampleName} ;
     my $countFile = $samFile . ".count";
 
     my $pbsName = "${sampleName}_count.pbs";
