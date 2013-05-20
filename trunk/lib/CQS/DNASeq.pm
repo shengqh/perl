@@ -614,10 +614,10 @@ sub bowtie2 {
     my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix, $indent );
     my $stat_command = get_stat_command( $bamSortedFile, $indent );
 
-    my $pbsName = "${sampleName}_bowtie.pbs";
+    my $pbsName = "${sampleName}_bowtie2.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
-    my $log     = "${logDir}/${sampleName}_bowtie.log";
+    my $log     = "${logDir}/${sampleName}_bowtie2.log";
 
     print SH "\$MYCMD ./$pbsName \n";
 
