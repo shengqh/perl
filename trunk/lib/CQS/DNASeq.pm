@@ -8,12 +8,13 @@ use CQS::PBS;
 use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::FileUtils;
+use CQS::NGSCommon;
 
 require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index get_sorted_bam refine_bam_file gatk_snpindel bowtie1 bowtie2)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index refine_bam_file gatk_snpindel bowtie1 bowtie2)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -52,13 +53,6 @@ ${indent}  samtools view -b -S $samFile -o $bamFile
 ${indent}fi";
 
   return ($command);
-}
-
-sub get_sorted_bam {
-  my $bamFile         = shift;
-  my $bamSortedPrefix = change_extension( $bamFile, "_sorted" );
-  my $bamSortedFile   = $bamSortedPrefix . ".bam";
-  return ( $bamSortedFile, $bamSortedPrefix );
 }
 
 sub get_sort_index_command {

@@ -5,13 +5,19 @@ use warnings;
 use CQS::QC;
 use CQS::DNASeq;
 use CQS::RNASeq;
+use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $root                   = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
-my $target_dir             = create_directory_or_die($root);
-my $email                  = "quanhu.sheng\@vanderbilt.edu";
-my $task_name              = "VANGARD00055";
+my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+my $target_dir = create_directory_or_die($root);
+my $email      = "quanhu.sheng\@vanderbilt.edu";
+my $task_name  = "VANGARD00055";
+
+my $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $hsa_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
+my $rno_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
+
 my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
@@ -92,6 +98,19 @@ my $config_rat = {
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  mirna_count_bowtie1 => {
+    target_dir => "${target_dir}/bowtie1_genome",
+    option     => "",
+    source_ref => "bowtie1",
+    cqs_tools  => $cqs_tools,
+    gff_file   => $rno_gffs,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
       "walltime" => "24",
       "mem"      => "20gb"
     },
@@ -355,7 +374,9 @@ my $config_mirna = {
 #bowtie2( $config_rat,   "bowtie2" );
 #bowtie2( $config_human, "bowtie2" );
 
-bowtie1( $config_rat,   "bowtie1" );
-bowtie1( $config_human, "bowtie1" );
+#bowtie1( $config_rat,   "bowtie1" );
+#bowtie1( $config_human, "bowtie1" );
+
+mirna_count($config_rat, "mirna_count_bowtie1");
 
 1;

@@ -11,6 +11,7 @@ use CQS::FileUtils;
 use CQS::StringUtils;
 use CQS::ConfigUtils;
 use CQS::SystemUtils;
+use CQS::NGSCommon;
 
 require Exporter;
 
@@ -18,7 +19,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(get_sorted_bam call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs novoalign)
+    qw(call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs novoalign)
   ]
 );
 
@@ -51,13 +52,6 @@ sub get_sorted_bam_prefix {
   my ($oldbam) = @_;
   my ( $filename, $dirs, $suffix ) = fileparse( $oldbam, qr/\.[^.]*/ );
   return ( $filename . "_sorted" );
-}
-
-sub get_sorted_bam {
-  my ($oldbam) = @_;
-  my ( $filename, $dirs, $suffix ) = fileparse( $oldbam, qr/\.[^.]*/ );
-  my $result = $dirs . get_sorted_bam_prefix($oldbam) . $suffix;
-  return ($result);
 }
 
 sub output_tophat2 {
