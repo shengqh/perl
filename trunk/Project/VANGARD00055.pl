@@ -112,7 +112,7 @@ my $config_rat = {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
-      "mem"      => "20gb"
+      "mem"      => "40gb"
     },
   },
   mirna_count_bowtie1 => {
@@ -125,7 +125,7 @@ my $config_rat = {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
-      "mem"      => "20gb"
+      "mem"      => "40gb"
     },
   },
   mirna_count_bowtie2 => {
@@ -138,7 +138,7 @@ my $config_rat = {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
-      "mem"      => "20gb"
+      "mem"      => "40gb"
     },
   },
 };
@@ -445,7 +445,7 @@ my $config_mirna = {
 mirna_count($config_rat, "mirna_count_bwa");
 mirna_count($config_human, "mirna_count_bwa");
 
-#mirna_count($config_rat, "mirna_count_bowtie1");
+mirna_count($config_rat, "mirna_count_bowtie1");
 #mirna_count($config_human, "mirna_count_bowtie1");
 
 #mirna_count($config_rat, "mirna_count_bowtie2");
