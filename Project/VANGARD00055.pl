@@ -25,7 +25,7 @@ my $option_samse_mirna     = "";
 my $bowtie2_option             = "-N 0 --phred33";
 my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
-my $bowtie1_option             = "-v 0 -k 10 --best --strata";
+my $bowtie1_option             = "-v 0 --best --strata";
 my $bowtie1_option_wholegenome = $bowtie1_option . " -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
@@ -439,13 +439,13 @@ my $config_mirna = {
 #bowtie2( $config_rat,   "bowtie2" );
 #bowtie2( $config_human, "bowtie2" );
 
-#bowtie1( $config_rat,   "bowtie1" );
-#bowtie1( $config_human, "bowtie1" );
+bowtie1( $config_rat,   "bowtie1" );
+bowtie1( $config_human, "bowtie1" );
 
-mirna_count($config_rat, "mirna_count_bwa");
-mirna_count($config_human, "mirna_count_bwa");
+#mirna_count($config_rat, "mirna_count_bwa");
+#mirna_count($config_human, "mirna_count_bwa");
 
-mirna_count($config_rat, "mirna_count_bowtie1");
+#mirna_count($config_rat, "mirna_count_bowtie1");
 #mirna_count($config_human, "mirna_count_bowtie1");
 
 #mirna_count($config_rat, "mirna_count_bowtie2");
