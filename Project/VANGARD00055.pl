@@ -12,11 +12,11 @@ use CQS::SystemUtils;
 my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 my $target_dir = create_directory_or_die($root);
 
-my $target_rat_dir = create_directory_or_die($target_dir . "/rat");
-my $target_human_dir = create_directory_or_die($target_dir . "/human");
+my $target_rat_dir   = create_directory_or_die( $target_dir . "/rat" );
+my $target_human_dir = create_directory_or_die( $target_dir . "/human" );
 
-my $email      = "quanhu.sheng\@vanderbilt.edu";
-my $task_name  = "VANGARD00055";
+my $email     = "quanhu.sheng\@vanderbilt.edu";
+my $task_name = "VANGARD00055";
 
 my $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $hsa_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
@@ -161,7 +161,7 @@ my $config_rat = {
     option        => $bowtie2_option,
     source_ref    => "unmappedfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna",
-    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna.fa",
+    fasta_file    => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna.fa",
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -268,7 +268,7 @@ my $config_human = {
     fasta_file      => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
     estimate_insert => 0,
     source_ref      => "fastqfiles",
-    sh_direct=>1,
+    sh_direct       => 1,
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -283,7 +283,7 @@ my $config_human = {
     bowtie1_index => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19.fa",
     samonly       => 0,
-    sh_direct=>1,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -298,7 +298,7 @@ my $config_human = {
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     samonly       => 0,
-    sh_direct=>1,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -312,7 +312,7 @@ my $config_human = {
     source_ref => "bwa",
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
-    sh_direct=>1,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -326,7 +326,7 @@ my $config_human = {
     source_ref => "bowtie1",
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
-    sh_direct=>1,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -340,7 +340,7 @@ my $config_human = {
     source_ref => "bowtie2",
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
-    sh_direct=>1,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -353,8 +353,9 @@ my $config_human = {
     option        => $bowtie2_option,
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna",
-    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
+    fasta_file    => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
     samonly       => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
