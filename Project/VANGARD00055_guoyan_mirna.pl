@@ -123,6 +123,7 @@ my $config_rat = {
     source_ref => "bwa",
     cqs_tools  => $cqs_tools,
     gff_file   => $rno_gffs,
+    fasta_format => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -136,6 +137,7 @@ my $config_rat = {
     source_ref => "bowtie1",
     cqs_tools  => $cqs_tools,
     gff_file   => $rno_gffs,
+    fasta_format => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -326,6 +328,7 @@ my $config_human = {
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
     sh_direct  => 1,
+    fasta_format => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -340,6 +343,7 @@ my $config_human = {
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
     sh_direct  => 1,
+    fasta_format => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -550,12 +554,12 @@ my $config_mirna = {
 #bowtie1( $config_rat,   "bowtie1" );
 #bowtie1( $config_human, "bowtie1" );
 #
-#mirna_count($config_rat, "mirna_count_bwa");
-#mirna_count($config_human, "mirna_count_bwa");
-#
-#mirna_count($config_rat, "mirna_count_bowtie1");
-#mirna_count($config_human, "mirna_count_bowtie1");
-#
+mirna_count($config_rat, "mirna_count_bwa");
+mirna_count($config_human, "mirna_count_bwa");
+
+mirna_count($config_rat, "mirna_count_bowtie1");
+mirna_count($config_human, "mirna_count_bowtie1");
+
 mirna_count($config_rat, "mirna_count_bowtie2");
 mirna_count($config_human, "mirna_count_bowtie2");
 
