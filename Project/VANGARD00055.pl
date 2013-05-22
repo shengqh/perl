@@ -11,6 +11,10 @@ use CQS::SystemUtils;
 
 my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 my $target_dir = create_directory_or_die($root);
+
+my $target_rat_dir = create_directory_or_die($target_dir . "/rat");
+my $target_human_dir = create_directory_or_die($target_dir . "/human");
+
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 my $task_name  = "VANGARD00055";
 
@@ -47,7 +51,7 @@ my $config_rat = {
     "2516-09" => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
   },
   bwa_mature => {
-    target_dir   => "${target_dir}/bwa_miRBase_species",
+    target_dir   => "${$target_rat_dir}/bwa_miRBase_species",
     option       => $bwa_option,
     option_samse => $option_samse_mirna,
     source_ref   => "fastqfiles",
@@ -60,7 +64,7 @@ my $config_rat = {
     },
   },
   bwa => {
-    target_dir      => "${target_dir}/bwa_genome",
+    target_dir      => "${$target_rat_dir}/bwa_genome",
     option          => $bwa_option_wholegenome,
     option_samse    => "",
     source_ref      => "fastqfiles",
@@ -75,7 +79,7 @@ my $config_rat = {
     },
   },
   bowtie1 => {
-    target_dir    => "${target_dir}/bowtie1_genome",
+    target_dir    => "${$target_rat_dir}/bowtie1_genome",
     option        => $bowtie1_option_wholegenome,
     source_ref    => "fastqfiles",
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/rn4",
@@ -89,7 +93,7 @@ my $config_rat = {
     },
   },
   bowtie2 => {
-    target_dir    => "${target_dir}/bowtie2_genome",
+    target_dir    => "${$target_rat_dir}/bowtie2_genome",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/rn4",
@@ -103,7 +107,7 @@ my $config_rat = {
     },
   },
   mirna_count_bwa => {
-    target_dir => "${target_dir}/bwa_genome",
+    target_dir => "${$target_rat_dir}/bwa_genome",
     option     => "",
     source_ref => "bwa",
     cqs_tools  => $cqs_tools,
@@ -116,7 +120,7 @@ my $config_rat = {
     },
   },
   mirna_count_bowtie1 => {
-    target_dir => "${target_dir}/bowtie1_genome",
+    target_dir => "${$target_rat_dir}/bowtie1_genome",
     option     => "",
     source_ref => "bowtie1",
     cqs_tools  => $cqs_tools,
@@ -129,7 +133,7 @@ my $config_rat = {
     },
   },
   mirna_count_bowtie2 => {
-    target_dir => "${target_dir}/bowtie2_genome",
+    target_dir => "${$target_rat_dir}/bowtie2_genome",
     option     => "",
     source_ref => "bowtie2",
     cqs_tools  => $cqs_tools,
@@ -190,7 +194,7 @@ my $config_human = {
     "2516-48" => ["${root}/cutadapt/2516-KCV-48_1_clipped.fastq"],
   },
   bwa_mature => {
-    target_dir   => "${target_dir}/bwa_miRBase_species",
+    target_dir   => "${$target_human_dir}/bwa_miRBase_species",
     option       => $bwa_option,
     option_samse => $option_samse_mirna,
     source_ref   => "fastqfiles",
@@ -203,7 +207,7 @@ my $config_human = {
     },
   },
   bwa => {
-    target_dir      => "${target_dir}/bwa_genome",
+    target_dir      => "${$target_human_dir}/bwa_genome",
     option          => $bwa_option_wholegenome,
     option_samse    => "",
     source_ref      => "fastqfiles",
@@ -218,7 +222,7 @@ my $config_human = {
     },
   },
   bowtie1 => {
-    target_dir    => "${target_dir}/bowtie1_genome",
+    target_dir    => "${$target_human_dir}/bowtie1_genome",
     option        => $bowtie1_option_wholegenome,
     source_ref    => "fastqfiles",
     bowtie1_index => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19",
@@ -232,7 +236,7 @@ my $config_human = {
     },
   },
   bowtie2 => {
-    target_dir    => "${target_dir}/bowtie2_genome",
+    target_dir    => "${$target_human_dir}/bowtie2_genome",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
@@ -246,7 +250,7 @@ my $config_human = {
     },
   },
   mirna_count_bwa => {
-    target_dir => "${target_dir}/bwa_genome",
+    target_dir => "${$target_human_dir}/bwa_genome",
     option     => "",
     source_ref => "bwa",
     cqs_tools  => $cqs_tools,
@@ -259,7 +263,7 @@ my $config_human = {
     },
   },
   mirna_count_bowtie1 => {
-    target_dir => "${target_dir}/bowtie1_genome",
+    target_dir => "${$target_human_dir}/bowtie1_genome",
     option     => "",
     source_ref => "bowtie1",
     cqs_tools  => $cqs_tools,
@@ -272,7 +276,7 @@ my $config_human = {
     },
   },
   mirna_count_bowtie2 => {
-    target_dir => "${target_dir}/bowtie2_genome",
+    target_dir => "${$target_human_dir}/bowtie2_genome",
     option     => "",
     source_ref => "bowtie2",
     cqs_tools  => $cqs_tools,
@@ -433,22 +437,22 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat,   "bwa_mature" );
 #bwa_by_pbs_single( $config_human, "bwa_mature" );
 
-#bwa_by_pbs_single( $config_rat, "bwa" );
-#bwa_by_pbs_single( $config_human, "bwa" );
+bwa_by_pbs_single( $config_rat, "bwa" );
+bwa_by_pbs_single( $config_human, "bwa" );
 
-#bowtie2( $config_rat,   "bowtie2" );
-#bowtie2( $config_human, "bowtie2" );
+bowtie2( $config_rat,   "bowtie2" );
+bowtie2( $config_human, "bowtie2" );
 
 bowtie1( $config_rat,   "bowtie1" );
 bowtie1( $config_human, "bowtie1" );
 
-#mirna_count($config_rat, "mirna_count_bwa");
-#mirna_count($config_human, "mirna_count_bwa");
+mirna_count($config_rat, "mirna_count_bwa");
+mirna_count($config_human, "mirna_count_bwa");
 
-#mirna_count($config_rat, "mirna_count_bowtie1");
-#mirna_count($config_human, "mirna_count_bowtie1");
+mirna_count($config_rat, "mirna_count_bowtie1");
+mirna_count($config_human, "mirna_count_bowtie1");
 
-#mirna_count($config_rat, "mirna_count_bowtie2");
-#mirna_count($config_human, "mirna_count_bowtie2");
+mirna_count($config_rat, "mirna_count_bowtie2");
+mirna_count($config_human, "mirna_count_bowtie2");
 
 1;
