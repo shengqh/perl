@@ -26,7 +26,7 @@ sub rsmc {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option,$sh_direct ) = get_parameter( $config, $section );
 
-  my $wsmfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
+  my $rsmcfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
   my $source_type = $config->{$section}{source_type} or die "source_type is not defined in $section";
   my $annovarLocation = $config->{$section}{annovar_database_location} or die "annovar_database_location is not defined in $section";
   my $annovarBuildver = $config->{$section}{annovar_buildver} or die "annovar_buildver is not defined in $section";
@@ -64,12 +64,12 @@ sub rsmc {
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
 
-    my $pbsName = "wsmdetector_${sampleName}.pbs";
+    my $pbsName = "rsmc_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/wsmdetector_${sampleName}.log";
+    my $log = "${logDir}/rsmc_${sampleName}.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
@@ -78,7 +78,7 @@ sub rsmc {
 
 $path_file 
 
-echo wsmdetector=`date` 
+echo rsmc=`date` 
 ";
 
     my $sampleCount = scalar(@sampleFiles);
@@ -99,10 +99,10 @@ echo wsmdetector=`date`
         for my $sampleFile (@sampleFiles) {
           print OUT " $sampleFile";
         }
-        print OUT " | mono $wsmfile all -t console $option";
+        print OUT " | mono $rsmcfile all -t console $option";
       }
       else {
-        print OUT "mono $wsmfile all -t bam -f $fafile $option";
+        print OUT "mono $rsmcfile all -t bam -f $fafile $option";
 
         my $first = 1;
         for my $sampleFile (@sampleFiles) {
@@ -117,7 +117,7 @@ echo wsmdetector=`date`
       }
     }
     else {
-      print OUT "mono $wsmfile all -t mpileup -m $mpileupfile $option";
+      print OUT "mono $rsmcfile all -t mpileup -m $mpileupfile $option";
     }
 
     print OUT " -o $curDir \n\n";
