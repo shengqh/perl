@@ -25,7 +25,7 @@ my $option_samse_mirna     = "";
 my $bowtie2_option             = "-N 0 --phred33";
 my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
-my $bowtie1_option             = "-v 0 --best --strata";
+my $bowtie1_option             = "-v 0 --best";
 my $bowtie1_option_wholegenome = $bowtie1_option . " -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
