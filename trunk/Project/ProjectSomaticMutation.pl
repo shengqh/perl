@@ -135,10 +135,10 @@ my $config = {
     mpileup_sequence          => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     annovar_buildver          => "hg19",
     annovar_database_location => "/data/cqs/guoy1/reference/annovar",
-
-    #mpileup_option   => "-q 20",
-    execute_file => "/home/shengq1/rsmc/rsmc.exe",
-    pbs          => {
+    sh_direct                 => 1,
+                                                                                           #mpileup_option   => "-q 20",
+    execute_file              => "/home/shengq1/rsmc/rsmc.exe",
+    pbs                       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -149,6 +149,6 @@ my $config = {
 
 #call_tophat2($config, "tophat2");
 
-call_wsmdetector( $config, "rsmc" );
+rsmc( $config, "rsmc" );
 
 1;
