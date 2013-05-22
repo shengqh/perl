@@ -128,17 +128,18 @@ my $config = {
     },
   },
   rsmc => {
-    target_dir                => "${target_dir}/rsmc",
-    option                    => "-c 8",                                                   #thread mode
-    source_ref                => "bamfiles",
-    source_type               => "bam",                                                    #source_type can be bam/mpileup
-    mpileup_sequence          => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
-    annovar_buildver          => "hg19",
-    annovar_database_location => "/data/cqs/guoy1/reference/annovar",
-    sh_direct                 => 1,
-                                                                                           #mpileup_option   => "-q 20",
-    execute_file              => "/home/shengq1/rsmc/rsmc.exe",
-    pbs                       => {
+    target_dir       => "${target_dir}/rsmc",
+    option           => "-c 8",                                                   #thread mode
+    source_ref       => "bamfiles",
+    source_type      => "bam",                                                    #source_type can be bam/mpileup
+    mpileup_sequence => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
+    annovar_buildver => "hg19",
+    rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
+    sh_direct        => 1,
+
+    #mpileup_option   => "-q 20",
+    execute_file => "/home/shengq1/rsmc/rsmc.exe",
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
