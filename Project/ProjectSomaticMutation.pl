@@ -128,7 +128,7 @@ my $config = {
     },
   },
   rsmc_thread => {
-    target_dir                => "${target_dir}/wsmdetector",
+    target_dir                => "${target_dir}/rsmc",
     option                    => "-c 8",                                                   #thread mode
     source_ref                => "bamfiles",
     source_type               => "bam",                                                    #source_type can be bam/mpileup
