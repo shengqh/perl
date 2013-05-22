@@ -214,6 +214,7 @@ my $config_human = {
     fasta_file      => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
     estimate_insert => 0,
     source_ref      => "fastqfiles",
+    sh_direct=>1,
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -228,6 +229,7 @@ my $config_human = {
     bowtie1_index => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19.fa",
     samonly       => 0,
+    sh_direct=>1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -242,6 +244,7 @@ my $config_human = {
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     samonly       => 0,
+    sh_direct=>1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -255,6 +258,7 @@ my $config_human = {
     source_ref => "bwa",
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
+    sh_direct=>1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -268,6 +272,7 @@ my $config_human = {
     source_ref => "bowtie1",
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
+    sh_direct=>1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -281,6 +286,7 @@ my $config_human = {
     source_ref => "bowtie2",
     cqs_tools  => $cqs_tools,
     gff_file   => $hsa_gffs,
+    sh_direct=>1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
