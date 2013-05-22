@@ -556,11 +556,12 @@ my $config_mirna = {
 #mirna_count($config_rat, "mirna_count_bowtie1");
 #mirna_count($config_human, "mirna_count_bowtie1");
 #
-#mirna_count($config_rat, "mirna_count_bowtie2");
-#mirna_count($config_human, "mirna_count_bowtie2");
+mirna_count($config_rat, "mirna_count_bowtie2");
+mirna_count($config_human, "mirna_count_bowtie2");
 
 #bowtie2( $config_rat,   "bowtie2_mature" );
-bowtie2( $config_human, "bowtie2_mature" );
-bowtie2( $config_human, "bowtie2_unmapped_mature" );
+#bowtie2( $config_human, "bowtie2_mature" );
+
+#bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
 1;
