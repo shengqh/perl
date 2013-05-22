@@ -66,16 +66,16 @@ foreach my $subdir (@subdirs) {
 }
 
 open( OUT, ">$outfile" ) || die $!;
-print OUT join ",", ( "miRNA", sort( keys %samples ) );
+print OUT join "\t", ( "miRNA", sort( keys %samples ) );
 print OUT "\n";
 foreach my $g ( sort keys %data ) {
   print OUT $g;
   foreach my $s ( sort ( keys %samples ) ) {
     if ( exists( $data{$g}->{$s} ) ) {
-      print OUT ",", $data{$g}->{$s};
+      print OUT "\t", $data{$g}->{$s};
     }
     else {
-      print OUT ",0";
+      print OUT "\t0";
     }
   }
   print OUT "\n";
