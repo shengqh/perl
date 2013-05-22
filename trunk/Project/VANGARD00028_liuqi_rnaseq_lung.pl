@@ -7,7 +7,7 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/pierre");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD00028_liuqi_rnaseq");
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
@@ -23,25 +23,25 @@ my $config = {
     task_name            => "pierre"
   },
   fastqfiles => {
-    "G1_7071" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_3_2_sequence.txt.gz" ],
-    "G1_7143" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_2_2_sequence.txt.gz" ],
-    "G2_7030" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_1_2_sequence.txt.gz" ],
-    "G2_7178" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_5_2_sequence.txt.gz" ],
-    "G2_7222" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_4_2_sequence.txt.gz" ],
-    "G2_7228" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_2_2_sequence.txt.gz" ],
-    "G3_7089" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_4_2_sequence.txt.gz" ],
-    "G4_7448" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_1_2_sequence.txt.gz" ],
-    "G4_7485" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_3_2_sequence.txt.gz" ],
-    "G4_7522" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_4_2_sequence.txt.gz" ],
-    "G4_7617" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/003/s_5_2_sequence.txt.gz" ],
-    "G4_7697" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_2_2_sequence.txt.gz" ],
-    "G5_6820" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/001/s_3_2_sequence.txt.gz" ],
-    "G5_7080" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_5_2_sequence.txt.gz" ],
-    "G5_7176" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_1_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_1_2_sequence.txt.gz" ],
-    "G5_7182" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_4_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_4_2_sequence.txt.gz" ],
-    "G6_7134" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_2_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_2_2_sequence.txt.gz" ],
-    "G6_7053" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_3_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/002/s_3_2_sequence.txt.gz" ],
-    "G6_7116" => [ "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_5_1_sequence.txt.gz", "/scratch/cqs/shengq1/rnaseq/pierre/raw/004/s_5_2_sequence.txt.gz" ],
+    "G1_7071" => [ "${target_dir}/raw/004/s_3_1_sequence.txt.gz", "${target_dir}/raw/004/s_3_2_sequence.txt.gz" ],
+    "G1_7143" => [ "${target_dir}/raw/003/s_2_1_sequence.txt.gz", "${target_dir}/raw/003/s_2_2_sequence.txt.gz" ],
+    "G2_7030" => [ "${target_dir}/raw/001/s_1_1_sequence.txt.gz", "${target_dir}/raw/001/s_1_2_sequence.txt.gz" ],
+    "G2_7178" => [ "${target_dir}/raw/001/s_5_1_sequence.txt.gz", "${target_dir}/raw/001/s_5_2_sequence.txt.gz" ],
+    "G2_7222" => [ "${target_dir}/raw/003/s_4_1_sequence.txt.gz", "${target_dir}/raw/003/s_4_2_sequence.txt.gz" ],
+    "G2_7228" => [ "${target_dir}/raw/001/s_2_1_sequence.txt.gz", "${target_dir}/raw/001/s_2_2_sequence.txt.gz" ],
+    "G3_7089" => [ "${target_dir}/raw/002/s_4_1_sequence.txt.gz", "${target_dir}/raw/002/s_4_2_sequence.txt.gz" ],
+    "G4_7448" => [ "${target_dir}/raw/003/s_1_1_sequence.txt.gz", "${target_dir}/raw/003/s_1_2_sequence.txt.gz" ],
+    "G4_7485" => [ "${target_dir}/raw/003/s_3_1_sequence.txt.gz", "${target_dir}/raw/003/s_3_2_sequence.txt.gz" ],
+    "G4_7522" => [ "${target_dir}/raw/001/s_4_1_sequence.txt.gz", "${target_dir}/raw/001/s_4_2_sequence.txt.gz" ],
+    "G4_7617" => [ "${target_dir}/raw/003/s_5_1_sequence.txt.gz", "${target_dir}/raw/003/s_5_2_sequence.txt.gz" ],
+    "G4_7697" => [ "${target_dir}/raw/004/s_2_1_sequence.txt.gz", "${target_dir}/raw/004/s_2_2_sequence.txt.gz" ],
+    "G5_6820" => [ "${target_dir}/raw/001/s_3_1_sequence.txt.gz", "${target_dir}/raw/001/s_3_2_sequence.txt.gz" ],
+    "G5_7080" => [ "${target_dir}/raw/002/s_5_1_sequence.txt.gz", "${target_dir}/raw/002/s_5_2_sequence.txt.gz" ],
+    "G5_7176" => [ "${target_dir}/raw/002/s_1_1_sequence.txt.gz", "${target_dir}/raw/002/s_1_2_sequence.txt.gz" ],
+    "G5_7182" => [ "${target_dir}/raw/004/s_4_1_sequence.txt.gz", "${target_dir}/raw/004/s_4_2_sequence.txt.gz" ],
+    "G6_7134" => [ "${target_dir}/raw/002/s_2_1_sequence.txt.gz", "${target_dir}/raw/002/s_2_2_sequence.txt.gz" ],
+    "G6_7053" => [ "${target_dir}/raw/002/s_3_1_sequence.txt.gz", "${target_dir}/raw/002/s_3_2_sequence.txt.gz" ],
+    "G6_7116" => [ "${target_dir}/raw/004/s_5_1_sequence.txt.gz", "${target_dir}/raw/004/s_5_2_sequence.txt.gz" ],
   },
   groups => {
     "NOCANCER"  => [ "G1_7071", "G1_7143", "G2_7030", "G2_7178", "G2_7222", "G2_7228", "G3_7089", ],
@@ -158,8 +158,8 @@ my $config = {
 
 #cuffmerge_by_pbs( $config, "cuffmerge" );
 
-#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 
-copy_and_rename_cuffdiff_file( $config, "rename_diff" );
+#copy_and_rename_cuffdiff_file( $config, "rename_diff" );
 
 1;
