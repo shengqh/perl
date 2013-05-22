@@ -28,10 +28,14 @@ sub rsmc {
 
   my $rsmcfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
   my $source_type = $config->{$section}{source_type} or die "source_type is not defined in $section";
-  my $annovarLocation = $config->{$section}{annovar_database_location} or die "annovar_database_location is not defined in $section";
+
   my $annovarBuildver = $config->{$section}{annovar_buildver} or die "annovar_buildver is not defined in $section";
-  
-  $option = $option . " -v $annovarBuildver -l $annovarLocation ";
+  $option = $option . " --annovar --annovar_buildver $annovarBuildver ";
+
+  my $rnaediting_db = $config->{$section}{rnaediting_db};
+  if(defined $rnaediting_db) {
+    $option = $option . " --rnaediting --rnaediting_db $rnaediting_db ";
+  }
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
