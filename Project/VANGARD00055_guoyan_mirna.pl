@@ -144,12 +144,13 @@ my $config_rat = {
     },
   },
   mirna_count_bowtie2 => {
-    target_dir => "${target_rat_dir}/bowtie2_genome",
-    option     => "",
-    source_ref => "bowtie2",
-    cqs_tools  => $cqs_tools,
-    gff_file   => $rno_gffs,
-    pbs        => {
+    target_dir   => "${target_rat_dir}/bowtie2_genome",
+    option       => "",
+    source_ref   => "bowtie2",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $rno_gffs,
+    fasta_format => 1,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -347,13 +348,14 @@ my $config_human = {
     },
   },
   mirna_count_bowtie2 => {
-    target_dir => "${target_human_dir}/bowtie2_genome",
-    option     => "",
-    source_ref => "bowtie2",
-    cqs_tools  => $cqs_tools,
-    gff_file   => $hsa_gffs,
-    sh_direct  => 1,
-    pbs        => {
+    target_dir   => "${target_human_dir}/bowtie2_genome",
+    option       => "",
+    source_ref   => "bowtie2",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $hsa_gffs,
+    sh_direct    => 1,
+    fasta_format => 1,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",

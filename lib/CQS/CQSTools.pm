@@ -52,6 +52,14 @@ sub mirna_count {
   my $gffFile = get_param_file( $config->{$section}{gff_file},  "gff_file",  1 );
 
   my %rawFiles = %{ get_sam_map( $config, $section ) };
+  my $fasta_format = $config->{$section}{fasta_format};
+  if ( !defined $fasta_format ) {
+    $fasta_format = 0;
+  }
+
+  if ($fasta_format) {
+    $option = $option . " --fasta";
+  }
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -63,11 +71,11 @@ sub mirna_count {
   }
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my $samFile = $rawFiles{$sampleName} ;
-    
-    my $curDir = dirname($samFile);
+    my $samFile = $rawFiles{$sampleName};
+
+    my $curDir   = dirname($samFile);
     my $fileName = basename($samFile);
-    
+
     my $countFile = $fileName . ".count";
 
     my $pbsName = "${sampleName}_count.pbs";
@@ -91,7 +99,7 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
-mono-sgen $cqsFile mirna_count -s $fileName -g $gffFile
+mono-sgen $cqsFile mirna_count $option -s $fileName -g $gffFile
 
 echo finished=`date`
 
