@@ -50,6 +50,17 @@ my $config_rat = {
     "2516-08" => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
     "2516-09" => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
   },
+  unmappedfiles => {
+    "2516-01" => ["${target_rat_dir}/bowtie2_genome/result/2516-01/2516-01.sam.unmapped"],
+    "2516-02" => ["${target_rat_dir}/bowtie2_genome/result/2516-02/2516-02.sam.unmapped"],
+    "2516-03" => ["${target_rat_dir}/bowtie2_genome/result/2516-03/2516-03.sam.unmapped"],
+    "2516-04" => ["${target_rat_dir}/bowtie2_genome/result/2516-04/2516-04.sam.unmapped"],
+    "2516-05" => ["${target_rat_dir}/bowtie2_genome/result/2516-05/2516-05.sam.unmapped"],
+    "2516-06" => ["${target_rat_dir}/bowtie2_genome/result/2516-06/2516-06.sam.unmapped"],
+    "2516-07" => ["${target_rat_dir}/bowtie2_genome/result/2516-07/2516-07.sam.unmapped"],
+    "2516-08" => ["${target_rat_dir}/bowtie2_genome/result/2516-08/2516-08.sam.unmapped"],
+    "2516-09" => ["${target_rat_dir}/bowtie2_genome/result/2516-09/2516-09.sam.unmapped"],
+  },
   bwa_mature => {
     target_dir   => "${target_rat_dir}/bwa_miRBase_species",
     option       => $bwa_option,
@@ -145,6 +156,20 @@ my $config_rat = {
       "mem"      => "40gb"
     },
   },
+  bowtie2_mature => {
+    target_dir    => "${target_rat_dir}/bowtie2_mature",
+    option        => $bowtie2_option,
+    source_ref    => "unmappedfiles",
+    bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna",
+    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
 };
 
 my $config_human = {
@@ -192,6 +217,35 @@ my $config_human = {
     "2516-46" => ["${root}/cutadapt/2516-KCV-46_1_clipped.fastq"],
     "2516-47" => ["${root}/cutadapt/2516-KCV-47_1_clipped.fastq"],
     "2516-48" => ["${root}/cutadapt/2516-KCV-48_1_clipped.fastq"],
+  },
+  unmappedfiles => {
+    "2516-11" => ["${target_human_dir}/bowtie2_genome/result/2516-11/2516-11.sam.unmapped"],
+    "2516-12" => ["${target_human_dir}/bowtie2_genome/result/2516-12/2516-12.sam.unmapped"],
+    "2516-13" => ["${target_human_dir}/bowtie2_genome/result/2516-13/2516-13.sam.unmapped"],
+    "2516-14" => ["${target_human_dir}/bowtie2_genome/result/2516-14/2516-14.sam.unmapped"],
+    "2516-15" => ["${target_human_dir}/bowtie2_genome/result/2516-15/2516-15.sam.unmapped"],
+    "2516-16" => ["${target_human_dir}/bowtie2_genome/result/2516-16/2516-16.sam.unmapped"],
+    "2516-17" => ["${target_human_dir}/bowtie2_genome/result/2516-17/2516-17.sam.unmapped"],
+    "2516-18" => ["${target_human_dir}/bowtie2_genome/result/2516-18/2516-18.sam.unmapped"],
+    "2516-19" => ["${target_human_dir}/bowtie2_genome/result/2516-19/2516-19.sam.unmapped"],
+    "2516-21" => ["${target_human_dir}/bowtie2_genome/result/2516-21/2516-21.sam.unmapped"],
+    "2516-22" => ["${target_human_dir}/bowtie2_genome/result/2516-22/2516-22.sam.unmapped"],
+    "2516-23" => ["${target_human_dir}/bowtie2_genome/result/2516-23/2516-23.sam.unmapped"],
+    "2516-24" => ["${target_human_dir}/bowtie2_genome/result/2516-24/2516-24.sam.unmapped"],
+    "2516-25" => ["${target_human_dir}/bowtie2_genome/result/2516-25/2516-25.sam.unmapped"],
+    "2516-26" => ["${target_human_dir}/bowtie2_genome/result/2516-26/2516-26.sam.unmapped"],
+    "2516-27" => ["${target_human_dir}/bowtie2_genome/result/2516-27/2516-27.sam.unmapped"],
+    "2516-28" => ["${target_human_dir}/bowtie2_genome/result/2516-28/2516-28.sam.unmapped"],
+    "2516-29" => ["${target_human_dir}/bowtie2_genome/result/2516-29/2516-29.sam.unmapped"],
+    "2516-31" => ["${target_human_dir}/bowtie2_genome/result/2516-31/2516-31.sam.unmapped"],
+    "2516-32" => ["${target_human_dir}/bowtie2_genome/result/2516-32/2516-32.sam.unmapped"],
+    "2516-33" => ["${target_human_dir}/bowtie2_genome/result/2516-33/2516-33.sam.unmapped"],
+    "2516-34" => ["${target_human_dir}/bowtie2_genome/result/2516-34/2516-34.sam.unmapped"],
+    "2516-35" => ["${target_human_dir}/bowtie2_genome/result/2516-35/2516-35.sam.unmapped"],
+    "2516-36" => ["${target_human_dir}/bowtie2_genome/result/2516-36/2516-36.sam.unmapped"],
+    "2516-37" => ["${target_human_dir}/bowtie2_genome/result/2516-37/2516-37.sam.unmapped"],
+    "2516-38" => ["${target_human_dir}/bowtie2_genome/result/2516-38/2516-38.sam.unmapped"],
+    "2516-39" => ["${target_human_dir}/bowtie2_genome/result/2516-39/2516-39.sam.unmapped"],
   },
   bwa_mature => {
     target_dir   => "${target_human_dir}/bwa_miRBase_species",
@@ -290,6 +344,20 @@ my $config_human = {
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie2_mature => {
+    target_dir    => "${target_human_dir}/bowtie2_mature",
+    option        => $bowtie2_option,
+    source_ref    => "fastqfiles",
+    bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna",
+    fasta_file   => "/data/cqs/shengq1/reference/miRBase19/hsao.mature.dna.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
       "walltime" => "24",
       "mem"      => "20gb"
     },
@@ -443,22 +511,25 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat,   "bwa_mature" );
 #bwa_by_pbs_single( $config_human, "bwa_mature" );
 
-bwa_by_pbs_single( $config_rat, "bwa" );
-bwa_by_pbs_single( $config_human, "bwa" );
+#bwa_by_pbs_single( $config_rat, "bwa" );
+#bwa_by_pbs_single( $config_human, "bwa" );
+#
+#bowtie2( $config_rat,   "bowtie2" );
+#bowtie2( $config_human, "bowtie2" );
+#
+#bowtie1( $config_rat,   "bowtie1" );
+#bowtie1( $config_human, "bowtie1" );
+#
+#mirna_count($config_rat, "mirna_count_bwa");
+#mirna_count($config_human, "mirna_count_bwa");
+#
+#mirna_count($config_rat, "mirna_count_bowtie1");
+#mirna_count($config_human, "mirna_count_bowtie1");
+#
+#mirna_count($config_rat, "mirna_count_bowtie2");
+#mirna_count($config_human, "mirna_count_bowtie2");
 
-bowtie2( $config_rat,   "bowtie2" );
-bowtie2( $config_human, "bowtie2" );
-
-bowtie1( $config_rat,   "bowtie1" );
-bowtie1( $config_human, "bowtie1" );
-
-mirna_count($config_rat, "mirna_count_bwa");
-mirna_count($config_human, "mirna_count_bwa");
-
-mirna_count($config_rat, "mirna_count_bowtie1");
-mirna_count($config_human, "mirna_count_bowtie1");
-
-mirna_count($config_rat, "mirna_count_bowtie2");
-mirna_count($config_human, "mirna_count_bowtie2");
+bowtie2( $config_rat,   "bowtie2_mature" );
+bowtie2( $config_human, "bowtie2_mature" );
 
 1;
