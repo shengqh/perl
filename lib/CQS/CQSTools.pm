@@ -46,7 +46,7 @@ sub get_sam_map {
 sub mirna_count {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
   my $gffFile = get_param_file( $config->{$section}{gff_file},  "gff_file",  1 );
@@ -55,7 +55,12 @@ sub mirna_count {
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $sampleName ( sort keys %rawFiles ) {
     my $samFile = $rawFiles{$sampleName} ;

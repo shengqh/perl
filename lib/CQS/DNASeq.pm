@@ -168,7 +168,7 @@ sub get_bam_tag {
 sub bwa_by_pbs_single {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
   die "define ${section}::option_samse first" if !defined( $config->{$section}{option_samse} );
@@ -178,7 +178,12 @@ sub bwa_by_pbs_single {
 
   my $shfile = $pbsDir . "/${task_name}_bwa.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -258,7 +263,7 @@ exit 1
 sub bwa_by_pbs_double {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option,$sh_direct ) = get_parameter( $config, $section );
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
   my $inserts = $config->{$section}{estimate_insert};
@@ -270,7 +275,12 @@ sub bwa_by_pbs_double {
 
   my $shfile = $pbsDir . "/${task_name}.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -366,7 +376,7 @@ exit 1;
 sub bwa_refine {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option,$sh_direct ) = get_parameter( $config, $section );
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
 
@@ -389,7 +399,12 @@ sub bwa_refine {
 
   my $shfile = $pbsDir . "/${task_name}.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
@@ -482,11 +497,10 @@ exit 1;
   print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
 }
 
-
 sub bowtie1 {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option,$sh_direct ) = get_parameter( $config, $section );
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
   my $bowtie1_index = $config->{$section}{bowtie1_index} or die "define ${section}::bowtie1_index first";
@@ -499,12 +513,17 @@ sub bowtie1 {
 
   my $shfile = $pbsDir . "/${task_name}.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my @sampleFiles   = @{ $rawFiles{$sampleName} };
-    my $samFile       = $sampleName . ".sam";
-    my $bamFile       = $sampleName . ".bam";
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $samFile     = $sampleName . ".sam";
+    my $bamFile     = $sampleName . ".bam";
 
     my $indent = "";
 
@@ -582,7 +601,7 @@ exit 1;
 sub bowtie2 {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
   my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
@@ -595,12 +614,17 @@ sub bowtie2 {
 
   my $shfile = $pbsDir . "/${task_name}.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my @sampleFiles   = @{ $rawFiles{$sampleName} };
-    my $samFile       = $sampleName . ".sam";
-    my $bamFile       = $sampleName . ".bam";
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $samFile     = $sampleName . ".sam";
+    my $bamFile     = $sampleName . ".bam";
 
     my $indent = "";
     my $tag    = "--sam-RG ID:$sampleName --sam-RG LB:$sampleName --sam-RG SM:$sampleName --sam-RG PL:ILLUMINA";
