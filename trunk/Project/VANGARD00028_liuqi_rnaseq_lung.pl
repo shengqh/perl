@@ -20,7 +20,7 @@ my $config = {
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     path_file            => "/home/shengq1/local/bin/path.txt",
-    task_name            => "pierre"
+    task_name            => "VANGARD00028"
   },
   fastqfiles => {
     "G1_7071" => [ "${target_dir}/raw/004/s_3_1_sequence.txt.gz", "${target_dir}/raw/004/s_3_2_sequence.txt.gz" ],
