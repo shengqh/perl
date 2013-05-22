@@ -363,6 +363,21 @@ my $config_human = {
   bowtie2_mature => {
     target_dir    => "${target_human_dir}/bowtie2_mature",
     option        => $bowtie2_option,
+    source_ref    => "fastqfiles",
+    bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna",
+    fasta_file    => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
+    samonly       => 0,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie2_unmapped_mature => {
+    target_dir    => "${target_human_dir}/bowtie2_unmapped_mature",
+    option        => $bowtie2_option,
     source_ref    => "unmappedfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna",
     fasta_file    => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
@@ -542,7 +557,8 @@ my $config_mirna = {
 #mirna_count($config_rat, "mirna_count_bowtie2");
 #mirna_count($config_human, "mirna_count_bowtie2");
 
-bowtie2( $config_rat,   "bowtie2_mature" );
+#bowtie2( $config_rat,   "bowtie2_mature" );
 bowtie2( $config_human, "bowtie2_mature" );
+bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
 1;
