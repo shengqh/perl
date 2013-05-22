@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(call_wsmdetector)] );
+our %EXPORT_TAGS = ( 'all' => [qw(rsmc)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -21,10 +21,10 @@ our $VERSION = '0.01';
 
 use Cwd;
 
-sub call_wsmdetector {
+sub rsmc {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option,$sh_direct ) = get_parameter( $config, $section );
 
   my $wsmfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
   my $source_type = $config->{$section}{source_type} or die "source_type is not defined in $section";
@@ -54,7 +54,12 @@ sub call_wsmdetector {
 
   my $shfile = $pbsDir . "/${task_name}.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
