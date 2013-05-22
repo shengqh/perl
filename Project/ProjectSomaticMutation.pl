@@ -127,15 +127,14 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  wsmdetector => {
+  rsmc_thread => {
     target_dir                => "${target_dir}/wsmdetector",
     option                    => "-c 8",                                                   #thread mode
-    source_ref                => "bamlocal",
+    source_ref                => "bamfiles",
     source_type               => "bam",                                                    #source_type can be bam/mpileup
     mpileup_sequence          => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     annovar_buildver          => "hg19",
     annovar_database_location => "/data/cqs/guoy1/reference/annovar",
-
     #mpileup_option   => "-q 20",
     execute_file => "/home/shengq1/wsmdetector/wsmdetector.exe",
     pbs          => {
@@ -166,6 +165,6 @@ my $config = {
 
 #call_tophat2($config, "tophat2");
 
-call_wsmdetector( $config, "wsmdetector" );
+call_wsmdetector( $config, "rsmc_thread" );
 
 1;
