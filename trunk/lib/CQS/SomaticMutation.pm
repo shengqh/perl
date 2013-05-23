@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(rsmc)] );
+our %EXPORT_TAGS = ( 'all' => [qw(rsmc muTect)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -24,7 +24,7 @@ use Cwd;
 sub rsmc {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option,$sh_direct ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $rsmcfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
   my $source_type = $config->{$section}{source_type} or die "source_type is not defined in $section";
@@ -33,7 +33,7 @@ sub rsmc {
   $option = $option . " --annovar --annovar_buildver $annovarBuildver ";
 
   my $rnaediting_db = $config->{$section}{rnaediting_db};
-  if(defined $rnaediting_db) {
+  if ( defined $rnaediting_db ) {
     $option = $option . " --rnaediting --rnaediting_db $rnaediting_db ";
   }
 
@@ -143,37 +143,19 @@ echo rsmc=`date`
 sub muTect {
   my ( $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option,$sh_direct ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $rsmcfile = get_param_file( $config->{$section}{execute_file}, "execute_file", 1 );
-  my $source_type = $config->{$section}{source_type} or die "source_type is not defined in $section";
+  my $executefile = get_param_file( $config->{$section}{execute_file}, "execute_file (muTect jar file)", 1 );
+  my $faFile      = get_param_file( $config->{$section}{fasta_file},   "fasta_file",                     1 );
+  my $cosmicfile  = get_param_file( $config->{$section}{cosmic_file},  "cosmic_file",                    1 );
+  my $dbsnpfile   = get_param_file( $config->{$section}{dbsnp_file},   "dbsnp_file",                     1 );
 
-  my $annovarBuildver = $config->{$section}{annovar_buildver} or die "annovar_buildver is not defined in $section";
-  $option = $option . " --annovar --annovar_buildver $annovarBuildver ";
+  my $annovarParameter = $config->{$section}{annovar_param} or die "annovar_param is not defined in $section";
+  $option = $option . " " . $annovarParameter;
 
-  my $rnaediting_db = $config->{$section}{rnaediting_db};
-  if(defined $rnaediting_db) {
-    $option = $option . " --rnaediting --rnaediting_db $rnaediting_db ";
-  }
+  my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-
-  my $mpileupfile      = "";
-  my $fafile           = "";
-  my $mpileupParameter = "";
-  my $isbam            = lc($source_type) eq "bam";
-  if ($isbam) {
-    $fafile = get_param_file( $config->{$section}{mpileup_sequence}, "mpileup_sequence", 1 );
-    $mpileupParameter = $config->{$section}{mpileup_option};
-    if ( defined $mpileupParameter ) {
-      if ( $mpileupParameter eq "" ) {
-        undef($$mpileupParameter);
-      }
-    }
-  }
-  else {
-    $mpileupfile = get_param_file( $config->{$section}{mpileup_file}, "mpileup_file", 1 );
-  }
 
   my $shfile = $pbsDir . "/${task_name}.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -184,15 +166,38 @@ sub muTect {
     print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
   }
 
+  $pbsDesc =~ /\=(\d+)gb/;
+  my $gb = $1;
+
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $sampleCount = scalar(@sampleFiles);
+    my $curDir      = create_directory_or_die( $resultDir . "/$sampleName" );
 
-    my $pbsName = "rsmc_${sampleName}.pbs";
+    if ( $sampleCount != 2 ) {
+      die "SampleFile should be normal,tumor paired.";
+    }
+
+    my $normal = $sampleFiles[0];
+    my $tumor  = $sampleFiles[1];
+
+    my $checkindex = "";
+    for my $sampleFile (@sampleFiles) {
+      my $bamindex = $sampleFile . ".bai";
+
+    }
+
+    my $vcf       = "${sampleName}.somatic.vcf";
+    my $passvcf   = "${sampleName}.somatic.pass.vcf";
+    my $passinput = "${sampleName}.somatic.pass.avinput";
+    my $annovar   = "${sampleName}.somatic.pass.annovar";
+
+    my $pbsName = "muTect_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/rsmc_${sampleName}.log";
+    my $log = "${logDir}/muTect_${sampleName}.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
@@ -201,50 +206,27 @@ sub muTect {
 
 $path_file 
 
-echo rsmc=`date` 
-";
+echo muTect=`date` 
 
-    my $sampleCount = scalar(@sampleFiles);
-    my $curDir      = create_directory_or_die( $resultDir . "/$sampleName" );
+if [ ! -s ${normal}.bai ]; then
+  samtools index $normal
+fi
 
-    if ($isbam) {
-      for my $sampleFile (@sampleFiles) {
-        my $bamindex = $sampleFile . ".bai";
+if [ ! -s ${tumor}.bai ]; then
+  samtools index $tumor
+fi
 
-        print OUT "if [ ! -s $bamindex ]; \n";
-        print OUT "then \n";
-        print OUT "  samtools index $sampleFile \n";
-        print OUT "fi \n\n";
-      }
+cd $curDir
+    
+java -Xmx${gb}g -jar $executefile --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor --coverage_file ${sampleName}.coverage.txt --vcf $vcf 
 
-      if ( defined $mpileupParameter ) {
-        print OUT "samtools mpileup -f $fafile $mpileupParameter";
-        for my $sampleFile (@sampleFiles) {
-          print OUT " $sampleFile";
-        }
-        print OUT " | mono $rsmcfile all -t console $option";
-      }
-      else {
-        print OUT "mono $rsmcfile all -t bam -f $fafile $option";
+grep -v REJECT $vcf > $passvcf
 
-        my $first = 1;
-        for my $sampleFile (@sampleFiles) {
-          if ($first) {
-            print OUT " -b $sampleFile";
-            $first = 0;
-          }
-          else {
-            print OUT ",$sampleFile";
-          }
-        }
-      }
-    }
-    else {
-      print OUT "mono $rsmcfile all -t mpileup -m $mpileupfile $option";
-    }
+convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
 
-    print OUT " -o $curDir \n\n";
-    print OUT "echo finished=`date` \n";
+summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
+
+echo finished=`date` \n";
     close OUT;
 
     print "$pbsFile created \n";
@@ -256,8 +238,7 @@ echo rsmc=`date`
     chmod 0755, $shfile;
   }
 
-  print "!!!shell file $shfile created, you can run this shell file to submit all samtools mpileup tasks.\n";
+  print "!!!shell file $shfile created, you can run this shell file to submit all tasks.\n";
 }
-
 
 1;
