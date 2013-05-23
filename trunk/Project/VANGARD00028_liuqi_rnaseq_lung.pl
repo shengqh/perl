@@ -57,12 +57,14 @@ my $config = {
     "G6" => [ "G6_7134", "G6_7053", "G6_7116", ],                          #HIGHRISK_CANCER
   },
   pairs => {
-    "NOCANCER_vs_CANCER"                     => [ "NOCANCER",  "CANCER" ],
-    "NONSMOKER_vs_SMOKER"                    => [ "NONSMOKER", "SMOKER" ],
-    "NONSMOKER_NOCANCER_vs_NONSMOKER_CANCER" => [ "G1",        "G4" ],
-    "LOWRISK_NOCANCER_vs_LOWRISK_CANCER"     => [ "G2",        "G5" ],
-    "LOWRISK_CANCER_vs_HIGHRISK_CANCER"      => [ "G5",        "G6" ],
-    "G1236"                                  => [ "G1",        "G2", "G3", "G6" ]
+
+    #    "NOCANCER_vs_CANCER"                     => [ "NOCANCER",  "CANCER" ],
+    #    "NONSMOKER_vs_SMOKER"                    => [ "NONSMOKER", "SMOKER" ],
+    #    "NONSMOKER_NOCANCER_vs_NONSMOKER_CANCER" => [ "G1",        "G4" ],
+    #    "LOWRISK_NOCANCER_vs_LOWRISK_CANCER"     => [ "G2",        "G5" ],
+    #    "LOWRISK_CANCER_vs_HIGHRISK_CANCER"      => [ "G5",        "G6" ],
+    #    "G1236"                                  => [ "G1",        "G2", "G3", "G6" ],
+    "G13" => [ "G1", "G3", ]
   },
   fastqc => {
     target_dir => "${target_dir}/fastqc",
