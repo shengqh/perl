@@ -285,12 +285,12 @@ sub varscan2 {
     my $passinput = "${sampleName}.somatic.pass.avinput";
     my $annovar   = "${sampleName}.somatic.pass.annovar";
 
-    my $pbsName = "muTect_${sampleName}.pbs";
+    my $pbsName = "varscan2_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/muTect_${sampleName}.log";
+    my $log = "${logDir}/varscan2_${sampleName}.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
