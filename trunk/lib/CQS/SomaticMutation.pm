@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(rsmc muTect)] );
+our %EXPORT_TAGS = ( 'all' => [qw(rsmc muTect varscan2)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -67,6 +67,15 @@ sub rsmc {
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $sampleCount = scalar(@sampleFiles);
+    if ( $sampleCount != 2 ) {
+      die "SampleFile should be normal,tumor paired.";
+    }
+
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+
+    my $normal = $sampleFiles[0];
+    my $tumor  = $sampleFiles[1];
 
     my $pbsName = "rsmc_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -85,39 +94,20 @@ $path_file
 echo rsmc=`date` 
 ";
 
-    my $sampleCount = scalar(@sampleFiles);
-    my $curDir      = create_directory_or_die( $resultDir . "/$sampleName" );
-
     if ($isbam) {
       for my $sampleFile (@sampleFiles) {
         my $bamindex = $sampleFile . ".bai";
-
-        print OUT "if [ ! -s $bamindex ]; \n";
-        print OUT "then \n";
-        print OUT "  samtools index $sampleFile \n";
-        print OUT "fi \n\n";
+        print OUT "if [ ! -s $bamindex ]; then
+  samtools index $sampleFile 
+fi
+";
       }
 
       if ( defined $mpileupParameter ) {
-        print OUT "samtools mpileup -f $fafile $mpileupParameter";
-        for my $sampleFile (@sampleFiles) {
-          print OUT " $sampleFile";
-        }
-        print OUT " | mono $rsmcfile all -t console $option";
+        print OUT "samtools mpileup -f $fafile $mpileupParameter $normal $tumor | mono $rsmcfile all -t console $option";
       }
       else {
-        print OUT "mono $rsmcfile all -t bam -f $fafile $option";
-
-        my $first = 1;
-        for my $sampleFile (@sampleFiles) {
-          if ($first) {
-            print OUT " -b $sampleFile";
-            $first = 0;
-          }
-          else {
-            print OUT ",$sampleFile";
-          }
-        }
+        print OUT "mono $rsmcfile all -t bam -f $fafile $option -b $normal,$tumor";
       }
     }
     else {
@@ -226,6 +216,113 @@ grep -v REJECT $vcf > $passvcf
 convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
 
 summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
+
+echo finished=`date` \n";
+    close OUT;
+
+    print "$pbsFile created \n";
+  }
+
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+
+  print "!!!shell file $shfile created, you can run this shell file to submit all tasks.\n";
+}
+
+sub varscan2 {
+  my ( $config, $section ) = @_;
+
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
+
+  my $executefile = get_param_file( $config->{$section}{execute_file}, "execute_file (varscan2 jar file)", 1 );
+  my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
+
+  my $min_coverage    = $config->{$section}{min_coverage}    or die "min_coverage is not defined in $section!";
+  my $somatic_p_value = $config->{$section}{somatic_p_value} or die "somatic_p_value is not defined in $section!";
+
+  my $annovarParameter = $config->{$section}{annovar_param} or die "annovar_param is not defined in $section";
+  $option = $option . " " . $annovarParameter;
+
+  my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
+
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
+
+  my $shfile = $pbsDir . "/${task_name}.submit";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
+
+  $pbsDesc =~ /\=(\d+)gb/;
+  my $gb = $1;
+
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $sampleCount = scalar(@sampleFiles);
+    my $curDir      = create_directory_or_die( $resultDir . "/$sampleName" );
+
+    if ( $sampleCount != 2 ) {
+      die "SampleFile should be normal,tumor paired.";
+    }
+
+    my $normal = $sampleFiles[0];
+    my $tumor  = $sampleFiles[1];
+
+    my $out       = "${sampleName}.somatic.out";
+    my $vcf       = "${sampleName}.somatic.vcf";
+    my $passvcf   = "${sampleName}.somatic.pass.vcf";
+    my $passinput = "${sampleName}.somatic.pass.avinput";
+    my $annovar   = "${sampleName}.somatic.pass.annovar";
+
+    my $pbsName = "muTect_${sampleName}.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
+
+    print SH "\$MYCMD ./$pbsName \n";
+
+    my $log = "${logDir}/muTect_${sampleName}.log";
+
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file 
+
+echo varscan2=`date` 
+
+if [ ! -s ${normal}.bai ]; then
+  samtools index $normal
+fi
+
+if [ ! -s ${tumor}.bai ]; then
+  samtools index $tumor
+fi
+
+cd $curDir
+
+if [ ! -s ${normal}.mpileup ]; then
+  echo NORMAL_MPILEUP=`date`
+  samtools mpileup -q 20 -f $faFile $normal > ${normal}.mpileup
+fi
+
+if [ ! -s ${tumor}.mpileup ]; then
+  echo NORMAL_MPILEUP=`date`
+  samtools mpileup -q 20 -f $faFile $tumor > ${tumor}.mpileup
+fi
+
+java -Xmx${gb}g -jar $executefile somatic $option ${normal}.mpileup ${tumor}.mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
+
+cat ${sampleName}.snp.vcf | grep 'SOMATIC;\|^#' > ${sampleName}.somatic.vcf
+
+convert2annovar.pl -format vcf4 ${sampleName}.somatic.vcf -includeinfo > ${sampleName}.somatic.avinput
+
+summarize_annovar.pl $annovarParameter --outfile $annovar ${sampleName}.somatic.avinput $annovarDB
 
 echo finished=`date` \n";
     close OUT;
