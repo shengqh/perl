@@ -132,7 +132,7 @@ my $config = {
     option           => "-c 8",                                                   #thread mode
     source_ref       => "bamfiles",
     source_type      => "bam",                                                    #source_type can be bam/mpileup
-    mpileup_sequence => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
+    mpileup_sequence => "/data/cqs/shengq1/reference/hg19_CRS/hg19_CRS.fa",
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
     sh_direct        => 1,
@@ -166,7 +166,7 @@ my $config = {
 
 #call_tophat2($config, "tophat2");
 
-#rsmc( $config, "rsmc" );
+rsmc( $config, "rsmc" );
 muTect( $config, "muTect" );
 
 1;
