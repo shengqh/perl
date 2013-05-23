@@ -244,7 +244,6 @@ sub varscan2 {
   my $somatic_p_value = $config->{$section}{somatic_p_value} or die "somatic_p_value is not defined in $section!";
 
   my $annovarParameter = $config->{$section}{annovar_param} or die "annovar_param is not defined in $section";
-  $option = $option . " " . $annovarParameter;
 
   my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
 
