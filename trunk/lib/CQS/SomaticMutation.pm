@@ -317,15 +317,15 @@ if [ ! -s $normal_mpileup ]; then
 fi
 
 if [ ! -s $tumor_mpileup ]; then
-  echo NORMAL_MPILEUP=`date`
+  echo TUMOR_MPILEUP=`date`
   samtools mpileup -q 20 -f $faFile $tumor > $tumor_mpileup
 fi
 
 java -Xmx${gb}g -jar $executefile somatic $option $normal_mpileup $tumor_mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
 
-cat ${sampleName}.snp.vcf | grep 'SOMATIC;\|^#' > ${sampleName}.somatic.vcf
+java -Xmx${gb}g -jar $executefile processSomatic ${sampleName}.snp.vcf --p-value $somatic_p_value
 
-convert2annovar.pl -format vcf4 ${sampleName}.somatic.vcf -includeinfo > ${sampleName}.somatic.avinput
+convert2annovar.pl -format vcf4 ${sampleName}.snp.vcf.Somatic.hc -includeinfo > ${sampleName}.somatic.avinput
 
 summarize_annovar.pl $annovarParameter --outfile $annovar ${sampleName}.somatic.avinput $annovarDB
 
