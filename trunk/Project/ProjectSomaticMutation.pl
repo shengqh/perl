@@ -162,11 +162,30 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  varscan2 => {
+    target_dir    => "${target_dir}/varscan2",
+    option        => "",
+    source_ref    => "bamfiles",
+    fasta_file    => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
+    min_coverage => 10,
+    somatic_p_value => 0.01,
+    annovar_param => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
+    annovar_db    => "/scratch/cqs/shengq1/references/annovar/humandb/",
+    sh_direct     => 1,
+    execute_file  => "/home/shengq1/local/bin/muTect-1.1.4.jar",
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 };
 
 #call_tophat2($config, "tophat2");
 
-rsmc( $config, "rsmc" );
-muTect( $config, "muTect" );
+#rsmc( $config, "rsmc" );
+#muTect( $config, "muTect" );
+varscan2( $config, "varscan2" );
 
 1;
