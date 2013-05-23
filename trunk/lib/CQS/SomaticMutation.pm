@@ -272,9 +272,12 @@ sub varscan2 {
 
     my $normal = $sampleFiles[0];
     my $tumor  = $sampleFiles[1];
-    
+
     my $normalfile = basename($normal);
-    my $tumorfile = basename($tumor);
+    my $tumorfile  = basename($tumor);
+
+    my $normal_mpileup = "${normalfile}.mpileup";
+    my $tumor_mpileup  = "${tumorfile}.mpileup";
 
     my $out       = "${sampleName}.somatic.out";
     my $vcf       = "${sampleName}.somatic.vcf";
@@ -308,17 +311,17 @@ fi
 
 cd $curDir
 
-if [ ! -s ${normal}.mpileup ]; then
+if [ ! -s $normal_mpileup ]; then
   echo NORMAL_MPILEUP=`date`
-  samtools mpileup -q 20 -f $faFile $normal > ${normalfile}.mpileup
+  samtools mpileup -q 20 -f $faFile $normal > $normal_mpileup
 fi
 
-if [ ! -s ${tumor}.mpileup ]; then
+if [ ! -s $tumor_mpileup ]; then
   echo NORMAL_MPILEUP=`date`
-  samtools mpileup -q 20 -f $faFile $tumor > ${tumorfile}.mpileup
+  samtools mpileup -q 20 -f $faFile $tumor > $tumor_mpileup
 fi
 
-java -Xmx${gb}g -jar $executefile somatic $option ${normalfile}.mpileup ${tumorfile}.mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
+java -Xmx${gb}g -jar $executefile somatic $option $normal_mpileup $tumor_mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
 
 cat ${sampleName}.snp.vcf | grep 'SOMATIC;\|^#' > ${sampleName}.somatic.vcf
 
