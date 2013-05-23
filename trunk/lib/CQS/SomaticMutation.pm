@@ -44,7 +44,7 @@ sub rsmc {
   my $mpileupParameter = "";
   my $isbam            = lc($source_type) eq "bam";
   if ($isbam) {
-    $fafile = get_param_file( $config->{$section}{mpileup_sequence}, "mpileup_sequence", 1 );
+    $fafile = get_param_file( $config->{$section}{fasta_file}, "fasta_file (for mpileup)", 1 );
     $mpileupParameter = $config->{$section}{mpileup_option};
     if ( defined $mpileupParameter ) {
       if ( $mpileupParameter eq "" ) {
