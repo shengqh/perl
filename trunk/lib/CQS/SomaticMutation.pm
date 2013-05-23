@@ -273,6 +273,9 @@ sub varscan2 {
 
     my $normal = $sampleFiles[0];
     my $tumor  = $sampleFiles[1];
+    
+    my $normalfile = basename($normal);
+    my $tumorfile = basename($tumor);
 
     my $out       = "${sampleName}.somatic.out";
     my $vcf       = "${sampleName}.somatic.vcf";
@@ -308,15 +311,15 @@ cd $curDir
 
 if [ ! -s ${normal}.mpileup ]; then
   echo NORMAL_MPILEUP=`date`
-  samtools mpileup -q 20 -f $faFile $normal > ${normal}.mpileup
+  samtools mpileup -q 20 -f $faFile $normal > ${normalfile}.mpileup
 fi
 
 if [ ! -s ${tumor}.mpileup ]; then
   echo NORMAL_MPILEUP=`date`
-  samtools mpileup -q 20 -f $faFile $tumor > ${tumor}.mpileup
+  samtools mpileup -q 20 -f $faFile $tumor > ${tumorfile}.mpileup
 fi
 
-java -Xmx${gb}g -jar $executefile somatic $option ${normal}.mpileup ${tumor}.mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
+java -Xmx${gb}g -jar $executefile somatic $option ${normalfile}.mpileup ${tumorfile}.mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
 
 cat ${sampleName}.snp.vcf | grep 'SOMATIC;\|^#' > ${sampleName}.somatic.vcf
 
