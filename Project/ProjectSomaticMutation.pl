@@ -136,10 +136,26 @@ my $config = {
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
     sh_direct        => 1,
-
-    #mpileup_option   => "-q 20",
-    execute_file => "/home/shengq1/rsmc/rsmc.exe",
-    pbs          => {
+    execute_file     => "/home/shengq1/rsmc/rsmc.exe",
+    pbs              => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  muTect => {
+    target_dir    => "${target_dir}/muTect",
+    option        => "-nt 8",
+    source_ref    => "bamfiles",
+    fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
+    cosmic_file   => "/data/cqs/shengq1/reference/mutect/hg19_cosmic_v54_120711.vcf",
+    dbsnp_file    => "/data/cqs/shengq1/reference/snp137/human/00-All.vcf",
+    annovar_param => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
+    annovar_db    => "/scratch/cqs/shengq1/references/annovar/humandb/",
+    sh_direct     => 1,
+    execute_file  => "/home/shengq1/local/bin/muTect-1.1.4.jar",
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -150,6 +166,7 @@ my $config = {
 
 #call_tophat2($config, "tophat2");
 
-rsmc( $config, "rsmc" );
+#rsmc( $config, "rsmc" );
+muTect( $config, "muTect" );
 
 1;
