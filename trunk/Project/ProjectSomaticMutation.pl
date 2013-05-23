@@ -12,15 +12,15 @@ my $target_dir = "/scratch/cqs/shengq1/somaticmutation";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
+my $annovar_param = "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove";
+my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
+
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 
 my $config = {
   general => {
-    bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
-    transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
-    path_file            => "/home/shengq1/local/bin/path.txt",
-    task_name            => "somaticmutation"
+    path_file => "/home/shengq1/local/bin/path.txt",
+    task_name => "somaticmutation"
   },
   fastqfiles => {
     "TCGA-A7-A0D9-NT" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.fastq"],
@@ -35,43 +35,6 @@ my $config = {
     "TCGA-A7-A0D9-TOPHAT2-THREAD" =>
       [ "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-NT/accepted_hits.bam", "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-TP/accepted_hits.bam", ],
     "TCGA-A7-A0D9-THREAD" => [ "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.bam", "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam", ],
-
-    #    "TCGA-BH-A0B3" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B3-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B3-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0B8" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B8-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0B8-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0BJ" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BJ-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BJ-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0BM" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BM-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0BM-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0C0" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0C0-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0C0-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0DK" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DK-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DK-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0DP" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DP-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0DP-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0E0" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0E0-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0E0-RNA_TP_sorted.bam",
-    #    ],
-    #    "TCGA-BH-A0H7" => [
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0H7-RNA_NT_sorted.bam"
-    #      "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-BH-A0H7-RNA_TP_sorted.bam",
-    #    ],
   },
   bamfiles => {
     "TCGA-A7-A0D9" => [
@@ -129,9 +92,9 @@ my $config = {
   },
   rsmc => {
     target_dir       => "${target_dir}/rsmc",
-    option           => "-c 8",                                                  #thread mode
+    option           => "-c 8",                                                 #thread mode
     source_ref       => "bamfiles",
-    source_type      => "bam",                                                   #source_type can be bam/mpileup
+    source_type      => "bam",                                                  #source_type can be bam/mpileup
     fasta_file       => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
@@ -163,17 +126,17 @@ my $config = {
     },
   },
   varscan2 => {
-    target_dir    => "${target_dir}/varscan2",
-    option        => "",
-    source_ref    => "bamfiles",
-    fasta_file    => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
-    min_coverage => 10,
+    target_dir      => "${target_dir}/varscan2",
+    option          => "",
+    source_ref      => "bamfiles",
+    fasta_file      => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
+    min_coverage    => 10,
     somatic_p_value => 0.01,
-    annovar_param => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
-    annovar_db    => "/scratch/cqs/shengq1/references/annovar/humandb/",
-    sh_direct     => 1,
-    execute_file  => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
-    pbs           => {
+    annovar_param   => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
+    annovar_db      => "/scratch/cqs/shengq1/references/annovar/humandb/",
+    sh_direct       => 1,
+    execute_file    => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
+    pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
