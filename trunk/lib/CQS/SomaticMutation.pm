@@ -187,6 +187,7 @@ sub muTect {
 
     }
 
+    my $out       = "${sampleName}.somatic.out";
     my $vcf       = "${sampleName}.somatic.vcf";
     my $passvcf   = "${sampleName}.somatic.pass.vcf";
     my $passinput = "${sampleName}.somatic.pass.avinput";
@@ -218,7 +219,7 @@ fi
 
 cd $curDir
     
-java -Xmx${gb}g -jar $executefile --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor --coverage_file ${sampleName}.coverage.txt --vcf $vcf 
+java -Xmx${gb}g -jar $executefile --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${sampleName}.coverage.txt --vcf $vcf 
 
 grep -v REJECT $vcf > $passvcf
 
