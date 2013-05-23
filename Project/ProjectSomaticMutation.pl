@@ -172,7 +172,7 @@ my $config = {
     annovar_param => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
     annovar_db    => "/scratch/cqs/shengq1/references/annovar/humandb/",
     sh_direct     => 1,
-    execute_file  => "/home/shengq1/local/bin/muTect-1.1.4.jar",
+    execute_file  => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
