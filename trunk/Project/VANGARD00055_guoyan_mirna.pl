@@ -40,15 +40,15 @@ my $config_rat = {
     task_name => $task_name . "_rat"
   },
   fastqfiles => {
-    "2516-01" => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
-    "2516-02" => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
-    "2516-03" => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
-    "2516-04" => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
-    "2516-05" => ["${root}/cutadapt/2516-KCV-5_1_clipped.fastq"],
-    "2516-06" => ["${root}/cutadapt/2516-KCV-6_1_clipped.fastq"],
-    "2516-07" => ["${root}/cutadapt/2516-KCV-7_1_clipped.fastq"],
-    "2516-08" => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
-    "2516-09" => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
+    "2516-01"  => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
+    "2516-02"  => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
+    "2516-03"  => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
+    "2516-04"  => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
+    "2516-05"  => ["${root}/cutadapt/2516-KCV-5_1_clipped.fastq"],
+    "2516-06"  => ["${root}/cutadapt/2516-KCV-6_1_clipped.fastq"],
+    "2516-07"  => ["${root}/cutadapt/2516-KCV-7_1_clipped.fastq"],
+    "2516-08"  => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
+    "2516-09"  => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
   },
   unmappedfiles => {
     "2516-01" => ["${target_rat_dir}/bowtie2_genome/result/2516-01/2516-01.sam.unmapped"],
@@ -118,13 +118,13 @@ my $config_rat = {
     },
   },
   mirna_count_bwa => {
-    target_dir => "${target_rat_dir}/bwa_genome",
-    option     => "",
-    source_ref => "bwa",
-    cqs_tools  => $cqs_tools,
-    gff_file   => $rno_gffs,
+    target_dir   => "${target_rat_dir}/bwa_genome",
+    option       => "",
+    source_ref   => "bwa",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $rno_gffs,
     fasta_format => 1,
-    pbs        => {
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -132,13 +132,13 @@ my $config_rat = {
     },
   },
   mirna_count_bowtie1 => {
-    target_dir => "${target_rat_dir}/bowtie1_genome",
-    option     => "",
-    source_ref => "bowtie1",
-    cqs_tools  => $cqs_tools,
-    gff_file   => $rno_gffs,
+    target_dir   => "${target_rat_dir}/bowtie1_genome",
+    option       => "",
+    source_ref   => "bowtie1",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $rno_gffs,
     fasta_format => 1,
-    pbs        => {
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -220,6 +220,39 @@ my $config_human = {
     "2516-46" => ["${root}/cutadapt/2516-KCV-46_1_clipped.fastq"],
     "2516-47" => ["${root}/cutadapt/2516-KCV-47_1_clipped.fastq"],
     "2516-48" => ["${root}/cutadapt/2516-KCV-48_1_clipped.fastq"],
+    "KCV2_1N2" => ["${root}/cutadapt/Fuchs/KCV2_1N2_GCCAAT_L003_R1_001_clipped.fastq"],
+    "KCV2_1N3" => [ "${root}/cutadapt/Fuchs/KCV2_1N3_CAGATC_L003_R1_001_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_1N3_CAGATC_L003_R1_002_clipped.fastq" ],
+    "KCV2_1N4" => [ "${root}/cutadapt/Fuchs/KCV2_1N4_ACTTGA_L003_R1_001_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_1N4_ACTTGA_L003_R1_002_clipped.fastq" ],
+    "KCV2_1N5" => [ "${root}/cutadapt/Fuchs/KCV2_1N5_GATCAG_L003_R1_001_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_1N5_GATCAG_L003_R1_002_clipped.fastq" ],
+    "KCV2_1N6" => [ "${root}/cutadapt/Fuchs/KCV2_1N6_TAGCTT_L003_R1_001_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_1N6_TAGCTT_L003_R1_002_clipped.fastq" ],
+    "KCV2_2N1" => [
+      "${root}/cutadapt/Fuchs/KCV2_2N1_GGCTAC_L003_R1_001_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_2N1_GGCTAC_L003_R1_002_clipped.fastq",
+      "${root}/cutadapt/Fuchs/KCV2_2N1_GGCTAC_L003_R1_003_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_2N1_GGCTAC_L003_R1_004_clipped.fastq",
+      "${root}/cutadapt/Fuchs/KCV2_2N1_GGCTAC_L003_R1_005_clipped.fastq"
+    ],
+    "KCV2_2N2" => ["${root}/cutadapt/Fuchs/KCV2_2N2_GCCGCG_L003_R1_001_clipped.fastq"],
+    "KCV2_2N3" => [
+      "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_001_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_002_clipped.fastq",
+      "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_003_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_004_clipped.fastq",
+      "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_005_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_006_clipped.fastq",
+      "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_007_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_008_clipped.fastq",
+      "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_009_clipped.fastq", "${root}/cutadapt/Fuchs/KCV2_2N3_CTTGTA_L003_R1_010_clipped.fastq"
+    ],
+    "KCV2_2N4" => ["${root}/cutadapt/Fuchs/KCV2_2N4_GCCTTA_L003_R1_001_clipped.fastq"],
+    "KCV2_2N5" => ["${root}/cutadapt/Fuchs/KCV2_2N5_GCTCCA_L003_R1_001_clipped.fastq"],
+    "KCV3_1C2" => ["${root}/cutadapt/Fuchs/KCV3_1C2_GGCACA_L004_R1_001_clipped.fastq"],
+    "KCV3_1C3" => ["${root}/cutadapt/Fuchs/KCV3_1C3_GGCCTG_L004_R1_001_clipped.fastq"],
+    "KCV3_1C4" => ["${root}/cutadapt/Fuchs/KCV3_1C4_TCTACC_L004_R1_001_clipped.fastq"],
+    "KCV3_1C5" => ["${root}/cutadapt/Fuchs/KCV3_1C5_TGAAGT_L004_R1_001_clipped.fastq"],
+    "KCV3_1C6" => ["${root}/cutadapt/Fuchs/KCV3_1C6_TGCCAT_L004_R1_001_clipped.fastq"],
+    "KCV3_2C1" => ["${root}/cutadapt/Fuchs/KCV3_2C1_TGCTGG_L004_R1_001_clipped.fastq"],
+    "KCV3_2C2" => ["${root}/cutadapt/Fuchs/KCV3_2C2_TGGCGC_L004_R1_001_clipped.fastq"],
+    "KCV3_2C3" => ["${root}/cutadapt/Fuchs/KCV3_2C3_TTCGAA_L004_R1_001_clipped.fastq"],
+    "Sample1" => ["${root}/cutadapt/MT/Sample1_12_clipped.fastq"],
+    "Sample2" => ["${root}/cutadapt/MT/Sample2_12_clipped.fastq"],
+    "Sample3" => ["${root}/cutadapt/MT/Sample3_12_clipped.fastq"],
+    "Sample4" => ["${root}/cutadapt/MT/Sample4_12_clipped.fastq"],
+    "Sample5" => ["${root}/cutadapt/MT/Sample5_12_clipped.fastq"],
   },
   unmappedfiles => {
     "2516-10" => ["${target_human_dir}/bowtie2_genome/result/2516-10/2516-10.sam.unmapped"],
@@ -322,14 +355,14 @@ my $config_human = {
     },
   },
   mirna_count_bwa => {
-    target_dir => "${target_human_dir}/bwa_genome",
-    option     => "",
-    source_ref => "bwa",
-    cqs_tools  => $cqs_tools,
-    gff_file   => $hsa_gffs,
-    sh_direct  => 1,
+    target_dir   => "${target_human_dir}/bwa_genome",
+    option       => "",
+    source_ref   => "bwa",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $hsa_gffs,
+    sh_direct    => 1,
     fasta_format => 1,
-    pbs        => {
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -337,14 +370,14 @@ my $config_human = {
     },
   },
   mirna_count_bowtie1 => {
-    target_dir => "${target_human_dir}/bowtie1_genome",
-    option     => "",
-    source_ref => "bowtie1",
-    cqs_tools  => $cqs_tools,
-    gff_file   => $hsa_gffs,
-    sh_direct  => 1,
+    target_dir   => "${target_human_dir}/bowtie1_genome",
+    option       => "",
+    source_ref   => "bowtie1",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $hsa_gffs,
+    sh_direct    => 1,
     fasta_format => 1,
-    pbs        => {
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -549,19 +582,19 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_human, "bwa" );
 #
 #bowtie2( $config_rat,   "bowtie2" );
-#bowtie2( $config_human, "bowtie2" );
+bowtie2( $config_human, "bowtie2" );
 #
 #bowtie1( $config_rat,   "bowtie1" );
 #bowtie1( $config_human, "bowtie1" );
 #
-mirna_count($config_rat, "mirna_count_bwa");
-mirna_count($config_human, "mirna_count_bwa");
+#mirna_count( $config_rat,   "mirna_count_bwa" );
+#mirna_count( $config_human, "mirna_count_bwa" );
 
-mirna_count($config_rat, "mirna_count_bowtie1");
-mirna_count($config_human, "mirna_count_bowtie1");
+#mirna_count( $config_rat,   "mirna_count_bowtie1" );
+#mirna_count( $config_human, "mirna_count_bowtie1" );
 
-mirna_count($config_rat, "mirna_count_bowtie2");
-mirna_count($config_human, "mirna_count_bowtie2");
+#mirna_count( $config_rat,   "mirna_count_bowtie2" );
+mirna_count( $config_human, "mirna_count_bowtie2" );
 
 #bowtie2( $config_rat,   "bowtie2_mature" );
 #bowtie2( $config_human, "bowtie2_mature" );
