@@ -147,8 +147,8 @@ my $config = {
 
 #call_tophat2($config, "tophat2");
 
-#rsmc( $config, "rsmc" );
-muTect( $config, "muTect" );
-varscan2( $config, "varscan2" );
+rsmc( $config, "rsmc" );
+#muTect( $config, "muTect" );
+#varscan2( $config, "varscan2" );
 
 1;
