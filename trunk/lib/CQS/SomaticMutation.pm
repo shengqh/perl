@@ -326,7 +326,9 @@ if [ ! -s $tumor_mpileup ]; then
   samtools mpileup -q 20 -f $faFile $tumor > $tumor_mpileup
 fi
 
-java -Xmx${gb}g -jar $executefile somatic $option $normal_mpileup $tumor_mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
+if [ ! -s ${sampleName}.snp.vcf ]; then
+  java -Xmx${gb}g -jar $executefile somatic $option $normal_mpileup $tumor_mpileup $sampleName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
+fi
 
 java -Xmx${gb}g -jar $executefile processSomatic ${sampleName}.snp.vcf --p-value $somatic_p_value
 
