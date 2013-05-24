@@ -182,6 +182,7 @@ sub muTect {
     my $passvcf   = "${sampleName}.somatic.pass.vcf";
     my $passinput = "${sampleName}.somatic.pass.avinput";
     my $annovar   = "${sampleName}.somatic.pass.annovar";
+    my $result   = "${sampleName}.somatic.pass.annovar.genome_summary.csv";
 
     my $pbsName = "muTect_${sampleName}.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -209,13 +210,17 @@ fi
 
 cd $curDir
     
-java -Xmx${gb}g -jar $executefile --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${sampleName}.coverage.txt --vcf $vcf 
+if [ ! -s $vcf ]; then
+  java -Xmx${gb}g -jar $executefile --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${sampleName}.coverage.txt --vcf $vcf
+fi 
 
-grep -v REJECT $vcf > $passvcf
+if [[ -s $vcf && ! -s $result ]]; then
+  grep -v REJECT $vcf > $passvcf
 
-convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
+  convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
 
-summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
+  summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
+fi
 
 echo finished=`date` \n";
     close OUT;
