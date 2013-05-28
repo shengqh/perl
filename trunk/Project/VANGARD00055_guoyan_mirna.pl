@@ -593,7 +593,7 @@ bowtie2( $config_human, "bowtie2" );
 #mirna_count( $config_rat,   "mirna_count_bowtie1" );
 #mirna_count( $config_human, "mirna_count_bowtie1" );
 
-#mirna_count( $config_rat,   "mirna_count_bowtie2" );
+mirna_count( $config_rat,   "mirna_count_bowtie2" );
 mirna_count( $config_human, "mirna_count_bowtie2" );
 
 #bowtie2( $config_rat,   "bowtie2_mature" );
