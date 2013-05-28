@@ -99,7 +99,7 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
-mono-sgen $cqsFile mirna_count $option -s $fileName -g $gffFile
+mono-sgen $cqsFile mirna_count $option -i $fileName -g $gffFile
 
 echo finished=`date`
 
