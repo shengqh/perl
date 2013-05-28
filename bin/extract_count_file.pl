@@ -47,7 +47,7 @@ my %samples;
 my %data;
 foreach my $subdir (@subdirs) {
   my $path = "${dirroot}/${subdir}";
-  my $f    = "${path}/${subdir}.bam.count";
+  my $f    = "${path}/${subdir}_sorted.bam.count";
 
   if ( !-s $f ) {
     next;
