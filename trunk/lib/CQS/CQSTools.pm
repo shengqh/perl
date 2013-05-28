@@ -22,7 +22,7 @@ our $VERSION = '0.01';
 use Cwd;
 
 #get expected alignment result based on alignment definition
-sub get_sam_map {
+sub get_bam_map {
   my ( $config, $section ) = @_;
 
   my ( $result, $issource ) = get_raw_files2( $config, $section );
@@ -37,7 +37,7 @@ sub get_sam_map {
 
   my $alignresult = {};
   for my $sampleName ( keys %fqFiles ) {
-    my $sam = "${resultDir}/${sampleName}/${sampleName}.sam";
+    my $sam = "${resultDir}/${sampleName}/${sampleName}_sorted.bam";
     $alignresult->{$sampleName} = $sam;
   }
   return $alignresult;
@@ -51,7 +51,7 @@ sub mirna_count {
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
   my $gffFile = get_param_file( $config->{$section}{gff_file},  "gff_file",  1 );
 
-  my %rawFiles = %{ get_sam_map( $config, $section ) };
+  my %rawFiles = %{ get_bam_map( $config, $section ) };
   my $fasta_format = $config->{$section}{fasta_format};
   if ( !defined $fasta_format ) {
     $fasta_format = 0;
@@ -71,10 +71,10 @@ sub mirna_count {
   }
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my $samFile = $rawFiles{$sampleName};
+    my $bamFile = $rawFiles{$sampleName};
 
-    my $curDir   = dirname($samFile);
-    my $fileName = basename($samFile);
+    my $curDir   = dirname($bamFile);
+    my $fileName = basename($bamFile);
 
     my $countFile = $fileName . ".count";
 
