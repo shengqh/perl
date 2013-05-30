@@ -7,7 +7,8 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/VANGARD00057");
+my $task_name = "VANGARD00082";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/${task_name}");
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
@@ -20,7 +21,7 @@ my $config = {
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     path_file            => "/home/shengq1/local/bin/path.txt",
-    task_name            => "VANGARD00057"
+    task_name            => $task_name,
   },
   fastqfiles => {
     "WE3" => [ "/blue/sequencer/Runs/projects/2461-WE/2013-04-16/2461-WE-3_1.fastq.gz", "/blue/sequencer/Runs/projects/2461-WE/2013-04-16/2461-WE-3_2.fastq.gz", ],
