@@ -16,7 +16,7 @@ foreach my $spec (@species) {
 my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
 chomp($bowtie2);
 
-my %files = {};
+my $files = {};
 foreach my $db (@dbs) {
   if ( !-s "${db}.fa" ) {
     `wget ftp://mirbase.org/pub/mirbase/CURRENT/${db}.fa.gz; gunzip -f ${db}.fa.gz `;
@@ -24,18 +24,19 @@ foreach my $db (@dbs) {
   if ( !-s "${db}.dna.fa" ) {
     `cat ${db}.fa | perl -lane 'unless(/^>/){s/U/T/g;} print' >${db}.dna.fa `;
   }
-  $files{"${db}.dna.fa"} = "${db}.dna";
+  $files->{"${db}.dna.fa"} = "${db}.dna";
 
   foreach my $spec (@species) {
     `cat ${db}.dna.fa | perl -lane 'if(/^>/) { \$flag=0 if \$_ !~ />${spec}/; \$flag=1 if /^>${spec}/;} print if \$flag' >${spec}.${db}.dna.fa `;
-    $files{"${spec}.${db}.dna.fa"} = "${spec}.${db}.dna";
+    $files->{"${spec}.${db}.dna.fa"} = "${spec}.${db}.dna";
   }
 }
 
-mkdir("bowtie2_index_${bowtie2}"); 
+mkdir("bowtie2_index_${bowtie2}");
 chdir("bowtie2_index_${bowtie2}");
-for my $file ( keys %files ) {
-  my $name = $files{$file};
+my %filemap = %{$files};
+for my $file ( keys %filemap ) {
+  my $name = $filemap{$file};
   print "ln -s ../${file} $file \n";
   `ln -s ../${file} $file `;
   `bowtie2-build $file $name `;
