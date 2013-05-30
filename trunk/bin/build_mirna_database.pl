@@ -43,6 +43,7 @@ for my $file ( keys %filemap ) {
     print "ln -s ../${file} $file \n";
     `ln -s ../${file} $file `;
   }
+  print "bowtie2-build $file $name \n";
   `bowtie2-build $file $name `;
 }
 
