@@ -36,6 +36,7 @@ mkdir("bowtie2_index_${bowtie2}");
 chdir("bowtie2_index_${bowtie2}");
 for my $file ( keys %files ) {
   my $name = $files{$file};
+  print "ln -s ../${file} $file \n";
   `ln -s ../${file} $file `;
   `bowtie2-build $file $name `;
 }
