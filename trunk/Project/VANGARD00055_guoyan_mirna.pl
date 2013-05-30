@@ -123,7 +123,7 @@ my $config_rat = {
     source_ref   => "bwa",
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
-    fasta_format => 1,
+    fasta_format => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -137,7 +137,7 @@ my $config_rat = {
     source_ref   => "bowtie1",
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
-    fasta_format => 1,
+    fasta_format => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -151,7 +151,7 @@ my $config_rat = {
     source_ref   => "bowtie2",
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
-    fasta_format => 1,
+    fasta_format => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -361,7 +361,7 @@ my $config_human = {
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     sh_direct    => 1,
-    fasta_format => 1,
+    fasta_format => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -376,7 +376,7 @@ my $config_human = {
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     sh_direct    => 1,
-    fasta_format => 1,
+    fasta_format => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -391,7 +391,7 @@ my $config_human = {
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     sh_direct    => 1,
-    fasta_format => 1,
+    fasta_format => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
