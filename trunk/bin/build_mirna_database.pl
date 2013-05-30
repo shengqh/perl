@@ -50,6 +50,7 @@ for my $file ( sort keys %filemap ) {
   }
   run_command("bowtie2-build $file $name ");
 }
+chdir("..");
 
 `bwa 2> 1`;
 my $bwa = `grep Version 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
@@ -68,5 +69,6 @@ for my $file ( keys %filemap ) {
   print "bwa index $file \n";
   `bwa index $file `;
 }
+chdir("..");
 
 1;
