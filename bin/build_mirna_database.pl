@@ -32,13 +32,17 @@ foreach my $db (@dbs) {
   }
 }
 
-mkdir("bowtie2_index_${bowtie2}");
+if ( !-e "bowtie2_index_${bowtie2}" ) {
+  mkdir("bowtie2_index_${bowtie2}");
+}
 chdir("bowtie2_index_${bowtie2}");
 my %filemap = %{$files};
 for my $file ( keys %filemap ) {
   my $name = $filemap{$file};
-  print "ln -s ../${file} $file \n";
-  `ln -s ../${file} $file `;
+  if ( !-e $file ) {
+    print "ln -s ../${file} $file \n";
+    `ln -s ../${file} $file `;
+  }
   `bowtie2-build $file $name `;
 }
 
