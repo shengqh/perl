@@ -7,7 +7,7 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/VANGARD00057");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD00057_guoyan_rnaseq");
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";

@@ -8,7 +8,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 
 my $task_name = "VANGARD00082";
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/${task_name}");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${task_name}_guoyan_rnaseq_WE");
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
