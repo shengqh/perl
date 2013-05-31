@@ -1026,9 +1026,7 @@ sub shrimp2 {
   }
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my @sampleFiles = @{ $rawFiles{$sampleName} };
-
-    my $sampleFile = $sampleFiles[0];
+    my $sampleFile = $rawFiles{$sampleName};
 
     my $shrimpFile      = $sampleName . ".shrimp";
     my $samFile         = $sampleName . ".sam";
