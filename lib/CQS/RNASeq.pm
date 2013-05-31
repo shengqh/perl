@@ -19,7 +19,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs novoalign)
+    qw(call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs novoalign shrimp2)
   ]
 );
 
@@ -586,7 +586,7 @@ fi
 
   print SH "exit 0\n";
   close(SH);
-  
+
   my $sigfile = $pbsDir . "/${task_name}_sig.pl";
   open( SH, ">$sigfile" ) or die "Cannot create $sigfile";
 
@@ -609,7 +609,7 @@ copy_and_rename_cuffdiff_file(\$config, \"rename_diff\");
 1;
 
 ";
-	close(SH);
+  close(SH);
 
   if ( is_linux() ) {
     chmod 0755, $shfile;
@@ -766,10 +766,10 @@ sub copy_and_rename_cuffdiff_file {
         my $line = <IN>;
         $line = <IN>;
         close(IN);
-        
-        if(defined($line)){
-          my @parts = split( /\t/, $line );
-          my $partcount = scalar(@parts);
+
+        if ( defined($line) ) {
+          my @parts      = split( /\t/, $line );
+          my $partcount  = scalar(@parts);
           my $targetname = "${targetdir}/${subdir}.${filename}";
 
           copy( $file, $targetname ) or die "copy failed : $!";
@@ -933,17 +933,17 @@ sub novoalign {
 
     my $sampleFile = $sampleFiles[0];
 
-    my $samFile       = $sampleName . ".sam";
-    my $bamFile       = $sampleName . ".bam";
+    my $samFile         = $sampleName . ".sam";
+    my $bamFile         = $sampleName . ".bam";
     my $sortedBamPrefix = $sampleName . "_sorted";
-    my $sortedBamFile = $sortedBamPrefix . ".bam";
+    my $sortedBamFile   = $sortedBamPrefix . ".bam";
 
     my $pbsName = "${sampleName}_nalign.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_nalign.log";
+    my $log    = "${logDir}/${sampleName}_nalign.log";
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
     open( OUT, ">$pbsFile" ) or die $!;
@@ -981,6 +981,113 @@ echo finished=`date`
   }
 
   print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+
+  #`qsub $pbsFile`;
+}
+
+sub get_shrimp2_source_files {
+  my ( $config, $section ) = @_;
+
+  if ( defined $config->{$section}{unmapped_ref} ) {
+    my $alignsection = $config->{$section}{unmapped_ref};
+    my $align_dir = $config->{$alignsection}{target_dir} or die "${$alignsection}::target_dir not defined.";
+    my ( $logDir, $pbsDir, $resultDir ) = init_dir( $align_dir, 0 );
+    my %fqFiles = %{ get_raw_files( $config, $alignsection ) };
+    my $result = {};
+    for my $sampleName ( keys %fqFiles ) {
+      my $fq = "${resultDir}/${sampleName}/${sampleName}_sorted.bam.unmapped.fastq";
+      $result->{$sampleName} = $fq;
+    }
+    return $result;
+  }
+
+  return get_raw_files( $config, $section );
+}
+
+sub shrimp2 {
+  my ( $config, $section ) = @_;
+
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
+
+  my $genome_index = get_param_file( $config->{$section}{genome_index}, "genome_index", 1 );
+  my $is_mirna   = $config->{$section}{is_mirna}   or die "define ${section}::is_mirna first";
+  my $output_bam = $config->{$section}{output_bam} or die "define ${section}::output_bam first";
+  my $mirna = "-M mirna" if $is_mirna or "";
+
+  my %rawFiles = %{ get_shrimp2_source_files( $config, $section ) };
+
+  my $shfile = $pbsDir . "/${task_name}.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
+
+  for my $sampleName ( sort keys %rawFiles ) {
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+
+    my $sampleFile = $sampleFiles[0];
+
+    my $shrimpFile      = $sampleName . ".shrimp";
+    my $samFile         = $sampleName . ".sam";
+    my $bamFile         = $sampleName . ".bam";
+    my $sortedBamPrefix = $sampleName . "_sorted";
+    my $sortedBamFile   = $sortedBamPrefix . ".bam";
+
+    my $pbsName = "${sampleName}_shrimp2.pbs";
+    my $pbsFile = "${pbsDir}/$pbsName";
+
+    print SH "\$MYCMD ./$pbsName \n";
+
+    my $log    = "${logDir}/${sampleName}_shrimp2.log";
+    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+
+    open( OUT, ">$pbsFile" ) or die $!;
+
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file
+
+echo shrimp2=`date`
+
+cd $curDir
+";
+
+    if ($output_bam) {
+      print OUT "gmapper -L $genome_index $sampleFile $mirna $option --extra-sam-fields >$samFile
+
+if [ -s $samFile ]; then
+  samtools view -b -S $samFile -o $bamFile 
+  samtools sort $bamFile $sortedBamPrefix 
+  samtools index $sortedBamFile 
+  samtools flagstat $sortedBamFile > ${sortedBamFile}.stat 
+fi
+
+echo finished=`date` 
+";
+    }
+    else {
+      print OUT "gmapper -L $genome_index $sampleFile $mirna $option --pretty >$shrimpFile
+      
+echo finished=`date` 
+";
+    }
+
+    close OUT;
+
+    print "$pbsFile created \n";
+  }
+  close(SH);
+
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+
+  print "!!!shell file $shfile created, you can run this shell file to submit all shrimp2 tasks.\n";
 
   #`qsub $pbsFile`;
 }
