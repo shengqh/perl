@@ -662,7 +662,7 @@ my $config_mirna = {
 #mirna_count( $config_human, "mirna_count_bowtie2" );
 
 shrimp2($config_rat, "shrimp2");
-shrimp2($config_human, "shrimp2");
+#shrimp2($config_human, "shrimp2");
 
 #bowtie2( $config_rat,   "bowtie2_mature" );
 #bowtie2( $config_human, "bowtie2_mature" );
