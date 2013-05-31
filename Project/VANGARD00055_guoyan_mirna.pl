@@ -161,6 +161,21 @@ my $config_rat = {
       "mem"      => "40gb"
     },
   },
+  shrimp2 => {
+    target_dir   => "${target_rat_dir}/shrimp2",
+    option       => $shrimp2_option,
+    unmapped_ref => "bowtie2",
+    genome_index => "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls/rn4-ls",
+    is_mirna     => 1,
+    output_bam   => 1,
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   bowtie2_mature => {
     target_dir    => "${target_rat_dir}/bowtie2_mature",
     option        => $bowtie2_option,
@@ -467,7 +482,7 @@ my $config_human = {
   bowtie2_unmapped_mature => {
     target_dir    => "${target_human_dir}/bowtie2_unmapped_mature",
     option        => $bowtie2_option,
-    source_ref    => "unmappedfiles",
+    unmapped_ref => "bowtie2",
     bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna",
     fasta_file    => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
     samonly       => 0,
