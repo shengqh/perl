@@ -996,7 +996,7 @@ sub get_shrimp2_source_files {
     my $result = {};
     for my $sampleName ( keys %fqFiles ) {
       my $fq = "${resultDir}/${sampleName}/${sampleName}_sorted.bam.unmapped.fastq";
-      $result->{$sampleName} = $fq;
+      $result->{"${sampleName}_sorted.bam.unmapped"} = $fq;
     }
     return $result;
   }
