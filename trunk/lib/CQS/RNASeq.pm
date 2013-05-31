@@ -1009,7 +1009,8 @@ sub shrimp2 {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $genome_index = get_param_file( $config->{$section}{genome_index} . ".genome", "genome_index", 1 );
+  my $genome_index = $config->{$section}{genome_index} or die "define ${section}::genome_index first";
+  die "genome index ${genome_index}.genome not exist" if ( !-e "${genome_index}.genome" );
   my $is_mirna   = $config->{$section}{is_mirna}   or die "define ${section}::is_mirna first";
   my $output_bam = $config->{$section}{output_bam} or die "define ${section}::output_bam first";
   my $mirna = "-M mirna" if $is_mirna or "";
