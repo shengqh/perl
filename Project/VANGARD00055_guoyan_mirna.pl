@@ -43,6 +43,7 @@ my $config_rat = {
   },
   fastqfiles => {
     "2516-01" => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
+    "2516-01-identical" => ["${root}/cutadapt/2516-KCV-1_1_clipped.identical_12.fastq"],
     "2516-02" => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
     "2516-03" => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
     "2516-04" => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
@@ -646,7 +647,7 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
 #
-#bowtie2( $config_rat,   "bowtie2" );
+bowtie2( $config_rat,   "bowtie2" );
 #bowtie2( $config_human, "bowtie2" );
 #
 #bowtie1( $config_rat,   "bowtie1" );
@@ -661,7 +662,7 @@ my $config_mirna = {
 #mirna_count( $config_rat,   "mirna_count_bowtie2" );
 #mirna_count( $config_human, "mirna_count_bowtie2" );
 
-shrimp2($config_rat, "shrimp2");
+#shrimp2($config_rat, "shrimp2");
 #shrimp2($config_human, "shrimp2");
 
 #bowtie2( $config_rat,   "bowtie2_mature" );
