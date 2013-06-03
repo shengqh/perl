@@ -26,7 +26,7 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-my $bowtie2_option             = "-a";
+my $bowtie2_option             = "--very-sensitive --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 10";
 my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
 my $bowtie1_option             = "-v 1 --best";
@@ -42,16 +42,16 @@ my $config_rat = {
     task_name => $task_name . "_rat"
   },
   fastqfiles => {
-    "2516-01" => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
+    "2516-01"           => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
     "2516-01-identical" => ["${root}/cutadapt/2516-KCV-1_1_clipped.identical_12.fastq"],
-    "2516-02" => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
-    "2516-03" => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
-    "2516-04" => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
-    "2516-05" => ["${root}/cutadapt/2516-KCV-5_1_clipped.fastq"],
-    "2516-06" => ["${root}/cutadapt/2516-KCV-6_1_clipped.fastq"],
-    "2516-07" => ["${root}/cutadapt/2516-KCV-7_1_clipped.fastq"],
-    "2516-08" => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
-    "2516-09" => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
+    "2516-02"           => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
+    "2516-03"           => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
+    "2516-04"           => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
+    "2516-05"           => ["${root}/cutadapt/2516-KCV-5_1_clipped.fastq"],
+    "2516-06"           => ["${root}/cutadapt/2516-KCV-6_1_clipped.fastq"],
+    "2516-07"           => ["${root}/cutadapt/2516-KCV-7_1_clipped.fastq"],
+    "2516-08"           => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
+    "2516-09"           => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
   },
   unmappedfiles => {
     "2516-01" => ["${target_rat_dir}/bowtie2_genome/result/2516-01/2516-01.bam.unmapped.fastq"],
@@ -483,7 +483,7 @@ my $config_human = {
   bowtie2_unmapped_mature => {
     target_dir    => "${target_human_dir}/bowtie2_unmapped_mature",
     option        => $bowtie2_option,
-    unmapped_ref => "bowtie2",
+    unmapped_ref  => "bowtie2",
     bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna",
     fasta_file    => "/data/cqs/shengq1/reference/miRBase19/hsa.mature.dna.fa",
     samonly       => 0,
@@ -647,7 +647,8 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
 #
-bowtie2( $config_rat,   "bowtie2" );
+bowtie2( $config_rat, "bowtie2" );
+
 #bowtie2( $config_human, "bowtie2" );
 #
 #bowtie1( $config_rat,   "bowtie1" );
