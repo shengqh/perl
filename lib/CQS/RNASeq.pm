@@ -55,7 +55,7 @@ sub get_sorted_bam_prefix {
 }
 
 sub output_tophat2 {
-  my ( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $tophatDir, $sampleName, $index, $sortbam, @sampleFiles ) = @_;
+  my ( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $tophatDir, $sampleName, $index, $sortbam, $indexbam, @sampleFiles ) = @_;
 
   my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
 
@@ -94,6 +94,11 @@ sub output_tophat2 {
     print OUT "  samtools sort $tophat2file $sortedbam \n";
     print OUT "  samtools index $sortedbamfile \n";
   }
+  else {
+    if ($indexbam) {
+      print OUT "  samtools index $tophat2file \n";
+    }
+  }
   print OUT "fi\n\n";
 }
 
@@ -111,9 +116,19 @@ sub tophat2_by_pbs {
     $batchmode = 0;
   }
 
+  my $indexbam = $config->{$section}{indexbam};
+  if ( !defined($indexbam) ) {
+    $indexbam = 0;
+  }
+
   my $sortbam = $config->{$section}{sortbam};
   if ( !defined($sortbam) ) {
     $sortbam = 0;
+  }
+  else {
+    if ($sortbam) {
+      $indexbam = 1;
+    }
   }
 
   my %fqFiles = %{ get_raw_files( $config, $section ) };
@@ -158,7 +173,7 @@ sub tophat2_by_pbs {
     my $index = 0;
     for my $sampleName ( sort keys %fqFiles ) {
       my @sampleFiles = @{ $fqFiles{$sampleName} };
-      output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, $index, $sortbam, @sampleFiles );
+      output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, $index, $sortbam, $indexbam, @sampleFiles );
       $index++;
     }
 
@@ -179,7 +194,7 @@ sub tophat2_by_pbs {
       my $log     = $logDir . "/${sampleName}_th2.log";
 
       output_header( $pbsFile, $pbsDesc, $path_file, $log );
-      output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, $sortbam, @sampleFiles );
+      output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, $sortbam, $indexbam, @sampleFiles );
       output_footer();
 
       print SH "\$MYCMD ./$pbsName \n";
