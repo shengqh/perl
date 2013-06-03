@@ -50,7 +50,6 @@ my $config_rat = {
   },
   fastqfiles => {
     "2516-01"           => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
-    "2516-01-identical" => ["${root}/cutadapt/2516-KCV-1_1_clipped.identical_12.fastq"],
     "2516-02"           => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
     "2516-03"           => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
     "2516-04"           => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
@@ -59,6 +58,9 @@ my $config_rat = {
     "2516-07"           => ["${root}/cutadapt/2516-KCV-7_1_clipped.fastq"],
     "2516-08"           => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
     "2516-09"           => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
+  },
+  identical_fastqfiles => {
+    "2516-01-identical" => ["${root}/cutadapt/2516-KCV-1_1_clipped.identical_12.fastq"],
   },
   unmappedfiles => {
     "2516-01" => ["${target_rat_dir}/bowtie2_genome/result/2516-01/2516-01.bam.unmapped.fastq"],
@@ -116,7 +118,7 @@ my $config_rat = {
   bowtie2 => {
     target_dir    => "${target_rat_dir}/bowtie2_genome",
     option        => $bowtie2_rat_option_wholegenome,
-    source_ref    => "fastqfiles",
+    source_ref    => "identical_fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
     samonly       => 0,
@@ -204,6 +206,9 @@ my $config_human = {
   general => {
     path_file => "/home/shengq1/local/bin/path.txt",
     task_name => $task_name . "_human"
+  },
+  identical_fastqfiles => {
+    "2516-10-identical"  => ["${root}/cutadapt/2516-KCV-10_1_clipped.identical_12.fastq"],
   },
   fastqfiles => {
     "2516-10"  => ["${root}/cutadapt/2516-KCV-10_1_clipped.fastq"],
@@ -400,7 +405,7 @@ my $config_human = {
   bowtie2 => {
     target_dir    => "${target_human_dir}/bowtie2_genome",
     option        => $bowtie2_human_option_wholegenome,
-    source_ref    => "fastqfiles",
+    source_ref    => "identical_fastqfiles",
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     samonly       => 0,
