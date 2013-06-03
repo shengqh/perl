@@ -28,12 +28,12 @@ my $option_samse_mirna     = "";
 
 my $bowtie2_option             = "--very-sensitive --gbar 50 --rdg 1000,1000 --rfg 1000,1000";
 
-#output at most 4 matches since one miRNA can map to at most 4 position in rno.gff3
-my $bowtie2_rat_option             = $bowtie2_option . " -k 4";
+#output at most 20 matches since one miRNA can map to at most 4 position in rno.gff3
+my $bowtie2_rat_option             = $bowtie2_option . " -k 20";
 my $bowtie2_rat_option_wholegenome = $bowtie2_rat_option . " -p 8";
 
 #output at most 11 matches since one miRNA can map to at most 11 position in hsa.gff3
-my $bowtie2_human_option             = $bowtie2_option . " -k 11";
+my $bowtie2_human_option             = $bowtie2_option . " -k 20";
 my $bowtie2_human_option_wholegenome = $bowtie2_rat_option . " -p 8";
 
 my $bowtie1_option             = "-v 1 --best";
