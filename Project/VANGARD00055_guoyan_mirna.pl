@@ -26,7 +26,7 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-my $bowtie2_option             = "-N 0 --phred33";
+my $bowtie2_option             = "-a";
 my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
 my $bowtie1_option             = "-v 1 --best";
