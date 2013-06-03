@@ -985,25 +985,6 @@ echo finished=`date`
   #`qsub $pbsFile`;
 }
 
-sub get_shrimp2_source_files {
-  my ( $config, $section ) = @_;
-
-  if ( defined $config->{$section}{unmapped_ref} ) {
-    my $alignsection = $config->{$section}{unmapped_ref};
-    my $align_dir = $config->{$alignsection}{target_dir} or die "${$alignsection}::target_dir not defined.";
-    my ( $logDir, $pbsDir, $resultDir ) = init_dir( $align_dir, 0 );
-    my %fqFiles = %{ get_raw_files( $config, $alignsection ) };
-    my $result = {};
-    for my $sampleName ( keys %fqFiles ) {
-      my $fq = "${resultDir}/${sampleName}/${sampleName}_sorted.bam.unmapped.fastq";
-      $result->{"${sampleName}_unmapped"} = $fq;
-    }
-    return $result;
-  }
-
-  return get_raw_files( $config, $section );
-}
-
 sub shrimp2 {
   my ( $config, $section ) = @_;
 
@@ -1015,7 +996,7 @@ sub shrimp2 {
   my $output_bam = $config->{$section}{output_bam} or die "define ${section}::output_bam first";
   my $mirna = "-M mirna" if $is_mirna or "";
 
-  my %rawFiles = %{ get_shrimp2_source_files( $config, $section ) };
+  my %rawFiles = %{ get_raw_files( $config, $section ) };
 
   my $shfile = $pbsDir . "/${task_name}.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
