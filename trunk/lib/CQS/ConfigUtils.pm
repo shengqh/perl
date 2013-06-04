@@ -73,7 +73,7 @@ sub get_param_file {
   return ($result);
 }
 
-require CQS::ClassFactory;
+use CQS::ClassFactory;
 
 sub do_get_raw_files {
   my ( $config, $section, $returnself ) = @_;
