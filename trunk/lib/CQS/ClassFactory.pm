@@ -11,7 +11,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = ( 'all' => [qw(new_class)] );
 
-my @classes = ( new CQS::Cutadapt() );
+our @classes = ( new CQS::Cutadapt() );
 
 sub new_class {
   my ($className) = @_;
