@@ -55,11 +55,8 @@ sub generateScript {
     my $fastqs = join( ',', @sampleFiles );
     my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs $tag";
 
-    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam( $bamFile, $indent );
-
-    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile, $indent );
-    my $index_command = get_index_command( $bamSortedFile, $indent );
-    my $stat_command = get_stat_command( $bamSortedFile, $indent );
+    my $index_command = get_index_command( $bamFile, $indent );
+    my $stat_command = get_stat_command( $bamFile, $indent );
 
     my $pbsName = "${sampleName}_bowtie2.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -89,12 +86,12 @@ $bowtie2_aln_command -S $samFile
     }
     else {
       print OUT "
-if [ -s $bamSortedFile ]; then
-  echo job has already been done. if you want to do again, delete $bamSortedFile and submit job again.
+if [ -s $bamFile ]; then
+  echo job has already been done. if you want to do again, delete $bamFile and submit job again.
   exit 0
 fi
 
-$bowtie2_aln_command | samtools view -S -b - | samtools sort - $bamSortedPrefix
+$bowtie2_aln_command | samtools view -S -b - | samtools sort - $sampleName
 
 $index_command
 
