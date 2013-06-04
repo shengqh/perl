@@ -823,10 +823,10 @@ my $config_mirna = {
 
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
-generateScript($config_rat, "cutadapt");
-generateScript($config_human, "cutadapt");
-
-
+#generateScript($config_rat, "cutadapt");
+#generateScript($config_human, "cutadapt");
+generateScript($config_rat, "identical");
+generateScript($config_human, "identical");
 
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #
