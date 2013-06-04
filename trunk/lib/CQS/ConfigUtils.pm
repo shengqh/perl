@@ -20,6 +20,8 @@ our $VERSION = '0.01';
 
 sub get_parameter {
   my ( $config, $section ) = @_;
+  
+  die "no section $section found!" if ! defined $config->{$section};
 
   my $task_name = $config->{general}{task_name} or die "define general::task_name first";
   my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
