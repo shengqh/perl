@@ -47,9 +47,7 @@ my $novoalign_option = "-l 15 -t 30 -r Random -m";
 my $shrimp2_option = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
 
 my $config_rat = {
-  general => {
-    task_name => $task_name . "_rat"
-  },
+  general       => { task_name => $task_name . "_rat" },
   originalfiles => {
     "2516-01" => ["${root}/rawdata/2516-KCV-1_1.fastq"],
     "2516-02" => ["${root}/rawdata/2516-KCV-2_1.fastq"],
@@ -85,7 +83,7 @@ my $config_rat = {
     "2516-09" => ["${target_rat_dir}/bowtie2_genome/result/2516-09/2516-09.bam.unmapped.fastq"],
   },
   cutadapt => {
-    class =>"Cutadapt",
+    class      => "Cutadapt",
     target_dir => "${target_rat_dir}/cutadapt",
     option     => "",
     source_ref => "originalfiles",
@@ -247,6 +245,81 @@ my $config_human = {
     path_file => "/home/shengq1/local/bin/path.txt",
     task_name => $task_name . "_human"
   },
+  oiginalfiles => {
+    "2516-10"  => ["${root}/rawdata/2516-KCV-10_1.fastq"],
+    "2516-11"  => ["${root}/rawdata/2516-KCV-11_1.fastq"],
+    "2516-12"  => ["${root}/rawdata/2516-KCV-12_1.fastq"],
+    "2516-13"  => ["${root}/rawdata/2516-KCV-13_1.fastq"],
+    "2516-14"  => ["${root}/rawdata/2516-KCV-14_1.fastq"],
+    "2516-15"  => ["${root}/rawdata/2516-KCV-15_1.fastq"],
+    "2516-16"  => ["${root}/rawdata/2516-KCV-16_1.fastq"],
+    "2516-17"  => ["${root}/rawdata/2516-KCV-17_1.fastq"],
+    "2516-18"  => ["${root}/rawdata/2516-KCV-18_1.fastq"],
+    "2516-19"  => ["${root}/rawdata/2516-KCV-19_1.fastq"],
+    "2516-20"  => ["${root}/rawdata/2516-KCV-20_1.fastq"],
+    "2516-21"  => ["${root}/rawdata/2516-KCV-21_1.fastq"],
+    "2516-22"  => ["${root}/rawdata/2516-KCV-22_1.fastq"],
+    "2516-23"  => ["${root}/rawdata/2516-KCV-23_1.fastq"],
+    "2516-24"  => ["${root}/rawdata/2516-KCV-24_1.fastq"],
+    "2516-25"  => ["${root}/rawdata/2516-KCV-25_1.fastq"],
+    "2516-26"  => ["${root}/rawdata/2516-KCV-26_1.fastq"],
+    "2516-27"  => ["${root}/rawdata/2516-KCV-27_1.fastq"],
+    "2516-28"  => ["${root}/rawdata/2516-KCV-28_1.fastq"],
+    "2516-29"  => ["${root}/rawdata/2516-KCV-29_1.fastq"],
+    "2516-30"  => ["${root}/rawdata/2516-KCV-30_1.fastq"],
+    "2516-31"  => ["${root}/rawdata/2516-KCV-31_1.fastq"],
+    "2516-32"  => ["${root}/rawdata/2516-KCV-32_1.fastq"],
+    "2516-33"  => ["${root}/rawdata/2516-KCV-33_1.fastq"],
+    "2516-34"  => ["${root}/rawdata/2516-KCV-34_1.fastq"],
+    "2516-35"  => ["${root}/rawdata/2516-KCV-35_1.fastq"],
+    "2516-36"  => ["${root}/rawdata/2516-KCV-36_1.fastq"],
+    "2516-37"  => ["${root}/rawdata/2516-KCV-37_1.fastq"],
+    "2516-38"  => ["${root}/rawdata/2516-KCV-38_1.fastq"],
+    "2516-39"  => ["${root}/rawdata/2516-KCV-39_1.fastq"],
+    "2516-40"  => ["${root}/rawdata/2516-KCV-40_1.fastq"],
+    "2516-41"  => ["${root}/rawdata/2516-KCV-41_1.fastq"],
+    "2516-42"  => ["${root}/rawdata/2516-KCV-42_1.fastq"],
+    "2516-43"  => ["${root}/rawdata/2516-KCV-43_1.fastq"],
+    "2516-44"  => ["${root}/rawdata/2516-KCV-44_1.fastq"],
+    "2516-45"  => ["${root}/rawdata/2516-KCV-45_1.fastq"],
+    "2516-46"  => ["${root}/rawdata/2516-KCV-46_1.fastq"],
+    "2516-47"  => ["${root}/rawdata/2516-KCV-47_1.fastq"],
+    "2516-48"  => ["${root}/rawdata/2516-KCV-48_1.fastq"],
+    "KCV2_1N2" => ["${root}/rawdata/KCV2_1N2_GCCAAT_L003_R1_001.fastq"],
+    "KCV2_1N3" => [ "${root}/rawdata/KCV2_1N3_CAGATC_L003_R1_001.fastq", "${root}/rawdata/KCV2_1N3_CAGATC_L003_R1_002.fastq" ],
+    "KCV2_1N4" => [ "${root}/rawdata/KCV2_1N4_ACTTGA_L003_R1_001.fastq", "${root}/rawdata/KCV2_1N4_ACTTGA_L003_R1_002.fastq" ],
+    "KCV2_1N5" => [ "${root}/rawdata/KCV2_1N5_GATCAG_L003_R1_001.fastq", "${root}/rawdata/KCV2_1N5_GATCAG_L003_R1_002.fastq" ],
+    "KCV2_1N6" => [ "${root}/rawdata/KCV2_1N6_TAGCTT_L003_R1_001.fastq", "${root}/rawdata/KCV2_1N6_TAGCTT_L003_R1_002.fastq" ],
+    "KCV2_2N1" => [
+      "${root}/rawdata/KCV2_2N1_GGCTAC_L003_R1_001.fastq", "${root}/rawdata/KCV2_2N1_GGCTAC_L003_R1_002.fastq",
+      "${root}/rawdata/KCV2_2N1_GGCTAC_L003_R1_003.fastq", "${root}/rawdata/KCV2_2N1_GGCTAC_L003_R1_004.fastq",
+      "${root}/rawdata/KCV2_2N1_GGCTAC_L003_R1_005.fastq"
+    ],
+    "KCV2_2N2" => ["${root}/rawdata/KCV2_2N2_GCCGCG_L003_R1_001.fastq"],
+    "KCV2_2N3" => [
+      "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_001.fastq", "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_002.fastq",
+      "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_003.fastq", "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_004.fastq",
+      "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_005.fastq", "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_006.fastq",
+      "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_007.fastq", "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_008.fastq",
+      "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_009.fastq", "${root}/rawdata/KCV2_2N3_CTTGTA_L003_R1_010.fastq"
+    ],
+    "KCV2_2N4" => ["${root}/rawdata/KCV2_2N4_GCCTTA_L003_R1_001.fastq"],
+    "KCV2_2N5" => ["${root}/rawdata/KCV2_2N5_GCTCCA_L003_R1_001.fastq"],
+    "KCV3_1C2" => ["${root}/rawdata/KCV3_1C2_GGCACA_L004_R1_001.fastq"],
+    "KCV3_1C3" => ["${root}/rawdata/KCV3_1C3_GGCCTG_L004_R1_001.fastq"],
+    "KCV3_1C4" => ["${root}/rawdata/KCV3_1C4_TCTACC_L004_R1_001.fastq"],
+    "KCV3_1C5" => ["${root}/rawdata/KCV3_1C5_TGAAGT_L004_R1_001.fastq"],
+    "KCV3_1C6" => ["${root}/rawdata/KCV3_1C6_TGCCAT_L004_R1_001.fastq"],
+    "KCV3_2C1" => ["${root}/rawdata/KCV3_2C1_TGCTGG_L004_R1_001.fastq"],
+    "KCV3_2C2" => ["${root}/rawdata/KCV3_2C2_TGGCGC_L004_R1_001.fastq"],
+    "KCV3_2C3" => ["${root}/rawdata/KCV3_2C3_TTCGAA_L004_R1_001.fastq"],
+    "Sample1"  => ["${root}/rawdata/Sample1_12.fastq"],
+    "Sample2"  => ["${root}/rawdata/Sample2_12.fastq"],
+    "Sample3"  => ["${root}/rawdata/Sample3_12.fastq"],
+    "Sample4"  => ["${root}/rawdata/Sample4_12.fastq"],
+    "Sample5"  => ["${root}/rawdata/Sample5_12.fastq"],
+  },
+
   identical_fastqfiles => { "2516-10-identical" => ["${root}/cutadapt/2516-KCV-10_1_clipped.identical_12.fastq"], },
   fastqfiles           => {
     "2516-10"  => ["${root}/cutadapt/2516-KCV-10_1_clipped.fastq"],
@@ -395,6 +468,21 @@ my $config_human = {
     "Sample3"  => ["${root}/cutadapt/MT/Sample3_12_clipped.fastq"],
     "Sample4"  => ["${root}/cutadapt/MT/Sample4_12_clipped.fastq"],
     "Sample5"  => ["${root}/cutadapt/MT/Sample5_12_clipped.fastq"],
+  },
+  cutadapt => {
+    class      => "Cutadapt",
+    target_dir => "${target_human_dir}/cutadapt",
+    option     => "",
+    source_ref => "originalfiles",
+    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+    extension  => "_clipped.fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
   },
   bwa_mature => {
     target_dir   => "${target_human_dir}/bwa_miRBase_species",
@@ -720,6 +808,11 @@ my $config_mirna = {
 
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
+generateScript($config_rat, "cutadapt");
+generateScript($config_human, "cutadapt");
+
+
+
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #
 ##cutadapt->generateScript( $config_rat, "cutadapt" );
@@ -728,9 +821,9 @@ my $config_mirna = {
 #    print "$k => @{$cutadapt_result{$k}}\n";
 #}
 
-my %rawFiles = %{ get_raw_files( $config_rat, "bowtie2_test" ) };
-foreach my $k (sort keys %rawFiles) {
-    print "$k => @{$rawFiles{$k}}\n";
-}
+#my %rawFiles = %{ get_raw_files( $config_rat, "bowtie2_test" ) };
+#foreach my $k ( sort keys %rawFiles ) {
+#  print "$k => @{$rawFiles{$k}}\n";
+#}
 
 1;
