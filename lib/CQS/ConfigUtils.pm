@@ -77,6 +77,59 @@ require CQS::ClassFactory;
 
 sub do_get_raw_files {
   my ( $config, $section, $returnself ) = @_;
+
+  die "section $section was not defined!" if !defined $config->{$section};
+
+  if ( defined $config->{$section}{source} ) {
+    return ( $config->{$section}{source}, 1 );
+  }
+
+  if ( defined $config->{$section}{source_ref} ) {
+    my $sectionName = $config->{$section}{source_ref};
+    die "section $sectionName was not defined!" if !defined $config->{$sectionName};
+    if ( defined $config->{$sectionName}{class} ) {
+      my $myclass = new_class( $config->{$sectionName}{class} );
+      return ( $myclass->getExpectResult(), 0 );
+    }
+    else {
+      my ( $result, $issource ) = do_get_raw_files( $config, $sectionName, 1 );
+      return ( $result, 0 );
+    }
+  }
+
+  if ( defined $config->{$section}{unmapped_ref} ) {
+    my $alignsection = $config->{$section}{unmapped_ref};
+    my $align_dir = $config->{$alignsection}{target_dir} or die "${$alignsection}::target_dir not defined.";
+    my ( $logDir, $pbsDir, $resultDir ) = init_dir( $align_dir, 0 );
+    my %fqFiles = %{ do_get_raw_files( $config, $alignsection, 0 ) };
+    my $result = {};
+    for my $sampleName ( keys %fqFiles ) {
+      my $fq = "${resultDir}/${sampleName}/${sampleName}_sorted.bam.unmapped.fastq";
+      $result->{"${sampleName}_unmapped"} = $fq;
+    }
+    return ( $result, 0 );
+  }
+
+  if ( defined $config->{$section}{source} ) {
+    return ( $config->{$section}{source}, 1 );
+  }
+
+  if ( defined $config->{$section}{source_ref} ) {
+    my $sectionName = $config->{$section}{source_ref};
+    my ( $result, $issource ) = do_get_raw_files( $config, $sectionName, 1 );
+    return ( $result, 0 );
+  }
+
+  if ($returnself) {
+    return ( $config->{$section}, 0 );
+  }
+  else {
+    die "define source or source_ref for $section";
+  }
+}
+
+sub do_get_raw_files_old {
+  my ( $config, $section, $returnself ) = @_;
   if ( !defined $config->{$section} ) {
     die "section $section was not defined!";
   }
