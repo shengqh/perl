@@ -23,7 +23,7 @@ sub get_parameter {
 
   my $task_name = $config->{general}{task_name} or die "define general::task_name first";
   my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
-  if (defined $path_file && -e $path_file ) {
+  if ( defined $path_file && -e $path_file ) {
     $path_file = "source $path_file";
   }
   else {
@@ -84,14 +84,14 @@ sub do_get_raw_files {
   }
 
   if ( defined $config->{$section}{source_ref} ) {
-    my $sectionName = $config->{$section}{source_ref};
-    die "section $sectionName was not defined!" if !defined $config->{$sectionName};
-    if ( defined $config->{$sectionName}{class} ) {
-      my $myclass = instantiate( $config->{$sectionName}{class} );
-      return ( $myclass->getExpectResult($config, $sectionName), 0 );
+    my $refSectionName = $config->{$section}{source_ref};
+    die "section $refSectionName was not defined!" if !defined $config->{$refSectionName};
+    if ( defined $config->{$refSectionName}{class} ) {
+      my $myclass = instantiate( $config->{$refSectionName}{class} );
+      return ( $myclass->getExpectResult( $config, $refSectionName ), 0 );
     }
     else {
-      my ( $result, $issource ) = do_get_raw_files( $config, $sectionName, 1 );
+      my ( $result, $issource ) = do_get_raw_files( $config, $refSectionName, 1 );
       return ( $result, 0 );
     }
   }
@@ -106,53 +106,6 @@ sub do_get_raw_files {
       my $fq = "${resultDir}/${sampleName}/${sampleName}_sorted.bam.unmapped.fastq";
       $result->{"${sampleName}_unmapped"} = $fq;
     }
-    return ( $result, 0 );
-  }
-
-  if ( defined $config->{$section}{source} ) {
-    return ( $config->{$section}{source}, 1 );
-  }
-
-  if ( defined $config->{$section}{source_ref} ) {
-    my $sectionName = $config->{$section}{source_ref};
-    my ( $result, $issource ) = do_get_raw_files( $config, $sectionName, 1 );
-    return ( $result, 0 );
-  }
-
-  if ($returnself) {
-    return ( $config->{$section}, 0 );
-  }
-  else {
-    die "define source or source_ref for $section";
-  }
-}
-
-sub do_get_raw_files_old {
-  my ( $config, $section, $returnself ) = @_;
-  if ( !defined $config->{$section} ) {
-    die "section $section was not defined!";
-  }
-
-  if ( defined $config->{$section}{unmapped_ref} ) {
-    my $alignsection = $config->{$section}{unmapped_ref};
-    my $align_dir = $config->{$alignsection}{target_dir} or die "${$alignsection}::target_dir not defined.";
-    my ( $logDir, $pbsDir, $resultDir ) = init_dir( $align_dir, 0 );
-    my %fqFiles = %{ do_get_raw_files( $config, $alignsection, 0 ) };
-    my $result = {};
-    for my $sampleName ( keys %fqFiles ) {
-      my $fq = "${resultDir}/${sampleName}/${sampleName}_sorted.bam.unmapped.fastq";
-      $result->{"${sampleName}_unmapped"} = $fq;
-    }
-    return ( $result, 0 );
-  }
-
-  if ( defined $config->{$section}{source} ) {
-    return ( $config->{$section}{source}, 1 );
-  }
-
-  if ( defined $config->{$section}{source_ref} ) {
-    my $sectionName = $config->{$section}{source_ref};
-    my ( $result, $issource ) = do_get_raw_files( $config, $sectionName, 1 );
     return ( $result, 0 );
   }
 
