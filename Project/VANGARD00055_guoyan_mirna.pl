@@ -8,7 +8,7 @@ use CQS::RNASeq;
 use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-use CQS::ObjectFactory;
+use CQS::CQSFactory;
 
 my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 my $target_dir = create_directory_or_die($root);
