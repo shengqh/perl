@@ -706,7 +706,9 @@ my $config_mirna = {
 
 my $cutadapt = new CQS::Cutadapt();
 #cutadapt->generateScript( $config_rat, "cutadpat" );
-my $cutadapt_result = $cutadapt->getExpectResult($config_rat, "cutadpat");
-print "@{[ %{$cutadapt_result} ]}\n";
+my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadpat")};
+foreach my $k (sort keys %cutadapt_result) {
+    print "$k => @{$cutadapt_result{$k}}\n";
+}
 
 1;
