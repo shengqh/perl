@@ -11,10 +11,9 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = ( 'all' => [qw(new_class)] );
 
-our @classes = ( new CQS::Cutadapt() );
-
 sub new_class {
   my ($className) = @_;
+  my @classes = ( new CQS::Cutadapt() );
   foreach my $class (@classes) {
     if ( $class->name() eq $className ) {
       return $class->clone();
