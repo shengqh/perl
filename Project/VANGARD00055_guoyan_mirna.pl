@@ -707,6 +707,6 @@ my $config_mirna = {
 my $cutadapt = new CQS::Cutadapt();
 #cutadapt->generateScript( $config_rat, "cutadpat" );
 my $cutadapt_result = $cutadapt->getExpectResult($config_rat, "cutadpat");
-print $cutadapt_result;
+print "@{[ %{$cutadapt_result} ]}\n";
 
 1;
