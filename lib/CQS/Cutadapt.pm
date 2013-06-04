@@ -41,6 +41,7 @@ sub generateScript {
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $finalFile   = $sampleName . $extension;
 
     my $pbsName = "${sampleName}_cutadapt.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -59,14 +60,25 @@ $path_file
 cd $resultDir
 
 ";
-
-    for my $sampleFile (@sampleFiles) {
-      my $fileName = basename($sampleFile);
-      my $outputFile = change_extension( $fileName, $extension );
-      print OUT "cutadapt $sampleFile -a $adapt -o $outputFile \n";
+    if ( scalar(@sampleFiles) == 1 ) {
+      print OUT "cutadapt $sampleFiles[0] -a $adapt -o $finalFile \n";
     }
+    else {
+      my $outputFiles = "";
+      for my $sampleFile (@sampleFiles) {
+        my $fileName = basename($sampleFile);
+        my $outputFile = change_extension( $fileName, $extension );
+        $outputFiles = $outputFiles . " " . $outputFile;
+        print OUT "cutadapt $sampleFile -a $adapt -o $outputFile \n";
+      }
 
-    print OUT "
+      print OUT "
+cat $outputFiles > $finalFile
+ 
+rm $outputFiles
+";
+    }
+    print "
 echo finished=`date`
 
 exit 1 
