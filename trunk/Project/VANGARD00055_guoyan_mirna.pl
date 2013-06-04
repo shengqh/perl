@@ -34,15 +34,8 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-my $bowtie2_option = "--very-sensitive --gbar 50 --rdg 1000,1000 --rfg 1000,1000";
-
-#output at most 20 matches since one miRNA can map to at most 4 position in rno.gff3
-my $bowtie2_rat_option             = $bowtie2_option . " -k 20";
-my $bowtie2_rat_option_wholegenome = $bowtie2_rat_option . " -p 8";
-
-#output at most 11 matches since one miRNA can map to at most 11 position in hsa.gff3
-my $bowtie2_human_option             = $bowtie2_option . " -k 20";
-my $bowtie2_human_option_wholegenome = $bowtie2_rat_option . " -p 8";
+my $bowtie2_option = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -a";
+my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
 my $bowtie1_option             = "-v 1 -n 1 -l 12 -k 200 --best --strata";
 my $bowtie1_option_wholegenome = $bowtie1_option . " -p 8";
@@ -120,7 +113,7 @@ my $config_rat = {
   bowtie2 => {
     class         => "Bowtie2",
     target_dir    => "${target_rat_dir}/bowtie2_genome",
-    option        => $bowtie2_rat_option_wholegenome,
+    option        => $bowtie2_option_wholegenome,
     source_ref    => "identical",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
@@ -176,7 +169,7 @@ my $config_rat = {
   },
   bowtie2_old => {
     target_dir    => "${target_rat_dir}/bowtie2_genome",
-    option        => $bowtie2_rat_option_wholegenome,
+    option        => $bowtie2_option_wholegenome,
     source_ref    => "identical_fastqfiles",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
@@ -520,7 +513,7 @@ my $config_human = {
   bowtie2 => {
     class         => "Bowtie2",
     target_dir    => "${target_human_dir}/bowtie2_genome",
-    option        => $bowtie2_human_option_wholegenome,
+    option        => $bowtie2_option_wholegenome,
     source_ref    => "identical",
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
@@ -579,7 +572,7 @@ my $config_human = {
   },
   bowtie2_old => {
     target_dir    => "${target_human_dir}/bowtie2_genome",
-    option        => $bowtie2_human_option_wholegenome,
+    option        => $bowtie2_option_wholegenome,
     source_ref    => "identical_fastqfiles  ",
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
