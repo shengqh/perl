@@ -705,7 +705,8 @@ my $config_mirna = {
 
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
-my $cutadapt = new_instance($config_rat->{cutadapt}{class});
+my $classname = $config_rat->{cutadapt}{class};
+my $cutadapt = new_instance($classname);
 #cutadapt->generateScript( $config_rat, "cutadapt" );
 my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadapt")};
 foreach my $k (sort keys %cutadapt_result) {
