@@ -245,7 +245,7 @@ my $config_human = {
     path_file => "/home/shengq1/local/bin/path.txt",
     task_name => $task_name . "_human"
   },
-  oiginalfiles => {
+  originalfiles => {
     "2516-10"  => ["${root}/rawdata/2516-KCV-10_1.fastq"],
     "2516-11"  => ["${root}/rawdata/2516-KCV-11_1.fastq"],
     "2516-12"  => ["${root}/rawdata/2516-KCV-12_1.fastq"],
