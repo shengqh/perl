@@ -869,11 +869,18 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
 #
-#bowtie2( $config_rat, "bowtie2" );
-#bowtie2( $config_human, "bowtie2" );
+bowtie2( $config_rat, "bowtie2_cutadapt" );
+bowtie2( $config_rat, "bowtie2_identical" );
+
+bowtie2( $config_human, "bowtie2_cutadapt" );
+bowtie2( $config_human, "bowtie2_identical" );
 #
 bowtie1( $config_rat,   "bowtie1_cutadapt" );
+bowtie1( $config_rat,   "bowtie1_identical" );
+
 bowtie1( $config_human, "bowtie1_cutadapt" );
+bowtie1( $config_human, "bowtie1_identical" );
+
 #
 #mirna_count( $config_rat,   "mirna_count_bwa" );
 #mirna_count( $config_human, "mirna_count_bwa" );
