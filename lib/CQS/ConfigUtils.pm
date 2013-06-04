@@ -6,6 +6,7 @@ use warnings;
 use File::Basename;
 use CQS::FileUtils;
 use CQS::PBS;
+use CQS::ClassFactory;
 
 require Exporter;
 
@@ -73,8 +74,6 @@ sub get_param_file {
   return ($result);
 }
 
-use CQS::ClassFactory;
-
 sub do_get_raw_files {
   my ( $config, $section, $returnself ) = @_;
 
@@ -88,7 +87,7 @@ sub do_get_raw_files {
     my $sectionName = $config->{$section}{source_ref};
     die "section $sectionName was not defined!" if !defined $config->{$sectionName};
     if ( defined $config->{$sectionName}{class} ) {
-      my $myclass = new_class( $config->{$sectionName}{class} );
+      my $myclass = instantiate( $config->{$sectionName}{class} );
       return ( $myclass->getExpectResult(), 0 );
     }
     else {

@@ -4,30 +4,24 @@ package CQS::ClassFactory;
 use strict;
 use warnings;
 
-require CQS::Cutadapt;
 require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(new_class)] );
+our %EXPORT_TAGS = ( 'all' => [qw(instantiate)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.01';
 
-use Cwd;
+sub instantiate {
+  my $requested_type = shift;
+  my $location       = "CQS/$requested_type.pm";
+  my $class          = "CQS::$requested_type";
 
-my @classes = ( new CQS::Cutadapt() );
+  require $location;
 
-sub new_class {
-  my ($className) = @_;
-  foreach my $class (@classes) {
-    if ( $class->name() eq $className ) {
-      return $class;
-    }
-  }
-
-  die "Cannot find class $className";
+  return $class->new(@_);
 }
 
 1;
