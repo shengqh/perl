@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::Bowtie2;
+package CQS::Bowtie1;
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ our @ISA = qw(CQS::AbstractBowtie);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "Bowtie2";
+  $self->{_name} = "Bowtie1";
   bless $self, $class;
   return $self;
 }
@@ -28,7 +28,7 @@ sub generateScript {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
-  my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
+  my $bowtie1_index = $config->{$section}{bowtie1_index} or die "define ${section}::bowtie1_index first";
   my $samonly = $config->{$section}{samonly};
   if ( !defined $samonly ) {
     $samonly = 0;
@@ -54,15 +54,15 @@ sub generateScript {
     my $tag    = "--sam-RG ID:$sampleName --sam-RG LB:$sampleName --sam-RG SM:$sampleName --sam-RG PL:ILLUMINA";
 
     my $fastqs = join( ',', @sampleFiles );
-    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs $tag";
+    my $bowtie1_aln_command = "bowtie $option -S $bowtie1_index $tag $fastqs";
 
     my $index_command = get_index_command( $bamFile, $indent );
     my $stat_command = get_stat_command( $bamFile, $indent );
 
-    my $pbsName = "${sampleName}_bowtie2.pbs";
+    my $pbsName = "${sampleName}_bowtie1.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
-    my $log     = "${logDir}/${sampleName}_bowtie2.log";
+    my $log     = "${logDir}/${sampleName}_bowtie1.log";
 
     print SH "\$MYCMD ./$pbsName \n";
 
@@ -82,7 +82,7 @@ if [ -s $samFile ]; then
   exit 0
 fi
 
-$bowtie2_aln_command -S $samFile
+$bowtie1_aln_command -S $samFile
 ";
     }
     else {
@@ -92,7 +92,7 @@ if [ -s $bamFile ]; then
   exit 0
 fi
 
-$bowtie2_aln_command | samtools view -S -b - | samtools sort - $sampleName
+$bowtie1_aln_command | samtools view -S -b - | samtools sort - $sampleName
 
 $index_command
 
@@ -116,7 +116,6 @@ exit 1;
     chmod 0755, $shfile;
   }
 
-  print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+  print "!!!shell file $shfile created, you can run this shell file to submit all bowtie1 tasks.\n";
 }
-
 1;
