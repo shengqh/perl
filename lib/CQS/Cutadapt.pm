@@ -78,7 +78,7 @@ cat $outputFiles > $finalFile
 rm $outputFiles
 ";
     }
-    print "
+    print OUT "
 echo finished=`date`
 
 exit 1 

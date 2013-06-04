@@ -30,4 +30,5 @@ sub generateScript {
   my $obj = instantiate($classname);
   $obj->generateScript( $config, $section );
 }
+
 1;
