@@ -4,6 +4,7 @@ package CQS::ClassFactory;
 use strict;
 use warnings;
 
+require CQS::Cutadapt;
 require Exporter;
 
 our @ISA = qw(Exporter);
