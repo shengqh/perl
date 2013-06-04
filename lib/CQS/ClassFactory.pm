@@ -8,7 +8,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(instantiate)] );
+our %EXPORT_TAGS = ( 'all' => [qw(instantiate generateScript)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -24,4 +24,10 @@ sub instantiate {
   return $class->new(@_);
 }
 
+sub generateScript {
+  my ( $config, $section ) = @_;
+  my $classname = $config->{$section}{class} or die "No class defined in section $section.";
+  my $obj = instantiate($classname);
+  $obj->generateScript( $config, "section" );
+}
 1;
