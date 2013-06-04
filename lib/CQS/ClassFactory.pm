@@ -9,11 +9,11 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(new_instance)] );
+our %EXPORT_TAGS = ( 'all' => [qw(new_class)] );
 
 my @classes = ( new CQS::Cutadapt() );
 
-sub new_instance {
+sub new_class {
   my ($className) = @_;
   foreach my $class (@classes) {
     if ( $class->name() eq $className ) {
