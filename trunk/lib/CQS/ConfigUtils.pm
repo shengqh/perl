@@ -7,6 +7,7 @@ use File::Basename;
 use CQS::FileUtils;
 use CQS::PBS;
 
+require CQS::ClassFactory;
 require Exporter;
 
 our @ISA = qw(Exporter);
