@@ -8,21 +8,16 @@ use CQS::PBS;
 use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::FileUtils;
+use CQS::Task;
+
+our @ISA = qw(CQS::Task);
 
 sub new {
   my ($class) = @_;
-  my $self = { _name => "Cutadapt" };
+  my $self = $class->SUPER::new();
+  $self->{_name} = "Cutadapt";
   bless $self, $class;
   return $self;
-}
-
-sub name {
-  my ($self) = @_;
-  return $self->{_name};
-}
-
-sub clone {
-  return new CQS::Cutadapt();
 }
 
 sub generateScript {
