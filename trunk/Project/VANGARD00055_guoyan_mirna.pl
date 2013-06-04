@@ -705,6 +705,8 @@ my $config_mirna = {
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
 my $cutadapt = new CQS::Cutadapt();
-$cutadapt->generateScript( $config_rat, "cutadpat" );
+#cutadapt->generateScript( $config_rat, "cutadpat" );
+my $cutadapt_result = $cutadapt->getExpectResult($config_rat, "cutadpat");
+print $cutadapt_result;
 
 1;
