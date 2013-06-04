@@ -8,6 +8,7 @@ use CQS::RNASeq;
 use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
+use CQS::Cutadapt;
 
 my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 my $target_dir = create_directory_or_die($root);
@@ -26,7 +27,7 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-my $bowtie2_option             = "--very-sensitive --gbar 50 --rdg 1000,1000 --rfg 1000,1000";
+my $bowtie2_option = "--very-sensitive --gbar 50 --rdg 1000,1000 --rfg 1000,1000";
 
 #output at most 20 matches since one miRNA can map to at most 4 position in rno.gff3
 my $bowtie2_rat_option             = $bowtie2_option . " -k 20";
@@ -48,21 +49,30 @@ my $config_rat = {
     path_file => "/home/shengq1/local/bin/path.txt",
     task_name => $task_name . "_rat"
   },
+  originalfiles => {
+    "2516-01" => ["${root}/rawdata/2516-KCV-1_1.fastq"],
+    "2516-02" => ["${root}/rawdata/2516-KCV-2_1.fastq"],
+    "2516-03" => ["${root}/rawdata/2516-KCV-3_1.fastq"],
+    "2516-04" => ["${root}/rawdata/2516-KCV-4_1.fastq"],
+    "2516-05" => ["${root}/rawdata/2516-KCV-5_1.fastq"],
+    "2516-06" => ["${root}/rawdata/2516-KCV-6_1.fastq"],
+    "2516-07" => ["${root}/rawdata/2516-KCV-7_1.fastq"],
+    "2516-08" => ["${root}/rawdata/2516-KCV-8_1.fastq"],
+    "2516-09" => ["${root}/rawdata/2516-KCV-9_1.fastq"],
+  },
   fastqfiles => {
-    "2516-01"           => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
-    "2516-02"           => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
-    "2516-03"           => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
-    "2516-04"           => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
-    "2516-05"           => ["${root}/cutadapt/2516-KCV-5_1_clipped.fastq"],
-    "2516-06"           => ["${root}/cutadapt/2516-KCV-6_1_clipped.fastq"],
-    "2516-07"           => ["${root}/cutadapt/2516-KCV-7_1_clipped.fastq"],
-    "2516-08"           => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
-    "2516-09"           => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
+    "2516-01" => ["${root}/cutadapt/2516-KCV-1_1_clipped.fastq"],
+    "2516-02" => ["${root}/cutadapt/2516-KCV-2_1_clipped.fastq"],
+    "2516-03" => ["${root}/cutadapt/2516-KCV-3_1_clipped.fastq"],
+    "2516-04" => ["${root}/cutadapt/2516-KCV-4_1_clipped.fastq"],
+    "2516-05" => ["${root}/cutadapt/2516-KCV-5_1_clipped.fastq"],
+    "2516-06" => ["${root}/cutadapt/2516-KCV-6_1_clipped.fastq"],
+    "2516-07" => ["${root}/cutadapt/2516-KCV-7_1_clipped.fastq"],
+    "2516-08" => ["${root}/cutadapt/2516-KCV-8_1_clipped.fastq"],
+    "2516-09" => ["${root}/cutadapt/2516-KCV-9_1_clipped.fastq"],
   },
-  identical_fastqfiles => {
-    "2516-01-identical" => ["${root}/cutadapt/2516-KCV-1_1_clipped.identical_12.fastq"],
-  },
-  unmappedfiles => {
+  identical_fastqfiles => { "2516-01-identical" => ["${root}/cutadapt/2516-KCV-1_1_clipped.identical_12.fastq"], },
+  unmappedfiles        => {
     "2516-01" => ["${target_rat_dir}/bowtie2_genome/result/2516-01/2516-01.bam.unmapped.fastq"],
     "2516-02" => ["${target_rat_dir}/bowtie2_genome/result/2516-02/2516-02.bam.unmapped.fastq"],
     "2516-03" => ["${target_rat_dir}/bowtie2_genome/result/2516-03/2516-03.bam.unmapped.fastq"],
@@ -72,6 +82,20 @@ my $config_rat = {
     "2516-07" => ["${target_rat_dir}/bowtie2_genome/result/2516-07/2516-07.bam.unmapped.fastq"],
     "2516-08" => ["${target_rat_dir}/bowtie2_genome/result/2516-08/2516-08.bam.unmapped.fastq"],
     "2516-09" => ["${target_rat_dir}/bowtie2_genome/result/2516-09/2516-09.bam.unmapped.fastq"],
+  },
+  cutadpat => {
+    target_dir => "${target_rat_dir}/cutadapt",
+    option     => "",
+    source_ref => "originalfiles",
+    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+    extension  => "_clipped.fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
   },
   bwa_mature => {
     target_dir   => "${target_rat_dir}/bwa_miRBase_species",
@@ -207,10 +231,8 @@ my $config_human = {
     path_file => "/home/shengq1/local/bin/path.txt",
     task_name => $task_name . "_human"
   },
-  identical_fastqfiles => {
-    "2516-10-identical"  => ["${root}/cutadapt/2516-KCV-10_1_clipped.identical_12.fastq"],
-  },
-  fastqfiles => {
+  identical_fastqfiles => { "2516-10-identical" => ["${root}/cutadapt/2516-KCV-10_1_clipped.identical_12.fastq"], },
+  fastqfiles           => {
     "2516-10"  => ["${root}/cutadapt/2516-KCV-10_1_clipped.fastq"],
     "2516-11"  => ["${root}/cutadapt/2516-KCV-11_1_clipped.fastq"],
     "2516-12"  => ["${root}/cutadapt/2516-KCV-12_1_clipped.fastq"],
@@ -662,7 +684,7 @@ my $config_mirna = {
 #bowtie2( $config_rat, "bowtie2" );
 #bowtie2( $config_human, "bowtie2" );
 #
-bowtie1( $config_rat,   "bowtie1" );
+#bowtie1( $config_rat,   "bowtie1" );
 #bowtie1( $config_human, "bowtie1" );
 #
 #mirna_count( $config_rat,   "mirna_count_bwa" );
@@ -681,5 +703,8 @@ bowtie1( $config_rat,   "bowtie1" );
 #bowtie2( $config_human, "bowtie2_mature" );
 
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
+
+my $cutadapt = new CQS::Cutadapt();
+$cutadapt->generateScript( $config_rat, "cutadpat" );
 
 1;
