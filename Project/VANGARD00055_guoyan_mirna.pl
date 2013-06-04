@@ -48,7 +48,7 @@ my $novoalign_option = "-l 15 -t 30 -r Random -m";
 my $shrimp2_option = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
 
 my $config_rat = {
-  general => { "task_name" => $task_name . "_rat" },
+  general => { "task_name" => $task_name . "_rat", },
   originalfiles => {
     "2516-01" => ["${root}/rawdata/2516-KCV-1_1.fastq"],
     "2516-02" => ["${root}/rawdata/2516-KCV-2_1.fastq"],
