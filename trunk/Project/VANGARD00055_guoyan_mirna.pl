@@ -719,13 +719,13 @@ my $config_mirna = {
 
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
-my $cutadapt = instantiate($config_rat->{cutadapt}{class});
-
-#cutadapt->generateScript( $config_rat, "cutadapt" );
-my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadapt")};
-foreach my $k (sort keys %cutadapt_result) {
-    print "$k => @{$cutadapt_result{$k}}\n";
-}
+#my $cutadapt = instantiate($config_rat->{cutadapt}{class});
+#
+##cutadapt->generateScript( $config_rat, "cutadapt" );
+#my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadapt")};
+#foreach my $k (sort keys %cutadapt_result) {
+#    print "$k => @{$cutadapt_result{$k}}\n";
+#}
 
 bowtie2($config_rat, "bowtie2_test");
 
