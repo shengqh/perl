@@ -97,16 +97,17 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  bowtie2_test => {
-    target_dir    => "${target_rat_dir}/bowtie2_genome_test",
-    option        => $bowtie2_rat_option_wholegenome,
-    source_ref    => "cutadapt",
-    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
-    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
-    samonly       => 0,
-    pbs           => {
+  identical =>{
+    class      => "IdenticalQueryBuilder",
+    target_dir => "${target_rat_dir}/identical",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools    => "~/cqstools/CQS.Tools.exe",
+    extension  => "_clipped_identical.fastq",
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "24",
       "mem"      => "20gb"
     },
@@ -475,6 +476,21 @@ my $config_human = {
     source_ref => "originalfiles",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  identical =>{
+    class      => "IdenticalQueryBuilder",
+    target_dir => "${target_human_dir}/identical",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools    => "~/cqstools/CQS.Tools.exe",
+    extension  => "_clipped_identical.fastq",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
