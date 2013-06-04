@@ -28,6 +28,6 @@ sub generateScript {
   my ( $config, $section ) = @_;
   my $classname = $config->{$section}{class} or die "No class defined in section $section.";
   my $obj = instantiate($classname);
-  $obj->generateScript( $config, "section" );
+  $obj->generateScript( $config, $section );
 }
 1;
