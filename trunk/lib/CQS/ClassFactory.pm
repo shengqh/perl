@@ -23,3 +23,5 @@ sub new_class {
 
   die "Cannot find class $className";
 }
+
+1;
