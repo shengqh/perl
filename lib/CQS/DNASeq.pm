@@ -9,13 +9,12 @@ use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::NGSCommon;
-use CQS::Cutadapt;
 
 require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(new_class bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index refine_bam_file gatk_snpindel bowtie1 bowtie2)] );
+our %EXPORT_TAGS = ( 'all' => [qw(bwa_refine bwa_by_pbs_single bwa_by_pbs_double samtools_index refine_bam_file gatk_snpindel bowtie1 bowtie2)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
