@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::ClassFactory;
+package CQS::ObjectFactory;
 
 use strict;
 use warnings;
@@ -9,9 +9,9 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(new_class)] );
+our %EXPORT_TAGS = ( 'all' => [qw(new_object)] );
 
-sub new_class {
+sub new_object {
   my ($className) = @_;
   my @classes = ( new CQS::Cutadapt() );
   foreach my $class (@classes) {
