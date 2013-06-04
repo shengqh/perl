@@ -84,7 +84,7 @@ my $config_rat = {
     "2516-09" => ["${target_rat_dir}/bowtie2_genome/result/2516-09/2516-09.bam.unmapped.fastq"],
   },
   cutadapt => {
-    class =>"CQS::Cutadapt",
+    class =>"Cutadapt",
     target_dir => "${target_rat_dir}/cutadapt",
     option     => "",
     source_ref => "originalfiles",
