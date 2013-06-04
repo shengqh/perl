@@ -53,6 +53,7 @@ sub generateScript {
 $path_file
 
 cd $resultDir
+
 ";
 
     for my $sampleFile (@sampleFiles) {
@@ -102,7 +103,7 @@ sub getExpectResult {
       push( @resultFiles, $resultDir . "/" . $outputFile );
     }
 
-    $result->{$sampleName} = @resultFiles;
+    $result->{$sampleName} = \@resultFiles;
   }
   return $result;
 }
