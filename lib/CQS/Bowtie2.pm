@@ -53,7 +53,7 @@ sub generateScript {
     my $tag    = "--sam-RG ID:$sampleName --sam-RG LB:$sampleName --sam-RG SM:$sampleName --sam-RG PL:ILLUMINA";
 
     my $fastqs = join( ',', @sampleFiles );
-    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs -S $samFile $tag";
+    my $bowtie2_aln_command = "bowtie2 $option -x $bowtie2_index -U $fastqs $tag";
 
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam( $bamFile, $indent );
 
@@ -84,7 +84,7 @@ if [ -s $samFile ]; then
   exit 0
 fi
 
-$bowtie2_aln_command
+$bowtie2_aln_command -S $samFile
 ";
     }
     else {
@@ -94,11 +94,7 @@ if [ -s $bamSortedFile ]; then
   exit 0
 fi
 
-$bowtie2_aln_command
-
-$sam2bam_command
-
-$sort_index_command
+$bowtie2_aln_command | samtools view -S -b - | samtools sort - $bamSortedPrefix
 
 $stat_command
 ";
