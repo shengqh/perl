@@ -36,7 +36,7 @@ my $bowtie2_rat_option_wholegenome = $bowtie2_rat_option . " -p 8";
 my $bowtie2_human_option             = $bowtie2_option . " -k 20";
 my $bowtie2_human_option_wholegenome = $bowtie2_rat_option . " -p 8";
 
-my $bowtie1_option             = "-v 1 --best";
+my $bowtie1_option             = "-v 1 -n 1 -l 12 -k 200 --best --strata";
 my $bowtie1_option_wholegenome = $bowtie1_option . " -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
@@ -104,7 +104,7 @@ my $config_rat = {
   bowtie1 => {
     target_dir    => "${target_rat_dir}/bowtie1_genome",
     option        => $bowtie1_option_wholegenome,
-    source_ref    => "fastqfiles",
+    source_ref    => "identical_fastqfiles",
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
     samonly       => 0,
@@ -405,7 +405,7 @@ my $config_human = {
   bowtie2 => {
     target_dir    => "${target_human_dir}/bowtie2_genome",
     option        => $bowtie2_human_option_wholegenome,
-    source_ref    => "identical_fastqfiles",
+    source_ref    => "identical_fastqfiles  ",
     bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
     samonly       => 0,
@@ -660,10 +660,9 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_human, "bwa" );
 #
 #bowtie2( $config_rat, "bowtie2" );
-
-bowtie2( $config_human, "bowtie2" );
+#bowtie2( $config_human, "bowtie2" );
 #
-#bowtie1( $config_rat,   "bowtie1" );
+bowtie1( $config_rat,   "bowtie1" );
 #bowtie1( $config_human, "bowtie1" );
 #
 #mirna_count( $config_rat,   "mirna_count_bwa" );
