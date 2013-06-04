@@ -11,9 +11,9 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+#my $root = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 
-#my $root       = "d:/temp";
+my $root       = "d:/temp";
 my $target_dir = create_directory_or_die($root);
 
 my $target_rat_dir   = create_directory_or_die( $target_dir . "/rat" );
