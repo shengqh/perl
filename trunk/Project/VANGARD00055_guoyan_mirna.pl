@@ -113,6 +113,7 @@ my $config_rat = {
     },
   },
   bowtie2 => {
+    class      => "Bowtie2",
     target_dir    => "${target_rat_dir}/bowtie2_genome",
     option        => $bowtie2_rat_option_wholegenome,
     source_ref    => "identical",
@@ -514,6 +515,7 @@ my $config_human = {
     },
   },
   bowtie2 => {
+    class      => "Bowtie2",
     target_dir    => "${target_human_dir}/bowtie2_genome",
     option        => $bowtie2_human_option_wholegenome,
     source_ref    => "identical",
