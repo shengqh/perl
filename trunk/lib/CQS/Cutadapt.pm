@@ -11,9 +11,18 @@ use CQS::FileUtils;
 
 sub new {
   my ($class) = @_;
-  my $self = {};
+  my $self = { _name => "Cutadapt" };
   bless $self, $class;
   return $self;
+}
+
+sub name {
+  my ($self) = @_;
+  return $self->{_name};
+}
+
+sub clone {
+  return new CQS::Cutadapt();
 }
 
 sub generateScript {
