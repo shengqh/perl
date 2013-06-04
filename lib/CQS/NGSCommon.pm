@@ -10,7 +10,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_sorted_bam get_sam2bam_command get_sort_index_command get_stat_command)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_sorted_bam get_sam2bam_command get_sort_index_command get_sort_command get_index_command get_stat_command)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -40,7 +40,7 @@ ${indent}fi";
   return ($command);
 }
 
-sub get_sort_index_command {
+sub get_sort_command {
   my ( $bamFile, $bamSortedPrefix, $indent ) = @_;
 
   if ( !defined($indent) ) {
@@ -58,9 +58,18 @@ sub get_sort_index_command {
   my $command = "${indent}if [ -s $bamFile ]; then
 ${indent}  echo BamSort=`date` 
 ${indent}  samtools sort $bamFile $bamSortedPrefix 
-${indent}fi
+${indent}fi";
+  return ($command);
+}
 
-${indent}if [ -s $bamSortedFile ]]; then
+sub get_index_command {
+  my ( $bamSortedFile, $indent ) = @_;
+
+  if ( !defined($indent) ) {
+    $indent = "";
+  }
+
+  my $command = "${indent}if [ -s $bamSortedFile ]; then
 ${indent}  echo BamIndex=`date` 
 ${indent}  samtools index $bamSortedFile
 ${indent}fi";
@@ -75,11 +84,24 @@ sub get_stat_command {
   }
 
   my $command = "${indent}if [ -s $bamSortedFile ]; then
-${indent}  echo bamstat=`date`
+${indent}  echo BamStat=`date`
 ${indent}  samtools flagstat $bamSortedFile > ${bamSortedFile}.stat 
 ${indent}fi";
 
   return ($command);
+}
+
+sub get_sort_index_command {
+  my ( $bamFile, $bamSortedPrefix, $indent ) = @_;
+  my $bamSortedFile;
+  if ( !defined $bamSortedPrefix ) {
+    ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile);
+  }
+  else {
+    $bamSortedFile = $bamSortedPrefix . ".bam";
+  }
+
+  return get_sort_command($bamFile, $bamSortedPrefix, $indent) . "\n" . get_index_command($bamSortedFile, $indent);  
 }
 
 1;
