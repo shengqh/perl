@@ -98,6 +98,20 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
+  bowtie2_test => {
+    target_dir    => "${target_rat_dir}/bowtie2_genome_test",
+    option        => $bowtie2_rat_option_wholegenome,
+    source_ref    => "cutadapt",
+    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   bwa_mature => {
     target_dir   => "${target_rat_dir}/bwa_miRBase_species",
     option       => $bwa_option,
@@ -712,5 +726,7 @@ my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadapt")};
 foreach my $k (sort keys %cutadapt_result) {
     print "$k => @{$cutadapt_result{$k}}\n";
 }
+
+bowtie2($config_rat, "bowtie2_test");
 
 1;
