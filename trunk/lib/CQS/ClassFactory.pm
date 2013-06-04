@@ -3,7 +3,6 @@ package CQS::ClassFactory;
 
 use strict;
 use warnings;
-use CQS::Cutadapt;
 
 require Exporter;
 
