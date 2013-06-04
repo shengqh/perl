@@ -32,7 +32,7 @@ sub get_sam2bam_command {
     $indent = "";
   }
 
-  my $command = "${indent}if [[ -s $samFile && ! -s $bamFile ]]; then
+  my $command = "${indent}if [ -s $samFile ]; then
 ${indent}  echo sam2bam=`date`
 ${indent}  samtools view -b -S $samFile -o $bamFile
 ${indent}fi";
@@ -55,12 +55,12 @@ sub get_sort_index_command {
     $bamSortedFile = $bamSortedPrefix . ".bam";
   }
 
-  my $command = "${indent}if [[ -s $bamFile && ! -s $bamSortedFile ]]; then
+  my $command = "${indent}if [ -s $bamFile ]; then
 ${indent}  echo BamSort=`date` 
 ${indent}  samtools sort $bamFile $bamSortedPrefix 
 ${indent}fi
 
-${indent}if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.bai ]]; then
+${indent}if [ -s $bamSortedFile ]]; then
 ${indent}  echo BamIndex=`date` 
 ${indent}  samtools index $bamSortedFile
 ${indent}fi";
@@ -74,7 +74,7 @@ sub get_stat_command {
     $indent = "";
   }
 
-  my $command = "${indent}if [[ -s $bamSortedFile && ! -s ${bamSortedFile}.stat ]]; then
+  my $command = "${indent}if [ -s $bamSortedFile ]; then
 ${indent}  echo bamstat=`date`
 ${indent}  samtools flagstat $bamSortedFile > ${bamSortedFile}.stat 
 ${indent}fi";
