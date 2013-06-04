@@ -7,7 +7,6 @@ use File::Basename;
 use CQS::FileUtils;
 use CQS::PBS;
 
-require CQS::ClassFactory;
 require Exporter;
 
 our @ISA = qw(Exporter);
@@ -73,6 +72,8 @@ sub get_param_file {
   }
   return ($result);
 }
+
+require CQS::ClassFactory;
 
 sub do_get_raw_files {
   my ( $config, $section, $returnself ) = @_;
