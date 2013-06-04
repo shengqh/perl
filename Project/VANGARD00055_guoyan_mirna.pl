@@ -896,8 +896,8 @@ bowtie1( $config_human, "bowtie1" );
 #generateScript($config_human, "cutadapt");
 #generateScript($config_rat, "identical");
 #generateScript($config_human, "identical");
-generateScript( $config_rat,   "bowtie2" );
-generateScript( $config_human, "bowtie2" );
+#generateScript( $config_rat,   "bowtie2" );
+#generateScript( $config_human, "bowtie2" );
 
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #
