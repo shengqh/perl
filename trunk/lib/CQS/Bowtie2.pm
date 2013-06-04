@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::Cutadapt;
+package CQS::Bowtie2;
 
 use strict;
 use warnings;
