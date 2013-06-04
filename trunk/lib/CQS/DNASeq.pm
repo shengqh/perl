@@ -9,6 +9,7 @@ use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::NGSCommon;
+use CQS::Cutadapt;
 
 require Exporter;
 
