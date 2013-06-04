@@ -58,7 +58,7 @@ sub generateScript {
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam( $bamFile, $indent );
 
     my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile, $indent );
-    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix, $indent );
+    my $index_command = get_index_command( $bamSortedFile, $indent );
     my $stat_command = get_stat_command( $bamSortedFile, $indent );
 
     my $pbsName = "${sampleName}_bowtie2.pbs";
@@ -95,6 +95,8 @@ if [ -s $bamSortedFile ]; then
 fi
 
 $bowtie2_aln_command | samtools view -S -b - | samtools sort - $bamSortedPrefix
+
+$index_command
 
 $stat_command
 ";
