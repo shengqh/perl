@@ -8,7 +8,7 @@ use CQS::RNASeq;
 use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-#use CQS::ClassFactory;
+use CQS::ClassFactory;
 
 my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 my $target_dir = create_directory_or_die($root);
@@ -706,7 +706,7 @@ my $config_mirna = {
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
 my $classname = $config_rat->{cutadapt}{class};
-my $cutadapt = new_class($classname);
+my $cutadapt = CQS::ClassFactory::new_class($classname);
 #cutadapt->generateScript( $config_rat, "cutadapt" );
 my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadapt")};
 foreach my $k (sort keys %cutadapt_result) {
