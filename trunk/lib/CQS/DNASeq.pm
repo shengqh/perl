@@ -22,18 +22,6 @@ our $VERSION = '0.01';
 
 use Cwd;
 
-sub new_class {
-  my ($className) = @_;
-  my @classes = ( new CQS::Cutadapt() );
-  foreach my $class (@classes) {
-    if ( $class->name() eq $className ) {
-      return $class->clone();
-    }
-  }
-
-  die "Cannot find class $className";
-}
-
 sub get_bwa_aln_command {
   my ( $sampleFile, $option, $faFile, $indent ) = @_;
 
