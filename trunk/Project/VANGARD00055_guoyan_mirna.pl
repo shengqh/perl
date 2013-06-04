@@ -8,9 +8,11 @@ use CQS::RNASeq;
 use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
+use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+#my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+my $root       = "d:/temp";
 my $target_dir = create_directory_or_die($root);
 
 my $target_rat_dir   = create_directory_or_die( $target_dir . "/rat" );
@@ -46,7 +48,6 @@ my $shrimp2_option = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
 
 my $config_rat = {
   general => {
-    path_file => "/home/shengq1/local/bin/path.txt",
     task_name => $task_name . "_rat"
   },
   originalfiles => {
@@ -727,6 +728,9 @@ my $config_mirna = {
 #    print "$k => @{$cutadapt_result{$k}}\n";
 #}
 
-bowtie2($config_rat, "bowtie2_test");
+my %rawFiles = %{ get_raw_files( $config_rat, "bowtie2_test" ) };
+foreach my $k (sort keys %rawFiles) {
+    print "$k => @{$rawFiles{$k}}\n";
+}
 
 1;

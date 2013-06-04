@@ -110,14 +110,9 @@ sub getExpectResult {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $finalFile   = $sampleName . $extension;
     my @resultFiles = ();
-
-    for my $sampleFile (@sampleFiles) {
-      my $fileName = basename($sampleFile);
-      my $outputFile = change_extension( $fileName, $extension );
-      push( @resultFiles, $resultDir . "/" . $outputFile );
-    }
+    push( @resultFiles, $resultDir . "/" . $finalFile );
 
     $result->{$sampleName} = \@resultFiles;
   }
