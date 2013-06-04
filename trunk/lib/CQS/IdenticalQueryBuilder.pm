@@ -73,7 +73,7 @@ cd $resultDir
 
 ";
     if ( scalar(@sampleFiles) == 1 ) {
-      print OUT "mono $cqstools mirna_identical -i $sampleFiles[0] $minlen -o $finalFile \n";
+      print OUT "mono $cqstools fastq_identical -i $sampleFiles[0] $minlen -o $finalFile \n";
     }
     else {
       my $outputFiles = "";
@@ -81,7 +81,7 @@ cd $resultDir
         my $fileName = basename($sampleFile);
         my $outputFile = change_extension( $fileName, $extension );
         $outputFiles = $outputFiles . " " . $outputFile;
-        print OUT "mono $cqstools mirna_identical -i $sampleFiles[0] $minlen -o $outputFile \n";
+        print OUT "mono $cqstools fastq_identical -i $sampleFiles[0] $minlen -o $outputFile \n";
       }
 
       if ($merge_result) {
