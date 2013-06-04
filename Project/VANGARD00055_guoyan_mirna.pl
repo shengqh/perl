@@ -112,7 +112,7 @@ my $config_rat = {
   },
   bowtie2_cutadapt => {
     class         => "Bowtie2",
-    target_dir    => "${target_rat_dir}/bowtie2_genome",
+    target_dir    => "${target_rat_dir}/bowtie2_genome_cutadapt",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "cutadapt",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
@@ -141,7 +141,7 @@ my $config_rat = {
     },
   },
   bowtie1_cutadapt => {
-    target_dir    => "${target_rat_dir}/bowtie1_genome",
+    target_dir    => "${target_rat_dir}/bowtie1_genome_cutadapt",
     option        => $bowtie1_option_wholegenome,
     source_ref    => "cutadapt",
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
@@ -527,7 +527,7 @@ my $config_human = {
   },
   bowtie2_cutadapt => {
     class         => "Bowtie2",
-    target_dir    => "${target_human_dir}/bowtie2_genome",
+    target_dir    => "${target_human_dir}/bowtie2_genome_cutadapt",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "cutadapt",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
@@ -556,7 +556,7 @@ my $config_human = {
     },
   },
   bowtie1_cutadapt => {
-    target_dir    => "${target_human_dir}/bowtie1_genome",
+    target_dir    => "${target_human_dir}/bowtie1_genome_cutadapt",
     option        => $bowtie1_option_wholegenome,
     source_ref    => "cutadapt",
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
@@ -872,8 +872,8 @@ my $config_mirna = {
 #bowtie2( $config_rat, "bowtie2" );
 #bowtie2( $config_human, "bowtie2" );
 #
-bowtie1( $config_rat,   "bowtie1" );
-bowtie1( $config_human, "bowtie1" );
+bowtie1( $config_rat,   "bowtie1_cutadapt" );
+bowtie1( $config_human, "bowtie1_cutadapt" );
 #
 #mirna_count( $config_rat,   "mirna_count_bwa" );
 #mirna_count( $config_human, "mirna_count_bwa" );
