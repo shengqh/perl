@@ -11,7 +11,8 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+my $root = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+
 #my $root       = "d:/temp";
 my $target_dir = create_directory_or_die($root);
 
@@ -47,7 +48,7 @@ my $novoalign_option = "-l 15 -t 30 -r Random -m";
 my $shrimp2_option = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
 
 my $config_rat = {
-  general       => { task_name => $task_name . "_rat" },
+  general => { "task_name" => $task_name . "_rat" },
   originalfiles => {
     "2516-01" => ["${root}/rawdata/2516-KCV-1_1.fastq"],
     "2516-02" => ["${root}/rawdata/2516-KCV-2_1.fastq"],
@@ -97,12 +98,12 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  identical =>{
+  identical => {
     class      => "IdenticalQueryBuilder",
     target_dir => "${target_rat_dir}/identical",
     option     => "",
     source_ref => "cutadapt",
-    cqstools    => "~/cqstools/CQS.Tools.exe",
+    cqstools   => "~/cqstools/CQS.Tools.exe",
     extension  => "_clipped_identical.fastq",
     sh_direct  => 1,
     pbs        => {
@@ -113,7 +114,7 @@ my $config_rat = {
     },
   },
   bowtie2 => {
-    class      => "Bowtie2",
+    class         => "Bowtie2",
     target_dir    => "${target_rat_dir}/bowtie2_genome",
     option        => $bowtie2_rat_option_wholegenome,
     source_ref    => "identical",
@@ -257,9 +258,7 @@ my $config_rat = {
 };
 
 my $config_human = {
-  general => {
-    task_name => $task_name . "_human"
-  },
+  general       => { task_name => $task_name . "_human" },
   originalfiles => {
     "2516-10"  => ["${root}/rawdata/2516-KCV-10_1.fastq"],
     "2516-11"  => ["${root}/rawdata/2516-KCV-11_1.fastq"],
@@ -499,12 +498,12 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
-  identical =>{
+  identical => {
     class      => "IdenticalQueryBuilder",
     target_dir => "${target_human_dir}/identical",
     option     => "",
     source_ref => "cutadapt",
-    cqstools    => "~/cqstools/CQS.Tools.exe",
+    cqstools   => "~/cqstools/CQS.Tools.exe",
     extension  => "_clipped_identical.fastq",
     sh_direct  => 1,
     pbs        => {
@@ -515,7 +514,7 @@ my $config_human = {
     },
   },
   bowtie2 => {
-    class      => "Bowtie2",
+    class         => "Bowtie2",
     target_dir    => "${target_human_dir}/bowtie2_genome",
     option        => $bowtie2_human_option_wholegenome,
     source_ref    => "identical",
@@ -858,8 +857,8 @@ my $config_mirna = {
 #generateScript($config_human, "cutadapt");
 #generateScript($config_rat, "identical");
 #generateScript($config_human, "identical");
-generateScript($config_rat, "bowtie2");
-generateScript($config_human, "bowtie2");
+generateScript( $config_rat,   "bowtie2" );
+generateScript( $config_human, "bowtie2" );
 
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #
