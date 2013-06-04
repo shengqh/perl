@@ -242,7 +242,6 @@ my $config_rat = {
 
 my $config_human = {
   general => {
-    path_file => "/home/shengq1/local/bin/path.txt",
     task_name => $task_name . "_human"
   },
   originalfiles => {
