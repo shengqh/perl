@@ -8,7 +8,7 @@ use CQS::RNASeq;
 use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-use CQS::Cutadapt;
+use CQS::ClassFactory;
 
 my $root       = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
 my $target_dir = create_directory_or_die($root);
@@ -83,7 +83,8 @@ my $config_rat = {
     "2516-08" => ["${target_rat_dir}/bowtie2_genome/result/2516-08/2516-08.bam.unmapped.fastq"],
     "2516-09" => ["${target_rat_dir}/bowtie2_genome/result/2516-09/2516-09.bam.unmapped.fastq"],
   },
-  cutadpat => {
+  cutadapt => {
+    class =>"CQS::Cutadapt",
     target_dir => "${target_rat_dir}/cutadapt",
     option     => "",
     source_ref => "originalfiles",
@@ -704,9 +705,9 @@ my $config_mirna = {
 
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
-my $cutadapt = new CQS::Cutadapt();
-#cutadapt->generateScript( $config_rat, "cutadpat" );
-my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadpat")};
+my $cutadapt = new_instance($config_rat->{cutadapt}{class});
+#cutadapt->generateScript( $config_rat, "cutadapt" );
+my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadapt")};
 foreach my $k (sort keys %cutadapt_result) {
     print "$k => @{$cutadapt_result{$k}}\n";
 }
