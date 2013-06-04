@@ -719,7 +719,7 @@ my $config_mirna = {
 
 #bowtie2( $config_human, "bowtie2_unmapped_mature" );
 
-my $cutadapt = new_class($config_rat->{cutadapt}{class});
+my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 
 #cutadapt->generateScript( $config_rat, "cutadapt" );
 my %cutadapt_result = %{$cutadapt->getExpectResult($config_rat, "cutadapt")};
