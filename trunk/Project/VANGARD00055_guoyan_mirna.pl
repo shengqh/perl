@@ -110,13 +110,56 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  bowtie2 => {
+  bowtie2_cutadapt => {
     class         => "Bowtie2",
     target_dir    => "${target_rat_dir}/bowtie2_genome",
+    option        => $bowtie2_option_wholegenome,
+    source_ref    => "cutadapt",
+    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie2_identical => {
+    class         => "Bowtie2",
+    target_dir    => "${target_rat_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "identical",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie1_cutadapt => {
+    target_dir    => "${target_rat_dir}/bowtie1_genome",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "cutadapt",
+    bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie1_identical => {
+    target_dir    => "${target_rat_dir}/bowtie1_genome_identical",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "identical",
+    bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -147,34 +190,6 @@ my $config_rat = {
     estimate_insert => 0,
     source_ref      => "fastqfiles",
     pbs             => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie1 => {
-    target_dir    => "${target_rat_dir}/bowtie1_genome",
-    option        => $bowtie1_option_wholegenome,
-    source_ref    => "identical_fastqfiles",
-    bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
-    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
-    samonly       => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie2_old => {
-    target_dir    => "${target_rat_dir}/bowtie2_genome",
-    option        => $bowtie2_option_wholegenome,
-    source_ref    => "identical_fastqfiles",
-    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
-    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
-    samonly       => 0,
-    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "24",
@@ -510,18 +525,60 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
-  bowtie2 => {
+  bowtie2_cutadapt => {
     class         => "Bowtie2",
     target_dir    => "${target_human_dir}/bowtie2_genome",
     option        => $bowtie2_option_wholegenome,
-    source_ref    => "identical",
-    bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
-    fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa",
+    source_ref    => "cutadapt",
+    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
     samonly       => 0,
-    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie2_identical => {
+    class         => "Bowtie2",
+    target_dir    => "${target_human_dir}/bowtie2_genome_identical",
+    option        => $bowtie2_option_wholegenome,
+    source_ref    => "identical",
+    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie1_cutadapt => {
+    target_dir    => "${target_human_dir}/bowtie1_genome",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "cutadapt",
+    bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie1_identical => {
+    target_dir    => "${target_human_dir}/bowtie1_genome_identical",
+    option        => $bowtie1_option_wholegenome,
+    source_ref    => "identical",
+    bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
       "walltime" => "24",
       "mem"      => "20gb"
     },
@@ -551,21 +608,6 @@ my $config_human = {
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie1 => {
-    target_dir    => "${target_human_dir}/bowtie1_genome",
-    option        => $bowtie1_option_wholegenome,
-    source_ref    => "fastqfiles",
-    bowtie1_index => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19",
-    fasta_file    => "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19.fa",
-    samonly       => 0,
-    sh_direct     => 1,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
       "walltime" => "24",
       "mem"      => "20gb"
     },
