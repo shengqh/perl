@@ -34,7 +34,7 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-my $bowtie2_option = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 100";
+my $bowtie2_option             = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 100";
 my $bowtie2_option_wholegenome = $bowtie2_option . " -p 8";
 
 my $bowtie1_option             = "-v 1 -n 1 -l 12 -k 100 --best --strata";
@@ -532,6 +532,7 @@ my $config_human = {
     source_ref    => "cutadapt",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    sh_direct     => 1,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -547,6 +548,7 @@ my $config_human = {
     source_ref    => "identical",
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    sh_direct     => 1,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -561,6 +563,7 @@ my $config_human = {
     source_ref    => "cutadapt",
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
+    sh_direct     => 1,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -575,6 +578,7 @@ my $config_human = {
     source_ref    => "identical",
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
+    sh_direct     => 1,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -874,9 +878,10 @@ bowtie2( $config_rat, "bowtie2_identical" );
 
 bowtie2( $config_human, "bowtie2_cutadapt" );
 bowtie2( $config_human, "bowtie2_identical" );
+
 #
-bowtie1( $config_rat,   "bowtie1_cutadapt" );
-bowtie1( $config_rat,   "bowtie1_identical" );
+bowtie1( $config_rat, "bowtie1_cutadapt" );
+bowtie1( $config_rat, "bowtie1_identical" );
 
 bowtie1( $config_human, "bowtie1_cutadapt" );
 bowtie1( $config_human, "bowtie1_identical" );
