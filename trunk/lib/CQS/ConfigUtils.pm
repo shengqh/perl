@@ -23,7 +23,7 @@ sub get_parameter {
 
   my $task_name = $config->{general}{task_name} or die "define general::task_name first";
   my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
-  if ( -e $path_file ) {
+  if (defined $path_file && -e $path_file ) {
     $path_file = "source $path_file";
   }
   else {
@@ -88,7 +88,7 @@ sub do_get_raw_files {
     die "section $sectionName was not defined!" if !defined $config->{$sectionName};
     if ( defined $config->{$sectionName}{class} ) {
       my $myclass = instantiate( $config->{$sectionName}{class} );
-      return ( $myclass->getExpectResult(), 0 );
+      return ( $myclass->getExpectResult($config, $sectionName), 0 );
     }
     else {
       my ( $result, $issource ) = do_get_raw_files( $config, $sectionName, 1 );
