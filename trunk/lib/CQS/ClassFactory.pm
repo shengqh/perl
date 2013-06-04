@@ -17,12 +17,13 @@ our $VERSION = '0.01';
 
 use Cwd;
 
+my @classes = ( new CQS::Cutadapt() );
+
 sub new_class {
   my ($className) = @_;
-  my @classes = ( new CQS::Cutadapt() );
   foreach my $class (@classes) {
     if ( $class->name() eq $className ) {
-      return $class->clone();
+      return $class;
     }
   }
 
