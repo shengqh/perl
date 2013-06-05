@@ -22,51 +22,62 @@ sub new {
 }
 
 sub perform {
-  my ($self, $config, $section ) = @_;
+  my ( $self, $config, $section ) = @_;
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
   my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
 
-  my $transcript_gtf = get_cuffdiff_gtf( $config, $section );
+  my $transcript_gtf = parse_param_file( $config, $section, "transcript_gtf", 1 );
 
-  my $tophat2map = get_tophat2_map( $config, $section );
+  my $rawFiles = get_raw_files( $config, $section );
 
-  my $groups = get_cuffdiff_groups( $config, $section );
+  my $groups = get_raw_files( $config, $section, "groups" );
 
-  my $pairs = get_cuffdiff_pairs( $config, $section );
+  my $pairs = get_raw_files( $config, $section, "pairs" );
 
-  my @labels = ();
-  my @files  = ();
-
-  my %tpgroups = ();
+  my %tpgroups         = ();
+  my %group_sample_map = ();
   for my $groupName ( sort keys %{$groups} ) {
     my @samples = @{ $groups->{$groupName} };
     my @gfiles  = ();
+    my $index   = 0;
     foreach my $sampleName (@samples) {
-      my $tophat2File = $tophat2map->{$sampleName};
-      push( @gfiles, $tophat2File );
+      my $bamFile = $rawFiles->{$sampleName};
+      push( @gfiles, $bamFile );
+      my $group_index = $groupName . "_" . $index;
+      $group_sample_map{$group_index} = $sampleName;
+      $index = $index + 1;
     }
-    $tpgroups{$groupName} = \@gfiles;
-
-    #print " $groupName => $tpgroups{$groupName} \n";
+    $tpgroups{$groupName} = join( ",", @gfiles );
   }
+
+  my $mapfile = $resultDir . "/${task_name}_group_sample.map";
+
+  open( MAP, ">$mapfile" ) or die "Cannot create $mapfile";
+  print MAP "GROUP_INDEX\tSAMPLE_NAME\n";
+  for my $gi ( sort keys %group_sample_map ) {
+    print MAP $gi . "\t" . $group_sample_map{$gi} . "\n";
+  }
+  close(MAP);
 
   my $shfile = $pbsDir . "/${task_name}.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-
-  print SH "
-if [ ! -s $transcript_gtf ]; then
-  echo $transcript_gtf is not exists! all job will be ignored.
-  exit 1
-fi
-
-type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" 
-";
+  if ($sh_direct) {
+    print SH "export MYCMD=\"bash\" \n";
+  }
+  else {
+    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
+  }
 
   for my $pairName ( sort keys %{$pairs} ) {
     my @groupNames = @{ $pairs->{$pairName} };
+    my @bams       = ();
+    foreach my $groupName (@groupNames) {
+      push( @bams, $tpgroups{$groupName} );
+    }
+    my $bamstrs = join( " ", @bams );
 
     my $pbsName = "${pairName}_cdiff.pbs";
 
@@ -75,44 +86,37 @@ type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\"
 
     my $curDir = create_directory_or_die( $resultDir . "/$pairName" );
 
-    my $labels = merge_string( ",", @groupNames );
+    my $labels = join( ",", @groupNames );
 
-    output_header( $pbsFile, $pbsDesc, $path_file, $log );
-    print OUT "cuffdiff $option -o $curDir -L $labels -b $bowtie2_fasta $transcript_gtf ";
+    open( OUT, ">$pbsFile" ) or die $!;
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
 
-    my @conditions = ();
-    foreach my $groupName (@groupNames) {
-      my @bamfiles = @{ $tpgroups{$groupName} };
-      my $bams = merge_string( ",", @bamfiles );
-      print OUT "$bams ";
+$path_file
 
-      foreach my $bam (@bamfiles) {
-        push( @conditions, "[ -s $bam ]" );
-      }
-    }
-    print OUT "\n";
+cd $curDir
 
-    output_footer();
+if [ -s gene_exp.diff ];then
+  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.
+  exit 1;
+fi
+
+cuffdiff $option -o . -L $labels -b $bowtie2_fasta $transcript_gtf $bamstrs
+
+echo finished=`date`
+
+exit 1
+";
+
+    close(OUT);
 
     print "$pbsFile created. \n";
 
-    my $condition = merge_string( " && ", @conditions );
-    print SH "
-if [ -s ${curDir}/gene_exp.diff ];then
-  echo job has already been done. if you want to do again, delete ${curDir}/gene_exp.diff and submit job again.
-else
-  if $condition;then
-    \$MYCMD ./$pbsName 
-    echo $pbsName was submitted. 
-  else
-    echo some required file not exists! $pbsName will be ignored.
-  fi
-fi
-
-";
+    print SH "\$MYCMD ./$pbsName \n";
   }
 
-  print SH "exit 0\n";
+  print SH "exit 1\n";
   close(SH);
 
   my $sigfile = $pbsDir . "/${task_name}_sig.pl";
@@ -142,7 +146,7 @@ copy_and_rename_cuffdiff_file(\$config, \"rename_diff\");
   if ( is_linux() ) {
     chmod 0755, $shfile;
   }
-  print "!!!shell file $shfile created, you can run this shell file to submit cuffdiff task.\n";
+  print "!!!shell file $shfile created, you can run this shell file to submit tasks.\n";
 }
 
 sub result {
@@ -150,39 +154,17 @@ sub result {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $fasta_format = $config->{$section}{fasta_format};
-  if ( !defined $fasta_format ) {
-    $fasta_format = 0;
-  }
-
-  my %rawFiles = %{ get_raw_files( $config, $section ) };
+  my $pairs = get_raw_files( $config, $section, "pairs" );
 
   my $result = {};
-  for my $sampleName ( keys %rawFiles ) {
-    my $curDir = $resultDir . "/$sampleName";
-
-    my @bamFiles  = @{ $rawFiles{$sampleName} };
-    my $bamFile   = $bamFiles[0];
-    my $fileName  = basename($bamFile);
-    my $countFile = $curDir . "/" . $fileName . ".count";
-
+  for my $pairName ( sort keys %{$pairs} ) {
+    my $curDir      = $resultDir . "/$pairName";
     my @resultFiles = ();
-    if ( !defined $pattern || $countFile =~ m/$pattern/ ) {
-      push( @resultFiles, $countFile );
-    }
+    push( @resultFiles, $curDir . "/gene_exp.diff" );
+    push( @resultFiles, $curDir . "/genes.read_group_tracking" );
+    push( @resultFiles, $curDir . "/splicing.diff" );
 
-    my $unmapped;
-    if ($fasta_format) {
-      $unmapped = change_extension( $countFile, ".unmapped.fasta" );
-    }
-    else {
-      $unmapped = change_extension( $countFile, ".unmapped.fastq" );
-    }
-    if ( !defined $pattern || $unmapped =~ m/$pattern/ ) {
-      push( @resultFiles, $unmapped );
-    }
-
-    $result->{$sampleName} = \@resultFiles;
+    $result->{$pairName} = filter( \@resultFiles, $pattern );
   }
   return $result;
 }

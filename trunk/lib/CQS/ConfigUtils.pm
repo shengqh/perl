@@ -12,7 +12,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file get_raw_files get_raw_files2)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file parse_param_file get_raw_files get_raw_files2)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -74,6 +74,48 @@ sub get_param_file {
     }
   }
   return ($result);
+}
+
+sub parse_param_file {
+  my ( $config, $section, $key, $required ) = @_;
+
+  die "section $section was not defined!" if !defined $config->{$section};
+  die "parameter key must be defined!" if !defined $key;
+
+  if ( defined $key ) {
+    return $config->{$section}{$key};
+  }
+
+  my $key_ref = $key . "_ref";
+  if ( defined $config->{$section}{$key_ref} ) {
+    my $refSectionName = $config->{$section}{$key_ref};
+    my $pattern;
+    if ( ref($refSectionName) eq 'ARRAY' ) {
+      my @parts = @{$refSectionName};
+      if ( scalar(@parts) == 2 ) {
+        $pattern        = $parts[1];
+        $refSectionName = $parts[0];
+      }
+      else {
+        $refSectionName = $parts[0];
+      }
+    }
+    die "section $refSectionName was not defined!" if !defined $config->{$refSectionName};
+    if ( defined $config->{$refSectionName}{class} ) {
+      my $myclass = instantiate( $config->{$refSectionName}{class} );
+      my $result = $myclass->result( $config, $refSectionName, $pattern );
+      while ( my ( $key, $value ) = each %{$result} ) {
+        my @values = @{$value};
+        return $values[0];
+      }
+    }
+  }
+
+  if ($required) {
+    die "define ${section}::${key} first.";
+  }
+
+  return undef;
 }
 
 sub do_get_raw_files {

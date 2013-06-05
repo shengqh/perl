@@ -129,12 +129,10 @@ sub result {
     my @bamFiles  = @{ $rawFiles{$sampleName} };
     my $bamFile   = $bamFiles[0];
     my $fileName  = basename($bamFile);
-    my $countFile = $curDir . "/" . $fileName . ".count";
 
     my @resultFiles = ();
-    if ( !defined $pattern || $countFile =~ m/$pattern/ ) {
-      push( @resultFiles, $countFile );
-    }
+    my $countFile = $curDir . "/" . $fileName . ".count";
+    push( @resultFiles, $countFile );
 
     my $unmapped;
     if ($fasta_format) {
@@ -143,11 +141,9 @@ sub result {
     else {
       $unmapped = change_extension( $countFile, ".unmapped.fastq" );
     }
-    if ( !defined $pattern || $unmapped =~ m/$pattern/ ) {
-      push( @resultFiles, $unmapped );
-    }
+    push( @resultFiles, $unmapped );
 
-    $result->{$sampleName} = \@resultFiles;
+    $result->{$sampleName} = filter(\@resultFiles, $pattern);
   }
   return $result;
 }

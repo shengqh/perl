@@ -19,6 +19,24 @@ sub name {
 sub perform {
 }
 
+sub filter {
+  my ( $resultFiles, $pattern ) = @_;
+
+  if ( !defined $pattern ) {
+    return $resultFiles;
+  }
+
+  my @filteredFiles = ();
+
+  for my $candidateFile ( @{$resultFiles} ) {
+    if ( $candidateFile =~ m/$pattern/ ) {
+      push( @filteredFiles, $candidateFile );
+    }
+  }
+
+  return \@filteredFiles;
+}
+
 sub result {
   my $result = {};
   return $result;
