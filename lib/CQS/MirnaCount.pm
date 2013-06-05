@@ -39,12 +39,12 @@ sub perform {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my %seqCountFiles = {};
+  my $seqCountFiles = {};
   if ( defined $config->{$section}{count_files} ) {
-    %seqCountFiles = %{ $config->{$section}{count_files} };
+    $seqCountFiles = $config->{$section}{count_files};
   }
   elsif ( defined $config->{$section}{count_ref} ) {
-    %seqCountFiles = %{ get_raw_files( $config, $config->{$section}{count_ref}, "\\.count\$" ) };
+    $seqCountFiles = get_raw_files( $config, $config->{$section}{count_ref}, "\\.count\$" );
   }
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
@@ -63,8 +63,8 @@ sub perform {
     my $countFile = $fileName . ".count";
 
     my $seqcountFile = "";
-    if ( defined $seqCountFiles{$sampleName} ) {
-      my @seqcounts = @{ $seqCountFiles{$sampleName} };
+    if ( defined $seqCountFiles->{$sampleName} ) {
+      my @seqcounts = @{ $seqCountFiles->{$sampleName} };
       my $seqcount  = $seqcounts[0];
       $seqcountFile = " -c $seqcount";
     }
