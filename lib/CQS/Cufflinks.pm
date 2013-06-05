@@ -52,6 +52,7 @@ sub perform {
     my $log    = $logDir . "/${sampleName}_clinks.log";
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
+    open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
 #PBS -o $log
 #PBS -j oe
