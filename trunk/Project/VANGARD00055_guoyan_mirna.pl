@@ -524,6 +524,20 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
+  fastqlen => {
+    class      => "FastqLen",
+    target_dir => "${target_human_dir}/fastqlen",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => "~/cqstools/CQS.Tools.exe",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   identical => {
     class      => "IdenticalQueryBuilder",
     target_dir => "${target_human_dir}/identical",
