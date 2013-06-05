@@ -92,6 +92,16 @@ sub do_get_raw_files {
 
   if ( defined $config->{$section}{$mapname_ref} ) {
     my $refSectionName = $config->{$section}{$mapname_ref};
+    if ( ref($refSectionName) eq 'ARRAY' ) {
+      my @parts = @{$refSectionName};
+      if ( scalar(@parts) == 2 ) {
+        $pattern        = $parts[1];
+        $refSectionName = $parts[0];
+      }
+      else {
+        $refSectionName = $parts[0];
+      }
+    }
     die "section $refSectionName was not defined!" if !defined $config->{$refSectionName};
     if ( defined $config->{$refSectionName}{class} ) {
       my $myclass = instantiate( $config->{$refSectionName}{class} );
