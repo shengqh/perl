@@ -20,8 +20,8 @@ our $VERSION = '0.01';
 
 sub get_parameter {
   my ( $config, $section ) = @_;
-  
-  die "no section $section found!" if ! defined $config->{$section};
+
+  die "no section $section found!" if !defined $config->{$section};
 
   my $task_name = $config->{general}{task_name} or die "define general::task_name first";
   my $path_file = get_param_file( $config->{general}{path_file}, "path_file", 0 );
@@ -77,7 +77,7 @@ sub get_param_file {
 }
 
 sub do_get_raw_files {
-  my ( $config, $section, $returnself ) = @_;
+  my ( $config, $section, $returnself, $pattern ) = @_;
 
   die "section $section was not defined!" if !defined $config->{$section};
 
@@ -90,7 +90,7 @@ sub do_get_raw_files {
     die "section $refSectionName was not defined!" if !defined $config->{$refSectionName};
     if ( defined $config->{$refSectionName}{class} ) {
       my $myclass = instantiate( $config->{$refSectionName}{class} );
-      return ( $myclass->getExpectResult( $config, $refSectionName ), 0 );
+      return ( $myclass->result( $config, $refSectionName, $pattern ), 0 );
     }
     else {
       my ( $result, $issource ) = do_get_raw_files( $config, $refSectionName, 1 );
@@ -120,15 +120,15 @@ sub do_get_raw_files {
 }
 
 sub get_raw_files {
-  my ( $config, $section ) = @_;
-  my ( $result, $issource ) = do_get_raw_files( $config, $section, 0 );
+  my ( $config, $section, $pattern ) = @_;
+  my ( $result, $issource ) = do_get_raw_files( $config, $section, 0, $pattern );
   return $result;
 }
 
 #return raw files and if the raw files are extracted from source directly
 sub get_raw_files2 {
-  my ( $config, $section ) = @_;
-  return do_get_raw_files( $config, $section, 0 );
+  my ( $config, $section, $pattern ) = @_;
+  return do_get_raw_files( $config, $section, 0, $pattern );
 }
 
 1;

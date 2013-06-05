@@ -445,13 +445,13 @@ exit 1;
 sub bowtie1 {
   my ( $config, $section ) = @_;
   my $obj = instantiate("Bowtie1");
-  $obj->generateScript( $config, $section );
+  $obj->perform( $config, $section );
 }
 
 sub bowtie2 {
   my ( $config, $section ) = @_;
   my $obj = instantiate("Bowtie2");
-  $obj->generateScript( $config, $section );
+  $obj->perform( $config, $section );
 }
 
 sub samtools_index {
