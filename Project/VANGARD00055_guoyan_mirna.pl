@@ -100,6 +100,7 @@ my $config_rat = {
     target_dir => "${target_rat_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
+    cqstools   => "~/cqstools/CQS.Tools.exe",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
