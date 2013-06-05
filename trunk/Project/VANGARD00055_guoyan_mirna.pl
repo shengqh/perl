@@ -590,10 +590,11 @@ my $config_human = {
     },
   },
   mirna_count_bowtie1_identical => {
+    class        => "MirnaCount",
     target_dir   => "${target_human_dir}/bowtie1_genome_identical",
     option       => "",
     source_ref   => "bowtie1_identical",
-    count_ref    => "identical",
+    seqcount_ref => "identical",
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     sh_direct    => 1,
