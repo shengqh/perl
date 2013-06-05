@@ -7,7 +7,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw( list_directories list_files has_file create_directory_or_die change_extension)] );
+our %EXPORT_TAGS = ( 'all' => [qw( list_directories list_files has_file create_directory_or_die change_extension file_exists)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -91,6 +91,15 @@ sub create_directory_or_die {
 		die "Cannot create directory $result\n";
 	}
 	return ($result);
+}
+
+sub file_exists {
+  my $file   = shift;
+  my $result = 0;
+  if ( defined($file) ) {
+    $result = -e $file;
+  }
+  return ($result);
 }
 
 1;

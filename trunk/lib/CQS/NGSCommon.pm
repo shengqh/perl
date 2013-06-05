@@ -10,7 +10,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_sorted_bam get_sam2bam_command get_sort_index_command get_sort_command get_index_command get_stat_command)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_sorted_bam get_sam2bam_command get_sort_index_command get_sort_command get_index_command get_stat_command transcript_gtf_index_exists)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -102,6 +102,16 @@ sub get_sort_index_command {
   }
 
   return get_sort_command($bamFile, $bamSortedPrefix, $indent) . "\n" . get_index_command($bamSortedFile, $indent);  
+}
+
+sub transcript_gtf_index_exists {
+  my $transcript_gtf_index = shift;
+  my $result               = 0;
+  if ( defined($transcript_gtf_index) ) {
+    my $file = $transcript_gtf_index . ".rev.1.bt2";
+    $result = -e $file;
+  }
+  return ($result);
 }
 
 1;
