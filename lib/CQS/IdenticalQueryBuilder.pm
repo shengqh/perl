@@ -114,7 +114,7 @@ exit 1
 }
 
 sub result {
-  my ( $self, $config, $section ) = @_;
+  my ( $self, $config, $section, $pattern ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
@@ -129,11 +129,11 @@ sub result {
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
-    my $finalFile   = $sampleName . $extension;
+    my $finalFile   = $resultDir . "/" . $sampleName . $extension;
     my @resultFiles = ();
 
     if ( scalar(@sampleFiles) == 1 || $merge_result ) {
-      push( @resultFiles, $resultDir . "/" . $finalFile );
+      push( @resultFiles, $finalFile );
     }
     else {
       for my $sampleFile (@sampleFiles) {
@@ -143,7 +143,23 @@ sub result {
       }
     }
 
-    $result->{$sampleName} = \@resultFiles;
+    if ( defined $pattern ) {
+      my @filteredFiles = ();
+
+      for my $candidateFile (@resultFiles) {
+        if ( $candidateFile =~ m/$pattern/ ) {
+          push( @filteredFiles, $candidateFile );
+        }
+        my $countFile = change_extension($candidateFile,".count");
+        if ( $countFile =~ m/$pattern/ ) {
+          push( @filteredFiles, $countFile );
+        }
+      }
+      $result->{$sampleName} = \@filteredFiles;
+    }
+    else {
+      $result->{$sampleName} = \@resultFiles;
+    }
   }
   return $result;
 }

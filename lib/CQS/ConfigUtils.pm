@@ -77,16 +77,21 @@ sub get_param_file {
 }
 
 sub do_get_raw_files {
-  my ( $config, $section, $returnself, $pattern ) = @_;
+  my ( $config, $section, $returnself, $mapname, $pattern ) = @_;
 
   die "section $section was not defined!" if !defined $config->{$section};
 
-  if ( defined $config->{$section}{source} ) {
-    return ( $config->{$section}{source}, 1 );
+  if ( !defined $mapname ) {
+    $mapname = "source";
+  }
+  my $mapname_ref = $mapname . "_ref";
+
+  if ( defined $config->{$section}{$mapname} ) {
+    return ( $config->{$section}{$mapname}, 1 );
   }
 
-  if ( defined $config->{$section}{source_ref} ) {
-    my $refSectionName = $config->{$section}{source_ref};
+  if ( defined $config->{$section}{$mapname_ref} ) {
+    my $refSectionName = $config->{$section}{$mapname_ref};
     die "section $refSectionName was not defined!" if !defined $config->{$refSectionName};
     if ( defined $config->{$refSectionName}{class} ) {
       my $myclass = instantiate( $config->{$refSectionName}{class} );
@@ -120,15 +125,15 @@ sub do_get_raw_files {
 }
 
 sub get_raw_files {
-  my ( $config, $section, $pattern ) = @_;
-  my ( $result, $issource ) = do_get_raw_files( $config, $section, 0, $pattern );
+  my ( $config, $section, $mapname, $pattern ) = @_;
+  my ( $result, $issource ) = do_get_raw_files( $config, $section, 0, $mapname, $pattern );
   return $result;
 }
 
 #return raw files and if the raw files are extracted from source directly
 sub get_raw_files2 {
-  my ( $config, $section, $pattern ) = @_;
-  return do_get_raw_files( $config, $section, 0, $pattern );
+  my ( $config, $section, $mapname, $pattern ) = @_;
+  return do_get_raw_files( $config, $section, 0, $mapname, $pattern );
 }
 
 1;

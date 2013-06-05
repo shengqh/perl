@@ -28,6 +28,8 @@ sub perform {
 
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
   my $gffFile = get_param_file( $config->{$section}{gff_file},  "gff_file",  1 );
+  #my $cqsFile = "";
+  #my $gffFile = "";
   my $fasta_format = $config->{$section}{fasta_format};
   if ( !defined $fasta_format ) {
     $fasta_format = 0;
@@ -38,14 +40,7 @@ sub perform {
   }
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-
-  my $seqCountFiles = {};
-  if ( defined $config->{$section}{count_files} ) {
-    $seqCountFiles = $config->{$section}{count_files};
-  }
-  elsif ( defined $config->{$section}{count_ref} ) {
-    $seqCountFiles = get_raw_files( $config, $config->{$section}{count_ref}, "\\.count\$" );
-  }
+  my %seqCountFiles = %{ get_raw_files( $config, $section, "seqcount", "\\.count\$") };
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -63,8 +58,8 @@ sub perform {
     my $countFile = $fileName . ".count";
 
     my $seqcountFile = "";
-    if ( defined $seqCountFiles->{$sampleName} ) {
-      my @seqcounts = @{ $seqCountFiles->{$sampleName} };
+    if ( defined $seqCountFiles{$sampleName} ) {
+      my @seqcounts = @{ $seqCountFiles{$sampleName} };
       my $seqcount  = $seqcounts[0];
       $seqcountFile = " -c $seqcount";
     }
