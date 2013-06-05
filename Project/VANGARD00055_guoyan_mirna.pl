@@ -526,7 +526,7 @@ my $config_human = {
   },
   fastqlen => {
     class      => "FastqLen",
-    target_dir => "${$target_dir}/fastqlen",
+    target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
     cqstools   => "~/cqstools/CQS.Tools.exe",
