@@ -143,7 +143,7 @@ my $config_rat = {
     class         => "Bowtie2",
     target_dir    => "${target_rat_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_wholegenome,
-    source_ref    => [ "identical", ".count\$" ],
+    source_ref    => [ "identical", ".fastq\$" ],
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
     samonly       => 0,
@@ -171,7 +171,7 @@ my $config_rat = {
   bowtie1_identical => {
     target_dir    => "${target_rat_dir}/bowtie1_genome_identical",
     option        => $bowtie1_option_wholegenome,
-    source_ref    => "identical",
+    source_ref    => [ "identical", ".fastq\$" ],
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
     samonly       => 0,
@@ -573,7 +573,7 @@ my $config_human = {
     class         => "Bowtie2",
     target_dir    => "${target_human_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_wholegenome,
-    source_ref    => "identical",
+    source_ref    => [ "identical", ".fastq\$" ],
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
     sh_direct     => 1,
@@ -605,7 +605,7 @@ my $config_human = {
     class         => "Bowtie1",
     target_dir    => "${target_human_dir}/bowtie1_genome_identical",
     option        => $bowtie1_option_wholegenome,
-    source_ref    => "identical",
+    source_ref    => [ "identical", ".fastq\$" ],
     bowtie1_index => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4.fa",
     sh_direct     => 1,
@@ -622,7 +622,7 @@ my $config_human = {
     target_dir   => "${target_human_dir}/bowtie1_genome_identical",
     option       => "",
     source_ref   => "bowtie1_identical",
-    seqcount_ref => "identical",
+    seqcount_ref => [ "identical", ".count\$" ],
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     sh_direct    => 1,
@@ -944,7 +944,7 @@ my $config_mirna = {
 #generateScript( $config_rat,   "bowtie2" );
 #generateScript( $config_human, "bowtie2" );
 
-performTask($config_rat, "bowtie2_identical");
+performTask( $config_rat, "bowtie2_identical" );
 
 #performTask( $config_rat,   "fastqlen" );
 #performTask( $config_human, "fastqlen" );
