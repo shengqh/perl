@@ -587,6 +587,22 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
+  mirna_count_bowtie1_identical => {
+    target_dir   => "${target_human_dir}/bowtie1_genome_identical",
+    option       => "",
+    source_ref   => "bowtie1_identical",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $hsa_gffs,
+    sh_direct    => 1,
+    fasta_format => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  
   bwa_mature => {
     target_dir   => "${target_human_dir}/bwa_miRBase_species",
     option       => $bwa_option,
@@ -635,21 +651,6 @@ my $config_human = {
     target_dir   => "${target_human_dir}/bwa_genome",
     option       => "",
     source_ref   => "bwa",
-    cqs_tools    => $cqs_tools,
-    gff_file     => $hsa_gffs,
-    sh_direct    => 1,
-    fasta_format => 0,
-    pbs          => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  mirna_count_bowtie1 => {
-    target_dir   => "${target_human_dir}/bowtie1_genome",
-    option       => "",
-    source_ref   => "bowtie1",
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     sh_direct    => 1,
@@ -873,25 +874,25 @@ my $config_mirna = {
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
 #
-bowtie2( $config_rat, "bowtie2_cutadapt" );
-bowtie2( $config_rat, "bowtie2_identical" );
-
-bowtie2( $config_human, "bowtie2_cutadapt" );
-bowtie2( $config_human, "bowtie2_identical" );
-
+#bowtie2( $config_rat, "bowtie2_cutadapt" );
+#bowtie2( $config_rat, "bowtie2_identical" );
 #
-bowtie1( $config_rat, "bowtie1_cutadapt" );
-bowtie1( $config_rat, "bowtie1_identical" );
-
-bowtie1( $config_human, "bowtie1_cutadapt" );
-bowtie1( $config_human, "bowtie1_identical" );
+#bowtie2( $config_human, "bowtie2_cutadapt" );
+#bowtie2( $config_human, "bowtie2_identical" );
+#
+##
+#bowtie1( $config_rat, "bowtie1_cutadapt" );
+#bowtie1( $config_rat, "bowtie1_identical" );
+#
+#bowtie1( $config_human, "bowtie1_cutadapt" );
+#bowtie1( $config_human, "bowtie1_identical" );
 
 #
 #mirna_count( $config_rat,   "mirna_count_bwa" );
 #mirna_count( $config_human, "mirna_count_bwa" );
 
 #mirna_count( $config_rat,   "mirna_count_bowtie1" );
-#mirna_count( $config_human, "mirna_count_bowtie1" );
+mirna_count( $config_human, "mirna_count_bowtie1_identical" );
 
 #mirna_count( $config_rat,   "mirna_count_bowtie2" );
 #mirna_count( $config_human, "mirna_count_bowtie2" );
