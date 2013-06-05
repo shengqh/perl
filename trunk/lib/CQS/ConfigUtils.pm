@@ -102,7 +102,7 @@ sub do_get_raw_files {
     my $alignsection = $config->{$section}{unmapped_ref};
     my $align_dir = $config->{$alignsection}{target_dir} or die "${$alignsection}::target_dir not defined.";
     my ( $logDir, $pbsDir, $resultDir ) = init_dir( $align_dir, 0 );
-    my %fqFiles = %{ do_get_raw_files( $config, $alignsection, 0 ) };
+    my %fqFiles = %{ do_get_raw_files( $config, $alignsection, 0, $pattern ) };
     my $result = {};
     for my $sampleName ( keys %fqFiles ) {
       my $fq = "${resultDir}/${sampleName}/${sampleName}_sorted.bam.unmapped.fastq";
