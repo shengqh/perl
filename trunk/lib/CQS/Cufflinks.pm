@@ -44,7 +44,8 @@ sub perform {
   }
 
   for my $sampleName ( sort keys %tophat2map ) {
-    my $tophat2File = $tophat2map{$sampleName};
+    my @tophat2Files = @{$tophat2map{$sampleName}};
+    my $tophat2File = $tophat2Files[0];
 
     my $pbsName = "${sampleName}_clinks.pbs";
     my $pbsFile = $pbsDir . "/$pbsName";
