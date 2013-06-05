@@ -10,6 +10,8 @@ use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD00028_liuqi_rnaseq");
 
+my $bowtie2_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
+
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 
@@ -96,6 +98,7 @@ my $config = {
   },
   tophat2_class => {
     class                => "Tophat2",
+    bowtie2_index        => $bowtie2_index,
     target_dir           => "${target_dir}/tophat2_class",
     option               => "-p 8",
     source_ref           => "fastqfiles",
