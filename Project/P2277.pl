@@ -108,7 +108,7 @@ my $config = {
     },
   },
   cufflinks => {
-    clas           => "Cufflinks",
+    class          => "Cufflinks",
     target_dir     => "${target_dir}/cufflinks",
     option         => "-p 8 -u -N",
     source_ref     => "tophat2",
