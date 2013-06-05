@@ -95,6 +95,7 @@ my $config = {
     },
   },
   tophat2_class => {
+    class                => "Tophat2",
     target_dir           => "${target_dir}/tophat2_class",
     option               => "-p 8",
     source_ref           => "fastqfiles",
