@@ -29,25 +29,6 @@ our $VERSION = '0.01';
 
 use Cwd;
 
-sub file_exists {
-  my $file   = shift;
-  my $result = 0;
-  if ( defined($file) ) {
-    $result = -e $file;
-  }
-  return ($result);
-}
-
-sub transcript_gtf_index_exists {
-  my $transcript_gtf_index = shift;
-  my $result               = 0;
-  if ( defined($transcript_gtf_index) ) {
-    my $file = $transcript_gtf_index . ".rev.1.bt2";
-    $result = -e $file;
-  }
-  return ($result);
-}
-
 sub get_sorted_bam_prefix {
   my ($oldbam) = @_;
   my ( $filename, $dirs, $suffix ) = fileparse( $oldbam, qr/\.[^.]*/ );
