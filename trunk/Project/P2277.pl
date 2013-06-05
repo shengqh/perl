@@ -108,6 +108,7 @@ my $config = {
     },
   },
   cufflinks => {
+    clas           => "Cufflinks",
     target_dir     => "${target_dir}/cufflinks",
     option         => "-p 8 -u -N",
     source_ref     => "tophat2",
@@ -167,6 +168,7 @@ my $config = {
 #tophat2_by_pbs( $config, "tophat2" );
 
 performTask( $config, "tophat2" );
+performTask( $config, "cufflinks" );
 performTask( $config, "cuffdiff" );
 
 #run cufflinks-cuffmerge-cuffdiff
