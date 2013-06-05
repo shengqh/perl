@@ -134,6 +134,7 @@ my $config = {
     class          => "Cuffdiff",
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
+    bowtie2_index  => $bowtie2_index,
     transcript_gtf => $transcript_gtf,
     source_ref     => "tophat2",
     groups_ref     => "groups",
