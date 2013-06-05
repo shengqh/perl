@@ -28,6 +28,7 @@ sub perform {
 
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
   my $gffFile = get_param_file( $config->{$section}{gff_file},  "gff_file",  1 );
+
   #my $cqsFile = "";
   #my $gffFile = "";
   my $fasta_format = $config->{$section}{fasta_format};
@@ -40,7 +41,7 @@ sub perform {
   }
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-  my %seqCountFiles = %{ get_raw_files( $config, $section, "seqcount", "\\.count\$") };
+  my %seqCountFiles = %{ get_raw_files( $config, $section, "seqcount" ) };
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
