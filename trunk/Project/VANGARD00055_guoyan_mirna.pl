@@ -558,6 +558,7 @@ my $config_human = {
     },
   },
   bowtie1_cutadapt => {
+    class         => "Bowtie1",
     target_dir    => "${target_human_dir}/bowtie1_genome_cutadapt",
     option        => $bowtie1_option_wholegenome,
     source_ref    => "cutadapt",
@@ -573,6 +574,7 @@ my $config_human = {
     },
   },
   bowtie1_identical => {
+    class         => "Bowtie1",
     target_dir    => "${target_human_dir}/bowtie1_genome_identical",
     option        => $bowtie1_option_wholegenome,
     source_ref    => "identical",
@@ -920,7 +922,7 @@ mirna_count( $config_human, "mirna_count_bowtie1_identical" );
 #    print "$k => @{$cutadapt_result{$k}}\n";
 #}
 
-#my %rawFiles = %{ get_raw_files( $config_rat, "bowtie2_test" ) };
+#my %rawFiles = %{ get_raw_files( $config_human, "mirna_count_bowtie1_identical" ) };
 #foreach my $k ( sort keys %rawFiles ) {
 #  print "$k => @{$rawFiles{$k}}\n";
 #}
