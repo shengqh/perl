@@ -97,7 +97,7 @@ my $config_rat = {
   },
   fastqlen => {
     class      => "FastqLen",
-    target_dir => "${target_rat_dir}/fastqlen",
+    target_dir => "${$target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
     cqstools   => "~/cqstools/CQS.Tools.exe",
@@ -526,7 +526,7 @@ my $config_human = {
   },
   fastqlen => {
     class      => "FastqLen",
-    target_dir => "${target_human_dir}/fastqlen",
+    target_dir => "${$target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
     cqstools   => "~/cqstools/CQS.Tools.exe",
@@ -946,6 +946,7 @@ my $config_mirna = {
 
 
 performTask($config_rat,"fastqlen");
+performTask($config_human,"fastqlen");
 
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #
