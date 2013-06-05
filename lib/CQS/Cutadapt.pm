@@ -20,7 +20,7 @@ sub new {
   return $self;
 }
 
-sub generateScript {
+sub perform {
   my ( $self, $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
@@ -99,7 +99,7 @@ exit 1
   #`qsub $pbsFile`;
 }
 
-sub getExpectResult {
+sub result {
   my ( $self, $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );

@@ -16,10 +16,10 @@ sub name {
   return $self->{_name};
 }
 
-sub generateScript {
+sub perform {
 }
 
-sub getExpectResult {
+sub result {
   my $result = {};
   return $result;
 }

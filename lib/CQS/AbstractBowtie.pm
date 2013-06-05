@@ -21,7 +21,7 @@ sub new {
   return $self;
 }
 
-sub getExpectResult {
+sub result {
   my ( $self, $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
