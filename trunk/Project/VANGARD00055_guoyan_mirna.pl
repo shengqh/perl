@@ -593,6 +593,7 @@ my $config_human = {
     target_dir   => "${target_human_dir}/bowtie1_genome_identical",
     option       => "",
     source_ref   => "bowtie1_identical",
+    count_ref    => "identical",
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     sh_direct    => 1,
@@ -604,7 +605,7 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
-  
+
   bwa_mature => {
     target_dir   => "${target_human_dir}/bwa_miRBase_species",
     option       => $bwa_option,
