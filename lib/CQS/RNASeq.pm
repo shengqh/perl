@@ -19,7 +19,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs novoalign shrimp2)
+    qw(tophat2 call_tophat2 tophat2_by_pbs get_tophat2_result call_RNASeQC cufflinks_by_pbs cuffmerge_by_pbs cuffdiff_by_pbs read_cufflinks_fpkm read_cuffdiff_significant_genes copy_and_rename_cuffdiff_file compare_cuffdiff miso_by_pbs novoalign shrimp2)
   ]
 );
 
@@ -35,161 +35,14 @@ sub get_sorted_bam_prefix {
   return ( $filename . "_sorted" );
 }
 
-sub output_tophat2 {
-  my ( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $tophat2_param, $tophatDir, $sampleName, $index, $sortbam, $indexbam, @sampleFiles ) = @_;
-
-  my $curDir = create_directory_or_die( $tophatDir . "/$sampleName" );
-
-  print OUT "echo tophat2=`date` \n";
-
-  my $has_gtf_file   = file_exists($transcript_gtf);
-  my $has_index_file = transcript_gtf_index_exists($transcript_gtf_index);
-
-  my $rgline = "--rg-id $sampleName --rg-sample $sampleName --rg-library $sampleName";
-
-  my $tophat2file = "accepted_hits.bam";
-
-  print OUT "cd $curDir \n";
-  print OUT "if [ -s $tophat2file ];\n";
-  print OUT "then\n";
-  print OUT "  echo job has already been done. if you want to do again, delete accepted_hits.bam and submit job again.\n";
-  print OUT "else\n";
-  if ($has_gtf_file) {
-    print OUT "  tophat2 $tophat2_param $rgline -G $transcript_gtf --transcriptome-index=$transcript_gtf_index -o . $bowtie2_index ";
-  }
-  elsif ($has_index_file) {
-    print OUT "  tophat2 $tophat2_param $rgline --transcriptome-index=$transcript_gtf_index -o . $bowtie2_index ";
-  }
-  else {
-    print OUT "  tophat2 $tophat2_param $rgline -o . $bowtie2_index ";
-  }
-
-  for my $sampleFile (@sampleFiles) {
-    print OUT "$sampleFile ";
-  }
-  print OUT "\n\n";
-
-  if ($sortbam) {
-    my $sortedbam     = get_sorted_bam_prefix($tophat2file);
-    my $sortedbamfile = get_sorted_bam($tophat2file);
-    print OUT "  samtools sort $tophat2file $sortedbam \n";
-    print OUT "  samtools index $sortedbamfile \n";
-  }
-  else {
-    if ($indexbam) {
-      print OUT "  samtools index $tophat2file \n";
-    }
-  }
-  print OUT "fi\n\n";
-}
-
 sub tophat2_by_pbs {
   my ( $config, $section ) = @_;
+  my $obj = instantiate("Tophat2");
+  $obj->perform( $config, $section );
+}
 
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-
-  $option = $option . " --keep-fasta-order";
-
-  my $bowtie2_index = $config->{general}{bowtie2_index} or die "define general::bowtie2_index first";
-
-  my $batchmode = $config->{$section}{batchmode};
-  if ( !defined($batchmode) ) {
-    $batchmode = 0;
-  }
-
-  my $indexbam = $config->{$section}{indexbam};
-  if ( !defined($indexbam) ) {
-    $indexbam = 0;
-  }
-
-  my $sortbam = $config->{$section}{sortbam};
-  if ( !defined($sortbam) ) {
-    $sortbam = 0;
-  }
-  else {
-    if ($sortbam) {
-      $indexbam = 1;
-    }
-  }
-
-  my %fqFiles = %{ get_raw_files( $config, $section ) };
-  my $sampleNameCount = 0;
-  while ( my ( $sampleName, $sampleFiles ) = each(%fqFiles) ) {
-    $sampleNameCount = $sampleNameCount + scalar( @{$sampleFiles} );
-  }
-
-  my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "${section}::transcript_gtf", 0 );
-  my $transcript_gtf_index;
-  if ( defined $transcript_gtf ) {
-    $transcript_gtf_index = $config->{$section}{transcript_gtf_index};
-  }
-  elsif ( defined $config->{general}{transcript_gtf} ) {
-    $transcript_gtf = get_param_file( $config->{general}{transcript_gtf}, "general::transcript_gtf", 1 );
-    $transcript_gtf_index = $config->{general}{transcript_gtf_index};
-  }
-
-  if ( ( defined $transcript_gtf ) && ( -e $transcript_gtf ) ) {
-    if ( !defined $transcript_gtf_index ) {
-      die "transcript_gtf was defined but transcript_gtf_index was not defined, you should defined transcript_gtf_index to cache the parsing result.";
-    }
-
-    if ( ( !$batchmode ) && ( $sampleNameCount > 1 ) ) {
-      if ( !-e ( $transcript_gtf_index . ".rev.1.bt2" ) ) {
-        print "transcript_gtf was defined but transcript_gtf_index has not been built, you should run only one job to build index first!";
-      }
-    }
-  }
-  elsif ( defined $transcript_gtf_index ) {
-    if ( !transcript_gtf_index_exists($transcript_gtf_index) ) {
-      die "transcript_gtf_index $transcript_gtf_index defined but not exists!";
-    }
-  }
-
-  if ($batchmode) {
-    my $pbsFile = $pbsDir . "/${task_name}_th2.pbs";
-    my $log     = $logDir . "/${task_name}_th2.log";
-
-    output_header( $pbsFile, $pbsDesc, $path_file, $log );
-
-    my $index = 0;
-    for my $sampleName ( sort keys %fqFiles ) {
-      my @sampleFiles = @{ $fqFiles{$sampleName} };
-      output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, $index, $sortbam, $indexbam, @sampleFiles );
-      $index++;
-    }
-
-    output_footer();
-
-    print "$pbsFile created\n";
-  }
-  else {
-    my $shfile = $pbsDir . "/${task_name}.submit";
-    open( SH, ">$shfile" ) or die "Cannot create $shfile";
-    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-
-    for my $sampleName ( sort keys %fqFiles ) {
-      my @sampleFiles = @{ $fqFiles{$sampleName} };
-
-      my $pbsName = "${sampleName}_th2.pbs";
-      my $pbsFile = $pbsDir . "/$pbsName";
-      my $log     = $logDir . "/${sampleName}_th2.log";
-
-      output_header( $pbsFile, $pbsDesc, $path_file, $log );
-      output_tophat2( $bowtie2_index, $transcript_gtf, $transcript_gtf_index, $option, $resultDir, $sampleName, 0, $sortbam, $indexbam, @sampleFiles );
-      output_footer();
-
-      print SH "\$MYCMD ./$pbsName \n";
-      print "$pbsFile created\n";
-    }
-
-    print SH "exit 0\n";
-    close(SH);
-
-    if ( is_linux() ) {
-      chmod 0755, $shfile;
-    }
-    print "!!!shell file $shfile created, you can run this shell file to submit all tophat2 tasks.\n";
-  }
+sub tophat2 {
+  tophat2_by_pbs(@_);
 }
 
 sub call_tophat2 {

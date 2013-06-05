@@ -81,27 +81,11 @@ my $config = {
     },
   },
   tophat2 => {
+    class                => "Tophat2",
     target_dir           => "${target_dir}/tophat2",
     option               => "-p 8",
-    batchmode            => 0,
-    sortbam              => 0,
-    indexbam             => 1,
     source_ref           => "fastqfiles",
-    transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => $transcript_gtf_index,
-    pbs                  => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "240",
-      "mem"      => "40gb"
-    },
-  },
-  tophat2_class => {
-    class                => "Tophat2",
     bowtie2_index        => $bowtie2_index,
-    target_dir           => "${target_dir}/tophat2_class",
-    option               => "-p 8",
-    source_ref           => "fastqfiles",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     pbs                  => {

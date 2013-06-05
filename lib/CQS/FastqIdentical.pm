@@ -143,23 +143,7 @@ sub result {
       }
     }
 
-    if ( defined $pattern ) {
-      my @filteredFiles = ();
-
-      for my $candidateFile (@resultFiles) {
-        if ( $candidateFile =~ m/$pattern/ ) {
-          push( @filteredFiles, $candidateFile );
-        }
-        my $countFile = change_extension($candidateFile,".count");
-        if ( $countFile =~ m/$pattern/ ) {
-          push( @filteredFiles, $countFile );
-        }
-      }
-      $result->{$sampleName} = \@filteredFiles;
-    }
-    else {
-      $result->{$sampleName} = \@resultFiles;
-    }
+    $result->{$sampleName} = filter( \@resultFiles, $pattern );
   }
   return $result;
 }
