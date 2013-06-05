@@ -6,6 +6,7 @@ use CQS::QC;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
+use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD00028_liuqi_rnaseq");
 
@@ -93,6 +94,19 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  tophat2_class => {
+    target_dir           => "${target_dir}/tophat2_class",
+    option               => "-p 8",
+    source_ref           => "fastqfiles",
+    transcript_gtf       => $transcript_gtf,
+    transcript_gtf_index => $transcript_gtf_index,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
   rnaseqc => {
     target_dir     => "${target_dir}/RNASeQC",
     option         => "",
@@ -153,7 +167,7 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-tophat2_by_pbs( $config, "tophat2" );
+performTask( $config, "tophat2_class" );
 
 #call_RNASeQC($config, "rnaseqc");
 
