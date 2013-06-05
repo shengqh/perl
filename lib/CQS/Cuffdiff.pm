@@ -44,7 +44,7 @@ sub perform {
     my @gfiles  = ();
     my $index   = 0;
     foreach my $sampleName (@samples) {
-      my @bamFiles = @{$rawFiles->{$sampleName}};
+      my @bamFiles = @{ $rawFiles->{$sampleName} };
       push( @gfiles, $bamFiles[0] );
       my $group_index = $groupName . "_" . $index;
       $group_sample_map{$group_index} = $sampleName;
