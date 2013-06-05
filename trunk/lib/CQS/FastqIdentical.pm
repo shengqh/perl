@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::IdenticalQueryBuilder;
+package CQS::FastqIdentical;
 
 use strict;
 use warnings;
@@ -15,7 +15,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "IdenticalQueryBuilder";
+  $self->{_name} = "FastqIdentical";
   bless $self, $class;
   return $self;
 }

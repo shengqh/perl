@@ -95,8 +95,21 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
+  fastqlen => {
+    class      => "FastqLen",
+    target_dir => "${target_rat_dir}/fastqlen",
+    option     => "",
+    source_ref => "cutadapt",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   identical => {
-    class      => "IdenticalQueryBuilder",
+    class      => "FastqIdentical",
     target_dir => "${target_rat_dir}/identical",
     option     => "",
     source_ref => "cutadapt",
@@ -896,7 +909,7 @@ my $config_mirna = {
 #mirna_count( $config_human, "mirna_count_bwa" );
 
 #mirna_count( $config_rat,   "mirna_count_bowtie1" );
-mirna_count( $config_human, "mirna_count_bowtie1_identical" );
+#mirna_count( $config_human, "mirna_count_bowtie1_identical" );
 
 #mirna_count( $config_rat,   "mirna_count_bowtie2" );
 #mirna_count( $config_human, "mirna_count_bowtie2" );
@@ -915,6 +928,9 @@ mirna_count( $config_human, "mirna_count_bowtie1_identical" );
 #generateScript($config_human, "identical");
 #generateScript( $config_rat,   "bowtie2" );
 #generateScript( $config_human, "bowtie2" );
+
+
+performTask($config_rat,"fastqlen");
 
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #

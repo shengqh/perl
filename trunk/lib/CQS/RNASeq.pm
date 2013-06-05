@@ -561,6 +561,8 @@ type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\"
     my $log     = $logDir . "/${pairName}_cdiff.log";
 
     my $curDir = create_directory_or_die( $resultDir . "/$pairName" );
+    my $defineFile = $curDir . "/group_define.txt";
+    open (GROUP, ">$defineFile") or die "Cannot create $defineFile";
 
     my $labels = merge_string( ",", @groupNames );
 
@@ -573,8 +575,11 @@ type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\"
       my $bams = merge_string( ",", @bamfiles );
       print OUT "$bams ";
 
+      my $index = 0;
       foreach my $bam (@bamfiles) {
         push( @conditions, "[ -s $bam ]" );
+        print GROUP "$groupName\t$index\t$bam\n";
+        $index = $index + 1;
       }
     }
     print OUT "\n";
