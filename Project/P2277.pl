@@ -10,18 +10,13 @@ use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/P2277_test");
 
-my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
-  general => {
-    bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
-    transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68",
-    path_file            => "/home/shengq1/bin/path.txt",
-    task_name            => "P2277"
-  },
+  general    => { task_name => "P2277" },
   fastqfiles => {
     "P2277-01" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-1_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-1_2_sequence.txt" ],
     "P2277-02" => [ "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-2_1_sequence.txt",  "/data/cqs/guom1/2277Rexer_mRNA/2277-BR-2_2_sequence.txt" ],
@@ -97,11 +92,13 @@ my $config = {
     },
   },
   tophat2 => {
-    class      => "Tophat2",
-    target_dir => "${target_dir}/tophat2",
-    option     => "--segment-length 25 -r 150 -p 8",
-    source_ref => "fastqfiles",
-    pbs        => {
+    class                => "Tophat2",
+    target_dir           => "${target_dir}/tophat2",
+    option               => "--segment-length 25 -r 150 -p 8",
+    source_ref           => "fastqfiles",
+    transcript_gtf       => $transcript_gtf,
+    transcript_gtf_index => $transcript_gtf_index,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "240",
