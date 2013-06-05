@@ -143,7 +143,7 @@ my $config_rat = {
     class         => "Bowtie2",
     target_dir    => "${target_rat_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_wholegenome,
-    source_ref    => "identical",
+    source_ref    => [ "identical", ".fastq\$" ],
     bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
     fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
     samonly       => 0,
@@ -944,9 +944,10 @@ my $config_mirna = {
 #generateScript( $config_rat,   "bowtie2" );
 #generateScript( $config_human, "bowtie2" );
 
+performTask($config_rat, "bowtie2_identical");
 
-performTask($config_rat,"fastqlen");
-performTask($config_human,"fastqlen");
+#performTask( $config_rat,   "fastqlen" );
+#performTask( $config_human, "fastqlen" );
 
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #
