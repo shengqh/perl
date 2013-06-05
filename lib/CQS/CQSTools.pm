@@ -3,11 +3,7 @@ package CQS::CQSTools;
 
 use strict;
 use warnings;
-use File::Basename;
-use CQS::PBS;
-use CQS::ConfigUtils;
-use CQS::SystemUtils;
-use CQS::FileUtils;
+use CQS::ClassFactory;
 
 require Exporter;
 
