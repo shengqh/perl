@@ -47,6 +47,7 @@ sub perform {
   if ( defined $config->{$section}{"seqcount"} || defined $config->{$section}{"seqcount_ref"} ) {
     %seqCountFiles = %{ get_raw_files( $config, $section, "seqcount" ) };
   }
+  print_hash(\%seqCountFiles);
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
