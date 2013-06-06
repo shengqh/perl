@@ -261,6 +261,7 @@ my $config_rat = {
     source_ref   => "bowtie2_genome_identical",
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
+    seqcount_ref => [ "identical", ".count\$" ],
     fasta_format => 0,
     pbs          => {
       "email"    => $email,
