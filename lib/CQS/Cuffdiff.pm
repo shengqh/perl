@@ -26,6 +26,8 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
+  my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
+
   my $transcript_gtf = parse_param_file( $config, $section, "transcript_gtf", 1 );
 
   my $rawFiles = get_raw_files( $config, $section );
@@ -99,7 +101,7 @@ if [ -s gene_exp.diff ];then
   exit 1;
 fi
 
-cuffdiff $option -o . -L $labels $transcript_gtf $bamstrs
+cuffdiff $option -o . -L $labels -b $faFile $transcript_gtf $bamstrs
 
 echo finished=`date`
 

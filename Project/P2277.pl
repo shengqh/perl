@@ -13,7 +13,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/P2277_test
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 my $bowtie2_index        = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
-my $fasta       = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
+my $fasta                = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -114,7 +114,7 @@ my $config = {
     perform        => 1,
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
-    bowtie2_index  => $bowtie2_index,
+    fasta_file     => $fasta,
     transcript_gtf => $transcript_gtf,
     source_ref     => "tophat2",
     groups_ref     => "groups",
@@ -146,6 +146,7 @@ my $config = {
     target_dir => "${target_dir}/cuffmerge",
     option     => "-p 8",
     source_ref => "cufflinks",
+    fasta_file => $fasta,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -159,6 +160,7 @@ my $config = {
     target_dir         => "${target_dir}/cufflinks_cuffdiff",
     option             => "-p 8 -u -N",
     transcript_gtf_ref => "cuffmerge",
+    fasta_file         => $fasta,
     source_ref         => "tophat2",
     groups_ref         => "groups",
     pairs_ref          => "pairs",
@@ -173,6 +175,6 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-performConfig( $config );
+performConfig($config);
 
 1;
