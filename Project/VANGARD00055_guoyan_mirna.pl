@@ -542,6 +542,7 @@ my $config_human = {
     target_dir   => "${target_human_dir}/bowtie2_genome_identical",
     option       => "",
     source_ref   => "bowtie2_genome_identical",
+    seqcount_ref => "identical",
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
     fasta_format => 0,
@@ -774,7 +775,7 @@ my $config_human = {
 #
 #};
 
-performConfig( $config_rat);
+performConfig($config_rat);
 performConfig($config_human);
 
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
@@ -790,6 +791,5 @@ performConfig($config_human);
 
 #bwa_by_pbs_single( $config_rat, "bwa" );
 #bwa_by_pbs_single( $config_human, "bwa" );
-
 
 1;
