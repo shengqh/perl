@@ -21,75 +21,65 @@ sub new {
   return $self;
 }
 
+sub get_assemblies_file {
+  my ( $config, $section, $target_dir ) = @_;
+
+  my $result = get_param_file( $config->{$section}{source}, "${section}::source", 0 );
+
+  if ( defined $result ) {
+    return $result;
+  }
+
+  my $cufflinks_gtf = get_raw_files( $config, $section, "source", ".gtf\$" );
+  $result = $target_dir . "/assemblies.txt";
+  open( OUT, ">$result" ) or die $!;
+  for my $gtf ( sort values %{$cufflinks_gtf} ) {
+    print OUT "${gtf}\n";
+  }
+  close OUT;
+
+  return $result;
+}
+
 sub perform {
-  
   my ( $self, $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
-  my $gtf = "";
+  my $gtfparam = "";
   if ( defined $transcript_gtf ) {
-    $gtf = "-g $transcript_gtf";
+    $gtfparam = "-g $transcript_gtf";
   }
 
-  my %tophat2map = %{ get_raw_files( $config, $section ) };
+  my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
 
-  my $shfile = $pbsDir . "/${task_name}.submit";
-  open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  if ($sh_direct) {
-    print SH "export MYCMD=\"bash\" \n";
-  }
-  else {
-    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-  }
+  my $assembliesfile = get_assemblies_file( $config, $section, $resultDir );
 
-  for my $sampleName ( sort keys %tophat2map ) {
-    my @tophat2Files = @{$tophat2map{$sampleName}};
-    my $tophat2File = $tophat2Files[0];
+  my $pbsFile = $pbsDir . "/${task_name}_cmerge.pbs";
+  my $log     = $logDir . "/${task_name}_cmerge.log";
 
-    my $pbsName = "${sampleName}_clinks.pbs";
-    my $pbsFile = $pbsDir . "/$pbsName";
-
-    my $log    = $logDir . "/${sampleName}_clinks.log";
-    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
-
-    open( OUT, ">$pbsFile" ) or die $!;
-    print OUT "$pbsDesc
+  open( OUT, ">$pbsFile" ) or die $!;
+  print OUT "$pbsDesc
 #PBS -o $log
 #PBS -j oe
 
 $path_file
 
-cd $curDir
+cd $resultDir
 
-if [ -s transcripts.gtf ];then
-  echo job has already been done. if you want to do again, delete ${curDir}/transcripts.gtf and submit job again.
-  exit 1;
-fi
+echo cuffmerge=`date` 
 
-echo cufflinks=`date`
- 
-cufflinks $option $gtf -o . $tophat2File
+cuffmerge $option $gtfparam -s $faFile -o . $assembliesfile 
 
 echo finished=`date`
 
 exit 1
 ";
 
-    close(OUT);
+  close(OUT);
 
-    print "$pbsFile created. \n";
-
-    print SH "\$MYCMD ./$pbsName \n";
-  }
-
-  print SH "exit 1\n";
-  close(SH);
-  if ( is_linux() ) {
-    chmod 0755, $shfile;
-  }
-  print "!!!shell file $shfile created, you can run this shell file to submit all tasks.\n";
+  print "$pbsFile created\n";
 }
 
 sub result {
@@ -97,17 +87,7 @@ sub result {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my %tophat2map = %{ get_raw_files( $config, $section ) };
-
-  my $result = {};
-  for my $sampleName ( sort keys %tophat2map ) {
-    my $curDir      = $resultDir . "/$sampleName";
-    my @resultFiles = ();
-    push( @resultFiles, $curDir . "/transcripts.gtf" );
-
-    $result->{$sampleName} = filter( \@resultFiles, $pattern );
-  }
-  return $result;
+  return { $task_name => [ $resultDir . "/merged.gtf" ] };
 }
 
 1;
