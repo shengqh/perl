@@ -45,7 +45,9 @@ sub filter_array {
 
   my @filteredFiles = ();
   for my $candidateFile ( @{$sourceFiles} ) {
+    print $candidateFile . "\n";
     if ( $candidateFile =~ m/$pattern/ ) {
+      print $candidateFile . " passed\n";
       push( @filteredFiles, $candidateFile );
     }
   }
