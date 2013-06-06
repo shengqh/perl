@@ -13,11 +13,20 @@ use CQS::ClassFactory;
 use CQS::Cutadapt;
 
 my $root;
+my $cqs_tools;
+my $hsa_gffs;
+my $rno_gffs;
 if ( is_linux() ) {
   $root = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+  $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
+  $hsa_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
+  $rno_gffs = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
 }
 else {
   $root = "d:/temp";
+  $cqs_tools = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
+  $hsa_gffs  = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
+  $rno_gffs  = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
 }
 my $target_dir = create_directory_or_die($root);
 
@@ -27,9 +36,7 @@ my $target_human_dir = create_directory_or_die( $target_dir . "/human" );
 my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "VANGARD00055";
 
-my $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $hsa_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
-my $rno_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
+ 
 
 my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
