@@ -79,6 +79,8 @@ sub get_param_file {
 
 sub parse_param_file {
   my ( $config, $section, $key, $required ) = @_;
+  
+  print "parse_param_file $key \n";
 
   die "section $section was not defined!" if !defined $config->{$section};
   die "parameter key must be defined!" if !defined $key;
