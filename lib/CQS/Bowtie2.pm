@@ -35,7 +35,7 @@ sub perform {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $shfile = $pbsDir . "/${task_name}.sh";
+  my $shfile = $pbsDir . "/${task_name}_bt2.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   if ($sh_direct) {
     print SH "export MYCMD=\"bash\" \n";
@@ -58,10 +58,10 @@ sub perform {
     my $index_command = get_index_command( $bamFile, $indent );
     my $stat_command = get_stat_command( $bamFile, $indent );
 
-    my $pbsName = "${sampleName}_bowtie2.pbs";
+    my $pbsName = "${sampleName}_bt2.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
-    my $log     = "${logDir}/${sampleName}_bowtie2.log";
+    my $log     = "${logDir}/${sampleName}_bt2.log";
 
     print SH "\$MYCMD ./$pbsName \n";
 

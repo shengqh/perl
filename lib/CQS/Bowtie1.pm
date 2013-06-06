@@ -35,7 +35,7 @@ sub perform {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $shfile = $pbsDir . "/${task_name}.sh";
+  my $shfile = $pbsDir . "/${task_name}_bt1.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   if ($sh_direct) {
     print SH "export MYCMD=\"bash\" \n";
@@ -55,10 +55,10 @@ sub perform {
     my $fastqs = join( ',', @sampleFiles );
     my $bowtie1_aln_command = "bowtie $option -S $bowtie1_index $tag $fastqs -S $samFile";
 
-    my $pbsName = "${sampleName}_bowtie1.pbs";
+    my $pbsName = "${sampleName}_bt1.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
-    my $log     = "${logDir}/${sampleName}_bowtie1.log";
+    my $log     = "${logDir}/${sampleName}_bt1.log";
 
     print SH "\$MYCMD ./$pbsName \n";
 
