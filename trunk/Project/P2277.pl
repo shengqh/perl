@@ -142,7 +142,7 @@ my $config = {
   },
   cuffmerge => {
     class      => "Cuffmerge",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/cuffmerge",
     option     => "-p 8",
     source_ref => "cufflinks",
