@@ -50,6 +50,7 @@ sub perform {
     my $sampleFile = $rawFiles{$sampleName};
 
     my $shrimpFile = $sampleName . ".shrimp";
+    my $samFile    = $sampleName . ".sam";
     my $bamFile    = $sampleName . ".bam";
 
     my $pbsName = "${sampleName}_shrimp2.pbs";
@@ -74,9 +75,10 @@ cd $curDir
 ";
 
     if ($output_bam) {
-      print OUT "gmapper -L $shrimp2_index $sampleFile $mirna $option --extra-sam-fields | samtools view -S -b - | samtools sort - $sampleName
+      print OUT "gmapper -L $shrimp2_index $sampleFile $mirna $option --extra-sam-fields > $samFile
 
-if [ -s $bamFile ]; then
+if [ -s $samFile ]; then
+  samtools view -S -b $samFile | samtools sort - $sampleName
   samtools index $bamFile 
   samtools flagstat $bamFile > ${bamFile}.stat 
 fi
