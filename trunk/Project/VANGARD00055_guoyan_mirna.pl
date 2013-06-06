@@ -553,6 +553,8 @@ my $config_human = {
     },
   },
   shrimp2_bowtie2_genome_identical => {
+    class         => "Shrimp2",
+    perform       => 1,
     target_dir    => "${target_human_dir}/bowtie2_genome_identical_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_identical", ".fastq\$" ],
