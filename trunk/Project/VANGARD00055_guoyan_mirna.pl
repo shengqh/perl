@@ -944,10 +944,10 @@ my $config_mirna = {
 #generateScript( $config_rat,   "bowtie2" );
 #generateScript( $config_human, "bowtie2" );
 
-performTask( $config_rat, "bowtie2_identical" );
+#performTask( $config_rat, "bowtie2_identical" );
 
-#performTask( $config_rat,   "fastqlen" );
-#performTask( $config_human, "fastqlen" );
+performTask( $config_rat,   "fastqlen" );
+performTask( $config_human, "fastqlen" );
 
 #my $cutadapt = instantiate($config_rat->{cutadapt}{class});
 #
