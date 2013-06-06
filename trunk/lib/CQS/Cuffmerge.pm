@@ -10,6 +10,7 @@ use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::Task;
 use CQS::NGSCommon;
+use CQS::StringUtils;
 
 our @ISA = qw(CQS::Task);
 
@@ -31,6 +32,9 @@ sub get_assemblies_file {
   }
 
   my $cufflinks_gtf = get_raw_files( $config, $section, "source", ".gtf\$" );
+  
+  print_hash($cufflinks_gtf);
+  
   $result = $target_dir . "/assemblies.txt";
   open( OUT, ">$result" ) or die $!;
   for my $gtf ( sort values %{$cufflinks_gtf} ) {
