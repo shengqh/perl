@@ -60,7 +60,7 @@ sub get_param_file {
       die "$name was not defined!";
     }
 
-    if ( !isDebug() && !-e $file ) {
+    if ( !is_debug() && !-e $file ) {
       die "$name $file defined but not exists!";
     }
   }
@@ -69,7 +69,7 @@ sub get_param_file {
       if ( $file eq "" ) {
         undef($result);
       }
-      elsif ( !isDebug() && !-e $file ) {
+      elsif ( !is_debug() && !-e $file ) {
         die "$name $file defined but not exists!";
       }
     }
