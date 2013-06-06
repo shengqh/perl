@@ -83,14 +83,12 @@ sub parse_param_file {
   die "section $section was not defined!" if !defined $config->{$section};
   die "parameter key must be defined!" if !defined $key;
 
-  if ( defined $key ) {
-    print "parse_param_file $key return $key\n";
+  if ( defined $config->{$section}{$key} ) {
     return $config->{$section}{$key};
   }
 
   my $key_ref = $key . "_ref";
   if ( defined $config->{$section}{$key_ref} ) {
-    print "parse_param_file $key return $key reference\n";
     my $refSectionName = $config->{$section}{$key_ref};
     my $pattern;
     if ( ref($refSectionName) eq 'ARRAY' ) {
