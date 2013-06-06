@@ -33,14 +33,14 @@ sub get_assemblies_file {
 
   my $cufflinks_gtf = get_raw_files( $config, $section, "source", ".gtf\$" );
   
-  print_hash($cufflinks_gtf);
+  #print_hash($cufflinks_gtf);
   
   $result = $target_dir . "/assemblies.txt";
   open( OUT, ">$result" ) or die $!;
-  for my $gtf ( sort values %{$cufflinks_gtf} ) {
-    my @gtfs = @{$gtf};
-    print OUT "$gtfs[0]\n";
-    print "$gtfs[0]\n";
+  
+  foreach my $k ( sort keys %{$cufflinks_gtf} ) {
+    print "@{$cufflinks_gtf->{$k}}\n";
+    print OUT "@{$cufflinks_gtf->{$k}}\n";
   }
   close OUT;
 
