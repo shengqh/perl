@@ -163,7 +163,7 @@ sub result {
     push( @resultFiles, $curDir . "/genes.read_group_tracking" );
     push( @resultFiles, $curDir . "/splicing.diff" );
 
-    $result->{$pairName} = filter( \@resultFiles, $pattern );
+    $result->{$pairName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }

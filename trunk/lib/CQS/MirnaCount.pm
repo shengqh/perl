@@ -147,7 +147,7 @@ sub result {
     }
     push( @resultFiles, $unmapped );
 
-    $result->{$sampleName} = $self->filter( \@resultFiles, $pattern );
+    $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }
