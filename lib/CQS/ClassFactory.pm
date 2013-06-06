@@ -8,7 +8,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(instantiate performTask)] );
+our %EXPORT_TAGS = ( 'all' => [qw(instantiate performTask performConfig)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -29,6 +29,20 @@ sub performTask {
   my $classname = $config->{$section}{class} or die "No class defined in section $section.";
   my $obj = instantiate($classname);
   $obj->perform( $config, $section );
+}
+
+sub performConfig {
+  my ($config) = @_;
+  foreach my $section ( keys %{$config} ) {
+    my $classname = $config->{$section}{class};
+    if ( defined $classname ) {
+      my $perform = $config->{$section}{perform};
+      if ( defined $perform && $perform ) {
+        my $obj = instantiate($classname);
+        $obj->perform( $config, $section );
+      }
+    }
+  }
 }
 
 1;

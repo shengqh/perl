@@ -135,6 +135,7 @@ my $config_rat = {
   general  => { "task_name" => $task_name . "_rat", },
   cutadapt => {
     class      => "Cutadapt",
+    perform    => 0,
     target_dir => "${target_rat_dir}/cutadapt",
     option     => "",
     source     => $rat,
@@ -150,6 +151,7 @@ my $config_rat = {
   },
   fastqlen => {
     class      => "FastqLen",
+    perform    => 0,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -162,23 +164,9 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  identical => {
-    class      => "FastqIdentical",
-    target_dir => "${target_rat_dir}/identical",
-    option     => "",
-    source_ref => "cutadapt",
-    cqstools   => $cqs_tools,
-    extension  => "_clipped_identical.fastq",
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie2_cutadapt => {
+  bowtie2_genome_cutadapt => {
     class         => "Bowtie2",
+    perform       => 0,
     target_dir    => "${target_rat_dir}/bowtie2_genome_cutadapt",
     option        => $bowtie2_option_wholegenome,
     source_ref    => "cutadapt",
@@ -192,11 +180,12 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  mirna_count_bowtie2_cutadapt => {
+  bowtie2_genome_cutadapt_mirna_count => {
     class        => "MirnaCount",
+    perform      => 1,
     target_dir   => "${target_rat_dir}/bowtie2_genome_cutadapt",
     option       => "",
-    source_ref   => "bowtie2_cutadapt",
+    source_ref   => "bowtie2_genome_cutadapt",
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
     fasta_format => 0,
@@ -207,22 +196,24 @@ my $config_rat = {
       "mem"      => "40gb"
     },
   },
-  bowtie2_identical => {
-    class         => "Bowtie2",
-    target_dir    => "${target_rat_dir}/bowtie2_genome_identical",
-    option        => $bowtie2_option_wholegenome,
-    source_ref    => [ "identical", ".fastq\$" ],
-    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
-    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
-    samonly       => 0,
-    pbs           => {
+  bowtie2_genome_cutadapt_shrimp2 => {
+    target_dir   => "${target_rat_dir}/bowtie2_genome_cutadapt_shrimp2",
+    option       => $shrimp2_option,
+    source_ref   => [ "bowtie2_genome_cutadapt_mirna_count", ".fastq\$" ],
+    genome_index => "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls/rn4-ls",
+    is_mirna     => 1,
+    output_bam   => 1,
+    sh_direct    => 1,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "24",
       "mem"      => "20gb"
     },
   },
-  bowtie1_cutadapt => {
+  bowtie1_genome_cutadapt => {
+    class         => "Bowtie1",
+    perform       => 0,
     target_dir    => "${target_rat_dir}/bowtie1_genome_cutadapt",
     option        => $bowtie1_option_wholegenome,
     source_ref    => "cutadapt",
@@ -236,7 +227,73 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
-  bowtie1_identical => {
+  bowtie1_genome_cutadapt_mirna_count => {
+    class        => "MirnaCount",
+    perform      => 0,
+    target_dir   => "${target_rat_dir}/bowtie1_genome_cutadapt",
+    option       => "",
+    source_ref   => "bowtie1_genome_cutadapt",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $rno_gffs,
+    fasta_format => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "40gb"
+    },
+  },
+  identical => {
+    class      => "FastqIdentical",
+    perform    => 0,
+    target_dir => "${target_rat_dir}/identical",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => $cqs_tools,
+    extension  => "_clipped_identical.fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie2_genome_identical => {
+    class         => "Bowtie2",
+    perform       => 0,
+    target_dir    => "${target_rat_dir}/bowtie2_genome_identical",
+    option        => $bowtie2_option_wholegenome,
+    source_ref    => [ "identical", ".fastq\$" ],
+    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
+    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    samonly       => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie2_genome_identical_mirna_count => {
+    class        => "MirnaCount",
+    perform      => 0,
+    target_dir   => "${target_rat_dir}/bowtie2_genome_identical",
+    option       => "",
+    source_ref   => "bowtie2_genome_identical",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $rno_gffs,
+    fasta_format => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie1_genome_identical => {
+    class         => "Bowtie1",
+    perform       => 0,
     target_dir    => "${target_rat_dir}/bowtie1_genome_identical",
     option        => $bowtie1_option_wholegenome,
     source_ref    => [ "identical", ".fastq\$" ],
@@ -248,6 +305,22 @@ my $config_rat = {
       "nodes"    => "1:ppn=8",
       "walltime" => "24",
       "mem"      => "20gb"
+    },
+  },
+  bowtie1_genome_identical_mirna_count => {
+    class        => "MirnaCount",
+    perform       => 0,
+    target_dir   => "${target_rat_dir}/bowtie1_genome_identical",
+    option       => "",
+    source_ref   => "bowtie1_genome_identical",
+    cqs_tools    => $cqs_tools,
+    gff_file     => $rno_gffs,
+    fasta_format => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "40gb"
     },
   },
 
@@ -293,49 +366,34 @@ my $config_rat = {
   #      "mem"      => "40gb"
   #    },
   #  },
-  mirna_count_bowtie1 => {
-    target_dir   => "${target_rat_dir}/bowtie1_genome",
-    option       => "",
-    source_ref   => "bowtie1",
-    cqs_tools    => $cqs_tools,
-    gff_file     => $rno_gffs,
-    fasta_format => 0,
-    pbs          => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "40gb"
-    },
-  },
-  shrimp2 => {
-    target_dir   => "${target_rat_dir}/shrimp2",
-    option       => $shrimp2_option,
-    unmapped_ref => "bowtie2",
-    genome_index => "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls/rn4-ls",
-    is_mirna     => 1,
-    output_bam   => 1,
-    sh_direct    => 1,
-    pbs          => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie2_mature => {
-    target_dir    => "${target_rat_dir}/bowtie2_mature",
-    option        => $bowtie2_option,
-    source_ref    => "unmappedfiles",
-    bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna",
-    fasta_file    => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna.fa",
-    samonly       => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
+  #  mirna_count_bowtie1 => {
+  #    target_dir   => "${target_rat_dir}/bowtie1_genome",
+  #    option       => "",
+  #    source_ref   => "bowtie1",
+  #    cqs_tools    => $cqs_tools,
+  #    gff_file     => $rno_gffs,
+  #    fasta_format => 0,
+  #    pbs          => {
+  #      "email"    => $email,
+  #      "nodes"    => "1:ppn=1",
+  #      "walltime" => "24",
+  #      "mem"      => "40gb"
+  #    },
+  #  },
+  #  bowtie2_mature => {
+  #    target_dir    => "${target_rat_dir}/bowtie2_mature",
+  #    option        => $bowtie2_option,
+  #    source_ref    => "unmappedfiles",
+  #    bowtie2_index => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna",
+  #    fasta_file    => "/data/cqs/shengq1/reference/miRBase19/rno.mature.dna.fa",
+  #    samonly       => 0,
+  #    pbs           => {
+  #      "email"    => $email,
+  #      "nodes"    => "1:ppn=8",
+  #      "walltime" => "24",
+  #      "mem"      => "20gb"
+  #    },
+  #  },
 };
 
 my $config_human = {
@@ -678,6 +736,8 @@ my $config_human = {
 #  },
 #
 #};
+
+performConfig( $config_rat);
 
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
 #bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
