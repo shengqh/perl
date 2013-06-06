@@ -44,15 +44,14 @@ my $option_samse_mirna     = "";
 my $bowtie2_option_top1 = "-N 0 -L 6 -p 8";
 my $bowtie2_option_topN = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 100 -p 8";
 
-my $bowtie2_rat_index = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
+my $bowtie2_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
 my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
-
 
 my $bowtie1_option_topN = "-v 1 -n 1 -l 12 -k 100 --best --strata -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
 
-my $shrimp2_option = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
+my $shrimp2_option      = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
 my $shrimp2_rat_index   = "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls/rn4-ls";
 my $shrimp2_human_index = "/data/cqs/shengq1/reference/hg19/shrimp2_index/hg19_chr-ls";
 
@@ -183,6 +182,7 @@ my $config_rat = {
     source_ref    => "cutadapt",
     bowtie2_index => $bowtie2_rat_index,
     samonly       => 0,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -199,6 +199,7 @@ my $config_rat = {
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
     fasta_format => 0,
+    sh_direct    => 1,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -215,7 +216,7 @@ my $config_rat = {
     shrimp2_index => $shrimp2_rat_index,
     is_mirna      => 1,
     output_bam    => 1,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -247,6 +248,7 @@ my $config_rat = {
     source_ref    => [ "identical", ".fastq\$" ],
     bowtie2_index => $bowtie2_rat_index,
     samonly       => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -264,6 +266,7 @@ my $config_rat = {
     gff_file     => $rno_gffs,
     seqcount_ref => [ "identical", ".dupcount\$" ],
     fasta_format => 0,
+    sh_direct    => 1,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -467,6 +470,7 @@ my $config_human = {
     source_ref    => "cutadapt",
     bowtie2_index => $bowtie2_human_index,
     samonly       => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -483,6 +487,7 @@ my $config_human = {
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     fasta_format => 0,
+    sh_direct    => 1,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -531,6 +536,7 @@ my $config_human = {
     source_ref    => [ "identical", ".fastq\$" ],
     bowtie2_index => $bowtie2_human_index,
     samonly       => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -548,6 +554,7 @@ my $config_human = {
     cqs_tools    => $cqs_tools,
     gff_file     => $hsa_gffs,
     fasta_format => 0,
+    sh_direct    => 1,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
