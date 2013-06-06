@@ -8,9 +8,9 @@ use CQS::FileUtils;
 use CQS::PBS;
 use CQS::ClassFactory;
 use CQS::StringUtils;
+use CQS::CQSDebug;
 
 require Exporter;
-
 our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file parse_param_file get_raw_files get_raw_files2)] );
@@ -60,7 +60,7 @@ sub get_param_file {
       die "$name was not defined!";
     }
 
-    if ( !-e $file ) {
+    if ( !isDebug() && !-e $file ) {
       die "$name $file defined but not exists!";
     }
   }
@@ -69,7 +69,7 @@ sub get_param_file {
       if ( $file eq "" ) {
         undef($result);
       }
-      elsif ( !-e $file ) {
+      elsif ( !isDebug() && !-e $file ) {
         die "$name $file defined but not exists!";
       }
     }
@@ -79,7 +79,7 @@ sub get_param_file {
 
 sub parse_param_file {
   my ( $config, $section, $key, $required ) = @_;
-  
+
   die "section $section was not defined!" if !defined $config->{$section};
   die "parameter key must be defined!" if !defined $key;
 
@@ -108,8 +108,8 @@ sub parse_param_file {
       my $result = $myclass->result( $config, $refSectionName, $pattern );
       print_hash($result);
       foreach my $k ( sort keys %{$result} ) {
-        my @gtfs = @{ $result->{$k} };
-        return $gtfs[0];
+        my @files = @{ $result->{$k} };
+        return $files[0];
       }
     }
   }
