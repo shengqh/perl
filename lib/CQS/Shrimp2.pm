@@ -78,7 +78,7 @@ cd $curDir
 
 if [ -s $bamFile ]; then
   samtools index $bamFile 
-  samtools flagstat $bamFile > ${$bamFile}.stat 
+  samtools flagstat $bamFile > ${bamFile}.stat 
 fi
 
 echo finished=`date`

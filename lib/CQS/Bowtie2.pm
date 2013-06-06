@@ -93,9 +93,10 @@ fi
 
 $bowtie2_aln_command | samtools view -S -b - | samtools sort - $sampleName
 
-$index_command
-
-$stat_command
+if [ -s $bamFile ]; then
+  samtools index $bamFile 
+  samtools flagstat $bamFile > ${bamFile}.stat 
+fi
 ";
     }
 
