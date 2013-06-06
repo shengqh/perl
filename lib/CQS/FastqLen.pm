@@ -60,7 +60,7 @@ $path_file
 
 cd $resultDir
 
-mono-sgen $cqstools fastq_identical -i $sampleFile -o $finalFile
+mono-sgen $cqstools fastq_len -i $sampleFile -o $finalFile
 
 echo finished=`date`
 

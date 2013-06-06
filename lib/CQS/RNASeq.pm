@@ -119,61 +119,8 @@ sub call_RNASeQC {
 
 sub cufflinks_by_pbs {
   my ( $config, $section ) = @_;
-
-  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-
-  my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 0 );
-  my $gtf = "";
-  if ( defined $transcript_gtf ) {
-    $gtf = "-g $transcript_gtf";
-  }
-
-  my %tophat2map = %{ get_tophat2_map( $config, $section ) };
-
-  my $shfile = $pbsDir . "/${task_name}.submit";
-  open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-
-  for my $sampleName ( sort keys %tophat2map ) {
-    my $tophat2File = $tophat2map{$sampleName};
-
-    my $pbsName = "${sampleName}_clinks.pbs";
-    my $pbsFile = $pbsDir . "/$pbsName";
-
-    print SH "if [ -s ${resultDir}/${sampleName}/transcripts.gtf ];\n";
-    print SH "then\n";
-    print SH "  echo job has already been done. if you want to do again, delete ${sampleName}/transcripts.gtf and submit job again.\n";
-    print SH "else\n";
-    print SH "  if [ ! -s $tophat2File ];\n";
-    print SH "  then";
-    print SH "    echo tophat2 of ${sampleName} has not finished, ignore current job. \n";
-    print SH "  else\n";
-    print SH "    \$MYCMD ./$pbsName \n";
-    print SH "    echo $pbsName was submitted. \n";
-    print SH "  fi\n";
-    print SH "fi\n";
-
-    my $log = $logDir . "/${sampleName}_clinks.log";
-
-    output_header( $pbsFile, $pbsDesc, $path_file, $log );
-
-    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
-
-    print OUT "echo cufflinks=`date` \n";
-
-    print OUT "cufflinks $option $gtf -o $curDir $tophat2File \n";
-
-    output_footer();
-
-    print "$pbsFile created\n";
-  }
-  print SH "exit 0\n";
-  close(SH);
-
-  if ( is_linux() ) {
-    chmod 0755, $shfile;
-  }
-  print "!!!shell file $shfile created, you can run this shell file to submit all cufflinks tasks.\n";
+  my $obj = instantiate("Cufflinks");
+  $obj->perform( $config, $section );
 }
 
 sub get_cufflinks_result_gtf {
