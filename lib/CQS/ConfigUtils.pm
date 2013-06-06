@@ -7,6 +7,7 @@ use File::Basename;
 use CQS::FileUtils;
 use CQS::PBS;
 use CQS::ClassFactory;
+use CQS::StringUtils;
 
 require Exporter;
 
@@ -104,6 +105,7 @@ sub parse_param_file {
     if ( defined $config->{$refSectionName}{class} ) {
       my $myclass = instantiate( $config->{$refSectionName}{class} );
       my $result = $myclass->result( $config, $refSectionName, $pattern );
+      print_hash($result);
       foreach my $k ( sort keys %{$result} ) {
         my @gtfs = @{ $result->{$k} };
         return $gtfs[0];
