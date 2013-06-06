@@ -26,9 +26,6 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
-  my $bowtie2_fasta = get_param_file( $bowtie2_index . ".fa", "bowtie2_fasta", 1 );
-
   my $transcript_gtf = parse_param_file( $config, $section, "transcript_gtf", 1 );
 
   my $rawFiles = get_raw_files( $config, $section );
@@ -102,7 +99,7 @@ if [ -s gene_exp.diff ];then
   exit 1;
 fi
 
-cuffdiff $option -o . -L $labels -b $bowtie2_fasta $transcript_gtf $bamstrs
+cuffdiff $option -o . -L $labels $transcript_gtf $bamstrs
 
 echo finished=`date`
 
