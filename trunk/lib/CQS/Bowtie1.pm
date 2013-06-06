@@ -27,7 +27,6 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $faFile = get_param_file( $config->{$section}{fasta_file}, "fasta_file", 1 );
   my $bowtie1_index = $config->{$section}{bowtie1_index} or die "define ${section}::bowtie1_index first";
   my $samonly = $config->{$section}{samonly};
   if ( !defined $samonly ) {
