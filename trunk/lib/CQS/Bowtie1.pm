@@ -53,10 +53,7 @@ sub perform {
     my $tag    = "--sam-RG ID:$sampleName --sam-RG LB:$sampleName --sam-RG SM:$sampleName --sam-RG PL:ILLUMINA";
 
     my $fastqs = join( ',', @sampleFiles );
-    my $bowtie1_aln_command = "bowtie $option -S $bowtie1_index $tag $fastqs";
-
-    my $index_command = get_index_command( $bamFile, $indent );
-    my $stat_command = get_stat_command( $bamFile, $indent );
+    my $bowtie1_aln_command = "bowtie $option -S $bowtie1_index $tag $fastqs -S $samFile";
 
     my $pbsName = "${sampleName}_bowtie1.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -81,7 +78,7 @@ if [ -s $samFile ]; then
   exit 0
 fi
 
-$bowtie1_aln_command -S $samFile
+$bowtie1_aln_command
 ";
     }
     else {
@@ -91,11 +88,13 @@ if [ -s $bamFile ]; then
   exit 0
 fi
 
-$bowtie1_aln_command | samtools view -S -b - | samtools sort - $sampleName
+$bowtie1_aln_command
 
-$index_command
-
-$stat_command
+if [ -s $samFile ]; then
+  samtools view -S -b $samFile | samtools sort - $sampleName
+  samtools index $bamFile 
+  samtools flagstat $bamFile > ${bamFile}.stat 
+fi
 ";
     }
 
