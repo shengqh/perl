@@ -35,7 +35,7 @@ sub get_assemblies_file {
   open( OUT, ">$result" ) or die $!;
   for my $gtf ( sort values %{$cufflinks_gtf} ) {
     my @gtfs = @{$gtf};
-    print OUT "${gtf}[0]\n";
+    print OUT "$gtfs[0]\n";
   }
   close OUT;
 
