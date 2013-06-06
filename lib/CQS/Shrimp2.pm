@@ -10,6 +10,7 @@ use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::Task;
 use CQS::NGSCommon;
+use CQS::StringUtils;
 
 our @ISA = qw(CQS::Task);
 
@@ -123,7 +124,7 @@ sub result {
       push( @resultFiles, $curDir . $sampleName . ".shrimp" );
     }
 
-    $result->{$sampleName} = filter( \@resultFiles, $pattern );
+    $result->{$sampleName} = \@resultFiles;
   }
   return $result;
 }

@@ -7,7 +7,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw( merge_string print_hash)] );
+our %EXPORT_TAGS = ( 'all' => [qw( merge_string print_hash filter_array)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -34,6 +34,23 @@ sub print_hash {
   foreach my $k ( sort keys %{$hash} ) {
     print "$k => @{$hash->{$k}}\n";
   }
+}
+
+sub filter_array {
+  my ($sourceFiles, $pattern ) = @_;
+
+  if ( !defined $pattern ) {
+    return $sourceFiles;
+  }
+
+  my @filteredFiles = ();
+  for my $candidateFile ( @{$sourceFiles} ) {
+    if ( $candidateFile =~ m/$pattern/ ) {
+      push( @filteredFiles, $candidateFile );
+    }
+  }
+
+  return \@filteredFiles;
 }
 
 1;
