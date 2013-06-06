@@ -41,7 +41,11 @@ sub perform {
   }
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-  my %seqCountFiles = %{ get_raw_files( $config, $section, "seqcount" ) };
+
+  my %seqCountFiles = ();
+  if ( defined $config->{$section}{"seqcount"} || defined $config->{$section}{"seqcount_ref"} ) {
+    %seqCountFiles = %{ get_raw_files( $config, $section, "seqcount" ) };
+  }
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -126,12 +130,12 @@ sub result {
   for my $sampleName ( keys %rawFiles ) {
     my $curDir = $resultDir . "/$sampleName";
 
-    my @bamFiles  = @{ $rawFiles{$sampleName} };
-    my $bamFile   = $bamFiles[0];
-    my $fileName  = basename($bamFile);
+    my @bamFiles = @{ $rawFiles{$sampleName} };
+    my $bamFile  = $bamFiles[0];
+    my $fileName = basename($bamFile);
 
     my @resultFiles = ();
-    my $countFile = $curDir . "/" . $fileName . ".count";
+    my $countFile   = $curDir . "/" . $fileName . ".count";
     push( @resultFiles, $countFile );
 
     my $unmapped;
@@ -143,7 +147,7 @@ sub result {
     }
     push( @resultFiles, $unmapped );
 
-    $result->{$sampleName} = filter(\@resultFiles, $pattern);
+    $result->{$sampleName} = filter( \@resultFiles, $pattern );
   }
   return $result;
 }
