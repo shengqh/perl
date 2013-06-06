@@ -104,9 +104,9 @@ sub parse_param_file {
     if ( defined $config->{$refSectionName}{class} ) {
       my $myclass = instantiate( $config->{$refSectionName}{class} );
       my $result = $myclass->result( $config, $refSectionName, $pattern );
-      while ( my ( $key, $value ) = each %{$result} ) {
-        my @values = @{$value};
-        return $values[0];
+      foreach my $k ( sort keys %{$result} ) {
+        my @gtfs = @{ $result->{$k} };
+        return $gtfs[0];
       }
     }
   }
