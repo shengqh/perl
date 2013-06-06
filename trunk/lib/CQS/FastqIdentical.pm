@@ -135,12 +135,14 @@ sub result {
 
     if ( scalar(@sampleFiles) == 1 || $merge_result ) {
       push( @resultFiles, $finalFile );
+      push( @resultFiles, change_extension( $finalFile, ".dupcount" ) );
     }
     else {
       for my $sampleFile (@sampleFiles) {
         my $fileName = basename($sampleFile);
-        my $outputFile = change_extension( $fileName, $extension );
-        push( @resultFiles, $resultDir . "/" . $outputFile );
+        my $outputFile = $resultDir . "/" . change_extension( $fileName, $extension );
+        push( @resultFiles, $outputFile );
+        push( @resultFiles, change_extension( $outputFile, ".dupcount" ) );
       }
     }
 
