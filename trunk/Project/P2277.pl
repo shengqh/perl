@@ -111,7 +111,7 @@ my $config = {
   },
   cuffdiff => {
     class          => "Cuffdiff",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
     fasta_file     => $fasta,
@@ -128,7 +128,7 @@ my $config = {
   },
   cufflinks => {
     class          => "Cufflinks",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/cufflinks",
     option         => "-p 8 -u -N",
     source_ref     => "tophat2",
