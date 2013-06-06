@@ -90,7 +90,7 @@ sub has_file {
 sub create_directory_or_die {
   my ($result) = @_;
   unless ( -e $result or mkdir($result) ) {
-    if ( !isDebug() ) {
+    if ( !is_debug() ) {
       die "Cannot create directory $result\n";
     }
   }
