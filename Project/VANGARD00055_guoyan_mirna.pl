@@ -44,12 +44,15 @@ my $option_samse_mirna     = "";
 my $bowtie2_option_top1 = "-N 0 -L 6 -p 8";
 my $bowtie2_option_topN = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 100 -p 8";
 
+my $bowtie2_rat_index = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
+my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
+
+
 my $bowtie1_option_topN = "-v 1 -n 1 -l 12 -k 100 --best --strata -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
 
 my $shrimp2_option = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
-
 my $shrimp2_rat_index   = "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls/rn4-ls";
 my $shrimp2_human_index = "/data/cqs/shengq1/reference/hg19/shrimp2_index/hg19_chr-ls";
 
@@ -178,8 +181,7 @@ my $config_rat = {
     target_dir    => "${target_rat_dir}/bowtie2_genome_cutadapt",
     option        => $bowtie2_option_topN,
     source_ref    => "cutadapt",
-    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
-    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    bowtie2_index => $bowtie2_rat_index,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -243,8 +245,7 @@ my $config_rat = {
     target_dir    => "${target_rat_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_topN,
     source_ref    => [ "identical", ".fastq\$" ],
-    bowtie2_index => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4",
-    fasta_file    => "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4.fa",
+    bowtie2_index => $bowtie2_rat_index,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -261,7 +262,7 @@ my $config_rat = {
     source_ref   => "bowtie2_genome_identical",
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
-    seqcount_ref => [ "identical", ".count\$" ],
+    seqcount_ref => [ "identical", ".dupcount\$" ],
     fasta_format => 0,
     pbs          => {
       "email"    => $email,
@@ -464,7 +465,7 @@ my $config_human = {
     target_dir    => "${target_human_dir}/bowtie2_genome_cutadapt",
     option        => $bowtie2_option_topN,
     source_ref    => "cutadapt",
-    bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
+    bowtie2_index => $bowtie2_human_index,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -528,7 +529,7 @@ my $config_human = {
     target_dir    => "${target_human_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_topN,
     source_ref    => [ "identical", ".fastq\$" ],
-    bowtie2_index => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
+    bowtie2_index => $bowtie2_human_index,
     samonly       => 0,
     pbs           => {
       "email"    => $email,
@@ -543,7 +544,7 @@ my $config_human = {
     target_dir   => "${target_human_dir}/bowtie2_genome_identical",
     option       => "",
     source_ref   => "bowtie2_genome_identical",
-    seqcount_ref => [ "identical", ".count\$" ],
+    seqcount_ref => [ "identical", ".dupcount\$" ],
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
     fasta_format => 0,
