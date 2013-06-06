@@ -39,8 +39,9 @@ sub get_assemblies_file {
   open( OUT, ">$result" ) or die $!;
   
   foreach my $k ( sort keys %{$cufflinks_gtf} ) {
-    print "@{$cufflinks_gtf->{$k}}\n";
-    print OUT "@{$cufflinks_gtf->{$k}}\n";
+    my @gtfs = @{$cufflinks_gtf->{$k}}; 
+    print "$gtfs[0]\n";
+    print OUT "$gtfs[0]\n";
   }
   close OUT;
 
