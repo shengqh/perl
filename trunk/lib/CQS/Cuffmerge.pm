@@ -40,7 +40,7 @@ sub get_assemblies_file {
   
   foreach my $k ( sort keys %{$cufflinks_gtf} ) {
     my @gtfs = @{$cufflinks_gtf->{$k}}; 
-    print "$gtfs[0]\n";
+    #print "$gtfs[0]\n";
     print OUT "$gtfs[0]\n";
   }
   close OUT;
