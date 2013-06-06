@@ -115,7 +115,7 @@ exit 1;
     chmod 0755, $shfile;
   }
 
-  print "!!!shell file $shfile created, you can run this shell file to submit all bwa tasks.\n";
+  print "!!!shell file $shfile created, you can run this shell file to submit all tasks.\n";
 }
 
 1;

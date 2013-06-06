@@ -20,7 +20,7 @@ sub perform {
 }
 
 sub filter {
-  my ( $resultFiles, $pattern ) = @_;
+  my ($self, $resultFiles, $pattern ) = @_;
 
   if ( !defined $pattern ) {
     return $resultFiles;
