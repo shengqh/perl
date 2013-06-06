@@ -94,6 +94,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Tophat2",
+    perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 150 -p 8",
     source_ref           => "fastqfiles",
@@ -107,32 +108,9 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  cufflinks => {
-    class          => "Cufflinks",
-    target_dir     => "${target_dir}/cufflinks",
-    option         => "-p 8 -u -N",
-    source_ref     => "tophat2",
-    transcript_gtf => $transcript_gtf,
-    pbs            => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "10gb"
-    },
-  },
-  cuffmerge => {
-    target_dir => "${target_dir}/cuffmerge",
-    option     => "-p 8",
-    source_ref => "cufflinks",
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
   cuffdiff => {
     class          => "Cuffdiff",
+    perform        => 1,
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
     bowtie2_index  => $bowtie2_index,
@@ -147,7 +125,36 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  cufflinks => {
+    class          => "Cufflinks",
+    perform        => 1,
+    target_dir     => "${target_dir}/cufflinks",
+    option         => "-p 8 -u -N",
+    source_ref     => "tophat2",
+    transcript_gtf => $transcript_gtf,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  cuffmerge => {
+    class      => "Cuffmerge",
+    perform    => 1,
+    target_dir => "${target_dir}/cuffmerge",
+    option     => "-p 8",
+    source_ref => "cufflinks",
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   cufflinks_cuffdiff => {
+    class              => "Cuffdiff",
+    perform            => 1,
     target_dir         => "${target_dir}/cufflinks_cuffdiff",
     option             => "-p 8 -u -N",
     transcript_gtf_ref => "cuffmerge",
@@ -165,17 +172,6 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 
-#tophat2_by_pbs( $config, "tophat2" );
-
-performTask( $config, "tophat2" );
-performTask( $config, "cufflinks" );
-performTask( $config, "cuffdiff" );
-
-#run cufflinks-cuffmerge-cuffdiff
-#cufflinks_by_pbs( $config, "cufflinks" );
-
-#cuffmerge_by_pbs( $config, "cuffmerge" );
-
-#cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
+performConfig( $config );
 
 1;
