@@ -26,6 +26,7 @@ sub filter {
     return $resultFiles;
   }
 
+  print $resultFiles . "\n";
   my @filteredFiles = ();
 
   for my $candidateFile ( @{$resultFiles} ) {
