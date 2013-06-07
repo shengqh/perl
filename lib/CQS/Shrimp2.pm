@@ -73,6 +73,7 @@ $path_file
 echo shrimp2=`date`
 
 cd $curDir
+
 ";
 
     if ($output_bam) {
