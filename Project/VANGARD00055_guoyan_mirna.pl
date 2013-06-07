@@ -41,7 +41,7 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-my $bowtie2_option_top1 = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -p 8";
+my $bowtie2_option_top1 = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 1 -p 8";
 my $bowtie2_option_topN = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 100 -p 8";
 
 my $bowtie2_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
@@ -192,7 +192,7 @@ my $config_rat = {
   },
   mirna_count_bowtie2_genome_cutadapt_top1 => {
     class        => "MirnaCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_rat_dir}/top1_bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt_top1",
@@ -209,7 +209,7 @@ my $config_rat = {
   },
   shrimp2_bowtie2_genome_cutadapt_top1 => {
     class         => "Shrimp2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_rat_dir}/top1_bowtie2_genome_cutadapt_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_top1", ".fastq\$" ],
@@ -530,7 +530,7 @@ my $config_human = {
   },
   mirna_count_bowtie2_genome_cutadapt_top1 => {
     class        => "MirnaCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_human_dir}/top1_bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt_top1",
@@ -547,7 +547,7 @@ my $config_human = {
   },
   shrimp2_bowtie2_genome_cutadapt_top1 => {
     class         => "Shrimp2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_human_dir}/top1_bowtie2_genome_cutadapt_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_top1", ".fastq\$" ],
