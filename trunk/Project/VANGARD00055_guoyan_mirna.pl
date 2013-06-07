@@ -51,7 +51,31 @@ my $bowtie1_option_topN = "-v 1 -n 1 -l 12 -k 100 --best --strata -p 8";
 
 my $novoalign_option = "-l 15 -t 30 -r Random -m";
 
-my $shrimp2_option      = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
+#shrimp2 gmapper set mirna mode
+#static int
+#set_mode_from_string(char const * s) {
+#  if (!strcmp(s, "mirna")) {
+#    mode_mirna = true;
+#
+#    //load_default_mirna_seeds();
+#
+#    Hflag = true;
+#    gapless_sw = true;
+#    anchor_width = 0;
+#    a_gap_open_score = -255;
+#    b_gap_open_score = -255;
+#    hash_filter_calls = false;
+#    match_mode = 1;
+#    window_len = 100.0;
+#    Gflag = false;
+#    compute_mapping_qualities = false;
+#
+#    return 1;
+#  } else {
+#    return 0;
+#  }
+#}
+my $shrimp2_option      = "-s 000111111000 -Q -N 8 -n 1 -o 1 --qv-offset 33";
 my $shrimp2_rat_index   = "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls_mirna/rn4-ls";
 my $shrimp2_human_index = "/data/cqs/shengq1/reference/hg19/shrimp2_index_ls_mirna/hg19_chr-ls";
 
@@ -922,7 +946,7 @@ my $config_human = {
 #performTask($config_rat, "bowtie2_genome_identical_topN");
 #performTask($config_rat, "bowtie2_genome_identical_topN");
 
-performConfig($config_rat, "^shrimp2", 1);
+#performConfig($config_rat, "^shrimp2", 1);
 performConfig($config_human, "^shrimp2", 1);
 
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
