@@ -32,15 +32,24 @@ sub performTask {
 }
 
 sub performConfig {
-  my ($config) = @_;
+  my ( $config, $pattern, $force ) = @_;
   foreach my $section ( sort keys %{$config} ) {
-    my $classname = $config->{$section}{class};
-    if ( defined $classname ) {
-      my $perform = $config->{$section}{perform};
-      if ( defined $perform && $perform ) {
-        print "Preforming $section by $classname \n";
-        my $obj = instantiate($classname);
-        $obj->perform( $config, $section );
+    if ( !defined $pattern || $section =~ m/$pattern/ ) {
+      my $classname = $config->{$section}{class};
+      if ( defined $classname ) {
+        my $perform;
+        if ( defined $force && $force ) {
+          $perform = 1;
+        }
+        else {
+          $perform = $config->{$section}{perform};
+        }
+        
+        if ( defined $perform && $perform ) {
+          print "Preforming $section by $classname \n";
+          my $obj = instantiate($classname);
+          $obj->perform( $config, $section );
+        }
       }
     }
   }
