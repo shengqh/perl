@@ -31,8 +31,8 @@ else {
 }
 my $target_dir = create_directory_or_die($root);
 
-my $target_rat_dir   = create_directory_or_die( $target_dir . "/rat_test" );
-my $target_human_dir = create_directory_or_die( $target_dir . "/human_test" );
+my $target_rat_dir   = create_directory_or_die( $target_dir . "/rat" );
+my $target_human_dir = create_directory_or_die( $target_dir . "/human" );
 
 my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "VANGARD00055";
@@ -151,6 +151,7 @@ my $config_rat = {
     source     => $rat,
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
+    minlen     => 12,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -174,12 +175,30 @@ my $config_rat = {
       "mem"      => "20gb"
     },
   },
+  cutadapt_len => {
+    class      => "Cutadapt",
+    perform    => 1,
+    target_dir => "${target_dir}/cutadapt_len",
+    option     => "",
+    source     => $rat,
+    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+    extension  => "_clipped.fastq",
+    minlen     => 12,
+    maxlen => 40,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   bowtie2_genome_cutadapt_top1 => {
     class         => "Bowtie2",
     perform       => 1,
     target_dir    => "${target_rat_dir}/top1_bowtie2_genome_cutadapt",
     option        => $bowtie2_option_top1,
-    source_ref    => "cutadapt",
+    source_ref    => "cutadapt_len",
     bowtie2_index => $bowtie2_rat_index,
     samonly       => 0,
     sh_direct     => 0,
@@ -192,7 +211,7 @@ my $config_rat = {
   },
   mirna_count_bowtie2_genome_cutadapt_top1 => {
     class        => "MirnaCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_rat_dir}/top1_bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt_top1",
@@ -209,7 +228,7 @@ my $config_rat = {
   },
   shrimp2_bowtie2_genome_cutadapt_top1 => {
     class         => "Shrimp2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_rat_dir}/top1_bowtie2_genome_cutadapt_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_top1", ".fastq\$" ],
@@ -226,10 +245,10 @@ my $config_rat = {
   },
   bowtie2_genome_cutadapt => {
     class         => "Bowtie2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_rat_dir}/bowtie2_genome_cutadapt",
     option        => $bowtie2_option_topN,
-    source_ref    => "cutadapt",
+    source_ref    => "cutadapt_len",
     bowtie2_index => $bowtie2_rat_index,
     samonly       => 0,
     sh_direct     => 0,
@@ -242,7 +261,7 @@ my $config_rat = {
   },
   mirna_count_bowtie2_genome_cutadapt => {
     class        => "MirnaCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_rat_dir}/bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt",
@@ -259,7 +278,7 @@ my $config_rat = {
   },
   shrimp2_bowtie2_genome_cutadapt => {
     class         => "Shrimp2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_rat_dir}/bowtie2_genome_cutadapt_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt", ".fastq\$" ],
@@ -276,10 +295,10 @@ my $config_rat = {
   },
   identical => {
     class      => "FastqIdentical",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/identical",
     option     => "",
-    source_ref => "cutadapt",
+    source_ref => "cutadapt_len",
     cqstools   => $cqs_tools,
     extension  => "_clipped_identical.fastq",
     sh_direct  => 1,
@@ -292,7 +311,7 @@ my $config_rat = {
   },
   bowtie2_genome_identical => {
     class         => "Bowtie2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_rat_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_topN,
     source_ref    => [ "identical", ".fastq\$" ],
@@ -308,7 +327,7 @@ my $config_rat = {
   },
   mirna_count_bowtie2_genome_identical => {
     class        => "MirnaCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_rat_dir}/bowtie2_genome_identical_count",
     option       => "",
     source_ref   => "bowtie2_genome_identical",
@@ -326,7 +345,7 @@ my $config_rat = {
   },
   shrimp2_bowtie2_genome_identical => {
     class         => "Shrimp2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_rat_dir}/bowtie2_genome_identical_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_identical", ".fastq\$" ],
@@ -512,12 +531,30 @@ my $config_human = {
       "mem"      => "20gb"
     },
   },
+  cutadapt_len => {
+    class      => "Cutadapt",
+    perform    => 1,
+    target_dir => "${target_dir}/cutadapt_len",
+    option     => "",
+    source     => $human,
+    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+    extension  => "_clipped.fastq",
+    minlen     => 12,
+    maxlen     => 40,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   bowtie2_genome_cutadapt_top1 => {
     class         => "Bowtie2",
     perform       => 1,
     target_dir    => "${target_human_dir}/top1_bowtie2_genome_cutadapt",
-    option        => $bowtie2_option_topN,
-    source_ref    => "cutadapt",
+    option        => $bowtie2_option_top1,
+    source_ref    => "cutadapt_min12",
     bowtie2_index => $bowtie2_human_index,
     samonly       => 0,
     sh_direct     => 1,
@@ -530,7 +567,7 @@ my $config_human = {
   },
   mirna_count_bowtie2_genome_cutadapt_top1 => {
     class        => "MirnaCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_human_dir}/top1_bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt_top1",
@@ -547,7 +584,7 @@ my $config_human = {
   },
   shrimp2_bowtie2_genome_cutadapt_top1 => {
     class         => "Shrimp2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_human_dir}/top1_bowtie2_genome_cutadapt_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_top1", ".fastq\$" ],
@@ -564,10 +601,10 @@ my $config_human = {
   },
   bowtie2_genome_cutadapt => {
     class         => "Bowtie2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_human_dir}/bowtie2_genome_cutadapt",
     option        => $bowtie2_option_topN,
-    source_ref    => "cutadapt",
+    source_ref    => "cutadapt_min12",
     bowtie2_index => $bowtie2_human_index,
     samonly       => 0,
     sh_direct     => 1,
@@ -580,7 +617,7 @@ my $config_human = {
   },
   mirna_count_bowtie2_genome_cutadapt => {
     class        => "MirnaCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_human_dir}/bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt",
@@ -597,7 +634,7 @@ my $config_human = {
   },
   shrimp2_bowtie2_genome_cutadapt => {
     class         => "Shrimp2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_human_dir}/bowtie2_genome_cutadapt_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt", ".fastq\$" ],
@@ -614,10 +651,10 @@ my $config_human = {
   },
   identical => {
     class      => "FastqIdentical",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/identical",
     option     => "",
-    source_ref => "cutadapt",
+    source_ref => "cutadapt_min12",
     cqstools   => $cqs_tools,
     extension  => "_clipped_identical.fastq",
     sh_direct  => 1,
@@ -630,7 +667,7 @@ my $config_human = {
   },
   bowtie2_genome_identical => {
     class         => "Bowtie2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_human_dir}/bowtie2_genome_identical",
     option        => $bowtie2_option_topN,
     source_ref    => [ "identical", ".fastq\$" ],
@@ -646,7 +683,7 @@ my $config_human = {
   },
   mirna_count_bowtie2_genome_identical => {
     class        => "MirnaCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_human_dir}/bowtie2_genome_identical_count",
     option       => "",
     source_ref   => "bowtie2_genome_identical",
@@ -664,7 +701,7 @@ my $config_human = {
   },
   shrimp2_bowtie2_genome_identical => {
     class         => "Shrimp2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_human_dir}/bowtie2_genome_identical_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_identical", ".fastq\$" ],

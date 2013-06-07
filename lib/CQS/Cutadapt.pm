@@ -27,6 +27,22 @@ sub perform {
 
   my $adapt     = $config->{$section}{adaptor}   or die "define ${section}::adaptor first";
   my $extension = $config->{$section}{extension} or die "define ${section}::extension first";
+  
+  my $minlen = $config->{$section}{minlen};
+  if (defined $minlen){
+    $minlen = "-m $minlen";
+  }
+  else{
+    $minlen = "";
+  }
+  
+  my $maxlen = $config->{$section}{maxlen};
+  if (defined $maxlen){
+    $maxlen = "-M $maxlen";
+  }
+  else{
+    $maxlen = "";
+  }
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
@@ -61,7 +77,7 @@ cd $resultDir
 
 ";
     if ( scalar(@sampleFiles) == 1 ) {
-      print OUT "cutadapt $sampleFiles[0] -a $adapt -o $finalFile \n";
+      print OUT "cutadapt $sampleFiles[0] $minlen $maxlen -a $adapt -o $finalFile \n";
     }
     else {
       my $outputFiles = "";
@@ -69,7 +85,7 @@ cd $resultDir
         my $fileName = basename($sampleFile);
         my $outputFile = change_extension( $fileName, $extension );
         $outputFiles = $outputFiles . " " . $outputFile;
-        print OUT "cutadapt $sampleFile -a $adapt -o $outputFile \n";
+        print OUT "cutadapt $sampleFile $minlen $maxlen -a $adapt -o $outputFile \n";
       }
 
       print OUT "
