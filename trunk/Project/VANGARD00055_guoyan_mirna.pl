@@ -41,7 +41,7 @@ my $bwa_option             = "-l 8 -n 1 -o 0";
 my $bwa_option_wholegenome = $bwa_option . " -t 8";
 my $option_samse_mirna     = "";
 
-my $bowtie2_option_top1 = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 1 -p 8";
+my $bowtie2_option_top1 = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -p 8";
 my $bowtie2_option_topN = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 100 -p 8";
 
 my $bowtie2_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
