@@ -59,6 +59,11 @@ $path_file
 
 cd $resultDir
 
+if [ -s $finalFile ];then
+  echo job has already been done. if you want to do again, delete ${resultDir}/${finalFile} and submit job again.
+  exit 1;
+fi
+
 ";
     if ( scalar(@sampleFiles) == 1 ) {
       print OUT "cutadapt $sampleFiles[0] $option -a $adapt -o $finalFile \n";
