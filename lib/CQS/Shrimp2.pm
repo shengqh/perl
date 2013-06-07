@@ -47,7 +47,8 @@ sub perform {
   }
 
   for my $sampleName ( sort keys %rawFiles ) {
-    my $sampleFile = $rawFiles{$sampleName};
+    my @sampleFiles = @{$rawFiles{$sampleName}};
+    my $sampleFile =  $sampleFiles[0];
 
     my $shrimpFile = $sampleName . ".shrimp";
     my $samFile    = $sampleName . ".sam";
