@@ -261,8 +261,8 @@ my $config_rat = {
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
+      "walltime" => "720",
+      "mem"      => "40gb"
     },
   },
   bowtie2_genome_cutadapt_topN => {
@@ -311,8 +311,8 @@ my $config_rat = {
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
+      "walltime" => "720",
+      "mem"      => "40gb"
     },
   },
   identical => {
@@ -374,12 +374,12 @@ my $config_rat = {
     shrimp2_index => $shrimp2_rat_index,
     is_mirna      => 1,
     output_bam    => 1,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
+      "walltime" => "720",
+      "mem"      => "40gb"
     },
   },
 
@@ -611,12 +611,12 @@ my $config_human = {
     shrimp2_index => $shrimp2_human_index,
     is_mirna      => 1,
     output_bam    => 1,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
+      "walltime" => "720",
+      "mem"      => "40gb"
     },
   },
   bowtie2_genome_cutadapt_topN => {
@@ -661,12 +661,12 @@ my $config_human = {
     shrimp2_index => $shrimp2_human_index,
     is_mirna      => 1,
     output_bam    => 1,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
+      "walltime" => "720",
+      "mem"      => "40gb"
     },
   },
   identical => {
@@ -728,12 +728,12 @@ my $config_human = {
     shrimp2_index => $shrimp2_human_index,
     is_mirna      => 1,
     output_bam    => 1,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
+      "walltime" => "720",
+      "mem"      => "40gb"
     },
   },
 
