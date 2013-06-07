@@ -315,7 +315,7 @@ my $config_rat = {
     source_ref    => [ "identical", ".fastq\$" ],
     bowtie2_index => $bowtie2_rat_index,
     samonly       => 0,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -917,8 +917,9 @@ my $config_human = {
 #
 #};
 
-performConfig($config_rat);
-performConfig($config_human);
+#performConfig($config_rat);
+#performConfig($config_human);
+performTask($config_rat, "bowtie2_genome_identical_topN");
 
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
 #bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
