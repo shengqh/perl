@@ -75,7 +75,7 @@ my $novoalign_option = "-l 15 -t 30 -r Random -m";
 #    return 0;
 #  }
 #}
-my $shrimp2_option      = "-s 000111111000 -Q -N 8 -n 1 -o 1 --qv-offset 33";
+my $shrimp2_option      = "-Q -N 8 -n 1 -o 1 --qv-offset 33";
 my $shrimp2_rat_index   = "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls_mirna/rn4-ls";
 my $shrimp2_human_index = "/data/cqs/shengq1/reference/hg19/shrimp2_index_ls_mirna/hg19_chr-ls";
 
