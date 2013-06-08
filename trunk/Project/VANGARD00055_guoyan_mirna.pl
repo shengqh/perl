@@ -946,8 +946,8 @@ my $config_human = {
 #performTask($config_rat, "bowtie2_genome_identical_topN");
 #performTask($config_rat, "bowtie2_genome_identical_topN");
 
-#performConfig($config_rat, "^shrimp2", 1);
-performConfig($config_human, "^shrimp2", 1);
+performConfig($config_rat, "^shrimp2", 1);
+#performConfig($config_human, "^shrimp2", 1);
 
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
 #bwa_by_pbs_single( $config_mirna, "bwa_hairpin" );
