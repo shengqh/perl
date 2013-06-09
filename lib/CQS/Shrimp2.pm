@@ -54,12 +54,12 @@ sub perform {
     my $samFile    = $sampleName . ".sam";
     my $bamFile    = $sampleName . ".bam";
 
-    my $pbsName = "${sampleName}_shrimp2.pbs";
+    my $pbsName = "${sampleName}_srp2.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log    = "${logDir}/${sampleName}_shrimp2.log";
+    my $log    = "${logDir}/${sampleName}_srp2.log";
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
     open( OUT, ">$pbsFile" ) or die $!;
