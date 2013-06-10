@@ -277,8 +277,8 @@ my $config_rat = {
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
-      "mem"      => "20gb"
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
   mirna_count_bowtie2_genome_cutadapt_topN => {
@@ -943,10 +943,10 @@ my $config_human = {
 
 #performConfig($config_rat);
 #performConfig($config_human);
-#performTask($config_rat, "bowtie2_genome_identical_topN");
+performTask($config_rat, "bowtie2_genome_cutadapt_topN");
 #performTask($config_rat, "bowtie2_genome_identical_topN");
 
-performConfig($config_rat, "^shrimp2", 1);
+#performConfig($config_rat, "^shrimp2", 1);
 #performConfig($config_human, "^shrimp2", 1);
 
 #bwa_by_pbs_single( $config_mirna, "bwa_mature" );
