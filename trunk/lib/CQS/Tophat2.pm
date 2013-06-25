@@ -10,9 +10,8 @@ use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::Task;
 use CQS::NGSCommon;
-use CQS::AbstractBowtie;
 
-our @ISA = qw(CQS::AbstractBowtie);
+our @ISA = qw(CQS::Task);
 
 sub new {
   my ($class) = @_;

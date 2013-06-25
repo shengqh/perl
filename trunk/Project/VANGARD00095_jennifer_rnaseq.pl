@@ -7,6 +7,7 @@ use CQS::DNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::SomaticMutation;
+use CQS::ClassFactory;
 
 my $vangard = "VANGARD00095";
 
@@ -36,6 +37,40 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  bwa => {
+    class      => "BWA",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa",
+    option     => "-q 15 -t 8",
+    fasta_file => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
+    source_ref => "fastqfiles",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  refine => {
+    class              => "GATK::Refine",
+    perform            => 1,
+    target_dir         => "${target_dir}/refine",
+    option             => "-Xmx40g",
+    fasta_file         => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
+    source_ref         => "bwa",
+    thread_count       => 8,
+    vcf_files          => ["/data/cqs/shengq1/reference/snp137/human/00-All.vcf"],
+    gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
+    markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bwa_refine => {
     target_dir         => $bwa_dir,
     option             => "-q 15 -t 8",
@@ -60,9 +95,9 @@ my $config = {
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
     source_ref    => "bwa_refine",
-    fasta_file    => "/data/cqs/guoy1/reference/hg19/hg19_rCRS/hg19_rCRS.fa",
+    fasta_file    => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
     cosmic_file   => "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf",
-    dbsnp_file    => "/data/cqs/shengq1/reference/snp137/dbsnp_137.b37.vcf",
+    dbsnp_file    => "/data/cqs/shengq1/reference/snp137/human/00-All.vcf",
     annovar_param => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
     annovar_db    => "/scratch/cqs/shengq1/references/annovar/humandb/",
     sh_direct     => 1,
@@ -78,6 +113,7 @@ my $config = {
 
 #fastqc_by_pbs( $config, "fastqc" );
 #bwa_refine( $config, "bwa_refine" );
-muTect($config, "muTect");
+#muTect( $config, "muTect" );
+performConfig($config);
 
 1;
