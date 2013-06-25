@@ -90,11 +90,7 @@ if [[ -s $saiFile1 && ! -s $samFile ]]; then
 fi";
     }
 
-    my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile);
-
     my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile, $bwa_indent );
-    my $sort_index_command = get_sort_index_command( $bamFile, $bamSortedPrefix, $bwa_indent );
-    my $stat_command = get_stat_command( $bamSortedFile, $bwa_indent );
 
     my $pbsName = "${sampleName}_bwa.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -112,8 +108,8 @@ $path_file
 
 cd $curDir
 
-if [ -s $bamSortedFile ]; then
-  echo job has already been done. if you want to do again, delete $bamSortedFile and submit job again.
+if [ -s $bamFile ]; then
+  echo job has already been done. if you want to do again, delete $bamFile and submit job again.
   exit 0
 fi
 
