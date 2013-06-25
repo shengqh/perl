@@ -10,13 +10,19 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_sorted_bam get_sam2bam_command get_sort_index_command get_sort_command get_index_command get_stat_command transcript_gtf_index_exists)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_bam_tag get_sorted_bam get_sam2bam_command get_sort_index_command get_sort_command get_index_command get_stat_command transcript_gtf_index_exists)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.01';
 
 use Cwd;
+
+sub get_bam_tag {
+  my ($sampleName) = @_;
+  my $tag = "'\@RG\tID:$sampleName\tLB:$sampleName\tSM:$sampleName\tPL:ILLUMINA'";
+  return ($tag);
+}
 
 sub get_sorted_bam {
   my $bamFile         = shift;
