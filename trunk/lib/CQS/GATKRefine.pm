@@ -141,9 +141,11 @@ sub result {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $bamFile     = $sampleName . ".bam";
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
+    my $sampleFile  = $sampleFiles[0];
+    my $sortedFile  = change_extension( $sampleFile, ".realigned.recal.rmdup_sorted.bam" );
     my @resultFiles = ();
-    push( @resultFiles, $bamFile );
+    push( @resultFiles, $sortedFile );
     $result->{$sampleName} = \@resultFiles;
   }
   return $result;
