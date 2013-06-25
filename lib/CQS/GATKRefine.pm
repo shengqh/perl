@@ -70,7 +70,15 @@ sub perform {
     print SH "\$MYCMD ./$pbsName \n";
 
     open( OUT, ">$pbsFile" ) or die $!;
-    print OUT "if [ ! -s $intervalFile ]; then
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file
+
+cd $curDir
+
+if [ ! -s $intervalFile ]; then
   echo RealignerTargetCreator=`date` 
   java $option -jar $gatk_jar -T RealignerTargetCreator -I $sampleFile -R $faFile $knownvcf -nt $thread_count -o $intervalFile
 fi
