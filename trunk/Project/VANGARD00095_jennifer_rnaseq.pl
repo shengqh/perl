@@ -6,6 +6,7 @@ use CQS::QC;
 use CQS::DNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
+use CQS::SomaticMutation;
 
 my $vangard = "VANGARD00095";
 
@@ -75,7 +76,8 @@ my $config = {
   },
 };
 
-fastqc_by_pbs( $config, "fastqc" );
-bwa_refine( $config, "bwa_refine" );
+#fastqc_by_pbs( $config, "fastqc" );
+#bwa_refine( $config, "bwa_refine" );
+muTect($config, "muTect");
 
 1;
