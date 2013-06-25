@@ -11,7 +11,6 @@ my $vangard  ="VANGARD00095";
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_jennifer_rnaseq");
 
-#my $bwa_dir = "${target_dir}/bwa";
 my $bwa_dir = "${target_dir}/bwa_refine";
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
