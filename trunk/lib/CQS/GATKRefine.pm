@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::GATK::Refine;
+package CQS::GATKRefine;
 
 use strict;
 use warnings;
@@ -16,7 +16,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "GATK::Refine";
+  $self->{_name} = "GATKRefine";
   bless $self, $class;
   return $self;
 }
