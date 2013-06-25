@@ -7,7 +7,7 @@ use CQS::DNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $vangard  ="VANGARD00095";
+my $vangard = "VANGARD00095";
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_jennifer_rnaseq");
 
@@ -19,13 +19,7 @@ my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
-  general => {
-    bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
-    transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => $transcript_gtf_index,
-    path_file            => "/home/shengq1/local/bin/path.txt",
-    task_name            => "${vangard}"
-  },
+  general    => { task_name => "${vangard}" },
   fastqfiles => {
     "2562-JP-1" => [ "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-1_1.fastq.gz", "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-1_2.fastq.gz" ],
     "2562-JP-2" => [ "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-2_1.fastq.gz", "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-2_2.fastq.gz" ]
@@ -47,12 +41,13 @@ my $config = {
     option_samse       => "",
     option_sampe       => "",
     option_gatk        => "-Xmx40g",
-    fasta_file         => "/data/cqs/shengq1/reference/hg19/hg19_chr.fa",
+    fasta_file         => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
     source_ref         => "fastqfiles",
     thread_count       => 8,
     vcf_files          => ["/data/cqs/shengq1/reference/snp137/human/00-All.vcf"],
     gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
     markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
+    sh_direct          => 1,
     pbs                => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
