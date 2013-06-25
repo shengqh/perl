@@ -53,7 +53,7 @@ my $config = {
     },
   },
   refine => {
-    class              => "GATK::Refine",
+    class              => "GATKRefine",
     perform            => 1,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
