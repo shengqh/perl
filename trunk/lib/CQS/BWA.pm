@@ -63,7 +63,7 @@ sub perform {
     my $bamFile     = $sampleName . ".bam";
     my $tag         = get_bam_tag($sampleName);
 
-    my $bwa_indent  = "  ";
+    my $bwa_indent  = "";
     my $sampleFile1 = $sampleFiles[0];
     my ( $bwaaln_command1, $saiFile1 ) = get_bwa_aln_command( $sampleFile1, $option, $faFile, $bwa_indent );
 
@@ -76,18 +76,18 @@ sub perform {
 
 $bwaaln_command2
 
-  if [[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]; then
-    echo aln=`date` 
-    bwa sampe -r $tag $option $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile
-  fi";
+if [[ -s $saiFile1 && -s $saiFile2 && ! -s $samFile ]]; then
+  echo aln=`date` 
+  bwa sampe -r $tag $option $faFile $saiFile1 $saiFile2 $sampleFile1 $sampleFile2 > $samFile
+fi";
     }
     else {
       $bwa_aln_command = "$bwaaln_command1
 
-  if [[ -s $saiFile1 && ! -s $samFile ]]; then
-    echo aln=`date` 
-    bwa samse -r $tag $option $faFile $saiFile1 $sampleFile1 > $samFile
-  fi";
+if [[ -s $saiFile1 && ! -s $samFile ]]; then
+  echo aln=`date` 
+  bwa samse -r $tag $option $faFile $saiFile1 $sampleFile1 > $samFile
+fi";
     }
 
     my ( $bamSortedFile, $bamSortedPrefix ) = get_sorted_bam($bamFile);
