@@ -12,9 +12,7 @@ my $transcript_gtf = "/data/cqs/guoy1/reference/mm10/mm10_annotation/Mus_musculu
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
-  general => {
-    task_name => "smad4"
-  },
+  general    => { task_name => "smad4" },
   fastqfiles => {
     "2288-RDB-35" => ["/data/cqs/chenx/smad4/2013/2288-RDB-35_1_sequence.txt.gz"],
     "2288-RDB-39" => ["/data/cqs/chenx/smad4/2013/2288-RDB-39_1_sequence.txt.gz"],
@@ -61,6 +59,7 @@ my $config = {
     option               => "-p 8 -u -N",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => "/scratch/cqs/shengq1/gtfindex/mm10_GRCm38_68",
+    fasta_file           => "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10.fa",
     source_ref           => "tophat2",
     groups_ref           => "groups",
     pairs_ref            => "pairs",
