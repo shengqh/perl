@@ -76,13 +76,6 @@ sub perform {
     my $normal = $sampleFiles[0];
     my $tumor  = $sampleFiles[1];
     
-    for my $sampleFile (@sampleFiles) {
-      my $bamindex = $sampleFile . ".bai";
-      if ( !-s $bamindex ) {
-        die "bam file must be indexed : $sampleFile";
-      }
-    }
-
     my $normalfile = basename($normal);
     my $tumorfile  = basename($tumor);
 
@@ -110,6 +103,15 @@ $path_file
 echo varscan2=`date` 
 
 cd $curDir
+
+
+if [ !-s ${normal}.bai ]; then
+  samtools index ${normal}
+fi
+
+if [ !-s ${tumor}.bai ]; then
+  samtools index ${tumor}
+fi
 
 if [ ! -s $normal_mpileup ]; then
   echo NORMAL_MPILEUP=`date`

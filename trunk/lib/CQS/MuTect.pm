@@ -74,13 +74,6 @@ sub perform {
     my $normal = $sampleFiles[0];
     my $tumor  = $sampleFiles[1];
 
-    for my $sampleFile (@sampleFiles) {
-      my $bamindex = $sampleFile . ".bai";
-      if ( !-s $bamindex ) {
-        die "bam file must be indexed : $sampleFile";
-      }
-    }
-
     my $out       = "${groupName}.somatic.out";
     my $vcf       = "${groupName}.somatic.vcf";
     my $passvcf   = "${groupName}.somatic.pass.vcf";
@@ -104,7 +97,15 @@ $path_file
 echo muTect=`date` 
 
 cd $curDir
-    
+
+if [ !-s ${normal}.bai ]; then
+  samtools index ${normal}
+fi
+
+if [ !-s ${tumor}.bai ]; then
+  samtools index ${tumor}
+fi
+
 if [ ! -s $vcf ]; then
   java -Xmx${gb}g -jar $muTect_jar --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
 fi 
