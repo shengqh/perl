@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use CQS::ClassFactory;
+use CQS::FileUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20130625_chenxi_rnaseq_smad4");
 
