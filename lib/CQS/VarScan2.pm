@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::MuTect;
+package CQS::VarScan2;
 
 use strict;
 use warnings;
@@ -16,7 +16,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "MuTect";
+  $self->{_name} = "VarScan2";
   bless $self, $class;
   return $self;
 }
@@ -26,10 +26,11 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $muTect_jar = get_param_file( $config->{$section}{muTect_jar},  "muTect_jar",  1 );
+  my $varscan2_jar = get_param_file( $config->{$section}{VarScan2_jar},  "VarScan2_jar",  1 );
   my $faFile     = get_param_file( $config->{$section}{fasta_file},  "fasta_file",  1 );
-  my $cosmicfile = get_param_file( $config->{$section}{cosmic_file}, "cosmic_file", 1 );
-  my $dbsnpfile  = get_param_file( $config->{$section}{dbsnp_file},  "dbsnp_file",  1 );
+
+  my $min_coverage    = $config->{$section}{min_coverage}    or die "min_coverage is not defined in $section!";
+  my $somatic_p_value = $config->{$section}{somatic_p_value} or die "somatic_p_value is not defined in $section!";
 
   my $annovarParameter = $config->{$section}{annovar_param} or die "annovar_param is not defined in $section";
   $option = $option . " " . $annovarParameter;
@@ -65,15 +66,16 @@ sub perform {
   for my $groupName ( sort keys %group_sample_map ) {
     my @sampleFiles = @{ $group_sample_map{$groupName} };
     my $sampleCount = scalar(@sampleFiles);
-    my $curDir      = create_directory_or_die( $resultDir . "/$groupName" );
 
     if ( $sampleCount != 2 ) {
       die "SampleFile should be normal,tumor paired.";
     }
 
+    my $curDir      = create_directory_or_die( $resultDir . "/$groupName" );
+
     my $normal = $sampleFiles[0];
     my $tumor  = $sampleFiles[1];
-
+    
     for my $sampleFile (@sampleFiles) {
       my $bamindex = $sampleFile . ".bai";
       if ( !-s $bamindex ) {
@@ -81,18 +83,22 @@ sub perform {
       }
     }
 
-    my $out       = "${groupName}.somatic.out";
-    my $vcf       = "${groupName}.somatic.vcf";
-    my $passvcf   = "${groupName}.somatic.pass.vcf";
+    my $normalfile = basename($normal);
+    my $tumorfile  = basename($tumor);
+
+    my $normal_mpileup = "${normalfile}.mpileup";
+    my $tumor_mpileup  = "${tumorfile}.mpileup";
+
+    my $snpvcf = "${groupName}.snp.vcf";
     my $passinput = "${groupName}.somatic.pass.avinput";
     my $annovar   = "${groupName}.somatic.pass.annovar";
-    my $result    = "${groupName}.somatic.pass.annovar.genome_summary.csv";
 
-    my $pbsName = "${groupName}_mt.pbs";
+    my $pbsName = "${groupName}_vs2.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
+
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${groupName}_mt.log";
+    my $log = "${logDir}/${groupName}_vs2.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
@@ -101,23 +107,29 @@ sub perform {
 
 $path_file 
 
-echo muTect=`date` 
+echo varscan2=`date` 
 
 cd $curDir
-    
-if [ ! -s $vcf ]; then
-  java -Xmx${gb}g -jar $muTect_jar --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
-fi 
 
-if [[ -s $vcf && ! -s $passvcf ]]; then
-  grep -v REJECT $vcf > $passvcf
+if [ ! -s $normal_mpileup ]; then
+  echo NORMAL_MPILEUP=`date`
+  samtools mpileup -q 20 -f $faFile $normal > $normal_mpileup
 fi
 
-if [[ -s $passvcf && ! -s $result ]]; then
-  convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
-
-  summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
+if [ ! -s $tumor_mpileup ]; then
+  echo TUMOR_MPILEUP=`date`
+  samtools mpileup -q 20 -f $faFile $tumor > $tumor_mpileup
 fi
+
+if [ ! -s $snpvcf ]; then
+  java -Xmx${gb}g -jar $varscan2_jar somatic $option $normal_mpileup $tumor_mpileup $groupName --output-vcf --somatic-p-value $somatic_p_value --min-coverage $min_coverage --strand-filter
+fi
+
+java -Xmx${gb}g -jar $varscan2_jar processSomatic $snpvcf --p-value $somatic_p_value
+
+convert2annovar.pl -format vcf4 ${snpvcf}.Somatic.hc -includeinfo > $passinput
+
+summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
 
 echo finished=`date` \n";
     close OUT;
@@ -131,7 +143,7 @@ echo finished=`date` \n";
     chmod 0755, $shfile;
   }
 
-  print "!!!shell file $shfile created, you can run this shell file to submit all MuTect tasks.\n";
+  print "!!!shell file $shfile created, you can run this shell file to submit all VarScan2 tasks.\n";
 }
 
 sub result {
@@ -145,8 +157,11 @@ sub result {
   for my $groupName ( keys %{$groups} ) {
     my @resultFiles = ();
     my $curDir      = $resultDir . "/$groupName";
-    push( @resultFiles, "$curDir/${groupName}.somatic.pass.annovar.genome_summary.csv" );
-    push( @resultFiles, "$curDir/${groupName}.somatic.pass.vcf" );
+    my $snpvcf = "${groupName}.snp.vcf";
+    my $annovar   = "${groupName}.somatic.pass.annovar";
+    push( @resultFiles, "$curDir/${annovar}.genome_summary.csv" );
+    push( @resultFiles, "$curDir/${snpvcf}.Somatic.hc" );
+    
     $result->{$groupName} = \@resultFiles;
   }
   return $result;
