@@ -78,7 +78,7 @@ sub perform {
     for my $sampleFile (@sampleFiles) {
       my $bamindex = $sampleFile . ".bai";
       if (! -s $bamindex){
-        die "bam file must be indexed : $bamindex";
+        die "bam file must be indexed : $sampleFile";
       }
     }
 
