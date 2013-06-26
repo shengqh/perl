@@ -104,12 +104,6 @@ fi";
   return ( $command, $sortedFile );
 }
 
-sub get_bam_tag {
-  my ($sampleName) = @_;
-  my $tag = "'\@RG\tID:$sampleName\tLB:$sampleName\tSM:$sampleName\tPL:ILLUMINA'";
-  return ($tag);
-}
-
 sub bwa_by_pbs_single {
   my ( $config, $section ) = @_;
 
