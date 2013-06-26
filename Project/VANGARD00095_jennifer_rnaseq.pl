@@ -26,6 +26,7 @@ my $config = {
     "2562-JP-1" => [ "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-1_1.fastq.gz", "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-1_2.fastq.gz" ],
     "2562-JP-2" => [ "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-2_1.fastq.gz", "/blue/sequencer/Runs/projects/2562-JP/2013-06-20/2562-JP-2_2.fastq.gz" ]
   },
+  groups => { "2562-JP" => [ "2562-JP-1", "2562-JP-2" ] },
   fastqc => {
     target_dir => "${target_dir}/fastqc",
     option     => "",
@@ -92,9 +93,12 @@ my $config = {
     },
   },
   muTect => {
+    class         => "MuTect",
+    perform       => 1,
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
-    source_ref    => "bwa_refine",
+    source_ref    => "refine",
+    groups_ref    => "groups",
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
     cosmic_file   => "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf",
     dbsnp_file    => "/data/cqs/shengq1/reference/snp137/human/00-All.vcf",
