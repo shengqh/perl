@@ -94,7 +94,7 @@ my $config = {
   },
   muTect => {
     class         => "MuTect",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
     source_ref    => "refine",
