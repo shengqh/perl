@@ -90,8 +90,6 @@ if [[ -s $saiFile1 && ! -s $samFile ]]; then
 fi";
     }
 
-    my $sam2bam_command = get_sam2bam_command( $samFile, $bamFile, $bwa_indent );
-
     my $pbsName = "${sampleName}_bwa.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     my $curDir  = create_directory_or_die( $resultDir . "/$sampleName" );
@@ -148,7 +146,7 @@ sub result {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $bamFile     = $sampleName . ".bam";
+    my $bamFile     = "${resultDir}/${sampleName}/${sampleName}.bam";
     my @resultFiles = ();
     push( @resultFiles, $bamFile );
     $result->{$sampleName} = \@resultFiles;
