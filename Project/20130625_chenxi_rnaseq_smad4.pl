@@ -30,6 +30,8 @@ my $config = {
   },
   pairs  => { "KO_vs_WT" => [ "WT", "KO" ], },
   fastqc => {
+    class      => "FastQC",
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -72,7 +74,6 @@ my $config = {
   },
 };
 
-fastqc_by_pbs( $config, "fastqc" );
 performConfig($config);
 
 1;
