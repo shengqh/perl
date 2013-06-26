@@ -111,9 +111,11 @@ if [ ! -s $vcf ]; then
   java -Xmx${gb}g -jar $executefile --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
 fi 
 
-if [[ -s $vcf && ! -s $result ]]; then
+if [[ -s $vcf && ! -s $passvcf ]]; then
   grep -v REJECT $vcf > $passvcf
+fi
 
+if [[ -s $passvcf && ! -s $result ]]; then
   convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
 
   summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
