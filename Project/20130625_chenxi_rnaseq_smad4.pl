@@ -13,9 +13,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => {
-    bowtie2_index => "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10",
-    path_file     => "/home/shengq1/bin/path.txt",
-    task_name     => "2379"
+    task_name => "smad4"
   },
   fastqfiles => {
     "2288-RDB-35" => ["/data/cqs/chenx/smad4/2013/2288-RDB-35_1_sequence.txt.gz"],
