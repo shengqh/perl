@@ -105,14 +105,6 @@ $path_file
 
 echo muTect=`date` 
 
-if [ ! -s ${normal}.bai ]; then
-  samtools index $normal
-fi
-
-if [ ! -s ${tumor}.bai ]; then
-  samtools index $tumor
-fi
-
 cd $curDir
     
 if [ ! -s $vcf ]; then
