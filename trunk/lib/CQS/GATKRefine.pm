@@ -54,8 +54,10 @@ sub perform {
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles   = @{ $rawFiles{$sampleName} };
     my $sampleFile    = $sampleFiles[0];
-    my $intervalFile  = $sampleFile . ".intervals";
-    my $realignedFile = change_extension( $sampleFile, ".realigned.bam" );
+    my $sampleFileName = basename($sampleFile);
+    
+    my $intervalFile  = $sampleFileName . ".intervals";
+    my $realignedFile = change_extension( $sampleFileName, ".realigned.bam" );
     my $grpFile       = $realignedFile . ".grp";
     my $recalFile     = change_extension( $realignedFile, ".recal.bam" );
     my $rmdupFile     = change_extension( $recalFile, ".rmdup.bam" );
