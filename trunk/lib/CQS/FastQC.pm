@@ -40,8 +40,8 @@ sub perform {
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
     my $sampleCount = scalar(@sampleFiles);
-    my $samples = join(' ', @sampleFiles);
-    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
+    my $samples     = join( ' ', @sampleFiles );
+    my $curDir      = create_directory_or_die( $resultDir . "/$sampleName" );
 
     my $pbsName = "${sampleName}_fq.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -69,11 +69,11 @@ echo finished=`date`
   }
 
   close(SH);
-  
+
   if ( is_linux() ) {
     chmod 0755, $shfile;
   }
-  
+
   print "!!!shell file $shfile created, you can run this shell file to submit all FastQC tasks.\n";
 }
 
@@ -86,9 +86,16 @@ sub result {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $bamFile     = "${resultDir}/${sampleName}/${sampleName}.bam";
+    my @sampleFiles = @{ $rawFiles{$sampleName} };
     my @resultFiles = ();
-    push( @resultFiles, $bamFile );
+    for my $sampleFile (@sampleFiles) {
+      my $name = basename($sampleFile);
+      if ( $name =~ /gz$/ ) {
+        $name = change_extension( $name, "" );
+      }
+      $name = change_extension( $name, "_fastqc" );
+      push( @resultFiles, "${resultDir}/${sampleName}/${name}" );
+    }
     $result->{$sampleName} = \@resultFiles;
   }
   return $result;
