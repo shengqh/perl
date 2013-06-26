@@ -40,12 +40,13 @@ my $config = {
     },
   },
   tophat2 => {
-    class      => "Tophat2",
-    perform    => 1,
-    target_dir => "${target_dir}/tophat2",
-    option     => "--segment-length 25 -r 0 -p 6",
-    source_ref => "fastqfiles",
-    pbs        => {
+    class         => "Tophat2",
+    perform       => 1,
+    target_dir    => "${target_dir}/tophat2",
+    option        => "--segment-length 25 -r 0 -p 6",
+    source_ref    => "fastqfiles",
+    bowtie2_index => "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10",
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=6",
       "walltime" => "72",
