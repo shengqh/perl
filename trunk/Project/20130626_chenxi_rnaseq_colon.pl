@@ -52,7 +52,7 @@ my $config = {
     option        => "--segment-length 25 -r 0 -p 6",
     source_ref    => "fastqfiles",
     bowtie2_index => "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10",
-    sh_direct     => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=6",
@@ -71,7 +71,7 @@ my $config = {
     source_ref           => "tophat2",
     groups_ref           => "groups",
     pairs_ref            => "pairs",
-    sh_direct            => 0,
+    sh_direct            => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
