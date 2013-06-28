@@ -7,7 +7,7 @@ use CQS::FileUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20130625_chenxi_rnaseq_smad4");
 
-my $transcript_gtf = "/data/cqs/guoy1/reference/mm10/mm10_annotation/Mus_musculus.GRCm38.68.gtf";
+my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/mm10/Mus_musculus.GRCm38.68.gtf";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -28,7 +28,7 @@ my $config = {
   pairs  => { "KO_vs_WT" => [ "WT", "KO" ], },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -42,7 +42,7 @@ my $config = {
   },
   tophat2 => {
     class         => "Tophat2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/tophat2",
     option        => "--segment-length 25 -r 0 -p 6",
     source_ref    => "fastqfiles",
