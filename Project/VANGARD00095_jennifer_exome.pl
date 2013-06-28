@@ -72,26 +72,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_refine => {
-    target_dir         => $bwa_dir,
-    option             => "-q 15 -t 8",
-    option_samse       => "",
-    option_sampe       => "",
-    option_gatk        => "-Xmx40g",
-    fasta_file         => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
-    source_ref         => "fastqfiles",
-    thread_count       => 8,
-    vcf_files          => ["/data/cqs/shengq1/reference/snp137/human/00-All.vcf"],
-    gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
-    markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
-    sh_direct          => 1,
-    pbs                => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
   muTect => {
     class         => "MuTect",
     perform       => 1,
@@ -115,9 +95,6 @@ my $config = {
   },
 };
 
-#fastqc_by_pbs( $config, "fastqc" );
-#bwa_refine( $config, "bwa_refine" );
-#muTect( $config, "muTect" );
 performConfig($config);
 
 1;
