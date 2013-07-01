@@ -117,7 +117,7 @@ fi
 if [[ -s $passvcf && ! -s $result ]]; then
   convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
 
-  table_annovar.pl $passinput $annovarDB $annovarParameter --outfile $annovar
+  summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
 fi
 
 echo finished=`date` \n";
@@ -152,5 +152,6 @@ sub result {
   }
   return $result;
 }
+
 
 1;
