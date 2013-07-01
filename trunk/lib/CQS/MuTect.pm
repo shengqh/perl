@@ -34,6 +34,11 @@ sub perform {
   my $annovarParameter = $config->{$section}{annovar_param} or die "annovar_param is not defined in $section";
   $option = $option . " " . $annovarParameter;
 
+  my $java_option = $config->{$section}{java_option};
+  if ( !defined $java_option ) {
+    $java_option = "";
+  }
+
   my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
 
   my $rawFiles = get_raw_files( $config, $section );
@@ -58,9 +63,6 @@ sub perform {
   else {
     print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
   }
-
-  $pbsDesc =~ /\=(\d+)gb/;
-  my $gb = $1;
 
   for my $groupName ( sort keys %group_sample_map ) {
     my @sampleFiles = @{ $group_sample_map{$groupName} };
@@ -107,7 +109,7 @@ if [ !-s ${tumor}.bai ]; then
 fi
 
 if [ ! -s $vcf ]; then
-  java -Xmx${gb}g -jar $muTect_jar --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
+  java $java_option -jar $muTect_jar $option --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
 fi 
 
 if [[ -s $vcf && ! -s $passvcf ]]; then
