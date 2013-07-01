@@ -68,7 +68,7 @@ sub perform {
     my $listfilename = "${groupName}.list";
     my $listfile     = $curDir . "/$listfilename";
     open( LIST, ">$listfile" ) or die "Cannot create $listfile";
-    my @sampleFiles = @{ $rawFiles->{$groupName} };
+    my @sampleFiles = @{ $group_sample_map{$groupName} };
     foreach my $sampleFile (@sampleFiles) {
       print LIST $sampleFile . "\n";
     }
