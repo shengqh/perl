@@ -123,7 +123,7 @@ $path_file
 cd $curDir
 
 echo InDel=`date` 
-java -jar $java_option $gatk_jar -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $indelOut -metrics $indelStat -glm INDEL $option
+java -jar $java_option $gatk_jar $option -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $indelOut -metrics $indelStat -glm INDEL
 
 echo finished=`date`
 ";
