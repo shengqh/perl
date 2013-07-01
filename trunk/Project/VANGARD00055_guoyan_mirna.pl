@@ -18,7 +18,7 @@ my $hsa_gffs;
 my $rno_gffs;
 
 if ( is_linux() ) {
-  $root      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_temp";
+  $root      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
   $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
   $hsa_gffs  = "/data/cqs/shengq1/reference/gff3/hsa.gff3";
   $rno_gffs  = "/data/cqs/shengq1/reference/gff3/rno.gff3";
@@ -78,6 +78,8 @@ my $novoalign_option = "-l 15 -t 30 -r Random -m";
 my $shrimp2_option      = "-Q -N 8 -o 1 --qv-offset 33";
 my $shrimp2_rat_index   = "/data/cqs/shengq1/reference/rn4/shrimp2_index_ls_mirna/rn4-ls";
 my $shrimp2_human_index = "/data/cqs/shengq1/reference/hg19/shrimp2_index_ls_mirna/hg19_chr-ls";
+my $shrimp2_rat_miRBase_index   = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/rno.mature.dna-ls";
+my $shrimp2_human_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/hsa.mature.dna-ls";
 
 my $rat = {
   "2516-01" => ["${root}/data/2516-KCV-1_1.fastq"],
@@ -218,7 +220,7 @@ my $config_rat = {
   },
   cutadapt_len => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/cutadapt_len",
     option     => "-m 12 -M 49",
     source     => $rat,
@@ -284,7 +286,7 @@ my $config_rat = {
   },
   bowtie2_genome_cutadapt_topN => {
     class         => "Bowtie2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_rat_dir}/topN_bowtie2_genome_cutadapt",
     option        => $bowtie2_option_topN,
     source_ref    => "cutadapt_len",
@@ -300,7 +302,7 @@ my $config_rat = {
   },
   mirna_count_bowtie2_genome_cutadapt_topN => {
     class        => "MirnaCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_rat_dir}/topN_bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt_topN",
@@ -317,11 +319,11 @@ my $config_rat = {
   },
   shrimp2_bowtie2_genome_cutadapt_topN => {
     class         => "Shrimp2",
-    perform       => 0,
-    target_dir    => "${target_rat_dir}/topN_bowtie2_genome_cutadapt_shrimp2",
+    perform       => 1,
+    target_dir    => "${target_rat_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
-    shrimp2_index => $shrimp2_rat_index,
+    shrimp2_index => $shrimp2_rat_miRBase_index,
     is_mirna      => 1,
     output_bam    => 1,
     sh_direct     => 0,
@@ -572,7 +574,7 @@ my $config_human = {
   },
   cutadapt_len => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/cutadapt_len",
     option     => "-m 12 -M 49",
     source     => $human,
@@ -638,7 +640,7 @@ my $config_human = {
   },
   bowtie2_genome_cutadapt_topN => {
     class         => "Bowtie2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_human_dir}/topN_bowtie2_genome_cutadapt",
     option        => $bowtie2_option_topN,
     source_ref    => "cutadapt_len",
@@ -654,7 +656,7 @@ my $config_human = {
   },
   mirna_count_bowtie2_genome_cutadapt_topN => {
     class        => "MirnaCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_human_dir}/topN_bowtie2_genome_cutadapt_count",
     option       => "",
     source_ref   => "bowtie2_genome_cutadapt_topN",
@@ -672,10 +674,10 @@ my $config_human = {
   shrimp2_bowtie2_genome_cutadapt_topN => {
     class         => "Shrimp2",
     perform       => 1,
-    target_dir    => "${target_human_dir}/topN_bowtie2_genome_cutadapt_shrimp2",
+    target_dir    => "${target_human_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
-    shrimp2_index => $shrimp2_human_index,
+    shrimp2_index => $shrimp2_human_miRBase_index,
     is_mirna      => 1,
     output_bam    => 1,
     sh_direct     => 0,
@@ -959,7 +961,7 @@ my $config_human = {
 #};
 
 performConfig($config_rat);
-#performConfig($config_human);
+performConfig($config_human);
 
 #performConfig($config_rat, "^shrimp2", 1);
 #performConfig($config_human, "^shrimp2", 1);
