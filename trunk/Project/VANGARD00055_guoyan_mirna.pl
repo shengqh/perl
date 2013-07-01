@@ -18,7 +18,7 @@ my $hsa_gffs;
 my $rno_gffs;
 
 if ( is_linux() ) {
-  $root      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna";
+  $root      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_temp";
   $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
   $hsa_gffs  = "/data/cqs/shengq1/reference/gff3/hsa.gff3";
   $rno_gffs  = "/data/cqs/shengq1/reference/gff3/rno.gff3";
@@ -187,7 +187,7 @@ my $config_rat = {
   general  => { "task_name" => $task_name . "_rat", },
   cutadapt => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/cutadapt",
     option     => "",
     source     => $rat,
@@ -203,7 +203,7 @@ my $config_rat = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -317,7 +317,7 @@ my $config_rat = {
   },
   shrimp2_bowtie2_genome_cutadapt_topN => {
     class         => "Shrimp2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_rat_dir}/topN_bowtie2_genome_cutadapt_shrimp2",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
