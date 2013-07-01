@@ -28,6 +28,8 @@ my $config = {
   },
   groups => { "2562-JP" => [ "2562-JP-1", "2562-JP-2" ] },
   fastqc => {
+    class      => "FastQC",
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -40,7 +42,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-q 15 -t 8",
     fasta_file => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
@@ -55,7 +57,7 @@ my $config = {
   },
   refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
