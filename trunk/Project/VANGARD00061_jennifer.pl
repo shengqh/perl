@@ -61,11 +61,11 @@ my $config = {
   },
   snpindel => {
     target_dir  => "${target_dir}/SNPindel",
-    option      => "-Xmx40g",
+    option => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
+    java_option      => "-Xmx40g",
     fasta_file  => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
     vcf_files   => ["/data/cqs/shengq1/reference/snp137/human/00-All.vcf"],
     gatk_jar    => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
-    gatk_option => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
     source      => { "2510-DH" => [ "${bwa_dir}/result/2510-DH-2/2510-DH-2.realigned.recal.rmdup_sorted.bam", "${bwa_dir}/result/2510-DH-3/2510-DH-3.realigned.recal.rmdup_sorted.bam" ], },
     pbs         => {
       "email"    => $email,

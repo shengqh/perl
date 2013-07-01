@@ -95,6 +95,24 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  snpindel => {
+    class       => "GATKSnpInDel",
+    perform     => 1,
+    target_dir  => "${target_dir}/SNPindel",
+    option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
+    java_option => "-Xmx40g",
+    fasta_file  => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
+    vcf_files   => ["/data/cqs/shengq1/reference/snp137/human/00-All.vcf"],
+    gatk_jar    => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
+    source_ref  => "refine",
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+    }
+
 };
 
 performConfig($config);
