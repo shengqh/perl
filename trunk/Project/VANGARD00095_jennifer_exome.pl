@@ -29,7 +29,7 @@ my $config = {
   groups => { "2562-JP" => [ "2562-JP-1", "2562-JP-2" ] },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -77,7 +77,7 @@ my $config = {
   },
   muTect => {
     class         => "MuTect",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
     source_ref    => "refine",
