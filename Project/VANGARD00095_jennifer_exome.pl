@@ -18,6 +18,9 @@ my $bwa_dir = "${target_dir}/bwa_refine";
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 
+my $annovar_param =  "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove";
+my $annovar_db = "/scratch/cqs/shengq1/references/annovar/humandb/";
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
@@ -97,6 +100,22 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  annovar_mutect => {
+    class      => "Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/muTect",
+    option     => $annovar_param,
+    source_ref => ["muTect", "\.vcf\$"],
+    annovar_db => $annovar_db,
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   snpindel => {
     class       => "GATKSNPIndel",
     perform     => 0,
@@ -119,9 +138,9 @@ my $config = {
     class      => "Annovar",
     perform    => 1,
     target_dir => "${target_dir}/SNPindel",
-    option     => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
     source_ref => "snpindel",
-    annovar_db => "/scratch/cqs/shengq1/references/annovar/humandb/",
+    option     => $annovar_param,
+    annovar_db => $annovar_db,
     sh_direct  => 1,
     isvcf      => 1,
     pbs        => {
