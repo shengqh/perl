@@ -38,7 +38,7 @@ sub perform {
 
   my $mapfile = $resultDir . "/${task_name}_group_sample.map";
   open( MAP, ">$mapfile" ) or die "Cannot create $mapfile";
-  print MAP "GROUP_INDEX\tSAMPLE_NAME\tGROUP\tIndex\n";
+  print MAP "GROUP_INDEX\tSAMPLE_NAME\tGROUP_SAMPLE\tGROUP\tIndex\n";
 
   my %tpgroups         = ();
   my %group_sample_map = ();
@@ -46,11 +46,11 @@ sub perform {
     my @samples = @{ $groups->{$groupName} };
     my @gfiles  = ();
     my $index   = 0;
-    foreach my $sampleName (sort @samples) {
+    foreach my $sampleName ( sort @samples ) {
       my @bamFiles = @{ $rawFiles->{$sampleName} };
       push( @gfiles, $bamFiles[0] );
       my $group_index = $groupName . "_" . $index;
-      print MAP $group_index . "\t" . $sampleName . "\t" . $groupName . "\t" . $index . "\n";
+      print MAP $group_index . "\t" . $sampleName . "\t" . $groupName . $sampleName . "\t" . $groupName . "\t" . $index . "\n";
       $group_sample_map{$group_index} = $sampleName;
       $index = $index + 1;
     }
