@@ -36,28 +36,25 @@ sub perform {
 
   my $pairs = get_raw_files( $config, $section, "pairs" );
 
+  my $mapfile = $resultDir . "/${task_name}_group_sample.map";
+  open( MAP, ">$mapfile" ) or die "Cannot create $mapfile";
+  print MAP "GROUP_INDEX\tSAMPLE_NAME\tGROUP\tIndex\n";
+
   my %tpgroups         = ();
   my %group_sample_map = ();
   for my $groupName ( sort keys %{$groups} ) {
     my @samples = @{ $groups->{$groupName} };
     my @gfiles  = ();
     my $index   = 0;
-    foreach my $sampleName (@samples) {
+    foreach my $sampleName (sort @samples) {
       my @bamFiles = @{ $rawFiles->{$sampleName} };
       push( @gfiles, $bamFiles[0] );
       my $group_index = $groupName . "_" . $index;
+      print MAP $group_index . "\t" . $sampleName . "\t" . $groupName . "\t" . $index . "\n";
       $group_sample_map{$group_index} = $sampleName;
       $index = $index + 1;
     }
     $tpgroups{$groupName} = join( ",", @gfiles );
-  }
-
-  my $mapfile = $resultDir . "/${task_name}_group_sample.map";
-
-  open( MAP, ">$mapfile" ) or die "Cannot create $mapfile";
-  print MAP "GROUP_INDEX\tSAMPLE_NAME\n";
-  for my $gi ( sort keys %group_sample_map ) {
-    print MAP $gi . "\t" . $group_sample_map{$gi} . "\n";
   }
   close(MAP);
 
@@ -162,6 +159,7 @@ sub result {
     push( @resultFiles, $curDir . "/gene_exp.diff" );
     push( @resultFiles, $curDir . "/genes.read_group_tracking" );
     push( @resultFiles, $curDir . "/splicing.diff" );
+    push( @resultFiles, $resultDir . "/${task_name}_group_sample.map" );
 
     $result->{$pairName} = filter_array( \@resultFiles, $pattern );
   }
