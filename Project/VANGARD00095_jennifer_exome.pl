@@ -77,7 +77,7 @@ my $config = {
   },
   muTect => {
     class         => "MuTect",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
     source_ref    => "refine",
@@ -99,7 +99,7 @@ my $config = {
   },
   snpindel => {
     class       => "GATKSNPIndel",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/SNPindel",
     option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
     source_ref  => "refine",
