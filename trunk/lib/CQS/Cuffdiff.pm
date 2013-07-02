@@ -50,7 +50,7 @@ sub perform {
       my @bamFiles = @{ $rawFiles->{$sampleName} };
       push( @gfiles, $bamFiles[0] );
       my $group_index = $groupName . "_" . $index;
-      print MAP $group_index . "\t" . $sampleName . "\t" . $groupName . $sampleName . "\t" . $groupName . "\t" . $index . "\n";
+      print MAP $group_index . "\t" . $sampleName . "\t" . $groupName . "_" . $sampleName . "\t" . $groupName . "\t" . $index . "\n";
       $group_sample_map{$group_index} = $sampleName;
       $index = $index + 1;
     }
