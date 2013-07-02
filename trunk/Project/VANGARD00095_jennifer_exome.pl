@@ -77,7 +77,7 @@ my $config = {
   },
   muTect => {
     class         => "MuTect",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
     source_ref    => "refine",
@@ -114,7 +114,23 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     },
-  }
+  },
+  annovar_snpindel => {
+    class      => "Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/SNPindel",
+    option     => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
+    source_ref => "snpindel",
+    annovar_db => "/scratch/cqs/shengq1/references/annovar/humandb/",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 };
 
 performConfig($config);
