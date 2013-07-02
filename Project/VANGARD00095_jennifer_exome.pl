@@ -136,7 +136,7 @@ my $config = {
   },
   annovar_snpindel => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/SNPindel",
     source_ref => "snpindel",
     option     => $annovar_param,
