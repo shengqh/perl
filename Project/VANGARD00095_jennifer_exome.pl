@@ -80,7 +80,7 @@ my $config = {
   },
   muTect => {
     class         => "MuTect",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
     source_ref    => "refine",
@@ -89,8 +89,6 @@ my $config = {
     fasta_file    => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
     cosmic_file   => "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf",
     dbsnp_file    => "/data/cqs/shengq1/reference/snp137/human/00-All.vcf",
-    annovar_param => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
-    annovar_db    => "/scratch/cqs/shengq1/references/annovar/humandb/",
     sh_direct     => 1,
     muTect_jar    => "/home/shengq1/local/bin/muTect-1.1.4.jar",
     pbs           => {
