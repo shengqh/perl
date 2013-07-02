@@ -45,6 +45,18 @@ sub perform {
     $java_option = "";
   }
 
+  my $filter_snp_option = $config->{$section}{filter_snp_option};
+  if ( !defined $filter_snp_option ) {
+    $filter_snp_option =
+"--filterExpression \"QD<2.0\" --filterName \"QD\" --filterExpression \"MQ<40.0\" --filterName \"MQ\" --filterExpression \"FS >60.0\" --filterName \"FS\" --filterExpression \"HaplotypeScore >13.0\" --filterName \"HaplotypeScore\" --filterExpression \"MQRankSum<-12.5\" --filterName \"MQRankSum\" --filterExpression \"ReadPosRankSum<-8.0\" --filterName \"ReadPosRankSum\"";
+  }
+
+  my $filter_indel_option = $config->{$section}{filter_indel_option};
+  if ( !defined $filter_indel_option ) {
+    $filter_indel_option =
+"--filterExpression \"QD<2.0\" --filterName \"QD\" --filterExpression \"ReadPosRankSum<-20.0\" --filterName \"ReadPosRankSum\" --filterExpression \"InbreedingCoeff < -0.8\" --filterName \"InbreedingCoeff\" --filterExpression \"FS > 200.0\" --filterName \"FS\"";
+  }
+
   my $rawFiles = get_raw_files( $config, $section );
   my $groups = get_raw_files( $config, $section, "groups" );
   my %group_sample_map = ();
@@ -74,8 +86,10 @@ sub perform {
     }
     close(LIST);
 
-    my $snpOut  = $groupName . "_snp.vcf";
-    my $snpStat = $groupName . "_snp.stat";
+    my $snpOut       = $groupName . "_snp.vcf";
+    my $snpStat      = $groupName . "_snp.stat";
+    my $snpFilterOut = $groupName . "_snp_filtered.vcf";
+    my $snpPass      = $groupName . "_snp_filtered.pass.vcf";
 
     my $pbsName = "${groupName}_snp.pbs";
 
@@ -95,15 +109,19 @@ $path_file
 cd $curDir
 
 echo SNP=`date` 
-java -jar $java_option $gatk_jar $option -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $snpOut -metrics $snpStat -glm SNP
+java $java_option -jar $gatk_jar -T UnifiedGenotyper $option -R $faFile -I $listfilename $knownvcf --out $snpOut -metrics $snpStat -glm SNP
+java $java_option -jar $gatk_jar -T VariantFiltration $filter_snp_option -R $faFile -o $snpFilterOut --variant $snpOut 
+cat $snpFilterOut | awk '$1 ~ \"#\" || $7 == \"PASS\"' > $snpPass 
 
 echo finished=`date`
 ";
     close OUT;
     print "$pbsFile created\n";
 
-    my $indelOut  = $groupName . "_indel.vcf";
-    my $indelStat = $groupName . "_indel.stat";
+    my $indelOut         = $groupName . "_indel.vcf";
+    my $indelStat        = $groupName . "_indel.stat";
+    my $indelFilteredOut = $groupName . "_indel_filtered.vcf";
+    my $indelPass        = $groupName . "_indel_filtered.pass.vcf";
 
     $pbsName = "${groupName}_id.pbs";
 
@@ -124,6 +142,8 @@ cd $curDir
 
 echo InDel=`date` 
 java -jar $java_option $gatk_jar $option -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $indelOut -metrics $indelStat -glm INDEL
+java $java_option -jar $gatk_jar -T VariantFiltration $filter_indel_option -R $faFile -o $indelFilteredOut --variant $indelOut
+cat $indelFilteredOut | awk '$1 ~ \"#\" || $7 == \"PASS\"' > $indelPass 
 
 echo finished=`date`
 ";
@@ -146,14 +166,14 @@ sub result {
   my $result = {};
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-  for my $sampleName ( sort keys %rawFiles ) {
-    my $curDir      = $resultDir . "/$sampleName";
-    my $snpOut      = $sampleName . "_snp.vcf";
-    my $indelOut    = $sampleName . "_indel.vcf";
+  for my $groupName ( sort keys %rawFiles ) {
+    my $curDir      = $resultDir . "/$groupName";
+    my $snpPass     = $groupName . "_snp_filtered.pass.vcf";
+    my $indelPass   = $groupName . "_indel_filtered.pass.vcf";
     my @resultFiles = ();
-    push( @resultFiles, "${curDir}/${snpOut}" );
-    push( @resultFiles, "${curDir}/${indelOut}" );
-    $result->{$sampleName} = \@resultFiles;
+    push( @resultFiles, "${curDir}/${snpPass}" );
+    push( @resultFiles, "${curDir}/${indelPass}" );
+    $result->{$groupName} = \@resultFiles;
   }
   return $result;
 }
