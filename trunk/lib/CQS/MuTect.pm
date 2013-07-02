@@ -31,15 +31,10 @@ sub perform {
   my $cosmicfile = get_param_file( $config->{$section}{cosmic_file}, "cosmic_file", 1 );
   my $dbsnpfile  = get_param_file( $config->{$section}{dbsnp_file},  "dbsnp_file",  1 );
 
-  my $annovarParameter = $config->{$section}{annovar_param} or die "annovar_param is not defined in $section";
-  $option = $option . " " . $annovarParameter;
-
   my $java_option = $config->{$section}{java_option};
   if ( !defined $java_option ) {
     $java_option = "";
   }
-
-  my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
 
   my $rawFiles = get_raw_files( $config, $section );
   my $groups = get_raw_files( $config, $section, "groups" );
@@ -79,9 +74,6 @@ sub perform {
     my $out       = "${groupName}.somatic.out";
     my $vcf       = "${groupName}.somatic.vcf";
     my $passvcf   = "${groupName}.somatic.pass.vcf";
-    my $passinput = "${groupName}.somatic.pass.avinput";
-    my $annovar   = "${groupName}.somatic.pass.annovar";
-    my $result    = "${groupName}.somatic.pass.annovar.genome_summary.csv";
 
     my $pbsName = "${groupName}_mt.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -116,12 +108,6 @@ if [[ -s $vcf && ! -s $passvcf ]]; then
   grep -v REJECT $vcf > $passvcf
 fi
 
-if [[ -s $passvcf && ! -s $result ]]; then
-  convert2annovar.pl -format vcf4 $passvcf -includeinfo > $passinput
-
-  summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
-fi
-
 echo finished=`date` \n";
     close OUT;
 
@@ -138,7 +124,7 @@ echo finished=`date` \n";
 }
 
 sub result {
-  my ( $self, $config, $section ) = @_;
+  my ( $self, $config, $section, $pattern ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
@@ -148,9 +134,8 @@ sub result {
   for my $groupName ( keys %{$groups} ) {
     my @resultFiles = ();
     my $curDir      = $resultDir . "/$groupName";
-    push( @resultFiles, "$curDir/${groupName}.somatic.pass.annovar.genome_summary.csv" );
     push( @resultFiles, "$curDir/${groupName}.somatic.pass.vcf" );
-    $result->{$groupName} = \@resultFiles;
+    $result->{$groupName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }
