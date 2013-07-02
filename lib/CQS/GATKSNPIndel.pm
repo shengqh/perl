@@ -109,8 +109,13 @@ $path_file
 cd $curDir
 
 echo SNP=`date` 
-java $java_option -jar $gatk_jar -T UnifiedGenotyper $option -R $faFile -I $listfilename $knownvcf --out $snpOut -metrics $snpStat -glm SNP
+
+if [ ! -s $snpOut ]; then
+  java $java_option -jar $gatk_jar -T UnifiedGenotyper $option -R $faFile -I $listfilename $knownvcf --out $snpOut -metrics $snpStat -glm SNP
+fi
+
 java $java_option -jar $gatk_jar -T VariantFiltration $filter_snp_option -R $faFile -o $snpFilterOut --variant $snpOut 
+
 cat $snpFilterOut | awk '\$1 ~ \"#\" || \$7 == \"PASS\"' > $snpPass 
 
 echo finished=`date`
@@ -141,8 +146,13 @@ $path_file
 cd $curDir
 
 echo InDel=`date` 
-java -jar $java_option $gatk_jar $option -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $indelOut -metrics $indelStat -glm INDEL
+
+if [ ! -s $indelOut ]; then
+  java -jar $java_option $gatk_jar $option -T UnifiedGenotyper -R $faFile -I $listfilename $knownvcf --out $indelOut -metrics $indelStat -glm INDEL
+fi
+
 java $java_option -jar $gatk_jar -T VariantFiltration $filter_indel_option -R $faFile -o $indelFilteredOut --variant $indelOut
+
 cat $indelFilteredOut | awk '\$1 ~ \"#\" || \$7 == \"PASS\"' > $indelPass 
 
 echo finished=`date`
