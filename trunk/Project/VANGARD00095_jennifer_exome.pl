@@ -19,7 +19,7 @@ my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapi
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 
 #my $annovar_param =  "-buildver hg19 -protocol refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,snp137,ljb2_all,cosmic64 -operation g,r,r,f,f,f,f,f --remove --otherinfo";
-my $annovar_param =  "-buildver hg19 -protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove --otherinfo";
+my $annovar_param =  "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove --otherinfo";
 my $annovar_db = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -106,6 +106,7 @@ my $config = {
     option     => $annovar_param,
     source_ref => ["muTect", "\.vcf\$"],
     annovar_db => $annovar_db,
+    buildver =>"hg19",
     sh_direct  => 1,
     isvcf      => 1,
     pbs        => {
@@ -140,6 +141,7 @@ my $config = {
     source_ref => "snpindel",
     option     => $annovar_param,
     annovar_db => $annovar_db,
+    buildver =>"hg19",
     sh_direct  => 1,
     isvcf      => 1,
     pbs        => {
