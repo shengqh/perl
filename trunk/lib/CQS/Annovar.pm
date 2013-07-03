@@ -70,13 +70,13 @@ cd $curDir
       my $vcf       = "";
       if ($isvcf) {
         $vcf = "convert2annovar.pl -format vcf4 $sampleFile -includeinfo > $passinput
-        
         ";
       }
       print OUT "
 if [ ! -s $result ]; then
   $vcf
-  summarize_annovar.pl $option --outfile $annovar $passinput $annovarDB
+  
+  table_annovar.pl $passinput $annovarDB $option --outfile $annovar 
 fi
 ";
     }
