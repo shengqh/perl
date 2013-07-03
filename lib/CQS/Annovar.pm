@@ -26,6 +26,9 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
+  my $buildver = $config->{$section}{buildver} or die "buildver is not defined in $section";
+  $option = "-buildver $buildver $option";
+    
   my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
   my $isvcf = $config->{$section}{isvcf};
   if ( !defined $isvcf ) {
@@ -66,7 +69,7 @@ cd $curDir
     for my $sampleFile (@sampleFiles) {
       my $passinput = change_extension( $sampleFile, ".avinput" );
       my $annovar   = change_extension( $sampleFile, ".annovar" );
-      my $result    = "${annovar}.genome_summary.csv";
+      my $result    = "${annovar}.${buildver}_multianno.csv";
       my $vcf       = "";
       if ($isvcf) {
         $vcf = "convert2annovar.pl -format vcf4 $sampleFile -includeinfo > $passinput
@@ -76,7 +79,7 @@ cd $curDir
 if [ ! -s $result ]; then
   $vcf
   
-  table_annovar.pl $passinput $annovarDB $option --outfile $annovar 
+  table_annovar.pl $passinput $annovarDB $option --csvout --outfile $annovar 
 fi
 ";
     }
@@ -105,6 +108,7 @@ sub result {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
+  my $buildver = $config->{$section}{buildver} or die "buildver is not defined in $section";
   my $rawFiles = get_raw_files( $config, $section );
 
   my $result = {};
@@ -112,10 +116,9 @@ sub result {
     my @sampleFiles = @{ $rawFiles->{$sampleName} };
     my $curDir      = $resultDir . "/$sampleName";
     my @resultFiles = ();
-
     for my $sampleFile (@sampleFiles) {
       my $annovar = change_extension( $sampleFile, ".annovar" );
-      my $result = "${annovar}.genome_summary.csv";
+      my $result    = "${annovar}.${buildver}_multianno.csv";
       push( @resultFiles, $curDir . "/$result" );
     }
     $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
