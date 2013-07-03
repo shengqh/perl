@@ -21,6 +21,31 @@ sub new {
   return $self;
 }
 
+sub getGroupSampleMap{
+  my ($config, $section ) = @_;
+  
+  my $rawFiles = get_raw_files( $config, $section );
+  my %group_sample_map = ();
+  if ( defined $config->{$section}{groups} || defined $config->{$section}{groups_ref} ) {
+    my $groups = get_raw_files( $config, $section, "groups" );
+    for my $groupName ( sort keys %{$groups} ) {
+      my @samples = @{ $groups->{$groupName} };
+      my @gfiles  = ();
+      my $index   = 0;
+      foreach my $sampleName (@samples) {
+        my @bamFiles = @{ $rawFiles->{$sampleName} };
+        push( @gfiles, $bamFiles[0] );
+      }
+      $group_sample_map{$groupName} = \@gfiles;
+    }
+  }
+  else {
+    %group_sample_map = %{$rawFiles};
+  }
+
+  return (\%group_sample_map)
+}
+
 sub perform {
   my ( $self, $config, $section ) = @_;
 
@@ -57,20 +82,7 @@ sub perform {
 "--filterExpression \"QD<2.0\" --filterName \"QD\" --filterExpression \"ReadPosRankSum<-20.0\" --filterName \"ReadPosRankSum\" --filterExpression \"InbreedingCoeff < -0.8\" --filterName \"InbreedingCoeff\" --filterExpression \"FS > 200.0\" --filterName \"FS\"";
   }
 
-  my $rawFiles = get_raw_files( $config, $section );
-  my $groups = get_raw_files( $config, $section, "groups" );
-  my %group_sample_map = ();
-  for my $groupName ( sort keys %{$groups} ) {
-    my @samples = @{ $groups->{$groupName} };
-    my @gfiles  = ();
-    my $index   = 0;
-    foreach my $sampleName (@samples) {
-      my @bamFiles = @{ $rawFiles->{$sampleName} };
-      push( @gfiles, $bamFiles[0] );
-    }
-    $group_sample_map{$groupName} = \@gfiles;
-  }
-
+  my %group_sample_map = %{getGroupSampleMap($config, $section)};
   my $shfile = $pbsDir . "/${task_name}_snp.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
@@ -175,8 +187,8 @@ sub result {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
   my $result = {};
 
-  my $groups = get_raw_files( $config, $section, "groups" );
-  for my $groupName ( sort keys %{$groups} ) {
+  my %group_sample_map = %{getGroupSampleMap($config, $section)};
+  for my $groupName ( sort keys %group_sample_map ) {
     my $curDir      = $resultDir . "/$groupName";
     my $snpPass     = $groupName . "_snp_filtered.pass.vcf";
     my $indelPass   = $groupName . "_indel_filtered.pass.vcf";
