@@ -317,9 +317,26 @@ my $config_rat = {
       "mem"      => "40gb"
     },
   },
+  mirna_count_bowtie2_genome_cutadapt_topN_tRNA => {
+    class        => "MirnaCount",
+    perform      => 1,
+    target_dir   => "${target_human_dir}/topN_bowtie2_genome_cutadapt_count_tRNA",
+    option       => "",
+    source_ref   => "bowtie2_genome_cutadapt_topN",
+    cqs_tools    => $cqs_tools,
+    gff_file     => "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/rn4_tRNA.bed",
+    fasta_format => 0,
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "40gb"
+    },
+  },
   shrimp2_bowtie2_genome_cutadapt_topN => {
     class         => "Shrimp2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_rat_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
@@ -671,9 +688,26 @@ my $config_human = {
       "mem"      => "40gb"
     },
   },
+  mirna_count_bowtie2_genome_cutadapt_topN_tRNA => {
+    class        => "MirnaCount",
+    perform      => 1,
+    target_dir   => "${target_human_dir}/topN_bowtie2_genome_cutadapt_count_tRNA",
+    option       => "",
+    source_ref   => "bowtie2_genome_cutadapt_topN",
+    cqs_tools    => $cqs_tools,
+    gff_file     => "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/hg19_tRNA.bed",
+    fasta_format => 0,
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "40gb"
+    },
+  },
   shrimp2_bowtie2_genome_cutadapt_topN => {
     class         => "Shrimp2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_human_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
     option        => $shrimp2_option,
     source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
