@@ -12,6 +12,7 @@ use CQS::StringUtils;
 use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::NGSCommon;
+use CQS::ClassFactory;
 
 require Exporter;
 

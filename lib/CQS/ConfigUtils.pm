@@ -13,7 +13,7 @@ use CQS::CQSDebug;
 require Exporter;
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file parse_param_file get_raw_files get_raw_files2)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file parse_param_file get_raw_files get_raw_files2 get_run_command)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -176,6 +176,16 @@ sub get_raw_files {
 sub get_raw_files2 {
   my ( $config, $section, $mapname, $pattern ) = @_;
   return do_get_raw_files( $config, $section, 0, $mapname, $pattern );
+}
+
+sub get_run_command {
+  my $sh_direct = shift;
+  if ($sh_direct) {
+    return ("MYCMD=\"bash\"");
+  }
+  else {
+    return ("type -P qsub &>/dev/null && MYCMD=\"qsub\" || MYCMD=\"bash\"");
+  }
 }
 
 1;
