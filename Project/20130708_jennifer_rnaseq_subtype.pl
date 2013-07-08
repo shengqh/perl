@@ -80,10 +80,6 @@ my $config = {
   },
 };
 
-tophat2_by_pbs( $config, "tophat2" );
-
-cuffdiff_by_pbs( $config, "cuffdiff" );
-
-#copy_and_rename_cuffdiff_file( $config, "rename_diff" );
+performConfig( $config);
 
 1;
