@@ -110,7 +110,7 @@ my $rat = {
   bowtie2_index => $bowtie2_rat_index,
   shrimp2_index => $shrimp2_rat_miRBase_index,
   target_dir    => $target_rat_dir,
-  task_name     => $task_name + "_rat",
+  task_name     => $task_name . "_rat",
 };
 my $human = {
   source => {
@@ -191,7 +191,7 @@ my $human = {
   bowtie2_index => $bowtie2_human_index,
   shrimp2_index => $shrimp2_human_miRBase_index,
   target_dir    => $target_human_dir,
-  task_name     => $task_name + "_human",
+  task_name     => $task_name . "_human",
 };
 
 my $mouse = {
@@ -223,7 +223,7 @@ my $mouse = {
   bowtie2_index => $bowtie2_mouse_index,
   shrimp2_index => $shrimp2_mouse_miRBase_index,
   target_dir    => $target_mouse_dir,
-  task_name     => $task_name + "_mouse",
+  task_name     => $task_name . "_mouse",
 };
 
 #my @defs = [ $rat, $human, $mouse ];
