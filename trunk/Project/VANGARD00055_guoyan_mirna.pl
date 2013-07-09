@@ -226,8 +226,8 @@ my $mouse = {
   task_name     => $task_name . "_mouse",
 };
 
-#my @defs = [ $rat, $human, $mouse ];
-my @defs = [ $mouse ];
+#my @defs = ( $rat, $human, $mouse );
+my @defs = ( $mouse );
 foreach my $def (@defs) {
   my $config = {
     general  => { "task_name" => $def->{task_name}, },
