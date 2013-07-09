@@ -229,6 +229,7 @@ my $mouse = {
 #my @defs = ( $rat, $human, $mouse );
 my @defs = ( $mouse );
 foreach my $def (@defs) {
+  my $cur_target_dir = $def->{target_dir};
   my $config = {
     general  => { "task_name" => $def->{task_name}, },
     cutadapt => {
@@ -281,7 +282,7 @@ foreach my $def (@defs) {
     bowtie2_genome_cutadapt_topN => {
       class         => "Bowtie2",
       perform       => 1,
-      target_dir    => "${target_rat_dir}/topN_bowtie2_genome_cutadapt",
+      target_dir    => "${cur_target_dir}/topN_bowtie2_genome_cutadapt",
       option        => $bowtie2_option_topN,
       source_ref    => "cutadapt_len",
       bowtie2_index => $def->{bowtie2_index},
@@ -297,7 +298,7 @@ foreach my $def (@defs) {
     mirna_count_bowtie2_genome_cutadapt_topN => {
       class        => "MirnaCount",
       perform      => 1,
-      target_dir   => "${target_rat_dir}/topN_bowtie2_genome_cutadapt_count",
+      target_dir   => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_count",
       option       => "",
       source_ref   => "bowtie2_genome_cutadapt_topN",
       cqs_tools    => $cqs_tools,
@@ -314,7 +315,7 @@ foreach my $def (@defs) {
     shrimp2_miRBase_bowtie2_genome_cutadapt_topN => {
       class         => "Shrimp2",
       perform       => 1,
-      target_dir    => "${target_rat_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
+      target_dir    => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
       option        => $shrimp2_option,
       source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
       shrimp2_index => $def->{shrimp2_index},
