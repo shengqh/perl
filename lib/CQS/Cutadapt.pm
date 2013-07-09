@@ -43,12 +43,12 @@ sub perform {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
     my $finalFile   = $sampleName . $extension;
 
-    my $pbsName = "${sampleName}_cutadapt.pbs";
+    my $pbsName = "${sampleName}_cut.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_cutadapt.log";
+    my $log = "${logDir}/${sampleName}_cut.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
