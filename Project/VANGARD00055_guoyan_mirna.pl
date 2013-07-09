@@ -231,8 +231,8 @@ my $mouse = {
   task_name     => $task_name . "_mouse",
 };
 
-#my @defs = ( $rat, $human, $mouse );
-my @defs = ($human);
+my @defs = ( $rat, $human, $mouse );
+#my @defs = ($human);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
