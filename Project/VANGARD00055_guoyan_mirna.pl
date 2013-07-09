@@ -309,7 +309,7 @@ my $config_rat = {
     cqs_tools    => $cqs_tools,
     gff_file     => $rno_gffs,
     fasta_format => 0,
-    sh_direct    => 1,
+    sh_direct    => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -994,8 +994,10 @@ my $config_human = {
 #
 #};
 
-performConfig($config_rat);
-performConfig($config_human);
+#performConfig($config_rat);
+#performConfig($config_human);
+
+performTask($config_rat,"mirna_count_bowtie2_genome_cutadapt_topN");
 
 #performConfig($config_rat, "^shrimp2", 1);
 #performConfig($config_human, "^shrimp2", 1);
