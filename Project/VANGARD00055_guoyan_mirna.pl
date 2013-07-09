@@ -245,7 +245,7 @@ foreach my $def (@defs) {
       source     => $def->{source},
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
-      sh_direct  => 0,
+      sh_direct  => 1,
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
@@ -260,7 +260,7 @@ foreach my $def (@defs) {
       option     => "",
       source_ref => "cutadapt",
       cqstools   => $cqs_tools,
-      sh_direct  => 0,
+      sh_direct  => 1,
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
@@ -276,7 +276,7 @@ foreach my $def (@defs) {
       source     => $def->{source},
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
-      sh_direct  => 0,
+      sh_direct  => 1,
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
