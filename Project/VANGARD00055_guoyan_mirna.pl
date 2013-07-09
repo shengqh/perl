@@ -186,6 +186,28 @@ my $human = {
     "Sample3"  => ["${root}/data/Sample3_12.fastq"],
     "Sample4"  => ["${root}/data/Sample4_12.fastq"],
     "Sample5"  => ["${root}/data/Sample5_12.fastq"],
+    "2572-KCV-1-19"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CH003_GTGAAA_L002_R1_001.fastq.gz"],
+    "2572-KCV-1-20"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CH002SS_GTGGCC_L002_R1_001.fastq.gz"],
+    "2572-KCV-1-21"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CH001_GTTTCG_L002_R1_001.fastq.gz"],
+    "2572-KCV-1-26"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CC_ATGAGC_L002_R1_001.fastq.gz"],
+    "2572-KCV-1-27"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/AE_ATTCCT_L002_R1_001.fastq.gz"],
+    "2572-KCV-1-28"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL001_CAAAAG_L002_R1_001.fastq.gz"],
+    "2572-KCV-1-29"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL002_CAACTA_L002_R1_001.fastq.gz"],
+    "2572-KCV-1-30"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL003_CACCGG_L002_R1_001.fastq.gz"],
+    "2571-KCV-1-31"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_20_CACGAT_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-32"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_21_CACTCA_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-33"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_22_CAGGCG_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-34"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_23_CATGGC_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-35"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_24_CATTTT_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-36"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_25_CCAACA_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-37"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_26_CGGAAT_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-38"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_27_CTAGCT_L005_R1_001.fastq.gz"],
+    "2571-KCV-1-39"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_28_CTATAC_L005_R1_001.fastq.gz"],
+    "2570-KCV-01-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl1_GAGTGG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl2_GGTAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl3_ACTGAT_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
   },
   coordinate    => $hsa_gffs,
   bowtie2_index => $bowtie2_human_index,
@@ -196,28 +218,11 @@ my $human = {
 
 my $mouse = {
   source => {
-    "Sample_AE"                 => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/AE_ATTCCT_L002_R1_001.fastq.gz"],
-    "Sample_CC"                 => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CC_ATGAGC_L002_R1_001.fastq.gz"],
-    "Sample_CH001"              => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CH001_GTTTCG_L002_R1_001.fastq.gz"],
-    "Sample_CH002SS"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CH002SS_GTGGCC_L002_R1_001.fastq.gz"],
-    "Sample_CH003"              => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CH003_GTGAAA_L002_R1_001.fastq.gz"],
-    "Sample_CHL001"             => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL001_CAAAAG_L002_R1_001.fastq.gz"],
-    "Sample_CHL002"             => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL002_CAACTA_L002_R1_001.fastq.gz"],
-    "Sample_CHL003"             => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL003_CACCGG_L002_R1_001.fastq.gz"],
-    "Sample_HD01_20"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_20_CACGAT_L005_R1_001.fastq.gz"],
-    "Sample_HD01_21"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_21_CACTCA_L005_R1_001.fastq.gz"],
-    "Sample_HD01_22"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_22_CAGGCG_L005_R1_001.fastq.gz"],
-    "Sample_HD01_23"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_23_CATGGC_L005_R1_001.fastq.gz"],
-    "Sample_HD01_24"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_24_CATTTT_L005_R1_001.fastq.gz"],
-    "Sample_HD01_25"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_25_CCAACA_L005_R1_001.fastq.gz"],
-    "Sample_HD01_26"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_26_CGGAAT_L005_R1_001.fastq.gz"],
-    "Sample_HD01_27"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_27_CTAGCT_L005_R1_001.fastq.gz"],
-    "Sample_HD01_28"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/HD01_28_CTATAC_L005_R1_001.fastq.gz"],
-    "Sample_mouseLiverControl1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl1_GAGTGG_L003_R1_001.fastq.gz"],
-    "Sample_mouseLiverControl2" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl2_GGTAGC_L003_R1_001.fastq.gz"],
-    "Sample_mouseLiverControl3" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl3_ACTGAT_L003_R1_001.fastq.gz"],
-    "Sample_mouseLiverControl4" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
-    "Sample_mouseLiverControl5" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl1_GAGTGG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl2_GGTAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl3_ACTGAT_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
   },
   coordinate    => $mmu_gffs,
   bowtie2_index => $bowtie2_mouse_index,
@@ -227,10 +232,10 @@ my $mouse = {
 };
 
 #my @defs = ( $rat, $human, $mouse );
-my @defs = ( $mouse );
+my @defs = ($human);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
-  my $config = {
+  my $config         = {
     general  => { "task_name" => $def->{task_name}, },
     cutadapt => {
       class      => "Cutadapt",
