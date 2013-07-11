@@ -261,7 +261,7 @@ foreach my $def (@defs) {
     general  => { "task_name" => $def->{task_name}, },
     cutadapt => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt",
       option     => "",
       source     => $def->{source},
@@ -277,7 +277,7 @@ foreach my $def (@defs) {
     },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
@@ -292,7 +292,7 @@ foreach my $def (@defs) {
     },
     cutadapt_len => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt_len",
       option     => "-m 12 -M 49",
       source     => $def->{source},
@@ -308,7 +308,7 @@ foreach my $def (@defs) {
     },
     bowtie2_genome_cutadapt_topN => {
       class         => "Bowtie2",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie2_genome_cutadapt",
       option        => $bowtie2_option_topN,
       source_ref    => "cutadapt_len",
@@ -335,13 +335,13 @@ foreach my $def (@defs) {
       pbs          => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
-        "walltime" => "24",
+        "walltime" => "72",
         "mem"      => "40gb"
       },
     },
     shrimp2_miRBase_bowtie2_genome_cutadapt_topN => {
       class         => "Shrimp2",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
       option        => $shrimp2_option,
       source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
