@@ -252,8 +252,8 @@ my $mouse = {
   task_name     => $task_name . "_mouse",
 };
 
-#my @defs = ( $rat, $human, $mouse );
-my @defs = ($mouse);
+my @defs = ( $rat, $human, $mouse );
+#my @defs = ($mouse);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
@@ -307,7 +307,7 @@ foreach my $def (@defs) {
     },
     bowtie2_genome_cutadapt_topN => {
       class         => "Bowtie2",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie2_genome_cutadapt",
       option        => $bowtie2_option_topN,
       source_ref    => "cutadapt_len",
