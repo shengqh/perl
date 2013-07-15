@@ -325,7 +325,7 @@ foreach my $def (@defs) {
       class        => "MirnaCount",
       perform      => 1,
       target_dir   => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_count",
-      option       => "",
+      option       => "-d",
       source_ref   => "bowtie2_genome_cutadapt_topN",
       cqs_tools    => $cqs_tools,
       gff_file     => $def->{coordinate},
