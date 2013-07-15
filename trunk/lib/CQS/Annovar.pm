@@ -67,8 +67,14 @@ cd $curDir
 ";
 
     for my $sampleFile (@sampleFiles) {
-      my $passinput = change_extension( $sampleFile, ".avinput" );
-      my $annovar   = change_extension( $sampleFile, ".annovar" );
+      my ($filename, $dir) = fileparse($sampleFile);
+      
+      if($dir eq $curDir){
+        $sampleFile = $filename;
+      }
+      
+      my $passinput = change_extension( $filename, ".avinput" );
+      my $annovar   = change_extension( $filename, ".annovar" );
       my $result    = "${annovar}.${buildver}_multianno.csv";
       my $vcf       = "";
       if ($isvcf) {
