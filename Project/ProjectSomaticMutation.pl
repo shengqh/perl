@@ -27,62 +27,43 @@ my $config = {
     "TCGA-A7-A0D9-NT" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.fastq"],
     "TCGA-A7-A0D9-TP" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.fastq"],
   },
-  groups     => { "TCGA-A7-A0D9" => [ "TCGA-A7-A0D9-NT", "TCGA-A7-A0D9-TP" ] },
-  bam_single => {
-    "TCGA-A7-A0D9-TOPHAT2-SINGLE" =>
-      [ "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-NT/accepted_hits.bam", "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-TP/accepted_hits.bam" ],
-    "TCGA-A7-A0D9-SINGLE" => [ "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.bam", "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam" ]
+  rnafiles => {
+    "TCGA-A7-A0D9-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_NT_sorted.bam"],
+    "TCGA-A7-A0D9-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0B3-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0B3-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0B8-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B8/TCGA-BH-A0B8-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0B8-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B8/TCGA-BH-A0B8-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0BJ-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BJ/TCGA-BH-A0BJ-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0BJ-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BJ/TCGA-BH-A0BJ-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0BM-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BM/TCGA-BH-A0BM-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0BM-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BM/TCGA-BH-A0BM-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0C0-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0C0/TCGA-BH-A0C0-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0C0-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0C0/TCGA-BH-A0C0-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0DK-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DK/TCGA-BH-A0DK-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0DK-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DK/TCGA-BH-A0DK-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0DP-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DP/TCGA-BH-A0DP-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0DP-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DP/TCGA-BH-A0DP-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0E0-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0E0/TCGA-BH-A0E0-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0E0-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0E0/TCGA-BH-A0E0-RNA_TP_sorted.bam"],
+    "TCGA-BH-A0H7-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0H7/TCGA-BH-A0H7-RNA_NT_sorted.bam"],
+    "TCGA-BH-A0H7-TP" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0H7/TCGA-BH-A0H7-RNA_TP_sorted.bam"],
   },
-  bamlocal => {
-    "TCGA-A7-A0D9-TOPHAT2-THREAD" =>
-      [ "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-NT/accepted_hits.bam", "/scratch/cqs/shengq1/somaticmutation/tophat2/result/TCGA-A7-A0D9-TP/accepted_hits.bam", ],
-    "TCGA-A7-A0D9-THREAD" => [ "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.bam", "/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.bam", ],
-  },
-  bamfiles => {
-    "TCGA-A7-A0D9" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0B3" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B3/TCGA-BH-A0B3-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0B8" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B8/TCGA-BH-A0B8-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0B8/TCGA-BH-A0B8-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0BJ" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BJ/TCGA-BH-A0BJ-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BJ/TCGA-BH-A0BJ-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0BM" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BM/TCGA-BH-A0BM-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0BM/TCGA-BH-A0BM-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0C0" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0C0/TCGA-BH-A0C0-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0C0/TCGA-BH-A0C0-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0DK" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DK/TCGA-BH-A0DK-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DK/TCGA-BH-A0DK-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0DP" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DP/TCGA-BH-A0DP-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0DP/TCGA-BH-A0DP-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0E0" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0E0/TCGA-BH-A0E0-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0E0/TCGA-BH-A0E0-RNA_TP_sorted.bam",
-    ],
-    "TCGA-BH-A0H7" => [
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0H7/TCGA-BH-A0H7-RNA_NT_sorted.bam",
-      "/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-BH-A0H7/TCGA-BH-A0H7-RNA_TP_sorted.bam",
-    ],
+  rnagroups => {
+    "TCGA-A7-A0D9" => [ "TCGA-A7-A0D9-NT", "TCGA-A7-A0D9-TP" ],
+    "TCGA-BH-A0B3" => [ "TCGA-BH-A0B3-NT", "TCGA-BH-A0B3-TP" ],
+    "TCGA-BH-A0B8" => [ "TCGA-BH-A0B8-NT", "TCGA-BH-A0B8-TP" ],
+    "TCGA-BH-A0BJ" => [ "TCGA-BH-A0BJ-NT", "TCGA-BH-A0BJ-TP" ],
+    "TCGA-BH-A0BM" => [ "TCGA-BH-A0BM-NT", "TCGA-BH-A0BM-TP" ],
+    "TCGA-BH-A0C0" => [ "TCGA-BH-A0C0-NT", "TCGA-BH-A0C0-TP" ],
+    "TCGA-BH-A0DK" => [ "TCGA-BH-A0DK-NT", "TCGA-BH-A0DK-TP" ],
+    "TCGA-BH-A0DP" => [ "TCGA-BH-A0DP-NT", "TCGA-BH-A0DP-TP" ],
+    "TCGA-BH-A0E0" => [ "TCGA-BH-A0E0-NT", "TCGA-BH-A0E0-TP" ],
+    "TCGA-BH-A0H7" => [ "TCGA-BH-A0H7-NT", "TCGA-BH-A0H7-TP" ],
   },
   tophat2 => {
     class      => "Tophat2",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/tophat2",
     option     => "--segment-length 25 -r 0 -p 8",
     batchmode  => 0,
@@ -113,15 +94,15 @@ my $config = {
   },
   muTect => {
     class       => "MuTect",
-    perform     => 0,
+    perform     => 1,
     target_dir  => "${target_dir}/muTect",
     option      => "-nt 8",
-    source_ref  => "tophat2",
-    groups_ref  => "groups",
+    source_ref  => "rnafiles",
+    groups_ref  => "rnagroups",
     java_option => "-Xmx40g",
-    fasta_file  => "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa",
-    cosmic_file => "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf",
-    dbsnp_file  => "/data/cqs/shengq1/reference/snp137/human/00-All.vcf",
+    fasta_file  => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
+    cosmic_file => "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf",
+    dbsnp_file  => "/data/cqs/shengq1/reference/snp137/human_b37/dbsnp_137.b37.vcf",
     sh_direct   => 1,
     muTect_jar  => "/home/shengq1/local/bin/muTect-1.1.4.jar",
     pbs         => {
@@ -136,17 +117,16 @@ my $config = {
     perform         => 1,
     target_dir      => "${target_dir}/varscan2",
     option          => "",
-    source_ref      => "bamfiles",
+    source_ref      => "rnafiles",
+    groups_ref      => "rnagroups",
     fasta_file      => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
     min_coverage    => 10,
     somatic_p_value => 0.01,
-    annovar_param   => "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove",
-    annovar_db      => "/scratch/cqs/shengq1/references/annovar/humandb/",
     sh_direct       => 1,
-    execute_file    => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
+    VarScan2_jar    => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
     pbs             => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -154,6 +134,6 @@ my $config = {
 };
 
 performConfig($config);
-rsmc( $config, "rsmc" );
+#rsmc( $config, "rsmc" );
 
 1;
