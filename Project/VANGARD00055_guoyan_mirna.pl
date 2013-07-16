@@ -253,6 +253,7 @@ my $mouse = {
 };
 
 my @defs = ( $rat, $human, $mouse );
+
 #my @defs = ($mouse);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
@@ -322,16 +323,17 @@ foreach my $def (@defs) {
       },
     },
     mirna_count_bowtie2_genome_cutadapt_topN => {
-      class        => "MirnaCount",
-      perform      => 1,
-      target_dir   => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_count",
-      option       => "-d",
-      source_ref   => "bowtie2_genome_cutadapt_topN",
-      cqs_tools    => $cqs_tools,
-      gff_file     => $def->{coordinate},
-      fasta_format => 0,
-      sh_direct    => 0,
-      pbs          => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_count",
+      option          => "-d",
+      source_ref      => "bowtie2_genome_cutadapt_topN",
+      fastq_files_ref => "cutadapt_len",
+      cqs_tools       => $cqs_tools,
+      gff_file        => $def->{coordinate},
+      fasta_format    => 0,
+      sh_direct       => 0,
+      pbs             => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
