@@ -7,8 +7,9 @@ use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::SomaticMutation;
+use CQS::ClassFactory;
 
-my $target_dir = "/scratch/cqs/shengq1/somaticmutation";
+my $target_dir = "/scratch/cqs/shengq1/somaticmutation_2";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -79,6 +80,8 @@ my $config = {
     ],
   },
   tophat2 => {
+    class =>"Tophat2",
+    perform=>1,
     target_dir => "${target_dir}/tophat2",
     option     => "--segment-length 25 -r 0 -p 8",
     batchmode  => 0,
@@ -108,6 +111,8 @@ my $config = {
     },
   },
   muTect => {
+    class =>"MuTect",
+    perform=>1,
     target_dir    => "${target_dir}/muTect",
     option        => "-nt 8",
     source_ref    => "bamfiles",
@@ -126,6 +131,8 @@ my $config = {
     },
   },
   varscan2 => {
+    class =>"VarScan2",
+    perform=>1,
     target_dir      => "${target_dir}/varscan2",
     option          => "",
     source_ref      => "bamfiles",
@@ -145,10 +152,7 @@ my $config = {
   },
 };
 
-#call_tophat2($config, "tophat2");
-
+performConfig($config);
 rsmc( $config, "rsmc" );
-#muTect( $config, "muTect" );
-#varscan2( $config, "varscan2" );
 
 1;
