@@ -47,7 +47,11 @@ sub perform {
   if ( defined $config->{$section}{"seqcount"} || defined $config->{$section}{"seqcount_ref"} ) {
     %seqCountFiles = %{ get_raw_files( $config, $section, "seqcount" ) };
   }
-  print_hash(\%seqCountFiles);
+
+  my %fastqFiles = ();
+  if ( defined $config->{$section}{"fastq_files"} || defined $config->{$section}{"fastq_files_ref"} ) {
+    %fastqFiles = %{ get_raw_files( $config, $section, "fastq_files" ) };
+  }
 
   my $shfile = $pbsDir . "/${task_name}_count.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -70,15 +74,22 @@ sub perform {
       my $seqcount  = $seqcounts[0];
       $seqcountFile = " -c $seqcount";
     }
+    
+    my $fastqFile = "";
+    if ( defined $fastqFiles{$sampleName} ) {
+      my @files = @{ $fastqFiles{$sampleName} };
+      my $file  = $files[0];
+      $fastqFile = " -q $file";
+    }
 
     my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
 
-    my $pbsName = "${sampleName}_count.pbs";
+    my $pbsName = "${sampleName}_ct.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_count.log";
+    my $log = "${logDir}/${sampleName}_ct.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
@@ -94,7 +105,7 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
-mono-sgen $cqsFile mirna_count $option -i $bamFile -g $gffFile -o $countFile $seqcountFile
+mono-sgen $cqsFile mirna_count $option -i $bamFile -g $gffFile -o $countFile $seqcountFile $fastqFile
 
 echo finished=`date`
 
