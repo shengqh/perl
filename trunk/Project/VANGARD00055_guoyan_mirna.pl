@@ -23,7 +23,7 @@ if ( is_linux() ) {
   $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
   $hsa_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/hsa_tableL.bed";
   $rno_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/rno_tableL.bed";
-  $mmu_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/rno_tableL.bed";
+  $mmu_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/mmu_tableL.bed";
 }
 else {
   $root      = "d:/temp";
