@@ -331,7 +331,6 @@ foreach my $def (@defs) {
       fastq_files_ref => "cutadapt_len",
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
-      fasta_format    => 0,
       sh_direct       => 0,
       pbs             => {
         "email"    => $email,
