@@ -45,7 +45,7 @@ my $bowtie2_option_topN = "-D 20 -R 3 -N 1 -L 12 -i S,1,0.50 --gbar 50 --rdg 100
 
 my $bowtie2_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
 my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
-my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
+my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
 
 #shrimp2 gmapper set mirna mode
 #static int
@@ -252,9 +252,9 @@ my $mouse = {
   task_name     => $task_name . "_mouse",
 };
 
-my @defs = ( $rat, $human, $mouse );
+#my @defs = ( $rat, $human, $mouse );
 
-#my @defs = ($mouse);
+my @defs = ($mouse);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
@@ -308,7 +308,7 @@ foreach my $def (@defs) {
     },
     bowtie2_genome_cutadapt_topN => {
       class         => "Bowtie2",
-      perform       => 0,
+      perform       => 1,
       target_dir    => "${cur_target_dir}/topN_bowtie2_genome_cutadapt",
       option        => $bowtie2_option_topN,
       source_ref    => "cutadapt_len",
@@ -324,7 +324,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie2_genome_cutadapt_topN => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_count",
       option          => "-d",
       source_ref      => "bowtie2_genome_cutadapt_topN",
