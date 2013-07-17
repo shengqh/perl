@@ -32,11 +32,6 @@ sub perform {
   my $min_coverage    = $config->{$section}{min_coverage}    or die "min_coverage is not defined in $section!";
   my $somatic_p_value = $config->{$section}{somatic_p_value} or die "somatic_p_value is not defined in $section!";
 
-  my $annovarParameter = $config->{$section}{annovar_param} or die "annovar_param is not defined in $section";
-  $option = $option . " " . $annovarParameter;
-
-  my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
-
   my $rawFiles = get_raw_files( $config, $section );
   my $groups = get_raw_files( $config, $section, "groups" );
   my %group_sample_map = ();
@@ -128,10 +123,6 @@ if [ ! -s $snpvcf ]; then
 fi
 
 java -Xmx${gb}g -jar $varscan2_jar processSomatic $snpvcf --p-value $somatic_p_value
-
-convert2annovar.pl -format vcf4 ${snpvcf}.Somatic.hc -includeinfo > $passinput
-
-summarize_annovar.pl $annovarParameter --outfile $annovar $passinput $annovarDB
 
 echo finished=`date` \n";
     close OUT;
