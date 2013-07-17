@@ -13,10 +13,8 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_2
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
-my $annovar_param = "--buildver hg19 --verdbsnp 137 --ver1000g 1000g2012apr --veresp 6500si --genetype refgene --alltranscript --remove";
-my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
-
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+my $fasta_file = "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa";
 
 my $config = {
   general => {
@@ -100,7 +98,7 @@ my $config = {
     source_ref  => "rnafiles",
     groups_ref  => "rnagroups",
     java_option => "-Xmx40g",
-    fasta_file  => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
+    fasta_file  => $fasta_file,
     cosmic_file => "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf",
     dbsnp_file  => "/data/cqs/shengq1/reference/snp137/human_b37/dbsnp_137.b37.vcf",
     sh_direct   => 1,
@@ -119,7 +117,7 @@ my $config = {
     option          => "",
     source_ref      => "rnafiles",
     groups_ref      => "rnagroups",
-    fasta_file      => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
+    fasta_file      => $fasta_file,
     min_coverage    => 10,
     somatic_p_value => 0.01,
     sh_direct       => 1,
