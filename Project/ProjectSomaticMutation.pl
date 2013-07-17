@@ -14,7 +14,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_2
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
-my $fasta_file = "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa";
+my $fasta_file = "/data/cqs/guoy1/reference/hg19/hg19_rCRS/hg19_rCRS.fa";
 
 my $config = {
   general => {
