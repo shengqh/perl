@@ -14,9 +14,9 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_2
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 ###hg19.16569###
-my $fasta_file = "/data/cqs/guoy1/reference/hg19/hg19_rCRS/hg19_rCRS.fa";
+my $fasta_file  = "/data/cqs/guoy1/reference/hg19/hg19_rCRS/hg19_rCRS.fa";
 my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf";
-my $snp_file = "/data/cqs/shengq1/reference/snp137/human_b37/dbsnp_137.b37.vcf";
+my $snp_file    = "/data/cqs/shengq1/reference/snp137/human_b37/dbsnp_137.b37.vcf";
 
 my $config = {
   general => {
@@ -58,14 +58,17 @@ my $config = {
     "TCGA-BH-A0H7" => [ "TCGA-BH-A0H7-NT", "TCGA-BH-A0H7-TP" ],
   },
   rsmc => {
+    class            => "RSMC",
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc",
-    option           => "-c 8",                                                 #thread mode
-    source_ref       => "bamfiles",
-    source_type      => "bam",                                                  #source_type can be bam/mpileup
+    option           => "-c 8",                                              #thread mode
+    source_ref       => "rnafiles",
+    groups_ref       => "rnagroups",
+    source_type      => "bam",                                               #source_type can be bam/mpileup
     fasta_file       => $fasta_file,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
-    sh_direct        => 1,
+    sh_direct        => 0,
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
@@ -104,7 +107,7 @@ my $config = {
     fasta_file      => $fasta_file,
     min_coverage    => 10,
     somatic_p_value => 0.01,
-    sh_direct       => 1,
+    sh_direct       => 0,
     VarScan2_jar    => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
     pbs             => {
       "email"    => $email,
@@ -116,6 +119,7 @@ my $config = {
 };
 
 performConfig($config);
+
 #rsmc( $config, "rsmc" );
 
 1;
