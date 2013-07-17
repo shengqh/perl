@@ -53,12 +53,7 @@ sub perform {
 
   my $shfile = $pbsDir . "/${task_name}_mt.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  if ($sh_direct) {
-    print SH "export MYCMD=\"bash\" \n";
-  }
-  else {
-    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-  }
+  print SH get_run_command($sh_direct) . "\n";
 
   for my $groupName ( sort keys %group_sample_map ) {
     my @sampleFiles = @{ $group_sample_map{$groupName} };
@@ -93,11 +88,11 @@ echo muTect=`date`
 
 cd $curDir
 
-if [ !-s ${normal}.bai ]; then
+if [ ! -s ${normal}.bai ]; then
   samtools index ${normal}
 fi
 
-if [ !-s ${tumor}.bai ]; then
+if [ ! -s ${tumor}.bai ]; then
   samtools index ${tumor}
 fi
 
