@@ -48,12 +48,7 @@ sub perform {
 
   my $shfile = $pbsDir . "/${task_name}_mt.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  if ($sh_direct) {
-    print SH "export MYCMD=\"bash\" \n";
-  }
-  else {
-    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-  }
+  print SH get_run_command($sh_direct) . "\n";
 
   $pbsDesc =~ /\=(\d+)gb/;
   my $gb = $1;
@@ -140,7 +135,7 @@ echo finished=`date` \n";
 }
 
 sub result {
-  my ( $self, $config, $section ) = @_;
+  my ( $self, $config, $section, $pattern ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
@@ -151,11 +146,8 @@ sub result {
     my @resultFiles = ();
     my $curDir      = $resultDir . "/$groupName";
     my $snpvcf = "${groupName}.snp.vcf";
-    my $annovar   = "${groupName}.somatic.pass.annovar";
-    push( @resultFiles, "$curDir/${annovar}.genome_summary.csv" );
     push( @resultFiles, "$curDir/${snpvcf}.Somatic.hc" );
-    
-    $result->{$groupName} = \@resultFiles;
+    $result->{$groupName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }
