@@ -13,17 +13,15 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_2
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
-my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+###hg19.16569###
 my $fasta_file = "/data/cqs/guoy1/reference/hg19/hg19_rCRS/hg19_rCRS.fa";
+my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf";
+my $snp_file = "/data/cqs/shengq1/reference/snp137/human_b37/dbsnp_137.b37.vcf";
 
 my $config = {
   general => {
     path_file => "/home/shengq1/local/bin/path.txt",
     task_name => "somaticmutation"
-  },
-  fastqfiles => {
-    "TCGA-A7-A0D9-NT" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_NT_sorted.fastq"],
-    "TCGA-A7-A0D9-TP" => ["/scratch/cqs/shengq1/somaticmutation/raw/TCGA-A7-A0D9-RNA_TP_sorted.fastq"],
   },
   rnafiles => {
     "TCGA-A7-A0D9-NT" => ["/workspace/guoy1/GeneTorrent/lij17/processed/BRCA/TCGA-A7-A0D9/TCGA-A7-A0D9-RNA_NT_sorted.bam"],
@@ -59,26 +57,12 @@ my $config = {
     "TCGA-BH-A0E0" => [ "TCGA-BH-A0E0-NT", "TCGA-BH-A0E0-TP" ],
     "TCGA-BH-A0H7" => [ "TCGA-BH-A0H7-NT", "TCGA-BH-A0H7-TP" ],
   },
-  tophat2 => {
-    class      => "Tophat2",
-    perform    => 0,
-    target_dir => "${target_dir}/tophat2",
-    option     => "--segment-length 25 -r 0 -p 8",
-    batchmode  => 0,
-    source_ref => "fastqfiles",
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "240",
-      "mem"      => "40gb"
-    },
-  },
   rsmc => {
     target_dir       => "${target_dir}/rsmc",
     option           => "-c 8",                                                 #thread mode
     source_ref       => "bamfiles",
     source_type      => "bam",                                                  #source_type can be bam/mpileup
-    fasta_file       => "/data/cqs/shengq1/reference/hg19_rCRS/hg19_rCRS.fa",
+    fasta_file       => $fasta_file,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
     sh_direct        => 1,
@@ -99,9 +83,9 @@ my $config = {
     groups_ref  => "rnagroups",
     java_option => "-Xmx40g",
     fasta_file  => $fasta_file,
-    cosmic_file => "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf",
-    dbsnp_file  => "/data/cqs/shengq1/reference/snp137/human_b37/dbsnp_137.b37.vcf",
-    sh_direct   => 1,
+    cosmic_file => $cosmic_file,
+    dbsnp_file  => $snp_file,
+    sh_direct   => 0,
     muTect_jar  => "/home/shengq1/local/bin/muTect-1.1.4.jar",
     pbs         => {
       "email"    => $email,
