@@ -9,7 +9,7 @@ use CQS::SystemUtils;
 use CQS::SomaticMutation;
 use CQS::ClassFactory;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_2");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_comparison");
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
