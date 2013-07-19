@@ -341,12 +341,12 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    mirna_count_bowtie2_genome_cutadapt_topN => {
+    mirna_count_bowtie1_genome_cutadapt_topN => {
       class           => "MirnaCount",
       perform         => 1,
-      target_dir      => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_count",
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count",
       option          => "-d",
-      source_ref      => "bowtie2_genome_cutadapt_topN",
+      source_ref      => "bowtie1_genome_cutadapt_topN",
       fastq_files_ref => "cutadapt_len",
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
@@ -358,12 +358,12 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    shrimp2_miRBase_bowtie2_genome_cutadapt_topN => {
+    shrimp2_miRBase_bowtie1_genome_cutadapt_topN => {
       class         => "Shrimp2",
       perform       => 0,
-      target_dir    => "${cur_target_dir}/topN_bowtie2_genome_cutadapt_shrimp2_miRBase",
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_shrimp2_miRBase",
       option        => $shrimp2_option,
-      source_ref    => [ "mirna_count_bowtie2_genome_cutadapt_topN", ".fastq\$" ],
+      source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN", ".fastq\$" ],
       shrimp2_index => $def->{shrimp2_index},
       is_mirna      => 1,
       output_bam    => 1,
