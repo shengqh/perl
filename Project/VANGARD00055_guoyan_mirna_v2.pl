@@ -313,7 +313,7 @@ foreach my $def (@defs) {
       class      => "Cutadapt",
       perform    => 1,
       target_dir => "${target_dir}/cutadapt_len",
-      option     => "-m 12 -M 49",
+      option     => "-O 10 -m 12 -M 49",
       source     => $def->{source},
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
