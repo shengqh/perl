@@ -363,7 +363,7 @@ foreach my $def (@defs) {
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count",
       option          => "-d",
       source_ref      => "bowtie1_genome_cutadapt_topN",
-      fastq_files_ref => "cutadapt_len",
+      fastq_files_ref => "identical",
       count_file_ref  => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
