@@ -361,7 +361,7 @@ foreach my $def (@defs) {
       class           => "MirnaCount",
       perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count",
-      option          => "-d -t 4",
+      option          => "-d -s",
       source_ref      => "bowtie1_genome_cutadapt_topN",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
