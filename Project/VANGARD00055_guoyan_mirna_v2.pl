@@ -349,7 +349,7 @@ foreach my $def (@defs) {
       source_ref    => [ "identical", ".fastq\$" ],
       bowtie1_index => $def->{bowtie1_index},
       samonly       => 0,
-      sh_direct     => 0,
+      sh_direct     => 1,
       pbs           => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
@@ -367,7 +367,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
-      sh_direct       => 0,
+      sh_direct       => 1,
       pbs             => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
