@@ -325,12 +325,28 @@ foreach my $def (@defs) {
         "mem"      => "20gb"
       },
     },
+    identical => {
+      class      => "FastqIdentical",
+      perform    => 1,
+      target_dir => "${target_dir}/identical",
+      option     => "",
+      source_ref => "cutadapt_len",
+      cqstools   => $cqs_tools,
+      extension  => "_clipped_identical.fastq",
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "24",
+        "mem"      => "20gb"
+      },
+    },
     bowtie1_genome_cutadapt_topN => {
       class         => "Bowtie1",
       perform       => 1,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt",
       option        => $bowtie1_option,
-      source_ref    => "cutadapt_len",
+      source_ref    => [ "identical", ".fastq\$" ],
       bowtie1_index => $def->{bowtie1_index},
       samonly       => 0,
       sh_direct     => 0,
@@ -348,6 +364,7 @@ foreach my $def (@defs) {
       option          => "-d",
       source_ref      => "bowtie1_genome_cutadapt_topN",
       fastq_files_ref => "cutadapt_len",
+      count_file_ref  => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
       sh_direct       => 0,
