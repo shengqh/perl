@@ -41,7 +41,7 @@ my $target_mouse_dir = create_directory_or_die( $target_dir . "/mouse" );
 my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "VANGARD00055";
 
-my $bowtie1_option = "-a -m 20 --best --strata -v 2 -l 12 -p 8";
+my $bowtie1_option = "-a -m 20 --best --strata -v 3 -l 12 -p 8";
 
 my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
