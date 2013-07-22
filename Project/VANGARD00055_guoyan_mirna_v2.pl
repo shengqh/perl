@@ -44,8 +44,8 @@ my $task_name = "VANGARD00055";
 my $bowtie1_option = "-a -m 20 --best --strata -v 2 -l 12 -p 8";
 
 my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
-my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie1_index/hg19";
-my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie1_index/mm9";
+my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
+my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
 
 #shrimp2 gmapper set mirna mode
 #static int
@@ -364,7 +364,7 @@ foreach my $def (@defs) {
       option          => "-d",
       source_ref      => "bowtie1_genome_cutadapt_topN",
       fastq_files_ref => "identical",
-      seqcount_ref  => [ "identical", ".dupcount\$" ],
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
       sh_direct       => 0,
@@ -398,3 +398,4 @@ foreach my $def (@defs) {
 }
 
 1;
+
