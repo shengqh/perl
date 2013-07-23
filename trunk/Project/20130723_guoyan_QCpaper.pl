@@ -25,6 +25,7 @@ my $config = {
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=2",
