@@ -11,6 +11,7 @@ use CQS::FileUtils;
 use CQS::Task;
 use CQS::NGSCommon;
 use CQS::StringUtils;
+use CQS::Fasta;
 
 our @ISA = qw(CQS::Task);
 
@@ -31,6 +32,19 @@ sub perform {
   my $faFile     = get_param_file( $config->{$section}{fasta_file},  "fasta_file",  1 );
   my $cosmicfile = get_param_file( $config->{$section}{cosmic_file}, "cosmic_file", 1 );
   my $dbsnpfile  = get_param_file( $config->{$section}{dbsnp_file},  "dbsnp_file",  1 );
+
+  my $bychromosome = $config->{$section}{bychromosome};
+  if ( !defined $bychromosome ) {
+    $bychromosome = 0;
+  }
+
+  my @chromosomes = ();
+  if ($bychromosome) {
+    @chromosomes = get_sequence_names($faFile);
+  }
+  else {
+    @chromosomes = ("");
+  }
 
   my $java_option = $config->{$section}{java_option};
   if ( !defined $java_option ) {
@@ -67,22 +81,33 @@ sub perform {
     my $normal = $sampleFiles[0];
     my $tumor  = $sampleFiles[1];
 
-    my $out       = "${groupName}.somatic.out";
-    my $vcf       = "${groupName}.somatic.vcf";
-    my $passvcf   = "${groupName}.somatic.pass.vcf";
+    for my $chr (@chromosomes) {
+      my $chrstr;
+      my $chroption;
+      if ( $chr eq "" ) {
+        $chrstr    = "";
+        $chroption = "";
+      }
+      else {
+        $chrstr    = "_${chr}";
+        $chroption = "-L $chr";
+      }
 
-    my $pbsName = "${groupName}_mt.pbs";
-    my $pbsFile = "${pbsDir}/$pbsName";
-    print SH "\$MYCMD ./$pbsName \n";
+      my $pbsName = "${groupName}${chrstr}_mt.pbs";
+      my $pbsFile = "${pbsDir}/$pbsName";
+      print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${groupName}_mt.log";
+      my $out     = "${groupName}${chrstr}.somatic.out";
+      my $vcf     = "${groupName}${chrstr}.somatic.vcf";
+      my $passvcf = "${groupName}${chrstr}.somatic.pass.vcf";
+      my $log     = "${logDir}/${groupName}${chrstr}_mt.log";
 
-    open( OUT, ">$pbsFile" ) or die $!;
-    print OUT "$pbsDesc
+      open( OUT, ">$pbsFile" ) or die $!;
+      print OUT "$pbsDesc
 #PBS -o $log
 #PBS -j oe
 
-$path_file 
+$path_file
 
 echo muTect=`date` 
 
@@ -97,7 +122,7 @@ if [ ! -s ${tumor}.bai ]; then
 fi
 
 if [ ! -s $vcf ]; then
-  java $java_option -jar $muTect_jar $option --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
+  java $java_option -jar $muTect_jar $option $chroption --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
 fi 
 
 if [[ -s $vcf && ! -s $passvcf ]]; then
@@ -105,9 +130,10 @@ if [[ -s $vcf && ! -s $passvcf ]]; then
 fi
 
 echo finished=`date` \n";
-    close OUT;
+      close OUT;
 
-    print "$pbsFile created \n";
+      print "$pbsFile created \n";
+    }
   }
 
   close(SH);
@@ -135,6 +161,5 @@ sub result {
   }
   return $result;
 }
-
 
 1;
