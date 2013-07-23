@@ -88,6 +88,7 @@ my $config = {
     fasta_file  => $fasta_file,
     cosmic_file => $cosmic_file,
     dbsnp_file  => $snp_file,
+    bychromosome => 1,
     sh_direct   => 0,
     muTect_jar  => "/home/shengq1/local/bin/muTect-1.1.4.jar",
     pbs         => {
