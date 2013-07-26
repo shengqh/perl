@@ -433,7 +433,7 @@ foreach my $def (@defs) {
       perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_unmatched",
       option        => $bowtie1_option_pm,
-      source_ref    => [ "identical", ".fastq\$" ],
+      source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN_pm", ".fastq\$" ],
       bowtie1_index => $human->{bowtie1_index},
       samonly       => 0,
       sh_direct     => 1,
