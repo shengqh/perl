@@ -43,6 +43,8 @@ my $task_name = "VANGARD00055";
 
 my $bowtie1_option = "-a -m 20 --best --strata -v 3 -l 12 -p 8";
 
+my $bowtie1_option_pm = "-a -m 20 --best --strata -v 0 -l 12 -p 8";
+
 my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
 my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
@@ -343,7 +345,7 @@ foreach my $def (@defs) {
     },
     bowtie1_genome_cutadapt_topN => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt",
       option        => $bowtie1_option,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -359,7 +361,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie1_genome_cutadapt_topN => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count",
       option          => "-d -s -e 1",
       source_ref      => "bowtie1_genome_cutadapt_topN",
@@ -392,9 +394,63 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    bowtie1_genome_cutadapt_topN_pm => {
+      class         => "Bowtie1",
+      perform       => 0,
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm",
+      option        => $bowtie1_option_pm,
+      source_ref    => [ "identical", ".fastq\$" ],
+      bowtie1_index => $def->{bowtie1_index},
+      samonly       => 0,
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    mirna_count_bowtie1_genome_cutadapt_topN_pm => {
+      class           => "MirnaCount",
+      perform         => 0,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_pm",
+      option          => "-d -s -e 1",
+      source_ref      => "bowtie1_genome_cutadapt_topN_pm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqs_tools,
+      gff_file        => $def->{coordinate},
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    bowtie1_genome_cutadapt_topN_pm_unmatched => {
+      class         => "Bowtie1",
+      perform       => 0,
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_unmatched",
+      option        => $bowtie1_option_pm,
+      source_ref    => [ "identical", ".fastq\$" ],
+      bowtie1_index => $def->{bowtie1_index},
+      samonly       => 0,
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
   };
 
   performConfig($config);
+  
+  if($def eq $mouse){
+    performTask($config, "bowtie1_genome_cutadapt_topN_pm" )
+  }
 }
 
 1;
