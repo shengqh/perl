@@ -434,7 +434,7 @@ foreach my $def (@defs) {
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_unmatched",
       option        => $bowtie1_option_pm,
       source_ref    => [ "identical", ".fastq\$" ],
-      bowtie1_index => $def->{bowtie1_index},
+      bowtie1_index => $human->{bowtie1_index},
       samonly       => 0,
       sh_direct     => 1,
       pbs           => {
@@ -450,7 +450,8 @@ foreach my $def (@defs) {
   
   if($def eq $mouse){
     #performTask($config, "bowtie1_genome_cutadapt_topN_pm" )
-    performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm" )
+    #performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm" )
+    performTask($config, "bowtie1_genome_cutadapt_topN_pm_unmatched" )
   }
 }
 
