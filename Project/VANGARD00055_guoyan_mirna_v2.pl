@@ -449,7 +449,8 @@ foreach my $def (@defs) {
   performConfig($config);
   
   if($def eq $mouse){
-    performTask($config, "bowtie1_genome_cutadapt_topN_pm" )
+    #performTask($config, "bowtie1_genome_cutadapt_topN_pm" )
+    performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm" )
   }
 }
 
