@@ -444,6 +444,24 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched => {
+      class           => "MirnaCount",
+      perform         => 0,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_pm_unmatched",
+      option          => "-d -s -e 1",
+      source_ref      => "bowtie1_genome_cutadapt_topN_pm_unmatched",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqs_tools,
+      gff_file        => $human->{coordinate},
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
   };
 
   performConfig($config);
@@ -451,7 +469,8 @@ foreach my $def (@defs) {
   if($def eq $mouse){
     #performTask($config, "bowtie1_genome_cutadapt_topN_pm" )
     #performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm" )
-    performTask($config, "bowtie1_genome_cutadapt_topN_pm_unmatched" )
+    #performTask($config, "bowtie1_genome_cutadapt_topN_pm_unmatched" )
+    performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" )
   }
 }
 
