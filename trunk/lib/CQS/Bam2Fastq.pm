@@ -90,8 +90,8 @@ sub result {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $fastq = $sampleName . "fastq";
-    my $finalFile   = $fastq . "gz";
+    my $fastq = $sampleName . ".fastq";
+    my $finalFile   = $fastq . ".gz";
 
     my @resultFiles = ();
     push( @resultFiles, $finalFile );
