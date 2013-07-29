@@ -54,6 +54,8 @@ $path_file
 
 cd $resultDir
 
+echo started=`date`
+
 if [ ! -s $finalFile ]; then
   bam2fastx $option -o $fastq $bamfile
   gzip $fastq
