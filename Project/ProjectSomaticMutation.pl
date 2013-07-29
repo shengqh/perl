@@ -11,7 +11,9 @@ use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_comparison");
 
-my $email = "quanhu.sheng\@vanderbilt.edu";
+my $email    = "quanhu.sheng\@vanderbilt.edu";
+my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 ##hg19.16569###
 my $fasta_file  = "/data/cqs/shengq1/reference/hg19.16569/bwa_index_0.7.4/hg19_rCRS.fa";
@@ -66,9 +68,11 @@ my $config = {
     class      => "Bam2Fastq",
     perform    => 1,
     target_dir => "${target_dir}/bam2fastq",
-    option     => "-q -Q -A",
+    option     => "",
     source_ref => "rnafiles",
-    ispaired   => 0,
+    cqstools   => $cqstools,
+    samtools   => $samtools,
+    ispaired   => 1,
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
