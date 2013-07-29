@@ -26,6 +26,11 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
+  my $ispaired = $config->{$section}{ispaired};
+  if ( !defined $ispaired ) {
+    $ispaired = 0;
+  }
+
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
   my $shfile = $pbsDir . "/${task_name}_b2q.sh";
@@ -34,9 +39,7 @@ sub perform {
 
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
-    my $bamfile = $sampleFiles[0];
-    my $fastq = $sampleName . ".fastq";
-    my $finalFile   = $fastq . ".gz";
+    my $bamfile     = $sampleFiles[0];
 
     my $pbsName = "${sampleName}_b2q.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
@@ -46,6 +49,39 @@ sub perform {
     my $log = "${logDir}/${sampleName}_b2q.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
+
+    if ($ispaired) {
+      my $namesorted = $sampleName . ".namesorted";
+      my $fastq     = $sampleName . ".fastq";
+      my $fastq1     = $sampleName . ".1.fastq";
+      my $fastq2     = $sampleName . ".2.fastq";
+      my $finalFile1 = $fastq1 . ".gz";
+      my $finalFile2 = $fastq2 . ".gz";
+    print OUT "$pbsDesc
+#PBS -o $log
+#PBS -j oe
+
+$path_file
+
+cd $resultDir
+
+echo started=`date`
+
+if [ ! -s $finalFile1 ]; then
+  samtools sort -n $bamfile -o $namesorted
+  bam2fastx $option -P -o $fastq ${namesorted}.bam
+  gzip $fastq1
+  gzip $fastq2
+fi
+
+echo finished=`date`
+
+exit 1 
+";
+    }
+    else {
+      my $fastq     = $sampleName . ".fastq";
+      my $finalFile = $fastq . ".gz";
     print OUT "$pbsDesc
 #PBS -o $log
 #PBS -j oe
@@ -65,6 +101,7 @@ echo finished=`date`
 
 exit 1 
 ";
+    }
 
     close OUT;
 
@@ -86,15 +123,31 @@ sub result {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
+  my $ispaired = $config->{$section}{ispaired};
+  if ( !defined $ispaired ) {
+    $ispaired = 0;
+  }
+
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $fastq = $resultDir . "/" . $sampleName . ".fastq";
-    my $finalFile   = $fastq . ".gz";
-
+    
     my @resultFiles = ();
-    push( @resultFiles, $finalFile );
+    if ($ispaired) {
+      my $namesorted = $sampleName . ".namesorted";
+      my $fastq     = $sampleName . ".fastq";
+      my $fastq1     = $sampleName . ".1.fastq";
+      my $fastq2     = $sampleName . ".2.fastq";
+      my $finalFile1 = $fastq1 . ".gz";
+      my $finalFile2 = $fastq2 . ".gz";
+      push( @resultFiles, $finalFile1 );
+      push( @resultFiles, $finalFile2 );
+    }else{
+      my $fastq     = $resultDir . "/" . $sampleName . ".fastq";
+      my $finalFile = $fastq . ".gz";
+      push( @resultFiles, $finalFile );
+    }    
 
     $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
