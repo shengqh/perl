@@ -68,7 +68,7 @@ my $config = {
     target_dir       => "${target_dir}/bam2fastq",
     option           => "-q -Q -A",                                         
     source_ref       => "rnafiles",
-    sh_direct        => 1,
+    sh_direct        => 0,
     pbs              => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
