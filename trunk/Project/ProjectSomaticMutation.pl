@@ -64,7 +64,7 @@ my $config = {
   },
   bam2fastq => {
     class            => "Bam2Fastq",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/bam2fastq",
     option           => "-q -Q -A",                                         
     source_ref       => "rnafiles",
@@ -78,7 +78,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/bwa",
     option     => "-q 15 -t 8",
     fasta_file => $fasta_file,
@@ -93,7 +93,7 @@ my $config = {
   },
   refine => {
     class              => "GATKRefine",
-    perform            => 0,
+    perform            => 1,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
