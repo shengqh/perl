@@ -31,6 +31,9 @@ sub perform {
     $ispaired = 0;
   }
 
+  my $cqstools = $config->{$section}{cqstools} or die "define ${section}::cqstools first";
+  my $samtools = $config->{$section}{samtools} or die "define ${section}::samtools first";
+
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
   my $shfile = $pbsDir . "/${task_name}_b2q.sh";
@@ -51,13 +54,12 @@ sub perform {
     open( OUT, ">$pbsFile" ) or die $!;
 
     if ($ispaired) {
-      my $namesorted = $sampleName . ".namesorted";
-      my $fastq     = $sampleName . ".fastq";
+      my $fastq      = $sampleName . ".fastq";
       my $fastq1     = $sampleName . ".1.fastq";
       my $fastq2     = $sampleName . ".2.fastq";
       my $finalFile1 = $fastq1 . ".gz";
       my $finalFile2 = $fastq2 . ".gz";
-    print OUT "$pbsDesc
+      print OUT "$pbsDesc
 #PBS -o $log
 #PBS -j oe
 
@@ -68,8 +70,7 @@ cd $resultDir
 echo started=`date`
 
 if [ ! -s $finalFile1 ]; then
-  samtools sort -n $bamfile -o $namesorted
-  bam2fastx $option -P -o $fastq ${namesorted}.bam
+  mono-sgen $cqstools bam2fastq $option -i $bamfile -o $fastq -p -s $samtools
   gzip $fastq1
   gzip $fastq2
 fi
@@ -82,7 +83,7 @@ exit 1
     else {
       my $fastq     = $sampleName . ".fastq";
       my $finalFile = $fastq . ".gz";
-    print OUT "$pbsDesc
+      print OUT "$pbsDesc
 #PBS -o $log
 #PBS -j oe
 
@@ -93,7 +94,7 @@ cd $resultDir
 echo started=`date`
 
 if [ ! -s $finalFile ]; then
-  bam2fastx $option -o $fastq $bamfile
+  mono-sgen $cqstools bam2fastq $option -i $bamfile -o $fastq -s $samtools
   gzip $fastq
 fi
 
@@ -132,22 +133,23 @@ sub result {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    
+
     my @resultFiles = ();
     if ($ispaired) {
       my $namesorted = $sampleName . ".namesorted";
-      my $fastq     = $sampleName . ".fastq";
+      my $fastq      = $sampleName . ".fastq";
       my $fastq1     = $sampleName . ".1.fastq";
       my $fastq2     = $sampleName . ".2.fastq";
       my $finalFile1 = $fastq1 . ".gz";
       my $finalFile2 = $fastq2 . ".gz";
       push( @resultFiles, $finalFile1 );
       push( @resultFiles, $finalFile2 );
-    }else{
+    }
+    else {
       my $fastq     = $resultDir . "/" . $sampleName . ".fastq";
       my $finalFile = $fastq . ".gz";
       push( @resultFiles, $finalFile );
-    }    
+    }
 
     $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
