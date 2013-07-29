@@ -13,15 +13,15 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_c
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
-###hg19.16569###
-#my $fasta_file  = "/data/cqs/shengq1/reference/hg19.16569/bwa_index_0.7.4/hg19_rCRS.fa";
-#my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf";
-#my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
+##hg19.16569###
+my $fasta_file  = "/data/cqs/shengq1/reference/hg19.16569/bwa_index_0.7.4/hg19_rCRS.fa";
+my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf";
+my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
 
-##hg19.16571###
-my $fasta_file  = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
-my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf";
-my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16571/00-All.vcf";
+###hg19.16571###
+#my $fasta_file  = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
+#my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf";
+#my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16571/00-All.vcf";
 
 my $config = {
   general => {
