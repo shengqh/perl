@@ -90,7 +90,7 @@ sub result {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $fastq = $sampleName . ".fastq";
+    my $fastq = $resultDir . "/" . $sampleName . ".fastq";
     my $finalFile   = $fastq . ".gz";
 
     my @resultFiles = ();
