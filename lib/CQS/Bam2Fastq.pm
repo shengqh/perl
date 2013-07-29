@@ -35,8 +35,8 @@ sub perform {
   for my $sampleName ( sort keys %rawFiles ) {
     my @sampleFiles = @{ $rawFiles{$sampleName} };
     my $bamfile = $sampleFiles[0];
-    my $fastq = $sampleName . "fastq";
-    my $finalFile   = $fastq . "gz";
+    my $fastq = $sampleName . ".fastq";
+    my $finalFile   = $fastq . ".gz";
 
     my $pbsName = "${sampleName}_b2q.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
