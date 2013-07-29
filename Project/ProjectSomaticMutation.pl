@@ -14,9 +14,14 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_c
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 ###hg19.16569###
-my $fasta_file  = "/data/cqs/guoy1/reference/hg19/hg19_rCRS/hg19_rCRS.fa";
-my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf";
-my $snp_file    = "/data/cqs/shengq1/reference/snp137/human_b37/dbsnp_137.b37.vcf";
+#my $fasta_file  = "/data/cqs/shengq1/reference/hg19.16569/bwa_index_0.7.4/hg19_rCRS.fa";
+#my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf";
+#my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
+
+##hg19.16571###
+my $fasta_file  = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
+my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf";
+my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16571/00-All.vcf";
 
 my $config = {
   general => {
@@ -57,12 +62,60 @@ my $config = {
     "TCGA-BH-A0E0" => [ "TCGA-BH-A0E0-NT", "TCGA-BH-A0E0-TP" ],
     "TCGA-BH-A0H7" => [ "TCGA-BH-A0H7-NT", "TCGA-BH-A0H7-TP" ],
   },
+  bam2fastq => {
+    class            => "Bam2Fastq",
+    perform          => 1,
+    target_dir       => "${target_dir}/bam2fastq",
+    option           => "-q -Q -A",                                         
+    source_ref       => "rnafiles",
+    sh_direct        => 1,
+    pbs              => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
+  bwa => {
+    class      => "BWA",
+    perform    => 0,
+    target_dir => "${target_dir}/bwa",
+    option     => "-q 15 -t 8",
+    fasta_file => $fasta_file,
+    source_ref => "bam2fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  refine => {
+    class              => "GATKRefine",
+    perform            => 0,
+    target_dir         => "${target_dir}/refine",
+    option             => "-Xmx40g",
+    fasta_file         => $fasta_file,
+    source_ref         => "bwa",
+    thread_count       => 8,
+    vcf_files          => [$snp_file],
+    gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
+    markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   rsmc => {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rsmc",
     option           => "-c 8",                                              #thread mode
-    source_ref       => "rnafiles",
+    source_ref       => "refine",
     groups_ref       => "rnagroups",
     source_type      => "bam",                                               #source_type can be bam/mpileup
     fasta_file       => $fasta_file,
@@ -82,7 +135,7 @@ my $config = {
     perform     => 1,
     target_dir  => "${target_dir}/muTect",
     option      => "-nt 8",
-    source_ref  => "rnafiles",
+    source_ref  => "refine",
     groups_ref  => "rnagroups",
     java_option => "-Xmx40g",
     fasta_file  => $fasta_file,
@@ -94,7 +147,7 @@ my $config = {
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "72",
+      "walltime" => "240",
       "mem"      => "40gb"
     },
   },
@@ -103,7 +156,7 @@ my $config = {
     perform         => 1,
     target_dir      => "${target_dir}/varscan2",
     option          => "",
-    source_ref      => "rnafiles",
+    source_ref      => "refine",
     groups_ref      => "rnagroups",
     fasta_file      => $fasta_file,
     min_coverage    => 10,
