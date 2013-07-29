@@ -64,7 +64,7 @@ my $config = {
   },
   bam2fastq => {
     class            => "Bam2Fastq",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/bam2fastq",
     option           => "-q -Q -A",                                         
     source_ref       => "rnafiles",
