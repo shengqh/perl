@@ -54,7 +54,7 @@ $path_file
 
 cd $resultDir
 
-if [! -s $finalFile]; then
+if [ ! -s $finalFile ]; then
   bam2fastx $option -o $fastq $bamfile
   gzip $fastq
 fi
