@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use IO::Uncompress::Gunzip qw(gunzip $GunzipError);
 use Net::FTP;
+use CQS::FileUtils;
 
 require Exporter;
 
@@ -13,7 +14,8 @@ our %EXPORT_TAGS = (
   'all' => [
     qw(download_geo_all
       download_geo_supplementary
-      download_geo_matrix)
+      download_geo_matrix
+      download_geo_ids)
   ]
 );
 
@@ -83,9 +85,11 @@ sub download_geo_dir {
       }
 
       print "\tDownloading : $localdir/$file\n";
-      $ftp->get( $file, $localfile )
+      $ftp->get( $file, $localfile . ".tmp" )
         or die "failed to download file $dataset/$file";
 
+      rename($localfile . ".tmp", $localfile);
+      
       if ($uncompress) {
         uncompress_file( $localfile, $uncompressedfile );
       }
@@ -116,6 +120,38 @@ sub download_geo_all {
   my ( $dataset, $targetRootDir ) = @_;
   download_geo_supplementary( @_, 0 );
   download_geo_matrix( @_, 1 );
+}
+
+sub download_geo_ids {
+  my ($targetdir, $excludeddir, @datasets) = @_;
+
+  foreach my $dataset (@datasets) {
+    my $localdir       = $targetdir . $dataset;
+    my $curexcludeddir = $excludeddir . $dataset;
+
+    if ( !( -d $localdir ) && ( -d $curexcludeddir ) ) {
+      next;
+    }
+
+    unless ( -d $localdir ) {
+      mkdir $localdir or die "failed to create directory $localdir";
+    }
+
+    if (
+      !has_file(
+        $localdir,
+        sub {
+          my $file = shift;
+          return $file =~ /\.cel$/i;
+        }
+      )
+      )
+    {
+      download_geo_supplementary( $dataset, $localdir, 1 );
+    }
+
+    download_geo_matrix( $dataset, $localdir, 1 );
+  }
 }
 
 1;
