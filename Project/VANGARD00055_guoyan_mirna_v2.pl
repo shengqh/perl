@@ -372,7 +372,7 @@ foreach my $def (@defs) {
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
       samtools        => $samtools,
-      sh_direct       => 0,
+      sh_direct       => 1,
       pbs             => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
