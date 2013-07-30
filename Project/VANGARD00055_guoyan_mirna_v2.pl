@@ -371,7 +371,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
-      samtools        => $$samtools,
+      samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
         "email"    => $email,
@@ -423,7 +423,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
-      samtools        => $$samtools,
+      samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
         "email"    => $email,
@@ -458,7 +458,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $human->{coordinate},
-      samtools        => $$samtools,
+      samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
         "email"    => $email,
