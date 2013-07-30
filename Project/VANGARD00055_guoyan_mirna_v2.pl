@@ -41,6 +41,8 @@ my $target_mouse_dir = create_directory_or_die( $target_dir . "/mouse" );
 my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "VANGARD00055";
 
+my $samtools = "/home/shengq1/local/bin/samtools/samtools";
+
 my $bowtie1_option = "-a -m 20 --best --strata -v 3 -l 12 -p 8";
 
 my $bowtie1_option_pm = "-a -m 20 --best --strata -v 0 -l 12 -p 8";
@@ -361,7 +363,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie1_genome_cutadapt_topN => {
       class           => "MirnaCount",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count",
       option          => "-d -s -e 1",
       source_ref      => "bowtie1_genome_cutadapt_topN",
@@ -369,6 +371,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
+      samtools        => $$samtools,
       sh_direct       => 1,
       pbs             => {
         "email"    => $email,
@@ -420,6 +423,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
+      samtools        => $$samtools,
       sh_direct       => 1,
       pbs             => {
         "email"    => $email,
@@ -454,6 +458,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $human->{coordinate},
+      samtools        => $$samtools,
       sh_direct       => 1,
       pbs             => {
         "email"    => $email,
@@ -465,12 +470,13 @@ foreach my $def (@defs) {
   };
 
   performConfig($config);
-  
-  if($def eq $mouse){
+
+  if ( $def eq $mouse ) {
+
     #performTask($config, "bowtie1_genome_cutadapt_topN_pm" )
     #performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm" )
     #performTask($config, "bowtie1_genome_cutadapt_topN_pm_unmatched" )
-    performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" )
+    #performTask( $config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" );
   }
 }
 
