@@ -28,6 +28,7 @@ sub perform {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
+  my $samtools = get_param_file( $config->{$section}{samtools}, "samtools", 1 );
   my $gffFile = get_param_file( $config->{$section}{gff_file},  "gff_file",  1 );
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
@@ -89,7 +90,7 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
-mono-sgen $cqsFile mirna_count $option -i $bamFile -g $gffFile -o $countFile $seqcountFile $fastqFile
+mono-sgen $cqsFile mirna_count $option --samtools $samtools -i $bamFile -g $gffFile -o $countFile $seqcountFile $fastqFile
 
 echo finished=`date`
 
