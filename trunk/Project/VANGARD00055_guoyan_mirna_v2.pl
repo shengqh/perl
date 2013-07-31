@@ -51,6 +51,8 @@ my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
 my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
 
+my $mirnacount_option = "-s --bed_as_gtf";#ignore score and consider bed as gtf. 
+
 #shrimp2 gmapper set mirna mode
 #static int
 #set_mode_from_string(char const * s) {
@@ -365,7 +367,7 @@ foreach my $def (@defs) {
       class           => "MirnaCount",
       perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count",
-      option          => "-d -s -e 1",
+      option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
@@ -417,7 +419,7 @@ foreach my $def (@defs) {
       class           => "MirnaCount",
       perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_pm",
-      option          => "-d -s -e 1",
+      option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_pm",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
@@ -452,7 +454,7 @@ foreach my $def (@defs) {
       class           => "MirnaCount",
       perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_pm_unmatched",
-      option          => "-d -s -e 1",
+      option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_pm_unmatched",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
