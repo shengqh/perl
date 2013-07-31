@@ -66,7 +66,7 @@ my $config = {
   },
   bam2fastq => {
     class      => "Bam2Fastq",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bam2fastq",
     option     => "",
     source_ref => "rnafiles",
@@ -88,7 +88,7 @@ my $config = {
     option     => "-q 15 -t 8",
     fasta_file => $fasta_file,
     source_ref => "bam2fastq",
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
