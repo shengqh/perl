@@ -136,19 +136,11 @@ sub result {
 
     my @resultFiles = ();
     if ($ispaired) {
-      my $namesorted = $sampleName . ".namesorted";
-      my $fastq      = $sampleName . ".fastq";
-      my $fastq1     = $sampleName . ".1.fastq";
-      my $fastq2     = $sampleName . ".2.fastq";
-      my $finalFile1 = $fastq1 . ".gz";
-      my $finalFile2 = $fastq2 . ".gz";
-      push( @resultFiles, $finalFile1 );
-      push( @resultFiles, $finalFile2 );
+      push( @resultFiles, $resultDir . "/" . $sampleName . ".1.fastq.gz" );
+      push( @resultFiles, $resultDir . "/" . $sampleName . ".2.fastq.gz" );
     }
     else {
-      my $fastq     = $resultDir . "/" . $sampleName . ".fastq";
-      my $finalFile = $fastq . ".gz";
-      push( @resultFiles, $finalFile );
+      push( @resultFiles, $resultDir . "/" . $sampleName . ".fastq.gz" );
     }
 
     $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
