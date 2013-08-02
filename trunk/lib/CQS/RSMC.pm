@@ -110,11 +110,11 @@ cd $curDir
       }
 
       print OUT "
-if [ !-s ${normal}.bai ]; then
+if [ ! -s ${normal}.bai ]; then
   samtools index ${normal}
 fi
 
-if [ !-s ${tumor}.bai ]; then
+if [ ! -s ${tumor}.bai ]; then
   samtools index ${tumor}
 fi
 
