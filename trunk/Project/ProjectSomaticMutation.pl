@@ -135,6 +135,26 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  rsmc_bwa => {
+    class            => "RSMC",
+    perform          => 1,
+    target_dir       => "${target_dir}/rsmc_bwa",
+    option           => "-c 8",    #thread mode
+    source_ref       => "bwa",
+    groups_ref       => "rnagroups",
+    source_type      => "bam",                                               #source_type can be bam/mpileup
+    fasta_file       => $fasta_file,
+    annovar_buildver => "hg19",
+    rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
+    sh_direct        => 0,
+    execute_file     => "/home/shengq1/rsmc/rsmc.exe",
+    pbs              => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   rsmc_nps => {
     class            => "RSMC",
     perform          => 1,
