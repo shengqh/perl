@@ -1,0 +1,72 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use CQS::QC;
+use CQS::RNASeq;
+use CQS::FileUtils;
+use CQS::SystemUtils;
+use CQS::ClassFactory;
+
+my $task_name  = "VANGARD00125";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${task_name}_jennifer_rnaseq");
+
+my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
+my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
+
+my $email = "quanhu.sheng\@vanderbilt.edu";
+
+my $config = {
+  general => {
+    bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
+    transcript_gtf       => $transcript_gtf,
+    transcript_gtf_index => $transcript_gtf_index,
+    path_file            => "/home/shengq1/local/bin/path.txt",
+    task_name            => $task_name,
+  },
+  fastqfiles => {
+    "2059-JP-0" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-0_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-0_2.fastq.gz" ],
+    "2059-JP-1" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-1_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-1_2.fastq.gz" ],
+    "2059-JP-2" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-2_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-2_2.fastq.gz" ],
+    "2059-JP-3" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-3_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-3_2.fastq.gz" ],
+    "2059-JP-4" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-4_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-4_2.fastq.gz" ],
+    "2059-JP-5" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-5_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-5_2.fastq.gz" ],
+    "2059-JP-6" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-6_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-6_2.fastq.gz" ],
+    "2059-JP-7" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-7_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-7_2.fastq.gz" ],
+    "2059-JP-8" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-8_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-8_2.fastq.gz" ],
+    "2059-JP-9" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-9_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-9_2.fastq.gz" ],
+  },
+  fastqc => {
+    class      => "FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc",
+    option     => "",
+    source_ref => "fastqfiles",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  tophat2 => {
+    class         => "Tophat2",
+    perform       => 1,
+    target_dir    => "${target_dir}/tophat2",
+    option        => "--segment-length 25 -r 0 -p 8",
+    source_ref    => "fastqfiles",
+    transcript_gtf       => $transcript_gtf,
+    transcript_gtf_index => $transcript_gtf_index,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
+};
+
+performConfig($config);
+
+1;
