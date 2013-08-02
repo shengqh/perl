@@ -135,7 +135,7 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  rsmc_ps => {
+  rsmc_nps => {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rsmc_filter_position_strand",
