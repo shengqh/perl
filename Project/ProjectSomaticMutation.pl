@@ -83,7 +83,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-q 15 -t 8",
     fasta_file => $fasta_file,
@@ -98,7 +98,7 @@ my $config = {
   },
   refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
@@ -119,7 +119,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rsmc",
-    option           => "-c 8",                                              #thread mode
+    option           => "-c 8 --not_filter_position --not_filter_strand",    #thread mode
     source_ref       => "refine",
     groups_ref       => "rnagroups",
     source_type      => "bam",                                               #source_type can be bam/mpileup
@@ -137,7 +137,7 @@ my $config = {
   },
   muTect => {
     class        => "MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/muTect",
     option       => "-nt 8",
     source_ref   => "refine",
@@ -158,7 +158,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2",
     option          => "",
     source_ref      => "refine",
