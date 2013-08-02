@@ -54,12 +54,7 @@ sub perform {
 
   my $shfile = $pbsDir . "/${task_name}.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  if ($sh_direct) {
-    print SH "export MYCMD=\"bash\" \n";
-  }
-  else {
-    print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-  }
+  print SH get_run_command($sh_direct);
 
   for my $sampleName ( sort keys %fqFiles ) {
     my @sampleFiles = @{ $fqFiles{$sampleName} };
