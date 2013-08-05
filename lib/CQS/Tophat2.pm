@@ -26,7 +26,9 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  $option = $option . " --keep-fasta-order";
+  if ( !$config->{$section}{sort_by_query} ) {
+    $option = $option . " --keep-fasta-order";
+  }
 
   my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
   my %fqFiles = %{ get_raw_files( $config, $section ) };
