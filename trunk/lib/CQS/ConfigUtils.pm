@@ -181,10 +181,10 @@ sub get_raw_files2 {
 sub get_run_command {
   my $sh_direct = shift;
   if ($sh_direct) {
-    return ("MYCMD=\"bash\"");
+    return ("MYCMD=\"bash\" \n");
   }
   else {
-    return ("type -P qsub &>/dev/null && MYCMD=\"qsub\" || MYCMD=\"bash\"");
+    return ("type -P qsub &>/dev/null && MYCMD=\"qsub\" || MYCMD=\"bash\" \n");
   }
 }
 
