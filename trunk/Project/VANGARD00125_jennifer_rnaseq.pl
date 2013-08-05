@@ -13,12 +13,12 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${task_na
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
+my $bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => {
-    bowtie2_index        => "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     path_file            => "/home/shengq1/local/bin/path.txt",
@@ -58,6 +58,7 @@ my $config = {
     source_ref    => "fastqfiles",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
+    bowtie2_index => $bowtie2_index,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
