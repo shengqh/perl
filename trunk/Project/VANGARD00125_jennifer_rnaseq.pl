@@ -63,7 +63,7 @@ my $config = {
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "240",
+      "walltime" => "72",
       "mem"      => "40gb"
     },
   },
