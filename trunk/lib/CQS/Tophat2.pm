@@ -26,8 +26,13 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  if ( !$config->{$section}{sort_by_query} ) {
+  my $index;
+  if ( $config->{$section}{sort_by_query} ) {
+    $index = 0;
+  }
+  else{
     $option = $option . " --keep-fasta-order";
+    $index = 1;
   }
 
   my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
@@ -77,6 +82,11 @@ sub perform {
     elsif ($has_index_file) {
       $gtfstr = "--transcriptome-index=$transcript_gtf_index";
     }
+    
+    my $indexcmd = "";
+    if($index){
+      $indexcmd = "samtools index $tophat2file";
+    }
 
     open( OUT, ">$pbsFile" ) or die $!;
 
@@ -95,7 +105,7 @@ fi
 
 tophat2 $option $rgline $gtfstr -o . $bowtie2_index $samples
 
-samtools index $tophat2file
+$indexcmd
 
 1;
 ";
