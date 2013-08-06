@@ -21,9 +21,9 @@ my $mmu_gffs;
 if ( is_linux() ) {
   $root      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2";
   $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
-  $hsa_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/hsa_tableL.bed";
-  $rno_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/rno_tableL.bed";
-  $mmu_gffs  = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/smrnapipeline/mmu_tableL.bed";
+  $hsa_gffs  = "${root}/smrnapipeline/hsa_tableL.bed";
+  $rno_gffs  = "${root}/smrnapipeline/rno_tableL.bed";
+  $mmu_gffs  = "${root}/smrnapipeline/mmu_tableL.bed";
 }
 else {
   $root      = "d:/temp";
@@ -43,15 +43,14 @@ my $task_name = "VANGARD00055";
 
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
-my $bowtie1_option = "-a -m 20 --best --strata -v 3 -l 12 -p 8";
-
+my $bowtie1_option    = "-a -m 20 --best --strata -v 3 -l 12 -p 8";
 my $bowtie1_option_pm = "-a -m 20 --best --strata -v 0 -l 12 -p 8";
 
 my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
 my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
 
-my $mirnacount_option = "-s --bed_as_gtf";#ignore score and consider bed as gtf. 
+my $mirnacount_option = "-s --bed_as_gtf";    #ignore score and consider bed as gtf.
 
 #shrimp2 gmapper set mirna mode
 #static int
@@ -81,6 +80,8 @@ my $shrimp2_option              = "-Q -N 8 -o 1 --qv-offset 33";
 my $shrimp2_rat_miRBase_index   = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/rno.mature.dna-ls";
 my $shrimp2_human_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/hsa.mature.dna-ls";
 my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/mmu.mature.dna-ls";
+
+my $bwa_option = "-o 0 -l 8 -n 3 -t 8";
 
 my $rat = {
   source => {
@@ -275,6 +276,7 @@ my $mouse = {
   shrimp2_index => $shrimp2_mouse_miRBase_index,
   target_dir    => $target_mouse_dir,
   task_name     => $task_name . "_mouse",
+  bwa_option    => $bwa_option
 };
 
 my @defs = ( $rat, $human, $mouse );
@@ -365,7 +367,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie1_genome_cutadapt_topN => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN",
@@ -469,15 +471,55 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    bwa_genome_cutadapt_topN => {
+      class         => "Bwa",
+      perform       => 1,
+      target_dir    => "${cur_target_dir}/topN_bwa_genome_cutadapt",
+      option        => $bwa_option,
+      source_ref    => [ "identical", ".fastq\$" ],
+      bowtie1_index => $def->{bwa_index},
+      samonly       => 0,
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    mirna_count_bwa_genome_cutadapt_topN => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bwa_genome_cutadapt_count",
+      option          => $mirnacount_option,
+      source_ref      => "bwa_genome_cutadapt_topN",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqs_tools,
+      gff_file        => $def->{coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
   };
 
   performConfig($config);
 
   if ( $def eq $mouse ) {
+
     #performTask($config, "bowtie1_genome_cutadapt_topN_pm" );
-    performTask($config, "mirna_count_bowtie1_genome_cutadapt_topN_pm" );
+    #performTask( $config, "mirna_count_bowtie1_genome_cutadapt_topN_pm" );
+
     #performTask($config, "bowtie1_genome_cutadapt_topN_pm_unmatched" );
-    performTask( $config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" );
+    #performTask( $config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" );
+
+    performTask( $config, "bwa_genome_cutadapt_topN" );
+    performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
   }
 }
 
