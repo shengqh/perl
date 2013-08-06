@@ -475,7 +475,7 @@ foreach my $def (@defs) {
     },
     bwa_genome_cutadapt_topN => {
       class      => "BWA",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bwa_genome_cutadapt",
       option     => $bwa_option,
       source_ref => [ "identical", ".fastq\$" ],
