@@ -81,7 +81,8 @@ my $shrimp2_rat_miRBase_index   = "/data/cqs/shengq1/reference/miRBase19/shrimp_
 my $shrimp2_human_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/hsa.mature.dna-ls";
 my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/mmu.mature.dna-ls";
 
-my $bwa_option = "-o 0 -l 8 -n 3 -t 8";
+my $bwa_option       = "-o 0 -l 8 -n 3 -t 8";
+my $bwa_hsammu_fasta = "/data/cqs/shengq1/reference/hg19mm9/bwa_0.7.4_index/hg19mm9.fa";
 
 my $rat = {
   source => {
@@ -276,7 +277,8 @@ my $mouse = {
   shrimp2_index => $shrimp2_mouse_miRBase_index,
   target_dir    => $target_mouse_dir,
   task_name     => $task_name . "_mouse",
-  bwa_option    => $bwa_option
+  bwa_option    => $bwa_option,
+  bwa_fasta     => $bwa_hsammu_fasta
 };
 
 my @defs = ( $rat, $human, $mouse );
@@ -472,15 +474,15 @@ foreach my $def (@defs) {
       },
     },
     bwa_genome_cutadapt_topN => {
-      class         => "BWA",
-      perform       => 1,
-      target_dir    => "${cur_target_dir}/topN_bwa_genome_cutadapt",
-      option        => $bwa_option,
-      source_ref    => [ "identical", ".fastq\$" ],
-      bowtie1_index => $def->{bwa_index},
-      samonly       => 0,
-      sh_direct     => 1,
-      pbs           => {
+      class      => "BWA",
+      perform    => 1,
+      target_dir => "${cur_target_dir}/topN_bwa_genome_cutadapt",
+      option     => $bwa_option,
+      source_ref => [ "identical", ".fastq\$" ],
+      fasta_file => $def->{bwa_fasta},
+      samonly    => 0,
+      sh_direct  => 1,
+      pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
         "walltime" => "72",
