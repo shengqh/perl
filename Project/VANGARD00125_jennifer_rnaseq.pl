@@ -38,7 +38,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -52,7 +52,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "fastqfiles",
@@ -61,6 +61,21 @@ my $config = {
     bowtie2_index        => $bowtie2_index,
     sort_by_query        => 1,
     pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  htseq => {
+    class      => "HTSeqCount",
+    perform    => 1,
+    target_dir => "${target_dir}/htseqcount",
+    option     => "",
+    source_ref => "tophat2",
+    gff_file   => $transcript_gtf,
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
