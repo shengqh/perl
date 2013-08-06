@@ -472,7 +472,7 @@ foreach my $def (@defs) {
       },
     },
     bwa_genome_cutadapt_topN => {
-      class         => "Bwa",
+      class         => "BWA",
       perform       => 1,
       target_dir    => "${cur_target_dir}/topN_bwa_genome_cutadapt",
       option        => $bwa_option,
