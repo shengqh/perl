@@ -491,7 +491,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bwa_genome_cutadapt_topN => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bwa_genome_cutadapt_count",
       option          => $mirnacount_option,
       source_ref      => "bwa_genome_cutadapt_topN",
