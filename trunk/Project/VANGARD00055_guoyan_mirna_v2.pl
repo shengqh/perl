@@ -83,6 +83,7 @@ my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_
 
 my $bwa_option       = "-o 0 -l 8 -n 3 -t 8";
 my $bwa_hsammu_fasta = "/data/cqs/shengq1/reference/hg19mm9/bwa_0.7.4_index/hg19mm9.fa";
+my $bwa_clip_option       = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $rat = {
   source => {
@@ -489,6 +490,22 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    bwa_genome_cutadapt_softclip_topN => {
+      class      => "BWA",
+      perform    => 0,
+      target_dir => "${cur_target_dir}/topN_bwa_genome_softclip_cutadapt",
+      option     => $bwa_clip_option,
+      source_ref => [ "identical", ".fastq\$" ],
+      fasta_file => $def->{bwa_fasta},
+      samonly    => 0,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     mirna_count_bwa_genome_cutadapt_topN => {
       class           => "MirnaCount",
       perform         => 0,
@@ -520,8 +537,10 @@ foreach my $def (@defs) {
     #performTask($config, "bowtie1_genome_cutadapt_topN_pm_unmatched" );
     #performTask( $config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" );
 
-    performTask( $config, "bwa_genome_cutadapt_topN" );
-    performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
+    #performTask( $config, "bwa_genome_cutadapt_topN" );
+    #performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
+    
+    performTask( $config, "bwa_genome_cutadapt_softclip_topN" );
   }
 }
 
