@@ -139,6 +139,7 @@ sub result {
     if ($sort_by_query) {
       push( @resultFiles, "${resultDir}/${sampleName}/${sampleName}.sortedname.bam" );
     }
+    print @resultFiles;
     $result->{$sampleName} = \@resultFiles;
   }
   return $result;
