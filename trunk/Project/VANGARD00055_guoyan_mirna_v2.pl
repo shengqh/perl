@@ -564,7 +564,7 @@ foreach my $def (@defs) {
     #performTask( $config, "bwa_genome_cutadapt_topN" );
     #performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
 
-    performTask( $config, "bwa_genome_cutadapt_softclip_topN" );
+    #performTask( $config, "bwa_genome_cutadapt_softclip_topN" );
   }
 }
 
