@@ -26,14 +26,9 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $index;
-  if ( $config->{$section}{sort_by_query} ) {
-    $index = 0;
-  }
-  else{
-    $option = $option . " --keep-fasta-order";
-    $index = 1;
-  }
+  $option = $option . " --keep-fasta-order";
+
+  my $sort_by_query = get_option_value( $config->{$section}{sort_by_query}, 0 );
 
   my $bowtie2_index = $config->{$section}{bowtie2_index} or die "define ${section}::bowtie2_index first";
   my %fqFiles = %{ get_raw_files( $config, $section ) };
@@ -63,6 +58,8 @@ sub perform {
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH get_run_command($sh_direct);
 
+  my $threadcount = get_pbs_thread( $config->{$section}{pbs} );
+
   for my $sampleName ( sort keys %fqFiles ) {
     my @sampleFiles = @{ $fqFiles{$sampleName} };
     my $samples = join( " ", @sampleFiles );
@@ -82,10 +79,10 @@ sub perform {
     elsif ($has_index_file) {
       $gtfstr = "--transcriptome-index=$transcript_gtf_index";
     }
-    
-    my $indexcmd = "";
-    if($index){
-      $indexcmd = "samtools index $tophat2file";
+
+    my $sortcmd = "";
+    if ($sort_by_query) {
+      $sortcmd = "samtools sort -n -f -@ $threadcount accepted_hits.bam ${sampleName}.sortedname.bam";
     }
 
     open( OUT, ">$pbsFile" ) or die $!;
@@ -105,7 +102,9 @@ fi
 
 tophat2 $option $rgline $gtfstr -o . $bowtie2_index $samples
 
-$indexcmd
+samtools index $tophat2file
+
+$sortcmd
 
 1;
 ";
@@ -130,12 +129,16 @@ sub result {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
+  my $sort_by_query = get_option_value( $config->{$section}{sort_by_query}, 0 );
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $finalFile   = $resultDir . "/" . $sampleName . "/accepted_hits.bam";
     my @resultFiles = ();
-    push( @resultFiles, $finalFile );
+    push( @resultFiles, "${resultDir}/${sampleName}/accepted_hits.bam" );
+
+    if ($sort_by_query) {
+      push( @resultFiles, "${resultDir}/${sampleName}/${sampleName}.sortedname.bam" );
+    }
     $result->{$sampleName} = \@resultFiles;
   }
   return $result;
