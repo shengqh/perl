@@ -128,7 +128,7 @@ sub result {
       push( @resultFiles, $curDir . $sampleName . ".shrimp" );
     }
 
-    $result->{$sampleName} = \@resultFiles;
+    $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }
