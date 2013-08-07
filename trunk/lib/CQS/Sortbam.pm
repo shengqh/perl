@@ -48,14 +48,17 @@ sub perform {
     open( OUT, ">$pbsFile" ) or die $!;
 
     my $sortcmd;
+    my $finalPrefix;
     my $finalFile;
     if ($sort_by_query) {
-      $finalFile = "${sampleName}.sortedname.bam";
-      $sortcmd   = "samtools sort $option -n -f -@ $threadcount $sampleFile $finalFile";
+      $finalPrefix = "${sampleName}.sortedname";
+      $finalFile   = "${finalPrefix}.bam";
+      $sortcmd     = "samtools sort $option -n -@ $threadcount $sampleFile $finalPrefix";
     }
     else {
-      $finalFile = "${sampleName}.sorted.bam";
-      $sortcmd   = "samtools sort $option -f -@ $threadcount $sampleFile $finalFile
+      $finalPrefix = "${sampleName}.sorted";
+      $finalFile   = "${finalPrefix}.bam";
+      $sortcmd     = "samtools sort $option -@ $threadcount $sampleFile $finalPrefix
 samtools index $finalFile";
     }
 
