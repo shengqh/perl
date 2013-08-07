@@ -78,7 +78,7 @@ echo finished=`date`
 }
 
 sub result {
-  my ( $self, $config, $section ) = @_;
+  my ( $self, $config, $section, $pattern ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
@@ -96,7 +96,7 @@ sub result {
       $name = change_extension( $name, "_fastqc" );
       push( @resultFiles, "${resultDir}/${sampleName}/${name}" );
     }
-    $result->{$sampleName} = \@resultFiles;
+    $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }

@@ -104,7 +104,7 @@ sub result {
     my @resultFiles = ();
     push( @resultFiles, $curDir . "/transcripts.gtf" );
 
-    $result->{$sampleName} = \@resultFiles;
+    $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }

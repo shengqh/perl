@@ -135,7 +135,7 @@ exit 1;
 }
 
 sub result {
-  my ( $self, $config, $section ) = @_;
+  my ( $self, $config, $section, $pattern ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
@@ -149,7 +149,7 @@ sub result {
     my $sortedFile  = change_extension( $sampleFileName, ".realigned.recal.rmdup_sorted.bam" );
     my @resultFiles = ();
     push( @resultFiles, "${resultDir}/${sampleName}/${sortedFile}" );
-    $result->{$sampleName} = \@resultFiles;
+    $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }

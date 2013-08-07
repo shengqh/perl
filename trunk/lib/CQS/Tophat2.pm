@@ -124,7 +124,7 @@ $sortcmd
 }
 
 sub result {
-  my ( $self, $config, $section ) = @_;
+  my ( $self, $config, $section, $pattern ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
@@ -139,8 +139,7 @@ sub result {
     if ($sort_by_query) {
       push( @resultFiles, "${resultDir}/${sampleName}/${sampleName}.sortedname.bam" );
     }
-    print @resultFiles;
-    $result->{$sampleName} = \@resultFiles;
+    $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
 }
