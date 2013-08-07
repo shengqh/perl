@@ -13,7 +13,7 @@ use CQS::CQSDebug;
 require Exporter;
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file parse_param_file get_raw_files get_raw_files2 get_run_command)] );
+our %EXPORT_TAGS = ( 'all' => [qw(get_parameter get_param_file parse_param_file get_raw_files get_raw_files2 get_run_command get_option_value)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -185,6 +185,16 @@ sub get_run_command {
   }
   else {
     return ("type -P qsub &>/dev/null && MYCMD=\"qsub\" || MYCMD=\"bash\" \n");
+  }
+}
+
+sub get_option_value{
+  my ($value, $defaultValue) = @_;
+  if(!defined $value){
+    return ($defaultValue);
+  }
+  else{
+    return ($value);
   }
 }
 
