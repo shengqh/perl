@@ -399,7 +399,7 @@ foreach my $def (@defs) {
     bowtie2_mirna_count_bowtie1_genome_cutadapt_topN => {
       class         => "Bowtie2",
       perform       => 1,
-      target_dir    => "${target_rat_dir}/topN_bowtie1_genome_cutadapt_count_bowtie2",
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_bowtie2",
       option        => $bowtie2_local_option,
       source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN", ".fastq\$" ],
       bowtie2_index => $def->{bowtie2_index},
