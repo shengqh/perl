@@ -50,6 +50,13 @@ my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
 my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
 
+my $bowtie2_option       = "-D 20 -R 3 -N 1 -L 8 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 20 -p 8";
+my $bowtie2_local_option = "$bowtie2_option --local";
+
+my $bowtie2_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
+my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
+my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
+
 my $mirnacount_option = "-s --bed_as_gtf";    #ignore score and consider bed as gtf.
 
 #shrimp2 gmapper set mirna mode
@@ -83,7 +90,7 @@ my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_
 
 my $bwa_option       = "-o 0 -l 8 -n 3 -t 8";
 my $bwa_hsammu_fasta = "/data/cqs/shengq1/reference/hg19mm9/bwa_0.7.4_index/hg19mm9.fa";
-my $bwa_clip_option       = "-o 2 -e 3 -l 8 -n 3 -t 8";
+my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $rat = {
   source => {
@@ -117,6 +124,7 @@ my $rat = {
   },
   coordinate    => $rno_gffs,
   bowtie1_index => $bowtie1_rat_index,
+  bowtie2_index => $bowtie2_rat_index,
   shrimp2_index => $shrimp2_rat_miRBase_index,
   target_dir    => $target_rat_dir,
   task_name     => $task_name . "_rat",
@@ -256,6 +264,7 @@ my $human = {
   },
   coordinate    => $hsa_gffs,
   bowtie1_index => $bowtie1_human_index,
+  bowtie2_index => $bowtie2_human_index,
   shrimp2_index => $shrimp2_human_miRBase_index,
   target_dir    => $target_human_dir,
   task_name     => $task_name . "_human",
@@ -275,10 +284,10 @@ my $mouse = {
   },
   coordinate    => $mmu_gffs,
   bowtie1_index => $bowtie1_mouse_index,
+  bowtie2_index => $bowtie2_mouse_index,
   shrimp2_index => $shrimp2_mouse_miRBase_index,
   target_dir    => $target_mouse_dir,
   task_name     => $task_name . "_mouse",
-  bwa_option    => $bwa_option,
   bwa_fasta     => $bwa_hsammu_fasta
 };
 
@@ -385,6 +394,21 @@ foreach my $def (@defs) {
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
         "mem"      => "40gb"
+      },
+    },
+    bowtie2_mirna_count_bowtie1_genome_cutadapt_topN => {
+      class         => "Bowtie2",
+      perform       => 1,
+      target_dir    => "${target_rat_dir}/topN_bowtie1_genome_cutadapt_count_bowtie2",
+      option        => $bowtie2_local_option,
+      source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN", ".fastq\$" ],
+      bowtie2_index => $def->{bowtie2_index},
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "24",
+        "mem"      => "20gb"
       },
     },
     shrimp2_miRBase_bowtie1_genome_cutadapt_topN => {
@@ -539,7 +563,7 @@ foreach my $def (@defs) {
 
     #performTask( $config, "bwa_genome_cutadapt_topN" );
     #performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
-    
+
     performTask( $config, "bwa_genome_cutadapt_softclip_topN" );
   }
 }
