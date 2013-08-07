@@ -9,6 +9,7 @@ use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::Task;
+use CQS::StringUtils;
 
 our @ISA = qw(CQS::Task);
 
