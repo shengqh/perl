@@ -9,7 +9,7 @@ use CQS::SystemUtils;
 use CQS::ClassFactory;
 
 my $task_name  = "VANGARD00125";
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${task_name}_jennifer_rnaseq_v2");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${task_name}_jennifer_rnaseq");
 
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
@@ -52,14 +52,13 @@ my $config = {
   },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "fastqfiles",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     bowtie2_index        => $bowtie2_index,
-    sort_by_query        => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -67,12 +66,26 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  sortbam => {
+    class         => "Sortbam",
+    perform       => 1,
+    target_dir    => "${target_dir}/sortname",
+    option        => "",
+    source_ref    => "fastqfiles",
+    sort_by_query => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   htseq => {
     class      => "HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
-    source_ref => [ "tophat2", "sortedname.bam" ],
+    source_ref => ["sortbam"],
     gff_file   => $transcript_gtf,
     sh_direct  => 1,
     pbs        => {
