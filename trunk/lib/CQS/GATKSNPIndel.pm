@@ -10,6 +10,7 @@ use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::Task;
 use CQS::NGSCommon;
+use CQS::StringUtils;
 
 our @ISA = qw(CQS::Task);
 
@@ -183,7 +184,7 @@ echo finished=`date`
 }
 
 sub result {
-  my ( $self, $config, $section ) = @_;
+  my ( $self, $config, $section, $pattern ) = @_;
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
   my $result = {};
 
@@ -195,7 +196,7 @@ sub result {
     my @resultFiles = ();
     push( @resultFiles, "${curDir}/${snpPass}" );
     push( @resultFiles, "${curDir}/${indelPass}" );
-    $result->{$groupName} = \@resultFiles;
+    $result->{$groupName} = filter_array(\@resultFiles, $pattern);
   }
   return $result;
 }
