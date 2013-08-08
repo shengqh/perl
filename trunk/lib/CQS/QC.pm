@@ -13,7 +13,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(fastqc_by_pbs)] );
+our %EXPORT_TAGS = ( 'all' => [qw(fastqc_by_pbs RNASeQC)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -22,55 +22,15 @@ our $VERSION = '0.01';
 use Cwd;
 
 sub fastqc_by_pbs {
-	my ( $config, $section ) = @_;
+  my ( $config, $section ) = @_;
+  my $obj = instantiate("FastQC");
+  $obj->perform( $config, $section );
+}
 
-	my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option ) = get_parameter( $config, $section );
-
-	my %rawFiles = %{ get_raw_files( $config, $section ) };
-
-	my $shfile = $pbsDir . "/${task_name}.submit";
-	open( SH, ">$shfile" ) or die "Cannot create $shfile";
-	print SH "type -P qsub &>/dev/null && export MYCMD=\"qsub\" || export MYCMD=\"bash\" \n";
-
-	for my $sampleName ( sort keys %rawFiles ) {
-		my @sampleFiles = @{ $rawFiles{$sampleName} };
-
-		my $pbsName = "${sampleName}_fq.pbs";
-		my $pbsFile = "${pbsDir}/$pbsName";
-
-		print SH "\$MYCMD ./$pbsName \n";
-
-		my $log = "${logDir}/${sampleName}_fq.log";
-
-		open( OUT, ">$pbsFile" ) or die $!;
-		print OUT $pbsDesc;
-		print OUT "#PBS -o $log\n";
-		print OUT "#PBS -j oe\n\n";
-  	print OUT "$path_file \n";
-		print OUT "echo fastqc=`date` \n";
-
-		my $sampleCount = scalar(@sampleFiles);
-		my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
-
-		print OUT "fastqc $option -t $sampleCount -o $curDir ";
-		for my $sampleFile (@sampleFiles) {
-			print OUT "$sampleFile ";
-		}
-		print OUT "\n";
-		print OUT "echo finished=`date` \n";
-		close OUT;
-
-		print "$pbsFile created \n";
-	}
-
-	#print SH "type -P qsub &>/dev/null || { cd $resultDir; qcimg2pdf.sh -o ${task_name}; }\n";
-	close(SH);
-	
-	if ( is_linux() ) {
-		chmod 0755, $shfile;
-	}
-	
-	print "!!!shell file $shfile created, you can run this shell file to submit all fastqc tasks.\n";
+sub RNASeQC {
+  my ( $config, $section ) = @_;
+  my $obj = instantiate("RNASeQC");
+  $obj->perform( $config, $section );
 }
 
 1;
