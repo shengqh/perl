@@ -11,7 +11,7 @@ use CQS::ClassFactory;
 
 my $vangard = "VANGARD00095";
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_jennifer_exome");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_jennifer_exome_backup2");
 
 my $bwa_dir = "${target_dir}/bwa_refine";
 
