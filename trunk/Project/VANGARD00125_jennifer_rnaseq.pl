@@ -51,8 +51,8 @@ my $config = {
   },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 1,
-    target_dir           => "${target_dir}/tophat2",
+    perform              => 0,
+    target_dir           => "${target_dir}/tophat2_old",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "fastqfiles",
     transcript_gtf       => $transcript_gtf,
@@ -65,12 +65,28 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  reorderbam => {
+    class         => "ReorderSam",
+    perform       => 0,
+    target_dir    => "${target_dir}/reordersam",
+    option        => "",
+    jar           => "/home/shengq1/local/bin/picard/ReorderSam.jar",
+    fasta_file    => $fasta_file,
+    source_ref    => "tophat2",
+    sort_by_query => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   rnaseqc => {
     class          => "RNASeQC",
     perform        => 1,
     target_dir     => "${target_dir}/rnaseqc",
     option         => "",
-    source_ref     => "tophat2",
+    source_ref     => "reorderbam",
     jar            => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
     fasta_file     => $fasta_file,
     transcript_gtf => $transcript_gtf,
