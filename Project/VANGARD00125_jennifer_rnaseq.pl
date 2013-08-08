@@ -14,14 +14,14 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${task_na
 my $transcript_gtf       = "/data/cqs/guoy1/reference/annotation2/hg19/Homo_sapiens.GRCh37.68.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_68";
 my $bowtie2_index        = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
-my $fasta_file        = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
+my $fasta_file           = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => {
-    path_file            => "/home/shengq1/local/bin/path.txt",
-    task_name            => $task_name,
+    path_file => "/home/shengq1/local/bin/path.txt",
+    task_name => $task_name,
   },
   fastqfiles => {
     "2059-JP-0" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-0_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-0_2.fastq.gz" ],
@@ -72,6 +72,7 @@ my $config = {
     option         => "",
     source_ref     => "tophat2",
     jar            => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
+    fasta_file     => $fasta_file,
     transcript_gtf => $transcript_gtf,
     pbs            => {
       "email"    => $email,
