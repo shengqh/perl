@@ -55,7 +55,7 @@ sub perform {
     die "transcript_gtf_index $transcript_gtf_index defined but not exists!";
   }
 
-  my $shfile = $pbsDir . "/${task_name}.submit";
+  my $shfile = $pbsDir . "/${task_name}_th2.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH get_run_command($sh_direct);
 
