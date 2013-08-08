@@ -83,7 +83,7 @@ sub perform {
 
     my $sortcmd = "";
     if ($sort_by_query) {
-      $sortcmd = "samtools sort -n -f -@ $threadcount accepted_hits.bam ${sampleName}.sortedname.bam";
+      $sortcmd = "samtools sort -n -@ $threadcount accepted_hits.bam ${sampleName}.sortedname";
     }
 
     open( OUT, ">$pbsFile" ) or die $!;
