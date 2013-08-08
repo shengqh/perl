@@ -67,7 +67,7 @@ my $config = {
   },
   reorderbam => {
     class         => "ReorderSam",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/reordersam",
     option        => "",
     jar           => "/home/shengq1/local/bin/picard/ReorderSam.jar",
