@@ -28,7 +28,7 @@ sub perform {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $faFile         = get_param_file( $config->{$section}{fasta_file},     "fasta_file",     1 );
-  my $jar            = get_param_file( $config->{$section}{muTect_jar},     "jar",            1 );
+  my $jar            = get_param_file( $config->{$section}{jar},            "jar",            1 );
   my $transcript_gtf = get_param_file( $config->{$section}{transcript_gtf}, "transcript_gtf", 1 );
 
   my $rawfiles = get_raw_files( $config, $section );
@@ -80,7 +80,7 @@ sub result {
   my @resultFiles = ();
   push( @resultFiles, $resultDir . "/metrics.tsv" );
   $result->{$task_name} = filter_array( \@resultFiles, $pattern );
-  
+
   return $result;
 }
 
