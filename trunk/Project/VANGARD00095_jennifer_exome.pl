@@ -11,7 +11,7 @@ use CQS::ClassFactory;
 
 my $vangard = "VANGARD00095";
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_jennifer_exome_backup2");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_jennifer_exome");
 
 my $bwa_dir = "${target_dir}/bwa_refine";
 
@@ -34,7 +34,7 @@ my $config = {
   groups => { "2562-JP" => [ "2562-JP-1", "2562-JP-2" ] },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -48,7 +48,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-q 15 -t 8",
     fasta_file => $fasta_file,
@@ -63,7 +63,7 @@ my $config = {
   },
   refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
@@ -82,7 +82,7 @@ my $config = {
   },
   muTect => {
     class       => "MuTect",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/muTect",
     option      => "-nt 8",
     source_ref  => "refine",
@@ -102,7 +102,7 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", "\.vcf\$" ],
