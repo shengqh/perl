@@ -66,9 +66,24 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  rnaseqc => {
+    class          => "RNASeQC",
+    perform        => 1,
+    target_dir     => "${target_dir}/rnaseqc",
+    option         => "",
+    source_ref     => "tophat2",
+    jar            => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
+    transcript_gtf => $transcript_gtf,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -82,7 +97,7 @@ my $config = {
   },
   htseq => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => ["sortbam"],
