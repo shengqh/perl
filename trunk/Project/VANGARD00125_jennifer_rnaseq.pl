@@ -67,7 +67,7 @@ my $config = {
   },
   reorderbam => {
     class         => "ReorderSam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/reordersam",
     option        => "",
     jar           => "/home/shengq1/local/bin/picard/ReorderSam.jar",
@@ -86,7 +86,7 @@ my $config = {
     perform        => 1,
     target_dir     => "${target_dir}/rnaseqc",
     option         => "",
-    source_ref     => "reorderbam",
+    source_ref     => "tophat2",
     jar            => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
     fasta_file     => $fasta_file,
     transcript_gtf => $transcript_gtf,
@@ -99,7 +99,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -113,7 +113,7 @@ my $config = {
   },
   htseq => {
     class      => "HTSeqCount",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => ["sortbam"],
