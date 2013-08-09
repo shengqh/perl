@@ -70,7 +70,7 @@ java -jar $jar I=${sampleFile} O=${finalFile} R=${faFile}
 
 samtools index $finalFile
 
-1;
+exit 1;
 ";
     close(OUT);
 

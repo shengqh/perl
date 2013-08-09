@@ -77,7 +77,7 @@ fi
 
 $sortcmd
 
-1;
+exit 1;
 ";
     close(OUT);
 
