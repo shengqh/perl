@@ -83,7 +83,7 @@ my $config = {
   },
   rnaseqc => {
     class          => "RNASeQC",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/rnaseqc",
     option         => "",
     source_ref     => "tophat2",
