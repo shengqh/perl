@@ -90,6 +90,7 @@ my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_
 
 my $bwa_option       = "-o 0 -l 8 -n 3 -t 8";
 my $bwa_hsammu_fasta = "/data/cqs/shengq1/reference/hg19mm9/bwa_0.7.4_index/hg19mm9.fa";
+my $hsammu_gffs = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/smrnapipeline/hsa_mmu_tableL.bed";
 my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $rat = {
@@ -288,7 +289,6 @@ my $mouse = {
   shrimp2_index => $shrimp2_mouse_miRBase_index,
   target_dir    => $target_mouse_dir,
   task_name     => $task_name . "_mouse",
-  bwa_fasta     => $bwa_hsammu_fasta
 };
 
 my @defs = ( $rat, $human, $mouse );
@@ -539,7 +539,7 @@ foreach my $def (@defs) {
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
-      gff_file        => $def->{coordinate},
+      gff_file        => $hsammu_gffs,
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
@@ -562,7 +562,7 @@ foreach my $def (@defs) {
     #performTask( $config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" );
 
     #performTask( $config, "bwa_genome_cutadapt_topN" );
-    #performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
+    performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
 
     #performTask( $config, "bwa_genome_cutadapt_softclip_topN" );
   }
