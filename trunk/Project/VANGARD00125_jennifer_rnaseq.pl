@@ -104,6 +104,7 @@ my $config = {
     option        => "",
     source_ref    => "tophat2",
     sort_by_query => 1,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
