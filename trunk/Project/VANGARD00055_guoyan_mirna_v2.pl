@@ -551,7 +551,7 @@ foreach my $def (@defs) {
     },
   };
 
-  performConfig($config);
+  #performConfig($config);
 
   if ( $def eq $mouse ) {
 
