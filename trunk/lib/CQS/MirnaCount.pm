@@ -90,6 +90,8 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
+echo MirnaCount=`date` 
+
 mono-sgen $cqsFile mirna_count $option --samtools $samtools -i $bamFile -g $gffFile -o $countFile $seqcountFile $fastqFile
 
 echo finished=`date`
