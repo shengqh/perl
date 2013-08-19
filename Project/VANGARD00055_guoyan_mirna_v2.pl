@@ -15,22 +15,29 @@ use CQS::Cutadapt;
 my $root;
 my $cqs_tools;
 my $hsa_gffs;
+my $hsa_trna_gffs;
 my $rno_gffs;
+my $rno_trna_gffs;
 my $mmu_gffs;
+my $mmu_trna_gffs;
 
 if ( is_linux() ) {
-  $root      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2";
-  $cqs_tools = "/home/shengq1/cqstools/CQS.Tools.exe";
-  $hsa_gffs  = "${root}/smrnapipeline/hsa_tableL.bed";
-  $rno_gffs  = "${root}/smrnapipeline/rno_tableL.bed";
-  $mmu_gffs  = "${root}/smrnapipeline/mmu_tableL.bed";
+  $root          = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2";
+  $cqs_tools     = "/home/shengq1/cqstools/CQS.Tools.exe";
+  $hsa_gffs      = "${root}/smrnapipeline/hsa_tableL.bed";
+  $hsa_trna_gffs = "${root}/smrnapipeline/hg19_tRNA12.bed";
+  $rno_gffs      = "${root}/smrnapipeline/rno_tableL.bed";
+  $rno_trna_gffs = "${root}/smrnapipeline/rn4_tRNA12.bed";
+  $mmu_gffs      = "${root}/smrnapipeline/mmu_tableL.bed";
+  $mmu_trna_gffs = "${root}/smrnapipeline/mm9_tRNA12.bed";
 }
 else {
-  $root      = "d:/temp";
-  $cqs_tools = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
-  $hsa_gffs  = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
-  $rno_gffs  = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
-  $mmu_gffs  = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/mmu.gff3";
+  $root          = "d:/temp";
+  $cqs_tools     = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
+  $hsa_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
+  $hsa_trna_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hg19_tRNA12.bed";
+  $rno_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
+  $mmu_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/mmu.gff3";
 }
 my $target_dir = create_directory_or_die($root);
 
@@ -90,7 +97,7 @@ my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_
 
 my $bwa_option       = "-o 0 -l 8 -n 3 -t 8";
 my $bwa_hsammu_fasta = "/data/cqs/shengq1/reference/hg19mm9/bwa_0.7.4_index/hg19mm9.fa";
-my $hsammu_gffs = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/smrnapipeline/hsa_mmu_tableL.bed";
+my $hsammu_gffs      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/smrnapipeline/hsa_mmu_tableL.bed";
 my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $rat = {
@@ -123,12 +130,13 @@ my $rat = {
     "2570-17" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-17_1.fastq.gz"],
     "2570-18" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-18_1.fastq.gz"],
   },
-  coordinate    => $rno_gffs,
-  bowtie1_index => $bowtie1_rat_index,
-  bowtie2_index => $bowtie2_rat_index,
-  shrimp2_index => $shrimp2_rat_miRBase_index,
-  target_dir    => $target_rat_dir,
-  task_name     => $task_name . "_rat",
+  coordinate      => $rno_gffs,
+  trna_coordinate => $rno_trna_gffs,
+  bowtie1_index   => $bowtie1_rat_index,
+  bowtie2_index   => $bowtie2_rat_index,
+  shrimp2_index   => $shrimp2_rat_miRBase_index,
+  target_dir      => $target_rat_dir,
+  task_name       => $task_name . "_rat",
 };
 my $human = {
   source => {
@@ -263,12 +271,13 @@ my $human = {
     "2572-KCV-1-29"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL002_CAACTA_L002_R1_001.fastq.gz"],
     "2572-KCV-1-30"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/CHL003_CACCGG_L002_R1_001.fastq.gz"],
   },
-  coordinate    => $hsa_gffs,
-  bowtie1_index => $bowtie1_human_index,
-  bowtie2_index => $bowtie2_human_index,
-  shrimp2_index => $shrimp2_human_miRBase_index,
-  target_dir    => $target_human_dir,
-  task_name     => $task_name . "_human",
+  coordinate      => $hsa_gffs,
+  trna_coordinate => $hsa_trna_gffs,
+  bowtie1_index   => $bowtie1_human_index,
+  bowtie2_index   => $bowtie2_human_index,
+  shrimp2_index   => $shrimp2_human_miRBase_index,
+  target_dir      => $target_human_dir,
+  task_name       => $task_name . "_human",
 };
 
 my $mouse = {
@@ -283,12 +292,13 @@ my $mouse = {
     "2570-KCV-01-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
     "2570-KCV-01-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
   },
-  coordinate    => $mmu_gffs,
-  bowtie1_index => $bowtie1_mouse_index,
-  bowtie2_index => $bowtie2_mouse_index,
-  shrimp2_index => $shrimp2_mouse_miRBase_index,
-  target_dir    => $target_mouse_dir,
-  task_name     => $task_name . "_mouse",
+  coordinate      => $mmu_gffs,
+  trna_coordinate => $mmu_trna_gffs,
+  bowtie1_index   => $bowtie1_mouse_index,
+  bowtie2_index   => $bowtie2_mouse_index,
+  shrimp2_index   => $shrimp2_mouse_miRBase_index,
+  target_dir      => $target_mouse_dir,
+  task_name       => $task_name . "_mouse",
 };
 
 my @defs = ( $rat, $human, $mouse );
@@ -396,9 +406,28 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    mirna_count_bowtie1_genome_cutadapt_topN_trna => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_trna",
+      option          => $mirnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqs_tools,
+      gff_file        => $def->{trna_coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     bowtie2_mirna_count_bowtie1_genome_cutadapt_topN => {
       class         => "Bowtie2",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_bowtie2",
       option        => $bowtie2_local_option,
       source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN", ".fastq\$" ],
@@ -551,7 +580,7 @@ foreach my $def (@defs) {
     },
   };
 
-  #performConfig($config);
+  performConfig($config);
 
   if ( $def eq $mouse ) {
 
@@ -562,7 +591,7 @@ foreach my $def (@defs) {
     #performTask( $config, "mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched" );
 
     #performTask( $config, "bwa_genome_cutadapt_topN" );
-    performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
+    #performTask( $config, "mirna_count_bwa_genome_cutadapt_topN" );
 
     #performTask( $config, "bwa_genome_cutadapt_softclip_topN" );
   }
