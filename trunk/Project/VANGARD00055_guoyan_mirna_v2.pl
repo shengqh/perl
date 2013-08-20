@@ -391,7 +391,7 @@ foreach my $def (@defs) {
       class           => "CQSPileup",
       perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_cqspileup",
-      option          => "",
+      option          => "--export_igv",
       source_ref      => "bowtie1_genome_cutadapt_topN",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
