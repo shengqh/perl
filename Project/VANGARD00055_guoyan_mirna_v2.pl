@@ -388,7 +388,7 @@ foreach my $def (@defs) {
       },
     },
     cqs_pileup_bowtie1_genome_cutadapt_topN => {
-      class           => "MirnaCount",
+      class           => "CQSPileup",
       perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_cqspileup",
       option          => "",
