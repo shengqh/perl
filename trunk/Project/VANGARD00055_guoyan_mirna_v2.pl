@@ -387,6 +387,24 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    cqs_pileup_bowtie1_genome_cutadapt_topN => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_cqspileup",
+      option          => "",
+      source_ref      => "bowtie1_genome_cutadapt_topN",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqs_tools,
+      gff_file        => $def->{coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     mirna_count_bowtie1_genome_cutadapt_topN => {
       class           => "MirnaCount",
       perform         => 0,
@@ -408,7 +426,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie1_genome_cutadapt_topN_trna => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_trna",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN",
