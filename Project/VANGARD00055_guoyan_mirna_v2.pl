@@ -407,7 +407,7 @@ foreach my $def (@defs) {
     },
     bowtie1_genome_cutadapt_topN_3mm_trim => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_trim",
       option        => $bowtie1_option_1mm_trim,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -417,6 +417,24 @@ foreach my $def (@defs) {
       pbs           => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    cqs_pileup_bowtie1_genome_cutadapt_topN_3mm_trim => {
+      class           => "CQSPileup",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_trim_cqspileup",
+      option          => "--export_igv",
+      source_ref      => "bowtie1_genome_cutadapt_topN_3mm_trim",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqs_tools,
+      gff_file        => $def->{coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
         "walltime" => "72",
         "mem"      => "40gb"
       },
