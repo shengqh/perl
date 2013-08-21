@@ -53,6 +53,7 @@ my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 my $bowtie1_option    = "-a -m 20 --best --strata -v 3 -l 12 -p 8";
 my $bowtie1_option_pm = "-a -m 20 --best --strata -v 0 -l 12 -p 8";
 my $bowtie1_option_1mm = "-a -m 20 --best --strata -v 1 -l 12 -p 8";
+my $bowtie1_option_1mm_trim = "-a -m 40 --best --strata -v 3 -l 12 -p 8 --trim5 2 --trim3 3";
 
 my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
@@ -390,9 +391,25 @@ foreach my $def (@defs) {
     },
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
+      source_ref    => [ "identical", ".fastq\$" ],
+      bowtie1_index => $def->{bowtie1_index},
+      samonly       => 0,
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    bowtie1_genome_cutadapt_topN_3mm_trim => {
+      class         => "Bowtie1",
+      perform       => 1,
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_trim",
+      option        => $bowtie1_option_1mm_trim,
       source_ref    => [ "identical", ".fastq\$" ],
       bowtie1_index => $def->{bowtie1_index},
       samonly       => 0,
