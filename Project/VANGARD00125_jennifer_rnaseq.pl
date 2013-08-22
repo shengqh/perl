@@ -127,13 +127,14 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  Datatable => {
+  datatable => {
     class         => "CQSDatatable",
     perform       => 1,
     target_dir    => "${target_dir}/datatable",
     option        => "",
     source_ref    => "htseqcount",
     name_map_file => "/data/cqs/shengq1/reference/hg19/hg19.gene.map",
+    cqs_tools     => "/home/shengq1/cqstools/CQS.Tools.exe",
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
