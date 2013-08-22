@@ -46,7 +46,7 @@ sub perform {
   }
   close(FL);
 
-  my $result = $task_name + ".count";
+  my $result = $task_name . ".count";
 
   my $shfile = $pbsDir . "/${task_name}_tb.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -66,7 +66,7 @@ sub result {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $result     = {};
-  my $resultFile = $task_name + ".count";
+  my $resultFile = $task_name . ".count";
   my $filelist   = $resultDir . "/${task_name}.filelist";
 
   my @resultFiles = ();
