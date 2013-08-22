@@ -17,7 +17,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => { task_name => "2404" },
-  files   => {
+  fastqfiles   => {
     "2404-NGD-001" => ["/autofs/blue_sequencer/Runs/projects/2404-NGD/2013-05-17/2404-NGD-1_1.fastq.gz"],
     "2404-NGD-009" => ["/autofs/blue_sequencer/Runs/projects/2404-NGD/2013-04-16/2404-NGD-9_1.fastq.gz"],
     "2404-NGD-010" => ["/autofs/blue_sequencer/Runs/projects/2404-NGD/2013-04-16/2404-NGD-10_1.fastq.gz"],
