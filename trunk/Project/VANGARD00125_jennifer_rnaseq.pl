@@ -99,7 +99,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -112,12 +112,12 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  htseq => {
+  htseqcount => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
-    source_ref => ["sortbam"],
+    source_ref => "sortbam",
     gff_file   => $transcript_gtf,
     sh_direct  => 1,
     pbs        => {
@@ -125,6 +125,21 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "40gb"
+    },
+  },
+  Datatable => {
+    class         => "CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/datatable",
+    option        => "",
+    source_ref    => "htseqcount",
+    name_map_file => "/data/cqs/shengq1/reference/hg19/hg19.gene.map",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
     },
   },
 };
