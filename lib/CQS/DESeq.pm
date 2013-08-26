@@ -90,7 +90,7 @@ pairCountData=cbind(countData[,colData\$condition==\"$g1\"],
 pairColData=data.frame( condition=factor(unlist(groups[colnames(pairCountData)]), 
                         levels=c(\"$g2\", \"$g1\")))
 
-pairColorDef=list(\"$g1\"=\"RED\", \"g2\"=\"BLUE\")
+pairColorDef=list(\"$g1\"=\"RED\", \"$g2\"=\"BLUE\")
 pairColors<-unlist(pairColorDef[pairColData\$condition])
 
 dds=DESeqDataSetFromMatrix(countData = pairCountData,
