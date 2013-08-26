@@ -147,17 +147,13 @@ sub result {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $pairs = get_raw_files( $config, $section, "pairs" );
+  my $pairs = get_raw_files( $config, $section);
 
   my $result = {};
   for my $pairName ( sort keys %{$pairs} ) {
-    my $curDir      = $resultDir . "/$pairName";
     my @resultFiles = ();
-    push( @resultFiles, $curDir . "/gene_exp.diff" );
-    push( @resultFiles, $curDir . "/genes.read_group_tracking" );
-    push( @resultFiles, $curDir . "/splicing.diff" );
-    push( @resultFiles, $resultDir . "/${task_name}_group_sample.map" );
-
+    push( @resultFiles, $resultDir . "/${pairName}.csv" );
+    push( @resultFiles, $resultDir . "/${pairName}.png" );
     $result->{$pairName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
