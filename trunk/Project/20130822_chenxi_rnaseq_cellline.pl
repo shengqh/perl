@@ -236,7 +236,7 @@ my $config = {
   },
   datatable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/datatable",
     option        => "-p ENSG",
     source_ref    => "htseqcount",
