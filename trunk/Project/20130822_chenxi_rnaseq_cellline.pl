@@ -236,13 +236,13 @@ my $config = {
   },
   datatable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/datatable",
     option        => "-p ENSG",
     source_ref    => "htseqcount",
     name_map_file => "/data/cqs/shengq1/reference/hg19/hg19.gene.map",
     cqs_tools     => "/home/shengq1/cqstools/CQS.Tools.exe",
-    sh_direct     => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -255,8 +255,8 @@ my $config = {
     perform        => 1,
     target_dir     => "${target_dir}/deseq",
     option         => "",
+    source_ref     => "pairs",
     groups_ref     => "groups",
-    pairs_ref      => "pairs",
     count_file_ref => "datatable",
     sh_direct      => 1,
     pbs            => {
