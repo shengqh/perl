@@ -78,8 +78,8 @@ colData=data.frame(condition=condition)
       die "Comparison in pair $pairName should contains and only contains two groups!";
     }
     
-    my $g1 = $groupNames[1];
-    my $g2 = $groupNames[2];
+    my $g1 = $groupNames[0];
+    my $g2 = $groupNames[1];
     
     print RF "
 #$pairName
