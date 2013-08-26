@@ -57,14 +57,16 @@ my $bowtie1_option_3mm_trim = "-a -m 40 --best --strata -v 3 -l 12 -p 8 --trim5 
 
 my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
-my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
+#my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
+my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie_index/mm10";
 
 my $bowtie2_option       = "-D 20 -R 3 -N 1 -L 8 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 20 -p 8";
 my $bowtie2_local_option = "$bowtie2_option --local";
 
 my $bowtie2_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
 my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
-my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
+#my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
+my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
 my $mirnacount_option = "-s --bed_as_gtf";    #ignore score and consider bed as gtf.
 
@@ -303,9 +305,9 @@ my $mouse = {
   task_name       => $task_name . "_mouse",
 };
 
-my @defs = ( $rat, $human, $mouse );
+#my @defs = ( $rat, $human, $mouse );
 
-#my @defs = ($mouse);
+my @defs = ($mouse);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
