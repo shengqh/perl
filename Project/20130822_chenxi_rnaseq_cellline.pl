@@ -16,8 +16,8 @@ my $fasta_file    = "/data/cqs/guoy1/reference/hg19/hg19_chr.fa";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
-  general => { task_name => "2404" },
-  fastqfiles   => {
+  general    => { task_name => "2404" },
+  fastqfiles => {
     "2404-NGD-001" => ["/autofs/blue_sequencer/Runs/projects/2404-NGD/2013-05-17/2404-NGD-1_1.fastq.gz"],
     "2404-NGD-009" => ["/autofs/blue_sequencer/Runs/projects/2404-NGD/2013-04-16/2404-NGD-9_1.fastq.gz"],
     "2404-NGD-010" => ["/autofs/blue_sequencer/Runs/projects/2404-NGD/2013-04-16/2404-NGD-10_1.fastq.gz"],
@@ -146,6 +146,7 @@ my $config = {
     "HT55_Plastic"             => [ "2404-NGD-064", "2404-NGD-066", "2404-NGD-101" ],
   },
   pairs => {
+
     #plastic vs tumor
     "HCT116_Plastic_vs_HCT116_Rectal"                     => [ "HCT116_Plastic",           "HCT116_Rectal" ],
     "HCT116_Kras_G13D_Plastic_vs_HCT116_Kras_G13D_Rectal" => [ "HCT116_Kras_G13D_Plastic", "HCT116_Kras_G13D_Rectal" ],
@@ -218,12 +219,12 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  htseq => {
+  htseqcount => {
     class      => "HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
-    source_ref => ["sortbam"],
+    source_ref => "sortbam",
     gff_file   => $transcript_gtf,
     sh_direct  => 0,
     pbs        => {
@@ -231,6 +232,22 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "40gb"
+    },
+  },
+  datatable => {
+    class         => "CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/datatable",
+    option        => "-p ENSG",
+    source_ref    => "htseqcount",
+    name_map_file => "/data/cqs/shengq1/reference/hg19/hg19.gene.map",
+    cqs_tools     => "/home/shengq1/cqstools/CQS.Tools.exe",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
     },
   },
 };
