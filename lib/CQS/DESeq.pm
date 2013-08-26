@@ -66,7 +66,7 @@ groups=list(
   }
   print RF ")
 
-condition=factor(unlist(groups[colnames(countTable)]))
+condition=factor(unlist(groups[colnames(countData)]))
 
 colData=data.frame(condition=condition)
 ";
