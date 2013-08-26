@@ -242,8 +242,24 @@ my $config = {
     source_ref    => "htseqcount",
     name_map_file => "/data/cqs/shengq1/reference/hg19/hg19.gene.map",
     cqs_tools     => "/home/shengq1/cqstools/CQS.Tools.exe",
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  deseq => {
+    class          => "DESeq",
+    perform        => 1,
+    target_dir     => "${target_dir}/deseq",
+    option         => "",
+    groups_ref     => "groups",
+    pairs_ref      => "pairs",
+    count_file_ref => "datatable",
+    sh_direct      => 1,
+    pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
