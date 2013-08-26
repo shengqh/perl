@@ -120,7 +120,7 @@ if((ncol(c1) > 0) && (ncol(c2) > 0)){
 
   tbb<-res[order(res\$padj),]
 
-  write.csv(as.data.frame(tbb),\"${pairName}.csv\"))
+  write.csv(as.data.frame(tbb),\"${pairName}.csv\")
 
   select<- (!is.na(res\$padj)) & (res\$padj<0.05)
 
