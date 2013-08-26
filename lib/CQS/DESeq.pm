@@ -35,16 +35,20 @@ sub perform {
   my $rfile = $resultDir . "/${task_name}.r";
   open( RF, ">$rfile" ) or die "Cannot create $rfile";
   print RF "
-library(\"DESeq\")
+library(\"DESeq2\")
+library(\"heatmap.plus\")
+
+hmcols <- colorRampPalette(c(\"green\", \"black\", \"red\"))(256)
 
 setwd(\"$resultDir\")  
   
 data<-read.table(\"$countfile\",row.names=1, header=T, check.names=F)
-if(is.numeric(data[1,1])){
-  countTable<-data
-}
-else{
-  countTable<-data[,c(2:ncol(data))]
+
+hasname <- (! is.numeric(data[1,1]))
+if(hasname){
+  countData<-data[,c(2:ncol(data))]
+}else{
+  countData<-data
 }
 
 groups=list(
@@ -64,15 +68,7 @@ groups=list(
 
 condition=factor(unlist(groups[colnames(countTable)]))
 
-cds = newCountDataSet(countTable, condition)
-cds = estimateSizeFactors(cds)
-cds = estimateDispersions(cds)
-
-rs=rowSums(counts(cds))
-theta=0.4
-use=(rs > quantile(rs, probs=theta))
-cdsFilt = cds[use,]
-
+colData=data.frame(condition=condition)
 ";
 
   for my $pairName ( sort keys %{$pairs} ) {
@@ -82,10 +78,54 @@ cdsFilt = cds[use,]
       die "Comparison in pair $pairName should contains and only contains two groups!";
     }
     
-    print RF "tb=nbinomTest(cdsFilt, \"" . $groupNames[0], "\", \"", $groupNames[1], "\")
-tbb<-tb[order(tb\$padj),]
-write.csv(tbb, \"${pairName}.csv\"))
+    my $g1 = $groupNames[1];
+    my $g2 = $groupNames[2];
+    
+    print RF "
+#$pairName
+    
+pairCountData=cbind(countData[,colData\$condition==\"$g1\"], 
+                    countData[,colData\$condition==\"$g2\"])
+                    
+pairColData=data.frame( condition=factor(unlist(groups[colnames(pairCountData)]), 
+                        levels=c(\"$g2\", \"$g1\")))
 
+pairColorDef=list(\"$g1\"=\"RED\", \"g2\"=\"BLUE\")
+pairColors<-unlist(pairColorDef[pairColData\$condition])
+
+dds=DESeqDataSetFromMatrix(countData = pairCountData,
+                           colData = pairColData,
+                           design = ~ condition)
+
+dds <- estimateSizeFactors(dds)
+dds <- estimateDispersions(dds)
+dds <- nbinomWaldTest(dds, cooksCutoff=FALSE)
+
+res<-results(dds)
+
+if(hasname){
+  res\$name<-data[,1]
+  res<-res[,c(ncol(res), 1:(ncol(res)-1))]
+}
+
+tbb<-res[order(res\$padj),]
+
+write.csv(as.data.frame(tbb),\"${pairName}.csv\"))
+
+select<- (!is.na(res\$padj)) & (res\$padj<0.05)
+
+vsd<-varianceStabilizingTransformation(dds,blind=TRUE)
+vsdmatrix<-as.matrix(assay(vsd))
+vsdselect<-vsdmatrix[select,]
+
+png(filename=\"${pairName}.png\", width=4000, height=3000, res=300)
+
+clab<-matrix(c(rep(\"white\", ncol(vsdselect)), pairColors), ncol=2, byrow=FALSE)
+colnames(clab)<-c(\"\", \"Group\")
+par(mar=c(12, 10, 10, 10))
+heatmap.plus(vsdselect, col = hmcols, ColSideColors = clab, margins=c(10,15))
+
+dev.off()
 ";
   }
    print "!!!R file $rfile created, you can run this R file to do calculation.\n";
