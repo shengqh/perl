@@ -84,7 +84,7 @@ cdsFilt = cds[use,]
     
     print RF "tb=nbinomTest(cdsFilt, \"" . $groupNames[0], "\", \"", $groupNames[1], "\")
 tbb<-tb[order(tb\$padj),]
-write.csv(tbb, paste0(\"$pairName\", \".csv\"))
+write.csv(tbb, \"${pairName}.csv\"))
 
 ";
   }
