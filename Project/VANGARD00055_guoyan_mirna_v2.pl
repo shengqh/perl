@@ -24,11 +24,11 @@ my $mmu_trna_gffs;
 if ( is_linux() ) {
   $root          = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2";
   $cqs_tools     = "/home/shengq1/cqstools/CQS.Tools.exe";
-  $hsa_gffs      = "${root}/smrnapipeline/hsa_tableL.bed";
+  $hsa_gffs      = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
   $hsa_trna_gffs = "${root}/smrnapipeline/hg19_tRNA12.bed";
-  $rno_gffs      = "${root}/smrnapipeline/rno_tableL.bed";
+  $rno_gffs      = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
   $rno_trna_gffs = "${root}/smrnapipeline/rn4_tRNA12.bed";
-  $mmu_gffs      = "${root}/smrnapipeline/mmu_tableL.bed";
+  $mmu_gffs      = "/data/cqs/shengq1/reference/miRBase20/mmu.gff3";
   $mmu_trna_gffs = "${root}/smrnapipeline/mm9_tRNA12.bed";
 }
 else {
@@ -71,32 +71,33 @@ my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
 my $mirnacount_option = "-s --bed_as_gtf";    #ignore score and consider bed as gtf.
+my $fasta_file        = ""
 
-#shrimp2 gmapper set mirna mode
-#static int
-#set_mode_from_string(char const * s) {
-#  if (!strcmp(s, "mirna")) {
-#    mode_mirna = true;
-#
-#    //load_default_mirna_seeds();
-#
-#    Hflag = true;
-#    gapless_sw = true;
-#    anchor_width = 0;
-#    a_gap_open_score = -255;
-#    b_gap_open_score = -255;
-#    hash_filter_calls = false;
-#    match_mode = 1;
-#    window_len = 100.0;
-#    Gflag = false;
-#    compute_mapping_qualities = false;
-#
-#    return 1;
-#  } else {
-#    return 0;
-#  }
-#}
-my $shrimp2_option              = "-Q -N 8 -o 1 --qv-offset 33";
+  #shrimp2 gmapper set mirna mode
+  #static int
+  #set_mode_from_string(char const * s) {
+  #  if (!strcmp(s, "mirna")) {
+  #    mode_mirna = true;
+  #
+  #    //load_default_mirna_seeds();
+  #
+  #    Hflag = true;
+  #    gapless_sw = true;
+  #    anchor_width = 0;
+  #    a_gap_open_score = -255;
+  #    b_gap_open_score = -255;
+  #    hash_filter_calls = false;
+  #    match_mode = 1;
+  #    window_len = 100.0;
+  #    Gflag = false;
+  #    compute_mapping_qualities = false;
+  #
+  #    return 1;
+  #  } else {
+  #    return 0;
+  #  }
+  #}
+  my $shrimp2_option            = "-Q -N 8 -o 1 --qv-offset 33";
 my $shrimp2_rat_miRBase_index   = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/rno.mature.dna-ls";
 my $shrimp2_human_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/hsa.mature.dna-ls";
 my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/mmu.mature.dna-ls";
@@ -501,6 +502,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
       gff_file        => $def->{coordinate},
+      fasta_file      => $fasta_file,
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
