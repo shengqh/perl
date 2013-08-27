@@ -33,7 +33,7 @@ sub perform {
   my $fastaFile  = get_param_file( $config->{$section}{fasta_file},  "fasta_file",  0 );
   
   if(defined $fastaFile){
-    $option = $option + " -f $fastaFile";    
+    $option = $option . " -f $fastaFile";    
   }
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
