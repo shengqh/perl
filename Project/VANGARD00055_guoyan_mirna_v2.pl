@@ -415,7 +415,7 @@ foreach my $def (@defs) {
     general  => { "task_name" => $def->{task_name}, },
     cutadapt => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10",
       source     => $def->{source},
@@ -431,7 +431,7 @@ foreach my $def (@defs) {
     },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
@@ -446,7 +446,7 @@ foreach my $def (@defs) {
     },
     cutadapt_len => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt_len",
       option     => "-O 10 -m 12 -M 49",
       source     => $def->{source},
@@ -462,7 +462,7 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/identical",
       option     => "",
       source_ref => "cutadapt_len",
@@ -478,7 +478,7 @@ foreach my $def (@defs) {
     },
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -494,7 +494,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie1_genome_cutadapt_topN_1mm => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_miRNAcount",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -513,11 +513,11 @@ foreach my $def (@defs) {
       },
     },
     tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
-      class           => "MirnaCount",
-      perform         => 0,
+      class           => "CQSTrnaCount",
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_tRNAcount",
       option          => $mirnacount_option,
-      source_ref      => "bowtie1_genome_cutadapt_topN",
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqs_tools,
@@ -533,7 +533,7 @@ foreach my $def (@defs) {
     },
     cqs_pileup_bowtie1_genome_cutadapt_topN_1mm => {
       class        => "CQSPileup",
-      perform      => 1,
+      perform      => 0,
       target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup",
       option       => "--export_igv",
       source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
