@@ -41,7 +41,7 @@ foreach my $db ( sort keys %{$species} ) {
   while (<DATA>) {
     if ( $_ =~ /^chr/ ) {
       print "$_";
-      my @parts  = split( $_, '\t' );
+      my @parts  = split(/\s+/,  $_);
       my $start  = $parts[3];
       my $end    = $parts[4];
       my $strand = '+';
