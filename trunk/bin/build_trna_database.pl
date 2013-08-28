@@ -7,6 +7,7 @@ use LWP::Simple;
 use File::Basename;
 
 use CQS::SystemUtils;
+
 sub run_command {
   my $command = shift;
   print "$command \n";
@@ -15,9 +16,8 @@ sub run_command {
 
 if ( is_linux() ) {
   chdir("/data/cqs/shengq1/reference/trna");
-  run_command("wget http://gtrnadb.ucsc.edu/download/tRNAs/GtRNAdb-all-tRNAs.fa.gz; gunzip -f GtRNAdb-all-tRNAs.fa.gz ");
 }
-else{
+else {
   chdir("e:/test");
 }
 
@@ -29,22 +29,29 @@ my $species = {
 
 my $files = {};
 foreach my $db ( sort keys %{$species} ) {
-  my $dbFile = "${db}_tRNA.bed";
-  my $url   = $species->{$db};
+  my $dbFile   = "${db}_tRNA.bed";
+  my $url      = $species->{$db};
   my $filename = basename($url);
-  
+
   run_command("wget $url ");
-  
-  open(DATA, "<${filename}");
-   
-#  open(DB, ">$dbFile");
+
+  open( DATA, "<${filename}" );
+
+  #  open(DB, ">$dbFile");
   while (<DATA>) {
-    if ($_ =~ /^chr/) {
+    if ( $_ =~ /^chr/ ) {
       print "$_";
-      if ($_ =~ /(\S+(chr\S+)\.\S+)\s+\((\d+)-(\d+)/){
-        print $1, "\t", $2, "\t", $3, "\t", $4, "\n";
+      my @parts  = split( $_, '\t' );
+      my $start  = $parts[3];
+      my $end    = $parts[4];
+      my $strand = '+';
+      if ( $start > $end ) {
+        $strand = '-';
+        $start  = $parts[4];
+        $end    = $parts[3];
       }
-    };
+      print $parts[1], "\t", $start, "\t", $end, "\t", $parts[1], ".tRNA", $parts[2], "-", $parts[5], $parts[6], "\t1000\t", $strand, "\n";
+    }
   }
   close(DATA);
 }
