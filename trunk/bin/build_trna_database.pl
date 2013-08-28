@@ -52,6 +52,7 @@ foreach my $db ( sort keys %{$species} ) {
         $start  = $parts[3];
         $end    = $parts[2];
       }
+      $start = $start -1;
       print DB $parts[0], "\t", $start, "\t", $end, "\t", $parts[0], ".tRNA", $parts[1], "-", $parts[4], $parts[5], "\t1000\t", $strand, "\n";
     }
   }
