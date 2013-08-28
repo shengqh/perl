@@ -33,7 +33,9 @@ foreach my $db ( sort keys %{$species} ) {
   my $url      = $species->{$db};
   my $filename = basename($url);
 
-  run_command("wget $url ");
+  if(! -e $filename){
+    run_command("wget $url ");
+  }
 
   open( DATA, "<${filename}" );
 
@@ -42,15 +44,15 @@ foreach my $db ( sort keys %{$species} ) {
     if ( $_ =~ /^chr/ ) {
       print "$_";
       my @parts  = split(/\s+/,  $_);
-      my $start  = $parts[3];
-      my $end    = $parts[4];
+      my $start  = $parts[2];
+      my $end    = $parts[3];
       my $strand = '+';
       if ( $start > $end ) {
         $strand = '-';
-        $start  = $parts[4];
-        $end    = $parts[3];
+        $start  = $parts[3];
+        $end    = $parts[2];
       }
-      print $parts[1], "\t", $start, "\t", $end, "\t", $parts[1], ".tRNA", $parts[2], "-", $parts[5], $parts[6], "\t1000\t", $strand, "\n";
+      print $parts[0], "\t", $start, "\t", $end, "\t", $parts[0], ".tRNA", $parts[1], "-", $parts[4], $parts[5], "\t1000\t", $strand, "\n";
     }
   }
   close(DATA);
