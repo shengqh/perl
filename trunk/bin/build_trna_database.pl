@@ -39,7 +39,7 @@ foreach my $db ( sort keys %{$species} ) {
 
   open( DATA, "<${filename}" );
 
-  #  open(DB, ">$dbFile");
+  open(DB, ">$dbFile");
   while (<DATA>) {
     if ( $_ =~ /^chr/ ) {
       print "$_";
@@ -52,10 +52,11 @@ foreach my $db ( sort keys %{$species} ) {
         $start  = $parts[3];
         $end    = $parts[2];
       }
-      print $parts[0], "\t", $start, "\t", $end, "\t", $parts[0], ".tRNA", $parts[1], "-", $parts[4], $parts[5], "\t1000\t", $strand, "\n";
+      print DB $parts[0], "\t", $start, "\t", $end, "\t", $parts[0], ".tRNA", $parts[1], "-", $parts[4], $parts[5], "\t1000\t", $strand, "\n";
     }
   }
   close(DATA);
+  close(DB);
 }
 
 1;
