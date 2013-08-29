@@ -59,7 +59,7 @@ my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index/hg19";
 
 #my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
-my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm10/mm10";
+my $bowtie1_mouse_index = "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10";
 
 my $bowtie2_option       = "-D 100 -R 3 -N 1 -L 8 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 20 -p 8";
 my $bowtie2_local_option = "$bowtie2_option --local";
