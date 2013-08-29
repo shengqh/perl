@@ -5,30 +5,30 @@ use warnings;
 use CQS::ClassFactory;
 use CQS::FileUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/2013828_chenxi_rnaseq_smad4");
+my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/2013828_chenxi_rnaseq_smad4");
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/mm10/Mus_musculus.GRCm38.68.gtf";
-my $smad_gff = "/data/cqs/shengq1/reference/mm10/smad4/smad4.gff";
-my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $smad_gff       = "/data/cqs/shengq1/reference/mm10/smad4/smad4.gff";
+my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general    => { task_name => "smad4" },
   fastqfiles => {
-  "2288-RDB-54" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-54_1.fastq.gz"],
-  "2288-RDB-55" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-55_1.fastq.gz"],
-  "2288-RDB-56" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-56_1.fastq.gz"],
-  "2288-RDB-57" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-57_1.fastq.gz"],
-  "2288-RDB-58" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-58_1.fastq.gz"],
-  "2288-RDB-59" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-59_1.fastq.gz"],
-  "2288-RDB-60" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-60_1.fastq.gz"],
-  "2288-RDB-61" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-61_1.fastq.gz"],
+    "2288-RDB-54" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-54_1.fastq.gz"],
+    "2288-RDB-55" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-55_1.fastq.gz"],
+    "2288-RDB-56" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-56_1.fastq.gz"],
+    "2288-RDB-57" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-57_1.fastq.gz"],
+    "2288-RDB-58" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-58_1.fastq.gz"],
+    "2288-RDB-59" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-59_1.fastq.gz"],
+    "2288-RDB-60" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-60_1.fastq.gz"],
+    "2288-RDB-61" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-61_1.fastq.gz"],
   },
   groups => {
     "WT" => [ "2288-RDB-54", "2288-RDB-58", "2288-RDB-59", "2288-RDB-61" ],
-    "KO" => [ "2288-RDB-55", "2288-RDB-56", "2288-RDB-57" , "2288-RDB-60"]
+    "KO" => [ "2288-RDB-55", "2288-RDB-56", "2288-RDB-57", "2288-RDB-60" ]
   },
-  pairs  => { "KO_vs_WT" => [ "WT", "KO" ], },
+  pairs  => { "KO_vs_WT" => [ "WT", "KO" ] },
   fastqc => {
     class      => "FastQC",
     perform    => 1,
@@ -88,7 +88,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  datatable => {
+  genetable => {
     class         => "CQSDatatable",
     perform       => 1,
     target_dir    => "${target_dir}/genetable",
@@ -98,6 +98,22 @@ my $config = {
     cqs_tools     => $cqstools,
     sh_direct     => 1,
     pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  deseq2 => {
+    class          => "DESeq2",
+    perform        => 1,
+    target_dir     => "${target_dir}/deseq2",
+    option         => "",
+    source_ref     => "pairs",
+    groups_ref     => "groups",
+    countfile_ref => "genetable",
+    sh_direct      => 1,
+    pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
@@ -120,15 +136,15 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  datatable => {
-    class         => "CQSDatatable",
-    perform       => 1,
-    target_dir    => "${target_dir}/exontable",
-    option        => "-p ENS",
-    source_ref    => "dexseqcount",
-    cqs_tools     => $cqstools,
-    sh_direct     => 1,
-    pbs           => {
+  exontable => {
+    class      => "CQSDatatable",
+    perform    => 1,
+    target_dir => "${target_dir}/exontable",
+    option     => "-p ENS",
+    source_ref => "dexseqcount",
+    cqs_tools  => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
