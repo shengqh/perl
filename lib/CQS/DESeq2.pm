@@ -140,8 +140,8 @@ for(pairname in pairnames){
   par(mar=c(12, 10, 10, 10))
   heatmap.plus(vsdselect, col = hmcols, ColSideColors = clab, margins=c(10,15))
   
-  grid.text(g1name, x = unit(0.05, \"npc\"), y = unit(0.85, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"RED\"))
-  grid.text(g2name, x = unit(0.05, \"npc\"), y = unit(0.80, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"BLUE\"))
+  grid.text(g1name, x = unit(0.02, \"npc\"), y = unit(0.90, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"RED\"))
+  grid.text(g2name, x = unit(0.02, \"npc\"), y = unit(0.85, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"BLUE\"))
   
   dev.off()
 }
