@@ -33,7 +33,7 @@ sub performTask {
 
 sub performConfig {
   my ( $config, $pattern, $force ) = @_;
-  foreach my $section ( sort keys %{$config} ) {
+  foreach my $section ( keys %{$config} ) {
     if ( !defined $pattern || $section =~ m/$pattern/ ) {
       my $classname = $config->{$section}{class};
       if ( defined $classname ) {
