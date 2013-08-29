@@ -250,16 +250,16 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  deseq => {
-    class          => "DESeq",
-    perform        => 1,
-    target_dir     => "${target_dir}/deseq",
-    option         => "",
-    source_ref     => "pairs",
-    groups_ref     => "groups",
+  deseq2 => {
+    class         => "DESeq2",
+    perform       => 1,
+    target_dir    => "${target_dir}/deseq2",
+    option        => "",
+    source_ref    => "pairs",
+    groups_ref    => "groups",
     countfile_ref => "datatable",
-    sh_direct      => 1,
-    pbs            => {
+    sh_direct     => 1,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
