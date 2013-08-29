@@ -35,7 +35,7 @@ sub perform {
   my %tpgroups = ();
   for my $groupName ( sort keys %{$groups} ) {
     my @samples = @{ $groups->{$groupName} };
-    $tpgroups{$groupName} = "\"" . join( "\"",\"", @samples ) . "\"";
+    $tpgroups{$groupName} = "\"" . join( "\",\"", @samples ) . "\"";
   }
 
   my $rfile = $resultDir . "/${task_name}.r";
