@@ -5,7 +5,7 @@ use warnings;
 use CQS::ClassFactory;
 use CQS::FileUtils;
 
-my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/2013828_chenxi_rnaseq_smad4");
+my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20130828_chenxi_rnaseq_smad4");
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/mm10/Mus_musculus.GRCm38.68.gtf";
 my $smad_gff       = "/data/cqs/shengq1/reference/mm10/smad4/smad4.gff";
 my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
