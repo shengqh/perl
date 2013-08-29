@@ -94,13 +94,13 @@ for(pairname in pairnames){
   c2=countData[,colnames(countData) %in% g2]
   
   if(ncol(c1) != length(g1)){
-    warning(paste0(\"There are only \", ncol(c1), \" samples in group \", g1name, \" but \", length(g1), \" required!\");
-    next;
+    warning(paste0(\"There are only \", ncol(c1), \" samples in group \", g1name, \" but \", length(g1), \" required!\"))
+    next
   }
   
   if(ncol(c2) != length(g2)){
-    warning(paste0(\"There are only \", ncol(c2), \" samples in group \", g2name, \" but \", length(g2), \" required!\");
-    next;
+    warning(paste0(\"There are only \", ncol(c2), \" samples in group \", g2name, \" but \", length(g2), \" required!\"))
+    next
   }
   
   pairCountData=cbind(c1, c2)
