@@ -31,7 +31,7 @@ sub perform {
   my $mapFile = get_param_file( $config->{$section}{name_map_file}, "name_map_file", 0 );
 
   my $mapoption = "";
-  if ( -e $mapFile ) {
+  if ( (defined $mapFile) & (-e $mapFile) ) {
     $mapoption = "-m $mapFile";
   }
 
