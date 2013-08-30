@@ -535,7 +535,7 @@ foreach my $def (@defs) {
       class      => "CQSDatatable",
       perform    => 1,
       target_dir => "${target_dir}/genetable",
-      option     => "-p ENS -i 1 -v 2 -o " . $def->{task_name} . "_trna.count",
+      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_trna.count",
       source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
       cqs_tools  => $cqstools,
       sh_direct  => 1,
