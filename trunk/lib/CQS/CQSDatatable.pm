@@ -22,6 +22,19 @@ sub new {
   return $self;
 }
 
+sub get_result{
+  my ( $task_name, $option ) = @_;
+
+  my $result;
+  if($option =~ /-o\s+(\S+)/){
+    $result = $1;
+  }
+  else{
+    $result = $task_name . ".count";
+  }
+  return $result;
+}
+
 sub perform {
   my ( $self, $config, $section ) = @_;
 
@@ -46,7 +59,7 @@ sub perform {
   }
   close(FL);
 
-  my $result = $task_name . ".count";
+  my $result = get_result($task_name, $option);
 
   my $shfile = $pbsDir . "/${task_name}_tb.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -66,7 +79,7 @@ sub result {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $result     = {};
-  my $resultFile = $resultDir . "/${task_name}.count";
+  my $resultFile = $resultDir . "/" . get_result($task_name, $option);
   my $filelist   = $resultDir . "/${task_name}.filelist";
 
   my @resultFiles = ();
