@@ -32,11 +32,11 @@ if ( is_linux() ) {
   $mmu_trna_gffs = "/data/cqs/shengq1/reference/trna/mm10_tRNA.bed";
 }
 else {
-  $root          = "d:/temp";
-  $cqstools      = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
-  $hsa_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
-  $rno_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
-  $mmu_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/mmu.gff3";
+  $root     = "d:/temp";
+  $cqstools = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
+  $hsa_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
+  $rno_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
+  $mmu_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/mmu.gff3";
 }
 my $target_dir = create_directory_or_die($root);
 
@@ -528,7 +528,7 @@ foreach my $def (@defs) {
     },
     tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
       class           => "CQSMappedCount",
-      perform         =>0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_tRNAcount",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
