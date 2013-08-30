@@ -14,7 +14,6 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
 	general => {
-		path_file => "/home/shengq1/bin/path.txt",
 		task_name => "tcga"
 	},
 	tcga => {
