@@ -90,9 +90,9 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/genetable",
-    option        => "-p ENSG",
+    option        => "-p ENS",
     source_ref    => "htseqcount",
     name_map_file => "/data/cqs/shengq1/reference/mm10/mm10.gene.map",
     cqs_tools     => $cqstools,
@@ -106,7 +106,7 @@ my $config = {
   },
   deseq2 => {
     class         => "DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/deseq2",
     option        => "",
     source_ref    => "pairs",
