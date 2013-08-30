@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::CQSTrnaCount;
+package CQS::CQSMappedCount;
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "CQSTrnaCount";
+  $self->{_name} = "CQSMappedCount";
   bless $self, $class;
   return $self;
 }
@@ -100,9 +100,9 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
-echo tRNACount=`date` 
+echo CQSMappedCount=`date` 
 
-mono-sgen $cqsFile trna_count $option --samtools $samtools -i $bamFile -g $gffFile -o $countFile $seqcountFile $fastqFile
+mono-sgen $cqsFile mapped_count $option --samtools $samtools -i $bamFile -g $gffFile -o $countFile $seqcountFile $fastqFile
 
 echo finished=`date`
 
