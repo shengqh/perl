@@ -80,7 +80,7 @@ sub result {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $result     = {};
-  my $resultFile = get_result($task_name, $option);
+  my ($resultFile, $newoption) = get_result($task_name, $option);
   $resultFile = $resultDir . "/" . $resultFile;
   my $filelist   = $resultDir . "/${task_name}.filelist";
 
