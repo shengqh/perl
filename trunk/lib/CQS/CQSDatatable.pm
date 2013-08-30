@@ -31,8 +31,9 @@ sub get_result{
   }
   else{
     $result = $task_name . ".count";
+    $option = $option . " -o " . $result;
   }
-  return $result;
+  return ($result, $option);
 }
 
 sub perform {
@@ -59,14 +60,14 @@ sub perform {
   }
   close(FL);
 
-  my $result = get_result($task_name, $option);
+  my ($result, $newoption) = get_result($task_name, $option);
 
   my $shfile = $pbsDir . "/${task_name}_tb.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "
 cd $resultDir
 
-mono-sgen $cqsFile data_table $option -l $filelist -o $result $mapoption
+mono-sgen $cqsFile data_table $newoption -l $filelist $mapoption
 ";
 
   close SH;
@@ -79,7 +80,8 @@ sub result {
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
   my $result     = {};
-  my $resultFile = $resultDir . "/" . get_result($task_name, $option);
+  my $resultFile = get_result($task_name, $option);
+  $resultFile = $resultDir . "/" . $resultFile;
   my $filelist   = $resultDir . "/${task_name}.filelist";
 
   my @resultFiles = ();
