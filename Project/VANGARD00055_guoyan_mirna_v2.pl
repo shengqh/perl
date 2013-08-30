@@ -35,7 +35,6 @@ else {
   $root          = "d:/temp";
   $cqstools      = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
   $hsa_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
-  $hsa_trna_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hg19_tRNA12.bed";
   $rno_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
   $mmu_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/mmu.gff3";
 }
@@ -512,6 +511,21 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    miRNA_table => {
+      class      => "CQSMirnaTable",
+      perform    => 1,
+      target_dir => "${target_dir}/summary",
+      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_trna.count",
+      source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
     tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
       class           => "CQSTrnaCount",
       perform         =>0,
@@ -534,7 +548,7 @@ foreach my $def (@defs) {
     tRNA_table => {
       class      => "CQSDatatable",
       perform    => 1,
-      target_dir => "${target_dir}/genetable",
+      target_dir => "${target_dir}/summary",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_trna.count",
       source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
       cqs_tools  => $cqstools,
