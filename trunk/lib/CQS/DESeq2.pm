@@ -149,7 +149,9 @@ for(pairname in pairnames){
 
   my $shfile = $pbsDir . "/${task_name}_de2.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
-  print SH "R --vanilla -f $rfile \n";
+  print SH "cd $resultDir
+R --vanilla -f $rfile
+";
   close(SH);
 
   print "!!!shell file $shfile created, you can run this shell file to do calculation.\n";
