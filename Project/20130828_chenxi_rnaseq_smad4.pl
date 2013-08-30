@@ -11,9 +11,10 @@ my $smad_gff       = "/data/cqs/shengq1/reference/mm10/smad4/smad4.gff";
 my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
+my $task  ="smad4";
 
 my $config = {
-  general    => { task_name => "smad4" },
+  general    => { task_name => $task },
   fastqfiles => {
     "2288-RDB-54" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-54_1.fastq.gz"],
     "2288-RDB-55" => ["/autofs/blue_sequencer/Runs/projects/2288-RDB/2013-08-23/2288-RDB-55_1.fastq.gz"],
@@ -140,7 +141,7 @@ my $config = {
     class      => "CQSDatatable",
     perform    => 1,
     target_dir => "${target_dir}/exontable",
-    option     => "-p ENS --noheader",
+    option     => "-p ENS --noheader -o ${task}_exon.count",
     source_ref => "dexseqcount",
     cqs_tools  => $cqstools,
     sh_direct  => 1,
