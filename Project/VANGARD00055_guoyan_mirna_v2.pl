@@ -13,7 +13,7 @@ use CQS::ClassFactory;
 use CQS::Cutadapt;
 
 my $root;
-my $cqs_tools;
+my $cqstools;
 my $hsa_gffs;
 my $hsa_trna_gffs;
 my $rno_gffs;
@@ -23,7 +23,7 @@ my $mmu_trna_gffs;
 
 if ( is_linux() ) {
   $root          = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2";
-  $cqs_tools     = "/home/shengq1/cqstools/CQS.Tools.exe";
+  $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
   $hsa_gffs      = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
   $hsa_trna_gffs = "/data/cqs/shengq1/reference/trna/hg19_tRNA.bed";
   $rno_gffs      = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
@@ -33,7 +33,7 @@ if ( is_linux() ) {
 }
 else {
   $root          = "d:/temp";
-  $cqs_tools     = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
+  $cqstools      = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
   $hsa_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hsa.gff3";
   $hsa_trna_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/hg19_tRNA12.bed";
   $rno_gffs      = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna/rno.gff3";
@@ -70,34 +70,34 @@ my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 #my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
 my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
-my $mirnacount_option = "-s --bed_as_gtf";    #ignore score and consider bed as gtf.
+my $mirnacount_option = "-s --bed_as_gtf";                                   #ignore score and consider bed as gtf.
 my $fasta_file        = "/data/cqs/shengq1/reference/miRBase20/mature.fa";
 
-  #shrimp2 gmapper set mirna mode
-  #static int
-  #set_mode_from_string(char const * s) {
-  #  if (!strcmp(s, "mirna")) {
-  #    mode_mirna = true;
-  #
-  #    //load_default_mirna_seeds();
-  #
-  #    Hflag = true;
-  #    gapless_sw = true;
-  #    anchor_width = 0;
-  #    a_gap_open_score = -255;
-  #    b_gap_open_score = -255;
-  #    hash_filter_calls = false;
-  #    match_mode = 1;
-  #    window_len = 100.0;
-  #    Gflag = false;
-  #    compute_mapping_qualities = false;
-  #
-  #    return 1;
-  #  } else {
-  #    return 0;
-  #  }
-  #}
-  my $shrimp2_option            = "-Q -N 8 -o 1 --qv-offset 33";
+#shrimp2 gmapper set mirna mode
+#static int
+#set_mode_from_string(char const * s) {
+#  if (!strcmp(s, "mirna")) {
+#    mode_mirna = true;
+#
+#    //load_default_mirna_seeds();
+#
+#    Hflag = true;
+#    gapless_sw = true;
+#    anchor_width = 0;
+#    a_gap_open_score = -255;
+#    b_gap_open_score = -255;
+#    hash_filter_calls = false;
+#    match_mode = 1;
+#    window_len = 100.0;
+#    Gflag = false;
+#    compute_mapping_qualities = false;
+#
+#    return 1;
+#  } else {
+#    return 0;
+#  }
+#}
+my $shrimp2_option              = "-Q -N 8 -o 1 --qv-offset 33";
 my $shrimp2_rat_miRBase_index   = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/rno.mature.dna-ls";
 my $shrimp2_human_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/hsa.mature.dna-ls";
 my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/mmu.mature.dna-ls";
@@ -435,7 +435,7 @@ foreach my $def (@defs) {
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
-      cqstools   => $cqs_tools,
+      cqstools   => $cqstools,
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
@@ -466,7 +466,7 @@ foreach my $def (@defs) {
       target_dir => "${target_dir}/identical",
       option     => "",
       source_ref => "cutadapt_len",
-      cqstools   => $cqs_tools,
+      cqstools   => $cqstools,
       extension  => "_clipped_identical.fastq",
       sh_direct  => 1,
       pbs        => {
@@ -478,7 +478,7 @@ foreach my $def (@defs) {
     },
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -500,7 +500,7 @@ foreach my $def (@defs) {
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
-      cqs_tools       => $cqs_tools,
+      cqs_tools       => $cqstools,
       gff_file        => $def->{coordinate},
       fasta_file      => $fasta_file,
       samtools        => $samtools,
@@ -514,13 +514,13 @@ foreach my $def (@defs) {
     },
     tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
       class           => "CQSTrnaCount",
-      perform         => 1,
+      perform         =>0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_tRNAcount",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
-      cqs_tools       => $cqs_tools,
+      cqs_tools       => $cqstools,
       gff_file        => $def->{trna_coordinate},
       samtools        => $samtools,
       sh_direct       => 1,
@@ -531,6 +531,21 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    tRNA_table => {
+      class      => "CQSDatatable",
+      perform    => 1,
+      target_dir => "${target_dir}/genetable",
+      option     => "-p ENS -i 1 -v 2 -o " . $def->{task_name} . "_trna.count",
+      source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
     cqs_pileup_bowtie1_genome_cutadapt_topN_1mm => {
       class        => "CQSPileup",
       perform      => 0,
@@ -538,7 +553,7 @@ foreach my $def (@defs) {
       option       => "--export_igv",
       source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
       seqcount_ref => [ "identical", ".dupcount\$" ],
-      cqs_tools    => $cqs_tools,
+      cqs_tools    => $cqstools,
       gff_file     => $def->{coordinate},
       samtools     => $samtools,
       sh_direct    => 1,
@@ -606,7 +621,7 @@ foreach my $def (@defs) {
     #      source_ref      => "bowtie1_genome_cutadapt_topN_pm",
     #      fastq_files_ref => "identical",
     #      seqcount_ref    => [ "identical", ".dupcount\$" ],
-    #      cqs_tools       => $cqs_tools,
+    #      cqs_tools       => $cqstools,
     #      gff_file        => $def->{coordinate},
     #      samtools        => $samtools,
     #      sh_direct       => 1,
@@ -641,7 +656,7 @@ foreach my $def (@defs) {
     #      source_ref      => "bowtie1_genome_cutadapt_topN_pm_unmatched",
     #      fastq_files_ref => "identical",
     #      seqcount_ref    => [ "identical", ".dupcount\$" ],
-    #      cqs_tools       => $cqs_tools,
+    #      cqs_tools       => $cqstools,
     #      gff_file        => $human->{coordinate},
     #      samtools        => $samtools,
     #      sh_direct       => 1,
@@ -692,7 +707,7 @@ foreach my $def (@defs) {
     #      source_ref      => "bwa_genome_cutadapt_topN",
     #      fastq_files_ref => "identical",
     #      seqcount_ref    => [ "identical", ".dupcount\$" ],
-    #      cqs_tools       => $cqs_tools,
+    #      cqs_tools       => $cqstools,
     #      gff_file        => $hsammu_gffs,
     #      samtools        => $samtools,
     #      sh_direct       => 1,
