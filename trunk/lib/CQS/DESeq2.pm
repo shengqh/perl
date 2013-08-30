@@ -146,7 +146,13 @@ for(pairname in pairnames){
   dev.off()
 }
 ";
-  print "!!!R file $rfile created, you can run this R file to do calculation.\n";
+
+  my $shfile = $pbsDir . "/${task_name}_de2.sh";
+  open( SH, ">$shfile" ) or die "Cannot create $shfile";
+  print SH "R --vanilla -f $rfile \n";
+  close(SH);
+
+  print "!!!shell file $shfile created, you can run this shell file to do calculation.\n";
 }
 
 sub result {
