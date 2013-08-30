@@ -527,7 +527,7 @@ foreach my $def (@defs) {
       },
     },
     tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
-      class           => "CQSTrnaCount",
+      class           => "CQSMappedCount",
       perform         =>0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_tRNAcount",
       option          => $mirnacount_option,
