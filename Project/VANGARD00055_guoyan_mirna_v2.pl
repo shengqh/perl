@@ -475,6 +475,22 @@ foreach my $def (@defs) {
         "mem"      => "20gb"
       },
     },
+    bowtie1_genome_cutadapt_topN_1mm_unidentical => {
+      class         => "Bowtie1",
+      perform       => 1,
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_unidentical",
+      option        => $bowtie1_option_1mm,
+      source_ref    => "cutadapt_len",
+      bowtie1_index => $def->{bowtie1_index},
+      samonly       => 0,
+      sh_direct     => 0,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
       perform       => 0,
@@ -493,7 +509,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie1_genome_cutadapt_topN_1mm => {
       class           => "MirnaCount",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_miRNAcount",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -515,8 +531,8 @@ foreach my $def (@defs) {
       class      => "CQSMirnaTable",
       perform    => 1,
       target_dir => "${target_dir}/summary",
-      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_trna.count",
-      source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
+      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_miRNA.count",
+      source_ref => "mirna_count_bowtie1_genome_cutadapt_topN_1mm",
       cqs_tools  => $cqstools,
       sh_direct  => 1,
       pbs        => {
@@ -549,7 +565,7 @@ foreach my $def (@defs) {
       class      => "CQSDatatable",
       perform    => 1,
       target_dir => "${target_dir}/summary",
-      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_trna.count",
+      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_tNA.count",
       source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
       cqs_tools  => $cqstools,
       sh_direct  => 1,
@@ -560,15 +576,33 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
-    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm => {
+    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_miRNA => {
       class        => "CQSPileup",
-      perform      => 0,
-      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup",
+      perform      => 1,
+      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_miRNA",
       option       => "--export_igv",
       source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
       seqcount_ref => [ "identical", ".dupcount\$" ],
       cqs_tools    => $cqstools,
       gff_file     => $def->{coordinate},
+      samtools     => $samtools,
+      sh_direct    => 1,
+      pbs          => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_tRNA => {
+      class        => "CQSPileup",
+      perform      => 1,
+      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_tRNA",
+      option       => "--export_igv",
+      source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
+      seqcount_ref => [ "identical", ".dupcount\$" ],
+      cqs_tools    => $cqstools,
+      gff_file     => $def->{trna_coordinate},
       samtools     => $samtools,
       sh_direct    => 1,
       pbs          => {
