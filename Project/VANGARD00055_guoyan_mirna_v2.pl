@@ -478,7 +478,7 @@ foreach my $def (@defs) {
     bowtie1_genome_cutadapt_topN_1mm_unidentical => {
       class         => "Bowtie1",
       perform       => 1,
-      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_unidentical",
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
       source_ref    => "cutadapt_len",
       bowtie1_index => $def->{bowtie1_index},
