@@ -510,7 +510,7 @@ foreach my $def (@defs) {
     mirna_count_bowtie1_genome_cutadapt_topN_1mm => {
       class           => "MirnaCount",
       perform         => 1,
-      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_miRNAcount",
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => "identical",
@@ -545,7 +545,7 @@ foreach my $def (@defs) {
     tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
       class           => "CQSMappedCount",
       perform         => 1,
-      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_tRNAcount",
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => "identical",
