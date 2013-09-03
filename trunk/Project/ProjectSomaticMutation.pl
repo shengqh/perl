@@ -17,7 +17,7 @@ my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 ##hg19.16569###
 my $fasta_file  = "/data/cqs/shengq1/reference/hg19.16569/bwa_index_0.7.4/hg19_rCRS.fa";
-my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16569.vcf";
+my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v66_20130725.hg19.16569.vcf";
 my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
 
 ###hg19.16571###
@@ -117,7 +117,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc",
     option           => "-c 8",    #thread mode
     source_ref       => "refine",
@@ -137,7 +137,7 @@ my $config = {
   },
   rsmc_bwa => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_bwa",
     option           => "-c 8",    #thread mode
     source_ref       => "bwa",
@@ -157,7 +157,7 @@ my $config = {
   },
   rsmc_nps => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_not_filter_position_strand",
     option           => "-c 8 --not_filter_position --not_filter_strand",    #thread mode
     source_ref       => "refine",
@@ -177,7 +177,7 @@ my $config = {
   },
   muTect => {
     class        => "MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/muTect",
     option       => "-nt 8",
     source_ref   => "refine",
@@ -198,7 +198,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/varscan2",
     option          => "",
     source_ref      => "refine",
