@@ -530,7 +530,7 @@ foreach my $def (@defs) {
     miRNA_table => {
       class      => "CQSMirnaTable",
       perform    => 1,
-      target_dir => "${target_dir}/summary",
+      target_dir => "${target_dir}/summary_miRNA",
       option     => "-o " . $def->{task_name} . "_miRNA.count",
       source_ref => "mirna_count_bowtie1_genome_cutadapt_topN_1mm",
       cqs_tools  => $cqstools,
@@ -564,7 +564,7 @@ foreach my $def (@defs) {
     tRNA_table => {
       class      => "CQSDatatable",
       perform    => 1,
-      target_dir => "${target_dir}/summary",
+      target_dir => "${target_dir}/summary_tRNA",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_tRNA.count",
       source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
       cqs_tools  => $cqstools,
