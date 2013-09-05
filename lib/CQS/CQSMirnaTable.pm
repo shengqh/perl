@@ -56,7 +56,7 @@ sub perform {
 
   my ($result, $newoption) = get_result($task_name, $option);
 
-  my $shfile = $pbsDir . "/${task_name}_tb.sh";
+  my $shfile = $pbsDir . "/${task_name}_mt.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "
 cd $resultDir
