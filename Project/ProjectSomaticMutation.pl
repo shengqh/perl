@@ -16,14 +16,17 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 ##hg19.16569###
-my $fasta_file  = "/data/cqs/shengq1/reference/hg19.16569/bwa_index_0.7.4/hg19_rCRS.fa";
+my $fasta_file  = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS.fa";
 my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v66_20130725.hg19.16569.vcf";
 my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
+my $bowtie2_index = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS";
 
 ###hg19.16571###
 #my $fasta_file  = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
 #my $cosmic_file = "/data/cqs/shengq1/reference/cosmic/cosmic_v65_28052013.hg19.16571.vcf";
 #my $snp_file    = "/data/cqs/shengq1/reference/snp137/hg19.16571/00-All.vcf";
+#my $bowtie2_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
+
 
 my $config = {
   general => {
@@ -81,66 +84,27 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  bwa => {
-    class      => "BWA",
-    perform    => 0,
-    target_dir => "${target_dir}/bwa",
-    option     => "-q 15 -t 8",
-    fasta_file => $fasta_file,
-    source_ref => "bam2fastq",
-    sh_direct  => 0,
-    pbs        => {
+  tophat2 => {
+    class         => "Tophat2",
+    perform       => 1,
+    target_dir    => "${target_dir}/tophat2",
+    option        => "--segment-length 25 -r 0 -p 6",
+    source_ref    => "bam2fastq",
+    bowtie2_index => $bowtie2_index,
+    sh_direct     => 0,
+    pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=6",
       "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  refine => {
-    class              => "GATKRefine",
-    perform            => 0,
-    target_dir         => "${target_dir}/refine",
-    option             => "-Xmx40g",
-    fasta_file         => $fasta_file,
-    source_ref         => "bwa",
-    thread_count       => 8,
-    vcf_files          => [$snp_file],
-    gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
-    markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
-    sh_direct          => 1,
-    pbs                => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "30gb"
     },
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc",
     option           => "-c 8",    #thread mode
-    source_ref       => "refine",
-    groups_ref       => "rnagroups",
-    source_type      => "bam",                                               #source_type can be bam/mpileup
-    fasta_file       => $fasta_file,
-    annovar_buildver => "hg19",
-    rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
-    sh_direct        => 0,
-    execute_file     => "/home/shengq1/rsmc/rsmc.exe",
-    pbs              => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "10gb"
-    },
-  },
-  rsmc_bwa => {
-    class            => "RSMC",
-    perform          => 0,
-    target_dir       => "${target_dir}/rsmc_bwa",
-    option           => "-c 8",    #thread mode
-    source_ref       => "bwa",
+    source_ref       => "tophat2",
     groups_ref       => "rnagroups",
     source_type      => "bam",                                               #source_type can be bam/mpileup
     fasta_file       => $fasta_file,
@@ -157,7 +121,7 @@ my $config = {
   },
   rsmc_nps => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc_not_filter_position_strand",
     option           => "-c 8 --not_filter_position --not_filter_strand",    #thread mode
     source_ref       => "refine",
@@ -180,7 +144,7 @@ my $config = {
     perform      => 1,
     target_dir   => "${target_dir}/muTect",
     option       => "-nt 8",
-    source_ref   => "refine",
+    source_ref   => "tophat2",
     groups_ref   => "rnagroups",
     java_option  => "-Xmx40g",
     fasta_file   => $fasta_file,
@@ -201,7 +165,7 @@ my $config = {
     perform         => 1,
     target_dir      => "${target_dir}/varscan2",
     option          => "",
-    source_ref      => "refine",
+    source_ref      => "tophat2",
     groups_ref      => "rnagroups",
     fasta_file      => $fasta_file,
     min_coverage    => 10,
