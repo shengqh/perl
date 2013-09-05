@@ -45,7 +45,7 @@ sub perform {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $filelist = $resultDir . "/${task_name}.filelist";
+  my $filelist = $pbsDir . "/${task_name}.filelist";
   open( FL, ">$filelist" ) or die "Cannot create $filelist";
   for my $sampleName ( sort keys %rawFiles ) {
     my @bamFiles = @{ $rawFiles{$sampleName} };
