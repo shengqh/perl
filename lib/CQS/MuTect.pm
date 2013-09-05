@@ -126,7 +126,11 @@ if [ ! -s $vcf ]; then
 fi 
 
 if [[ -s $vcf && ! -s $passvcf ]]; then
-  grep -v REJECT $vcf > $passvcf
+  grep -v \"^##\" $vcf > ${vcf}.clean
+  grep -v \"^##\" $out | cut -f 17 > ${out}.clean
+  paste ${vcf}.clean ${out}.clean > ${vcf}.lod
+  rm ${vcf}.clean ${out}.clean
+  grep -v REJECT ${vcf}.lod > $passvcf
 fi
 
 echo finished=`date` \n";
