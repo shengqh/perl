@@ -54,7 +54,7 @@ my $config = {
     cqstools   => $cqstools,
     samtools   => $samtools,
     ispaired   => 1,
-    sh_direct  => 0,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
