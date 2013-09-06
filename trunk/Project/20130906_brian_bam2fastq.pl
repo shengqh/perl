@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 
+use CQS::FileUtils;
 use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/shengq1/20130906_brian_bam2fastq");
