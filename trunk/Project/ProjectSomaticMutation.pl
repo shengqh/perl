@@ -143,7 +143,7 @@ my $config = {
     class        => "MuTect",
     perform      => 1,
     target_dir   => "${target_dir}/muTect_tophat2",
-    option       => "-nt 8",
+    option       => "",
     source_ref   => "tophat2",
     groups_ref   => "rnagroups",
     java_option  => "-Xmx40g",
@@ -155,7 +155,7 @@ my $config = {
     muTect_jar   => "/home/shengq1/local/bin/muTect-1.1.4.jar",
     pbs          => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "240",
       "mem"      => "40gb"
     },
