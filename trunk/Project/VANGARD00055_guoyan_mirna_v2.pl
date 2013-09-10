@@ -562,7 +562,7 @@ foreach my $def (@defs) {
       },
     },
     tRNA_table => {
-      class      => "CQSDatatable",
+      class      => "CQSTrnaTable",
       perform    => 1,
       target_dir => "${target_dir}/summary_tRNA",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_tRNA.count",
