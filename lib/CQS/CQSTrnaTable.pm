@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::CQSMirnaTable;
+package CQS::CQSTrnaTable;
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "CQSMirnaTable";
+  $self->{_name} = "CQSTrnaTable";
   bless $self, $class;
   return $self;
 }
@@ -44,7 +44,6 @@ sub perform {
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-
   my $filelist = $pbsDir . "/${task_name}.filelist";
   open( FL, ">$filelist" ) or die "Cannot create $filelist";
   for my $sampleName ( sort keys %rawFiles ) {
@@ -56,17 +55,17 @@ sub perform {
 
   my ( $result, $newoption ) = get_result( $task_name, $option );
 
-  my $shfile = $pbsDir . "/${task_name}_mt.sh";
+  my $shfile = $pbsDir . "/${task_name}_tt.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "
 cd $resultDir
 
-mono-sgen $cqsFile mirna_table $newoption -l $filelist
+mono-sgen $cqsFile trna_table $newoption -l $filelist
 ";
 
   close SH;
 
-  print "!!!shell file $shfile created, you can run this shell file to run CQSMirnaTable task.\n";
+  print "!!!shell file $shfile created, you can run this shell file to run CQSTrnaTable task.\n";
 }
 
 sub result {
