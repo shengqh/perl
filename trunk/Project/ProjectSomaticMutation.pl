@@ -100,7 +100,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-q 15 -t 8",
     fasta_file => $fasta_file,
@@ -115,7 +115,7 @@ my $config = {
   },
   refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
@@ -134,7 +134,7 @@ my $config = {
   },
   rsmc_tophat2 => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_tophat2",
     option           => "-c 8",                                              #thread mode
     source_ref       => "tophat2",
@@ -154,7 +154,7 @@ my $config = {
   },
   rsmc_bwaRefine => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_bwaRefine",
     option           => "-c 8",                                              #thread mode
     source_ref       => "refine",
@@ -194,7 +194,7 @@ my $config = {
   },
   muTect_tophat2 => {
     class        => "MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/muTect_tophat2",
     option       => "",
     source_ref   => "tophat2",
@@ -215,7 +215,7 @@ my $config = {
   },
   muTect_bwaRefine => {
     class        => "MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/muTect_bwaRefine",
     option       => "",
     source_ref   => "refine",
@@ -236,7 +236,7 @@ my $config = {
   },
   varscan2_tophat2 => {
     class           => "VarScan2",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2_tophat2",
     option          => "",
     source_ref      => "tophat2",
@@ -255,7 +255,7 @@ my $config = {
   },
   varscan2_bwaRefine => {
     class           => "VarScan2",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2_bwaRefine",
     option          => "",
     source_ref      => "refine",
