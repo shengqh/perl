@@ -12,8 +12,9 @@ use CQS::Task;
 use CQS::NGSCommon;
 use CQS::StringUtils;
 use CQS::Fasta;
+use CQS::AbstractSomaticMutation;
 
-our @ISA = qw(CQS::Task);
+our @ISA = qw(CQS::AbstractSomaticMutation);
 
 sub new {
   my ($class) = @_;
@@ -51,19 +52,7 @@ sub perform {
     $java_option = "";
   }
 
-  my $rawFiles = get_raw_files( $config, $section );
-  my $groups = get_raw_files( $config, $section, "groups" );
-  my %group_sample_map = ();
-  for my $groupName ( sort keys %{$groups} ) {
-    my @samples = @{ $groups->{$groupName} };
-    my @gfiles  = ();
-    my $index   = 0;
-    foreach my $sampleName (@samples) {
-      my @bamFiles = @{ $rawFiles->{$sampleName} };
-      push( @gfiles, $bamFiles[0] );
-    }
-    $group_sample_map{$groupName} = \@gfiles;
-  }
+  my %group_sample_map = %{$self->get_group_sample_map ($config, $section)};
 
   my $shfile = $pbsDir . "/${task_name}_mt.submit";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -78,9 +67,9 @@ sub perform {
       die "SampleFile should be normal,tumor paired.";
     }
 
-    my $normal = $sampleFiles[0];
-    my $tumor  = $sampleFiles[1];
-
+    my $normal = $sampleFiles[0][1];
+    my $tumor  = $sampleFiles[1][1];
+    
     for my $chr (@chromosomes) {
       my $chrstr;
       my $chroption;
