@@ -134,7 +134,7 @@ my $config = {
   },
   rsmc_tophat2 => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc_tophat2",
     option           => "-c 8",                                              #thread mode
     source_ref       => "tophat2",
@@ -154,7 +154,7 @@ my $config = {
   },
   rsmc_bwaRefine => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc_bwaRefine",
     option           => "-c 8",                                              #thread mode
     source_ref       => "refine",
@@ -174,7 +174,7 @@ my $config = {
   },
   rsmc_nps => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc_tophat2_not_filter_position_strand",
     option           => "-c 8 -n 0 -q 0 --max_normal_percentage 1.0 -g 0.0 -d 5 --not_filter_position --not_filter_strand ",          #thread mode
     source_ref       => "tophat2",
@@ -194,7 +194,7 @@ my $config = {
   },
   muTect_tophat2 => {
     class        => "MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/muTect_tophat2",
     option       => "",
     source_ref   => "tophat2",
@@ -215,7 +215,7 @@ my $config = {
   },
   muTect_bwaRefine => {
     class        => "MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/muTect_bwaRefine",
     option       => "",
     source_ref   => "refine",
