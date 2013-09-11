@@ -12,7 +12,7 @@ use CQS::Task;
 use CQS::NGSCommon;
 use CQS::StringUtils;
 
-our @ISA = qw(CQS::Task);
+our @ISA = qw(CQS::AbstractSomaticMutation);
 
 sub new {
   my ($class) = @_;
@@ -33,20 +33,7 @@ sub perform {
   my $min_coverage    = $config->{$section}{min_coverage}    or die "min_coverage is not defined in $section!";
   my $somatic_p_value = $config->{$section}{somatic_p_value} or die "somatic_p_value is not defined in $section!";
 
-  my $rawFiles = get_raw_files( $config, $section );
-  my $groups = get_raw_files( $config, $section, "groups" );
-  my %group_sample_map = ();
-  for my $groupName ( sort keys %{$groups} ) {
-    my @samples = @{ $groups->{$groupName} };
-    my @gfiles  = ();
-    my $index   = 0;
-    foreach my $sampleName (@samples) {
-      my @bamFiles = @{ $rawFiles->{$sampleName} };
-      my @sambam = ($sampleName, $bamFiles[0]);
-      push( @gfiles, \@sambam );
-    }
-    $group_sample_map{$groupName} = \@gfiles;
-  }
+  my %group_sample_map = %{get_group_sample_map ($config, $section)};
 
   my $shfile = $pbsDir . "/${task_name}_vs2.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
