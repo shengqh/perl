@@ -174,7 +174,7 @@ my $config = {
   },
   rsmc_nps => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_tophat2_not_filter_position_strand",
     option           => "-c 8 -n 0 -q 0 --max_normal_percentage 1.0 -g 0.0 -d 5 --not_filter_position --not_filter_strand ",          #thread mode
     source_ref       => "tophat2",
@@ -236,7 +236,7 @@ my $config = {
   },
   varscan2_tophat2 => {
     class           => "VarScan2",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/varscan2_tophat2",
     option          => "",
     source_ref      => "tophat2",
@@ -255,7 +255,7 @@ my $config = {
   },
   varscan2_bwaRefine => {
     class           => "VarScan2",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/varscan2_bwaRefine",
     option          => "",
     source_ref      => "refine",
