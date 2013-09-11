@@ -34,7 +34,7 @@ sub perform {
   my $min_coverage    = $config->{$section}{min_coverage}    or die "min_coverage is not defined in $section!";
   my $somatic_p_value = $config->{$section}{somatic_p_value} or die "somatic_p_value is not defined in $section!";
 
-  my %group_sample_map = %{SUPER::get_group_sample_map ($config, $section)};
+  my %group_sample_map = %{$self->get_group_sample_map ($config, $section)};
 
   my $shfile = $pbsDir . "/${task_name}_vs2.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
