@@ -42,12 +42,12 @@ sub perform {
     my $index   = 0;
     foreach my $sampleName (@samples) {
       my @bamFiles = @{ $rawFiles->{$sampleName} };
-      push( @gfiles, $bamFiles[0] );
+      push( @gfiles, ($sampleName, $bamFiles[0]) );
     }
     $group_sample_map{$groupName} = \@gfiles;
   }
 
-  my $shfile = $pbsDir . "/${task_name}_mt.submit";
+  my $shfile = $pbsDir . "/${task_name}_vs2.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH get_run_command($sh_direct) . "\n";
 
@@ -64,11 +64,11 @@ sub perform {
 
     my $curDir      = create_directory_or_die( $resultDir . "/$groupName" );
 
-    my $normal = $sampleFiles[0];
-    my $tumor  = $sampleFiles[1];
+    my $normal = $sampleFiles[0][1];
+    my $tumor  = $sampleFiles[1][1];
     
-    my $normalfile = basename($normal);
-    my $tumorfile  = basename($tumor);
+    my $normalfile = $sampleFiles[0][0];
+    my $tumorfile  = $sampleFiles[1][0];
 
     my $normal_mpileup = "${normalfile}.mpileup";
     my $tumor_mpileup  = "${tumorfile}.mpileup";
