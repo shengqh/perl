@@ -9,6 +9,7 @@ use CQS::ConfigUtils;
 use CQS::SystemUtils;
 use CQS::FileUtils;
 use CQS::Task;
+use CQS::AbstractSomaticMutation;
 use CQS::NGSCommon;
 use CQS::StringUtils;
 
