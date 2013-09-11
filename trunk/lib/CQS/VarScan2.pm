@@ -42,7 +42,8 @@ sub perform {
     my $index   = 0;
     foreach my $sampleName (@samples) {
       my @bamFiles = @{ $rawFiles->{$sampleName} };
-      push( @gfiles, ($sampleName, $bamFiles[0]) );
+      my @sambam = ($sampleName, $bamFiles[0]);
+      push( @gfiles, \@sambam );
     }
     $group_sample_map{$groupName} = \@gfiles;
   }
