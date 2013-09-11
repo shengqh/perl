@@ -134,7 +134,7 @@ my $config = {
   },
   rsmc_tophat2 => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_tophat2",
     option           => "-c 8",                                              #thread mode
     source_ref       => "tophat2",
@@ -154,7 +154,7 @@ my $config = {
   },
   rsmc_bwaRefine => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_bwaRefine",
     option           => "-c 8",                                              #thread mode
     source_ref       => "refine",
@@ -172,14 +172,34 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  rsmc_nps => {
+  rsmc_tophat2_nofilter => {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rsmc_tophat2_not_filter_position_strand",
-    option           => "-c 8 -n 0 -q 0 --max_normal_percentage 1.0 -g 0.0 -d 5 --not_filter_position --not_filter_strand ",          #thread mode
+    option           => "-c 8 -n 20 -q 0 --max_normal_percentage 1.0 -g 0.0 -d 5 --not_filter_position --not_filter_strand ",    #thread mode
     source_ref       => "tophat2",
     groups_ref       => "rnagroups",
-    source_type      => "bam",                                                     #source_type can be bam/mpileup
+    source_type      => "bam",                                                                                                   #source_type can be bam/mpileup
+    fasta_file       => $fasta_file,
+    annovar_buildver => "hg19",
+    rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
+    sh_direct        => 0,
+    execute_file     => "/home/shengq1/rsmc/rsmc.exe",
+    pbs              => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  rsmc_bwaRefine_nofilter => {
+    class            => "RSMC",
+    perform          => 1,
+    target_dir       => "${target_dir}/rsmc_bwaRefine_not_filter_position_strand",
+    option           => "-c 8 -n 20 -q 0 --max_normal_percentage 1.0 -g 0.0 -d 5 --not_filter_position --not_filter_strand ",    #thread mode
+    source_ref       => "tophat2",
+    groups_ref       => "rnagroups",
+    source_type      => "bam",                                                                                                   #source_type can be bam/mpileup
     fasta_file       => $fasta_file,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
@@ -194,7 +214,7 @@ my $config = {
   },
   muTect_tophat2 => {
     class        => "MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/muTect_tophat2",
     option       => "",
     source_ref   => "tophat2",
@@ -215,7 +235,7 @@ my $config = {
   },
   muTect_bwaRefine => {
     class        => "MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/muTect_bwaRefine",
     option       => "",
     source_ref   => "refine",
@@ -236,7 +256,7 @@ my $config = {
   },
   varscan2_tophat2 => {
     class           => "VarScan2",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2_tophat2",
     option          => "",
     source_ref      => "tophat2",
@@ -255,7 +275,7 @@ my $config = {
   },
   varscan2_bwaRefine => {
     class           => "VarScan2",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2_bwaRefine",
     option          => "",
     source_ref      => "refine",
