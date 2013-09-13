@@ -543,6 +543,40 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
+    miRNA_overlap_count_bowtie1_genome_cutadapt_topN_trna => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
+      option          => $trnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    miRNA_overlap_table => {
+      class      => "CQSTrnaTable",
+      perform    => 1,
+      target_dir => "${target_dir}/summary_miRNA",
+      option     => "-o " . $def->{task_name} . "_miRNA_overlap.count",
+      source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN_trna",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
     tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
       class           => "CQSMappedCount",
       perform         => 1,
