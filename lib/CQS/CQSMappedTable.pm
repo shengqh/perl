@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::CQSTrnaTable;
+package CQS::CQSMappedTable;
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "CQSTrnaTable";
+  $self->{_name} = "CQSMappedTable";
   bless $self, $class;
   return $self;
 }
@@ -44,7 +44,7 @@ sub perform {
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-  my $filelist = $pbsDir . "/${task_name}.filelist";
+  my $filelist = $pbsDir . "/${task_name}_mt.filelist";
   open( FL, ">$filelist" ) or die "Cannot create $filelist";
   for my $sampleName ( sort keys %rawFiles ) {
     my @bamFiles = @{ $rawFiles{$sampleName} };

@@ -140,8 +140,10 @@ sub result {
     my $fileName = basename($bamFile);
 
     my @resultFiles = ();
-    my $countFile   = $curDir . "/" . $fileName . ".count";
+    my $countFile   = "${curDir}/${fileName}.count";
     push( @resultFiles, $countFile );
+    push( @resultFiles, "${countFile}.mapped.xml" );
+    push( @resultFiles, "${curDir}/${fileName}.info" );
 
     my $unmapped;
     if ($fasta_format) {
