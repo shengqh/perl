@@ -69,10 +69,10 @@ my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 #my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
 my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
-my $mirnacount_option = "-s";                                   #ignore score
-my $trnacount_option = "-s";                                   #ignore score
-my $mirna_overlap_count_option = "-s --gtf_key miRNA";          
-my $fasta_file        = "/data/cqs/shengq1/reference/miRBase20/mature.fa";
+my $mirnacount_option          = "-s";                                                #ignore score
+my $trnacount_option           = "-s";                                                #ignore score
+my $mirna_overlap_count_option = "-s --gtf_key miRNA";
+my $fasta_file                 = "/data/cqs/shengq1/reference/miRBase20/mature.fa";
 
 #shrimp2 gmapper set mirna mode
 #static int
@@ -511,7 +511,7 @@ foreach my $def (@defs) {
     },
     mirna_count_bowtie1_genome_cutadapt_topN_1mm => {
       class           => "MirnaCount",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -531,7 +531,7 @@ foreach my $def (@defs) {
     },
     miRNA_table => {
       class      => "CQSMirnaTable",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/summary_miRNA",
       option     => "-o " . $def->{task_name} . "_miRNA.count",
       source_ref => "mirna_count_bowtie1_genome_cutadapt_topN_1mm",
@@ -595,7 +595,7 @@ foreach my $def (@defs) {
     },
     tRNA_overlap_count_bowtie1_genome_cutadapt_topN => {
       class           => "CQSMappedCount",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -614,7 +614,7 @@ foreach my $def (@defs) {
     },
     tRNA_table => {
       class      => "CQSMappedTable",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/summary_tRNA",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_tRNA.count",
       source_ref => "tRNA_overlap_count_bowtie1_genome_cutadapt_topN",
@@ -642,43 +642,43 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
-    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_miRNA => {
-      class        => "CQSPileup",
-      perform      => 0,
-      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_miRNA",
-      option       => "--export_igv",
-      source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
-      seqcount_ref => [ "identical", ".dupcount\$" ],
-      cqs_tools    => $cqstools,
-      gff_file     => $def->{coordinate},
-      samtools     => $samtools,
-      sh_direct    => 1,
-      pbs          => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_tRNA => {
-      class        => "CQSPileup",
-      perform      => 0,
-      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_tRNA",
-      option       => "--export_igv",
-      source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
-      seqcount_ref => [ "identical", ".dupcount\$" ],
-      cqs_tools    => $cqstools,
-      gff_file     => $def->{trna_coordinate},
-      samtools     => $samtools,
-      sh_direct    => 1,
-      pbs          => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
 
+    #    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_miRNA => {
+    #      class        => "CQSPileup",
+    #      perform      => 0,
+    #      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_miRNA",
+    #      option       => "--export_igv",
+    #      source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
+    #      seqcount_ref => [ "identical", ".dupcount\$" ],
+    #      cqs_tools    => $cqstools,
+    #      gff_file     => $def->{coordinate},
+    #      samtools     => $samtools,
+    #      sh_direct    => 1,
+    #      pbs          => {
+    #        "email"    => $email,
+    #        "nodes"    => "1:ppn=1",
+    #        "walltime" => "72",
+    #        "mem"      => "40gb"
+    #      },
+    #    },
+    #    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_tRNA => {
+    #      class        => "CQSPileup",
+    #      perform      => 0,
+    #      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_tRNA",
+    #      option       => "--export_igv",
+    #      source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
+    #      seqcount_ref => [ "identical", ".dupcount\$" ],
+    #      cqs_tools    => $cqstools,
+    #      gff_file     => $def->{trna_coordinate},
+    #      samtools     => $samtools,
+    #      sh_direct    => 1,
+    #      pbs          => {
+    #        "email"    => $email,
+    #        "nodes"    => "1:ppn=1",
+    #        "walltime" => "72",
+    #        "mem"      => "40gb"
+    #      },
+    #    },
     #    bowtie2_mirna_count_bowtie1_genome_cutadapt_topN => {
     #      class         => "Bowtie2",
     #      perform       => 0,
