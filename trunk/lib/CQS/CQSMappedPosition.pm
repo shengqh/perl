@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::CQSMirnaTable;
+package CQS::CQSMappedPosition;
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "CQSMirnaTable";
+  $self->{_name} = "CQSMappedPosition";
   bless $self, $class;
   return $self;
 }
@@ -30,7 +30,7 @@ sub get_result {
     $result = $1;
   }
   else {
-    $result = $task_name . ".count";
+    $result = $task_name . ".position";
     $option = $option . " -o " . $result;
   }
   return ( $result, $option );
@@ -44,8 +44,7 @@ sub perform {
   my $cqsFile = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 1 );
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
-
-  my $filelist = $pbsDir . "/${task_name}_mt.filelist";
+  my $filelist = $pbsDir . "/${task_name}_mp.filelist";
   open( FL, ">$filelist" ) or die "Cannot create $filelist";
   for my $sampleName ( sort keys %rawFiles ) {
     my @bamFiles = @{ $rawFiles{$sampleName} };
@@ -56,17 +55,17 @@ sub perform {
 
   my ( $result, $newoption ) = get_result( $task_name, $option );
 
-  my $shfile = $pbsDir . "/${task_name}_mt.sh";
+  my $shfile = $pbsDir . "/${task_name}_mp.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "
 cd $resultDir
 
-mono-sgen $cqsFile mirna_table $newoption -l $filelist
+mono-sgen $cqsFile mapped_position $newoption -l $filelist
 ";
 
   close SH;
 
-  print "!!!shell file $shfile created, you can run this shell file to run CQSMirnaTable task.\n";
+  print "!!!shell file $shfile created, you can run this shell file to run CQSTrnaTable task.\n";
 }
 
 sub result {
@@ -76,7 +75,7 @@ sub result {
   my $result = {};
   my ( $resultFile, $newoption ) = get_result( $task_name, $option );
   $resultFile = $resultDir . "/" . $resultFile;
-  my $filelist = $resultDir . "/${task_name}.filelist";
+  my $filelist = $resultDir . "/${task_name}_mp.filelist";
 
   my @resultFiles = ();
   push( @resultFiles, $resultFile );
