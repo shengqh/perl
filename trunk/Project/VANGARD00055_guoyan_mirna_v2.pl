@@ -71,6 +71,7 @@ my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
 my $mirnacount_option = "-s --bed_as_gtf";                                   #ignore score and consider bed as gtf.
 my $trnacount_option = "-s";                                   #ignore score
+my $mirna_overlap_count_option = "-s --gtf_key miRNA";          
 my $fasta_file        = "/data/cqs/shengq1/reference/miRBase20/mature.fa";
 
 #shrimp2 gmapper set mirna mode
@@ -543,11 +544,11 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
-    miRNA_overlap_count_bowtie1_genome_cutadapt_topN_trna => {
+    miRNA_overlap_count_bowtie1_genome_cutadapt_topN => {
       class           => "CQSMappedCount",
       perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
-      option          => $trnacount_option,
+      option          => $mirna_overlap_count_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
@@ -566,8 +567,8 @@ foreach my $def (@defs) {
       class      => "CQSTrnaTable",
       perform    => 1,
       target_dir => "${target_dir}/summary_miRNA",
-      option     => "-o " . $def->{task_name} . "_miRNA_overlap.count",
-      source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN_trna",
+      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_miRNA_overlap.count",
+      source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN",
       cqs_tools  => $cqstools,
       sh_direct  => 1,
       pbs        => {
@@ -577,7 +578,7 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
-    tRNA_count_bowtie1_genome_cutadapt_topN_trna => {
+    tRNA_overlap_count_bowtie1_genome_cutadapt_topN => {
       class           => "CQSMappedCount",
       perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
@@ -601,7 +602,7 @@ foreach my $def (@defs) {
       perform    => 0,
       target_dir => "${target_dir}/summary_tRNA",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_tRNA.count",
-      source_ref => "tRNA_count_bowtie1_genome_cutadapt_topN_trna",
+      source_ref => "tRNA_overlap_count_bowtie1_genome_cutadapt_topN",
       cqs_tools  => $cqstools,
       sh_direct  => 1,
       pbs        => {
