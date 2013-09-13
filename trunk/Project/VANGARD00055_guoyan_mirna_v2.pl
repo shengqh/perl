@@ -69,7 +69,7 @@ my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 #my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
 my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
-my $mirnacount_option = "-s --bed_as_gtf";                                   #ignore score and consider bed as gtf.
+my $mirnacount_option = "-s";                                   #ignore score
 my $trnacount_option = "-s";                                   #ignore score
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";          
 my $fasta_file        = "/data/cqs/shengq1/reference/miRBase20/mature.fa";
