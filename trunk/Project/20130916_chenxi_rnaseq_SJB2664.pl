@@ -8,6 +8,7 @@ use CQS::FileUtils;
 my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20130916_chenxi_rnaseq_SJB2664");
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/mm10/Mus_musculus.GRCm38.68.gtf";
 my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $fasta_file     = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10.fa";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "smad4";
@@ -61,6 +62,7 @@ my $config = {
     source_ref     => "tophat2",
     groups_ref     => "groups",
     pairs_ref      => "pairs",
+    fasta_file     => $fasta_file,
     sh_direct      => 0,
     pbs            => {
       "email"    => $email,
