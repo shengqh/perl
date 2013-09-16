@@ -11,7 +11,7 @@ my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $fasta_file     = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10.fa";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
-my $task  = "2664SJB";
+my $task  = "SJB2664";
 
 my $config = {
   general    => { task_name => $task },
