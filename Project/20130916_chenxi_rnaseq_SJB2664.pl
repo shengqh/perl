@@ -26,7 +26,7 @@ my $config = {
   pairs  => { "2664-SJB" => [ "2664-SJB-1", "2664-SJB-2" ] },
   fastqc => {
     class      => "FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
