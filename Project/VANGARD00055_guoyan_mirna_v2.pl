@@ -477,6 +477,94 @@ foreach my $def (@defs) {
         "mem"      => "20gb"
       },
     },
+    
+    #perfect match
+    bowtie1_genome_cutadapt_topN_pm => {
+      class         => "Bowtie1",
+      perform       => 1,
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm",
+      option        => $bowtie1_option_pm,
+      source_ref    => [ "identical", ".fastq\$" ],
+      bowtie1_index => $def->{bowtie1_index},
+      samonly       => 0,
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    miRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA_overlap",
+      option          => $mirna_overlap_count_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_pm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    miRNA_overlap_position_pm => {
+      class      => "CQSMappedPosition",
+      perform    => 1,
+      target_dir => "${target_dir}/summary_miRNA_overlap",
+      option     => "-o " . $def->{task_name} . "_miRNA.position",
+      source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
+    tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_tRNA",
+      option          => $trnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_pm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{trna_coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    tRNA_position => {
+      class      => "CQSMappedPosition",
+      perform    => 1,
+      target_dir => "${target_dir}/summary_tRNA_pm",
+      option     => "-o " . $def->{task_name} . "_tRNA.position",
+      source_ref => "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
+    
+    #1 mismatch
     bowtie1_genome_cutadapt_topN_1mm_unidentical => {
       class         => "Bowtie1",
       perform       => 0,
@@ -565,7 +653,7 @@ foreach my $def (@defs) {
     },
     miRNA_overlap_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_miRNA_overlap",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_miRNA_overlap.count",
       source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN",
@@ -580,7 +668,7 @@ foreach my $def (@defs) {
     },
     miRNA_overlap_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_miRNA_overlap",
       option     => "-o " . $def->{task_name} . "_miRNA.position",
       source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN",
