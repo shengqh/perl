@@ -131,19 +131,21 @@ for(pairname in pairnames){
   vsd<-varianceStabilizingTransformation(dds,blind=TRUE)
   vsdmatrix<-as.matrix(assay(vsd))
   vsdselect<-vsdmatrix[select,]
-  colnames(vsdselect)<-colnames(pairCountData)
+  if(nrow(vsdselect) > 2){
+    colnames(vsdselect)<-colnames(pairCountData)
   
-  png(filename=paste0(pairname, \".png\"), width=4000, height =3000, res=300)
+    png(filename=paste0(pairname, \".png\"), width=4000, height =3000, res=300)
   
-  clab<-matrix(c(rep(\"white\", ncol(vsdselect)), pairColors), ncol=2, byrow=FALSE)
-  colnames(clab)<-c(\"\", \"Group\")
-  par(mar=c(12, 10, 10, 10))
-  heatmap.plus(vsdselect, col = hmcols, ColSideColors = clab, margins=c(10,15))
+    clab<-matrix(c(rep(\"white\", ncol(vsdselect)), pairColors), ncol=2, byrow=FALSE)
+    colnames(clab)<-c(\"\", \"Group\")
+    par(mar=c(12, 10, 10, 10))
+    heatmap.plus(vsdselect, col = hmcols, ColSideColors = clab, margins=c(10,15))
   
-  grid.text(g1name, x = unit(0.02, \"npc\"), y = unit(0.90, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"RED\"))
-  grid.text(g2name, x = unit(0.02, \"npc\"), y = unit(0.85, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"BLUE\"))
+    grid.text(g1name, x = unit(0.02, \"npc\"), y = unit(0.90, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"RED\"))
+    grid.text(g2name, x = unit(0.02, \"npc\"), y = unit(0.85, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"BLUE\"))
   
-  dev.off()
+    dev.off()
+  }
 }
 ";
 
