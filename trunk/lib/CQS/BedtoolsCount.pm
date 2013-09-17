@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::HTSeqCount;
+package CQS::BedtoolsCount;
 
 use strict;
 use warnings;
@@ -17,7 +17,7 @@ our @ISA = qw(CQS::Task);
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
-  $self->{_name} = "HTSeqCount";
+  $self->{_name} = "BedtoolsCount";
   bless $self, $class;
   return $self;
 }
@@ -27,11 +27,11 @@ sub perform {
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-  my $gffFile  = get_param_file( $config->{$section}{gff_file},  "gff_file",  1 );
+  my $bedFile  = get_param_file( $config->{$section}{bed_file},  "bed_file",  1 );
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $shfile = $pbsDir . "/${task_name}_ht.sh";
+  my $shfile = $pbsDir . "/${task_name}_bc.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH get_run_command($sh_direct) . "\n";
 
@@ -40,12 +40,12 @@ sub perform {
     my $bamFile   = $bamFiles[0];
     my $countFile = "${sampleName}.count";
 
-    my $pbsName = "${sampleName}_ht.pbs";
+    my $pbsName = "${sampleName}_bc.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
 
     print SH "\$MYCMD ./$pbsName \n";
 
-    my $log = "${logDir}/${sampleName}_ht.log";
+    my $log = "${logDir}/${sampleName}_bc.log";
 
     open( OUT, ">$pbsFile" ) or die $!;
     print OUT "$pbsDesc
@@ -61,9 +61,9 @@ if [ -s $countFile ]; then
   exit 0
 fi
 
-echo HTSeqCount=`date`
+echo BedtoolsCount=`date`
 
-samtools view $bamFile | htseq-count -q -m intersection-nonempty -s no -i gene_id - $gffFile > $countFile
+bedtools multicov -bams $bamFile -bed $bedFile | cut -f 4,13 | sort - > $countFile
 
 echo finished=`date`
 
