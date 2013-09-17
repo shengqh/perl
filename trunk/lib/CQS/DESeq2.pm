@@ -90,8 +90,8 @@ for(pairname in pairnames){
   g2name=gnames[2]
   g1=gs[[g1name]]
   g2=gs[[g2name]]
-  c1=countData[,colnames(countData) %in% g1]
-  c2=countData[,colnames(countData) %in% g2]
+  c1=as.matrix(countData[,colnames(countData) %in% g1])
+  c2=as.matrix(countData[,colnames(countData) %in% g2])
   
   if(ncol(c1) != length(g1)){
     warning(paste0(\"There are only \", ncol(c1), \" samples in group \", g1name, \" but \", length(g1), \" required!\"))
