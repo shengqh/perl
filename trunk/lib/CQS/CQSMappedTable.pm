@@ -60,7 +60,7 @@ sub perform {
   print SH "
 cd $resultDir
 
-mono-sgen $cqsFile trna_table $newoption -l $filelist
+mono-sgen $cqsFile mapped_table $newoption -l $filelist
 ";
 
   close SH;
