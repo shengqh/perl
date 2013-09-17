@@ -548,7 +548,7 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    tRNA_position => {
+    tRNA_position_pm => {
       class      => "CQSMappedPosition",
       perform    => 1,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_tRNA_position",
