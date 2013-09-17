@@ -63,7 +63,7 @@ fi
 
 echo BedtoolsCount=`date`
 
-bedtools multicov -bams $bamFile -bed $bedFile | cut -f 4,13 | sort - > $countFile
+bedtools multicov -bams $bamFile -bed $bedFile | awk '{print(\$4 \"\t\" \$1 \":\" \$2 \"-\" \$3 \"\t\" \$13)}' | sort - > $countFile
 
 echo finished=`date`
 
