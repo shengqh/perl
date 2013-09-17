@@ -517,7 +517,7 @@ foreach my $def (@defs) {
     miRNA_overlap_position_pm => {
       class      => "CQSMappedPosition",
       perform    => 1,
-      target_dir => "${target_dir}/summary_miRNA_overlap",
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA_overlap_position",
       option     => "-o " . $def->{task_name} . "_miRNA.position",
       source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm",
       cqs_tools  => $cqstools,
@@ -551,7 +551,7 @@ foreach my $def (@defs) {
     tRNA_position => {
       class      => "CQSMappedPosition",
       perform    => 1,
-      target_dir => "${target_dir}/summary_tRNA_pm",
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_tRNA_position",
       option     => "-o " . $def->{task_name} . "_tRNA.position",
       source_ref => "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm",
       cqs_tools  => $cqstools,
