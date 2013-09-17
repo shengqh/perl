@@ -477,7 +477,7 @@ foreach my $def (@defs) {
         "mem"      => "20gb"
       },
     },
-    
+
     #perfect match
     bowtie1_genome_cutadapt_topN_pm => {
       class         => "Bowtie1",
@@ -563,7 +563,7 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
-    
+
     #1 mismatch
     bowtie1_genome_cutadapt_topN_1mm_unidentical => {
       class         => "Bowtie1",
