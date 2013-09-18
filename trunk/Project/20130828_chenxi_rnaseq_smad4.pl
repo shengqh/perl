@@ -113,7 +113,7 @@ my $config = {
     option     => "",
     source_ref => "tophat2",
     bed_file   => $bed_file,
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -125,7 +125,7 @@ my $config = {
     class         => "CQSDatatable",
     perform       => 1,
     target_dir    => "${target_dir}/bedtable",
-    option        => "-p ENS --noheader -o ${task}_gene_bedtools.count",
+    option        => "-i 1 -v 2 -p ENS --noheader -o ${task}_gene_bedtools.count",
     source_ref    => "bedtoolscount",
     name_map_file => "/data/cqs/shengq1/reference/mm10/mm10.gene.map",
     cqs_tools     => $cqstools,
