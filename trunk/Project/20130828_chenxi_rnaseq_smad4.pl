@@ -9,7 +9,7 @@ my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/201308
 my $transcript_gtf = "/data/cqs/guoy1/reference/annotation2/mm10/Mus_musculus.GRCm38.68.gtf";
 my $smad_gff       = "/data/cqs/shengq1/reference/mm10/smad4/smad4.gff";
 my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $bed_file = "/data/cqs/shengq1/reference/mm10/Mus_musculus.GRCm38.68.bed";
+my $bed_file = "/data/cqs/shengq1/reference/mm10/mm10.bed";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  ="smad4";
@@ -108,7 +108,7 @@ my $config = {
   },
   bedtoolscount => {
     class      => "BedtoolsCount",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/bedtoolscount",
     option     => "",
     source_ref => "tophat2",
@@ -123,7 +123,7 @@ my $config = {
   },
   bedtoolstable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/bedtable",
     option        => "-i 1 -v 2 -p ENS --noheader -o ${task}_gene_bedtools.count",
     source_ref    => "bedtoolscount",
