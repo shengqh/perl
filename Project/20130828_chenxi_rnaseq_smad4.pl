@@ -77,7 +77,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -92,7 +92,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -123,7 +123,7 @@ my $config = {
   },
   bedtoolstable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/bedtable",
     option        => "-i 1 -v 2 -p ENS --noheader -o ${task}_gene_bedtools.count",
     source_ref    => "bedtoolscount",
