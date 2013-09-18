@@ -108,12 +108,12 @@ my $config = {
   },
   bedtoolscount => {
     class      => "BedtoolsCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bedtoolscount",
     option     => "",
     source_ref => "tophat2",
     bed_file   => $bed_file,
-    sh_direct  => 0,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
