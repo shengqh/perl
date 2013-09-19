@@ -718,7 +718,7 @@ foreach my $def (@defs) {
     tRNA_1mm_position => {
       class      => "CQSMappedPosition",
       perform    => 1,
-      target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
       option     => "-o " . $def->{task_name} . "_tRNA.position",
       source_ref => "tRNA_1mm_count",
       cqs_tools  => $cqstools,
