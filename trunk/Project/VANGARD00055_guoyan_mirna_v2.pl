@@ -671,7 +671,7 @@ foreach my $def (@defs) {
       perform    => 1,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
       option     => "-o " . $def->{task_name} . "_miRNA.position",
-      source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN",
+      source_ref => "miRNA_1mm_count_overlap",
       cqs_tools  => $cqstools,
       sh_direct  => 1,
       pbs        => {
