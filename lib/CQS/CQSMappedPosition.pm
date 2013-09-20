@@ -65,7 +65,7 @@ mono-sgen $cqsFile mapped_position $newoption -l $filelist
 
   close SH;
 
-  print "!!!shell file $shfile created, you can run this shell file to run CQSTrnaTable task.\n";
+  print "!!!shell file $shfile created, you can run this shell file to run ", $self->{_name}, " task.\n";
 }
 
 sub result {
