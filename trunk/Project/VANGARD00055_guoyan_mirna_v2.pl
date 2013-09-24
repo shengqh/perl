@@ -615,7 +615,7 @@ foreach my $def (@defs) {
       },
     },
 
-    #1 mismatch
+    #1 mismatch notidentical search
     cutadapt_len_fake => {
       class      => "Cutadapt",
       perform    => 0,
@@ -648,6 +648,8 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+
+    #1 mismatch identical search
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
       perform       => 0,
