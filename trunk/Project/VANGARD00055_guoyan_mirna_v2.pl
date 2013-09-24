@@ -109,6 +109,35 @@ my $hsammu_gffs      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v
 my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $rat = {
+  notidentical_search =>{
+    "2516-01"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-1_1.fastq"],
+    "2516-02"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-2_1.fastq"],
+    "2516-03"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-3_1.fastq"],
+    "2516-04"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-4_1.fastq"],
+    "2516-05"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-5_1.fastq"],
+    "2516-06"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-6_1.fastq"],
+    "2516-07"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-7_1.fastq"],
+    "2516-08"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-8_1.fastq"],
+    "2516-09"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-9_1.fastq"],
+    "2570-01"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-1_1.fastq.gz"],
+    "2570-02"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-2_1.fastq.gz"],
+    "2570-03"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-3_1.fastq.gz"],
+    "2570-04"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-4_1.fastq.gz"],
+    "2570-05"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-5_1.fastq.gz"],
+    "2570-06"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-6_1.fastq.gz"],
+    "2570-07"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-7_1.fastq.gz"],
+    "2570-08"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-8_1.fastq.gz"],
+    "2570-09"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-9_1.fastq.gz"],
+    "2570-10"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-10_1.fastq.gz"],
+    "2570-11"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-11_1.fastq.gz"],
+    "2570-12"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-12_1.fastq.gz"],
+    "2570-13"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-13_1.fastq.gz"],
+    "2570-14"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-14_1.fastq.gz"],
+    "2570-15"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-15_1.fastq.gz"],
+    "2570-16"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-16_1.fastq.gz"],
+    "2570-17"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-17_1.fastq.gz"],
+    "2570-18"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-18_1.fastq.gz"],
+  },
   source => {
     "2516-01"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-1_1.fastq"],
     "2516-02"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-2_1.fastq"],
@@ -204,6 +233,17 @@ my $rat = {
   task_name       => $task_name . "_rat",
 };
 my $human = {
+  notidentical_search =>{
+    "2570-KCV-01-19"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant1_GTGAAA_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-20"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant2_GTGGCC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-21"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant3_GTTTCG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-22"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant4_CGTACG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-23"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl1_GAGTGG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-24"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl2_GGTAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-25"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl3_ACTGAT_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-26"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-27"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
+  },
   source => {
     "2516-10"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-10_1.fastq"],
     "2516-11"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-11_1.fastq"],
@@ -387,6 +427,17 @@ my $human = {
 };
 
 my $mouse = {
+  notidentical_search =>{
+    "2570-KCV-01-19"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant1_GTGAAA_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-20"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant2_GTGGCC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-21"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant3_GTTTCG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-22"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant4_CGTACG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-23"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl1_GAGTGG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-24"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl2_GGTAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-25"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl3_ACTGAT_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-26"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-27"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
+  },
   source => {
     "2570-KCV-01-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant1_GTGAAA_L003_R1_001.fastq.gz"],
     "2570-KCV-01-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant2_GTGGCC_L003_R1_001.fastq.gz"],
@@ -565,12 +616,28 @@ foreach my $def (@defs) {
     },
 
     #1 mismatch
-    bowtie1_genome_cutadapt_topN_1mm_unidentical => {
+    cutadapt_len_fake => {
+      class      => "Cutadapt",
+      perform    => 0,
+      target_dir => "${target_dir}/cutadapt_len",
+      option     => "-O 10 -m 12 -M 49",
+      source     => $def->{notidentical_search},
+      adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+      extension  => "_clipped.fastq",
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "24",
+        "mem"      => "20gb"
+      },
+    },
+    bowtie1_genome_cutadapt_topN_1mm_notidentical => {
       class         => "Bowtie1",
-      perform       => 0,
+      perform       => 1,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
-      source_ref    => "cutadapt_len",
+      source_ref    => "cutadapt_len_fake",
       bowtie1_index => $def->{bowtie1_index},
       samonly       => 0,
       sh_direct     => 0,
@@ -668,7 +735,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
       option     => "-o " . $def->{task_name} . "_miRNA.position",
       source_ref => "miRNA_1mm_count_overlap",
