@@ -513,14 +513,14 @@ my $mouse = {
 
 #my @defs = ( $rat, $human, $mouse );
 
-my @defs = ($rat);
+my @defs = ($human);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
     general  => { "task_name" => $def->{task_name}, },
     cutadapt => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10",
       source     => $def->{source},
@@ -536,7 +536,7 @@ foreach my $def (@defs) {
     },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
@@ -551,7 +551,7 @@ foreach my $def (@defs) {
     },
     cutadapt_len => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt_len",
       option     => "-O 10 -m 12 -M 49",
       source     => $def->{source},
@@ -567,7 +567,7 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/identical",
       option     => "",
       source_ref => "cutadapt_len",
@@ -585,7 +585,7 @@ foreach my $def (@defs) {
     #perfect match
     bowtie1_genome_cutadapt_topN_pm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm",
       option        => $bowtie1_option_pm,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -601,7 +601,7 @@ foreach my $def (@defs) {
     },
     miRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA_overlap",
       option          => $mirna_overlap_count_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_pm",
@@ -620,7 +620,7 @@ foreach my $def (@defs) {
     },
     miRNA_overlap_position_pm => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA_overlap_position",
       option     => "-o " . $def->{task_name} . "_miRNA.position",
       source_ref => "miRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm",
@@ -635,7 +635,7 @@ foreach my $def (@defs) {
     },
     tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_tRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_pm",
@@ -654,7 +654,7 @@ foreach my $def (@defs) {
     },
     tRNA_position_pm => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_tRNA_position",
       option     => "-o " . $def->{task_name} . "_tRNA.position",
       source_ref => "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm",
@@ -687,7 +687,7 @@ foreach my $def (@defs) {
     },
     bowtie1_genome_cutadapt_topN_1mm_notidentical => {
       class         => "Bowtie1",
-      perform       => 0,
+      perform       => 1,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
       source_ref    => "cutadapt_len_fake",
@@ -704,7 +704,7 @@ foreach my $def (@defs) {
     #1 mismatch notidentical search
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -720,7 +720,7 @@ foreach my $def (@defs) {
     },
     mirna_1mm_count => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -740,7 +740,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_table => {
       class      => "CQSMirnaTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_miRNA",
       option     => "-o " . $def->{task_name} . "_miRNA.count",
       source_ref => "mirna_1mm_count",
@@ -755,7 +755,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_count_overlap => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
       option          => $mirna_overlap_count_option,
       source_ref      => "mirna_1mm_count",
@@ -774,7 +774,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_miRNA_overlap",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_miRNA_overlap.count",
       source_ref => "miRNA_1mm_count_overlap",
@@ -789,7 +789,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
       option     => "-o " . $def->{task_name} . "_miRNA.position",
       source_ref => "miRNA_1mm_count_overlap",
@@ -804,7 +804,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_count => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -823,7 +823,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_tRNA",
       option     => "-i 1 -v 2 -o " . $def->{task_name} . "_tRNA.count",
       source_ref => "tRNA_1mm_count",
@@ -838,7 +838,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
       option     => "-o " . $def->{task_name} . "_tRNA.position",
       source_ref => "tRNA_1mm_count",
