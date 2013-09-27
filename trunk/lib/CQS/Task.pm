@@ -24,4 +24,9 @@ sub result {
   return $result;
 }
 
+sub require {
+  my $result = [];
+  return $result;
+}
+
 1;
