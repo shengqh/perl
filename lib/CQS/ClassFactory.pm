@@ -61,7 +61,7 @@ sub performTrace {
   my $trace = {};
 
   foreach my $section ( keys %{$config} ) {
-    $trace->{$section} = [];
+    $trace->{$section} = ();
     my $cursection = $config->{$section};
     foreach my $key ( keys %{$cursection} ) {
       if ( $key =~ /_ref$/ ) {
