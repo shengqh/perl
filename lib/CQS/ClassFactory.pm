@@ -8,7 +8,7 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(instantiate performTask performConfig)] );
+our %EXPORT_TAGS = ( 'all' => [qw(instantiate performTask performConfig performTrace)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -44,12 +44,34 @@ sub performConfig {
         else {
           $perform = $config->{$section}{perform};
         }
-        
+
         if ( defined $perform && $perform ) {
           print "Preforming $section by $classname \n";
           my $obj = instantiate($classname);
           $obj->perform( $config, $section );
         }
+      }
+    }
+  }
+}
+
+sub performTrace {
+  my ( $config, $pattern, $force ) = @_;
+
+  my $trace = {};
+
+  foreach my $section ( keys %{$config} ) {
+    $trace->{$section} = [];
+    my $cursection = $config->{$section};
+    foreach my $key ( keys %{$cursection} ) {
+      if ( $key =~ /_ref$/ ) {
+        my $refSectionName = $cursection->{$key};
+        if ( ref($refSectionName) eq 'ARRAY' ) {
+          my @parts = @{$refSectionName};
+          $refSectionName = $parts[0];
+        }
+        push( $trace->{$section}, $refSectionName );
+        print "$section require $refSectionName"
       }
     }
   }
