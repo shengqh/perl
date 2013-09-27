@@ -61,6 +61,11 @@ $path_file
 
 cd $resultDir
 
+if [ -s $finalFile ]; then
+  echo job has already been done. if you want to do again, delete ${resultDir}/${finalFile} and submit job again.
+  exit 1;
+fi
+
 mono-sgen $cqstools fastq_len -i $sampleFile -o $finalFile
 
 echo finished=`date`
