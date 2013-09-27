@@ -109,49 +109,47 @@ my $hsammu_gffs      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v
 my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $rat = {
-  notidentical_search =>{
-    "2516-01"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-1_1.fastq"],
-    "2516-02"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-2_1.fastq"],
-    "2516-03"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-3_1.fastq"],
-    "2516-04"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-4_1.fastq"],
-    "2516-05"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-5_1.fastq"],
-    "2516-06"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-6_1.fastq"],
-    "2516-07"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-7_1.fastq"],
-    "2516-08"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-8_1.fastq"],
-    "2516-09"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-9_1.fastq"],
-    "2570-01"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-1_1.fastq.gz"],
-    "2570-02"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-2_1.fastq.gz"],
-    "2570-03"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-3_1.fastq.gz"],
-    "2570-04"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-4_1.fastq.gz"],
-    "2570-05"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-5_1.fastq.gz"],
-    "2570-06"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-6_1.fastq.gz"],
-    "2570-07"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-7_1.fastq.gz"],
-    "2570-08"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-8_1.fastq.gz"],
-    "2570-09"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-9_1.fastq.gz"],
-    "2570-10"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-10_1.fastq.gz"],
-    "2570-11"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-11_1.fastq.gz"],
-    "2570-12"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-12_1.fastq.gz"],
-    "2570-13"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-13_1.fastq.gz"],
-    "2570-14"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-14_1.fastq.gz"],
-    "2570-15"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-15_1.fastq.gz"],
-    "2570-16"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-16_1.fastq.gz"],
-    "2570-17"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-17_1.fastq.gz"],
-    "2570-18"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-18_1.fastq.gz"],
+  notidentical_search => {
+    "2516-01" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-1_1.fastq"],
+    "2516-02" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-2_1.fastq"],
+    "2516-03" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-3_1.fastq"],
+    "2516-04" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-4_1.fastq"],
+    "2516-05" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-5_1.fastq"],
+    "2516-06" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-6_1.fastq"],
+    "2516-07" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-7_1.fastq"],
+    "2516-08" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-8_1.fastq"],
+    "2516-09" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-9_1.fastq"],
+    "2570-01" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-1_1.fastq.gz"],
+    "2570-02" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-2_1.fastq.gz"],
+    "2570-03" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-3_1.fastq.gz"],
+    "2570-04" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-4_1.fastq.gz"],
+    "2570-05" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-5_1.fastq.gz"],
+    "2570-06" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-6_1.fastq.gz"],
+    "2570-07" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-7_1.fastq.gz"],
+    "2570-08" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-8_1.fastq.gz"],
+    "2570-09" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-9_1.fastq.gz"],
+    "2570-10" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-10_1.fastq.gz"],
+    "2570-11" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-11_1.fastq.gz"],
+    "2570-12" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-12_1.fastq.gz"],
+    "2570-13" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-13_1.fastq.gz"],
+    "2570-14" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-14_1.fastq.gz"],
+    "2570-15" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-15_1.fastq.gz"],
+    "2570-16" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-16_1.fastq.gz"],
+    "2570-17" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-17_1.fastq.gz"],
+    "2570-18" => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-18_1.fastq.gz"],
   },
   source => {
-  "NIH_Rat_HDL_01" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_1_ATCACG_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_02" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_2_CGATGT_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_03" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_3_TTAGGC_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_04" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_4_TGACCA_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_05" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_5_ACAGTG_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_06" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_6_GCCAAT_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_07" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_7_CAGATC_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_08" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_8_ACTTGA_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_09" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_9_GATCAG_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_10" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_10_TAGCTT_L001_R1.fastq.gz"],
-  "NIH_Rat_HDL_11" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_11_GGCTAC_L001_R1.fastq.gz"],
-  },
-  source_old => {
+    "NIH_Rat_HDL_01"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_1_ATCACG_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_02"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_2_CGATGT_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_03"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_3_TTAGGC_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_04"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_4_TGACCA_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_05"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_5_ACAGTG_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_06"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_6_GCCAAT_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_07"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_7_CAGATC_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_08"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_8_ACTTGA_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_09"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_9_GATCAG_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_10"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_10_TAGCTT_L001_R1.fastq.gz"],
+    "NIH_Rat_HDL_11"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_11_GGCTAC_L001_R1.fastq.gz"],
     "2516-01"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-1_1.fastq"],
     "2516-02"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-2_1.fastq"],
     "2516-03"                   => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/2516-KCV-3_1.fastq"],
@@ -246,7 +244,7 @@ my $rat = {
   task_name       => $task_name . "_rat",
 };
 my $human = {
-  notidentical_search =>{
+  notidentical_search => {
     "2570-KCV-01-19"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant1_GTGAAA_L003_R1_001.fastq.gz"],
     "2570-KCV-01-20"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant2_GTGGCC_L003_R1_001.fastq.gz"],
     "2570-KCV-01-21"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant3_GTTTCG_L003_R1_001.fastq.gz"],
@@ -468,7 +466,6 @@ my $human = {
     "03-16-Pre_CAGATC"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-16-Pre_CAGATC_L005_R1_001.fastq.gz"],
     "03-17-Post_TAGCTT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Post_TAGCTT_L004_R1_001.fastq.gz"],
     "03-17-Pre_GATCAG"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Pre_GATCAG_L004_R1_001.fastq.gz"],
-
   },
   coordinate      => $hsa_gffs,
   trna_coordinate => $hsa_trna_gffs,
@@ -480,16 +477,16 @@ my $human = {
 };
 
 my $mouse = {
-  notidentical_search =>{
-    "2570-KCV-01-19"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant1_GTGAAA_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-20"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant2_GTGGCC_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-21"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant3_GTTTCG_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-22"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant4_CGTACG_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-23"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl1_GAGTGG_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-24"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl2_GGTAGC_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-25"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl3_ACTGAT_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-26"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
-    "2570-KCV-01-27"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
+  notidentical_search => {
+    "2570-KCV-01-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant1_GTGAAA_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant2_GTGGCC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant3_GTTTCG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant4_CGTACG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl1_GAGTGG_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl2_GGTAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl3_ACTGAT_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
+    "2570-KCV-01-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
   },
   source => {
     "2570-KCV-01-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna/data/VickersTemp/mouseLiverTransplant1_GTGAAA_L003_R1_001.fastq.gz"],
@@ -513,7 +510,7 @@ my $mouse = {
 
 #my @defs = ( $rat, $human, $mouse );
 
-my @defs = ($human);
+my @defs = ($rat);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
@@ -701,6 +698,7 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+
     #1 mismatch notidentical search
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
