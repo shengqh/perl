@@ -58,7 +58,7 @@ sub performConfig {
 sub performTrace {
   my ( $config, $pattern, $force ) = @_;
 
-  foreach my $section ( keys %{$config} ) {
+  foreach my $section ( sort keys %{$config} ) {
     my $cursection = $config->{$section};
     foreach my $key ( keys %{$cursection} ) {
       if ( $key =~ /_ref$/ ) {
