@@ -113,6 +113,7 @@ if [ -s $samFile ]; then
   samtools view -S -b $samFile | samtools sort - $sampleName
   samtools index $bamFile 
   samtools flagstat $bamFile > ${bamFile}.stat 
+  rm $samFile
 fi
   
 echo finished=`date`
