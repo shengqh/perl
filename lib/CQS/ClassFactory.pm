@@ -67,7 +67,7 @@ sub performTrace {
           my @parts = @{$refSectionName};
           $refSectionName = $parts[0];
         }
-        print "$section require $refSectionName"
+        print "$section require $refSectionName \n";
       }
     }
   }
