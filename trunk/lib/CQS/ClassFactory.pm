@@ -58,10 +58,7 @@ sub performConfig {
 sub performTrace {
   my ( $config, $pattern, $force ) = @_;
 
-  my $trace = {};
-
   foreach my $section ( keys %{$config} ) {
-    $trace->{$section} = ();
     my $cursection = $config->{$section};
     foreach my $key ( keys %{$cursection} ) {
       if ( $key =~ /_ref$/ ) {
@@ -70,7 +67,6 @@ sub performTrace {
           my @parts = @{$refSectionName};
           $refSectionName = $parts[0];
         }
-        push( $trace->{$section}, $refSectionName );
         print "$section require $refSectionName"
       }
     }
