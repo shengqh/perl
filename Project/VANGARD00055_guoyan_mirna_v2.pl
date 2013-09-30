@@ -1058,8 +1058,8 @@ foreach my $def (@defs) {
 
   };
 
-  #performConfig($config);
-  performTrace($config);
+  performConfig($config);
+#  performTrace($config);
 }
 
 1;
