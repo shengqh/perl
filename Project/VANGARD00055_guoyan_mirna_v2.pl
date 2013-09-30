@@ -72,7 +72,7 @@ my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 my $mirnacount_option          = "-s";                                                #ignore score
 my $trnacount_option           = "-s";                                                #ignore score
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
-my $fasta_file                 = "/data/cqs/shengq1/reference/miRBase20/mature.fa";
+my $fasta_file                 = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
 #shrimp2 gmapper set mirna mode
 #static int
@@ -577,7 +577,7 @@ foreach my $def (@defs) {
     #1 mismatch notidentical search
     bowtie1_genome_cutadapt_topN_1mm_notidentical => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
       source_ref    => "cutadapt_len",
@@ -592,7 +592,7 @@ foreach my $def (@defs) {
       },
     },
 
-    #1 mismatch notidentical search
+    #1 mismatch search
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
       perform       => 0,
@@ -611,7 +611,7 @@ foreach my $def (@defs) {
     },
     mirna_1mm_count => {
       class           => "MirnaCount",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
