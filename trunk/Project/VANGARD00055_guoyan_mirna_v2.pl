@@ -512,9 +512,44 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    mirna_pm_count => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA",
+      option          => $mirnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_pm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{coordinate},
+      fasta_file      => $fasta_file,
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    miRNA_pm_table => {
+      class      => "CQSMirnaTable",
+      perform    => 1,
+      target_dir => "${target_dir}/summary_miRNA",
+      option     => "-o " . $def->{task_name} . "_pm_miRNA.count",
+      source_ref => "mirna_pm_count",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
     miRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA_overlap",
       option          => $mirna_overlap_count_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_pm",
@@ -549,7 +584,7 @@ foreach my $def (@defs) {
     },
     tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_tRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_pm",
@@ -620,7 +655,7 @@ foreach my $def (@defs) {
     },
     mirna_1mm_count => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -642,7 +677,7 @@ foreach my $def (@defs) {
       class      => "CQSMirnaTable",
       perform    => 0,
       target_dir => "${target_dir}/summary_miRNA",
-      option     => "-o " . $def->{task_name} . "_miRNA.count",
+      option     => "-o " . $def->{task_name} . "_1mm_miRNA.count",
       source_ref => "mirna_1mm_count",
       cqs_tools  => $cqstools,
       sh_direct  => 1,
@@ -655,7 +690,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_count_overlap => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
       option          => $mirna_overlap_count_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
