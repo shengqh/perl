@@ -69,10 +69,14 @@ my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 #my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
 my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
-my $mirnacount_option          = "-s";                                                #ignore score
-my $trnacount_option           = "-s";                                                #ignore score
+my $mirnacount_option          = "-s";                                                    #ignore score
+my $trnacount_option           = "-s";                                                    #ignore score
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $fasta_file                 = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
+
+my $trna_hg19_fasta = "/data/cqs/shengq1/reference/trna/hg19_tRNA.bed.fa";
+my $trna_mm10_fasta = "/data/cqs/shengq1/reference/trna/mm10_tRNA.bed.fa";
+my $trna_rn4_fasta  = "/data/cqs/shengq1/reference/trna/rn4_tRNA.bed.fa";
 
 #shrimp2 gmapper set mirna mode
 #static int
@@ -208,6 +212,7 @@ my $rat = {
   },
   coordinate      => $rno_gffs,
   trna_coordinate => $rno_trna_gffs,
+  trna_fasta      => $trna_rn4_fasta,
   bowtie1_index   => $bowtie1_rat_index,
   bowtie2_index   => $bowtie2_rat_index,
   shrimp2_index   => $shrimp2_rat_miRBase_index,
@@ -389,6 +394,7 @@ my $human = {
   },
   coordinate      => $hsa_gffs,
   trna_coordinate => $hsa_trna_gffs,
+  trna_fasta      => $trna_hg19_fasta,
   bowtie1_index   => $bowtie1_human_index,
   bowtie2_index   => $bowtie2_human_index,
   shrimp2_index   => $shrimp2_human_miRBase_index,
@@ -410,6 +416,7 @@ my $mouse = {
   },
   coordinate      => $mmu_gffs,
   trna_coordinate => $mmu_trna_gffs,
+  trna_fasta      => $trna_mm10_fasta,
   bowtie1_index   => $bowtie1_mouse_index,
   bowtie2_index   => $bowtie2_mouse_index,
   shrimp2_index   => $shrimp2_mouse_miRBase_index,
@@ -549,6 +556,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
       gff_file        => $def->{trna_coordinate},
+      fasta_file      => $def->{trna_fasta},
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
@@ -703,6 +711,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
       gff_file        => $def->{trna_coordinate},
+      fasta_file      => $def->{trna_fasta},
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
@@ -952,7 +961,8 @@ foreach my $def (@defs) {
   };
 
   performConfig($config);
-#  performTrace($config);
+
+  #  performTrace($config);
 }
 
 1;
