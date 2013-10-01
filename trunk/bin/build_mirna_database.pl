@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-chdir("/data/cqs/shengq1/reference/miRBase19");
+chdir("/data/cqs/shengq1/reference/miRBase20");
 
 my @dbs = ( "mature", "hairpin" );
 my @species = ( "hsa", "mmu", "rno" );
