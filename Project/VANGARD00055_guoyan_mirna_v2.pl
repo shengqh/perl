@@ -152,44 +152,6 @@ my $rat = {
     "2570-16"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-16_1.fastq.gz"],
     "2570-17"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-17_1.fastq.gz"],
     "2570-18"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-18_1.fastq.gz"],
-    "2261-ASK-102_1"            => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-102_1_sequence.txt.gz"],
-    "2261-ASK-103_1"            => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-103_1_sequence.txt.gz"],
-    "2261-ASK-57_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-57_1_sequence.txt.gz"],
-    "2261-ASK-59_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-59_1_sequence.txt.gz"],
-    "2261-ASK-61_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-61_1_sequence.txt.gz"],
-    "2261-ASK-62_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-62_1_sequence.txt.gz"],
-    "2261-ASK-63_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-63_1_sequence.txt.gz"],
-    "2261-ASK-66_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-66_1_sequence.txt.gz"],
-    "2261-ASK-68_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-68_1_sequence.txt.gz"],
-    "2261-ASK-71_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-71_1_sequence.txt.gz"],
-    "2261-ASK-82_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-82_1_sequence.txt.gz"],
-    "2261-ASK-93_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-93_1_sequence.txt.gz"],
-    "2261-ASK-94_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-94_1_sequence.txt.gz"],
-    "2261-ASK-95_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-95_1_sequence.txt.gz"],
-    "2261-ASK-96_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2261-ASK-96_1_sequence.txt.gz"],
-    "2288-RDB-54_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-54_1_sequence.txt.gz"],
-    "2288-RDB-55_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-55_1_sequence.txt.gz"],
-    "2288-RDB-56_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-56_1_sequence.txt.gz"],
-    "2288-RDB-57_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-57_1_sequence.txt.gz"],
-    "2288-RDB-58_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-58_1_sequence.txt.gz"],
-    "2288-RDB-59_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-59_1_sequence.txt.gz"],
-    "2288-RDB-60_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-60_1_sequence.txt.gz"],
-    "2288-RDB-61_1"             => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2288-RDB-61_1_sequence.txt.gz"],
-    "2634-SH-1_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2634-SH-1_1_sequence.txt.gz"],
-    "2634-SH-2_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2634-SH-2_1_sequence.txt.gz"],
-    "2634-SH-3_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2634-SH-3_1_sequence.txt.gz"],
-    "2634-SH-4_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2634-SH-4_1_sequence.txt.gz"],
-    "2634-SH-5_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2634-SH-5_1_sequence.txt.gz"],
-    "2634-SH-6_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2634-SH-6_1_sequence.txt.gz"],
-    "2646-ASK-1_1"              => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2646-ASK-1_1_sequence.txt.gz"],
-    "2646-ASK-2_1"              => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2646-ASK-2_1_sequence.txt.gz"],
-    "2646-ASK-3_1"              => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2646-ASK-3_1_sequence.txt.gz"],
-    "2646-ASK-4_1"              => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2646-ASK-4_1_sequence.txt.gz"],
-    "2646-ASK-5_1"              => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2646-ASK-5_1_sequence.txt.gz"],
-    "2661-AR-1_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2661-AR-1_1_sequence.txt.gz"],
-    "2661-AR-2_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2661-AR-2_1_sequence.txt.gz"],
-    "2661-AR-3_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2661-AR-3_1_sequence.txt.gz"],
-    "2661-AR-4_1"               => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/2661-AR-4_1_sequence.txt.gz"],
     "Colesevelam-3251.1_CGATGT" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3251.1_CGATGT_L003_R1_001.fastq.gz"],
     "Colesevelam-3251.2_ATCACG" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3251.2_ATCACG_L003_R1_001.fastq.gz"],
     "Colesevelam-3258.1_ACAGTG" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3258.1_ACAGTG_L003_R1_001.fastq.gz"],
@@ -433,7 +395,7 @@ my $human = {
       "2571-KCV-1-41", "2571-KCV-1-42", "2571-KCV-1-43", "2571-KCV-1-44", "2571-KCV-1-45", "2571-KCV-1-46", "2571-KCV-1-47", "2571-KCV-1-48"
     ],
     "RA"      => [ "2572-KCV-1-19", "2572-KCV-1-20", "2572-KCV-1-21", "2572-KCV-1-22", "2572-KCV-1-23", "2572-KCV-1-24" ],
-    "RA_2" => [ "2572-KCV-1-25", "2572-KCV-1-26", "2572-KCV-1-27", "2572-KCV-1-28", "2572-KCV-1-29", "2572-KCV-1-30" ],
+    "SLE" => [ "2572-KCV-1-25", "2572-KCV-1-26", "2572-KCV-1-27", "2572-KCV-1-28", "2572-KCV-1-29", "2572-KCV-1-30" ],
     "Nash"    => [
       "KCV2_1N2", "KCV2_1N3", "KCV2_1N4", "KCV2_1N5", "KCV2_1N6", "KCV2_2N1", "KCV2_2N2", "KCV2_2N3", "KCV2_2N4", "KCV2_2N5",
       "KCV3_1C2", "KCV3_1C3", "KCV3_1C4", "KCV3_1C5", "KCV3_1C6", "KCV3_2C1", "KCV3_2C2", "KCV3_2C3"
@@ -1053,7 +1015,7 @@ foreach my $def (@defs) {
 
   };
 
-  performConfig($config);
+  performConfig($config, , 1);
 
   #  performTrace($config);
 }
