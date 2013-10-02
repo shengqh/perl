@@ -218,7 +218,11 @@ my $rat = {
   shrimp2_index   => $shrimp2_rat_miRBase_index,
   target_dir      => $target_rat_dir,
   task_name       => $task_name . "_rat",
+  groups =>{
+    "NIH_Rat_HDL" => ["NIH_Rat_HDL_01", "NIH_Rat_HDL_02", "NIH_Rat_HDL_03", "NIH_Rat_HDL_04", "NIH_Rat_HDL_05", "NIH_Rat_HDL_06", "NIH_Rat_HDL_07", "NIH_Rat_HDL_08", "NIH_Rat_HDL_09", "NIH_Rat_HDL_10", "NIH_Rat_HDL_11"]
+  }
 };
+
 my $human = {
   source => {
     "2516-10"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/2516-KCV-10_1.fastq.gz"],
@@ -400,6 +404,9 @@ my $human = {
   shrimp2_index   => $shrimp2_human_miRBase_index,
   target_dir      => $target_human_dir,
   task_name       => $task_name . "_human",
+  groups =>{
+    "2570-KCV-01" => ["2570-KCV-01-19", "2570-KCV-01-20", "2570-KCV-01-21", "2570-KCV-01-22", "2570-KCV-01-23", "2570-KCV-01-24", "2570-KCV-01-25", "2570-KCV-01-26", "2570-KCV-01-27"]
+  }
 };
 
 my $mouse = {
@@ -422,6 +429,9 @@ my $mouse = {
   shrimp2_index   => $shrimp2_mouse_miRBase_index,
   target_dir      => $target_mouse_dir,
   task_name       => $task_name . "_mouse",
+  groups =>{
+    "2570-KCV-01" => ["2570-KCV-01-19", "2570-KCV-01-20", "2570-KCV-01-21", "2570-KCV-01-22", "2570-KCV-01-23", "2570-KCV-01-24", "2570-KCV-01-25", "2570-KCV-01-26", "2570-KCV-01-27"]
+  }
 };
 
 my @defs = ( $rat, $human, $mouse );
@@ -514,7 +524,7 @@ foreach my $def (@defs) {
     },
     mirna_pm_count => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_pm",
@@ -535,9 +545,10 @@ foreach my $def (@defs) {
     miRNA_pm_table => {
       class      => "CQSMirnaTable",
       perform    => 1,
-      target_dir => "${target_dir}/summary_miRNA",
-      option     => "-o " . $def->{task_name} . "_pm_miRNA.count",
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_count_miRNA_table",
+      option     => "",
       source_ref => "mirna_pm_count",
+      groups_ref => $def->{groups},
       cqs_tools  => $cqstools,
       sh_direct  => 1,
       pbs        => {
@@ -675,11 +686,12 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_table => {
       class      => "CQSMirnaTable",
-      perform    => 0,
-      target_dir => "${target_dir}/summary_miRNA",
-      option     => "-o " . $def->{task_name} . "_1mm_miRNA.count",
+      perform    => 1,
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table",
+      option     => "",
       source_ref => "mirna_1mm_count",
       cqs_tools  => $cqstools,
+      groups_ref => $def->{groups},
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
@@ -710,10 +722,11 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_table => {
       class      => "CQSMappedTable",
-      perform    => 0,
-      target_dir => "${target_dir}/summary_miRNA_overlap",
-      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_miRNA_overlap.count",
+      perform    => 1,
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_table",
+      option     => "",
       source_ref => "miRNA_1mm_count_overlap",
+      groups_ref => $def->{groups},
       cqs_tools  => $cqstools,
       sh_direct  => 1,
       pbs        => {
@@ -760,10 +773,11 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
-      perform    => 0,
-      target_dir => "${target_dir}/summary_tRNA",
-      option     => "-i 1 -v 2 -o " . $def->{task_name} . "_tRNA.count",
+      perform    => 1,
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_table",
+      option     => "",
       source_ref => "tRNA_1mm_count",
+      groups_ref => $def->{groups},
       cqs_tools  => $cqstools,
       sh_direct  => 1,
       pbs        => {
