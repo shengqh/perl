@@ -1015,7 +1015,7 @@ foreach my $def (@defs) {
 
   };
 
-  performConfig($config, , 1);
+  performConfig($config, "" , 1);
 
   #  performTrace($config);
 }
