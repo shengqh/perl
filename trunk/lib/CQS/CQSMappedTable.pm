@@ -50,7 +50,7 @@ cd $resultDir
     my $groups = get_raw_files( $config, $section, "groups" );
     for my $groupName ( sort keys %{$groups} ) {
       my @samples  = @{ $groups->{$groupName} };
-      my $filelist = $pbsDir . "/${prefix}${groupName}${suffix}_mt.filelist";
+      my $filelist = $pbsDir . "/${prefix}${task_name}_${groupName}${suffix}_mt.filelist";
       open( FL, ">$filelist" ) or die "Cannot create $filelist";
       for my $sampleName ( sort @samples ) {
         my @countFiles = @{ $rawFiles{$sampleName} };
@@ -58,7 +58,7 @@ cd $resultDir
         print FL $sampleName, "\t", $countFile, "\n";
       }
       close(FL);
-      my $newoption = $option . " -o ${prefix}${groupName}${suffix}.count";
+      my $newoption = $option . " -o ${prefix}${task_name}_${groupName}${suffix}.count";
       print SH "
 mono-sgen $cqsFile mapped_table $newoption -l $filelist
 ";
