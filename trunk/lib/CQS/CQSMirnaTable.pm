@@ -45,6 +45,11 @@ sub perform {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
+  my $suffix = $config->{$section}{suffix};
+  if ( !defined $suffix ) {
+    $suffix = "";
+  }
+
   my $shfile = $pbsDir . "/${task_name}_mt.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "
@@ -63,7 +68,8 @@ cd $resultDir
         print FL $sampleName, "\t", $countFile, "\n";
       }
       close(FL);
-      my ( $result, $newoption ) = get_result( $groupName, $option );
+
+      my $newoption = $option . " -o ${groupName}${suffix}.count";
       print SH "
 mono-sgen $cqsFile mirna_table $newoption -l $filelist
 ";
@@ -78,8 +84,7 @@ mono-sgen $cqsFile mirna_table $newoption -l $filelist
       print FL $sampleName, "\t", $countFile, "\n";
     }
     close(FL);
-    my ( $result, $newoption ) = get_result( $task_name, $option );
-
+    my $newoption = $option . " -o ${task_name}${suffix}.count";
     print SH "
 cd $resultDir
 
