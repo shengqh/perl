@@ -550,7 +550,7 @@ foreach my $def (@defs) {
       groups     => $def->{groups},
       cqs_tools  => $cqstools,
       sh_direct  => 1,
-      suffix     => "_miRNA_pm",
+      prefix     => "miRNA_pm_",
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
@@ -692,7 +692,7 @@ foreach my $def (@defs) {
       source_ref => "mirna_1mm_count",
       cqs_tools  => $cqstools,
       groups     => $def->{groups},
-      suffix     => "_miRNA_1mm",
+      prefix     => "miRNA_1mm_",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
@@ -729,7 +729,7 @@ foreach my $def (@defs) {
       source_ref => "miRNA_1mm_count_overlap",
       groups     => $def->{groups},
       cqs_tools  => $cqstools,
-      suffix     => "_miRNA_1mm_overlap",
+      prefix     => "miRNA_overlap_1mm_",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
@@ -781,7 +781,7 @@ foreach my $def (@defs) {
       source_ref => [ "tRNA_1mm_count", ".xml" ],
       groups     => $def->{groups},
       cqs_tools  => $cqstools,
-      suffix     => "_tRNA_1mm",
+      prefix     => "tRNA_1mm_",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
