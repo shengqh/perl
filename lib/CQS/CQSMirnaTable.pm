@@ -45,25 +45,47 @@ sub perform {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
-  my $filelist = $pbsDir . "/${task_name}_mt.filelist";
-  open( FL, ">$filelist" ) or die "Cannot create $filelist";
-  for my $sampleName ( sort keys %rawFiles ) {
-    my @bamFiles = @{ $rawFiles{$sampleName} };
-    my $bamFile  = $bamFiles[0];
-    print FL $sampleName, "\t", $bamFile, "\n";
-  }
-  close(FL);
-
-  my ( $result, $newoption ) = get_result( $task_name, $option );
-
   my $shfile = $pbsDir . "/${task_name}_mt.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "
 cd $resultDir
+";
+
+  if ( defined $config->{$section}{groups} || defined $config->{$section}{groups_ref} ) {
+    my $groups = get_raw_files( $config, $section, "groups" );
+    for my $groupName ( sort keys %{$groups} ) {
+      my @samples  = @{ $groups->{$groupName} };
+      my $filelist = $pbsDir . "/${groupName}_mt.filelist";
+      open( FL, ">$filelist" ) or die "Cannot create $filelist";
+      for my $sampleName ( sort @samples ) {
+        my @countFiles = @{ $rawFiles{$sampleName} };
+        my $countFile  = $countFiles[0];
+        print FL $sampleName, "\t", $countFile, "\n";
+      }
+      close(FL);
+      my ( $result, $newoption ) = get_result( $groupName, $option );
+      print SH "
+mono-sgen $cqsFile mirna_table $newoption -l $filelist
+";
+    }
+  }
+  else {
+    my $filelist = $pbsDir . "/${task_name}_mt.filelist";
+    open( FL, ">$filelist" ) or die "Cannot create $filelist";
+    for my $sampleName ( sort keys %rawFiles ) {
+      my @countFiles = @{ $rawFiles{$sampleName} };
+      my $countFile  = $countFiles[0];
+      print FL $sampleName, "\t", $countFile, "\n";
+    }
+    close(FL);
+    my ( $result, $newoption ) = get_result( $task_name, $option );
+
+    print SH "
+cd $resultDir
 
 mono-sgen $cqsFile mirna_table $newoption -l $filelist
 ";
-
+  }
   close SH;
 
   print "!!!shell file $shfile created, you can run this shell file to run CQSMirnaTable task.\n";
