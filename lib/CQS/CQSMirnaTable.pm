@@ -22,20 +22,6 @@ sub new {
   return $self;
 }
 
-sub get_result {
-  my ( $task_name, $option ) = @_;
-
-  my $result;
-  if ( $option =~ /-o\s+(\S+)/ ) {
-    $result = $1;
-  }
-  else {
-    $result = $task_name . ".count";
-    $option = $option . " -o " . $result;
-  }
-  return ( $result, $option );
-}
-
 sub perform {
   my ( $self, $config, $section ) = @_;
 
@@ -45,12 +31,17 @@ sub perform {
 
   my %rawFiles = %{ get_raw_files( $config, $section ) };
 
+  my $prefix = $config->{$section}{prefix};
+  if ( !defined $prefix ) {
+    $prefix = "";
+  }
+
   my $suffix = $config->{$section}{suffix};
   if ( !defined $suffix ) {
     $suffix = "";
   }
 
-  my $shfile = $pbsDir . "/${task_name}_mt.sh";
+  my $shfile = $pbsDir . "/${prefix}${task_name}${suffix}_mt.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
   print SH "
 cd $resultDir
@@ -69,7 +60,7 @@ cd $resultDir
       }
       close(FL);
 
-      my $newoption = $option . " -o ${groupName}${suffix}.count";
+      my $newoption = $option . " -o ${prefix}${groupName}${suffix}.count";
       print SH "
 mono-sgen $cqsFile mirna_table $newoption -l $filelist
 ";
@@ -84,7 +75,7 @@ mono-sgen $cqsFile mirna_table $newoption -l $filelist
       print FL $sampleName, "\t", $countFile, "\n";
     }
     close(FL);
-    my $newoption = $option . " -o ${task_name}${suffix}.count";
+    my $newoption = $option . " -o ${prefix}${task_name}${suffix}.count";
     print SH "
 cd $resultDir
 
