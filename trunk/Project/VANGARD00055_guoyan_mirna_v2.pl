@@ -219,12 +219,40 @@ my $rat = {
   target_dir      => $target_rat_dir,
   task_name       => $task_name . "_rat",
   groups          => {
+    "Rat_Islets_diabetes" => [ "2516-01", "2516-02", "2516-03", "2516-04", "2516-05", "2516-06", "2516-07", "2516-08", "2516-09" ],
+    "Rat_Liver_diabetes"  => [
+      "2570-01", "2570-02", "2570-03", "2570-04", "2570-05", "2570-06", "2570-07", "2570-08", "2570-09", "2570-10",
+      "2570-11", "2570-12", "2570-13", "2570-14", "2570-15", "2570-16", "2570-17", "2570-18"
+    ],
+    "Rat_HDL_diabetes" => [
+      "Colesevelam-3251.1_CGATGT",
+      "Colesevelam-3251.2_ATCACG",
+      "Colesevelam-3258.1_ACAGTG",
+      "Colesevelam-3258.2_TGACCA",
+      "Colesevelam-3269.1_GCCAAT",
+      "Colesevelam-3269.2_TTAGGC",
+      "Lean-3183.1_GATCAG",
+      "Lean-3185.1_CAGATC",
+      "Lean-3185.2_ACTTGA",
+      "Lean-KR-4073.1_TAGCTT",
+      "Lean-KR-4073.2_CTTGTA",
+      "Lean-KR-4074.2_AGTCAA",
+      "Lean-KR-4074.3_GGCTAC",
+      "Vehicle-3259.1_CCGTCC",
+      "Vehicle-3259.2_ATGTCA",
+      "Vehicle-3263.1_GTGAAA",
+      "Vehicle-3263.2_AGTTCC",
+      "Vehicle-3271.1_GTCCGC",
+      "Vehicle-3271.2_GTAGAG"
+    ],
     "NIH_Rat_HDL" => [
       "NIH_Rat_HDL_01", "NIH_Rat_HDL_02", "NIH_Rat_HDL_03", "NIH_Rat_HDL_04", "NIH_Rat_HDL_05", "NIH_Rat_HDL_06",
       "NIH_Rat_HDL_07", "NIH_Rat_HDL_08", "NIH_Rat_HDL_09", "NIH_Rat_HDL_10", "NIH_Rat_HDL_11"
     ]
   }
 };
+
+my $transplant = [ "2570-KCV-01-19", "2570-KCV-01-20", "2570-KCV-01-21", "2570-KCV-01-22", "2570-KCV-01-23", "2570-KCV-01-24", "2570-KCV-01-25", "2570-KCV-01-26", "2570-KCV-01-27" ];
 
 my $human = {
   source => {
@@ -407,7 +435,34 @@ my $human = {
   shrimp2_index   => $shrimp2_human_miRBase_index,
   target_dir      => $target_human_dir,
   task_name       => $task_name . "_human",
-  groups => { "2570-KCV-01" => [ "2570-KCV-01-19", "2570-KCV-01-20", "2570-KCV-01-21", "2570-KCV-01-22", "2570-KCV-01-23", "2570-KCV-01-24", "2570-KCV-01-25", "2570-KCV-01-26", "2570-KCV-01-27" ] }
+  groups          => {
+    "Human_HDL_N3" =>
+      [ "2516-10", "2516-11", "2516-12", "2516-13", "2516-14", "2516-15", "2516-16", "2516-17", "2516-18", "2516-19", "2516-20", "2516-21", "2516-22", "2516-23", "2516-24", "2516-47", "2516-48" ],
+    "CKD_HDL_1" => [
+      "2516-25", "2516-26", "2516-27", "2516-28", "2516-29", "2516-30", "2516-31", "2516-32", "2516-33", "2516-34", "2516-35", "2516-36",
+      "2516-37", "2516-38", "2516-39", "2516-40", "2516-41", "2516-42", "2516-43", "2516-44", "2516-45", "2516-46"
+    ],
+    "TransplantLiver" => $transplant,
+    "CKD_HDL_2"       => [
+      "2571-KCV-1-31", "2571-KCV-1-32", "2571-KCV-1-33", "2571-KCV-1-34", "2571-KCV-1-35", "2571-KCV-1-36", "2571-KCV-1-37", "2571-KCV-1-38", "2571-KCV-1-39", "2571-KCV-1-40",
+      "2571-KCV-1-41", "2571-KCV-1-42", "2571-KCV-1-43", "2571-KCV-1-44", "2571-KCV-1-45", "2571-KCV-1-46", "2571-KCV-1-47", "2571-KCV-1-48"
+    ],
+    "RA" => [ "2572-KCV-1-19", "2572-KCV-1-20", "2572-KCV-1-21", "2572-KCV-1-22", "2572-KCV-1-23", "2572-KCV-1-24" ],
+
+    "RA_2" => [ "2572-KCV-1-25", "2572-KCV-1-26", "2572-KCV-1-27", "2572-KCV-1-28", "2572-KCV-1-29", "2572-KCV-1-30" ],
+    "Nash" => [
+      "KCV2_1N2", "KCV2_1N3", "KCV2_1N4", "KCV2_1N5", "KCV2_1N6", "KCV2_2N1", "KCV2_2N2", "KCV2_2N3", "KCV2_2N4", "KCV2_2N5",
+      "KCV3_1C2", "KCV3_1C3", "KCV3_1C4", "KCV3_1C5", "KCV3_1C6", "KCV3_2C1", "KCV3_2C2", "KCV3_2C3"
+    ],
+    "Plasma_fractions" => [ "Sample1", "Sample2", "Sample3", "Sample4", "Sample5", ],
+    "Human_HDL_N10"    => [
+      "01-018-Post_CTTGTA", "01-018-Pre_GGCTAC", "01-031-Post_GGTAGC", "01-031-Pre_GAGTGG", "01-061-Post_ATGAGC", "01-061-Pre_ACTGAT", "01-28-Post_CGATGT",  "01-28-Pre_ATCACG",
+      "01-29-Pre_TGACCA",   "01-29-Pre_TTAGGC",  "01-36-Post_GCCAAT",  "01-36-Pre_ACAGTG",  "03-007-Post_CAAAAG", "03-007-Pre_ATTCCT", "03-011-Post_CACCGG", "03-011-Pre_CAACTA",
+      "03-015-Post_CACTCA", "03-015-Pre_CACGAT", "03-018-Post_CGTACG", "03-018-Pre_GTTTCG", "03-026-Post_AGTTCC", "03-026-Pre_AGTCAA", "03-031-Post_CATGGC", "03-031-Pre_CAGGCG",
+      "03-033-Post_CCAACA", "03-033-Pre_CATTTT", "03-036-Post_CCGTCC", "03-036-Pre_ATGTCA", "03-047-Post_CTAGCT", "03-047-Pre_CGGAAT", "03-049-Post_CTCAGA", "03-049-Pre_CTATAC",
+      "03-063-Post_GTGGCC", "03-063-Pre_GTGAAA", "03-065-Post_GTCCGC", "03-065-Pre_GTAGAG", "03-16-Post_ACTTGA",  "03-16-Pre_CAGATC",  "03-17-Post_TAGCTT",  "03-17-Pre_GATCAG"
+    ],
+  }
 };
 
 my $mouse = {
@@ -430,7 +485,7 @@ my $mouse = {
   shrimp2_index   => $shrimp2_mouse_miRBase_index,
   target_dir      => $target_mouse_dir,
   task_name       => $task_name . "_mouse",
-  groups => { "2570-KCV-01" => [ "2570-KCV-01-19", "2570-KCV-01-20", "2570-KCV-01-21", "2570-KCV-01-22", "2570-KCV-01-23", "2570-KCV-01-24", "2570-KCV-01-25", "2570-KCV-01-26", "2570-KCV-01-27" ] }
+  groups          => { "TransplantLiver" => $transplant }
 };
 
 my @defs = ( $rat, $human, $mouse );
