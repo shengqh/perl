@@ -225,24 +225,9 @@ my $rat = {
       "2570-11", "2570-12", "2570-13", "2570-14", "2570-15", "2570-16", "2570-17", "2570-18"
     ],
     "Rat_HDL_diabetes" => [
-      "Colesevelam-3251.1_CGATGT",
-      "Colesevelam-3251.2_ATCACG",
-      "Colesevelam-3258.1_ACAGTG",
-      "Colesevelam-3258.2_TGACCA",
-      "Colesevelam-3269.1_GCCAAT",
-      "Colesevelam-3269.2_TTAGGC",
-      "Lean-3183.1_GATCAG",
-      "Lean-3185.1_CAGATC",
-      "Lean-3185.2_ACTTGA",
-      "Lean-KR-4073.1_TAGCTT",
-      "Lean-KR-4073.2_CTTGTA",
-      "Lean-KR-4074.2_AGTCAA",
-      "Lean-KR-4074.3_GGCTAC",
-      "Vehicle-3259.1_CCGTCC",
-      "Vehicle-3259.2_ATGTCA",
-      "Vehicle-3263.1_GTGAAA",
-      "Vehicle-3263.2_AGTTCC",
-      "Vehicle-3271.1_GTCCGC",
+      "Colesevelam-3251.1_CGATGT", "Colesevelam-3251.2_ATCACG", "Colesevelam-3258.1_ACAGTG", "Colesevelam-3258.2_TGACCA", "Colesevelam-3269.1_GCCAAT", "Colesevelam-3269.2_TTAGGC",
+      "Lean-3183.1_GATCAG",        "Lean-3185.1_CAGATC",        "Lean-3185.2_ACTTGA",        "Lean-KR-4073.1_TAGCTT",     "Lean-KR-4073.2_CTTGTA",     "Lean-KR-4074.2_AGTCAA",
+      "Lean-KR-4074.3_GGCTAC",     "Vehicle-3259.1_CCGTCC",     "Vehicle-3259.2_ATGTCA",     "Vehicle-3263.1_GTGAAA",     "Vehicle-3263.2_AGTTCC",     "Vehicle-3271.1_GTCCGC",
       "Vehicle-3271.2_GTAGAG"
     ],
     "NIH_Rat_HDL" => [
@@ -447,10 +432,9 @@ my $human = {
       "2571-KCV-1-31", "2571-KCV-1-32", "2571-KCV-1-33", "2571-KCV-1-34", "2571-KCV-1-35", "2571-KCV-1-36", "2571-KCV-1-37", "2571-KCV-1-38", "2571-KCV-1-39", "2571-KCV-1-40",
       "2571-KCV-1-41", "2571-KCV-1-42", "2571-KCV-1-43", "2571-KCV-1-44", "2571-KCV-1-45", "2571-KCV-1-46", "2571-KCV-1-47", "2571-KCV-1-48"
     ],
-    "RA" => [ "2572-KCV-1-19", "2572-KCV-1-20", "2572-KCV-1-21", "2572-KCV-1-22", "2572-KCV-1-23", "2572-KCV-1-24" ],
-
+    "RA"      => [ "2572-KCV-1-19", "2572-KCV-1-20", "2572-KCV-1-21", "2572-KCV-1-22", "2572-KCV-1-23", "2572-KCV-1-24" ],
     "RA_2" => [ "2572-KCV-1-25", "2572-KCV-1-26", "2572-KCV-1-27", "2572-KCV-1-28", "2572-KCV-1-29", "2572-KCV-1-30" ],
-    "Nash" => [
+    "Nash"    => [
       "KCV2_1N2", "KCV2_1N3", "KCV2_1N4", "KCV2_1N5", "KCV2_1N6", "KCV2_2N1", "KCV2_2N2", "KCV2_2N3", "KCV2_2N4", "KCV2_2N5",
       "KCV3_1C2", "KCV3_1C3", "KCV3_1C4", "KCV3_1C5", "KCV3_1C6", "KCV3_2C1", "KCV3_2C2", "KCV3_2C3"
     ],
