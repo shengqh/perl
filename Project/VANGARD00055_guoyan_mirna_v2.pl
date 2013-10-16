@@ -1038,7 +1038,7 @@ foreach my $def (@defs) {
   #  performConfig($config, "" , 1);
   performConfig($config);
 
-  if ( $config == $human ) {
+  if ( $def == $human ) {
     performTask( $config, "smallRNA_1mm_count" );
   }
 
