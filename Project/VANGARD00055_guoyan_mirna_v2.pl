@@ -374,15 +374,16 @@ my $human = {
     "03-17-Post_TAGCTT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Post_TAGCTT_L004_R1_001.fastq.gz"],
     "03-17-Pre_GATCAG"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Pre_GATCAG_L004_R1_001.fastq.gz"],
   },
-  coordinate      => $hsa_gffs,
-  trna_coordinate => $hsa_trna_gffs,
-  trna_fasta      => $trna_hg19_fasta,
-  bowtie1_index   => $bowtie1_human_index,
-  bowtie2_index   => $bowtie2_human_index,
-  shrimp2_index   => $shrimp2_human_miRBase_index,
-  target_dir      => $target_human_dir,
-  task_name       => $task_name . "_human",
-  groups          => {
+  coordinate          => $hsa_gffs,
+  trna_coordinate     => $hsa_trna_gffs,
+  trna_fasta          => $trna_hg19_fasta,
+  smallrna_coordinate => "/data/cqs/shengq1/reference/hg19/smallRNA/Homo_sapiens.GRCh37.73.smallRNA.bed",
+  bowtie1_index       => $bowtie1_human_index,
+  bowtie2_index       => $bowtie2_human_index,
+  shrimp2_index       => $shrimp2_human_miRBase_index,
+  target_dir          => $target_human_dir,
+  task_name           => $task_name . "_human",
+  groups              => {
     "Human_HDL_N3" =>
       [ "2516-10", "2516-11", "2516-12", "2516-13", "2516-14", "2516-15", "2516-16", "2516-17", "2516-18", "2516-19", "2516-20", "2516-21", "2516-22", "2516-23", "2516-24", "2516-47", "2516-48" ],
     "CKD_HDL_1" => [
@@ -394,9 +395,9 @@ my $human = {
       "2571-KCV-1-31", "2571-KCV-1-32", "2571-KCV-1-33", "2571-KCV-1-34", "2571-KCV-1-35", "2571-KCV-1-36", "2571-KCV-1-37", "2571-KCV-1-38", "2571-KCV-1-39", "2571-KCV-1-40",
       "2571-KCV-1-41", "2571-KCV-1-42", "2571-KCV-1-43", "2571-KCV-1-44", "2571-KCV-1-45", "2571-KCV-1-46", "2571-KCV-1-47", "2571-KCV-1-48"
     ],
-    "RA"      => [ "2572-KCV-1-19", "2572-KCV-1-20", "2572-KCV-1-21", "2572-KCV-1-22", "2572-KCV-1-23", "2572-KCV-1-24" ],
-    "SLE" => [ "2572-KCV-1-25", "2572-KCV-1-26", "2572-KCV-1-27", "2572-KCV-1-28", "2572-KCV-1-29", "2572-KCV-1-30" ],
-    "Nash"    => [
+    "RA"   => [ "2572-KCV-1-19", "2572-KCV-1-20", "2572-KCV-1-21", "2572-KCV-1-22", "2572-KCV-1-23", "2572-KCV-1-24" ],
+    "SLE"  => [ "2572-KCV-1-25", "2572-KCV-1-26", "2572-KCV-1-27", "2572-KCV-1-28", "2572-KCV-1-29", "2572-KCV-1-30" ],
+    "Nash" => [
       "KCV2_1N2", "KCV2_1N3", "KCV2_1N4", "KCV2_1N5", "KCV2_1N6", "KCV2_2N1", "KCV2_2N2", "KCV2_2N3", "KCV2_2N4", "KCV2_2N5",
       "KCV3_1C2", "KCV3_1C3", "KCV3_1C4", "KCV3_1C5", "KCV3_1C6", "KCV3_2C1", "KCV3_2C2", "KCV3_2C3"
     ],
@@ -544,7 +545,7 @@ foreach my $def (@defs) {
     },
     miRNA_pm_table => {
       class      => "CQSMirnaTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_pm",
       option     => "",
       source_ref => "mirna_pm_count",
@@ -687,7 +688,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_table => {
       class      => "CQSMirnaTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_1mm",
       option     => "",
       source_ref => "mirna_1mm_count",
@@ -724,7 +725,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_1mm_overlap",
       option     => "",
       source_ref => "miRNA_1mm_count_overlap",
@@ -774,9 +775,28 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    smallRNA_1mm_count => {
+      class           => "CQSMappedCount",
+      perform         => 0,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
+      option          => $trnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{smallrna_coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary",
       option     => "",
       source_ref => [ "tRNA_1mm_count", ".xml" ],
@@ -1015,8 +1035,12 @@ foreach my $def (@defs) {
 
   };
 
-#  performConfig($config, "" , 1);
+  #  performConfig($config, "" , 1);
   performConfig($config);
+
+  if ( $config == $human ) {
+    performTask( $config, "smallRNA_1mm_count" );
+  }
 
   #  performTrace($config);
 }
