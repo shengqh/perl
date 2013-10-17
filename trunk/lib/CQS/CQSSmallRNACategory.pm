@@ -53,8 +53,6 @@ sub perform {
       $mirnaoption = "-m \"$mirna\"";
     }
 
-    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
-
     my $pbsName = "${sampleName}_cat.pbs";
     my $pbsFile = "${pbsDir}/$pbsName";
     
@@ -71,7 +69,7 @@ sub perform {
 
 $path_file
 
-cd $curDir
+cd $resultDir
 
 if [ -s $countFile ]; then
   echo job has already been done. if you want to do again, delete $countFile and submit job again.
@@ -111,9 +109,7 @@ sub result {
 
   my $result = {};
   for my $sampleName ( keys %rawFiles ) {
-    my $curDir = $resultDir . "/$sampleName";
-
-    my $countFile = "${curDir}/${sampleName}.catcount";
+    my $countFile = "${resultDir}/${sampleName}.catcount";
 
     my @resultFiles = ();
     push( @resultFiles, $countFile );
