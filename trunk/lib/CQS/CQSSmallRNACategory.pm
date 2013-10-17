@@ -36,6 +36,15 @@ sub perform {
     %miRNAFiles = %{ get_raw_files( $config, $section, "mirna_count" ) };
     $hasMiRNA  =1;
   }
+  
+  my $ispdf = $config->{$section}{pdfgraph};
+  if(!defined $ispdf){
+    $ispdf = 0;
+  }
+  my $pdfoption = "";
+  if($ispdf){
+    $pdfoption = "--pdf";
+  }
 
   my $shfile = $pbsDir . "/${task_name}_cat.sh";
   open( SH, ">$shfile" ) or die "Cannot create $shfile";
@@ -78,7 +87,7 @@ fi
 
 echo CQSSmallRNACategory=`date` 
 
-mono-sgen $cqsFile smallrna_category $option $mirnaoption $smallrnaoption -o $countFile
+mono-sgen $cqsFile smallrna_category $option $mirnaoption $smallrnaoption -o $countFile $pdfoption
 
 echo finished=`date`
 
