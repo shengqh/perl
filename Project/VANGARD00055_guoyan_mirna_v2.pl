@@ -172,15 +172,16 @@ my $rat = {
     "Vehicle-3271.1_GTCCGC"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.1_GTCCGC_L003_R1_001.fastq.gz"],
     "Vehicle-3271.2_GTAGAG"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.2_GTAGAG_L003_R1_001.fastq.gz"],
   },
-  coordinate      => $rno_gffs,
-  trna_coordinate => $rno_trna_gffs,
-  trna_fasta      => $trna_rn4_fasta,
-  bowtie1_index   => $bowtie1_rat_index,
-  bowtie2_index   => $bowtie2_rat_index,
-  shrimp2_index   => $shrimp2_rat_miRBase_index,
-  target_dir      => $target_rat_dir,
-  task_name       => $task_name . "_rat",
-  groups          => {
+  coordinate          => $rno_gffs,
+  trna_coordinate     => $rno_trna_gffs,
+  trna_fasta          => $trna_rn4_fasta,
+  smallrna_coordinate => "/gpfs21/scratch/cqs/shengq1/references/smallrna/Rattus_norvegicus.RGSC3.4.69.smallRNA.bed",
+  bowtie1_index       => $bowtie1_rat_index,
+  bowtie2_index       => $bowtie2_rat_index,
+  shrimp2_index       => $shrimp2_rat_miRBase_index,
+  target_dir          => $target_rat_dir,
+  task_name           => $task_name . "_rat",
+  groups              => {
     "Rat_Islets_diabetes" => [ "2516-01", "2516-02", "2516-03", "2516-04", "2516-05", "2516-06", "2516-07", "2516-08", "2516-09" ],
     "Rat_Liver_diabetes"  => [
       "2570-01", "2570-02", "2570-03", "2570-04", "2570-05", "2570-06", "2570-07", "2570-08", "2570-09", "2570-10",
@@ -377,7 +378,7 @@ my $human = {
   coordinate          => $hsa_gffs,
   trna_coordinate     => $hsa_trna_gffs,
   trna_fasta          => $trna_hg19_fasta,
-  smallrna_coordinate => "/data/cqs/shengq1/reference/hg19/smallRNA/Homo_sapiens.GRCh37.73.smallRNA.bed",
+  smallrna_coordinate => "/gpfs21/scratch/cqs/shengq1/references/smallrna/Homo_sapiens.GRCh37.73.smallRNA.bed",
   bowtie1_index       => $bowtie1_human_index,
   bowtie2_index       => $bowtie2_human_index,
   shrimp2_index       => $shrimp2_human_miRBase_index,
@@ -424,15 +425,16 @@ my $mouse = {
     "2570-KCV-01-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
     "2570-KCV-01-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
   },
-  coordinate      => $mmu_gffs,
-  trna_coordinate => $mmu_trna_gffs,
-  trna_fasta      => $trna_mm10_fasta,
-  bowtie1_index   => $bowtie1_mouse_index,
-  bowtie2_index   => $bowtie2_mouse_index,
-  shrimp2_index   => $shrimp2_mouse_miRBase_index,
-  target_dir      => $target_mouse_dir,
-  task_name       => $task_name . "_mouse",
-  groups          => { "TransplantLiver" => $transplant }
+  coordinate          => $mmu_gffs,
+  trna_coordinate     => $mmu_trna_gffs,
+  trna_fasta          => $trna_mm10_fasta,
+  smallrna_coordinate => "/gpfs21/scratch/cqs/shengq1/references/smallrna/Mus_musculus.GRCm38.73.smallRNA.bed",
+  bowtie1_index       => $bowtie1_mouse_index,
+  bowtie2_index       => $bowtie2_mouse_index,
+  shrimp2_index       => $shrimp2_mouse_miRBase_index,
+  target_dir          => $target_mouse_dir,
+  task_name           => $task_name . "_mouse",
+  groups              => { "TransplantLiver" => $transplant }
 };
 
 my @defs = ( $rat, $human, $mouse );
@@ -809,7 +811,7 @@ foreach my $def (@defs) {
     },
     smallRNA_1mm_count => {
       class           => "CQSMappedCount",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -828,11 +830,11 @@ foreach my $def (@defs) {
     },
     smallRNA_1mm_category => {
       class           => "CQSSmallRNACategory",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category",
       option          => "",
-      source_ref      => ["smallRNA_1mm_count", ".mapped.xml\$"],
-      mirna_count_ref => ["mirna_1mm_count", ".mapped.xml\$"],
+      source_ref      => [ "smallRNA_1mm_count", ".mapped.xml\$" ],
+      mirna_count_ref => [ "mirna_1mm_count", ".mapped.xml\$" ],
       cqs_tools       => $cqstools,
       sh_direct       => 1,
       pbs             => {
@@ -842,7 +844,6 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    
 
     #    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_miRNA => {
     #      class        => "CQSPileup",
@@ -1056,8 +1057,9 @@ foreach my $def (@defs) {
   performConfig($config);
 
   if ( $def == $human ) {
-#    performTask( $config, "smallRNA_1mm_count" );
-    performTask( $config, "smallRNA_1mm_category" );
+
+    # performTask( $config, "smallRNA_1mm_count" );
+    # performTask( $config, "smallRNA_1mm_category" );
   }
 
   #  performTrace($config);
