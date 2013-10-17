@@ -775,25 +775,6 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    smallRNA_1mm_count => {
-      class           => "CQSMappedCount",
-      perform         => 0,
-      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
-      option          => $trnacount_option,
-      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
-      fastq_files_ref => "identical",
-      seqcount_ref    => [ "identical", ".dupcount\$" ],
-      cqs_tools       => $cqstools,
-      gff_file        => $def->{smallrna_coordinate},
-      samtools        => $samtools,
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
       perform    => 0,
@@ -826,6 +807,42 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
+    smallRNA_1mm_count => {
+      class           => "CQSMappedCount",
+      perform         => 0,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
+      option          => $trnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{smallrna_coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    smallRNA_1mm_category => {
+      class           => "CQSSmallRNACategory",
+      perform         => 0,
+      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category",
+      option          => "",
+      source_ref      => "smallRNA_1mm_count",
+      mirna_count_ref => "mirna_1mm_count",
+      cqs_tools       => $cqstools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    
 
     #    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_miRNA => {
     #      class        => "CQSPileup",
@@ -1039,7 +1056,8 @@ foreach my $def (@defs) {
   performConfig($config);
 
   if ( $def == $human ) {
-    performTask( $config, "smallRNA_1mm_count" );
+#    performTask( $config, "smallRNA_1mm_count" );
+    performTask( $config, "smallRNA_1mm_category" );
   }
 
   #  performTrace($config);
