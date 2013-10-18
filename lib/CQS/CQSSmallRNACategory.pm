@@ -87,7 +87,7 @@ cd $resultDir
 
 echo CQSSmallRNACategory=`date` 
 
-mono-sgen $cqsFile smallrna_group -l $filelist -o $resultDir
+mono-sgen $cqsFile smallrna_group -i $filelist -o $resultDir
 
 echo finished=`date`
 
