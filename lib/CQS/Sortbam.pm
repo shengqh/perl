@@ -44,7 +44,6 @@ sub perform {
     my $pbsFile = $pbsDir . "/$pbsName";
     my $log     = $logDir . "/${sampleName}_sort.log";
 
-    my $curDir = create_directory_or_die( $resultDir . "/$sampleName" );
     open( OUT, ">$pbsFile" ) or die $!;
 
     my $sortcmd;
@@ -68,10 +67,10 @@ samtools index $finalFile";
 
 $path_file
 
-cd $curDir 
+cd $resultDir 
 
 if [ -s $finalFile ]; then
-  echo job has already been done. if you want to do again, delete ${curDir}/${finalFile} and submit job again.
+  echo job has already been done. if you want to do again, delete ${resultDir}/${finalFile} and submit job again.
   exit 1;
 fi
 
@@ -113,7 +112,7 @@ sub result {
     }
 
     my @resultFiles = ();
-    push( @resultFiles, "${resultDir}/${sampleName}/${finalFile}" );
+    push( @resultFiles, "${resultDir}/${finalFile}" );
     $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
   return $result;
