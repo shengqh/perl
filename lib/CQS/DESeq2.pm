@@ -151,7 +151,7 @@ for(pairname in pairnames){
   rldselect<-rldmatrix[select,,drop=F]
   if(nrow(rldselect) > 2){
     png(filename=paste0(pairname, \".heatmap.png\"), width=3000, height =3000, res=300)
-    heatmap3(rldselect, col = hmcols, ColSideColors = pairColors, margins=c(12,2), scale=\"r\", dist=dist, labRow=\"\",
+    heatmap3(rldselect, col = hmcols, ColSideColors = pairColors, margins=c(12,5), scale=\"r\", dist=dist, labRow=\"\",
              legendfun=function() showLegend(legend=paste0(\"Group \", gnames),col=c(\"red\",\"blue\"),cex=1.5,x=\"center\"))
     dev.off()
   }
