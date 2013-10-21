@@ -13,6 +13,16 @@ use CQS::NGSCommon;
 
 our @ISA = qw(CQS::Task);
 
+my $directory;
+
+BEGIN {
+  use File::Spec::Functions qw(rel2abs);
+  use File::Basename qw(dirname);
+
+  my $path   = rel2abs( $0 );
+  $directory = dirname( $path );
+}
+
 sub new {
   my ($class) = @_;
   my $self = $class->SUPER::new();
@@ -25,6 +35,8 @@ sub perform {
   my ( $self, $config, $section ) = @_;
 
   my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
+
+  print ("directory=" . $directory . "\n");
 
   my $pairs = get_raw_files( $config, $section );
 
