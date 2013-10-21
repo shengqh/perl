@@ -34,10 +34,7 @@ sub perform {
 
   my $countfile = parse_param_file( $config, $section, "countfile", 1 );
   
-  use FindBin qw($Bin);
-  $directory = $Bin;
-  print $directory . "\n";
-  my $rtemplate = $directory . "/DESeq2.r";
+  my $rtemplate = dirname(__FILE__) . "/DESeq2.r";
   if(! -e $rtemplate){
     die "File not found : " . $rtemplate;
   }
