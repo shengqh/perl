@@ -16,11 +16,8 @@ our @ISA = qw(CQS::Task);
 my $directory;
 
 BEGIN {
-  use File::Spec::Functions qw(rel2abs);
-  use File::Basename qw(dirname);
-
-  my $path   = rel2abs( $0 );
-  $directory = dirname( $path );
+  use FindBin qw($Bin);
+  $directory = $Bin;
 }
 
 sub new {
