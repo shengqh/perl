@@ -67,11 +67,11 @@ pairs=list(
   }
 
   print RF ")
-pairnames=names(pairs)
-
 library(\"DESeq2\")
 library(\"heatmap3\")
 library(\"lattice\")
+library(\"reshape\")
+library(\"ggplot2\")
 
 hmcols <- colorRampPalette(c(\"green\", \"black\", \"red\"))(256)
 
@@ -134,19 +134,22 @@ for(pairname in pairnames){
   
   tbbselect<-tbbselect[order(tbbselect\$padj),,drop=F]
   write.csv(as.data.frame(tbbselect),paste0(pairname, \"_DESeq2_sig.csv\"))
-  
+
+  #draw density graph
+  png(filename=paste0(pairname, \".logdensity.png\"), width=4000, height=3000, res=300)
+  rld<-rlogTransformation(dds, blind=TRUE)
+  rldmatrix=as.matrix(assay(rld))
+  rsdata<-melt(rldmatrix)
+  colnames(rsdata)<-c(\"Gene\", \"Sample\", \"logCount\")
+  ggplot(rsdata, aes(x=logCount, colour=Sample)) + geom_density() + xlab(\"log transformed count\")
+  dev.off()
+    
   #draw heatmap
-  vsd<-varianceStabilizingTransformation(dds,blind=TRUE)
-  vsdmatrix<-as.matrix(assay(vsd))
-  vsdselect<-vsdmatrix[select,,drop=F]
-  if(nrow(vsdselect) > 2){
-    colnames(vsdselect)<-colnames(pairCountData)
-  
-    png(filename=paste0(pairname, \".heatmap.png\"), width=4000, height =3000, res=300)
-  
-    par(mar=c(12, 10, 10, 10))
-    heatmap3(vsdselect, col = hmcols, ColSideColors = pairColors, margins=c(10,15), scale=\"r\", dist=dist, labRow=\"\",
-             legendfun=function() showLegend(legend=gnames,col=c(\"red\",\"blue\"),cex=1.5))
+  rldselect<-rldmatrix[select,,drop=F]
+  if(nrow(rldselect) > 2){
+    png(filename=paste0(pairname, \".heatmap.png\"), width=3000, height =3000, res=300)
+    heatmap3(vsdselect, col = hmcols, ColSideColors = pairColors, margins=c(12,2), scale=\"r\", dist=dist, labRow=\"\",
+             legendfun=function() showLegend(legend=paste0(\"Group \", gnames),col=c(\"red\",\"blue\"),cex=1.5,x=\"center\"))
     dev.off()
   }
 }
