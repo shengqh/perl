@@ -18,6 +18,7 @@ my $directory;
 BEGIN {
   use FindBin qw($Bin);
   $directory = $Bin;
+  print $directory . "\n";
 }
 
 sub new {
