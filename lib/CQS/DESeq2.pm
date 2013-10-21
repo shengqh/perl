@@ -135,13 +135,16 @@ for(pairname in pairnames){
   tbbselect<-tbbselect[order(tbbselect\$padj),,drop=F]
   write.csv(as.data.frame(tbbselect),paste0(pairname, \"_DESeq2_sig.csv\"))
 
-  #draw density graph
-  png(filename=paste0(pairname, \".logdensity.png\"), width=4000, height=3000, res=300)
+  #transform the count data
   rld<-rlogTransformation(dds, blind=TRUE)
   rldmatrix=as.matrix(assay(rld))
+  
+  #draw density graph
   rsdata<-melt(rldmatrix)
   colnames(rsdata)<-c(\"Gene\", \"Sample\", \"logCount\")
-  ggplot(rsdata, aes(x=logCount, colour=Sample)) + geom_density() + xlab(\"log transformed count\")
+  png(filename=paste0(pairname, \".logdensity.png\"), width=4000, height=3000, res=300)
+  g<-ggplot(rsdata, aes(x=logCount, colour=Sample)) + geom_density() + xlab(\"log transformed count\")
+  print(g)
   dev.off()
     
   #draw heatmap
