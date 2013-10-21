@@ -30,8 +30,7 @@ my $data1 = {
     "KO" => [ "2288-RDB-55", "2288-RDB-56", "2288-RDB-57", "2288-RDB-60" ],
   },
   pairs => {
-    "KO_vs_WT"   => [ "WT",  "KO" ],
-    "KO2_vs_WT2" => [ "WT2", "KO2" ]
+    "KO_vs_WT"   => [ "WT",  "KO" ]
   },
 };
 
@@ -68,7 +67,7 @@ foreach my $def (@defs) {
     pairs      => $def->{pairs},
     fastqc     => {
       class      => "FastQC",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/fastqc",
       option     => "",
       source_ref => "fastqfiles",
@@ -82,7 +81,7 @@ foreach my $def (@defs) {
     },
     tophat2 => {
       class         => "Tophat2",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/tophat2",
       option        => "--segment-length 25 -r 0 -p 6",
       source_ref    => "fastqfiles",
@@ -97,7 +96,7 @@ foreach my $def (@defs) {
     },
     sortbam => {
       class         => "Sortbam",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/sortname",
       option        => "",
       source_ref    => "tophat2",
@@ -112,7 +111,7 @@ foreach my $def (@defs) {
     },
     htseqcount => {
       class      => "HTSeqCount",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/htseqcount",
       option     => "",
       source_ref => "sortbam",
@@ -127,7 +126,7 @@ foreach my $def (@defs) {
     },
     genetable => {
       class         => "CQSDatatable",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/genetable",
       option        => "-p ENS --noheader -o ${task}_gene.count",
       source_ref    => "htseqcount",
@@ -190,7 +189,7 @@ foreach my $def (@defs) {
     },
     dexseqcount => {
       class        => "DexseqCount",
-      perform      => 1,
+      perform      => 0,
       target_dir   => "${target_dir}/dexseqcount",
       option       => "",
       source_ref   => "tophat2",
@@ -206,7 +205,7 @@ foreach my $def (@defs) {
     },
     exontable => {
       class      => "CQSDatatable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/exontable",
       option     => "-p ENS --noheader -o ${task}_exon.count",
       source_ref => "dexseqcount",
