@@ -54,8 +54,10 @@ data<-read.table(\"$countfile\",row.names=1, header=T, check.names=F)
 
 pairs=list(
 ";
-  my $first = 1;
+  my $first = 0;
+  my $totalGroup = scalar(keys %{$pairs});
   for my $pairName ( sort keys %{$pairs} ) {
+    $first ++;
     my @groupNames = @{ $pairs->{$pairName} };
 
     if ( scalar(@groupNames) != 2 ) {
@@ -66,11 +68,13 @@ pairs=list(
     my $g2 = $groupNames[1];
     my $s1 = $tpgroups{$g1};
     my $s2 = $tpgroups{$g2};
-    if ( !$first ) {
-      print RF ",";
+    print RF "  \"$pairName\" = list(\"$g1\" = c($s1), \"$g2\" = c($s2))";
+    if ( $first != $totalGroup) {
+      print RF ", \n";
     }
-    print RF "\"$pairName\" = list(\"$g1\" = c($s1), \"$g2\" = c($s2)) \n";
-    $first = 0;
+    else{
+      print RF " \n";
+    }
   }
   print RF ") \n\n";
 
