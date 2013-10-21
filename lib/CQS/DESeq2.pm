@@ -33,9 +33,9 @@ sub perform {
   my $groups = get_raw_files( $config, $section, "groups" );
 
   my $countfile = parse_param_file( $config, $section, "countfile", 1 );
-  
+
   my $rtemplate = dirname(__FILE__) . "/DESeq2.r";
-  if(! -e $rtemplate){
+  if ( !-e $rtemplate ) {
     die "File not found : " . $rtemplate;
   }
 
@@ -72,8 +72,15 @@ pairs=list(
     print RF "\"$pairName\" = list(\"$g1\" = c($s1), \"$g2\" = c($s2)) \n";
     $first = 0;
   }
+  print RF ") \n\n";
 
   open RT, "<$rtemplate" or die $!;
+  while (<RT>) {
+    if ( $_ =~ '^##' ) {
+      next;
+    }
+    exit;
+  }
   while (<RT>) {
     print RF $_;
   }
