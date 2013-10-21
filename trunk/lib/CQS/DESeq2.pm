@@ -41,22 +41,9 @@ sub perform {
   my $rfile = $resultDir . "/${task_name}.r";
   open( RF, ">$rfile" ) or die "Cannot create $rfile";
   print RF "
-library(\"DESeq2\")
-library(\"heatmap.plus\")
-library(\"gplots\")
-
-hmcols <- colorRampPalette(c(\"green\", \"black\", \"red\"))(256)
-
 setwd(\"$resultDir\")  
   
 data<-read.table(\"$countfile\",row.names=1, header=T, check.names=F)
-
-hasname <- (! is.numeric(data[1,1]))
-if(hasname){
-  countData<-data[,c(2:ncol(data))]
-}else{
-  countData<-data
-}
 
 pairs=list(
 ";
@@ -82,6 +69,22 @@ pairs=list(
   print RF ")
 pairnames=names(pairs)
 
+library(\"DESeq2\")
+library(\"heatmap3\")
+library(\"lattice\")
+
+hmcols <- colorRampPalette(c(\"green\", \"black\", \"red\"))(256)
+
+hasname <- (! is.numeric(data[1,1]))
+if(hasname){
+  countData<-data[,c(2:ncol(data))]
+}else{
+  countData<-data
+}
+
+pairnames=names(pairs)
+pairname=pairnames[1]
+
 for(pairname in pairnames){
   str(pairname)
   gs=pairs[[pairname]]
@@ -90,8 +93,8 @@ for(pairname in pairnames){
   g2name=gnames[2]
   g1=gs[[g1name]]
   g2=gs[[g2name]]
-  c1=as.matrix(countData[,colnames(countData) %in% g1])
-  c2=as.matrix(countData[,colnames(countData) %in% g2])
+  c1=countData[,colnames(countData) %in% g1,drop=F]
+  c2=countData[,colnames(countData) %in% g2,drop=F]
   
   if(ncol(c1) != length(g1)){
     warning(paste0(\"There are only \", ncol(c1), \" samples in group \", g1name, \" but \", length(g1), \" required!\"))
@@ -105,45 +108,45 @@ for(pairname in pairnames){
   
   pairCountData=cbind(c1, c2)
   
-  pairColData=data.frame(condition=factor(c(rep(g1name, ncol(c1)), rep(g2name, ncol(c2)))))
-  pairColors<-c(rep(\"RED\", ncol(c1)), rep(\"BLUE\", ncol(c2)))
+  pairColData=data.frame(condition=factor(c(rep(g1name, ncol(c1)), rep(g2name, ncol(c2))), levels=gnames))
+  rownames(pairColData)<-colnames(pairCountData)
+  pairColors<-as.matrix(data.frame(Group=c(rep(\"red\", ncol(c1)), rep(\"blue\", ncol(c2)))))
   
+  #different expression analysis
   dds=DESeqDataSetFromMatrix(countData = pairCountData,
                              colData = pairColData,
                              design = ~ condition)
   
-  dds <- estimateSizeFactors(dds)
-  dds <- estimateDispersions(dds)
-  dds <- nbinomWaldTest(dds)
-  
-  res<-results(dds)
-  
-  if(hasname){
-    res\$name<-data[,1]
-    res<-res[,c(ncol(res), 1:(ncol(res)-1))]
-  }
-  
-  tbb<-res[order(res\$padj),]
-  write.csv(as.data.frame(tbb),paste0(pairname, \"_DESeq2.csv\"))
+  dds <- DESeq(dds)
+  res<-results(dds,cooksCutoff=FALSE)
   
   select<- (!is.na(res\$padj)) & (res\$padj<0.05) & ((res\$log2FoldChange >= 1) | (res\$log2FoldChange <= -1))
   
+  if(hasname){
+    tbb<-cbind(data[,1,drop=F], pairCountData, res)
+  }else{
+    tbb<-cbind(pairCountData, res)
+  }
+  tbbselect<-tbb[select,,drop=F]
+  
+  tbb<-tbb[order(tbb\$padj),,drop=F]
+  write.csv(as.data.frame(tbb),paste0(pairname, \"_DESeq2.csv\"))
+  
+  tbbselect<-tbbselect[order(tbbselect\$padj),,drop=F]
+  write.csv(as.data.frame(tbbselect),paste0(pairname, \"_DESeq2_sig.csv\"))
+  
+  #draw heatmap
   vsd<-varianceStabilizingTransformation(dds,blind=TRUE)
   vsdmatrix<-as.matrix(assay(vsd))
-  vsdselect<-vsdmatrix[select,]
+  vsdselect<-vsdmatrix[select,,drop=F]
   if(nrow(vsdselect) > 2){
     colnames(vsdselect)<-colnames(pairCountData)
   
-    png(filename=paste0(pairname, \".png\"), width=4000, height =3000, res=300)
+    png(filename=paste0(pairname, \".heatmap.png\"), width=4000, height =3000, res=300)
   
-    clab<-matrix(c(rep(\"white\", ncol(vsdselect)), pairColors), ncol=2, byrow=FALSE)
-    colnames(clab)<-c(\"\", \"Group\")
     par(mar=c(12, 10, 10, 10))
-    heatmap.plus(vsdselect, col = hmcols, ColSideColors = clab, margins=c(10,15))
-  
-    grid.text(g1name, x = unit(0.02, \"npc\"), y = unit(0.90, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"RED\"))
-    grid.text(g2name, x = unit(0.02, \"npc\"), y = unit(0.85, \"npc\"), just = \"left\", gp=gpar(fontsize=20, col=\"BLUE\"))
-  
+    heatmap3(vsdselect, col = hmcols, ColSideColors = pairColors, margins=c(10,15), scale=\"r\", dist=dist, labRow=\"\",
+             legendfun=function() showLegend(legend=gnames,col=c(\"red\",\"blue\"),cex=1.5))
     dev.off()
   }
 }
