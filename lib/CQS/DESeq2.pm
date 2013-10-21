@@ -79,7 +79,7 @@ pairs=list(
     if ( $_ =~ '^##' ) {
       next;
     }
-    exit;
+    last;
   }
   while (<RT>) {
     print RF $_;
