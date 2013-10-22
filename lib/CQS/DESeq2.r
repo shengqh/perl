@@ -1,9 +1,9 @@
 ##predefined_condition_begin
-##setwd("H:/shengquanhu/projects/chenxi/20131017_chenxi_rnaseq_smad4/deseq2/result")  
-##data<-read.table("H:/shengquanhu/projects/chenxi/20131017_chenxi_rnaseq_smad4/genetable/result/smad4_gene.count",row.names=1, header=T, check.names=F)
-##pairs=list(
-##		"KO_vs_WT" = list("WT" = c("2288-RDB-81","2288-RDB-83","2288-RDB-85"), "KO" = c("2288-RDB-82","2288-RDB-84","2288-RDB-86")) 
-##)
+#setwd("H:/shengquanhu/projects/chenxi/20131017_chenxi_rnaseq_smad4/deseq2/result")  
+#data<-read.table("H:/shengquanhu/projects/chenxi/20131017_chenxi_rnaseq_smad4/genetable/result/smad4_gene.count",row.names=1, header=T, check.names=F)
+#pairs=list(
+#	"KO_vs_WT" = list("WT" = c("2288-RDB-81","2288-RDB-83","2288-RDB-85"), "KO" = c("2288-RDB-82","2288-RDB-84","2288-RDB-86")) 
+#)
 ##predefined_condition_end
 
 library("DESeq2")
@@ -11,6 +11,7 @@ library("heatmap3")
 library("lattice")
 library("reshape")
 library("ggplot2")
+library("grid")
 
 hmcols <- colorRampPalette(c("green", "black", "red"))(256)
 
@@ -82,6 +83,23 @@ for(pairname in pairnames){
 	colnames(rsdata)<-c("Gene", "Sample", "logCount")
 	png(filename=paste0(pairname, ".logdensity.png"), width=4000, height=3000, res=300)
 	g<-ggplot(rsdata) + geom_density(aes(x=logCount, colour=Sample)) + xlab("log transformed count")
+	print(g)
+	dev.off()
+	
+	#draw pca graph
+	png(filename=paste0(pairname, ".pca.png"), width=3000, height=3000, res=300)
+	pca<-prcomp(t(rldmatrix))
+	supca<-summary(pca)$importance
+	pcalabs=paste0(colnames(data), "(", round(supca[2,] * 100), "%)")
+	data<-data.frame(pca$x)
+	g <- ggplot(data, aes(x=PC1, y=PC2, label=row.names(data))) + 
+			geom_text(vjust=-0.6, size=4) +
+			geom_point(col=pairColors, size=4) + 
+			scale_x_continuous(limits=c(min(data$PC1) * 1.2,max(data$PC1) * 1.2)) +
+			scale_y_continuous(limits=c(min(data$PC2) * 1.2,max(data$PC2) * 1.2)) + 
+			geom_hline(aes(0), size=.2) + 
+			geom_vline(aes(0), size=.2) + 
+			xlab(pcalabs[1]) + ylab(pcalabs[2])
 	print(g)
 	dev.off()
 	

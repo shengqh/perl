@@ -80,7 +80,7 @@ pairs=list(
 
   open RT, "<$rtemplate" or die $!;
   while (<RT>) {
-    if ( $_ =~ '^##' ) {
+    if ( $_ =~ '^#' ) {
       next;
     }
     last;
