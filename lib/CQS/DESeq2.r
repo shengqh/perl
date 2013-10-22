@@ -90,8 +90,8 @@ for(pairname in pairnames){
 	png(filename=paste0(pairname, ".pca.png"), width=3000, height=3000, res=300)
 	pca<-prcomp(t(rldmatrix))
 	supca<-summary(pca)$importance
-	pcalabs=paste0(colnames(data), "(", round(supca[2,] * 100), "%)")
 	data<-data.frame(pca$x)
+	pcalabs=paste0(colnames(data), "(", round(supca[2,] * 100), "%)")
 	g <- ggplot(data, aes(x=PC1, y=PC2, label=row.names(data))) + 
 			geom_text(vjust=-0.6, size=4) +
 			geom_point(col=pairColors, size=4) + 
