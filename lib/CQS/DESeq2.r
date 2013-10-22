@@ -82,7 +82,7 @@ for(pairname in pairnames){
 	rsdata<-melt(rldmatrix)
 	colnames(rsdata)<-c("Gene", "Sample", "logCount")
 	png(filename=paste0(pairname, ".logdensity.png"), width=4000, height=3000, res=300)
-	g<-ggplot(rsdata) + geom_density(aes(x=logCount, colour=Sample)) + xlab("log transformed count")
+	g<-ggplot(rsdata) + geom_density(aes(x=logCount, colour=Sample)) + xlab("DESeq2 log transformed count")
 	print(g)
 	dev.off()
 	
