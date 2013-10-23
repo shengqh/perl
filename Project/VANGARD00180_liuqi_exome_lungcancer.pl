@@ -54,7 +54,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -68,7 +68,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-q 15 -t 8",
     fasta_file => $fasta_file,
@@ -83,7 +83,7 @@ my $config = {
   },
   refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
@@ -122,10 +122,10 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
-    source_ref => [ "muTect", "\.vcf\$" ],
+    source_ref => [ "muTect", ".pass.vcf\$" ],
     annovar_db => $annovar_db,
     buildver   => "hg19",
     sh_direct  => 1,
