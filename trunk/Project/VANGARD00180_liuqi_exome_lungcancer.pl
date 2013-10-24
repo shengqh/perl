@@ -23,6 +23,8 @@ my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_73";
 my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
+my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
@@ -128,6 +130,8 @@ my $config = {
     source_ref => [ "muTect", ".pass.vcf\$" ],
     annovar_db => $annovar_db,
     buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv",
     sh_direct  => 1,
     isvcf      => 1,
     pbs        => {
