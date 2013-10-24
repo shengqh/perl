@@ -20,7 +20,7 @@ my $transcript_gtf       = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GR
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_73";
 
 #my $annovar_param =  "-buildver hg19 -protocol refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,snp137,ljb2_all,cosmic64 -operation g,r,r,f,f,f,f,f --remove --otherinfo";
-my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove --otherinfo";
+my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
