@@ -90,7 +90,7 @@ cd $curDir
   grep \"^##\" ${sampleFile} > ${filename}.tmp
   grep -v \"^##\" ${sampleFile} | rev | cut -f2- | rev >> ${filename}.tmp
   convert2annovar.pl -format vcf4 ${filename}.tmp > $passinput
-  rm ${filename}.tmp
+  #rm ${filename}.tmp
 else
   convert2annovar.pl -format vcf4 ${sampleFile} > $passinput
 fi
