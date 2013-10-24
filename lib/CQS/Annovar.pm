@@ -76,7 +76,8 @@ cd $curDir
       
       my $passinput = change_extension( $filename, ".avinput" );
       my $annovar   = change_extension( $filename, ".annovar" );
-      my $result    = "${annovar}.${buildver}_multianno.csv";
+      my $final   = $annovar . ".final.txt";
+      my $result    = "${annovar}.${buildver}_multianno.txt";
       my $vcf       = "";
       if ($isvcf) {
         $vcf = "convert2annovar.pl -format vcf4 $sampleFile > $passinput
@@ -87,6 +88,15 @@ if [ ! -s $result ]; then
   $vcf
   
   table_annovar.pl $passinput $annovarDB $option --outfile $annovar 
+fi
+
+if [[ -s $result && ! -s $final ]]; then
+  grep \"^##\" ${sampleFile} > ${final}.header
+  grep -v \"^##\" ${sampleFile} | cut -f8- > ${sampleFile}.clean
+  grep -v \"^##\" ${result} > ${result}.clean
+  paste ${result}.clean ${sampleFile}.clean > ${final}.data
+  cat ${final}.header ${final}.data > $final
+  rm ${sampleFile}.clean ${result}.clean ${final}.header ${final}.data
 fi
 ";
     }
@@ -125,7 +135,9 @@ sub result {
     my @resultFiles = ();
     for my $sampleFile (@sampleFiles) {
       my $annovar = change_extension( $sampleFile, ".annovar" );
+      my $final   = $annovar . ".final.txt";
       my $result    = "${annovar}.${buildver}_multianno.csv";
+      push( @resultFiles, $curDir . "/$final" );
       push( @resultFiles, $curDir . "/$result" );
     }
     $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
