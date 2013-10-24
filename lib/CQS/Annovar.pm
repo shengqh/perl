@@ -36,7 +36,7 @@ sub perform {
     $isvcf = 0;
   }
 
-  my $cqstools = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 0 );
+  my $cqstools = get_param_file( $config->{$section}{cqstools}, "cqstools", 0 );
   my $affyFile = get_param_file( $config->{$section}{affy_file}, "affy_file", 0 );
 
   my $rawFiles = get_raw_files( $config, $section );
