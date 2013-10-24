@@ -77,30 +77,23 @@ cd $curDir
         $sampleFile = $filename;
       }
 
-      my $annovar   = change_extension( $filename,          ".annovar" );
-      my $result    = "${annovar}.${buildver}_multianno.txt";
-      my $final     = $annovar . ".final.tsv";
-      my $excel     = $final . ".xls";
-      
-      my $vcf = "";
+      my $annovar = change_extension( $filename, ".annovar" );
+      my $result  = "${annovar}.${buildver}_multianno.txt";
+      my $final   = $annovar . ".final.tsv";
+      my $excel   = $final . ".xls";
+
+      my $vcf;
       my $passinput;
       if ($isvcf) {
         $passinput = change_extension( $filename, ".avinput" );
-  $vcf = "if [ grep \"^#CHROM\" $sampleFile | grep t_lod_fstar ]; then
-    grep \"^##\" ${sampleFile} > ${filename}.tmp
-    grep -v \"^##\" ${sampleFile} | rev | cut -f2- | rev >> ${filename}.tmp
-    convert2annovar.pl -format vcf4 ${filename}.tmp > $passinput
-    #rm ${filename}.tmp
-  else
-    convert2annovar.pl -format vcf4 ${sampleFile} > $passinput
-  fi
-";
+        $vcf = "convert2annovar.pl -format vcf4old ${sampleFile} > $passinput ";
       }
-      else{
+      else {
         $passinput = $sampleFile;
+        $vcf       = "";
       }
 
-        print OUT "
+      print OUT "
 if [ ! -s $result ]; then 
   $vcf
   table_annovar.pl $passinput $annovarDB $option --outfile $annovar 
@@ -116,63 +109,63 @@ if [[ -s $result && ! -s $final ]]; then
 fi
 ";
 
-        if ( defined $cqstools ) {
-          my $affyoption = defined($affyFile) ? "-a $affyFile" : "";
-          print OUT "
+      if ( defined $cqstools ) {
+        my $affyoption = defined($affyFile) ? "-a $affyFile" : "";
+        print OUT "
 if [[ -s $final && ! -s $excel ]]; then
   mono-sgen $cqstools annovar_refine -i $final $affyoption -o $excel
 fi
 ";
-        }
       }
-      print OUT "
+    }
+    print OUT "
 echo finished=`date`
 
 exit 1
 ";
-      close(OUT);
+    close(OUT);
 
-      print "$pbsFile created. \n";
+    print "$pbsFile created. \n";
 
-      print SH "\$MYCMD ./$pbsName \n";
-    }
-    print SH "exit 1\n";
-    close(SH);
-
-    if ( is_linux() ) {
-      chmod 0755, $shfile;
-    }
-    print "!!!shell file $shfile created, you can run this shell file to submit Annovar tasks.\n";
+    print SH "\$MYCMD ./$pbsName \n";
   }
+  print SH "exit 1\n";
+  close(SH);
 
-  sub result {
-    my ( $self, $config, $section, $pattern ) = @_;
+  if ( is_linux() ) {
+    chmod 0755, $shfile;
+  }
+  print "!!!shell file $shfile created, you can run this shell file to submit Annovar tasks.\n";
+}
 
-    my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
+sub result {
+  my ( $self, $config, $section, $pattern ) = @_;
 
-    my $buildver = $config->{$section}{buildver} or die "buildver is not defined in $section";
-    my $rawFiles = get_raw_files( $config, $section );
-    my $cqstools = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 0 );
+  my ( $task_name, $path_file, $pbsDesc, $target_dir, $logDir, $pbsDir, $resultDir, $option, $sh_direct ) = get_parameter( $config, $section );
 
-    my $result = {};
-    for my $sampleName ( sort keys %{$rawFiles} ) {
-      my @sampleFiles = @{ $rawFiles->{$sampleName} };
-      my $curDir      = $resultDir . "/$sampleName";
-      my @resultFiles = ();
-      for my $sampleFile (@sampleFiles) {
-        my $annovar = change_extension( $sampleFile, ".annovar" );
-        my $final   = $annovar . ".final.txt";
-        my $result  = "${annovar}.${buildver}_multianno.txt";
-        if ( defined $cqstools ) {
-          my $excel = $final . ".xls";
-          push( @resultFiles, $curDir . "/$excel" );
-        }
-        push( @resultFiles, $curDir . "/$final" );
-        push( @resultFiles, $curDir . "/$result" );
+  my $buildver = $config->{$section}{buildver} or die "buildver is not defined in $section";
+  my $rawFiles = get_raw_files( $config, $section );
+  my $cqstools = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 0 );
+
+  my $result = {};
+  for my $sampleName ( sort keys %{$rawFiles} ) {
+    my @sampleFiles = @{ $rawFiles->{$sampleName} };
+    my $curDir      = $resultDir . "/$sampleName";
+    my @resultFiles = ();
+    for my $sampleFile (@sampleFiles) {
+      my $annovar = change_extension( $sampleFile, ".annovar" );
+      my $final   = $annovar . ".final.txt";
+      my $result  = "${annovar}.${buildver}_multianno.txt";
+      if ( defined $cqstools ) {
+        my $excel = $final . ".xls";
+        push( @resultFiles, $curDir . "/$excel" );
       }
-      $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
+      push( @resultFiles, $curDir . "/$final" );
+      push( @resultFiles, $curDir . "/$result" );
     }
-    return $result;
+    $result->{$sampleName} = filter_array( \@resultFiles, $pattern );
   }
+  return $result;
+}
 
-  1;
+1;
