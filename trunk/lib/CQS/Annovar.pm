@@ -103,7 +103,7 @@ fi
       if ( defined $cqstools ) {
         my $affyoption = defined($affyFile) ? "-a $affyFile" : "";
         print OUT "
-if [[ -s $final && ! -s $excel]]; then
+if [[ -s $final && ! -s $excel ]]; then
   mono-sgen $cqstools annovar_refine -i $final $affyoption -o $excel
 fi
 ";
