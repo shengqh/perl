@@ -115,15 +115,12 @@ if [ ! -s $vcf ]; then
 fi 
 
 if [[ -s $vcf && ! -s $passvcf ]]; then
-  grep \"^##\" $vcf > ${vcf}.header
-  grep -v \"^##\" $vcf > ${vcf}.clean
-  grep -v \"^##\" $out | cut -f 17 > ${out}.clean
-  paste ${vcf}.clean ${out}.clean > ${vcf}.lod
-  rm ${vcf}.clean ${out}.clean
-  grep -v REJECT ${vcf}.lod > ${vcf}.pass.lod
-  rm ${vcf}.lod
-  cat ${vcf}.header ${vcf}.pass.lod > $passvcf
-  rm ${vcf}.header ${vcf}.pass.lod
+  grep \"^#\" $vcf > $passvcf
+  grep -v \"^##\" $out | awk '{print \";LOD=\"\$17}' > ${out}.lod
+  grep -v \"^##\" $vcf | cut -f1-8 > ${vcf}.first
+  paste -d \"\" ${vcf}.first ${out}.lod > ${vcf}.first_lod
+  grep -v \"^##\" $vcf | cut -f9- > ${vcf}.second
+  paste ${vcf}.first_lod ${vcf}.second | grep -v \"^#CHROM\" | grep -v REJECT >> $passvcf
 fi
 
 echo finished=`date` \n";
