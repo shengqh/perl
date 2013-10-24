@@ -76,7 +76,7 @@ cd $curDir
       
       my $passinput = change_extension( $filename, ".avinput" );
       my $annovar   = change_extension( $filename, ".annovar" );
-      my $final   = $annovar . ".final.txt";
+      my $final   = $annovar . ".final.tsv";
       my $result    = "${annovar}.${buildver}_multianno.txt";
       my $vcf       = "";
       if ($isvcf) {
