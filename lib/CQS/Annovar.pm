@@ -79,7 +79,7 @@ cd $curDir
       my $result    = "${annovar}.${buildver}_multianno.csv";
       my $vcf       = "";
       if ($isvcf) {
-        $vcf = "convert2annovar.pl -format vcf4 $sampleFile -includeinfo > $passinput
+        $vcf = "convert2annovar.pl -format vcf4 $sampleFile -includeinfo --comment > $passinput
         ";
       }
       print OUT "
