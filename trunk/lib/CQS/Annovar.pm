@@ -87,13 +87,13 @@ cd $curDir
       if ($isvcf) {
         $passinput = change_extension( $filename, ".avinput" );
   $vcf = "if [ grep \"^#CHROM\" $sampleFile | grep t_lod_fstar ]; then
-  grep \"^##\" ${sampleFile} > ${filename}.tmp
-  grep -v \"^##\" ${sampleFile} | rev | cut -f2- | rev >> ${filename}.tmp
-  convert2annovar.pl -format vcf4 ${filename}.tmp > $passinput
-  #rm ${filename}.tmp
-else
-  convert2annovar.pl -format vcf4 ${sampleFile} > $passinput
-fi
+    grep \"^##\" ${sampleFile} > ${filename}.tmp
+    grep -v \"^##\" ${sampleFile} | rev | cut -f2- | rev >> ${filename}.tmp
+    convert2annovar.pl -format vcf4 ${filename}.tmp > $passinput
+    #rm ${filename}.tmp
+  else
+    convert2annovar.pl -format vcf4 ${sampleFile} > $passinput
+  fi
 ";
       }
       else{
