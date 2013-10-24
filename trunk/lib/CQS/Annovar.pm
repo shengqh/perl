@@ -29,12 +29,15 @@ sub perform {
 
   my $buildver = $config->{$section}{buildver} or die "buildver is not defined in $section";
   $option = "-buildver $buildver $option";
-    
+
   my $annovarDB = $config->{$section}{annovar_db} or die "annovar_db is not defined in $section";
   my $isvcf = $config->{$section}{isvcf};
   if ( !defined $isvcf ) {
     $isvcf = 0;
   }
+
+  my $cqstools = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 0 );
+  my $affyFile = get_param_file( $config->{$section}{affy_file}, "affy_file", 0 );
 
   my $rawFiles = get_raw_files( $config, $section );
 
@@ -68,21 +71,18 @@ cd $curDir
 ";
 
     for my $sampleFile (@sampleFiles) {
-      my ($filename, $dir) = fileparse($sampleFile);
-      
-      if($dir eq $curDir){
+      my ( $filename, $dir ) = fileparse($sampleFile);
+
+      if ( $dir eq $curDir ) {
         $sampleFile = $filename;
       }
-      
+
       my $passinput = change_extension( $filename, ".avinput" );
       my $annovar   = change_extension( $filename, ".annovar" );
-      my $final   = $annovar . ".final.tsv";
       my $result    = "${annovar}.${buildver}_multianno.txt";
-      my $vcf       = "";
-      if ($isvcf) {
-        $vcf = "convert2annovar.pl -format vcf4 $sampleFile > $passinput
-        ";
-      }
+      my $final     = $annovar . ".final.tsv";
+      my $excel     = $final . ".xls";
+      my $vcf = $isvcf ? "convert2annovar.pl -format vcf4 $sampleFile > $passinput " : "";
       print OUT "
 if [ ! -s $result ]; then
   $vcf
@@ -99,6 +99,15 @@ if [[ -s $result && ! -s $final ]]; then
   rm ${sampleFile}.clean ${result}.clean ${final}.header ${final}.data
 fi
 ";
+
+      if ( defined $cqstools ) {
+        my $affyoption = defined($affyFile) ? "-a $affyFile" : "";
+        print OUT "
+if [[ -s $final && ! -s $excel]]; then
+  mono-sgen $cqstools annovar_refine -i $final $affyoption -o $excel
+fi
+";
+      }
     }
     print OUT "
 echo finished=`date`
@@ -127,6 +136,7 @@ sub result {
 
   my $buildver = $config->{$section}{buildver} or die "buildver is not defined in $section";
   my $rawFiles = get_raw_files( $config, $section );
+  my $cqstools = get_param_file( $config->{$section}{cqs_tools}, "cqs_tools", 0 );
 
   my $result = {};
   for my $sampleName ( sort keys %{$rawFiles} ) {
@@ -136,7 +146,11 @@ sub result {
     for my $sampleFile (@sampleFiles) {
       my $annovar = change_extension( $sampleFile, ".annovar" );
       my $final   = $annovar . ".final.txt";
-      my $result    = "${annovar}.${buildver}_multianno.csv";
+      my $result  = "${annovar}.${buildver}_multianno.txt";
+      if ( defined $cqstools ) {
+        my $excel = $final . ".xls";
+        push( @resultFiles, $curDir . "/$excel" );
+      }
       push( @resultFiles, $curDir . "/$final" );
       push( @resultFiles, $curDir . "/$result" );
     }
