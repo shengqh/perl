@@ -123,6 +123,7 @@ if [[ -s $vcf && ! -s $passvcf ]]; then
   paste -d \"\" ${vcf}.first ${out}.lod > ${vcf}.first_lod
   grep -v \"^##\" $vcf | cut -f9- > ${vcf}.second
   paste ${vcf}.first_lod ${vcf}.second | grep -v \"^#CHROM\" | grep -v REJECT >> $passvcf
+  rm ${out}.lod ${vcf}.first ${vcf}.first_lod ${vcf}.second
 fi
 
 echo finished=`date` \n";
