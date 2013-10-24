@@ -111,7 +111,7 @@ if [ ! -s ${tumor}.bai ]; then
 fi
 
 if [ ! -s $vcf ]; then
-  java $java_option -jar $muTect_jar $option $chroption --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --coverage_file ${groupName}.coverage.txt --vcf $vcf
+  java $java_option -jar $muTect_jar $option $chroption --analysis_type MuTect --reference_sequence $faFile --cosmic $cosmicfile --dbsnp $dbsnpfile --input_file:normal $normal --input_file:tumor $tumor -o $out --vcf $vcf
 fi 
 
 if [[ -s $vcf && ! -s $passvcf ]]; then
