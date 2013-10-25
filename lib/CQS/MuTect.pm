@@ -127,6 +127,7 @@ if [[ -s $vcf && ! -s $passvcf ]]; then
 fi
 
 echo finished=`date` \n";
+
       close OUT;
 
       print "$pbsFile created \n";
