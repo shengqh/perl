@@ -107,6 +107,7 @@ my $config = {
     perform        => 1,
     target_dir     => "${target_dir}/RNASeQC",
     option         => "",
+    fasta_file         => $fasta_file,
     transcript_gtf => $transcript_gtf,
     genome_fasta   => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
     rnaseqc_jar    => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
