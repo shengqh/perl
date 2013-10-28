@@ -102,9 +102,25 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  rnaseqc => {
+    class              => "RNASeQC",
+    perform            => 1,
+    target_dir     => "${target_dir}/RNASeQC",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    genome_fasta   => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
+    rnaseqc_jar    => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
+    source_ref     => "refine",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   muTect => {
     class       => "GATK::MuTect",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/muTect",
     option      => "",
     source_ref  => "refine",
@@ -124,7 +140,7 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", ".pass.vcf\$" ],
