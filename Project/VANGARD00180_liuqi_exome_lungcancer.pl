@@ -103,8 +103,8 @@ my $config = {
     },
   },
   rnaseqc => {
-    class              => "RNASeQC",
-    perform            => 1,
+    class          => "RNASeQC",
+    perform        => 1,
     target_dir     => "${target_dir}/RNASeQC",
     option         => "",
     transcript_gtf => $transcript_gtf,
