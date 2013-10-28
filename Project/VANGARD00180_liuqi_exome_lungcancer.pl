@@ -103,7 +103,7 @@ my $config = {
     },
   },
   muTect => {
-    class       => "MuTect",
+    class       => "GATK::MuTect",
     perform     => 1,
     target_dir  => "${target_dir}/muTect",
     option      => "",
