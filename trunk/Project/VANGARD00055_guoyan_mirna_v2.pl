@@ -643,7 +643,7 @@ foreach my $def (@defs) {
       class         => "CQS::MappedDistinct",
       perform       => 0,
       target_dir    => "${target_dir}/pm_tRNA_distinct",
-      option        => $trnacount_option,
+      option        => "",
       source_ref    => [ "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm", ".mapped.xml" ],
       second_ref    => [ "fake_human_tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm", ".mapped.xml" ],
       cqs_tools     => $cqstools,
