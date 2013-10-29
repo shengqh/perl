@@ -759,7 +759,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_count => {
       class           => "CQSMappedCount",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -830,7 +830,7 @@ foreach my $def (@defs) {
     },
     smallRNA_1mm_category => {
       class           => "CQSSmallRNACategory",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category",
       option          => "",
       source_ref      => [ "smallRNA_1mm_count", ".mapped.xml\$" ],
