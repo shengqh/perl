@@ -70,7 +70,7 @@ my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
 my $mirnacount_option          = "-s";                                                    #ignore score
-my $trnacount_option           = "--length";                                                    
+my $trnacount_option           = "--length";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $fasta_file                 = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
@@ -617,6 +617,46 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+
+    #for distinct count only
+    fake_human_tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm => {
+      class           => "CQSMappedCount",
+      perform         => 0,
+      target_dir      => $human->{target_dir} . "/topN_bowtie1_genome_cutadapt_pm_count_tRNA",
+      option          => $trnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_pm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $human->{trna_coordinate},
+      fasta_file      => $human->{trna_fasta},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm_distinct => {
+      class         => "CQS::MappedDistinct",
+      perform       => 0,
+      target_dir    => "${target_dir}/pm_tRNA_distinct",
+      option        => $trnacount_option,
+      source_ref    => [ "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm", ".mapped.xml" ],
+      second_ref    => [ "fake_human_tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm", ".mapped.xml" ],
+      cqs_tools     => $cqstools,
+      first_suffix  => "mouse_",
+      second_suffix => "human_",
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     tRNA_position_pm => {
       class      => "CQSMappedPosition",
       perform    => 0,
@@ -1057,13 +1097,9 @@ foreach my $def (@defs) {
   #  performConfig($config, "" , 1);
   performConfig($config);
 
-  if ( $def == $human ) {
-
-    # performTask( $config, "smallRNA_1mm_count" );
-    # performTask( $config, "smallRNA_1mm_category" );
+  if ( $def == $mouse ) {
+    performTask( $config, "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm_distinct" );
   }
-
-  #  performTrace($config);
 }
 
 1;
