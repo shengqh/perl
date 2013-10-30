@@ -2,11 +2,7 @@
 use strict;
 use warnings;
 
-use CQS::QC;
-use CQS::RNASeq;
 use CQS::FileUtils;
-use CQS::SystemUtils;
-use CQS::SomaticMutation;
 use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_comparison");
@@ -20,10 +16,11 @@ my $fasta_file    = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/
 my $cosmic_file   = "/data/cqs/shengq1/reference/cosmic/cosmic_v66_20130725.hg19.16569.vcf";
 my $snp_file      = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
 my $bowtie2_index = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS";
+my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove";
+my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $config = {
   general => {
-    path_file => "/home/shengq1/local/bin/path.txt",
     task_name => "somaticmutation"
   },
   rnafiles => {
@@ -62,12 +59,12 @@ my $config = {
   },
   rsmc_nofilter => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rsmc_nofilter",
     option           => "-c 8 -n 20 -q 0 --max_normal_percentage 1.0 -g 0.0 -d 5 --not_filter_position --not_filter_strand ",    #thread mode
     source_ref       => "rnafiles",
     groups_ref       => "rnagroups",
-    source_type      => "bam",                                               #source_type can be bam/mpileup
+    source_type      => "bam",                                                                                                   #source_type can be bam/mpileup
     fasta_file       => $fasta_file,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
@@ -82,7 +79,7 @@ my $config = {
   },
   muTect => {
     class        => "MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/muTect",
     option       => "",
     source_ref   => "rnafiles",
@@ -101,9 +98,28 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  varscan2_tophat2 => {
+  annovar_mutect => {
+    class      => "Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/muTect",
+    option     => $annovar_param,
+    source_ref => [ "muTect", ".pass.vcf\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  varscan2 => {
     class           => "VarScan2",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2",
     option          => "",
     source_ref      => "rnafiles",
@@ -120,10 +136,27 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  annovar_varscan2 => {
+    class      => "Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/varscan2",
+    option     => $annovar_param,
+    source_ref => [ "varscan2", ".Somatic.hc\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 };
 
 performConfig($config);
-
-#rsmc( $config, "rsmc" );
 
 1;
