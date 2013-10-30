@@ -20,9 +20,7 @@ my $annovar_param = "-protocol refGene,snp137,cosmic64 -operation g,f,f --remove
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $config = {
-  general => {
-    task_name => "somaticmutation"
-  },
+  general  => { task_name => "somaticmutation" },
   rnafiles => {
     "TCGA-A7-A0D9-NT" => ["/scratch/cqs/shengq1/somaticmutation_comparison/bam/TCGA-A7-A0D9-RNA_NT_sorted.bam"],
     "TCGA-A7-A0D9-TP" => ["/scratch/cqs/shengq1/somaticmutation_comparison/bam/TCGA-A7-A0D9-RNA_TP_sorted.bam"],
@@ -59,12 +57,12 @@ my $config = {
   },
   rsmc_nofilter => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc_nofilter",
-    option           => "-c 8 -n 20 -q 0 --max_normal_percentage 1.0 -g 0.0 -d 5 --not_filter_position --not_filter_strand ",    #thread mode
+    option           => "-c 8 --not_filter_position --not_filter_strand ",    #thread mode
     source_ref       => "rnafiles",
     groups_ref       => "rnagroups",
-    source_type      => "bam",                                                                                                   #source_type can be bam/mpileup
+    source_type      => "BAM",                                                #source_type can be BAM/Mpileup
     fasta_file       => $fasta_file,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
@@ -100,7 +98,7 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -138,7 +136,7 @@ my $config = {
   },
   annovar_varscan2 => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/varscan2",
     option     => $annovar_param,
     source_ref => [ "varscan2", ".Somatic.hc\$" ],
