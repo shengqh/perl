@@ -66,13 +66,13 @@ my $config = {
     fasta_file       => $fasta_file,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
-    sh_direct        => 1,
+    sh_direct        => 0,
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "10gb"
+      "mem"      => "20gb"
     },
   },
   muTect => {
