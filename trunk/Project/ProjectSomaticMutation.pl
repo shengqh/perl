@@ -59,7 +59,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rsmc_nofilter",
-    option           => "-c 8",    #thread mode
+    option           => "",    #single thread mode
     source_ref       => "rnafiles",
     groups_ref       => "rnagroups",
     source_type      => "BAM",                                                #source_type can be BAM/Mpileup
@@ -70,7 +70,7 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
