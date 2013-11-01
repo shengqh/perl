@@ -82,7 +82,7 @@ my $config = {
   },
   muTect => {
     class       => "MuTect",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/muTect",
     option      => "-nt 8",
     source_ref  => "refine",
@@ -155,7 +155,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rsmc",
     option           => "-c 8",                                              #thread mode
     source_ref       => "refine",
