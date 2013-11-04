@@ -91,11 +91,11 @@ my $config = {
     target_dir => "${target_dir}/FastqDump",
     option     => "",
     source_ref => "files",
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=2",
-      "walltime" => "2",
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
       "mem"      => "10gb"
     },
   },
