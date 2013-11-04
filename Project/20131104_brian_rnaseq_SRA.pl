@@ -87,7 +87,7 @@ my $config = {
   sra2fastq => {
     class      => "SRA::FastqDump",
     perform    => 1,
-    paired     => 1,
+    ispaired   => 1,
     target_dir => "${target_dir}/FastqDump",
     option     => "",
     source_ref => "files",
@@ -174,37 +174,37 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-    dexseqcount => {
-      class        => "DexseqCount",
-      perform      => 0,
-      target_dir   => "${target_dir}/dexseqcount",
-      option       => "",
-      source_ref   => "tophat2",
-      gff_file     => $hg19_gff,
-      dexseq_count => "/home/shengq1/pylibs/bin/dexseq_count.py",
-      sh_direct    => 1,
-      pbs          => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
+  dexseqcount => {
+    class        => "DexseqCount",
+    perform      => 0,
+    target_dir   => "${target_dir}/dexseqcount",
+    option       => "",
+    source_ref   => "tophat2",
+    gff_file     => $hg19_gff,
+    dexseq_count => "/home/shengq1/pylibs/bin/dexseq_count.py",
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
-    exontable => {
-      class      => "CQSDatatable",
-      perform    => 0,
-      target_dir => "${target_dir}/exontable",
-      option     => "-p ENS --noheader -o ${task}_exon.count",
-      source_ref => "dexseqcount",
-      cqs_tools  => $cqstools,
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "10",
-        "mem"      => "10gb"
-      },
+  },
+  exontable => {
+    class      => "CQSDatatable",
+    perform    => 0,
+    target_dir => "${target_dir}/exontable",
+    option     => "-p ENS --noheader -o ${task}_exon.count",
+    source_ref => "dexseqcount",
+    cqs_tools  => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
     },
+  },
 };
 
 performConfig($config);
