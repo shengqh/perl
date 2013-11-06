@@ -12,6 +12,7 @@ my $transcript_gtf       = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GR
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_73";
 
 my $hg19_gff = "/scratch/cqs/shengq1/references/hg19/dexseq_gff/Homo_sapiens.GRCh37.73.dexseq.gff";
+my $hg19_map = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.map";
 
 my $bowtie2_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 
@@ -164,7 +165,7 @@ my $config = {
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
-    name_map_file => "/data/cqs/shengq1/reference/mm10/mm10.gene.map",
+    name_map_file => $hg19_map,
     cqs_tools     => $cqstools,
     sh_direct     => 1,
     pbs           => {
@@ -191,14 +192,15 @@ my $config = {
     },
   },
   exontable => {
-    class      => "CQSDatatable",
-    perform    => 1,
-    target_dir => "${target_dir}/exontable",
-    option     => "-p ENS --noheader -o ${task}_exon.count",
-    source_ref => "dexseqcount",
-    cqs_tools  => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
+    class         => "CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/exontable",
+    option        => "-p ENS --noheader -o ${task}_exon.count",
+    name_map_file => $hg19_map,
+    source_ref    => "dexseqcount",
+    cqs_tools     => $cqstools,
+    sh_direct     => 1,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
