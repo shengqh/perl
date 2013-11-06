@@ -65,7 +65,7 @@ my $config = {
     "SRR925729" => ["/gpfs20/data/lehmanbd/RNAseq_Gray/SRR925729.sra"],
     "SRR925732" => ["/gpfs20/data/lehmanbd/RNAseq_Gray/SRR925732.sra"],
     "SRR925734" => ["/gpfs20/data/lehmanbd/RNAseq_Gray/SRR925734.sra"],
-    "SRR925735" => ["/gpfs20/data/lehmanbd/RNAseq_Gray/SRR925735.sra"],
+    "SRR925735" => ["/scratch/cqs/shengq1/rnaseq/20131104_brian_rnaseq_SRA/raw/SRR925735.sra"],
     "SRR925736" => ["/gpfs20/data/lehmanbd/RNAseq_Gray/SRR925736.sra"],
     "SRR925737" => ["/gpfs20/data/lehmanbd/RNAseq_Gray/SRR925737.sra"],
     "SRR925740" => ["/gpfs20/data/lehmanbd/RNAseq_Gray/SRR925740.sra"],
@@ -176,7 +176,7 @@ my $config = {
   },
   dexseqcount => {
     class        => "DexseqCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/dexseqcount",
     option       => "",
     source_ref   => "tophat2",
@@ -192,7 +192,7 @@ my $config = {
   },
   exontable => {
     class      => "CQSDatatable",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/exontable",
     option     => "-p ENS --noheader -o ${task}_exon.count",
     source_ref => "dexseqcount",
