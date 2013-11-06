@@ -1,0 +1,1 @@
+python /home/shengq1/pylibs/bin/dexseq_prepare_annotation.py ../Homo_sapiens.GRCh37.73.gtf Homo_sapiens.GRCh37.73.dexseq.gff
