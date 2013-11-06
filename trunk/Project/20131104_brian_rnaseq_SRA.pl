@@ -105,7 +105,7 @@ my $config = {
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "sra2fastq",
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=2",
@@ -135,7 +135,7 @@ my $config = {
     option        => "",
     source_ref    => "tophat2",
     sort_by_query => 1,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -150,7 +150,7 @@ my $config = {
     option     => "",
     source_ref => "sortbam",
     gff_file   => $transcript_gtf,
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -182,7 +182,7 @@ my $config = {
     source_ref   => "tophat2",
     gff_file     => $hg19_gff,
     dexseq_count => "/home/shengq1/pylibs/bin/dexseq_count.py",
-    sh_direct    => 1,
+    sh_direct    => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
