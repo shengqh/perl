@@ -5,8 +5,8 @@ use strict;
 use warnings;
 
 sub new {
-  require "Varscan2/SomaticMutation.pm";
-  my $class = "VarScan2::SomaticMutation";
+  require "Varscan2/Somatic.pm";
+  my $class = "VarScan2::Somatic";
   return $class->new();
 }
 
