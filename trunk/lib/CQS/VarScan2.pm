@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::Varscan2;
+package CQS::VarScan2;
 
 use strict;
 use warnings;
