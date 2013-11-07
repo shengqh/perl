@@ -87,7 +87,7 @@ my $config = {
   },
   sra2fastq => {
     class      => "SRA::FastqDump",
-    perform    => 1,
+    perform    => 0,
     ispaired   => 1,
     target_dir => "${target_dir}/FastqDump",
     option     => "",
@@ -102,7 +102,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "sra2fastq",
@@ -116,7 +116,7 @@ my $config = {
   },
   tophat2 => {
     class         => "Tophat2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/tophat2",
     option        => "--segment-length 25 -r 0 -p 6",
     source_ref    => "sra2fastq",
@@ -131,7 +131,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -146,7 +146,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -161,7 +161,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -177,7 +177,7 @@ my $config = {
   },
   dexseqcount => {
     class        => "DexseqCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/dexseqcount",
     option       => "",
     source_ref   => "tophat2",
@@ -193,7 +193,7 @@ my $config = {
   },
   exontable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/exontable",
     option        => "-p ENS --noheader -o ${task}_exon.count",
     name_map_file => $hg19_map,
@@ -205,6 +205,25 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
       "mem"      => "10gb"
+    },
+  },
+  varscan2 => {
+    class           => "VarScan2::Mpileup2snp",
+    perform         => 1,
+    target_dir      => "${target_dir}/varscan2",
+    option          => "--min-coverage 10 --strand-filter",
+    mpileup_options => "-q 20",
+    java_option     => "-Xmx40g",
+    source_ref      => "files",
+    fasta_file      => $fasta_file,
+    somatic_p_value => 0.05,
+    sh_direct       => 0,
+    VarScan2_jar    => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
 };
