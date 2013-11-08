@@ -136,7 +136,7 @@ my $config = {
     },
   },
   muTect => {
-    class        => "MuTect",
+    class        => "GATK::MuTect",
     perform      => 1,
     target_dir   => "${target_dir}/muTect",
     option       => "",
@@ -176,7 +176,7 @@ my $config = {
     },
   },
   varscan2 => {
-    class           => "VarScan2",
+    class           => "VarScan2::Somatic",
     perform         => 1,
     target_dir      => "${target_dir}/varscan2",
     option          => "--min-coverage 10",
