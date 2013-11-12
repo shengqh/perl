@@ -115,14 +115,16 @@ my $config = {
     },
   },
   tophat2 => {
-    class         => "Tophat2",
-    perform       => 0,
-    target_dir    => "${target_dir}/tophat2",
-    option        => "--segment-length 25 -r 0 -p 6",
-    source_ref    => "sra2fastq",
-    bowtie2_index => $bowtie2_index,
-    sh_direct     => 0,
-    pbs           => {
+    class                => "Tophat2",
+    perform              => 1,
+    target_dir           => "${target_dir}/tophat2",
+    option               => "--segment-length 25 -r 0 -p 6",
+    source_ref           => "sra2fastq",
+    bowtie2_index        => $bowtie2_index,
+    transcript_gtf       => $transcript_gtf,
+    transcript_gtf_index => $transcript_gtf_index,
+    sh_direct            => 0,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=6",
       "walltime" => "72",
@@ -209,7 +211,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Mpileup2snp",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
