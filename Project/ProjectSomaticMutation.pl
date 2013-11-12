@@ -146,7 +146,7 @@ my $config = {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
-      "mem"      => "20gb"
+      "mem"      => "40gb"
     },
   },
   bwa_dna => {
