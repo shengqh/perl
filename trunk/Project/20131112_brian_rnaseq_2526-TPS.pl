@@ -119,6 +119,7 @@ my $config = {
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
+    rename_bam           => 1,
     sh_direct            => 0,
     pbs                  => {
       "email"    => $email,
