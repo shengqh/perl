@@ -16,6 +16,9 @@ my $hg19_map = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.map"
 
 my $bowtie2_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 
+my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove --otherinfo";
+my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
+
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -123,6 +126,7 @@ my $config = {
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
+    rename_bam           => 1,
     sh_direct            => 0,
     pbs                  => {
       "email"    => $email,
@@ -133,7 +137,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -148,7 +152,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -163,7 +167,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -179,7 +183,7 @@ my $config = {
   },
   dexseqcount => {
     class        => "DexseqCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/dexseqcount",
     option       => "",
     source_ref   => "tophat2",
@@ -195,7 +199,7 @@ my $config = {
   },
   exontable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/exontable",
     option        => "-p ENS --noheader -o ${task}_exon.count",
     name_map_file => $hg19_map,
@@ -211,7 +215,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Mpileup2snp",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
@@ -228,6 +232,24 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  annovar_varscan2 => {
+    class      => "Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/varscan2",
+    option     => $annovar_param,
+    source_ref => [ "varscan2", "\.vcf\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  
 };
 
 performConfig($config);
