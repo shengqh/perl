@@ -12,10 +12,10 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 ##hg19.16569###
-#my $fasta_file    = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS.fa";
-#my $cosmic_file   = "/data/cqs/shengq1/reference/cosmic/cosmic_v66_20130725.hg19.16569.vcf";
-#my $snp_file      = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
-#my $bowtie2_index = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS";
+my $fasta_file_16569    = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS.fa";
+my $cosmic_file_16569   = "/data/cqs/shengq1/reference/cosmic/cosmic_v66_20130725.hg19.16569.vcf";
+my $snp_file_16569      = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
+my $bowtie2_index_16569 = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS";
 
 ##hg19.16571###
 my $fasta_file    = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
@@ -261,6 +261,67 @@ my $config = {
     groups_ref       => "groups",
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
     fasta_file       => $fasta_file,
+    annovar_buildver => "hg19",
+    rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
+    sh_direct        => 1,
+    execute_file     => "/home/shengq1/rsmc/rsmc.exe",
+    pbs              => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
+  muTect_16569 => {
+    class        => "GATK::MuTect",
+    perform      => 1,
+    target_dir   => "${target_dir}/16569_muTect",
+    option       => "",
+    java_option  => "-Xmx40g",
+    source_ref   => ["dna","rna"],
+    groups_ref   => "groups",
+    fasta_file   => $fasta_file_16569,
+    cosmic_file  => $cosmic_file_16569,
+    dbsnp_file   => $snp_file_16569,
+    bychromosome => 0,
+    sh_direct    => 0,
+    muTect_jar   => "/home/shengq1/local/bin/muTect-1.1.4.jar",
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
+  varscan2_16569 => {
+    class           => "VarScan2::Somatic",
+    perform         => 1,
+    target_dir      => "${target_dir}/16569_varscan2",
+    option          => "--min-coverage 10",
+    mpileup_options => "-q 20",
+    java_option     => "-Xmx40g",
+    source_ref      => ["dna","rna"],
+    groups_ref      => "groups",
+    fasta_file      => $fasta_file_16569,
+    somatic_p_value => 0.05,
+    sh_direct       => 0,
+    VarScan2_jar    => "/home/shengq1/local/bin/VarScan.v2.3.5.jar",
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  rsmc_16569 => {
+    class            => "RSMC",
+    perform          => 1,
+    target_dir       => "${target_dir}/16569_rsmc",
+    option           => "-c 12",                                             #thread mode
+    source_ref       => ["dna","rna"],
+    groups_ref       => "groups",
+    source_type      => "BAM",                                               #source_type can be BAM/Mpileup
+    fasta_file       => $fasta_file_16569,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
     sh_direct        => 1,
