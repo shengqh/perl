@@ -127,12 +127,27 @@ my $config = {
     "TCGA-BH-A0E0-RNA-TP-DNA-NB" => [ "TCGA-BH-A0E0-DNA-NB", "TCGA-BH-A0E0-RNA-TP" ],
     "TCGA-BH-A0H7-RNA-TP-DNA-NB" => [ "TCGA-BH-A0H7-DNA-NB", "TCGA-BH-A0H7-RNA-TP" ],
   },
+  sortbam_dna => {
+    class         => "Sortbam",
+    perform       => 1,
+    target_dir    => "${target_dir}/sortname",
+    option        => "",
+    source_ref    => "dna",
+    sort_by_query => 1,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   bam2fastq_dna => {
     class               => "Bam2Fastq",
     perform             => 1,
     target_dir          => "${target_dir}/dna_bam2fastq",
     option              => "",
-    source_ref          => "dna",
+    source_ref          => "sortbam_dna",
     cqstools            => $cqstools,
     ispaired            => 1,
     sort_before_convert => 1,
@@ -179,12 +194,27 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  sortbam_rna => {
+    class         => "Sortbam",
+    perform       => 1,
+    target_dir    => "${target_dir}/sortname",
+    option        => "",
+    source_ref    => "rna",
+    sort_by_query => 1,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   bam2fastq_rna => {
     class               => "Bam2Fastq",
     perform             => 1,
     target_dir          => "${target_dir}/rna_bam2fastq",
     option              => "",
-    source_ref          => "rna",
+    source_ref          => "sortbam_rna",
     cqstools            => $cqstools,
     ispaired            => 1,
     sort_before_convert => 1,
