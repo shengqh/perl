@@ -258,7 +258,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  sortbam_rna => {
+  sortbam_tophat2_rna => {
     class         => "Sortbam",
     perform       => 1,
     target_dir    => "${target_dir}/rna_tophat2_sortname",
@@ -278,7 +278,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/rna_htseqcount",
     option     => "",
-    source_ref => "sortbam_rna",
+    source_ref => "sortbam_tophat2_rna",
     gff_file   => $transcript_gtf,
     sh_direct  => 0,
     pbs        => {
