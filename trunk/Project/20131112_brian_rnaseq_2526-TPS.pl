@@ -98,7 +98,7 @@ my $config = {
   files   => $files,
   fastqc  => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -112,7 +112,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 6",
     source_ref           => "files",
@@ -130,7 +130,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -145,7 +145,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -160,7 +160,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -176,7 +176,7 @@ my $config = {
   },
   dexseqcount => {
     class        => "DexseqCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/dexseqcount",
     option       => "",
     source_ref   => "tophat2",
@@ -192,13 +192,13 @@ my $config = {
   },
   exontable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/exontable",
     option        => "-p ENS --noheader -o ${task}_exon.count",
     name_map_file => $hg19_map,
     source_ref    => "dexseqcount",
     cqs_tools     => $cqstools,
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -208,7 +208,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Mpileup2snp",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
