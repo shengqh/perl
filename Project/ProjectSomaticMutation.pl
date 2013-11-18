@@ -25,6 +25,7 @@ my $bowtie2_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_73";
+my $hg19_map             = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.map";
 
 my $annovar_param = "-protocol refGene,snp137,cosmic64 -operation g,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
@@ -128,20 +129,20 @@ my $config = {
     "TCGA-BH-A0H7-RNA-TP-DNA-NB" => [ "TCGA-BH-A0H7-DNA-NB", "TCGA-BH-A0H7-RNA-TP" ],
   },
   rna_groups => {
-    "TCGA-A7-A0D9-RNA-TP-NT"     => [ "TCGA-A7-A0D9-RNA-NT", "TCGA-A7-A0D9-RNA-TP" ],
-    "TCGA-BH-A0B3-RNA-TP-NT"     => [ "TCGA-BH-A0B3-RNA-NT", "TCGA-BH-A0B3-RNA-TP" ],
-    "TCGA-BH-A0B8-RNA-TP-NT"     => [ "TCGA-BH-A0B8-RNA-NT", "TCGA-BH-A0B8-RNA-TP" ],
-    "TCGA-BH-A0BJ-RNA-TP-NT"     => [ "TCGA-BH-A0BJ-RNA-NT", "TCGA-BH-A0BJ-RNA-TP" ],
-    "TCGA-BH-A0BM-RNA-TP-NT"     => [ "TCGA-BH-A0BM-RNA-NT", "TCGA-BH-A0BM-RNA-TP" ],
-    "TCGA-BH-A0C0-RNA-TP-NT"     => [ "TCGA-BH-A0C0-RNA-NT", "TCGA-BH-A0C0-RNA-TP" ],
-    "TCGA-BH-A0DK-RNA-TP-NT"     => [ "TCGA-BH-A0DK-RNA-NT", "TCGA-BH-A0DK-RNA-TP" ],
-    "TCGA-BH-A0DP-RNA-TP-NT"     => [ "TCGA-BH-A0DP-RNA-NT", "TCGA-BH-A0DP-RNA-TP" ],
-    "TCGA-BH-A0E0-RNA-TP-NT"     => [ "TCGA-BH-A0E0-RNA-NT", "TCGA-BH-A0E0-RNA-TP" ],
-    "TCGA-BH-A0H7-RNA-TP-NT"     => [ "TCGA-BH-A0H7-RNA-NT", "TCGA-BH-A0H7-RNA-TP" ],
+    "TCGA-A7-A0D9-RNA-TP-NT" => [ "TCGA-A7-A0D9-RNA-NT", "TCGA-A7-A0D9-RNA-TP" ],
+    "TCGA-BH-A0B3-RNA-TP-NT" => [ "TCGA-BH-A0B3-RNA-NT", "TCGA-BH-A0B3-RNA-TP" ],
+    "TCGA-BH-A0B8-RNA-TP-NT" => [ "TCGA-BH-A0B8-RNA-NT", "TCGA-BH-A0B8-RNA-TP" ],
+    "TCGA-BH-A0BJ-RNA-TP-NT" => [ "TCGA-BH-A0BJ-RNA-NT", "TCGA-BH-A0BJ-RNA-TP" ],
+    "TCGA-BH-A0BM-RNA-TP-NT" => [ "TCGA-BH-A0BM-RNA-NT", "TCGA-BH-A0BM-RNA-TP" ],
+    "TCGA-BH-A0C0-RNA-TP-NT" => [ "TCGA-BH-A0C0-RNA-NT", "TCGA-BH-A0C0-RNA-TP" ],
+    "TCGA-BH-A0DK-RNA-TP-NT" => [ "TCGA-BH-A0DK-RNA-NT", "TCGA-BH-A0DK-RNA-TP" ],
+    "TCGA-BH-A0DP-RNA-TP-NT" => [ "TCGA-BH-A0DP-RNA-NT", "TCGA-BH-A0DP-RNA-TP" ],
+    "TCGA-BH-A0E0-RNA-TP-NT" => [ "TCGA-BH-A0E0-RNA-NT", "TCGA-BH-A0E0-RNA-TP" ],
+    "TCGA-BH-A0H7-RNA-TP-NT" => [ "TCGA-BH-A0H7-RNA-NT", "TCGA-BH-A0H7-RNA-TP" ],
   },
   sortbam_dna => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/dna_sortname",
     option        => "",
     source_ref    => "dna",
@@ -156,7 +157,7 @@ my $config = {
   },
   bam2fastq_dna => {
     class               => "Bam2Fastq",
-    perform             => 1,
+    perform             => 0,
     target_dir          => "${target_dir}/dna_bam2fastq",
     option              => "",
     source_ref          => "sortbam_dna",
@@ -174,7 +175,7 @@ my $config = {
   },
   bwa_dna => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/dna_bwa",
     option     => "-q 15 -t 8",
     fasta_file => $fasta_file,
@@ -189,7 +190,7 @@ my $config = {
   },
   refine_dna => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/dna_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
@@ -208,7 +209,7 @@ my $config = {
   },
   sortbam_rna => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/rna_sortname",
     option        => "",
     source_ref    => "rna",
@@ -223,7 +224,7 @@ my $config = {
   },
   bam2fastq_rna => {
     class               => "Bam2Fastq",
-    perform             => 1,
+    perform             => 0,
     target_dir          => "${target_dir}/rna_bam2fastq",
     option              => "",
     source_ref          => "sortbam_rna",
@@ -241,7 +242,7 @@ my $config = {
   },
   tophat2_rna => {
     class                => "Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/rna_tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "bam2fastq_rna",
@@ -257,9 +258,55 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  sortbam_rna => {
+    class         => "Sortbam",
+    perform       => 1,
+    target_dir    => "${target_dir}/rna_tophat2_sortname",
+    option        => "",
+    source_ref    => "files",
+    sort_by_query => 1,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
+  htseqcount_rna => {
+    class      => "HTSeqCount",
+    perform    => 1,
+    target_dir => "${target_dir}/rna_htseqcount",
+    option     => "",
+    source_ref => "sortbam_rna",
+    gff_file   => $transcript_gtf,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  genetable_rna => {
+    class         => "CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/rna_genetable",
+    option        => "-p ENS --noheader -o TCGA_rna_gene.count",
+    source_ref    => "htseqcount_rna",
+    name_map_file => $hg19_map,
+    cqs_tools     => $cqstools,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/all_muTect",
     option       => "",
     java_option  => "-Xmx40g",
@@ -280,7 +327,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
@@ -300,7 +347,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/all_rsmc",
     option           => "-c 12",                                             #thread mode
     source_ref       => [ "refine_dna", "tophat2_rna" ],
@@ -320,7 +367,7 @@ my $config = {
   },
   muTect_16569 => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/16569_muTect",
     option       => "",
     java_option  => "-Xmx40g",
@@ -341,7 +388,7 @@ my $config = {
   },
   varscan2_16569 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/16569_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
@@ -361,10 +408,10 @@ my $config = {
   },
   rsmc_16569 => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/16569_rsmc",
     option           => "-c 12",                                             #thread mode
-    source_ref       => [ "rna" ],
+    source_ref       => ["rna"],
     groups_ref       => "rna_groups",
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
     fasta_file       => $fasta_file_16569,
