@@ -1153,7 +1153,7 @@ my $w83config = {
   },
   bam2fastq => {
     class               => "Bam2Fastq",
-    perform             => 1,
+    perform             => 0,
     target_dir          => "${target_dir}/bam2fastq",
     option              => "",
     source_ref          => "bamfiles",
