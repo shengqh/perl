@@ -1103,7 +1103,7 @@ foreach my $def (@defs) {
   }
 }
 
-my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index";
+my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index/Gingivalis_W83";
 
 my $target_w87_dir = create_directory_or_die( $target_dir . "/w87" );
 
