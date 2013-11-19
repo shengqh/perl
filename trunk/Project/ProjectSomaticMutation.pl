@@ -175,9 +175,9 @@ my $config = {
   },
   bwa_dna => {
     class      => "BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/dna_bwa",
-    option     => "-q 15 -t 8",
+    option     => "-T 15 -t 8",
     fasta_file => $fasta_file,
     source_ref => "bam2fastq_dna",
     sh_direct  => 0,
@@ -260,7 +260,7 @@ my $config = {
   },
   sortbam_tophat2_rna => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/rna_tophat2_sortname",
     option        => "",
     source_ref    => "tophat2_rna",
@@ -275,7 +275,7 @@ my $config = {
   },
   htseqcount_rna => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/rna_htseqcount",
     option     => "",
     source_ref => "sortbam_tophat2_rna",
@@ -290,7 +290,7 @@ my $config = {
   },
   genetable_rna => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/rna_genetable",
     option        => "-p ENS --noheader -o TCGA_rna_gene.count",
     source_ref    => "htseqcount_rna",
