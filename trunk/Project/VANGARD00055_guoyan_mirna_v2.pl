@@ -1105,10 +1105,10 @@ foreach my $def (@defs) {
 
 my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index/Gingivalis_W83";
 
-my $target_w87_dir = create_directory_or_die( $target_dir . "/w87" );
+my $target_w83_dir = create_directory_or_die( $target_dir . "/w83" );
 
-my $w87config = {
-  general => { "task_name" => "w87", },
+my $w83config = {
+  general => { "task_name" => "w83", },
   fastqfiles => {
     "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.fastq"],
     "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.fastq"],
@@ -1140,7 +1140,7 @@ my $w87config = {
   bowtie1_genome_cutadapt_topN_1mm => {
     class         => "Bowtie1",
     perform       => 1,
-    target_dir    => "${target_w87_dir}/topN_bowtie1_genome_cutadapt_1mm",
+    target_dir    => "${target_w83_dir}/topN_bowtie1_genome_cutadapt_1mm",
     option        => $bowtie1_option_1mm,
     source_ref    => "fastqfiles",
     bowtie1_index => $w87_bowtie1_index,
@@ -1155,6 +1155,6 @@ my $w87config = {
   },
 };
 
-performConfig($w87config);
+performConfig($w83config);
 
 1;
