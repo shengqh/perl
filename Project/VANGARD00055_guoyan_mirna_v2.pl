@@ -1095,12 +1095,64 @@ foreach my $def (@defs) {
   };
 
   #  performConfig($config, "" , 1);
-  performConfig($config);
+  #performConfig($config);
 
   if ( $def == $mouse ) {
-    performTask( $config, "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm_distinct" );
+    #performTask( $config, "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm_distinct" );
   }
 }
 
-1;
+my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index";
 
+my $target_w87_dir = create_directory_or_die( $target_dir . "/w87" );
+
+my $w87config = {
+  fastqfiles => {
+    "2572-KCV-1-19_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.fastq"],
+    "2572-KCV-1-20_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.fastq"],
+    "2572-KCV-1-21_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-21_clipped_identical.fastq"],
+    "2572-KCV-1-22_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-22_clipped_identical.fastq"],
+    "2572-KCV-1-23_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-23_clipped_identical.fastq"],
+    "2572-KCV-1-24_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-24_clipped_identical.fastq"],
+    "2572-KCV-1-25_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-25_clipped_identical.fastq"],
+    "2572-KCV-1-26_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-26_clipped_identical.fastq"],
+    "2572-KCV-1-27_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-27_clipped_identical.fastq"],
+    "2572-KCV-1-28_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-28_clipped_identical.fastq"],
+    "2572-KCV-1-29_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.fastq"],
+    "2572-KCV-1-30_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.fastq"],
+  },
+  countfiles => {
+    "2572-KCV-1-19_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.dupcount"],
+    "2572-KCV-1-20_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.dupcount"],
+    "2572-KCV-1-21_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-21_clipped_identical.dupcount"],
+    "2572-KCV-1-22_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-22_clipped_identical.dupcount"],
+    "2572-KCV-1-23_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-23_clipped_identical.dupcount"],
+    "2572-KCV-1-24_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-24_clipped_identical.dupcount"],
+    "2572-KCV-1-25_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-25_clipped_identical.dupcount"],
+    "2572-KCV-1-26_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-26_clipped_identical.dupcount"],
+    "2572-KCV-1-27_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-27_clipped_identical.dupcount"],
+    "2572-KCV-1-28_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-28_clipped_identical.dupcount"],
+    "2572-KCV-1-29_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.dupcount"],
+    "2572-KCV-1-30_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.dupcount"],
+  },
+  bowtie1_genome_cutadapt_topN_1mm => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_w87_dir}/topN_bowtie1_genome_cutadapt_1mm",
+    option        => $bowtie1_option_1mm,
+    source_ref    => "fastqfiles",
+    bowtie1_index => $w87_bowtie1_index,
+    samonly       => 0,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+};
+ 
+performConfig($w87config); 
+ 
+1;
