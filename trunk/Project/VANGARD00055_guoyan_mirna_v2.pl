@@ -1098,6 +1098,7 @@ foreach my $def (@defs) {
   #performConfig($config);
 
   if ( $def == $mouse ) {
+
     #performTask( $config, "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm_distinct" );
   }
 }
@@ -1107,6 +1108,7 @@ my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1
 my $target_w87_dir = create_directory_or_die( $target_dir . "/w87" );
 
 my $w87config = {
+  general => { "task_name" => "w87", },
   fastqfiles => {
     "2572-KCV-1-19_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.fastq"],
     "2572-KCV-1-20_clipped_identical" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.fastq"],
@@ -1152,7 +1154,7 @@ my $w87config = {
     },
   },
 };
- 
-performConfig($w87config); 
- 
+
+performConfig($w87config);
+
 1;
