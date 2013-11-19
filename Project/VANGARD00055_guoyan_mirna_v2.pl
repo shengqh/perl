@@ -1108,7 +1108,7 @@ my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1
 my $target_w83_dir = create_directory_or_die( $target_dir . "/w83" );
 
 my $w83config = {
-  general => { "task_name" => "w83", },
+  general    => { "task_name" => "w83", },
   fastqfiles => {
     "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.fastq"],
     "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.fastq"],
@@ -1137,12 +1137,32 @@ my $w83config = {
     "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.dupcount"],
     "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.dupcount"],
   },
+  bam2fastq => {
+    class               => "Bam2Fastq",
+    perform             => 0,
+    target_dir          => "${target_dir}/bam2fastq",
+    option              => "",
+    source_ref          => "fastqfiles",
+    cqstools            => $cqstools,
+    ispaired            => 1,
+    unmapped_only       => 1,
+    sort_before_convert => 0,
+    sort_thread         => 12,
+    sh_direct           => 1,
+    pbs                 => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
+
   bowtie1_genome_cutadapt_topN_1mm => {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_w83_dir}/topN_bowtie1_genome_cutadapt_1mm",
     option        => $bowtie1_option_1mm,
-    source_ref    => "fastqfiles",
+    source_ref    => "bam2fastq",
     bowtie1_index => $w87_bowtie1_index,
     samonly       => 0,
     sh_direct     => 1,
