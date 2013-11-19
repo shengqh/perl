@@ -1153,7 +1153,7 @@ my $w83config = {
   },
   bam2fastq => {
     class               => "Bam2Fastq",
-    perform             => 0,
+    perform             => 1,
     target_dir          => "${target_dir}/bam2fastq",
     option              => "",
     source_ref          => "bamfiles",
@@ -1162,6 +1162,7 @@ my $w83config = {
     unmapped_only       => 1,
     sort_before_convert => 0,
     sort_thread         => 12,
+    unzipped            => 1,
     sh_direct           => 1,
     pbs                 => {
       "email"    => $email,
