@@ -1103,8 +1103,8 @@ foreach my $def (@defs) {
   }
 }
 
-my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index/Gingivalis_W83";
-my $w87_gtf_index     = "/scratch/cqs/shengq1/references/gingivalis_W83/Gingivalis_W83.gtf";
+my $w83_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index/Gingivalis_W83";
+my $w83_gtf_index     = "/scratch/cqs/shengq1/references/gingivalis_W83/Gingivalis_W83.gtf";
 
 my $target_w83_dir = create_directory_or_die( $target_dir . "/w83" );
 
@@ -1178,7 +1178,7 @@ my $w83config = {
     target_dir    => "${target_w83_dir}/topN_bowtie1_genome_cutadapt_1mm",
     option        => $bowtie1_option_1mm,
     source_ref    => "fastqfiles",
-    bowtie1_index => $w87_bowtie1_index,
+    bowtie1_index => $w83_bowtie1_index,
     samonly       => 0,
     sh_direct     => 1,
     pbs           => {
@@ -1188,7 +1188,7 @@ my $w83config = {
       "mem"      => "40gb"
     },
   },
-  tRNA_1mm_count => {
+  count_1mm => {
     class           => "CQSMappedCount",
     perform         => 1,
     target_dir      => "${target_w83_dir}/bowtie1_genome_cutadapt_1mm_count",
@@ -1197,7 +1197,7 @@ my $w83config = {
     fastq_files_ref => "bam2fastq",
     seqcount_ref    => "countfiles",
     cqs_tools       => $cqstools,
-    gff_file        => $w87_gtf_index,
+    gff_file        => $w83_gtf_index,
     samtools        => $samtools,
     sh_direct       => 1,
     pbs             => {
@@ -1205,6 +1205,22 @@ my $w83config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "40gb"
+    },
+  },
+  tRNA_1mm_table => {
+    class      => "CQSMappedTable",
+    perform    => 1,
+    target_dir => "${target_w83_dir}/summary",
+    option     => "",
+    source_ref => [ "count_1mm", ".xml" ],
+    cqs_tools  => $cqstools,
+    prefix     => "gingivalis_W83_1mm_",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
     },
   },
 };
