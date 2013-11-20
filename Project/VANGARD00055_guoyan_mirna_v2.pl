@@ -1198,7 +1198,6 @@ my $w83config = {
     seqcount_ref    => "countfiles",
     cqs_tools       => $cqstools,
     gff_file        => $w87_gtf_index,
-    fasta_file      => $w87_bowtie1_index . ".fasta",
     samtools        => $samtools,
     sh_direct       => 1,
     pbs             => {
