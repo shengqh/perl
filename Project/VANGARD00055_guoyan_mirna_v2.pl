@@ -1104,6 +1104,7 @@ foreach my $def (@defs) {
 }
 
 my $w87_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index/Gingivalis_W83";
+my $w87_gtf_index     = "/scratch/cqs/shengq1/references/gingivalis_W83/Gingivalis_W83.gtf";
 
 my $target_w83_dir = create_directory_or_die( $target_dir . "/w83" );
 
@@ -1171,7 +1172,6 @@ my $w83config = {
       "mem"      => "20gb"
     },
   },
-
   bowtie1_genome_cutadapt_topN_1mm => {
     class         => "Bowtie1",
     perform       => 1,
@@ -1184,6 +1184,26 @@ my $w83config = {
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  tRNA_1mm_count => {
+    class           => "CQSMappedCount",
+    perform         => 1,
+    target_dir      => "${target_w83_dir}/bowtie1_genome_cutadapt_1mm_count",
+    option          => "",
+    source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+    fastq_files_ref => "bam2fastq",
+    seqcount_ref    => "countfiles",
+    cqs_tools       => $cqstools,
+    gff_file        => $w87_gtf_index,
+    fasta_file      => $w87_bowtie1_index . ".fasta",
+    samtools        => $samtools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "40gb"
     },
