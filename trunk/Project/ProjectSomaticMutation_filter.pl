@@ -13,7 +13,7 @@ my  @rna_groups = ("TCGA-A7-A0D9-RNA-TP-NT",
     "TCGA-BH-A0E0-RNA-TP-NT",
     "TCGA-BH-A0H7-RNA-TP-NT");
     
-my $dir = "/scratch/cqs/shengq1/somaticmutation_comparison/16569_rsmc/result/";
+my $dir = "/scratch/cqs/shengq1/somaticmutation_comparison/16569_rsmc/result";
   
 for my $key (@rna_groups){
   print($key . "\n");
