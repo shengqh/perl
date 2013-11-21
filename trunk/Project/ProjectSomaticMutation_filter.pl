@@ -17,7 +17,7 @@ my $dir = "/scratch/cqs/shengq1/somaticmutation_comparison/16569_rsmc/result";
   
 for my $key (@rna_groups){
   print($key . "\n");
-  exec "mono-sgen /home/shengq1/rsmc/rsmc.exe filter -i ${dir}/${key}/${key}.bases -o ${dir}/${key}/${key}.tsv 1> ${dir}/log/${key}.log";
+  exec "mono-sgen /home/shengq1/rsmc/rsmc.exe filter -i ${dir}/${key}/${key}.bases -o ${dir}/${key}/${key}.tsv 1>${dir}/log/${key}.log";
 }  
   
 1;
