@@ -173,7 +173,7 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  bwa_dna => {
+  dna_bwa => {
     class      => "BWA",
     perform    => 1,
     target_dir => "${target_dir}/dna_bwa",
@@ -188,13 +188,48 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  refine_dna => {
+  dna_bwa_refine => {
     class              => "GATKRefine",
-    perform            => 0,
-    target_dir         => "${target_dir}/dna_refine",
+    perform            => 1,
+    target_dir         => "${target_dir}/dna_bwa_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
-    source_ref         => "bwa_dna",
+    source_ref         => "dna_bwa",
+    thread_count       => 8,
+    vcf_files          => [$snp_file],
+    gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
+    markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
+    sh_direct          => 0,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  dna_bowtie2 => {
+    class         => "Bowtie2",
+    perform       => 1,
+    target_dir    => "${target_dir}/dna_bowtie2",
+    option        => "-p 8",
+    source_ref    => "bam2fastq_dna",
+    bowtie2_index => $bowtie2_index,
+    samonly       => 0,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  dna_bowtie2_refine => {
+    class              => "GATKRefine",
+    perform            => 1,
+    target_dir         => "${target_dir}/dna_bowtie2_refine",
+    option             => "-Xmx40g",
+    fasta_file         => $fasta_file,
+    source_ref         => "dna_bowtie2",
     thread_count       => 8,
     vcf_files          => [$snp_file],
     gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
@@ -306,11 +341,11 @@ my $config = {
   },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/all_muTect",
     option       => "",
     java_option  => "-Xmx40g",
-    source_ref   => [ "refine_dna", "tophat2_rna" ],
+    source_ref   => [ "dna_bwa_refine", "tophat2_rna" ],
     groups_ref   => "groups",
     fasta_file   => $fasta_file,
     cosmic_file  => $cosmic_file,
@@ -327,12 +362,12 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
     java_option     => "-Xmx40g",
-    source_ref      => [ "refine_dna", "tophat2_rna" ],
+    source_ref      => [ "dna_bwa_refine", "tophat2_rna" ],
     groups_ref      => "groups",
     fasta_file      => $fasta_file,
     somatic_p_value => 0.05,
@@ -347,10 +382,10 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/all_rsmc",
     option           => "-c 12",                                             #thread mode
-    source_ref       => [ "refine_dna", "tophat2_rna" ],
+    source_ref       => [ "dna_bwa_refine", "tophat2_rna" ],
     groups_ref       => "groups",
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
     fasta_file       => $fasta_file,
