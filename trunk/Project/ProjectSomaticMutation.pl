@@ -402,9 +402,9 @@ my $config = {
   },
   muTect_16569 => {
     class        => "GATK::MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/16569_muTect",
-    option       => "",
+    option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
     source_ref   => [ "dna", "rna" ],
     groups_ref   => "groups",
