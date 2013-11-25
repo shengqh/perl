@@ -1260,7 +1260,7 @@ my $parclip_config = {
     },
   },
   bowtie2 => {
-    class         => "Bowtie1",
+    class         => "Bowtie2",
     perform       => 1,
     target_dir    => "${target_parclip_dir}/bowtie2",
     option        => "-N 1",
