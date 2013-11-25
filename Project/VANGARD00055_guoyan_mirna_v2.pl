@@ -1247,16 +1247,16 @@ my $parclip_config = {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_parclip_dir}/bowtie1",
-    option        => "-v 2 -m 10 --best --strata",
+    option        => "-v 2 --best --strata",
     source_ref    => "fastqfiles",
     bowtie1_index => $bowtie1_human_index,
     samonly       => 0,
     sh_direct     => 0,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "20gb"
     },
   },
   sortbam => {
