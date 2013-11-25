@@ -1276,7 +1276,6 @@ my $parclip_config = {
   },
 };
 
-#performConfig($w83config);
-
+performConfig($parclip_config);
 
 1;
