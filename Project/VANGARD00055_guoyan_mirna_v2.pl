@@ -1154,7 +1154,7 @@ my $w83config = {
   },
   bam2fastq => {
     class               => "Bam2Fastq",
-    perform             => 1,
+    perform             => 0,
     target_dir          => "${target_w83_dir}/bam2fastq",
     option              => "",
     source_ref          => "bamfiles",
@@ -1174,7 +1174,7 @@ my $w83config = {
   },
   bowtie1_genome_cutadapt_topN_1mm => {
     class         => "Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_w83_dir}/topN_bowtie1_genome_cutadapt_1mm",
     option        => $bowtie1_option_1mm,
     source_ref    => "fastqfiles",
@@ -1190,7 +1190,7 @@ my $w83config = {
   },
   count_1mm => {
     class           => "CQSMappedCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_w83_dir}/bowtie1_genome_cutadapt_1mm_count",
     option          => "",
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -1209,7 +1209,7 @@ my $w83config = {
   },
   tRNA_1mm_table => {
     class      => "CQSMappedTable",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_w83_dir}/summary",
     option     => "",
     source_ref => [ "count_1mm", ".xml" ],
@@ -1225,6 +1225,58 @@ my $w83config = {
   },
 };
 
-performConfig($w83config);
+#performConfig($w83config);
+
+my $parclip_files = {
+  "Vickers_Parclip_1_ATCACG_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_1_ATCACG_L002_R1.fastq"],
+  "Vickers_Parclip_2_CGATGT_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_2_CGATGT_L002_R1.fastq"],
+  "Vickers_Parclip_3_TTAGGC_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_3_TTAGGC_L002_R1.fastq"],
+  "Vickers_Parclip_4_TGACCA_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_4_TGACCA_L002_R1.fastq"],
+  "Vickers_Parclip_5_ACAGTG_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_5_ACAGTG_L002_R1.fastq"],
+  "Vickers_Parclip_6_GCCAAT_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_6_GCCAAT_L002_R1.fastq"],
+  "Vickers_Parclip_7_CAGATC_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_7_CAGATC_L002_R1.fastq"],
+  "Vickers_Parclip_8_ACTTGA_L002_R1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_8_ACTTGA_L002_R1.fastq"]
+};
+
+my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip" );
+
+my $parclip_config = {
+  general    => { "task_name" => "parclip", },
+  fastqfiles => $parclip_files,
+  bowtie1 => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_parclip_dir}/bowtie1",
+    option        => "-v 2 -m 10 --best --strata -f -p 8",
+    source_ref    => "fastqfiles",
+    bowtie1_index => $bowtie1_human_index,
+    samonly       => 0,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  sortbam => {
+    class         => "Sortbam",
+    perform       => 1,
+    target_dir    => "${target_parclip_dir}/sortname",
+    option        => "",
+    source_ref    => "bowtie1",
+    sort_by_query => 1,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
+};
+
+#performConfig($w83config);
+
 
 1;
