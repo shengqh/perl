@@ -1247,7 +1247,7 @@ my $parclip_config = {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_parclip_dir}/bowtie1",
-    option        => "-v 2 -m 10 --best --strata -p 8",
+    option        => "-v 2 -m 10 --best --strata",
     source_ref    => "fastqfiles",
     bowtie1_index => $bowtie1_human_index,
     samonly       => 0,
@@ -1261,7 +1261,7 @@ my $parclip_config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_parclip_dir}/sortname",
     option        => "",
     source_ref    => "bowtie1",
