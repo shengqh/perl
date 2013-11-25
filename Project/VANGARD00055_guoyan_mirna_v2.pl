@@ -1259,6 +1259,22 @@ my $parclip_config = {
       "mem"      => "20gb"
     },
   },
+  bowtie2 => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_parclip_dir}/bowtie2",
+    option        => "-N 1",
+    source_ref    => "fastqfiles",
+    bowtie2_index => $bowtie2_human_index,
+    samonly       => 0,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   sortbam => {
     class         => "Sortbam",
     perform       => 0,
