@@ -1243,41 +1243,72 @@ my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip" );
 my $parclip_config = {
   general    => { "task_name" => "parclip", },
   fastqfiles => $parclip_files,
+  cutadapt   => {
+    class      => "Cutadapt",
+    perform    => 1,
+    target_dir => "${target_parclip_dir}/cutadapt",
+    option     => "-O 10",
+    source     => "fastqfiles",
+    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+    extension  => "_clipped.fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  fastqlen => {
+    class      => "FastqLen",
+    perform    => 1,
+    target_dir => "${target_parclip_dir}/fastqlen",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  cutadapt_len => {
+    class      => "Cutadapt",
+    perform    => 1,
+    target_dir => "${target_parclip_dir}/cutadapt_len",
+    option     => "-O 10 -m 12 -M 49",
+    source     => "fastqfiles",
+    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+    extension  => "_clipped.fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   bowtie1 => {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_parclip_dir}/bowtie1",
-    option        => "-v 2 -a --best --strata",
-    source_ref    => "fastqfiles",
+    option        => "-v 2 -m 10 -p 8 --best --strata",
+    source_ref    => "cutadapt_len",
     bowtie1_index => $bowtie1_human_index,
     samonly       => 0,
     sh_direct     => 0,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie2 => {
-    class         => "Bowtie2",
-    perform       => 1,
-    target_dir    => "${target_parclip_dir}/bowtie2",
-    option        => "-N 1",
-    source_ref    => "fastqfiles",
-    bowtie2_index => $bowtie2_human_index,
-    samonly       => 0,
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "20gb"
     },
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_parclip_dir}/sortname",
     option        => "",
     source_ref    => "bowtie1",
