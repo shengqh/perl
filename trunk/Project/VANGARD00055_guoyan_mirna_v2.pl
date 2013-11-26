@@ -1245,7 +1245,7 @@ my $parclip_config = {
   fastqfiles => $parclip_files,
   cutadapt   => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_parclip_dir}/cutadapt",
     option     => "-O 10",
     source_ref => "fastqfiles",
@@ -1261,7 +1261,7 @@ my $parclip_config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_parclip_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -1276,7 +1276,7 @@ my $parclip_config = {
   },
   cutadapt_len => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_parclip_dir}/cutadapt_len",
     option     => "-O 10 -m 12 -M 60",
     source_ref => "fastqfiles",
