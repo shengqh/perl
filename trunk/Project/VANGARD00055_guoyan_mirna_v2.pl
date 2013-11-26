@@ -1228,14 +1228,14 @@ my $w83config = {
 #performConfig($w83config);
 
 my $parclip_files = {
-  "Parclip_01" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_1_ATCACG_L002_R1.fastq"],
-  "Parclip_02" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_2_CGATGT_L002_R1.fastq"],
-  "Parclip_03" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_3_TTAGGC_L002_R1.fastq"],
-  "Parclip_04" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_4_TGACCA_L002_R1.fastq"],
-  "Parclip_05" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_5_ACAGTG_L002_R1.fastq"],
-  "Parclip_06" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_6_GCCAAT_L002_R1.fastq"],
-  "Parclip_07" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_7_CAGATC_L002_R1.fastq"],
-  "Parclip_08" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_8_ACTTGA_L002_R1.fastq"]
+  "Parclip_01" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
+  "Parclip_02" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_2_CGATGT_L002_R1.fastq.gz"],
+  "Parclip_03" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_3_TTAGGC_L002_R1.fastq.gz"],
+  "Parclip_04" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_4_TGACCA_L002_R1.fastq.gz"],
+  "Parclip_05" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_5_ACAGTG_L002_R1.fastq.gz"],
+  "Parclip_06" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_6_GCCAAT_L002_R1.fastq.gz"],
+  "Parclip_07" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_7_CAGATC_L002_R1.fastq.gz"],
+  "Parclip_08" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_8_ACTTGA_L002_R1.fastq.gz"]
 };
 
 my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip" );
@@ -1278,7 +1278,7 @@ my $parclip_config = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${target_parclip_dir}/cutadapt_len",
-    option     => "-O 10 -m 12 -M 49",
+    option     => "-O 10 -m 12 -M 60",
     source_ref => "fastqfiles",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
