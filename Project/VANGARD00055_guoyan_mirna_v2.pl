@@ -1294,29 +1294,15 @@ my $parclip_config = {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_parclip_dir}/bowtie1",
-    option        => "-v 2 -m 10 -p 8 --best --strata",
+    option        => "-v 2 -m 10 --best --strata",
     source_ref    => "cutadapt_len",
     bowtie1_index => $bowtie1_human_index,
+    samformat     => 0,
     samonly       => 0,
     sh_direct     => 0,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
-  sortbam => {
-    class         => "Sortbam",
-    perform       => 1,
-    target_dir    => "${target_parclip_dir}/sortname",
-    option        => "",
-    source_ref    => "bowtie1",
-    sort_by_query => 1,
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
