@@ -178,8 +178,8 @@ my $config = {
     },
   },
   bam2fastq_dna => {
-    class               => "Bam2Fastq",
-    perform             => 0,
+    class               => "Format::Bam2Fastq",
+    perform             => 1,
     target_dir          => "${target_dir}/dna_bam2fastq",
     option              => "",
     source_ref          => "sortbam_dna",
