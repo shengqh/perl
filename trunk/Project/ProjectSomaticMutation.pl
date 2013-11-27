@@ -183,10 +183,7 @@ my $config = {
     target_dir          => "${target_dir}/dna_bam2fastq",
     option              => "",
     source_ref          => "sortbam_dna",
-    cqstools            => $cqstools,
     ispaired            => 1,
-    sort_before_convert => 0,
-    sort_thread         => 12,
     sh_direct           => 1,
     pbs                 => {
       "email"    => $email,
@@ -197,7 +194,7 @@ my $config = {
   },
   dna_bwa => {
     class      => "BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/dna_bwa",
     option     => "-T 15 -t 8",
     fasta_file => $fasta_file,
@@ -280,15 +277,12 @@ my $config = {
     },
   },
   bam2fastq_rna => {
-    class               => "Bam2Fastq",
-    perform             => 0,
+    class               => "Format::Bam2Fastq",
+    perform             => 1,
     target_dir          => "${target_dir}/rna_bam2fastq",
     option              => "",
     source_ref          => "sortbam_rna",
-    cqstools            => $cqstools,
     ispaired            => 1,
-    sort_before_convert => 0,
-    sort_thread         => 12,
     sh_direct           => 1,
     pbs                 => {
       "email"    => $email,
@@ -299,7 +293,7 @@ my $config = {
   },
   tophat2_rna => {
     class                => "Tophat2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/rna_tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "bam2fastq_rna",
@@ -363,7 +357,7 @@ my $config = {
   },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/all_muTect",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -384,7 +378,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
@@ -404,7 +398,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/all_rsmc",
     option           => "-c 12",                                             #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna" ],
