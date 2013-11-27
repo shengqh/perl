@@ -178,7 +178,7 @@ my $config = {
     },
   },
   bam2fastq_dna => {
-    class               => "Format::Bam2Fastq",
+    class               => "CQS::Bam2Fastq",
     perform             => 1,
     target_dir          => "${target_dir}/dna_bam2fastq",
     option              => "",
@@ -196,7 +196,7 @@ my $config = {
     class      => "BWA",
     perform    => 1,
     target_dir => "${target_dir}/dna_bwa",
-    option     => "-T 15 -t 8",
+    option     => "-T 15 -t 8 -M",
     fasta_file => $fasta_file,
     source_ref => "bam2fastq_dna",
     sh_direct  => 0,
