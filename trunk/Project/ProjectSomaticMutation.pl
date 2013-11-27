@@ -184,7 +184,7 @@ my $config = {
     option              => "",
     source_ref          => "sortbam_dna",
     ispaired            => 1,
-    sh_direct           => 1,
+    sh_direct           => 0,
     pbs                 => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -283,7 +283,7 @@ my $config = {
     option              => "",
     source_ref          => "sortbam_rna",
     ispaired            => 1,
-    sh_direct           => 1,
+    sh_direct           => 0,
     pbs                 => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
