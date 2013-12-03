@@ -255,7 +255,7 @@ foreach my $def (@defs) {
     miRNA_1mm_table => {
       class      => "CQSMirnaTable",
       perform    => 1,
-      target_dir => "${cur_target_dir}/summary_1mm",
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table",
       option     => "",
       source_ref => "mirna_1mm_count",
       cqs_tools  => $cqstools,
@@ -292,7 +292,7 @@ foreach my $def (@defs) {
     miRNA_1mm_overlap_table => {
       class      => "CQSMappedTable",
       perform    => 1,
-      target_dir => "${cur_target_dir}/summary_1mm_overlap",
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_table",
       option     => "",
       source_ref => "miRNA_1mm_count_overlap",
       groups     => $def->{groups},
@@ -344,7 +344,7 @@ foreach my $def (@defs) {
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
       perform    => 1,
-      target_dir => "${cur_target_dir}/summary",
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_table",
       option     => "",
       source_ref => [ "tRNA_1mm_count", ".xml" ],
       groups     => $def->{groups},
