@@ -8,7 +8,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::TCGA;
 
-my $target_dir = "/scratch/shengq1/briandata";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/tcga/briandata");
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
