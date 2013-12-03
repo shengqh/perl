@@ -133,11 +133,11 @@ foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
     general  => { "task_name" => $def->{task_name}, },
-    cutadapt => {
+    cutadapt_len => {
       class      => "Cutadapt",
       perform    => 1,
-      target_dir => "${cur_target_dir}/cutadapt",
-      option     => "-O 10",
+      target_dir => "${cur_target_dir}/cutadapt_len",
+      option     => "-O 10 -m 12",
       source     => $def->{mirna},
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
@@ -156,22 +156,6 @@ foreach my $def (@defs) {
       option     => "",
       source_ref => "cutadapt",
       cqstools   => $cqstools,
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
-      },
-    },
-    cutadapt_len => {
-      class      => "Cutadapt",
-      perform    => 1,
-      target_dir => "${cur_target_dir}/cutadapt_len",
-      option     => "-O 10 -m 12 -M 49",
-      source     => $def->{mirna},
-      adaptor    => "TGGAATTCTCGGGTGCCAAGG",
-      extension  => "_clipped.fastq",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
