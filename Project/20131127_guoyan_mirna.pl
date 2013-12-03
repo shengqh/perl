@@ -53,7 +53,7 @@ my $hsammu_gffs      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v
 my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $human = {
-  source => {
+  mrna => {
     "2163-CRF-01" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-1_1.fastq.gz"],
     "2163-CRF-02" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-2_1.fastq.gz"],
     "2163-CRF-03" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-3_1.fastq.gz"],
@@ -65,7 +65,9 @@ my $human = {
     "2163-CRF-09" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-9_1.fastq.gz"],
     "2163-CRF-10" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-10_1.fastq.gz"],
     "2163-CRF-11" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-11_1.fastq.gz"],
-    "2163-CRF-12" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-12_1.fastq.gz"],
+    "2163-CRF-12" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-12_1.fastq.gz"]
+  },
+  mirna => {
     "2245-CRF-00" => ["/autofs/blue_sequencer/Runs/projects/2245-CRF/2012-08-03/2245-CRF-0_1.fastq.gz"],
     "2245-CRF-01" => ["/autofs/blue_sequencer/Runs/projects/2245-CRF/2012-08-03/2245-CRF-1_1.fastq.gz"],
     "2245-CRF-02" => ["/autofs/blue_sequencer/Runs/projects/2245-CRF/2012-08-03/2245-CRF-2_1.fastq.gz"],
@@ -111,9 +113,11 @@ my $human = {
   shrimp2_index       => $shrimp2_human_miRBase_index,
   target_dir          => $target_dir,
   task_name           => $task_name . "_human",
-  groups              => {
+  mrna_groups              => {
     "2163-CRF" =>
       [ "2163-CRF-01", "2163-CRF-10", "2163-CRF-11", "2163-CRF-12", "2163-CRF-02", "2163-CRF-03", "2163-CRF-04", "2163-CRF-05", "2163-CRF-06", "2163-CRF-07", "2163-CRF-08", "2163-CRF-09" ],
+  },
+  groups              => {
     "2245-CRF" =>
       [ "2245-CRF-00", "2245-CRF-01", "2245-CRF-10", "2245-CRF-11", "2245-CRF-02", "2245-CRF-03", "2245-CRF-04", "2245-CRF-05", "2245-CRF-06", "2245-CRF-07", "2245-CRF-08", "2245-CRF-09" ],
     "2403-CRF" => [
@@ -134,7 +138,7 @@ foreach my $def (@defs) {
       perform    => 1,
       target_dir => "${cur_target_dir}/cutadapt",
       option     => "-O 10",
-      source     => $def->{source},
+      source     => $def->{mirna},
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
       sh_direct  => 1,
@@ -165,7 +169,7 @@ foreach my $def (@defs) {
       perform    => 1,
       target_dir => "${cur_target_dir}/cutadapt_len",
       option     => "-O 10 -m 12 -M 49",
-      source     => $def->{source},
+      source     => $def->{mirna},
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
       sh_direct  => 1,
