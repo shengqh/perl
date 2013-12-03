@@ -169,7 +169,7 @@ foreach my $def (@defs) {
       perform    => 1,
       target_dir => "${cur_target_dir}/identical",
       option     => "",
-      source_ref => "cutadapt_len",
+      source_ref => ["cutadapt_len", "fastq.gz\$"],
       cqstools   => $cqstools,
       extension  => "_clipped_identical.fastq",
       sh_direct  => 1,
