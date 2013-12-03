@@ -135,7 +135,7 @@ foreach my $def (@defs) {
     general  => { "task_name" => $def->{task_name}, },
     cutadapt_len => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/cutadapt_len",
       option     => "-O 10 -m 12",
       source     => $def->{mirna},
@@ -151,7 +151,7 @@ foreach my $def (@defs) {
     },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt_len",
@@ -166,7 +166,7 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${cur_target_dir}/identical",
       option     => "",
       source_ref => "cutadapt_len",
