@@ -166,7 +166,7 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/identical",
       option     => "",
       source_ref => ["cutadapt_len", "fastq.gz\$"],
@@ -184,7 +184,7 @@ foreach my $def (@defs) {
     #1 mismatch notidentical search
     bowtie1_genome_cutadapt_topN_1mm_notidentical => {
       class         => "Bowtie1",
-      perform       => 0,
+      perform       => 1,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
       source_ref    => "cutadapt_len",
