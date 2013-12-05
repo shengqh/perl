@@ -1292,7 +1292,7 @@ my $parclip_config = {
   },
   bowtie1 => {
     class         => "Bowtie1",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_parclip_dir}/bowtie1",
     option        => "-v 2 -m 10 --best --strata",
     source_ref    => "cutadapt_len",
@@ -1310,7 +1310,7 @@ my $parclip_config = {
   bowtie1bam => {
     class         => "Bowtie1",
     perform       => 1,
-    target_dir    => "${target_parclip_dir}/bowtie1",
+    target_dir    => "${target_parclip_dir}/bowtie1bam",
     option        => "-v 2 -m 10 --best --strata",
     source_ref    => "cutadapt_len",
     bowtie1_index => "/data/cqs/guoy1/reference/hg19chr/bowtie1_index/hg19",
