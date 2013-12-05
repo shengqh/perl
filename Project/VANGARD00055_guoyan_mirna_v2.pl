@@ -1243,14 +1243,14 @@ my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip" );
 my $parclip_config = {
   general    => { "task_name" => "parclip", },
   fastqfiles => $parclip_files,
-  cutadapt   => {
+  cutadapt_len => {
     class      => "Cutadapt",
     perform    => 0,
-    target_dir => "${target_parclip_dir}/cutadapt",
-    option     => "-O 10",
+    target_dir => "${target_parclip_dir}/cutadapt_len",
+    option     => "-O 10 -m 12",
     source_ref => "fastqfiles",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
-    extension  => "_clipped.fastq.gz",
+    extension  => "_clipped.fastq",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -1264,25 +1264,9 @@ my $parclip_config = {
     perform    => 0,
     target_dir => "${target_parclip_dir}/fastqlen",
     option     => "",
-    source_ref => "cutadapt",
+    source_ref => "cutadapt_len",
     cqstools   => $cqstools,
     sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  cutadapt_len => {
-    class      => "Cutadapt",
-    perform    => 0,
-    target_dir => "${target_parclip_dir}/cutadapt_len",
-    option     => "-O 10 -m 12 -M 60",
-    source_ref => "fastqfiles",
-    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
-    extension  => "_clipped.fastq.gz",
-    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
