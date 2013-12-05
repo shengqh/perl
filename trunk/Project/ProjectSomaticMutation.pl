@@ -418,18 +418,18 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/all_rsmc",
-    option           => "-c 12",                                             #thread mode
+    option           => "",                                             #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna" ],
     groups_ref       => ["rna_dna_groups"],
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
     fasta_file       => $fasta_file,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
-    sh_direct        => 1,
+    sh_direct        => 0,
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
