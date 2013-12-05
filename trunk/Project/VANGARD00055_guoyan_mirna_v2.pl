@@ -1307,6 +1307,23 @@ my $parclip_config = {
       "mem"      => "20gb"
     },
   },
+  bowtie1bam => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_parclip_dir}/bowtie1",
+    option        => "-v 2 -m 10 --best --strata",
+    source_ref    => "cutadapt_len",
+    bowtie1_index => "/data/cqs/guoy1/reference/hg19chr/bowtie1_index/hg19",
+    samformat     => 1,
+    samonly       => 0,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   PARalyzer => {
     class      => "ParClip::PARalyzer",
     perform    => 1,
@@ -1314,6 +1331,7 @@ my $parclip_config = {
     option     => "",
     source_ref => "bowtie1",
     genome2bit => "/data/cqs/guoy1/reference/hg19chr/hg19.2bit",
+    mirna_db   => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
