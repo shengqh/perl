@@ -479,7 +479,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/16569_rsmc",
-    option           => "-c 12",                                             #thread mode
+    option           => "",                                         
     source_ref       => ["dna", "rna"],
     groups_ref       => [ "dna_groups" ],
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
@@ -490,7 +490,7 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
