@@ -1241,8 +1241,8 @@ my $parclip_files = {
 my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip" );
 
 my $parclip_config = {
-  general    => { "task_name" => "parclip", },
-  fastqfiles => $parclip_files,
+  general      => { "task_name" => "parclip", },
+  fastqfiles   => $parclip_files,
   cutadapt_len => {
     class      => "Cutadapt",
     perform    => 0,
@@ -1252,6 +1252,7 @@ my $parclip_config = {
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
     sh_direct  => 0,
+    gzipped    => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
