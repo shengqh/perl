@@ -415,7 +415,7 @@ my $config = {
   },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/all_muTect",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -436,7 +436,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-q 20",
@@ -456,7 +456,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/all_rsmc",
     option           => "",                                                     #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
