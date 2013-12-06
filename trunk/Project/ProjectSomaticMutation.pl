@@ -357,7 +357,7 @@ my $config = {
     perform            => 1,
     target_dir         => "${target_dir}/rna_tophat_redup",
     option             => "-Xmx20g",
-    source_ref         => "dna_bwa",
+    source_ref         => "tophat2_rna",
     markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
     sh_direct          => 0,
     pbs                => {
@@ -517,7 +517,7 @@ my $config = {
   },
   rsmc_16569 => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/16569_rsmc",
     option           => "",
     source_ref       => [ "dna", "rna" ],
