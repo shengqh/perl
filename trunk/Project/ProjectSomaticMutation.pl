@@ -456,7 +456,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/all_rsmc",
     option           => "",                                                     #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
