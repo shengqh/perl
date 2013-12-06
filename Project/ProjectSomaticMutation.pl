@@ -353,7 +353,7 @@ my $config = {
     },
   },
   tophat2_rna_removeduplicates => {
-    class              => "Picard::RemoveDuplicates",
+    class              => "Picard::MarkDuplicates",
     perform            => 1,
     target_dir         => "${target_dir}/rna_tophat_redup",
     option             => "-Xmx20g",
