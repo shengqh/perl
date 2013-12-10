@@ -277,7 +277,7 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
-    deseq2 => {
+    deseq2_mirna => {
       class         => "DESeq2",
       perform       => 1,
       target_dir    => "${cur_target_dir}/deseq2_miRNA",
@@ -380,7 +380,7 @@ foreach my $def (@defs) {
         "mem"      => "10gb"
       },
     },
-    deseq2 => {
+    deseq2_trna => {
       class         => "DESeq2",
       perform       => 1,
       target_dir    => "${cur_target_dir}/deseq2_tRNA",
