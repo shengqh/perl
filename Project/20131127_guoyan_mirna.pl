@@ -53,19 +53,19 @@ my $hsammu_gffs      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v
 my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
 
 my $mrna = {
-    "2163-CRF-01" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-1_1.fastq.gz"],
-    "2163-CRF-02" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-2_1.fastq.gz"],
-    "2163-CRF-03" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-3_1.fastq.gz"],
-    "2163-CRF-04" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-4_1.fastq.gz"],
-    "2163-CRF-05" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-5_1.fastq.gz"],
-    "2163-CRF-06" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-6_1.fastq.gz"],
-    "2163-CRF-07" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-7_1.fastq.gz"],
-    "2163-CRF-08" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-8_1.fastq.gz"],
-    "2163-CRF-09" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-9_1.fastq.gz"],
-    "2163-CRF-10" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-10_1.fastq.gz"],
-    "2163-CRF-11" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-11_1.fastq.gz"],
-    "2163-CRF-12" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-12_1.fastq.gz"]
-  };
+  "2163-CRF-01" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-1_1.fastq.gz"],
+  "2163-CRF-02" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-2_1.fastq.gz"],
+  "2163-CRF-03" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-3_1.fastq.gz"],
+  "2163-CRF-04" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-4_1.fastq.gz"],
+  "2163-CRF-05" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-5_1.fastq.gz"],
+  "2163-CRF-06" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-6_1.fastq.gz"],
+  "2163-CRF-07" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-7_1.fastq.gz"],
+  "2163-CRF-08" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-06-26/2163-CRF-8_1.fastq.gz"],
+  "2163-CRF-09" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-9_1.fastq.gz"],
+  "2163-CRF-10" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-10_1.fastq.gz"],
+  "2163-CRF-11" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-11_1.fastq.gz"],
+  "2163-CRF-12" => ["/autofs/blue_sequencer/Runs/projects/2163-CRF/2012-08-03/2163-CRF-12_1.fastq.gz"]
+};
 
 my $human2245 = {
   mirna => {
@@ -90,15 +90,15 @@ my $human2245 = {
   shrimp2_index       => $shrimp2_human_miRBase_index,
   target_dir          => $target_dir,
   task_name           => $task_name . "_human2245",
-  groups => {
+  groups              => {
     "2245-CRF-NORMAL"          => [ "2245-CRF-00", "2245-CRF-01", "2245-CRF-02", "2245-CRF-03" ],
     "2245-CRF-STEATOSIS"       => [ "2245-CRF-04", "2245-CRF-05", "2245-CRF-06", "2245-CRF-07" ],
     "2245-CRF-STEATOPEPATITIS" => [ "2245-CRF-08", "2245-CRF-09", "2245-CRF-10", "2245-CRF-11" ],
   },
-  pairs =>{
-    "2245-CRF-STEATOSIS-NORMAL"          => [ "2245-CRF-NORMAL", "2245-CRF-STEATOSIS" ],
-    "2245-CRF-STEATOPEPATITIS-NORMAL"          => [ "2245-CRF-NORMAL", "2245-CRF-STEATOPEPATITIS" ],
-    "2245-CRF-STEATOPEPATITIS-STEATOSIS"          => [ "2245-CRF-STEATOSIS", "2245-CRF-STEATOPEPATITIS" ],
+  pairs => {
+    "2245-CRF-STEATOSIS-NORMAL"          => [ "2245-CRF-NORMAL",    "2245-CRF-STEATOSIS" ],
+    "2245-CRF-STEATOPEPATITIS-NORMAL"    => [ "2245-CRF-NORMAL",    "2245-CRF-STEATOPEPATITIS" ],
+    "2245-CRF-STEATOPEPATITIS-STEATOSIS" => [ "2245-CRF-STEATOSIS", "2245-CRF-STEATOPEPATITIS" ],
   }
 };
 my $human2403 = {
@@ -136,23 +136,23 @@ my $human2403 = {
   shrimp2_index       => $shrimp2_human_miRBase_index,
   target_dir          => $target_dir,
   task_name           => $task_name . "_human2403",
-  groups => {
+  groups              => {
     "2403-CRF-NORMAL"    => [ "2403-CRF-01", "2403-CRF-02", "2403-CRF-03", "2403-CRF-04", "2403-CRF-05", "2403-CRF-18" ],
     "2403-CRF-STEATOSIS" => [ "2403-CRF-06", "2403-CRF-07", "2403-CRF-08", "2403-CRF-09", "2403-CRF-10", "2403-CRF-19", "2403-CRF-20", "2403-CRF-26" ],
     "2403-CRF-STEATOPEPATITIS" => [ "2403-CRF-11", "2403-CRF-12", "2403-CRF-13", "2403-CRF-14", "2403-CRF-15", "2403-CRF-21", "2403-CRF-22" ],
     "2403-CRF-CIRRHOSIS"       => [ "2403-CRF-23", "2403-CRF-24", "2403-CRF-28" ],
   },
-  pairs =>{
-    "2403-CRF-STEATOSIS-NORMAL"          => [ "2403-CRF-NORMAL", "2403-CRF-STEATOSIS" ],
-    "2403-CRF-STEATOPEPATITIS-NORMAL"          => [ "2403-CRF-NORMAL", "2403-CRF-STEATOPEPATITIS" ],
-    "2403-CRF-CIRRHOSIS-NORMAL"       => [ "2403-CRF-NORMAL", "2403-CRF-CIRRHOSIS" ],
-    "2403-CRF-STEATOPEPATITIS-STEATOSIS"          => [ "2403-CRF-STEATOSIS", "2403-CRF-STEATOPEPATITIS" ],
-    "2403-CRF-CIRRHOSIS-STEATOSIS"          => [ "2403-CRF-STEATOSIS", "2403-CRF-CIRRHOSIS" ],
-    "2403-CRF-CIRRHOSIS-STEATOPEPATITIS"          => [ "2403-CRF-STEATOPEPATITIS", "2403-CRF-CIRRHOSIS" ],
+  pairs => {
+    "2403-CRF-STEATOSIS-NORMAL"          => [ "2403-CRF-NORMAL",          "2403-CRF-STEATOSIS" ],
+    "2403-CRF-STEATOPEPATITIS-NORMAL"    => [ "2403-CRF-NORMAL",          "2403-CRF-STEATOPEPATITIS" ],
+    "2403-CRF-CIRRHOSIS-NORMAL"          => [ "2403-CRF-NORMAL",          "2403-CRF-CIRRHOSIS" ],
+    "2403-CRF-STEATOPEPATITIS-STEATOSIS" => [ "2403-CRF-STEATOSIS",       "2403-CRF-STEATOPEPATITIS" ],
+    "2403-CRF-CIRRHOSIS-STEATOSIS"       => [ "2403-CRF-STEATOSIS",       "2403-CRF-CIRRHOSIS" ],
+    "2403-CRF-CIRRHOSIS-STEATOPEPATITIS" => [ "2403-CRF-STEATOPEPATITIS", "2403-CRF-CIRRHOSIS" ],
   }
 };
 
-my @defs = ($human2245, $human2403);
+my @defs = ( $human2245, $human2403 );
 
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
@@ -282,8 +282,8 @@ foreach my $def (@defs) {
       perform       => 1,
       target_dir    => "${cur_target_dir}/deseq2_miRNA",
       option        => "",
-      source_ref    => $def->{pairs},
-      groups_ref    => $def->{groups},
+      source        => $def->{pairs},
+      groups        => $def->{groups},
       countfile_ref => "miRNA_1mm_table",
       sh_direct     => 1,
       pbs           => {
@@ -385,8 +385,8 @@ foreach my $def (@defs) {
       perform       => 1,
       target_dir    => "${cur_target_dir}/deseq2_tRNA",
       option        => "",
-      source_ref    => $def->{groups},
-      groups_ref    => $def->{pairs},
+      source        => $def->{groups},
+      groups        => $def->{pairs},
       countfile_ref => "tRNA_1mm_table",
       sh_direct     => 1,
       pbs           => {
