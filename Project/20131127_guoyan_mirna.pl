@@ -385,8 +385,8 @@ foreach my $def (@defs) {
       perform       => 1,
       target_dir    => "${cur_target_dir}/deseq2_tRNA",
       option        => "",
-      source        => $def->{groups},
-      groups        => $def->{pairs},
+      source        => $def->{pairs},
+      groups        => $def->{groups},
       countfile_ref => "tRNA_1mm_table",
       sh_direct     => 1,
       pbs           => {
