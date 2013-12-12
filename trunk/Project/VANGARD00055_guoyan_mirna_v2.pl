@@ -1331,6 +1331,7 @@ my $parclip_config = {
     target_dir => "${target_parclip_dir}/paralyzer",
     option     => "-f miRNA",
     source_ref => [ "PARalyzer", ".cluster.csv" ],
+    cqstools   => $cqstools,
     gff_file   => $hsa_gffs,
     sh_direct  => 1,
     pbs        => {
