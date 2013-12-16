@@ -105,9 +105,9 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${cur_target_dir}/identical",
-      option     => "",
+      option     => "-n",
       source     => $def->{mirna},
       cqstools   => $cqstools,
       extension  => "_clipped_identical.fastq",
@@ -195,7 +195,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
       option     => "-o " . $def->{task_name} . "_miRNA.position",
       source_ref => "miRNA_1mm_count_overlap",
@@ -246,7 +246,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
       option     => "-o " . $def->{task_name} . "_tRNA.position",
       source_ref => "tRNA_1mm_count",
