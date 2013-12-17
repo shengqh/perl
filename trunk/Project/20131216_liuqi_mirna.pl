@@ -90,7 +90,7 @@ foreach my $def (@defs) {
     general  => { "task_name" => $def->{task_name}, },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${cur_target_dir}/fastqlen",
       option     => "",
       source     => $def->{mirna},
@@ -105,7 +105,7 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${cur_target_dir}/identical",
       option     => "-n",
       source     => $def->{mirna},
