@@ -63,6 +63,7 @@ my $config = {
     option     => "-n",
     extension  => "_trim.fastq",
     source_ref => "fastqfiles",
+    cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
