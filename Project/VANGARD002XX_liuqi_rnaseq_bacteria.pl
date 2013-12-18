@@ -42,6 +42,20 @@ my $config = {
     "20uM_NDGA_vs_DMSO"            => [ "20uM_NDGA",            "DMSO" ],
     "100uM_chlorpromazine_vs_DMSO" => [ "100uM_chlorpromazine", "DMSO" ]
   },
+  fastqc => {
+    class      => "FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc",
+    option     => "",
+    source_ref => "fastqfiles",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   rockhopper => {
     class          => "Bacteria::RockHopper",
     perform        => 1,
@@ -67,7 +81,7 @@ my $config = {
     target_dir     => "${target_dir}/bowtie2",
     source_ref     => "fastqfiles",
     bowtie2_index =>"${target_dir}/genome/bowtie2-index/NC_005945",
-    option         => "-p 8 --very-sensitive",
+    option         => "-p 8",
     sh_direct      => 1,
     pbs            => {
       "email"    => $email,
