@@ -44,9 +44,23 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
+    source_ref => "fastqfiles",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  trimmer =>{
+    class      => "Fastx::Trimmer",
+    perform    => 1,
+    target_dir => "${target_dir}/trimmer",
+    option     => "-l 50",
     source_ref => "fastqfiles",
     sh_direct  => 1,
     pbs        => {
@@ -60,7 +74,7 @@ my $config = {
     class          => "Bacteria::RockHopper",
     perform        => 1,
     target_dir     => "${target_dir}/rockhopper",
-    source_ref     => "fastqfiles",
+    source_ref     => "trimmer",
     groups_ref     => "groups",
     pairs_ref      => "pairs",
     java_option    => "-Xmx10g",
