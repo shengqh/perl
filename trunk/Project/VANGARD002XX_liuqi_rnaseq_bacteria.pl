@@ -13,7 +13,8 @@ my $vangard = "VANGARD00223";
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_liuqi_rnaseq_bacteria");
 
-my $email = "quanhu.sheng\@vanderbilt.edu";
+my $email    = "quanhu.sheng\@vanderbilt.edu";
+my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $config = {
   general    => { task_name => "${vangard}" },
@@ -58,18 +59,33 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trimmer",
     option     => "-n",
     extension  => "_trim.fastq",
     source_ref => "fastqfiles",
-    cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
+    cqstools   => $cqstools,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "2",
       "mem"      => "10gb"
+    },
+  },
+  fastqlen => {
+    class      => "FastqLen",
+    perform    => 1,
+    target_dir => "${target_dir}/trimlen",
+    option     => "",
+    source_ref => "trimmer",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
     },
   },
   rockhopper => {
@@ -93,7 +109,7 @@ my $config = {
   },
   bowtie2 => {
     class         => "Bowtie2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/bowtie2",
     source_ref    => "fastqfiles",
     bowtie2_index => "${target_dir}/genome/bowtie2-index/NC_005945",
