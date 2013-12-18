@@ -38,21 +38,36 @@ my $config = {
     "100uM_chlorpromazine" => [ "2732-EPS-10", "2732-EPS-11", "2732-EPS-12" ],
   },
   pairs => {
-    "50uM_0070_vs_DMSO"            => [ "DMSO", "50uM_0070" ],
-    "20uM_NDGA_vs_DMSO"            => [ "DMSO", "20uM_NDGA" ],
-    "100uM_chlorpromazine_vs_DMSO" => [ "DMSO", "100uM_chlorpromazine" ]
+    "50uM_0070_vs_DMSO"            => [ "50uM_0070",            "DMSO" ],
+    "20uM_NDGA_vs_DMSO"            => [ "20uM_NDGA",            "DMSO" ],
+    "100uM_chlorpromazine_vs_DMSO" => [ "100uM_chlorpromazine", "DMSO" ]
   },
   rockhopper => {
     class          => "Bacteria::RockHopper",
     perform        => 1,
     target_dir     => "${target_dir}/rockhopper",
     source_ref     => "fastqfiles",
-    groups_ref      => "groups",
-    pairs_ref       => "pairs",
+    groups_ref     => "groups",
+    pairs_ref      => "pairs",
     java_option    => "-Xmx10g",
     rockhopper_jar => "/scratch/cqs/shengq1/local/bin/Rockhopper.jar",
     genome_dir     => "${target_dir}/genome",
-    option         => "-p 8 -s false -TIME -v true",
+    option         => "-p 8 -TIME -v true",
+    sh_direct      => 1,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  bowtie2 => {
+    class          => "Bowtie2",
+    perform        => 1,
+    target_dir     => "${target_dir}/bowtie2",
+    source_ref     => "fastqfiles",
+    bowtie2_index =>"${target_dir}/genome/bowtie2-index",
+    option         => "-p 8 --very-sensitive",
     sh_direct      => 1,
     pbs            => {
       "email"    => $email,
