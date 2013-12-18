@@ -56,11 +56,12 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  trimmer =>{
-    class      => "Fastx::Trimmer",
+  trimmer => {
+    class      => "CQS::FastqTrimmer",
     perform    => 1,
     target_dir => "${target_dir}/trimmer",
-    option     => "-l 50",
+    option     => "-n",
+    extension  => "_trim.fastq",
     source_ref => "fastqfiles",
     sh_direct  => 1,
     pbs        => {
@@ -90,14 +91,14 @@ my $config = {
     },
   },
   bowtie2 => {
-    class          => "Bowtie2",
-    perform        => 1,
-    target_dir     => "${target_dir}/bowtie2",
-    source_ref     => "fastqfiles",
-    bowtie2_index =>"${target_dir}/genome/bowtie2-index/NC_005945",
-    option         => "-p 8",
-    sh_direct      => 1,
-    pbs            => {
+    class         => "Bowtie2",
+    perform       => 1,
+    target_dir    => "${target_dir}/bowtie2",
+    source_ref    => "fastqfiles",
+    bowtie2_index => "${target_dir}/genome/bowtie2-index/NC_005945",
+    option        => "-p 8",
+    sh_direct     => 1,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
