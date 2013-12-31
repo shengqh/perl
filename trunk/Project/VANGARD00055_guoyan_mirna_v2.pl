@@ -708,6 +708,22 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    bowtie1_genome_cutadapt_topN_1mm_trim => {
+      class         => "Bowtie1",
+      perform       => 1,
+      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_trim",
+      option        => $bowtie1_option_1mm . " -5 2 -3 3 ",
+      source_ref    => [ "identical", ".fastq\$" ],
+      bowtie1_index => $def->{bowtie1_index},
+      samonly       => 0,
+      sh_direct     => 1,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     mirna_1mm_count => {
       class           => "MirnaCount",
       perform         => 0,
@@ -1095,254 +1111,254 @@ foreach my $def (@defs) {
   };
 
   #  performConfig($config, "" , 1);
-  #performConfig($config);
+  performConfig($config);
 
   if ( $def == $mouse ) {
 
     #performTask( $config, "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm_distinct" );
   }
 }
-
-my $w83_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index/Gingivalis_W83";
-my $w83_gtf_index     = "/scratch/cqs/shengq1/references/gingivalis_W83/Gingivalis_W83.gtf";
-
-my $target_w83_dir = create_directory_or_die( $target_dir . "/w83" );
-
-my $w83config = {
-  general    => { "task_name" => "w83", },
-  fastqfiles => {
-    "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.fastq"],
-    "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.fastq"],
-    "2572-KCV-1-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-21_clipped_identical.fastq"],
-    "2572-KCV-1-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-22_clipped_identical.fastq"],
-    "2572-KCV-1-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-23_clipped_identical.fastq"],
-    "2572-KCV-1-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-24_clipped_identical.fastq"],
-    "2572-KCV-1-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-25_clipped_identical.fastq"],
-    "2572-KCV-1-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-26_clipped_identical.fastq"],
-    "2572-KCV-1-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-27_clipped_identical.fastq"],
-    "2572-KCV-1-28" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-28_clipped_identical.fastq"],
-    "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.fastq"],
-    "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.fastq"],
-  },
-  bamfiles => {
-    "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-19/2572-KCV-1-19.bam"],
-    "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-20/2572-KCV-1-20.bam"],
-    "2572-KCV-1-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-21/2572-KCV-1-21.bam"],
-    "2572-KCV-1-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-22/2572-KCV-1-22.bam"],
-    "2572-KCV-1-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-23/2572-KCV-1-23.bam"],
-    "2572-KCV-1-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-24/2572-KCV-1-24.bam"],
-    "2572-KCV-1-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-25/2572-KCV-1-25.bam"],
-    "2572-KCV-1-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-26/2572-KCV-1-26.bam"],
-    "2572-KCV-1-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-27/2572-KCV-1-27.bam"],
-    "2572-KCV-1-28" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-28/2572-KCV-1-28.bam"],
-    "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-29/2572-KCV-1-29.bam"],
-    "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-30/2572-KCV-1-30.bam"],
-  },
-  countfiles => {
-    "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.dupcount"],
-    "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.dupcount"],
-    "2572-KCV-1-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-21_clipped_identical.dupcount"],
-    "2572-KCV-1-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-22_clipped_identical.dupcount"],
-    "2572-KCV-1-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-23_clipped_identical.dupcount"],
-    "2572-KCV-1-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-24_clipped_identical.dupcount"],
-    "2572-KCV-1-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-25_clipped_identical.dupcount"],
-    "2572-KCV-1-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-26_clipped_identical.dupcount"],
-    "2572-KCV-1-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-27_clipped_identical.dupcount"],
-    "2572-KCV-1-28" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-28_clipped_identical.dupcount"],
-    "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.dupcount"],
-    "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.dupcount"],
-  },
-  bam2fastq => {
-    class               => "Bam2Fastq",
-    perform             => 0,
-    target_dir          => "${target_w83_dir}/bam2fastq",
-    option              => "",
-    source_ref          => "bamfiles",
-    cqstools            => $cqstools,
-    ispaired            => 0,
-    unmapped_only       => 1,
-    sort_before_convert => 0,
-    sort_thread         => 12,
-    unzipped            => 1,
-    sh_direct           => 1,
-    pbs                 => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie1_genome_cutadapt_topN_1mm => {
-    class         => "Bowtie1",
-    perform       => 0,
-    target_dir    => "${target_w83_dir}/topN_bowtie1_genome_cutadapt_1mm",
-    option        => $bowtie1_option_1mm,
-    source_ref    => "fastqfiles",
-    bowtie1_index => $w83_bowtie1_index,
-    samonly       => 0,
-    sh_direct     => 1,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  count_1mm => {
-    class           => "CQSMappedCount",
-    perform         => 0,
-    target_dir      => "${target_w83_dir}/bowtie1_genome_cutadapt_1mm_count",
-    option          => "",
-    source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
-    fastq_files_ref => "bam2fastq",
-    seqcount_ref    => "countfiles",
-    cqs_tools       => $cqstools,
-    gff_file        => $w83_gtf_index,
-    samtools        => $samtools,
-    sh_direct       => 1,
-    pbs             => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  tRNA_1mm_table => {
-    class      => "CQSMappedTable",
-    perform    => 0,
-    target_dir => "${target_w83_dir}/summary",
-    option     => "",
-    source_ref => [ "count_1mm", ".xml" ],
-    cqs_tools  => $cqstools,
-    prefix     => "gingivalis_W83_1mm_",
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "10",
-      "mem"      => "10gb"
-    },
-  },
-};
-
-#performConfig($w83config);
-
-my $parclip_files = {
-  "Parclip_01" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
-  "Parclip_02" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_2_CGATGT_L002_R1.fastq.gz"],
-  "Parclip_03" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_3_TTAGGC_L002_R1.fastq.gz"],
-  "Parclip_04" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_4_TGACCA_L002_R1.fastq.gz"],
-  "Parclip_05" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_5_ACAGTG_L002_R1.fastq.gz"],
-  "Parclip_06" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_6_GCCAAT_L002_R1.fastq.gz"],
-  "Parclip_07" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_7_CAGATC_L002_R1.fastq.gz"],
-  "Parclip_08" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_8_ACTTGA_L002_R1.fastq.gz"]
-};
-
-my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip" );
-
-my $parclip_config = {
-  general      => { "task_name" => "parclip", },
-  fastqfiles   => $parclip_files,
-  cutadapt_len => {
-    class      => "Cutadapt",
-    perform    => 0,
-    target_dir => "${target_parclip_dir}/cutadapt_len",
-    option     => "-O 10 -m 12",
-    source_ref => "fastqfiles",
-    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
-    extension  => "_clipped.fastq",
-    sh_direct  => 0,
-    gzipped    => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  fastqlen => {
-    class      => "FastqLen",
-    perform    => 0,
-    target_dir => "${target_parclip_dir}/fastqlen",
-    option     => "",
-    source_ref => "cutadapt_len",
-    cqstools   => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie1out => {
-    class         => "Bowtie1",
-    perform       => 0,
-    target_dir    => "${target_parclip_dir}/bowtie1out",
-    option        => "-v 2 -m 10 --best --strata",
-    source_ref    => [ "cutadapt_len", "fastq.gz\$" ],
-    bowtie1_index => "/data/cqs/guoy1/reference/hg19chr/bowtie1_index/hg19",
-    samformat     => 0,
-    samonly       => 0,
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie1bam => {
-    class         => "Bowtie1",
-    perform       => 0,
-    target_dir    => "${target_parclip_dir}/bowtie1bam",
-    option        => "-v 2 -m 10 --best --strata",
-    source_ref    => [ "cutadapt_len", "fastq.gz\$" ],
-    bowtie1_index => "/data/cqs/guoy1/reference/hg19chr/bowtie1_index/hg19",
-    samformat     => 1,
-    samonly       => 0,
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
-  PARalyzer => {
-    class      => "ParClip::PARalyzer",
-    perform    => 0,
-    target_dir => "${target_parclip_dir}/paralyzer",
-    option     => "",
-    source_ref => "bowtie1out",
-    genome2bit => "/data/cqs/guoy1/reference/hg19chr/hg19.2bit",
-    mirna_db   => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
-  annotation => {
-    class            => "CQS::ParalyzerClusterAnnotator",
-    perform          => 1,
-    target_dir       => "${target_parclip_dir}/paralyzer",
-    option           => "-f miRNA",
-    source_ref       => [ "PARalyzer", ".cluster.csv" ],
-    cqstools         => $cqstools,
-    coordinate_files => [ $hsa_gffs, $hsa_trna_gffs ],
-    sh_direct        => 1,
-    pbs              => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
-};
-
-performConfig($parclip_config);
+#
+#my $w83_bowtie1_index = "/scratch/cqs/shengq1/references/gingivalis_W83/bowtie_1.0.0_index/Gingivalis_W83";
+#my $w83_gtf_index     = "/scratch/cqs/shengq1/references/gingivalis_W83/Gingivalis_W83.gtf";
+#
+#my $target_w83_dir = create_directory_or_die( $target_dir . "/w83" );
+#
+#my $w83config = {
+#  general    => { "task_name" => "w83", },
+#  fastqfiles => {
+#    "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.fastq"],
+#    "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.fastq"],
+#    "2572-KCV-1-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-21_clipped_identical.fastq"],
+#    "2572-KCV-1-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-22_clipped_identical.fastq"],
+#    "2572-KCV-1-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-23_clipped_identical.fastq"],
+#    "2572-KCV-1-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-24_clipped_identical.fastq"],
+#    "2572-KCV-1-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-25_clipped_identical.fastq"],
+#    "2572-KCV-1-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-26_clipped_identical.fastq"],
+#    "2572-KCV-1-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-27_clipped_identical.fastq"],
+#    "2572-KCV-1-28" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-28_clipped_identical.fastq"],
+#    "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.fastq"],
+#    "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.fastq"],
+#  },
+#  bamfiles => {
+#    "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-19/2572-KCV-1-19.bam"],
+#    "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-20/2572-KCV-1-20.bam"],
+#    "2572-KCV-1-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-21/2572-KCV-1-21.bam"],
+#    "2572-KCV-1-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-22/2572-KCV-1-22.bam"],
+#    "2572-KCV-1-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-23/2572-KCV-1-23.bam"],
+#    "2572-KCV-1-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-24/2572-KCV-1-24.bam"],
+#    "2572-KCV-1-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-25/2572-KCV-1-25.bam"],
+#    "2572-KCV-1-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-26/2572-KCV-1-26.bam"],
+#    "2572-KCV-1-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-27/2572-KCV-1-27.bam"],
+#    "2572-KCV-1-28" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-28/2572-KCV-1-28.bam"],
+#    "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-29/2572-KCV-1-29.bam"],
+#    "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-30/2572-KCV-1-30.bam"],
+#  },
+#  countfiles => {
+#    "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.dupcount"],
+#    "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.dupcount"],
+#    "2572-KCV-1-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-21_clipped_identical.dupcount"],
+#    "2572-KCV-1-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-22_clipped_identical.dupcount"],
+#    "2572-KCV-1-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-23_clipped_identical.dupcount"],
+#    "2572-KCV-1-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-24_clipped_identical.dupcount"],
+#    "2572-KCV-1-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-25_clipped_identical.dupcount"],
+#    "2572-KCV-1-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-26_clipped_identical.dupcount"],
+#    "2572-KCV-1-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-27_clipped_identical.dupcount"],
+#    "2572-KCV-1-28" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-28_clipped_identical.dupcount"],
+#    "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.dupcount"],
+#    "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.dupcount"],
+#  },
+#  bam2fastq => {
+#    class               => "Bam2Fastq",
+#    perform             => 0,
+#    target_dir          => "${target_w83_dir}/bam2fastq",
+#    option              => "",
+#    source_ref          => "bamfiles",
+#    cqstools            => $cqstools,
+#    ispaired            => 0,
+#    unmapped_only       => 1,
+#    sort_before_convert => 0,
+#    sort_thread         => 12,
+#    unzipped            => 1,
+#    sh_direct           => 1,
+#    pbs                 => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "72",
+#      "mem"      => "20gb"
+#    },
+#  },
+#  bowtie1_genome_cutadapt_topN_1mm => {
+#    class         => "Bowtie1",
+#    perform       => 0,
+#    target_dir    => "${target_w83_dir}/topN_bowtie1_genome_cutadapt_1mm",
+#    option        => $bowtie1_option_1mm,
+#    source_ref    => "fastqfiles",
+#    bowtie1_index => $w83_bowtie1_index,
+#    samonly       => 0,
+#    sh_direct     => 1,
+#    pbs           => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=8",
+#      "walltime" => "72",
+#      "mem"      => "40gb"
+#    },
+#  },
+#  count_1mm => {
+#    class           => "CQSMappedCount",
+#    perform         => 0,
+#    target_dir      => "${target_w83_dir}/bowtie1_genome_cutadapt_1mm_count",
+#    option          => "",
+#    source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+#    fastq_files_ref => "bam2fastq",
+#    seqcount_ref    => "countfiles",
+#    cqs_tools       => $cqstools,
+#    gff_file        => $w83_gtf_index,
+#    samtools        => $samtools,
+#    sh_direct       => 1,
+#    pbs             => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "72",
+#      "mem"      => "40gb"
+#    },
+#  },
+#  tRNA_1mm_table => {
+#    class      => "CQSMappedTable",
+#    perform    => 0,
+#    target_dir => "${target_w83_dir}/summary",
+#    option     => "",
+#    source_ref => [ "count_1mm", ".xml" ],
+#    cqs_tools  => $cqstools,
+#    prefix     => "gingivalis_W83_1mm_",
+#    sh_direct  => 1,
+#    pbs        => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "10",
+#      "mem"      => "10gb"
+#    },
+#  },
+#};
+#
+##performConfig($w83config);
+#
+#my $parclip_files = {
+#  "Parclip_01" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
+#  "Parclip_02" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_2_CGATGT_L002_R1.fastq.gz"],
+#  "Parclip_03" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_3_TTAGGC_L002_R1.fastq.gz"],
+#  "Parclip_04" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_4_TGACCA_L002_R1.fastq.gz"],
+#  "Parclip_05" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_5_ACAGTG_L002_R1.fastq.gz"],
+#  "Parclip_06" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_6_GCCAAT_L002_R1.fastq.gz"],
+#  "Parclip_07" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_7_CAGATC_L002_R1.fastq.gz"],
+#  "Parclip_08" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_8_ACTTGA_L002_R1.fastq.gz"]
+#};
+#
+#my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip" );
+#
+#my $parclip_config = {
+#  general      => { "task_name" => "parclip", },
+#  fastqfiles   => $parclip_files,
+#  cutadapt_len => {
+#    class      => "Cutadapt",
+#    perform    => 0,
+#    target_dir => "${target_parclip_dir}/cutadapt_len",
+#    option     => "-O 10 -m 12",
+#    source_ref => "fastqfiles",
+#    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+#    extension  => "_clipped.fastq",
+#    sh_direct  => 0,
+#    gzipped    => 1,
+#    pbs        => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "24",
+#      "mem"      => "20gb"
+#    },
+#  },
+#  fastqlen => {
+#    class      => "FastqLen",
+#    perform    => 0,
+#    target_dir => "${target_parclip_dir}/fastqlen",
+#    option     => "",
+#    source_ref => "cutadapt_len",
+#    cqstools   => $cqstools,
+#    sh_direct  => 1,
+#    pbs        => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "24",
+#      "mem"      => "20gb"
+#    },
+#  },
+#  bowtie1out => {
+#    class         => "Bowtie1",
+#    perform       => 0,
+#    target_dir    => "${target_parclip_dir}/bowtie1out",
+#    option        => "-v 2 -m 10 --best --strata",
+#    source_ref    => [ "cutadapt_len", "fastq.gz\$" ],
+#    bowtie1_index => "/data/cqs/guoy1/reference/hg19chr/bowtie1_index/hg19",
+#    samformat     => 0,
+#    samonly       => 0,
+#    sh_direct     => 0,
+#    pbs           => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "72",
+#      "mem"      => "20gb"
+#    },
+#  },
+#  bowtie1bam => {
+#    class         => "Bowtie1",
+#    perform       => 0,
+#    target_dir    => "${target_parclip_dir}/bowtie1bam",
+#    option        => "-v 2 -m 10 --best --strata",
+#    source_ref    => [ "cutadapt_len", "fastq.gz\$" ],
+#    bowtie1_index => "/data/cqs/guoy1/reference/hg19chr/bowtie1_index/hg19",
+#    samformat     => 1,
+#    samonly       => 0,
+#    sh_direct     => 0,
+#    pbs           => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "72",
+#      "mem"      => "20gb"
+#    },
+#  },
+#  PARalyzer => {
+#    class      => "ParClip::PARalyzer",
+#    perform    => 0,
+#    target_dir => "${target_parclip_dir}/paralyzer",
+#    option     => "",
+#    source_ref => "bowtie1out",
+#    genome2bit => "/data/cqs/guoy1/reference/hg19chr/hg19.2bit",
+#    mirna_db   => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+#    sh_direct  => 1,
+#    pbs        => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "72",
+#      "mem"      => "20gb"
+#    },
+#  },
+#  annotation => {
+#    class            => "CQS::ParalyzerClusterAnnotator",
+#    perform          => 1,
+#    target_dir       => "${target_parclip_dir}/paralyzer",
+#    option           => "-f miRNA",
+#    source_ref       => [ "PARalyzer", ".cluster.csv" ],
+#    cqstools         => $cqstools,
+#    coordinate_files => [ $hsa_gffs, $hsa_trna_gffs ],
+#    sh_direct        => 1,
+#    pbs              => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "72",
+#      "mem"      => "20gb"
+#    },
+#  },
+#};
+#
+#performConfig($parclip_config);
 
 1;
