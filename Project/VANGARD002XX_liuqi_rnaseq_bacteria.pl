@@ -31,21 +31,26 @@ my $config = {
     "2732-EPS-10" => ["${target_dir}/raw/2732-EPS-10_1_sequence.txt"],
     "2732-EPS-11" => ["${target_dir}/raw/2732-EPS-11_1_sequence.txt"],
     "2732-EPS-12" => ["${target_dir}/raw/2732-EPS-12_1_sequence.txt"],
+    "2732-EPS-13" => ["${target_dir}/raw/2732-EPS-13_1_sequence.txt"],
+    "2732-EPS-14" => ["${target_dir}/raw/2732-EPS-14_1_sequence.txt"],
+    "2732-EPS-15" => ["${target_dir}/raw/2732-EPS-15_1_sequence.txt"],
   },
   groups => {
     "DMSO"                 => [ "2732-EPS-01", "2732-EPS-02", "2732-EPS-03" ],
     "50uM_0070"            => [ "2732-EPS-04", "2732-EPS-05", "2732-EPS-06" ],
     "20uM_NDGA"            => [ "2732-EPS-07", "2732-EPS-08", "2732-EPS-09" ],
     "100uM_chlorpromazine" => [ "2732-EPS-10", "2732-EPS-11", "2732-EPS-12" ],
+    "New"                  => [ "2732-EPS-13", "2732-EPS-14", "2732-EPS-15" ],
   },
   pairs => {
     "50uM_0070_vs_DMSO"            => [ "50uM_0070",            "DMSO" ],
     "20uM_NDGA_vs_DMSO"            => [ "20uM_NDGA",            "DMSO" ],
-    "100uM_chlorpromazine_vs_DMSO" => [ "100uM_chlorpromazine", "DMSO" ]
+    "100uM_chlorpromazine_vs_DMSO" => [ "100uM_chlorpromazine", "DMSO" ],
+    "New_vs_DMSO"                  => [ "New",                  "DMSO" ]
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -59,7 +64,7 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/trimmer",
     option     => "-n",
     extension  => "_trim.fastq",
@@ -109,7 +114,7 @@ my $config = {
   },
   bowtie2 => {
     class         => "Bowtie2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/bowtie2",
     source_ref    => "fastqfiles",
     bowtie2_index => "${target_dir}/genome/bowtie2-index/NC_005945",
