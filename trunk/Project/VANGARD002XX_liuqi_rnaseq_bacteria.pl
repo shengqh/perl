@@ -40,13 +40,13 @@ my $config = {
     "50uM_0070"            => [ "2732-EPS-04", "2732-EPS-05", "2732-EPS-06" ],
     "20uM_NDGA"            => [ "2732-EPS-07", "2732-EPS-08", "2732-EPS-09" ],
     "100uM_chlorpromazine" => [ "2732-EPS-10", "2732-EPS-11", "2732-EPS-12" ],
-    "New"                  => [ "2732-EPS-13", "2732-EPS-14", "2732-EPS-15" ],
+    "20uM_targocil"        => [ "2732-EPS-13", "2732-EPS-14", "2732-EPS-15" ],
   },
   pairs => {
     "50uM_0070_vs_DMSO"            => [ "50uM_0070",            "DMSO" ],
     "20uM_NDGA_vs_DMSO"            => [ "20uM_NDGA",            "DMSO" ],
     "100uM_chlorpromazine_vs_DMSO" => [ "100uM_chlorpromazine", "DMSO" ],
-    "New_vs_DMSO"                  => [ "New",                  "DMSO" ]
+    "20uM_targocil_vs_DMSO"        => [ "20uM_targocil",        "DMSO" ]
   },
   fastqc => {
     class      => "FastQC",
