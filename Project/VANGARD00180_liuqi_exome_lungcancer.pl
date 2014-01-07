@@ -104,7 +104,7 @@ my $config = {
   },
   rnaseqc => {
     class          => "RNASeQC",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/RNASeQC",
     option         => "",
     fasta_file     => $fasta_file,
@@ -121,7 +121,7 @@ my $config = {
   },
   muTect => {
     class       => "GATK::MuTect",
-    perform     => 0,
+    perform     => 1,
     target_dir  => "${target_dir}/muTect",
     option      => "",
     source_ref  => "refine",
@@ -141,7 +141,7 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", ".pass.vcf\$" ],
