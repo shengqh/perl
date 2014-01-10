@@ -50,7 +50,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -64,7 +64,7 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trimmer",
     option     => "-n",
     extension  => "_trim.fastq",
@@ -80,7 +80,7 @@ my $config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trimlen",
     option     => "",
     source_ref => "trimmer",
@@ -103,7 +103,7 @@ my $config = {
     java_option    => "-Xmx10g",
     rockhopper_jar => "/scratch/cqs/shengq1/local/bin/Rockhopper.jar",
     genome_dir     => "${target_dir}/genome",
-    option         => "-p 8 -TIME -v true",
+    option         => "-p 8 -TIME -v true -c true",
     sh_direct      => 1,
     pbs            => {
       "email"    => $email,
@@ -114,7 +114,7 @@ my $config = {
   },
   bowtie2 => {
     class         => "Bowtie2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/bowtie2",
     source_ref    => "fastqfiles",
     bowtie2_index => "${target_dir}/genome/bowtie2-index/NC_005945",
