@@ -164,7 +164,7 @@ my $config = {
   cnmops => {
     target_dir  => "${target_dir}/cnmops",
     option      => "",
-    source_ref  => "bamfiles",
+    source_ref  => "refine",
     bedfile     => $bedfile,
     pairmode    => "paired",
     isbamsorted => 1,
@@ -194,7 +194,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 cnmops( $config, "cnmops" );
 
 1;
