@@ -1,8 +1,16 @@
 cd /data/cqs/shengq1/reference/cosmic
 version="v67_20131024"
-wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicNonCodingVariants_${version}.vcf.gz
-wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicCodingMuts_${version}.vcf.gz
-gunzip Cosmic*.gz 
+
+if [! -s CosmicNonCodingVariants_${version}.vcf]; then
+    wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicNonCodingVariants_${version}.vcf.gz
+    gunzip CosmicNonCodingVariants_${version}.vcf.gz
+fi
+
+if [! -s ftp://ngs.sanger.ac.uk/production/cosmic/CosmicCodingMuts_${version}.vcf]; then
+    wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicCodingMuts_${version}.vcf.gz
+    gunzip CosmicCodingMuts_${version}.vcf.gz
+fi
+ 
 grep "^#" CosmicCodingMuts_${version}.vcf > VCF_Header 
 grep -v "^#" CosmicCodingMuts_${version}.vcf > Coding.clean 
 grep -v "^#" CosmicNonCodingVariants_${version}.vcf > NonCoding.clean 
