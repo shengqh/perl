@@ -32,7 +32,6 @@ my $config = {
   fastqfiles => {
     "2476-JP-01" => [ "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-1_1.fastq.gz",  "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-1_2.fastq.gz" ],
     "2476-JP-02" => [ "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-2_1.fastq.gz",  "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-2_2.fastq.gz" ],
-    "2476-JP-03" => [ "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-05-21/2476-JP-3_1.fastq.gz",  "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-05-21/2476-JP-3_2.fastq.gz" ],
     "2476-JP-04" => [ "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-4_1.fastq.gz",  "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-4_2.fastq.gz" ],
     "2476-JP-05" => [ "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-5_1.fastq.gz",  "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-5_2.fastq.gz" ],
     "2476-JP-06" => [ "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-6_1.fastq.gz",  "/autofs/blue_sequencer/Runs/projects/2476-JP/2013-09-24/2476-JP-6_2.fastq.gz" ],
@@ -61,7 +60,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -75,7 +74,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
