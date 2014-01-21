@@ -1,5 +1,5 @@
 cd /data/cqs/shengq1/reference/cosmic
-version="v66_20130725"
+version="v67_20131024"
 wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicNonCodingVariants_${version}.vcf.gz
 wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicCodingMuts_${version}.vcf.gz
 gunzip Cosmic*.gz 
