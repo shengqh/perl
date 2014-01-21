@@ -1,12 +1,12 @@
 cd /data/cqs/shengq1/reference/cosmic
 version="v67_20131024"
 
-if [! -s CosmicNonCodingVariants_${version}.vcf]; then
+if [ ! -s CosmicNonCodingVariants_${version}.vcf ]; then
     wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicNonCodingVariants_${version}.vcf.gz
     gunzip CosmicNonCodingVariants_${version}.vcf.gz
 fi
 
-if [! -s ftp://ngs.sanger.ac.uk/production/cosmic/CosmicCodingMuts_${version}.vcf]; then
+if [ ! -s ftp://ngs.sanger.ac.uk/production/cosmic/CosmicCodingMuts_${version}.vcf ]; then
     wget ftp://ngs.sanger.ac.uk/production/cosmic/CosmicCodingMuts_${version}.vcf.gz
     gunzip CosmicCodingMuts_${version}.vcf.gz
 fi
