@@ -20,7 +20,7 @@ my $gatk                 = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_dir           = "/home/shengq1/local/bin/picard/";
 my $mutect               = "/home/shengq1/local/bin/muTect-1.1.4.jar";
 my $bedfile              = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_withoutY_lite.bed";
-my $conifer = "/home/shengq1/pylibs/bin/conifer.py";
+my $conifer              = "/home/shengq1/pylibs/bin/conifer.py";
 
 #my $annovar_param =  "-buildver hg19 -protocol refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,snp137,ljb2_all,cosmic64 -operation g,r,r,f,f,f,f,f --remove --otherinfo";
 my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove --otherinfo";
@@ -90,7 +90,7 @@ my $config = {
   },
   refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
@@ -109,7 +109,7 @@ my $config = {
   },
   muTect => {
     class       => "MuTect",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/muTect",
     option      => "",
     source_ref  => "refine",
@@ -129,7 +129,7 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", "\.vcf\$" ],
@@ -146,7 +146,7 @@ my $config = {
   },
   snpindel => {
     class       => "GATKSNPIndel",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/SNPindel",
     option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
     source_ref  => "refine",
@@ -163,6 +163,8 @@ my $config = {
     },
   },
   cnmops => {
+    class       => "CNV::cnMops",
+    perform     => 1,
     target_dir  => "${target_dir}/cnmops",
     option      => "",
     source_ref  => "refine",
@@ -177,6 +179,8 @@ my $config = {
     },
   },
   conifer => {
+    class       => "CNV::Conifer",
+    perform     => 1,
     target_dir  => "${target_dir}/conifer",
     option      => "",
     source_ref  => "refine",
@@ -192,7 +196,7 @@ my $config = {
   },
   annovar_snpindel => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/SNPindel",
     source_ref => "snpindel",
     option     => $annovar_param,
@@ -209,8 +213,6 @@ my $config = {
   },
 };
 
-#performConfig($config);
-#cnmops( $config, "cnmops" );
-conifer( $config, "conifer" );
+performConfig($config);
 
 1;
