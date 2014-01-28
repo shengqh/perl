@@ -20,6 +20,7 @@ my $gatk                 = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_dir           = "/home/shengq1/local/bin/picard/";
 my $mutect               = "/home/shengq1/local/bin/muTect-1.1.4.jar";
 my $bedfile              = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_withoutY_lite.bed";
+my $conifer = "/home/shengq1/pylibs/bin/conifer.py";
 
 #my $annovar_param =  "-buildver hg19 -protocol refGene,phastConsElements46way,genomicSuperDups,esp6500si_all,1000g2012apr_all,snp137,ljb2_all,cosmic64 -operation g,r,r,f,f,f,f,f --remove --otherinfo";
 my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove --otherinfo";
@@ -175,6 +176,20 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  conifer => {
+    target_dir  => "${target_dir}/conifer",
+    option      => "",
+    source_ref  => "refine",
+    conifer     => $conifer,
+    bedfile     => $bedfile,
+    isbamsorted => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "720",
+      "mem"      => "10gb"
+    },
+  },
   annovar_snpindel => {
     class      => "Annovar",
     perform    => 1,
@@ -195,6 +210,7 @@ my $config = {
 };
 
 #performConfig($config);
-cnmops( $config, "cnmops" );
+#cnmops( $config, "cnmops" );
+conifer( $config, "conifer" );
 
 1;
