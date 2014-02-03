@@ -109,7 +109,7 @@ my $config = {
   },
   muTect => {
     class       => "MuTect",
-    perform     => 0,
+    perform     => 1,
     target_dir  => "${target_dir}/muTect",
     option      => "",
     source_ref  => "refine",
@@ -129,7 +129,7 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", "\.vcf\$" ],
@@ -164,7 +164,7 @@ my $config = {
   },
   cnmops => {
     class       => "CNV::cnMops",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/cnmops",
     option      => "",
     source_ref  => "refine",
@@ -180,7 +180,7 @@ my $config = {
   },
   conifer => {
     class       => "CNV::Conifer",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/conifer",
     option      => "",
     source_ref  => "refine",
