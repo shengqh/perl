@@ -8,10 +8,8 @@ use CQS::FileUtils;
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20140204_yuhui_rnaseq_count");
 
 my $fasta_file           = "/scratch/yuh9/software/bowtie2-2.1.0/index/hg19.fa";
-my $transcript_gtf       = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.gtf";
-my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_73";
+my $transcript_gtf       = "/scratch/yuh9/software/bowtie2-2.1.0/index/Homo_sapiens/UCSC/hg19/Annotation/Genes/genes.gtf";
 
-my $hg19_gff = "/scratch/cqs/shengq1/references/hg19/dexseq_gff/Homo_sapiens.GRCh37.73.dexseq.gff";
 my $hg19_map = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.map";
 
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
