@@ -10,8 +10,6 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20140204_y
 my $fasta_file           = "/scratch/yuh9/software/bowtie2-2.1.0/index/hg19.fa";
 my $transcript_gtf       = "/scratch/yuh9/software/bowtie2-2.1.0/index/Homo_sapiens/UCSC/hg19/Annotation/Genes/genes.gtf";
 
-my $hg19_map = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.map";
-
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -32,7 +30,7 @@ my $config = {
   files   => $files,
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "files",
@@ -47,7 +45,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -66,7 +64,6 @@ my $config = {
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
-    name_map_file => $hg19_map,
     cqs_tools     => $cqstools,
     sh_direct     => 1,
     pbs           => {
