@@ -57,13 +57,14 @@ my $files = {
   },
 };
 
-my @runs = [
-
+my @runs = (
   #"run3",
   "run4"
-];
+);
 
 foreach my $run (@runs) {
+  print ($files->{$run});
+  
   my $config = {
     general => { task_name => $task . "_" . $run },
     files   => $files->{$run},
