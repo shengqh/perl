@@ -55,16 +55,33 @@ my $files = {
     "40-TX_S4_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R1_001.fastq.gz"],
     "40-TX_S4_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R2_001.fastq.gz"],
   },
+
+  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5 -r -n \(.+_\)L001_\(.+\)_001
+  "run5" => {
+    "32-PD_S1_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/32-PD_S1_L001_R1_001.fastq.gz"],
+    "32-PD_S1_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/32-PD_S1_L001_R2_001.fastq.gz"],
+    "33-PA_S2_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/33-PA_S2_L001_R1_001.fastq.gz"],
+    "33-PA_S2_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/33-PA_S2_L001_R2_001.fastq.gz"],
+    "408637_S4_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408637_S4_L001_R1_001.fastq.gz"],
+    "408637_S4_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408637_S4_L001_R2_001.fastq.gz"],
+    "408648_S5_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408648_S5_L001_R1_001.fastq.gz"],
+    "408648_S5_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408648_S5_L001_R2_001.fastq.gz"],
+    "B42-TD_S3_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/B42-TD_S3_L001_R1_001.fastq.gz"],
+    "B42-TD_S3_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/B42-TD_S3_L001_R2_001.fastq.gz"],
+  },
+
 };
 
 my @runs = (
-  "run3",
-  "run4"
+
+  #"run3",
+  #"run4",
+  "run5"
 );
 
 foreach my $run (@runs) {
-  my $target_dir = create_directory_or_die($root_dir . "/" . $run);
-  my $config = {
+  my $target_dir = create_directory_or_die( $root_dir . "/" . $run );
+  my $config     = {
     general => { task_name => $task . "_" . $run },
     files   => $files->{$run},
     fastqc  => {
@@ -73,7 +90,7 @@ foreach my $run (@runs) {
       target_dir => "${target_dir}/fastqc",
       option     => "",
       source_ref => "files",
-      sh_direct  => 0,
+      sh_direct  => 1,
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=2",
