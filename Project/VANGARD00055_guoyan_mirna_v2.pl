@@ -12,33 +12,25 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use CQS::Cutadapt;
 
-my $root;
-my $cqstools;
-my $hsa_gffs;
-my $hsa_trna_gffs;
-my $rno_gffs;
-my $rno_trna_gffs;
-my $mmu_gffs;
-my $mmu_trna_gffs;
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2");
+my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-if ( is_linux() ) {
-  $root          = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2";
-  $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
-  $hsa_gffs      = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
-  $hsa_trna_gffs = "/data/cqs/shengq1/reference/trna/hg19_tRNA.bed";
-  $rno_gffs      = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
-  $rno_trna_gffs = "/data/cqs/shengq1/reference/trna/rn4_tRNA.bed";
-  $mmu_gffs      = "/data/cqs/shengq1/reference/miRBase20/mmu.gff3";
-  $mmu_trna_gffs = "/data/cqs/shengq1/reference/trna/mm10_tRNA.bed";
-}
-else {
-  $root     = "d:/temp";
-  $cqstools = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
-  $hsa_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna_v2/hsa.gff3";
-  $rno_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna_v2/rno.gff3";
-  $mmu_gffs = "H:/shengquanhu/projects/vangard/VANGARD00055_guoyan_mirna_v2/mmu.gff3";
-}
-my $target_dir = create_directory_or_die($root);
+my $hg19_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
+my $hg19_trna_bed     = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed";
+my $hg19_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa";
+my $hg19_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed";
+
+my $mm10_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/mmu.gff3";
+my $mm10_trna_bed     = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed";
+my $mm10_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa";
+my $mm10_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed";
+
+my $rn4_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
+my $rn4_trna_bed     = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed";
+my $rn4_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa";
+my $rn4_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed";
+
+my $target_dir = $root;
 
 my $target_rat_dir   = create_directory_or_die( $target_dir . "/rat" );
 my $target_human_dir = create_directory_or_die( $target_dir . "/human" );
@@ -51,66 +43,17 @@ my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 my $bowtie1_option_pm       = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
 my $bowtie1_option_1mm      = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
-my $bowtie1_option_1mm_trim = "-a -m 100 --best --strata -v 1 -l 12 -p 8 --trim5 2 --trim3 3";
+my $bowtie1_option_1mm_trim = "-a -m 100 --best --strata -v 1 -l 12 -p 8 --trim3 3";
 my $bowtie1_option_3mm      = "-a -m 100 --best --strata -v 3 -l 12 -p 8";
 
 my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS";
-
-#my $bowtie1_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie_index/mm9";
 my $bowtie1_mouse_index = "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10";
-
-my $bowtie2_option       = "-D 100 -R 3 -N 1 -L 8 -i S,1,0.50 --gbar 50 --rdg 1000,1000 --rfg 1000,1000 -k 20 -p 8";
-my $bowtie2_local_option = "$bowtie2_option --local";
-
-my $bowtie2_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie2_index/rn4";
-my $bowtie2_human_index = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
-
-#my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm9/bowtie2_index/mm9";
-my $bowtie2_mouse_index = "/data/cqs/guoy1/reference/mm10/bowtie2_index/mm10";
 
 my $mirnacount_option          = "-s";                                                    #ignore score
 my $trnacount_option           = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
-my $fasta_file                 = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
-
-my $trna_hg19_fasta = "/data/cqs/shengq1/reference/trna/hg19_tRNA.bed.fa";
-my $trna_mm10_fasta = "/data/cqs/shengq1/reference/trna/mm10_tRNA.bed.fa";
-my $trna_rn4_fasta  = "/data/cqs/shengq1/reference/trna/rn4_tRNA.bed.fa";
-
-#shrimp2 gmapper set mirna mode
-#static int
-#set_mode_from_string(char const * s) {
-#  if (!strcmp(s, "mirna")) {
-#    mode_mirna = true;
-#
-#    //load_default_mirna_seeds();
-#
-#    Hflag = true;
-#    gapless_sw = true;
-#    anchor_width = 0;
-#    a_gap_open_score = -255;
-#    b_gap_open_score = -255;
-#    hash_filter_calls = false;
-#    match_mode = 1;
-#    window_len = 100.0;
-#    Gflag = false;
-#    compute_mapping_qualities = false;
-#
-#    return 1;
-#  } else {
-#    return 0;
-#  }
-#}
-my $shrimp2_option              = "-Q -N 8 -o 1 --qv-offset 33";
-my $shrimp2_rat_miRBase_index   = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/rno.mature.dna-ls";
-my $shrimp2_human_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/hsa.mature.dna-ls";
-my $shrimp2_mouse_miRBase_index = "/data/cqs/shengq1/reference/miRBase19/shrimp_index_2.2.3/mmu.mature.dna-ls";
-
-my $bwa_option       = "-o 0 -l 8 -n 3 -t 8";
-my $bwa_hsammu_fasta = "/data/cqs/shengq1/reference/hg19mm9/bwa_0.7.4_index/hg19mm9.fa";
-my $hsammu_gffs      = "/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/smrnapipeline/hsa_mmu_tableL.bed";
-my $bwa_clip_option  = "-o 2 -e 3 -l 8 -n 3 -t 8";
+my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
 my $rat = {
   source => {
@@ -172,13 +115,11 @@ my $rat = {
     "Vehicle-3271.1_GTCCGC"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.1_GTCCGC_L003_R1_001.fastq.gz"],
     "Vehicle-3271.2_GTAGAG"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.2_GTAGAG_L003_R1_001.fastq.gz"],
   },
-  coordinate          => $rno_gffs,
-  trna_coordinate     => $rno_trna_gffs,
-  trna_fasta          => $trna_rn4_fasta,
-  smallrna_coordinate => "/gpfs21/scratch/cqs/shengq1/references/smallrna/Rattus_norvegicus.RGSC3.4.69.smallRNA.bed",
+  coordinate          => $rn4_mrna_gff,
+  trna_coordinate     => $rn4_trna_bed,
+  trna_fasta          => $rn4_trna_fasta,
+  smallrna_coordinate => $rn4_smallrna_bed,
   bowtie1_index       => $bowtie1_rat_index,
-  bowtie2_index       => $bowtie2_rat_index,
-  shrimp2_index       => $shrimp2_rat_miRBase_index,
   target_dir          => $target_rat_dir,
   task_name           => $task_name . "_rat",
   groups              => {
@@ -375,13 +316,11 @@ my $human = {
     "03-17-Post_TAGCTT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Post_TAGCTT_L004_R1_001.fastq.gz"],
     "03-17-Pre_GATCAG"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Pre_GATCAG_L004_R1_001.fastq.gz"],
   },
-  coordinate          => $hsa_gffs,
-  trna_coordinate     => $hsa_trna_gffs,
-  trna_fasta          => $trna_hg19_fasta,
-  smallrna_coordinate => "/gpfs21/scratch/cqs/shengq1/references/smallrna/Homo_sapiens.GRCh37.73.smallRNA.bed",
+  coordinate          => $hg19_mrna_gff,
+  trna_coordinate     => $hg19_trna_bed,
+  trna_fasta          => $hg19_trna_fasta,
+  smallrna_coordinate => $$hg19_smallrna_bed,
   bowtie1_index       => $bowtie1_human_index,
-  bowtie2_index       => $bowtie2_human_index,
-  shrimp2_index       => $shrimp2_human_miRBase_index,
   target_dir          => $target_human_dir,
   task_name           => $task_name . "_human",
   groups              => {
@@ -425,13 +364,11 @@ my $mouse = {
     "2570-KCV-01-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
     "2570-KCV-01-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
   },
-  coordinate          => $mmu_gffs,
-  trna_coordinate     => $mmu_trna_gffs,
-  trna_fasta          => $trna_mm10_fasta,
-  smallrna_coordinate => "/gpfs21/scratch/cqs/shengq1/references/smallrna/Mus_musculus.GRCm38.73.smallRNA.bed",
+  coordinate          => $mm10_mrna_gff,
+  trna_coordinate     => $mm10_trna_bed,
+  trna_fasta          => $mm10_trna_fasta,
+  smallrna_coordinate => $mm10_smallrna_bed,
   bowtie1_index       => $bowtie1_mouse_index,
-  bowtie2_index       => $bowtie2_mouse_index,
-  shrimp2_index       => $shrimp2_mouse_miRBase_index,
   target_dir          => $target_mouse_dir,
   task_name           => $task_name . "_mouse",
   groups              => { "TransplantLiver" => $transplant }
@@ -535,7 +472,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
       gff_file        => $def->{coordinate},
-      fasta_file      => $fasta_file,
+      fasta_file      => $mirna_fasta,
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
@@ -572,7 +509,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
       gff_file        => $def->{coordinate},
-      fasta_file      => $fasta_file,
+      fasta_file      => $mirna_fasta,
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
@@ -734,7 +671,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
       gff_file        => $def->{coordinate},
-      fasta_file      => $fasta_file,
+      fasta_file      => $mirna_fasta,
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
@@ -771,7 +708,7 @@ foreach my $def (@defs) {
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
       gff_file        => $def->{coordinate},
-      fasta_file      => $fasta_file,
+      fasta_file      => $mirna_fasta,
       samtools        => $samtools,
       sh_direct       => 1,
       pbs             => {
@@ -901,220 +838,12 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-
-    #    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_miRNA => {
-    #      class        => "CQSPileup",
-    #      perform      => 0,
-    #      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_miRNA",
-    #      option       => "--export_igv",
-    #      source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
-    #      seqcount_ref => [ "identical", ".dupcount\$" ],
-    #      cqs_tools    => $cqstools,
-    #      gff_file     => $def->{coordinate},
-    #      samtools     => $samtools,
-    #      sh_direct    => 1,
-    #      pbs          => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=1",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    cqs_pileup_bowtie1_genome_cutadapt_topN_1mm_tRNA => {
-    #      class        => "CQSPileup",
-    #      perform      => 0,
-    #      target_dir   => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_cqspileup_tRNA",
-    #      option       => "--export_igv",
-    #      source_ref   => "bowtie1_genome_cutadapt_topN_1mm",
-    #      seqcount_ref => [ "identical", ".dupcount\$" ],
-    #      cqs_tools    => $cqstools,
-    #      gff_file     => $def->{trna_coordinate},
-    #      samtools     => $samtools,
-    #      sh_direct    => 1,
-    #      pbs          => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=1",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    bowtie2_mirna_count_bowtie1_genome_cutadapt_topN => {
-    #      class         => "Bowtie2",
-    #      perform       => 0,
-    #      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_bowtie2",
-    #      option        => $bowtie2_local_option,
-    #      source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN", ".fastq\$" ],
-    #      bowtie2_index => $def->{bowtie2_index},
-    #      sh_direct     => 1,
-    #      pbs           => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=8",
-    #        "walltime" => "24",
-    #        "mem"      => "20gb"
-    #      },
-    #    },
-    #    shrimp2_miRBase_bowtie1_genome_cutadapt_topN => {
-    #      class         => "Shrimp2",
-    #      perform       => 0,
-    #      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_shrimp2_miRBase",
-    #      option        => $shrimp2_option,
-    #      source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN", ".fastq\$" ],
-    #      shrimp2_index => $def->{shrimp2_index},
-    #      is_mirna      => 1,
-    #      output_bam    => 1,
-    #      sh_direct     => 0,
-    #      pbs           => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=8",
-    #        "walltime" => "720",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    bowtie1_genome_cutadapt_topN_pm => {
-    #      class         => "Bowtie1",
-    #      perform       => 0,
-    #      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm",
-    #      option        => $bowtie1_option_pm,
-    #      source_ref    => [ "identical", ".fastq\$" ],
-    #      bowtie1_index => $def->{bowtie1_index},
-    #      samonly       => 0,
-    #      sh_direct     => 1,
-    #      pbs           => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=8",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    mirna_count_bowtie1_genome_cutadapt_topN_pm => {
-    #      class           => "MirnaCount",
-    #      perform         => 0,
-    #      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_pm",
-    #      option          => $mirnacount_option,
-    #      source_ref      => "bowtie1_genome_cutadapt_topN_pm",
-    #      fastq_files_ref => "identical",
-    #      seqcount_ref    => [ "identical", ".dupcount\$" ],
-    #      cqs_tools       => $cqstools,
-    #      gff_file        => $def->{coordinate},
-    #      samtools        => $samtools,
-    #      sh_direct       => 1,
-    #      pbs             => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=1",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    bowtie1_genome_cutadapt_topN_pm_unmatched => {
-    #      class         => "Bowtie1",
-    #      perform       => 0,
-    #      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm_unmatched",
-    #      option        => $bowtie1_option_pm,
-    #      source_ref    => [ "mirna_count_bowtie1_genome_cutadapt_topN_pm", ".fastq\$" ],
-    #      bowtie1_index => $human->{bowtie1_index},
-    #      samonly       => 0,
-    #      sh_direct     => 1,
-    #      pbs           => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=8",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    mirna_count_bowtie1_genome_cutadapt_topN_pm_unmatched => {
-    #      class           => "MirnaCount",
-    #      perform         => 0,
-    #      target_dir      => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_count_pm_unmatched",
-    #      option          => $mirnacount_option,
-    #      source_ref      => "bowtie1_genome_cutadapt_topN_pm_unmatched",
-    #      fastq_files_ref => "identical",
-    #      seqcount_ref    => [ "identical", ".dupcount\$" ],
-    #      cqs_tools       => $cqstools,
-    #      gff_file        => $human->{coordinate},
-    #      samtools        => $samtools,
-    #      sh_direct       => 1,
-    #      pbs             => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=1",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    bwa_genome_cutadapt_topN => {
-    #      class      => "BWA",
-    #      perform    => 0,
-    #      target_dir => "${cur_target_dir}/topN_bwa_genome_cutadapt",
-    #      option     => $bwa_option,
-    #      source_ref => [ "identical", ".fastq\$" ],
-    #      fasta_file => $def->{bwa_fasta},
-    #      samonly    => 0,
-    #      sh_direct  => 1,
-    #      pbs        => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=8",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    bwa_genome_cutadapt_softclip_topN => {
-    #      class      => "BWA",
-    #      perform    => 0,
-    #      target_dir => "${cur_target_dir}/topN_bwa_genome_softclip_cutadapt",
-    #      option     => $bwa_clip_option,
-    #      source_ref => [ "identical", ".fastq\$" ],
-    #      fasta_file => $def->{bwa_fasta},
-    #      samonly    => 0,
-    #      sh_direct  => 1,
-    #      pbs        => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=8",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    mirna_count_bwa_genome_cutadapt_topN => {
-    #      class           => "MirnaCount",
-    #      perform         => 0,
-    #      target_dir      => "${cur_target_dir}/topN_bwa_genome_cutadapt_count",
-    #      option          => $mirnacount_option . " -e 3",
-    #      source_ref      => "bwa_genome_cutadapt_topN",
-    #      fastq_files_ref => "identical",
-    #      seqcount_ref    => [ "identical", ".dupcount\$" ],
-    #      cqs_tools       => $cqstools,
-    #      gff_file        => $hsammu_gffs,
-    #      samtools        => $samtools,
-    #      sh_direct       => 1,
-    #      pbs             => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=1",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-    #    bowtie1_genome_cutadapt_topN_3mm => {
-    #      class         => "Bowtie1",
-    #      perform       => 0,
-    #      target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_3mm",
-    #      option        => $bowtie1_option_3mm,
-    #      source_ref    => [ "identical", ".fastq\$" ],
-    #      bowtie1_index => $def->{bowtie1_index},
-    #      samonly       => 0,
-    #      sh_direct     => 1,
-    #      pbs           => {
-    #        "email"    => $email,
-    #        "nodes"    => "1:ppn=8",
-    #        "walltime" => "72",
-    #        "mem"      => "40gb"
-    #      },
-    #    },
-
   };
 
   #  performConfig($config, "" , 1);
   performConfig($config);
 
   if ( $def == $mouse ) {
-
     #performTask( $config, "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm_distinct" );
   }
 }
@@ -1125,7 +854,7 @@ my $w83_gtf_index     = "/scratch/cqs/shengq1/references/gingivalis_W83/Gingival
 my $target_w83_dir = create_directory_or_die( $target_dir . "/w83" );
 
 my $w83config = {
-  general    => { "task_name" => "w83", },
+  general  => { "task_name" => "w83", },
   bamfiles => {
     "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-19/2572-KCV-1-19.bam"],
     "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-20/2572-KCV-1-20.bam"],
@@ -1227,7 +956,8 @@ my $w83config = {
   },
 };
 
-performConfig($w83config);
+#performConfig($w83config);
+
 #
 #my $parclip_files = {
 #  "Parclip_01" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/PARCLIP/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
@@ -1334,7 +1064,7 @@ performConfig($w83config);
 #    option           => "-f miRNA",
 #    source_ref       => [ "PARalyzer", ".cluster.csv" ],
 #    cqstools         => $cqstools,
-#    coordinate_files => [ $hsa_gffs, $hsa_trna_gffs ],
+#    coordinate_files => [ $hg19_mrna_gff, $hg19_trna_bed ],
 #    sh_direct        => 1,
 #    pbs              => {
 #      "email"    => $email,
