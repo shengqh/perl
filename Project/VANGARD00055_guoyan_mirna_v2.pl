@@ -374,9 +374,9 @@ my $mouse = {
   groups              => { "TransplantLiver" => $transplant }
 };
 
-#my @defs = ( $rat, $human, $mouse );
+my @defs = ( $rat, $human, $mouse );
 
-my @defs = ($human);
+#my @defs = ($human);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
@@ -448,7 +448,7 @@ foreach my $def (@defs) {
     #perfect match
     bowtie1_genome_cutadapt_topN_pm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_pm",
       option        => $bowtie1_option_pm,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -631,7 +631,7 @@ foreach my $def (@defs) {
     #1 mismatch search
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "identical", ".fastq\$" ],
