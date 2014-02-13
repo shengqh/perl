@@ -93,7 +93,7 @@ my @runs = (
 );
 
 foreach my $run (@runs) {
-  my $target_dir = create_directory_or_die( $root_dir . "/" . $run );
+  my $target_dir = create_directory_or_die( $root_dir . "/" . $run . "_test" );
   my $config     = {
     general => { task_name => $task . "_" . $run },
     files   => $files->{$run},
@@ -243,6 +243,19 @@ foreach my $run (@runs) {
         "mem"      => "10gb"
       },
     },
+    sequence_task => {
+      class      => "SequenceTask",
+      perform    => 1,
+      target_dir => "${target_dir}/sequencetask",
+      source     => { "gene" => [ "tophat2", "sortbam", "htseqcount" ] },
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "10gb"
+      }
+    }
   };
 
   performConfig($config);
