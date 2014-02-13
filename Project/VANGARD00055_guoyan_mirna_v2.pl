@@ -773,7 +773,7 @@ foreach my $def (@defs) {
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
       perform    => 1,
-      target_dir => "${target_dir}/summary",
+      target_dir => "${target_dir}/summary_1mm",
       option     => "",
       source_ref => [ "tRNA_1mm_count", ".xml" ],
       groups     => $def->{groups},

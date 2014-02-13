@@ -70,13 +70,26 @@ my $files = {
     "B42-TD_S3_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/B42-TD_S3_L001_R2_001.fastq.gz"],
   },
 
+  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5 -r -n \(.+_\)L001_\(.+\)_001
+  "run6" => {
+    "30-TXE_S1_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/30-TXE_S1_L001_R1_001.fastq.gz"],
+    "30-TXE_S1_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/30-TXE_S1_L001_R2_001.fastq.gz"],
+    "32-PE_S2_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/32-PE_S2_L001_R1_001.fastq.gz"],
+    "32-PE_S2_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/32-PE_S2_L001_R2_001.fastq.gz"],
+    "33-PI_S3_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/33-PI_S3_L001_R1_001.fastq.gz"],
+    "33-PI_S3_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/33-PI_S3_L001_R2_001.fastq.gz"],
+    "40-T_S4_R1"   => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R1_001.fastq.gz"],
+    "40-T_S4_R2"   => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R2_001.fastq.gz"],
+  },
+
 };
 
 my @runs = (
 
   #"run3",
   #"run4",
-  "run5"
+  #"run5",
+  "run6"
 );
 
 foreach my $run (@runs) {
