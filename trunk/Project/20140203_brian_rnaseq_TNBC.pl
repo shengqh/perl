@@ -248,7 +248,7 @@ foreach my $run (@runs) {
       perform    => 1,
       target_dir => "${target_dir}/sequencetask",
       source     => {
-        "gene"  => [ "tophat2",   "sortbam", "htseqcount", "dexseqcount", "varscan2", "annovar_varscan2" ],
+        "gene"  => [ "fastqc", "tophat2",   "sortbam", "htseqcount", "dexseqcount", "varscan2", "annovar_varscan2" ],
         "table" => [ "genetable", "exontable" ],
       },
       sh_direct => 0,
