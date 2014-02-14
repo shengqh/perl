@@ -93,7 +93,7 @@ my @runs = (
 );
 
 foreach my $run (@runs) {
-  my $target_dir = create_directory_or_die( $root_dir . "/" . $run);
+  my $target_dir = create_directory_or_die( $root_dir . "/" . $run );
   my $config     = {
     general => { task_name => $task . "_" . $run },
     files   => $files->{$run},
@@ -247,9 +247,12 @@ foreach my $run (@runs) {
       class      => "SequenceTask",
       perform    => 1,
       target_dir => "${target_dir}/sequencetask",
-      source     => { "gene" => ["tophat2", "sortbam", "htseqcount", "dexseqcount", "varscan2", "annovar_varscan2" ] },
-      sh_direct  => 0,
-      pbs        => {
+      source     => {
+        "gene"  => [ "tophat2",   "sortbam", "htseqcount", "dexseqcount", "varscan2", "annovar_varscan2" ],
+        "table" => [ "genetable", "exontable" ],
+      },
+      sh_direct => 0,
+      pbs       => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
         "walltime" => "72",
