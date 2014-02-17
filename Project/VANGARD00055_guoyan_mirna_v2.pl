@@ -844,9 +844,9 @@ foreach my $def (@defs) {
           "bowtie1_genome_cutadapt_topN_pm",                    "mirna_pm_count",    "miRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm", "miRNA_overlap_position_pm",
           "tRNA_overlap_count_bowtie1_genome_cutadapt_topN_pm", "tRNA_position_pm",  "bowtie1_genome_cutadapt_topN_1mm_notidentical",       "bowtie1_genome_cutadapt_topN_1mm",
           "bowtie1_genome_cutadapt_topN_1mm_trim",              "mirna_1mm_count",   "miRNA_1mm_count_overlap",                             "miRNA_1mm_overlap_position",
-          "tRNA_1mm_count",                                     "tRNA_1mm_position", "smallRNA_1mm_count",                                  "smallRNA_1mm_category"
+          "tRNA_1mm_count",                                     "tRNA_1mm_position", "smallRNA_1mm_count",                                  
         ],
-        table => [ "miRNA_pm_table", "miRNA_1mm_table", "miRNA_1mm_overlap_table", "tRNA_1mm_table" ],
+        table => [ "miRNA_pm_table", "miRNA_1mm_table", "miRNA_1mm_overlap_table", "tRNA_1mm_table", "smallRNA_1mm_category" ],
       },
       sh_direct => 1,
       pbs       => {
