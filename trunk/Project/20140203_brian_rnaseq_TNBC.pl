@@ -245,7 +245,7 @@ foreach my $run (@runs) {
     },
     sequence_task => {
       class      => "SequenceTask",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/sequencetask",
       source     => {
         "gene"  => [ "fastqc", "tophat2",   "sortbam", "htseqcount", "dexseqcount", "varscan2", "annovar_varscan2" ],
