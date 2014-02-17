@@ -369,9 +369,9 @@ my $mouse = {
   groups              => { "TransplantLiver" => $transplant }
 };
 
-my @defs = ( $rat, $human, $mouse );
+#my @defs = ( $rat, $human, $mouse );
 
-#my @defs = ($human);
+my @defs = ($mouse);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
