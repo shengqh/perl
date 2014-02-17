@@ -479,7 +479,7 @@ foreach my $def (@defs) {
     },
     miRNA_pm_table => {
       class      => "CQSMirnaTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_pm",
       option     => "",
       source_ref => "mirna_pm_count",
@@ -678,7 +678,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_table => {
       class      => "CQSMirnaTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_1mm",
       option     => "",
       source_ref => "mirna_1mm_count",
@@ -715,7 +715,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_1mm_overlap",
       option     => "",
       source_ref => "miRNA_1mm_count_overlap",
@@ -767,7 +767,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/summary_1mm",
       option     => "",
       source_ref => [ "tRNA_1mm_count", ".xml" ],
