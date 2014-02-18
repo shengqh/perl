@@ -77,7 +77,7 @@ my @runs = (
 );
 
 foreach my $run (@runs) {
-  my $target_dir = create_directory_or_die( $root_dir . "/" . $run . "_test" );
+  my $target_dir = create_directory_or_die( $root_dir . "/" . $run );
   my $config     = {
     general => { task_name => $task . "_" . $run },
     files   => $files->{$run},
