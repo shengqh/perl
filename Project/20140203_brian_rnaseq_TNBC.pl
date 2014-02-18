@@ -6,6 +6,7 @@ use CQS::ClassFactory;
 use CQS::FileUtils;
 
 my $root_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20140203_brian_rnaseq_TNBC");
+
 #my $root_dir = create_directory_or_die("e:/temp");
 
 my $fasta_file           = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
@@ -25,71 +26,53 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "20140203_brian";
 
-#cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3 -n \(.+_\)L001_\(.+\)_001
-
 my $files = {
 
-  #cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3 -n \(.+_\)L001_\(.+\)_001
+  #cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3 -n \(.+_\)L001
   "run3" => {
-    "30-PA_S1_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-PA_S1_L001_R1_001.fastq.gz"],
-    "30-PA_S1_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-PA_S1_L001_R2_001.fastq.gz"],
-    "30-SB_S2_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-SB_S2_L001_R1_001.fastq.gz"],
-    "30-SB_S2_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-SB_S2_L001_R2_001.fastq.gz"],
-    "30-TA_S3_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-TA_S3_L001_R1_001.fastq.gz"],
-    "30-TA_S3_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-TA_S3_L001_R2_001.fastq.gz"],
-    "40-PA_S4_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-PA_S4_L001_R1_001.fastq.gz"],
-    "40-PA_S4_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-PA_S4_L001_R2_001.fastq.gz"],
-    "40-TXA_S5_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-TXA_S5_L001_R1_001.fastq.gz"],
-    "40-TXA_S5_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-TXA_S5_L001_R2_001.fastq.gz"],
-    "42-PC_S6_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/42-PC_S6_L001_R1_001.fastq.gz"],
-    "42-PC_S6_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/42-PC_S6_L001_R2_001.fastq.gz"],
+    "30-PA_S1_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-PA_S1_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-PA_S1_L001_R2_001.fastq.gz" ],
+    "30-SB_S2_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-SB_S2_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-SB_S2_L001_R2_001.fastq.gz" ],
+    "30-TA_S3_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-TA_S3_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/30-TA_S3_L001_R2_001.fastq.gz" ],
+    "40-PA_S4_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-PA_S4_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-PA_S4_L001_R2_001.fastq.gz" ],
+    "40-TXA_S5_" => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-TXA_S5_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/40-TXA_S5_L001_R2_001.fastq.gz" ],
+    "42-PC_S6_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/42-PC_S6_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_3/42-PC_S6_L001_R2_001.fastq.gz" ],
   },
 
-  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/ -r -n \(.+_\)L001_\(.+\)_001
+  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/ -r -n \(.+_\)L001
   "run4" => {
-    "30-SE_S1_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/30-SE/30-SE_S1_L001_R1_001.fastq.gz"],
-    "30-SE_S1_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/30-SE/30-SE_S1_L001_R2_001.fastq.gz"],
-    "32-TE_S2_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/32-TE/32-TE_S2_L001_R1_001.fastq.gz"],
-    "32-TE_S2_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/32-TE/32-TE_S2_L001_R2_001.fastq.gz"],
-    "40-P_S3_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R1_001.fastq.gz"],
-    "40-P_S3_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R2_001.fastq.gz"],
-    "40-TX_S4_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R1_001.fastq.gz"],
-    "40-TX_S4_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R2_001.fastq.gz"],
+    "30-SE_S1_" =>
+      [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/30-SE/30-SE_S1_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/30-SE/30-SE_S1_L001_R2_001.fastq.gz" ],
+    "32-TE_S2_" =>
+      [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/32-TE/32-TE_S2_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/32-TE/32-TE_S2_L001_R2_001.fastq.gz" ],
+    "40-P_S3_" =>
+      [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R2_001.fastq.gz" ],
+    "40-TX_S4_" =>
+      [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R2_001.fastq.gz" ],
   },
 
-  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5 -r -n \(.+_\)L001_\(.+\)_001
+  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5 -r -n \(.+_\)L001
   "run5" => {
-    "32-PD_S1_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/32-PD_S1_L001_R1_001.fastq.gz"],
-    "32-PD_S1_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/32-PD_S1_L001_R2_001.fastq.gz"],
-    "33-PA_S2_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/33-PA_S2_L001_R1_001.fastq.gz"],
-    "33-PA_S2_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/33-PA_S2_L001_R2_001.fastq.gz"],
-    "408637_S4_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408637_S4_L001_R1_001.fastq.gz"],
-    "408637_S4_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408637_S4_L001_R2_001.fastq.gz"],
-    "408648_S5_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408648_S5_L001_R1_001.fastq.gz"],
-    "408648_S5_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408648_S5_L001_R2_001.fastq.gz"],
-    "B42-TD_S3_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/B42-TD_S3_L001_R1_001.fastq.gz"],
-    "B42-TD_S3_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/B42-TD_S3_L001_R2_001.fastq.gz"],
+    "32-PD_S1_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/32-PD_S1_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/32-PD_S1_L001_R2_001.fastq.gz" ],
+    "33-PA_S2_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/33-PA_S2_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/33-PA_S2_L001_R2_001.fastq.gz" ],
+    "408637_S4_" => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408637_S4_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408637_S4_L001_R2_001.fastq.gz" ],
+    "408648_S5_" => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408648_S5_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/408648_S5_L001_R2_001.fastq.gz" ],
+    "B42-TD_S3_" => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/B42-TD_S3_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_5/B42-TD_S3_L001_R2_001.fastq.gz" ],
   },
 
-  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6 -r -n \(.+_\)L001_\(.+\)_001
+  # cqstools file_def -i /data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6 -r -n \(.+_\)L001
   "run6" => {
-    "30-TXE_S1_R1" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/30-TXE_S1_L001_R1_001.fastq.gz"],
-    "30-TXE_S1_R2" => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/30-TXE_S1_L001_R2_001.fastq.gz"],
-    "32-PE_S2_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/32-PE_S2_L001_R1_001.fastq.gz"],
-    "32-PE_S2_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/32-PE_S2_L001_R2_001.fastq.gz"],
-    "33-PI_S3_R1"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/33-PI_S3_L001_R1_001.fastq.gz"],
-    "33-PI_S3_R2"  => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/33-PI_S3_L001_R2_001.fastq.gz"],
-    "40-T_S4_R1"   => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R1_001.fastq.gz"],
-    "40-T_S4_R2"   => ["/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R2_001.fastq.gz"],
+    "30-TXE_S1_" => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/30-TXE_S1_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/30-TXE_S1_L001_R2_001.fastq.gz" ],
+    "32-PE_S2_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/32-PE_S2_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/32-PE_S2_L001_R2_001.fastq.gz" ],
+    "33-PI_S3_"  => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/33-PI_S3_L001_R1_001.fastq.gz",  "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/33-PI_S3_L001_R2_001.fastq.gz" ],
+    "40-T_S4_"   => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R1_001.fastq.gz",   "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R2_001.fastq.gz" ],
   },
 
 };
 
 my @runs = (
-
-  #"run3",
-  #"run4",
-  #"run5",
+  "run3",
+  "run4",
+  "run5",
   "run6"
 );
 
@@ -249,7 +232,7 @@ foreach my $run (@runs) {
       perform    => 1,
       target_dir => "${target_dir}/sequencetask",
       source     => {
-        "gene"  => [ "fastqc", "tophat2",   "sortbam", "htseqcount", "dexseqcount", "varscan2", "annovar_varscan2" ],
+        "gene"  => [ "fastqc",    "tophat2", "sortbam", "htseqcount", "dexseqcount", "varscan2", "annovar_varscan2" ],
         "table" => [ "genetable", "exontable" ],
       },
       sh_direct => 0,
