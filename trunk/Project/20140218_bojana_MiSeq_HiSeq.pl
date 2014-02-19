@@ -46,10 +46,10 @@ my $config = {
     "MiSeq" => [ "MiSeqSample1", "MiSeqSample2", "MiSeqSample3" ],
     "HiSeq" => [ "HiSeqSample1", "HiSeqSample2", "HiSeqSample3" ],
   },
-  pairs  => { "HiSeq_vs_MiSeq" => [ "MiSeq", "HiSeq" ] },
+  pairs  => { "HiSeq_vs_MiSeq" => [ "MiSeq", "HiSeq", "paired" ] },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -63,7 +63,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "files",
@@ -81,7 +81,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -96,7 +96,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -111,7 +111,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -143,7 +143,7 @@ my $config = {
   },
   sequence_task => {
     class      => "SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     source     => {
       "gene"  => [ "fastqc",    "tophat2", "sortbam", "htseqcount" ],
