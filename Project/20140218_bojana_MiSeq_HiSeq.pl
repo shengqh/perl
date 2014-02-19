@@ -48,7 +48,6 @@ my $config = {
   },
   pairs  => { 
     "HiSeq_vs_MiSeq" => [ "MiSeq", "HiSeq", "paired" ], 
-    "HiSeq_vs_MiSeq_unPaired" => [ "MiSeq", "HiSeq"], 
   },
   fastqc => {
     class      => "FastQC",
