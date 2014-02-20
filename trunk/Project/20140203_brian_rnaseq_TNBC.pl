@@ -44,8 +44,7 @@ my $files = {
       [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/30-SE/30-SE_S1_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/30-SE/30-SE_S1_L001_R2_001.fastq.gz" ],
     "32-TE_S2" =>
       [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/32-TE/32-TE_S2_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/32-TE/32-TE_S2_L001_R2_001.fastq.gz" ],
-    "40-P_S3" =>
-      [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R2_001.fastq.gz" ],
+    "40-P_S3" => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-P/40-P_S3_L001_R2_001.fastq.gz" ],
     "40-TX_S4" =>
       [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R1_001.fastq.gz", "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_4/40-TX/40-TX_S4_L001_R2_001.fastq.gz" ],
   },
@@ -67,14 +66,46 @@ my $files = {
     "40-T_S4"   => [ "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R1_001.fastq.gz",   "/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_6/40-T_S4_L001_R2_001.fastq.gz" ],
   },
 
+  "run07" => {
+    "30-TI_S1" => ["/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_7/30-TI_S1_L001_R1_001.fastq.gz"],
+    "402750_S4" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_7/402750_S4_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_7/402750_S4_L001_R2_001.fastq.gz" ],
+    "42-P_S2" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_7/42-P_S2_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_7/42-P_S2_L001_R2_001.fastq.gz" ],
+    "42-T_S3" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_7/42-T_S3_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_7/42-T_S3_L001_R2_001.fastq.gz" ],
+  },
+  "run08" => {
+    "402781_S1" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/402781_S1_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/402781_S1_L001_R2_001.fastq.gz" ],
+    "402830_S2" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/402830_S2_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/402830_S2_L001_R2_001.fastq.gz" ],
+    "405375_S3" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/405375_S3_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/405375_S3_L001_R2_001.fastq.gz" ],
+    "407730_S4" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/407730_S4_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_8/407730_S4_L001_R2_001.fastq.gz" ],
+  },
+  "run09" => {
+    "30-TC_S1" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_9/30-TC_S1_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_9/30-TC_S1_L001_R2_001.fastq.gz" ],
+    "33-TA_S2" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_9/33-TA_S2_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_9/33-TA_S2_L001_R2_001.fastq.gz" ],
+    "IG-34_S3" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_9/IG-34_S3_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_9/IG-34_S3_L001_R2_001.fastq.gz" ],
+  },
+
+  "run10" => {
+    "33-SN_S2" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_10/33-SN_S2_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_10/33-SN_S2_L001_R2_001.fastq.gz" ],
+    "33-TG_S1" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_10/33-TG_S1_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_10/33-TG_S1_L001_R2_001.fastq.gz" ],
+    "408648_S3" =>
+      [ "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_10/408648_S3_L001_R1_001.fastq.gz", "/gpfs20/data/lehmanbd/insight_seq/TNBC_RNA-seq_phaseI/Run_10/408648_S3_L001_R2_001.fastq.gz" ],
+  },
 };
 
-my @runs = (
-  "run3",
-  "run4",
-  "run5",
-  "run6"
-);
+my @runs = ( #"run3", "run4", "run5", "run6",
+"run07", "run08", "run09", "run10" );
 
 foreach my $run (@runs) {
   my $target_dir = create_directory_or_die( $root_dir . "/" . $run );
