@@ -123,7 +123,7 @@ foreach my $def (@defs) {
 		cutadapt => {
 			class      => "Cutadapt",
 			perform    => 1,
-			target_dir => "${target_dir}/cutadapt",
+			target_dir => "${$cur_target_dir}/cutadapt",
 			option     => "-O 10",
 			source     => $def->{source},
 			adaptor    => "TGGAATTCTCGGGTGCCAAGG",
@@ -139,7 +139,7 @@ foreach my $def (@defs) {
 		fastqlen => {
 			class      => "FastqLen",
 			perform    => 1,
-			target_dir => "${target_dir}/fastqlen",
+			target_dir => "${$cur_target_dir}/fastqlen",
 			option     => "",
 			source_ref => "cutadapt",
 			cqstools   => $cqstools,
@@ -154,7 +154,7 @@ foreach my $def (@defs) {
 		cutadapt_len => {
 			class      => "Cutadapt",
 			perform    => 1,
-			target_dir => "${target_dir}/cutadapt_len",
+			target_dir => "${$cur_target_dir}/cutadapt_len",
 			option     => "-O 10 -m 12 -M 49",
 			source     => $def->{source},
 			adaptor    => "TGGAATTCTCGGGTGCCAAGG",
@@ -170,7 +170,7 @@ foreach my $def (@defs) {
 		identical => {
 			class      => "FastqIdentical",
 			perform    => 1,
-			target_dir => "${target_dir}/identical",
+			target_dir => "${$cur_target_dir}/identical",
 			option     => "",
 			source_ref => "cutadapt_len",
 			cqstools   => $cqstools,
