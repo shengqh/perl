@@ -40,7 +40,7 @@ my $target_parclip_dir = create_directory_or_die( $target_dir . "/parclip_test" 
 
 my $parclip_config = {
   general      => { "task_name" => "parclip", },
-  fastqfiles   => $kcv2797,
+  fastqfiles   => $parclip_files,
   cutadapt => {
     class      => "Cutadapt",
     perform    => 1,
