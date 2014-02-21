@@ -144,7 +144,10 @@ my $parclip_config = {
     perform    => 1,
     target_dir => "${target_parclip_dir}/overall",
     option     => "",
-    source     => { overall => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "annotation", "bowtie1bam" ], },
+    source     => { 
+      individual => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "bowtie1bam" ], 
+      summary => [ "annotation" ], 
+    },
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
