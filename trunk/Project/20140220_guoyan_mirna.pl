@@ -151,28 +151,12 @@ foreach my $def (@defs) {
 				"mem"      => "20gb"
 			},
 		},
-		cutadapt_len => {
-			class      => "Cutadapt",
-			perform    => 1,
-			target_dir => "${cur_target_dir}/cutadapt_len",
-			option     => "-O 10 -m 12 -M 49",
-			source     => $def->{source},
-			adaptor    => "TGGAATTCTCGGGTGCCAAGG",
-			extension  => "_clipped.fastq",
-			sh_direct  => 1,
-			pbs        => {
-				"email"    => $email,
-				"nodes"    => "1:ppn=1",
-				"walltime" => "24",
-				"mem"      => "20gb"
-			},
-		},
 		identical => {
 			class      => "FastqIdentical",
 			perform    => 1,
 			target_dir => "${cur_target_dir}/identical",
 			option     => "",
-			source_ref => "cutadapt_len",
+			source_ref => "cutadapt",
 			cqstools   => $cqstools,
 			extension  => "_clipped_identical.fastq",
 			sh_direct  => 1,
@@ -190,7 +174,7 @@ foreach my $def (@defs) {
 			perform       => 1,
 			target_dir    => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
 			option        => $bowtie1_option_1mm,
-			source_ref    => "cutadapt_len",
+			source_ref    => "cutadapt",
 			bowtie1_index => $def->{bowtie1_index},
 			samonly       => 0,
 			sh_direct     => 0,
