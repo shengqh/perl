@@ -117,7 +117,7 @@ my $human2403 = {
 my @defs = ( $human2245, $human2403 );
 
 foreach my $def (@defs) {
-	my $cur_target_dir = create_directory_or_die($def->{target_dir});
+	my $cur_target_dir = create_directory_or_die( $def->{target_dir} );
 	my $config         = {
 		general  => { "task_name" => $def->{task_name}, },
 		cutadapt => {
@@ -406,9 +406,9 @@ foreach my $def (@defs) {
 					"cutadapt", "fastqlen", "cutadapt_len", "identical",
 					"bowtie1_genome_cutadapt_topN_1mm_notidentical",
 					"bowtie1_genome_cutadapt_topN_1mm",
-					"mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "tRNA_1mm_position", "smallRNA_1mm_count",
+					"mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
 				],
-				summary => [ "miRNA_1mm_table", "miRNA_1mm_overlap_table", "tRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position" ],
+				summary => [ "miRNA_1mm_table", "miRNA_1mm_overlap_table", "tRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
 			},
 			sh_direct => 1,
 			pbs       => {
