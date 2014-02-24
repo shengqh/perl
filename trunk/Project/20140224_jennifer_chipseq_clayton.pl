@@ -90,7 +90,7 @@ my $config = {
     target_dir => "${target_dir}/overall",
     option     => "",
     source     => { individual => [ "fastqc", "bwa", "refine" ] },
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
