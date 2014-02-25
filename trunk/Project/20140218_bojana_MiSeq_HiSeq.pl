@@ -5,7 +5,7 @@ use warnings;
 use CQS::ClassFactory;
 use CQS::FileUtils;
 
-my $task       = "20140218_bojana_MiSeq_HiSeq";
+my $task       = "20140218_bojana_MiSeq_HiSeq_v2";
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/${task}");
 
 my $fasta_file           = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
@@ -171,6 +171,20 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
       "mem"      => "10gb"
+    },
+  },
+  cuffdiff => {
+    target_dir     => "${target_dir}/cuffdiff",
+    option         => "-p 8 -u -N",
+    transcript_gtf => $transcript_gtf,
+    source_ref     => "tophat2",
+    groups_ref     => "groups",
+    pairs_ref      => "pairs",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
     },
   },
   sequence_task => {
