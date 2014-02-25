@@ -46,9 +46,7 @@ my $config = {
     "MiSeq" => [ "MiSeqSample1", "MiSeqSample2", "MiSeqSample3" ],
     "HiSeq" => [ "HiSeqSample1", "HiSeqSample2", "HiSeqSample3" ],
   },
-  pairs  => { 
-    "HiSeq_vs_MiSeq" => [ "MiSeq", "HiSeq", "paired" ], 
-  },
+  pairs  => { "HiSeq_vs_MiSeq" => [ "MiSeq", "HiSeq", "paired" ], },
   fastqc => {
     class      => "FastQC",
     perform    => 0,
@@ -79,6 +77,22 @@ my $config = {
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "30gb"
+    },
+  },
+  rnaseqc => {
+    class          => "RNASeQC",
+    perform        => 1,
+    target_dir     => "${target_dir}/RNASeQC",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    genome_fasta   => $fasta_file,
+    rnaseqc_jar    => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
+    source_ref     => "tophat2",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
   sortbam => {
@@ -129,7 +143,7 @@ my $config = {
   },
   deseq2 => {
     class         => "DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/deseq2",
     option        => "",
     source_ref    => "pairs",
