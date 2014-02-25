@@ -50,15 +50,34 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bwa => {
+  pretrim_bwa => {
     class      => "BWA",
     perform    => 0,
-    target_dir => "${target_dir}/bwa",
+    target_dir => "${target_dir}/pretrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
     source_ref => "fastqfiles",
     sh_direct  => 0,
     pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  pretrim_refine => {
+    class              => "GATKRefine",
+    perform            => 1,
+    target_dir         => "${target_dir}/pretrim_refine",
+    option             => "-Xmx40g",
+    fasta_file         => $fasta_file,
+    source_ref         => "pretrim_bwa",
+    thread_count       => 8,
+    vcf_files          => [$dbsnp],
+    gatk_jar           => $gatk,
+    markDuplicates_jar => "${picard_dir}/MarkDuplicates.jar",
+    sh_direct          => 0,
+    pbs                => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -81,10 +100,10 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  bwa_scythe => {
+  posttrim_bwa => {
     class      => "BWA",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_scythe",
+    target_dir => "${target_dir}/posttrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
     source_ref => "scythe",
@@ -96,13 +115,13 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  refine => {
+  posttrim_refine => {
     class              => "GATKRefine",
     perform            => 1,
-    target_dir         => "${target_dir}/refine",
+    target_dir         => "${target_dir}/posttrim_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
-    source_ref         => "bwa_scythe",
+    source_ref         => "posttrim_bwa",
     thread_count       => 8,
     vcf_files          => [$dbsnp],
     gatk_jar           => $gatk,
@@ -120,7 +139,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/overall",
     option     => "",
-    source     => { individual => [ "fastqc", "bwa", "scythe", "bwa_scythe", "refine" ] },
+    source     => { individual => [ "fastqc", "pretrim_bwa", "pretrim_refine", "scythe", "posttrim_bwa", "posttrim_refine" ] },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
