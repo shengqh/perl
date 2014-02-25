@@ -61,12 +61,28 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  trimmer => {
+    class      => "CQS::FastqTrimmer",
+    perform    => 1,
+    target_dir => "${target_dir}/trimmer",
+    option     => "-n -z",
+    extension  => "_trim.fastq.gz",
+    source_ref => "fastqfiles",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
-    source_ref           => "files",
+    source_ref           => "trimmer",
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
@@ -97,7 +113,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -112,7 +128,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -127,7 +143,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -143,7 +159,7 @@ my $config = {
   },
   deseq2 => {
     class         => "DESeq2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -159,10 +175,10 @@ my $config = {
   },
   sequence_task => {
     class      => "SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     source     => {
-      "gene"  => [ "fastqc",    "tophat2", "sortbam", "htseqcount" ],
+      "gene"  => [ "fastqc",    "trimmer", "tophat2", "sortbam", "htseqcount" ],
       "table" => [ "genetable", "deseq2" ],
     },
     sh_direct => 0,
