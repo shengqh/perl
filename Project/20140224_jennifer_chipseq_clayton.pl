@@ -65,13 +65,44 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  scythe => {
+    class        => "Trimmer::Scythe",
+    perform      => 1,
+    target_dir   => "${target_dir}/scythe",
+    option       => "-n 10 -M 30 -q illumina",
+    source_ref   => "fastqfiles",
+    adapter_file => "/scratch/cqs/shengq1/local/bin/illumina_adapters.fa",
+    extension    => "_clipped.fastq",
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bwa_scythe => {
+    class      => "BWA",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_scythe",
+    option     => "-t 8",
+    fasta_file => $fasta_file,
+    source_ref => "scythe",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   refine => {
     class              => "GATKRefine",
     perform            => 1,
     target_dir         => "${target_dir}/refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
-    source_ref         => "bwa",
+    source_ref         => "bwa_scythe",
     thread_count       => 8,
     vcf_files          => [$dbsnp],
     gatk_jar           => $gatk,
@@ -89,7 +120,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/overall",
     option     => "",
-    source     => { individual => [ "fastqc", "bwa", "refine" ] },
+    source     => { individual => [ "fastqc", "bwa", "scythe", "bwa_scythe", "refine" ] },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
