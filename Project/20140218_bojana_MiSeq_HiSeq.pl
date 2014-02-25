@@ -49,7 +49,7 @@ my $config = {
   pairs  => { "HiSeq_vs_MiSeq" => [ "MiSeq", "HiSeq", "paired" ], },
   fastqc => {
     class      => "FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -174,12 +174,15 @@ my $config = {
     },
   },
   cuffdiff => {
+    class          => "Cuffdiff",
+    perform        => 1,
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
     transcript_gtf => $transcript_gtf,
     source_ref     => "tophat2",
     groups_ref     => "groups",
     pairs_ref      => "pairs",
+    sh_direct      => 0,
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -192,8 +195,8 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     source     => {
-      "gene"  => [ "fastqc",    "trimmer", "tophat2", "sortbam", "htseqcount" ],
-      "table" => [ "genetable", "deseq2" ],
+      "gene"  => [ "fastqc",    "trimmer", "tophat2",  "sortbam", "htseqcount" ],
+      "table" => [ "genetable", "deseq2",  "cuffdiff", "rnaseqc" ],
     },
     sh_direct => 0,
     pbs       => {
