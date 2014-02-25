@@ -179,6 +179,7 @@ my $config = {
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
     transcript_gtf => $transcript_gtf,
+    fasta_file     => $fasta_file,
     source_ref     => "tophat2",
     groups_ref     => "groups",
     pairs_ref      => "pairs",
