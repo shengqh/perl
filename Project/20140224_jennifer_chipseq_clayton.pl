@@ -38,7 +38,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -52,7 +52,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
@@ -69,7 +69,7 @@ my $config = {
     class        => "Trimmer::Scythe",
     perform      => 1,
     target_dir   => "${target_dir}/scythe",
-    option       => "-n 10 -M 30 -q illumina",
+    option       => "-n 10 -M 30",
     source_ref   => "fastqfiles",
     adapter_file => "/scratch/cqs/shengq1/local/bin/illumina_adapters.fa",
     extension    => "_clipped.fastq",
