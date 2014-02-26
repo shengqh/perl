@@ -153,7 +153,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/overall",
     option     => "",
-    source     => { individual => [ "fastqc", "pretrim_bwa", "pretrim_refine", "scythe", "posttrim_bwa", "posttrim_refine" ] },
+    source     => { individual => [ "fastqc", "pretrim_bwa", "pretrim_refine", "scythe", "sickle", "posttrim_bwa", "posttrim_refine" ] },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
