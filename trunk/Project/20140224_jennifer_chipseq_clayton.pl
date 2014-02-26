@@ -88,12 +88,26 @@ my $config = {
     class        => "Trimmer::Scythe",
     perform      => 1,
     target_dir   => "${target_dir}/scythe",
-    option       => "-n 10 -M 30",
+    option       => "",
     source_ref   => "fastqfiles",
     adapter_file => "/scratch/cqs/shengq1/local/bin/illumina_adapters.fa",
-    extension    => "_clipped.fastq",
     sh_direct    => 1,
     pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  sickle => {
+    class      => "Trimmer::Sickle",
+    perform    => 1,
+    target_dir => "${target_dir}/scythe",
+    option     => "",
+    qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
+    source_ref => "scythe",
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
@@ -106,7 +120,7 @@ my $config = {
     target_dir => "${target_dir}/posttrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
-    source_ref => "scythe",
+    source_ref => "sickle",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
