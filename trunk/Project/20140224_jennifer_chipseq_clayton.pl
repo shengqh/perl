@@ -38,7 +38,7 @@ my $config = {
   },
   pretrim_fastqc => {
     class      => "FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/pretrim_fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -52,7 +52,7 @@ my $config = {
   },
   pretrim_bwa => {
     class      => "BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/pretrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
