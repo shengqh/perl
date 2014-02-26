@@ -180,7 +180,7 @@ my $config = {
   },
   cuffdiff => {
     class          => "Cuffdiff",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
     transcript_gtf => $transcript_gtf,
