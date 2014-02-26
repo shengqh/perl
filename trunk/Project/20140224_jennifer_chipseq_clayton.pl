@@ -102,7 +102,7 @@ my $config = {
   sickle => {
     class      => "Trimmer::Sickle",
     perform    => 1,
-    target_dir => "${target_dir}/scythe",
+    target_dir => "${target_dir}/sickle",
     option     => "",
     qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
     source_ref => "scythe",
