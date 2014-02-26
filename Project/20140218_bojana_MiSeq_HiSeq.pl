@@ -46,7 +46,12 @@ my $config = {
     "MiSeq" => [ "MiSeqSample1", "MiSeqSample2", "MiSeqSample3" ],
     "HiSeq" => [ "HiSeqSample1", "HiSeqSample2", "HiSeqSample3" ],
   },
-  pairs  => { "HiSeq_vs_MiSeq" => [ "MiSeq", "HiSeq", "paired" ], },
+  pairs => {
+    "HiSeq_vs_MiSeq" => {
+      groups => [ "MiSeq", "HiSeq" ],
+      paired => 1
+    }
+  },
   fastqc => {
     class      => "FastQC",
     perform    => 1,
