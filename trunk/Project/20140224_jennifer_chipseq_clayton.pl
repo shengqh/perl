@@ -38,7 +38,7 @@ my $config = {
   },
   pretrim_fastqc => {
     class      => "FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/pretrim_fastqc",
     option     => "",
     source_ref => "fastqfiles",
