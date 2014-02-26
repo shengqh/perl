@@ -52,7 +52,7 @@ my $config = {
   },
   pretrim_bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/pretrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
@@ -67,7 +67,7 @@ my $config = {
   },
   pretrim_refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/pretrim_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
