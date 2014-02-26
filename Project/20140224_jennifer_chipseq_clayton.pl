@@ -38,7 +38,7 @@ my $config = {
   },
   pretrim_fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/pretrim_fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -67,7 +67,7 @@ my $config = {
   },
   pretrim_refine => {
     class              => "GATKRefine",
-    perform            => 0,
+    perform            => 1,
     target_dir         => "${target_dir}/pretrim_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
