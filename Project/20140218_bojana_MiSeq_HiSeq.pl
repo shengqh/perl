@@ -7,7 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
-my $task = "20140218_bojana_MiSeq_HiSeq_v2";
+my $task = "20140218_bojana_MiSeq_HiSeq_v3";
 
 my $target_dir;
 
@@ -77,19 +77,18 @@ my $config = {
     },
   },
   trimmer => {
-    class      => "CQS::FastqTrimmer",
+    class      => "Trimmer::Sickle",
     perform    => 1,
-    target_dir => "${target_dir}/trimmer",
-    option     => "-n -z",
-    extension  => "_trim.fastq.gz",
+    target_dir => "${target_dir}/sickle",
+    option     => "",
+    qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
     source_ref => "files",
-    cqstools   => $cqstools,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "2",
-      "mem"      => "10gb"
+      "walltime" => "24",
+      "mem"      => "20gb"
     },
   },
   fastqc_trim => {
@@ -239,11 +238,10 @@ my $config = {
 };
 
 performConfig($config);
+
 #performTask($config, "cuffdiff");
 
 #my $pairs = $config->{"pairs" };
 #my ( $ispaired, $gNames ) = get_pair_groups( $pairs, "HiSeq_vs_MiSeq" );
-  
-
 
 1;
