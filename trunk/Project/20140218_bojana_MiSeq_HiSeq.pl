@@ -7,7 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
-my $task = "20140218_bojana_MiSeq_HiSeq_v3";
+my $task = "20140218_bojana_MiSeq_HiSeq_v4";
 
 my $target_dir;
 
@@ -77,12 +77,28 @@ my $config = {
     },
   },
   trimmer => {
+    class      => "CQS::FastqTrimmer",
+    perform    => 1,
+    target_dir => "${target_dir}/trimmer",
+    option     => "-n -z",
+    extension  => "_trim.fastq.gz",
+    source_ref => "files",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  sickle => {
     class      => "Trimmer::Sickle",
     perform    => 1,
     target_dir => "${target_dir}/sickle",
     option     => "",
     qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
-    source_ref => "files",
+    source_ref => "trimmer",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
