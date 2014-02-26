@@ -36,10 +36,10 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5049046/2653-JP-35_S2_L001_R2_001.fastq.gz"
     ],
   },
-  fastqc => {
+  pretrim_fastqc => {
     class      => "FastQC",
     perform    => 0,
-    target_dir => "${target_dir}/fastqc",
+    target_dir => "${target_dir}/pretrim_fastqc",
     option     => "",
     source_ref => "fastqfiles",
     sh_direct  => 1,
@@ -84,10 +84,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  scythe => {
+  trim_scythe => {
     class        => "Trimmer::Scythe",
     perform      => 1,
-    target_dir   => "${target_dir}/scythe",
+    target_dir   => "${target_dir}/trim_scythe",
     option       => "",
     source_ref   => "fastqfiles",
     adapter_file => "/scratch/cqs/shengq1/local/bin/illumina_adapters.fa",
@@ -99,13 +99,13 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  sickle => {
+  trim_sickle => {
     class      => "Trimmer::Sickle",
     perform    => 1,
-    target_dir => "${target_dir}/sickle",
+    target_dir => "${target_dir}/trim_sickle",
     option     => "",
     qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
-    source_ref => "scythe",
+    source_ref => "trim_scythe",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -114,13 +114,27 @@ my $config = {
       "mem"      => "20gb"
     },
   },
+  posttrim_fastqc => {
+    class      => "FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/posttrim_fastqc",
+    option     => "",
+    source_ref => "trim_sickle",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   posttrim_bwa => {
     class      => "BWA",
     perform    => 1,
     target_dir => "${target_dir}/posttrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
-    source_ref => "sickle",
+    source_ref => "trim_sickle",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -153,7 +167,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/overall",
     option     => "",
-    source     => { individual => [ "fastqc", "pretrim_bwa", "pretrim_refine", "scythe", "sickle", "posttrim_bwa", "posttrim_refine" ] },
+    source     => { individual => [ "pretrim_fastqc", "pretrim_bwa", "pretrim_refine", "trim_scythe", "trim_sickle", "posttrim_fastqc", "posttrim_bwa", "posttrim_refine" ] },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
