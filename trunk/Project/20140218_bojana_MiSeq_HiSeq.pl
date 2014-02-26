@@ -5,9 +5,10 @@ use warnings;
 use CQS::ClassFactory;
 use CQS::FileUtils;
 
-my $task       = "20140218_bojana_MiSeq_HiSeq_v2";
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/${task}");
-#my $target_dir = "h:/temp";
+my $task = "20140218_bojana_MiSeq_HiSeq_v2";
+
+#my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/${task}");
+my $target_dir = "h:/temp";
 
 my $fasta_file           = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.gtf";
@@ -69,11 +70,11 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/trimmer",
     option     => "-n -z",
     extension  => "_trim.fastq.gz",
-    source_ref => "fastqfiles",
+    source_ref => "files",
     cqstools   => $cqstools,
     sh_direct  => 1,
     pbs        => {
@@ -83,9 +84,23 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  fastqc_trim => {
+    class      => "FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc_trim",
+    option     => "",
+    source_ref => "trimmer",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=2",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "trimmer",
@@ -103,7 +118,7 @@ my $config = {
   },
   rnaseqc => {
     class          => "RNASeQC",
-    perform        => 0,
+    perform        => 1,
     target_dir     => "${target_dir}/RNASeQC",
     option         => "",
     transcript_gtf => $transcript_gtf,
@@ -119,7 +134,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -134,7 +149,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -149,7 +164,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -165,7 +180,7 @@ my $config = {
   },
   deseq2 => {
     class         => "DESeq2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -181,7 +196,7 @@ my $config = {
   },
   cuffdiff => {
     class          => "Cuffdiff",
-    perform        => 0,
+    perform        => 1,
     target_dir     => "${target_dir}/cuffdiff",
     option         => "-p 8 -u -N",
     transcript_gtf => $transcript_gtf,
@@ -199,11 +214,11 @@ my $config = {
   },
   sequence_task => {
     class      => "SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     source     => {
-      "gene"  => [ "fastqc",    "trimmer", "tophat2",  "sortbam", "htseqcount" ],
-      "table" => [ "genetable", "deseq2",  "cuffdiff", "rnaseqc" ],
+      "gene" => [ "fastqc", "trimmer", "fastqc_trim", "tophat2", "sortbam", "htseqcount" ],
+      "table" => [ "genetable", "deseq2", "cuffdiff", "rnaseqc" ],
     },
     sh_direct => 0,
     pbs       => {
