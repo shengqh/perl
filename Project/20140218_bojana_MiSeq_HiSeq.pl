@@ -7,7 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
-my $task = "20140218_bojana_MiSeq_HiSeq_v5";
+my $task = "20140218_bojana_MiSeq_HiSeq";
 
 my $target_dir;
 
@@ -64,7 +64,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => [ "MiSeqfiles", "HiSeqfiles" ],
@@ -78,7 +78,7 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trimmer",
     option     => "-n -z",
     extension  => "_trim.fastq.gz",
@@ -94,7 +94,7 @@ my $config = {
   },
   fastqc_trim => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc_trim",
     option     => "",
     source_ref => "trimmer",
@@ -108,7 +108,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => [ "MiSeqfiles", "trimmer" ],
@@ -126,7 +126,7 @@ my $config = {
   },
   rnaseqc => {
     class          => "RNASeQC",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/RNASeQC",
     option         => "",
     transcript_gtf => $transcript_gtf,
@@ -142,7 +142,7 @@ my $config = {
   },
   sortbam => {
     class         => "Sortbam",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -157,7 +157,7 @@ my $config = {
   },
   htseqcount => {
     class      => "HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -172,7 +172,7 @@ my $config = {
   },
   genetable => {
     class         => "CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -188,7 +188,7 @@ my $config = {
   },
   deseq2 => {
     class         => "DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -222,7 +222,7 @@ my $config = {
   },
   sequence_task => {
     class      => "SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/overall",
     source     => {
       "gene" => [ "fastqc", "trimmer", "fastqc_trim", "tophat2", "sortbam", "htseqcount" ],
