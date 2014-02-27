@@ -67,7 +67,7 @@ my $config = {
   },
   pretrim_markdup => {
     class              => "Picard::MarkDuplicates",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/pretrim_markdup",
     option             => "-Xmx40g",
     source_ref         => "pretrim_bwa",
@@ -102,7 +102,7 @@ my $config = {
   },
   trim_scythe => {
     class        => "Trimmer::Scythe",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/trim_scythe",
     option       => "",
     source_ref   => "fastqfiles",
@@ -117,7 +117,7 @@ my $config = {
   },
   trim_sickle => {
     class      => "Trimmer::Sickle",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/trim_sickle",
     option     => "",
     qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
@@ -132,7 +132,7 @@ my $config = {
   },
   posttrim_fastqc => {
     class      => "FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/posttrim_fastqc",
     option     => "",
     source_ref => "trim_sickle",
@@ -146,7 +146,7 @@ my $config = {
   },
   posttrim_bwa => {
     class      => "BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/posttrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
@@ -177,7 +177,7 @@ my $config = {
   },
   posttrim_refine => {
     class              => "GATKRefine",
-    perform            => 0,
+    perform            => 1,
     target_dir         => "${target_dir}/posttrim_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
