@@ -38,7 +38,7 @@ my $config = {
   },
   pretrim_fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/pretrim_fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -52,7 +52,7 @@ my $config = {
   },
   pretrim_bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/pretrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
@@ -65,9 +65,25 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  pretrim_markdup => {
+    class              => "Picard::MarkDuplicates",
+    perform            => 1,
+    target_dir         => "${target_dir}/pretrim_markdup",
+    option             => "-Xmx40g",
+    source_ref         => "pretrim_bwa",
+    thread_count       => 8,
+    markDuplicates_jar => "${picard_dir}/MarkDuplicates.jar",
+    sh_direct          => 0,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   pretrim_refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/pretrim_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
@@ -86,7 +102,7 @@ my $config = {
   },
   trim_scythe => {
     class        => "Trimmer::Scythe",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/trim_scythe",
     option       => "",
     source_ref   => "fastqfiles",
@@ -101,7 +117,7 @@ my $config = {
   },
   trim_sickle => {
     class      => "Trimmer::Sickle",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trim_sickle",
     option     => "",
     qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
@@ -116,7 +132,7 @@ my $config = {
   },
   posttrim_fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/posttrim_fastqc",
     option     => "",
     source_ref => "trim_sickle",
@@ -130,7 +146,7 @@ my $config = {
   },
   posttrim_bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/posttrim_bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
@@ -143,9 +159,25 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  posttrim_markdup => {
+    class              => "Picard::MarkDuplicates",
+    perform            => 1,
+    target_dir         => "${target_dir}/posttrim_markdup",
+    option             => "-Xmx40g",
+    source_ref         => "posttrim_bwa",
+    thread_count       => 8,
+    markDuplicates_jar => "${picard_dir}/MarkDuplicates.jar",
+    sh_direct          => 0,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   posttrim_refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/posttrim_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file,
