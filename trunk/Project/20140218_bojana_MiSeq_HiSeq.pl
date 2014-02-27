@@ -7,7 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
-my $task = "20140218_bojana_MiSeq_HiSeq_v4";
+my $task = "20140218_bojana_MiSeq_HiSeq_v5";
 
 my $target_dir;
 
@@ -31,28 +31,28 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
-my $files = {
-  "MiSeqSample1" => [
-    "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-33_408637_S4_L001_R1_001.fastq.gz",
-    "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-33_408637_S4_L001_R2_001.fastq.gz"
-  ],
-  "MiSeqSample2" => [
-    "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-34_S3_L001_R1_001.fastq.gz",
-    "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-34_S3_L001_R2_001.fastq.gz"
-  ],
-  "MiSeqSample3" => [
-    "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-39_408648_S5_L001_R1_001.fastq.gz",
-    "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-39_408648_S5_L001_R2_001.fastq.gz"
-  ],
-  "HiSeqSample1" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-6_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-6_2.fastq.gz" ],
-  "HiSeqSample2" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-7_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-7_2.fastq.gz" ],
-  "HiSeqSample3" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-9_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-9_2.fastq.gz" ],
-};
-
 my $config = {
-  general => { task_name => $task },
-  files   => $files,
-  groups  => {
+  general    => { task_name => $task },
+  MiSeqfiles => {
+    "MiSeqSample1" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-33_408637_S4_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-33_408637_S4_L001_R2_001.fastq.gz"
+    ],
+    "MiSeqSample2" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-34_S3_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-34_S3_L001_R2_001.fastq.gz"
+    ],
+    "MiSeqSample3" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-39_408648_S5_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-39_408648_S5_L001_R2_001.fastq.gz"
+    ],
+  },
+  HiSeqfiles => {
+    "HiSeqSample1" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-6_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-6_2.fastq.gz" ],
+    "HiSeqSample2" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-7_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-7_2.fastq.gz" ],
+    "HiSeqSample3" => [ "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-9_1.fastq.gz", "/autofs/blue_sequencer/Runs/projects/2059-JP/2013-07-24/2059-JP-9_2.fastq.gz" ],
+  },
+  groups => {
     "MiSeq" => [ "MiSeqSample1", "MiSeqSample2", "MiSeqSample3" ],
     "HiSeq" => [ "HiSeqSample1", "HiSeqSample2", "HiSeqSample3" ],
   },
@@ -67,7 +67,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
-    source_ref => "files",
+    source_ref => [ "MiSeqfiles", "HiSeqfiles" ],
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -82,7 +82,7 @@ my $config = {
     target_dir => "${target_dir}/trimmer",
     option     => "-n -z",
     extension  => "_trim.fastq.gz",
-    source_ref => "files",
+    source_ref => "HiSeqfiles",
     cqstools   => $cqstools,
     sh_direct  => 1,
     pbs        => {
@@ -92,27 +92,12 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  sickle => {
-    class      => "Trimmer::Sickle",
-    perform    => 1,
-    target_dir => "${target_dir}/sickle",
-    option     => "",
-    qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
-    source_ref => "trimmer",
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
   fastqc_trim => {
     class      => "FastQC",
     perform    => 1,
     target_dir => "${target_dir}/fastqc_trim",
     option     => "",
-    source_ref => "sickle",
+    source_ref => "trimmer",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -126,7 +111,7 @@ my $config = {
     perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
-    source_ref           => "sickle",
+    source_ref           => [ "MiSeqfiles", "trimmer" ],
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
@@ -240,7 +225,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/overall",
     source     => {
-      "gene" => [ "fastqc", "trimmer", "sickle", "fastqc_trim", "tophat2", "sortbam", "htseqcount" ],
+      "gene" => [ "fastqc", "trimmer", "fastqc_trim", "tophat2", "sortbam", "htseqcount" ],
       "table" => [ "genetable", "deseq2", "cuffdiff", "rnaseqc" ],
     },
     sh_direct => 0,
