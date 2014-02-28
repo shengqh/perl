@@ -12,7 +12,7 @@ my $task = "20140218_bojana_MiSeq_HiSeq";
 my $target_dir;
 
 if ( is_linux() ) {
-  $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/${task}");
+  $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/${task}_v5");
 }
 else {
   $target_dir = "h:/temp";

@@ -104,7 +104,7 @@ my $config = {
     class        => "Trimmer::Scythe",
     perform      => 1,
     target_dir   => "${target_dir}/trim_scythe",
-    option       => "",
+    option       => "-p 0.1",
     source_ref   => "fastqfiles",
     adapter_file => "/scratch/cqs/shengq1/local/bin/illumina_adapters.fa",
     sh_direct    => 1,
@@ -199,7 +199,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/overall",
     option     => "",
-    source     => { individual => [ "pretrim_fastqc", "pretrim_bwa", "pretrim_refine", "trim_scythe", "trim_sickle", "posttrim_fastqc", "posttrim_bwa", "posttrim_refine" ] },
+    source     => { individual => [ "pretrim_fastqc", "pretrim_bwa", "pretrim_markdup", "pretrim_refine", "trim_scythe", "trim_sickle", "posttrim_fastqc", "posttrim_bwa", "posttrim_markdup", "posttrim_refine" ] },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
