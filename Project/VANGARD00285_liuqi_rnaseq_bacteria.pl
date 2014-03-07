@@ -97,9 +97,9 @@ my $config = {
     pairs_ref      => "pairs",
     java_option    => "-Xmx10g",
     rockhopper_jar => "/scratch/cqs/shengq1/local/bin/Rockhopper.jar",
-    genome_dir     => "${target_dir}/genome",
+    genome_dir     => "/data/cqs/shengq1/reference/bacteria",
     option         => "-p 8 -TIME -v true -c true",
-    sh_direct      => 1,
+    sh_direct      => 0,
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -114,7 +114,7 @@ my $config = {
     source_ref    => "fastqfiles",
     bowtie2_index => "${target_dir}/genome/bowtie2-index/NC_005945",
     option        => "-p 8",
-    sh_direct     => 1,
+    sh_direct     => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -139,6 +139,7 @@ my $config = {
 
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "rockhopper");
 
 1;
