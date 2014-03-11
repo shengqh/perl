@@ -140,6 +140,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "rockhopper");
+performTask($config, "bowtie2");
 
 1;
