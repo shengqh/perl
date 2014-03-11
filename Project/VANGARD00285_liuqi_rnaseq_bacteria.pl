@@ -15,6 +15,9 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard
 
 my $email    = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $rockhopper_jar = "/scratch/cqs/shengq1/local/bin/Rockhopper.jar";
+my $genome_dir = "/data/cqs/shengq1/reference/bacteria/NC_005945";
+my $bowtie2_index = "/data/cqs/shengq1/reference/bacteria/NC_005945/bowtie2-index/NC_005945";
 
 my $config = {
   general    => { task_name => "${vangard}" },
@@ -96,8 +99,8 @@ my $config = {
     groups_ref     => "groups",
     pairs_ref      => "pairs",
     java_option    => "-Xmx10g",
-    rockhopper_jar => "/scratch/cqs/shengq1/local/bin/Rockhopper.jar",
-    genome_dir     => "/data/cqs/shengq1/reference/bacteria",
+    rockhopper_jar => $rockhopper_jar,
+    genome_dir     => $genome_dir,
     option         => "-p 8 -TIME -v true -c true",
     sh_direct      => 0,
     pbs            => {
@@ -112,7 +115,7 @@ my $config = {
     perform       => 1,
     target_dir    => "${target_dir}/bowtie2",
     source_ref    => "trimmer",
-    bowtie2_index => "/data/cqs/shengq1/reference/bacteria/bowtie2-index/NC_005945",
+    bowtie2_index => $bowtie2_index,
     option        => "-p 8",
     sh_direct     => 0,
     pbs           => {
@@ -139,7 +142,7 @@ my $config = {
 
 };
 
-#performConfig($config);
-performTask($config, "bowtie2");
+performConfig($config);
+#performTask($config, "bowtie2");
 
 1;
