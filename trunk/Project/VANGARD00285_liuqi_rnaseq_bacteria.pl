@@ -16,8 +16,8 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard
 my $email    = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $rockhopper_jar = "/scratch/cqs/shengq1/local/bin/Rockhopper.jar";
-my $genome_dir = "/data/cqs/shengq1/reference/bacteria/NC_005945";
-my $bowtie2_index = "/data/cqs/shengq1/reference/bacteria/NC_005945/bowtie2-index/NC_005945";
+my $genome_dir = "/data/cqs/shengq1/reference/bacteria/NC_009641";
+my $bowtie2_index = "/data/cqs/shengq1/reference/bacteria/NC_009641/bowtie2-2.1.0-index/NC_009641";
 
 my $config = {
   general    => { task_name => "${vangard}" },
@@ -48,7 +48,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqfiles",
@@ -62,7 +62,7 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trimmer",
     option     => "-n",
     extension  => "_trim.fastq",
@@ -78,7 +78,7 @@ my $config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trimlen",
     option     => "",
     source_ref => "trimmer",
