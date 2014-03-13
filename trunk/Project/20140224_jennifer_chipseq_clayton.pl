@@ -19,14 +19,6 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
   general    => { task_name => "chipseq_clayton" },
   fastqfiles => {
-    "1806-p73IP_S1" => [
-      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p73IP_S1_L001_R1_001.fastq.gz",
-      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p73IP_S1_L001_R2_001.fastq.gz"
-    ],
-    "1806-p63IP_S2" => [
-      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p63IP_S2_L001_R1_001.fastq.gz",
-      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p63IP_S2_L001_R2_001.fastq.gz"
-    ],
     "2653-JP-34_S1" => [
       "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5049046/2653-JP-34_S1_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5049046/2653-JP-34_S1_L001_R2_001.fastq.gz"
@@ -35,11 +27,25 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5049046/2653-JP-35_S2_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5049046/2653-JP-35_S2_L001_R2_001.fastq.gz"
     ],
+    "1806-p63IP_S2" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p63IP_S2_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p63IP_S2_L001_R2_001.fastq.gz"
+    ],
+    "1806-p73IP_S1" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p73IP_S1_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5011011/1806-p73IP_S1_L001_R2_001.fastq.gz"
+    ],
   },
-  pairs =>{
-    "POL2IP" =>{"2653-JP-34_S1", "2653-JP-35_S2"},
-    "p73IP" =>{"2653-JP-34_S1", "1806-p73IP_S1"},
-    "p63IP" =>{"2653-JP-34_S1", "1806-p63IP_S2"},
+  groups => {
+    "Control" => ["2653-JP-34_S1"],
+    "POL2IP"  => ["2653-JP-35_S2"],
+    "p63IP"   => ["1806-p63IP_S2"],
+    "p73IP"   => ["1806-p73IP_S1"],
+  },
+  pairs => {
+    "POL2IP_vs_Control" => { "Control", "POL2IP" },
+    "p73IP_vs_Control"  => { "Control", "p63IP" },
+    "p63IP_vs_Control"  => { "Control", "p73IP" },
   },
   pretrim_fastqc => {
     class      => "FastQC",
@@ -125,7 +131,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/trim_sickle",
     option     => "",
-    qual_type  => "sanger",                 #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
+    qual_type  => "sanger",                      #Type of quality values (solexa (CASAVA < 1.3), illumina (CASAVA 1.3 to 1.7), sanger (which is CASAVA >= 1.8))
     source_ref => "trim_scythe",
     sh_direct  => 1,
     pbs        => {
@@ -199,14 +205,30 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  homerMakeTagDirectory =>{
-    class              => "Homer::MakeTagDirectory",
-    perform            => 1,
-    target_dir         => "${target_dir}/homerMakeTagDirectory",
-    option             => "-Xmx40g",
-    source_ref         => "pretrim_markdup",
-    sh_direct          => 1,
-    pbs                => {
+  homerMakeTagDirectory => {
+    class      => "Homer::MakeTagDirectory",
+    perform    => 1,
+    target_dir => "${target_dir}/homerMakeTagDirectory",
+    option     => "",
+    source_ref => "pretrim_markdup",
+    groups_ref => "groups",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  homerFindPeaks => {
+    class      => "Homer::FindPeaks",
+    perform    => 1,
+    target_dir => "${target_dir}/homerFindPeaks",
+    option     => "",
+    source_ref => "homerMakeTagDirectory",
+    pairs_ref => "pairs",
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -218,9 +240,11 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/overall",
     option     => "",
-    source     => { individual => [ "pretrim_fastqc", "pretrim_bwa", "pretrim_markdup", "pretrim_refine", "trim_scythe", "trim_sickle", "posttrim_fastqc", "posttrim_bwa", "posttrim_markdup", "posttrim_refine" ] },
-    sh_direct  => 0,
-    pbs        => {
+    source     => {
+      individual => [ "pretrim_fastqc", "pretrim_bwa", "pretrim_markdup", "pretrim_refine", "trim_scythe", "trim_sickle", "posttrim_fastqc", "posttrim_bwa", "posttrim_markdup", "posttrim_refine" ]
+    },
+    sh_direct => 0,
+    pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -230,6 +254,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "homerMakeTagDirectory");
+performTask( $config, "homerMakeTagDirectory" );
 
 1;
