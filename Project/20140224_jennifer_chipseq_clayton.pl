@@ -36,6 +36,11 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/chipseq/20140224_jennifer_chipseq_clayton/data/analysis_5049046/2653-JP-35_S2_L001_R2_001.fastq.gz"
     ],
   },
+  pairs =>{
+    "POL2IP" =>{"2653-JP-34_S1", "2653-JP-35_S2"},
+    "p73IP" =>{"2653-JP-34_S1", "1806-p73IP_S1"},
+    "p63IP" =>{"2653-JP-34_S1", "1806-p63IP_S2"},
+  },
   pretrim_fastqc => {
     class      => "FastQC",
     perform    => 0,
@@ -194,6 +199,20 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  homerMakeTagDirectory =>{
+    class              => "Homer::MakeTagDirectory",
+    perform            => 1,
+    target_dir         => "${target_dir}/homerMakeTagDirectory",
+    option             => "-Xmx40g",
+    source_ref         => "pretrim_markdup",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   overall => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -210,6 +229,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "homerMakeTagDirectory");
 
 1;
