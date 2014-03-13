@@ -254,6 +254,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "homerMakeTagDirectory" );
+#performTask( $config, "homerMakeTagDirectory" );
+performTask( $config, "homerFindPeaks" );
 
 1;
