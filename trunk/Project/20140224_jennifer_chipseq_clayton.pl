@@ -43,9 +43,9 @@ my $config = {
     "p73IP"   => ["1806-p73IP_S1"],
   },
   pairs => {
-    "POL2IP_vs_Control" => { "Control", "POL2IP" },
-    "p73IP_vs_Control"  => { "Control", "p63IP" },
-    "p63IP_vs_Control"  => { "Control", "p73IP" },
+    "POL2IP_vs_Control" => [ "Control", "POL2IP" ],
+    "p73IP_vs_Control"  => [ "Control", "p63IP" ],
+    "p63IP_vs_Control"  => [ "Control", "p73IP" ],
   },
   pretrim_fastqc => {
     class      => "FastQC",
@@ -226,7 +226,7 @@ my $config = {
     target_dir => "${target_dir}/homerFindPeaks",
     option     => "",
     source_ref => "homerMakeTagDirectory",
-    pairs_ref => "pairs",
+    pairs_ref  => "pairs",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
