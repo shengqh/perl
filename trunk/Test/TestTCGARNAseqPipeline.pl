@@ -18,7 +18,10 @@ my $config = {
   general => { task_name => $task },
   files   => {
     "S1" => ["/scratch/cqs/shengq1/rnaseq/samples/sample1_1.fastq", "/scratch/cqs/shengq1/rnaseq/samples/sample1_2.fastq"],
-    "S2" => ["/scratch/cqs/shengq1/rnaseq/samples/sample2_1.fastq", "/scratch/cqs/shengq1/rnaseq/samples/sample2_2.fastq"],
+    "MiSeqSample1" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-33_408637_S4_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20140218_bojana_MiSeq_HiSeq/rawdata/IG-33_408637_S4_L001_R2_001.fastq.gz"
+    ],
   },
   tcga => {
     class            => "TCGA::RNAseq",
@@ -30,7 +33,6 @@ my $config = {
     bedtools_dir     => $bedtools_dir,
     tcga_bin_dir     => $tcga_bin_dir,
     mapslice_version => "2",
-    rename_bam       => 1,
     sh_direct        => 1,
     pbs              => {
       "email"    => $email,
