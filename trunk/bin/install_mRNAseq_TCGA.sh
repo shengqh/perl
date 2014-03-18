@@ -1,3 +1,5 @@
+#svn propset svn:eol-style LF bin/install_mRNAseq_TCGA.sh
+
 cd /scratch/cqs/shengq1/local/bin/TCGA
 
 wget -r -nc --no-parent --reject "index.html*,MapSplice_multi_threads_2.0.1.9.zip,hg19_M_rCRS.fa.tgz" -X "/public/mRNAseq_TCGA/hg19_M_rCRS/chromosomes/togo,/public/mRNAseq_TCGA/rsem_ref/bak,/public/mRNAseq_TCGA/rsem_ref/rsem" -e robots=off https://webshare.bioinf.unc.edu/public/mRNAseq_TCGA/
