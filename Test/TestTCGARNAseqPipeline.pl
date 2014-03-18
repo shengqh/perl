@@ -9,7 +9,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/TCGApipeli
 
 my $picard_dir   = "/home/shengq1/local/bin/picard";
 my $bedtools_dir = "/scratch/cqs/lij17/softwares/bin/bedtools-2.17.0/bin";
-my $tcga_bin_dir = "/scratch/cqs/shengq1/local/bin/TCGA/webshare.bioinf.unc.edu/public/mRNAseq_TCGA";
+my $tcga_bin_dir = "/scratch/cqs/shengq1/local/bin/TCGA/mRNAseq_TCGA";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "pipeline";
