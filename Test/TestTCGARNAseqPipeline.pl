@@ -17,12 +17,8 @@ my $task  = "pipeline";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "S1" => ["/gpfs21/scratch/cqs/shengq1/report/rawdata/s1_sequence.txt"],
-    "S2" => ["/gpfs21/scratch/cqs/shengq1/report/rawdata/s2_sequence.txt"],
-    "S3" => ["/gpfs21/scratch/cqs/shengq1/report/rawdata/s3_sequence.txt"],
-    "S4" => ["/gpfs21/scratch/cqs/shengq1/report/rawdata/s4_sequence.txt"],
-    "S5" => ["/gpfs21/scratch/cqs/shengq1/report/rawdata/s5_sequence.txt"],
-    "S6" => ["/gpfs21/scratch/cqs/shengq1/report/rawdata/s6_sequence.txt"],
+    "S1" => ["/scratch/cqs/shengq1/rnaseq/samples/sample1_1.fastq", "/scratch/cqs/shengq1/rnaseq/samples/sample1_2.fastq"],
+    "S2" => ["/scratch/cqs/shengq1/rnaseq/samples/sample2_1.fastq", "/scratch/cqs/shengq1/rnaseq/samples/sample2_2.fastq"],
   },
   tcga => {
     class            => "TCGA::RNAseq",
