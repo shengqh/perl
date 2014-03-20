@@ -32,7 +32,6 @@ my $config = {
     picard_dir       => $picard_dir,
     bedtools_dir     => $bedtools_dir,
     tcga_bin_dir     => $tcga_bin_dir,
-    mapslice_version => "2",
     sh_direct        => 1,
     pbs              => {
       "email"    => $email,
