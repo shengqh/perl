@@ -8,6 +8,8 @@ ln -s webshare.bioinf.unc.edu/public/mRNAseq_TCGA/ mRNAseq_TCGA
 
 cd mRNAseq_TCGA
 
+chmod 755 rsem_ref/rsem/rsem-*
+
 tar -xzvf MapSplice_multithreads_2.0.1.9.tar.gz
 tar -xzvf MapSplice_multithreads_12_07.tar.gz
 
@@ -20,13 +22,6 @@ wget -nc http://apache.mirrors.hoobly.com//commons/collections/binaries/commons-
 tar -zxvf commons-collections-3.2.1-bin.tar.gz
 mv commons-collections-3.2.1/commons-collections-3.2.1.jar .
 rm -rf commons-collections-3.2.1 
-
-#rsem
-
-wget -nc http://deweylab.biostat.wisc.edu/rsem/src/rsem-1.1.13.tar.gz
-tar -xzvf rsem-1.1.13.tar.gz
-cd rsem-1.1.13
-make
 
 #samtools, the version of the one that mapsplice attached missing a function cat
 
