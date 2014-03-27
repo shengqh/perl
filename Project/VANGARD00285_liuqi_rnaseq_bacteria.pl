@@ -2,11 +2,8 @@
 use strict;
 use warnings;
 
-use CQS::QC;
-use CQS::DNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-use CQS::SomaticMutation;
 use CQS::ClassFactory;
 
 my $vangard = "VANGARD00285";
