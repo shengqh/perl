@@ -183,7 +183,7 @@ foreach my $dataset (@datasets) {
         T1_individual => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "bowtie1bam" ],
         T2_summary    => ["annotation"],
       },
-      sh_direct => 1,
+      sh_direct => 0,
       pbs       => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
