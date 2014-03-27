@@ -22,14 +22,8 @@ my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS
 my $human_2bit          = "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit";
 
 my $kcv2797 = {
-  files => {
-    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV-1/raw/2797-KCV-1_RPI40_Ago2INS1Huh7.fastq.gz"],
-    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV-1/raw/2797-KCV-1_RPI41_Ago3INS1Huh7.fastq.gz"],
-    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV-1/raw/2797-KCV-1_RPI42_Ago2INS1HCEAC.fastq.gz"],
-    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV-1/raw/2797-KCV-1_RPI43_Ago3INS1HCEAC.fastq.gz"],
-    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV-1/raw/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
-    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV-1/raw/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
-  },
+  files     => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
+  maps      => { "2797-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV/2797-KCV-1.map"], },
   task_name => "2797-KCV"
 };
 
@@ -51,8 +45,8 @@ my $kcv2795 = {
 
 my @datasets = (
 
-  #$kcv2797,
-  $kcv2795
+  $kcv2797,
+  #$kcv2795
 );
 
 foreach my $dataset (@datasets) {
