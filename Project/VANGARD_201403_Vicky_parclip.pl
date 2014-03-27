@@ -173,16 +173,17 @@ foreach my $dataset (@datasets) {
         "mem"      => "20gb"
       },
     },
-    overall => {
+    sequencetask => {
       class      => "CQS::SequenceTask",
       perform    => 1,
-      target_dir => "${target_parclip_dir}/overall",
+      target_dir => "${target_parclip_dir}/sequencetask",
       option     => "",
       source     => {
-        individual => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "bowtie1bam" ],
-        summary    => ["annotation"],
+        T0_prepare    => ["demultiplexing"],
+        T1_individual => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "bowtie1bam" ],
+        T2_summary    => ["annotation"],
       },
-      sh_direct => 0,
+      sh_direct => 1,
       pbs       => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
