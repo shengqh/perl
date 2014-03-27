@@ -23,7 +23,7 @@ my $human_2bit          = "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit";
 
 my $kcv2797 = {
   files     => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
-  maps      => { "2797-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV/2797-KCV-1.map"], },
+  maps      => { "2797-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV/demultiplexing/pbs/2797-KCV-1.map"], },
   task_name => "2797-KCV"
 };
 
@@ -35,10 +35,10 @@ my $kcv2795 = {
     "2795-KCV-4" => ["/gpfs21/scratch/vantage_repo/Vickers/2795/2795-KCV-4_1_sequence.txt.gz"],
   },
   maps => {
-    "2795-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/2795-KCV-1.map"],
-    "2795-KCV-2" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/2795-KCV-2.map"],
-    "2795-KCV-3" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/2795-KCV-3.map"],
-    "2795-KCV-4" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/2795-KCV-4.map"],
+    "2795-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-1.map"],
+    "2795-KCV-2" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-2.map"],
+    "2795-KCV-3" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-3.map"],
+    "2795-KCV-4" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-4.map"],
   },
   task_name => "2795-KCV"
 };
@@ -46,7 +46,7 @@ my $kcv2795 = {
 my @datasets = (
 
   $kcv2797,
-  #$kcv2795
+  $kcv2795
 );
 
 foreach my $dataset (@datasets) {
@@ -187,7 +187,8 @@ foreach my $dataset (@datasets) {
     }
   };
 
-  performConfig($parclip_config);
+  #performConfig($parclip_config);
+  performTask($parclip_config, "demultiplexing");
 }
 
 1;
