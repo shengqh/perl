@@ -66,6 +66,7 @@ foreach my $dataset (@datasets) {
       option     => "",
       source     => $dataset->{files},
       maps       => $dataset->{maps},
+      cqstools   => $cqstools,
       sh_direct  => 0,
       pbs        => {
         "email"    => $email,
