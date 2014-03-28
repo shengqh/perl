@@ -352,6 +352,28 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  muTect2 => {
+    class        => "GATK::MuTect",
+    perform      => 1,
+    target_dir   => "${target_dir}/all_muTect_2",
+    option       => "--min_qscore 20",
+    java_option  => "-Xmx40g",
+    source_ref   => [ "tophat2_rna" ],
+    groups_ref   => [ "rna_groups" ],
+    fasta_file   => $fasta_file,
+    cosmic_file  => $cosmic_file,
+    dbsnp_file   => $snp_file,
+    bychromosome => 0,
+    sh_direct    => 0,
+    muTect_jar   => "/home/shengq1/local/bin/muTect-1.1.4.jar",
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
+  
   tophat2_rna_removeduplicates => {
     class              => "Picard::MarkDuplicates",
     perform            => 0,
@@ -537,6 +559,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "muTect2");
 
 1;
