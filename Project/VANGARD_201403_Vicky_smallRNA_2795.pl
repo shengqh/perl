@@ -320,6 +320,7 @@ foreach my $def (@defs) {
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
+        prepare    => ["demultiplexing"],
         individual => [
           "cutadapt", "fastqlen", "identical",
           "bowtie1_genome_cutadapt_topN_1mm_notidentical",
