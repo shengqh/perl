@@ -64,7 +64,9 @@ my $kcv2797mouse = {
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/mmu.mature.dna.db",
 };
 
-my @datasets = ( $kcv2797human, $kcv2797mouse );
+my @datasets = ( $kcv2797human, 
+#$kcv2797mouse 
+);
 
 foreach my $dataset (@datasets) {
   my $target_dir     = create_directory_or_die( $root . $dataset->{task_name} );
