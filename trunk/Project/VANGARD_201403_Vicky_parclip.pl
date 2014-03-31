@@ -35,15 +35,21 @@ my $demultiplexing_config = {
 performConfig($demultiplexing_config);
 
 my $kcv2797human = {
-  files            => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
-  maps             => { "2797-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV/demultiplexing/pbs/2797-KCV-1.map"], },
+  files => {
+    "RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI40_Ago2INS1Huh7.fastq.gz"],
+    "RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI41_Ago3INS1Huh7.fastq.gz"],
+    "RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI42_Ago2INS1HCEAC.fastq.gz"],
+    "RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI43_Ago3INS1HCEAC.fastq.gz"],
+    "RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
+    "RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
+  },
   task_name        => "2797-KCV",
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
-  trna_coordinate => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
-  bowtie1_index   => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
-  genome2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
-  mirna_db        => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
-  target_dir      => $root,
+  trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
+  bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+  genome2bit       => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+  target_dir       => $root,
 };
 
 my @datasets = ($kcv2797human);
@@ -187,7 +193,7 @@ foreach my $dataset (@datasets) {
   };
 
   #performConfig($parclip_config);
-#  performTask( $parclip_config, "demultiplexing" );
+  #  performTask( $parclip_config, "demultiplexing" );
 }
 
 1;
