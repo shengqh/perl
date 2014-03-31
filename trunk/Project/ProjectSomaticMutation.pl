@@ -352,28 +352,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  muTect2 => {
-    class        => "GATK::MuTect",
-    perform      => 1,
-    target_dir   => "${target_dir}/all_muTect_2",
-    option       => "--min_qscore 20",
-    java_option  => "-Xmx40g",
-    source_ref   => [ "tophat2_rna" ],
-    groups_ref   => [ "rna_groups" ],
-    fasta_file   => $fasta_file,
-    cosmic_file  => $cosmic_file,
-    dbsnp_file   => $snp_file,
-    bychromosome => 0,
-    sh_direct    => 0,
-    muTect_jar   => "/home/shengq1/local/bin/muTect-1.1.4.jar",
-    pbs          => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "240",
-      "mem"      => "40gb"
-    },
-  },
-  
   tophat2_rna_removeduplicates => {
     class              => "Picard::MarkDuplicates",
     perform            => 0,
@@ -437,7 +415,7 @@ my $config = {
   },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/all_muTect",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -461,7 +439,7 @@ my $config = {
     perform         => 1,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
-    mpileup_options => "-q 20",
+    mpileup_options => "-A -q 20 -Q 20",
     java_option     => "-Xmx40g",
     source_ref      => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
     groups_ref      => [ "dna_groups", "rna_groups", "rna_dna_groups" ],
@@ -519,10 +497,10 @@ my $config = {
   },
   varscan2_16569 => {
     class           => "VarScan2::Somatic",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/16569_varscan2",
     option          => "--min-coverage 10",
-    mpileup_options => "-q 20",
+    mpileup_options => "-A -q 20 -Q 20",
     java_option     => "-Xmx40g",
     source_ref      => [ "dna", "rna" ],
     groups_ref      => [ "dna_groups", "rna_groups" ],
@@ -539,7 +517,7 @@ my $config = {
   },
   rsmc_16569 => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/16569_rsmc",
     option           => "",
     source_ref       => [ "dna", "rna" ],
@@ -559,7 +537,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask($config, "muTect2");
+performConfig($config);
+#performTask($config, "muTect2");
 
 1;
