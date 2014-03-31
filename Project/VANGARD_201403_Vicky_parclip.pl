@@ -7,47 +7,46 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $hg19_mrna_gff = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
-my $hg19_trna_bed = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed";
+my $email = "quanhu.sheng\@vanderbilt.edu";
 
-my $target_dir = $root;
-
-my $email     = "quanhu.sheng\@vanderbilt.edu";
-my $task_name = "VANGARD00055";
-
-my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS";
-my $human_2bit          = "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit";
-
-my $kcv2797 = {
-  files     => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
-  maps      => { "2797-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV/demultiplexing/pbs/2797-KCV-1.map"], },
-  task_name => "2797-KCV"
+my $demultiplexing_config = {
+  general        => { "task_name" => "parclip", },
+  demultiplexing => {
+    class      => "Format::Demultiplexing",
+    perform    => 1,
+    target_dir => "${root}/demultiplexing",
+    option     => "",
+    source     => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
+    maps       => { "2797-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV/demultiplexing/pbs/2797-KCV-1.map"], },
+    cqstools   => $cqstools,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
 };
 
-my $kcv2795 = {
-  files => {
-    "2795-KCV-1" => ["/gpfs21/scratch/vantage_repo/Vickers/2795/2795-KCV-1_1_sequence.txt.gz"],
-    "2795-KCV-2" => ["/gpfs21/scratch/vantage_repo/Vickers/2795/2795-KCV-2_1_sequence.txt.gz"],
-    "2795-KCV-3" => ["/gpfs21/scratch/vantage_repo/Vickers/2795/2795-KCV-3_1_sequence.txt.gz"],
-    "2795-KCV-4" => ["/gpfs21/scratch/vantage_repo/Vickers/2795/2795-KCV-4_1_sequence.txt.gz"],
-  },
-  maps => {
-    "2795-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-1.map"],
-    "2795-KCV-2" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-2.map"],
-    "2795-KCV-3" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-3.map"],
-    "2795-KCV-4" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2795-KCV/demultiplexing/pbs/2795-KCV-4.map"],
-  },
-  task_name => "2795-KCV"
+performConfig($demultiplexing_config);
+
+my $kcv2797human = {
+  files            => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
+  maps             => { "2797-KCV-1" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_201403_Vicky_parclip/2797-KCV/demultiplexing/pbs/2797-KCV-1.map"], },
+  task_name        => "2797-KCV",
+  mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
+  trna_coordinate => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
+  bowtie1_index   => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+  genome2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  mirna_db        => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+  target_dir      => $root,
 };
 
-my @datasets = (
-
-  $kcv2797,
-  $kcv2795
-);
+my @datasets = ($kcv2797human);
 
 foreach my $dataset (@datasets) {
   my $target_parclip_dir = create_directory_or_die( $root . $dataset->{task_name} );
@@ -107,7 +106,7 @@ foreach my $dataset (@datasets) {
       target_dir    => "${target_parclip_dir}/bowtie1out",
       option        => "-v 2 -m 10 --best --strata",
       source_ref    => [ "cutadapt", "fastq.gz\$" ],
-      bowtie1_index => $bowtie1_human_index,
+      bowtie1_index => $dataset->{bowtie1_index},
       samformat     => 0,
       samonly       => 0,
       sh_direct     => 0,
@@ -124,7 +123,7 @@ foreach my $dataset (@datasets) {
       target_dir    => "${target_parclip_dir}/bowtie1bam",
       option        => "-v 2 -m 10 --best --strata",
       source_ref    => [ "cutadapt", "fastq.gz\$" ],
-      bowtie1_index => $bowtie1_human_index,
+      bowtie1_index => $dataset->{bowtie1_index},
       samformat     => 1,
       samonly       => 0,
       sh_direct     => 0,
@@ -141,8 +140,8 @@ foreach my $dataset (@datasets) {
       target_dir => "${target_parclip_dir}/paralyzer",
       option     => "",
       source_ref => "bowtie1out",
-      genome2bit => $human_2bit,
-      mirna_db   => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+      genome2bit => $dataset->{genome_2bit},
+      mirna_db   => $dataset->{mirna_db},
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
@@ -158,7 +157,7 @@ foreach my $dataset (@datasets) {
       option           => "-f miRNA",
       source_ref       => [ "PARalyzer", ".cluster.csv" ],
       cqstools         => $cqstools,
-      coordinate_files => [ $hg19_mrna_gff, $hg19_trna_bed ],
+      coordinate_files => [ $dataset->{mirna_coordinate}, $dataset->{trna_coordinate} ],
       sh_direct        => 1,
       pbs              => {
         "email"    => $email,
@@ -188,7 +187,7 @@ foreach my $dataset (@datasets) {
   };
 
   #performConfig($parclip_config);
-  performTask($parclip_config, "demultiplexing");
+#  performTask( $parclip_config, "demultiplexing" );
 }
 
 1;
