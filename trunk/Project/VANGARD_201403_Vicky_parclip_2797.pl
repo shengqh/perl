@@ -32,7 +32,7 @@ my $demultiplexing_config = {
   },
 };
 
-performConfig($demultiplexing_config);
+#performConfig($demultiplexing_config);
 
 my $kcv2797human = {
   files => {
@@ -43,43 +43,40 @@ my $kcv2797human = {
     "RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
     "RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
   },
-  task_name        => "2797-KCV",
+  task_name        => "2797-KCV-hg19",
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
   trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
   bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
   genome2bit       => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
-  target_dir       => $root,
 };
 
-my @datasets = ($kcv2797human);
+my $kcv2797mouse = {
+  files => {
+    "RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
+    "RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
+  },
+  task_name        => "2797-KCV-mm10",
+  mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
+  trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed",
+  bowtie1_index    => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
+  genome2bit       => "/data/cqs/guoy1/reference/mm10/mm10.2bit",
+  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/mmu.mature.dna.db",
+};
+
+
+my @datasets = ($kcv2797human, $kcv2797mouse);
 
 foreach my $dataset (@datasets) {
-  my $target_parclip_dir = create_directory_or_die( $root . $dataset->{task_name} );
+  my $target_dir = create_directory_or_die( $root . $dataset->{task_name} );
   my $parclip_config     = {
-    general        => { "task_name" => "parclip", },
-    demultiplexing => {
-      class      => "Format::Demultiplexing",
-      perform    => 1,
-      target_dir => "${target_parclip_dir}/demultiplexing",
-      option     => "",
-      source     => $dataset->{files},
-      maps       => $dataset->{maps},
-      cqstools   => $cqstools,
-      sh_direct  => 0,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
-      },
-    },
+    general  => { "task_name" => "parclip", },
     cutadapt => {
       class      => "Cutadapt",
       perform    => 1,
-      target_dir => "${target_parclip_dir}/cutadapt",
+      target_dir => "${target_dir}/cutadapt",
       option     => "-O 10 -e 0.083",
-      source_ref => "demultiplexing",
+      source     => $dataset->{files},
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
       sh_direct  => 0,
@@ -94,7 +91,7 @@ foreach my $dataset (@datasets) {
     fastqlen => {
       class      => "FastqLen",
       perform    => 1,
-      target_dir => "${target_parclip_dir}/fastqlen",
+      target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
       cqstools   => $cqstools,
@@ -109,7 +106,7 @@ foreach my $dataset (@datasets) {
     bowtie1out => {
       class         => "Bowtie1",
       perform       => 1,
-      target_dir    => "${target_parclip_dir}/bowtie1out",
+      target_dir    => "${target_dir}/bowtie1out",
       option        => "-v 2 -m 10 --best --strata",
       source_ref    => [ "cutadapt", "fastq.gz\$" ],
       bowtie1_index => $dataset->{bowtie1_index},
@@ -126,7 +123,7 @@ foreach my $dataset (@datasets) {
     bowtie1bam => {
       class         => "Bowtie1",
       perform       => 1,
-      target_dir    => "${target_parclip_dir}/bowtie1bam",
+      target_dir    => "${target_dir}/bowtie1bam",
       option        => "-v 2 -m 10 --best --strata",
       source_ref    => [ "cutadapt", "fastq.gz\$" ],
       bowtie1_index => $dataset->{bowtie1_index},
@@ -143,7 +140,7 @@ foreach my $dataset (@datasets) {
     PARalyzer => {
       class      => "ParClip::PARalyzer",
       perform    => 1,
-      target_dir => "${target_parclip_dir}/paralyzer",
+      target_dir => "${target_dir}/paralyzer",
       option     => "",
       source_ref => "bowtie1out",
       genome2bit => $dataset->{genome_2bit},
@@ -159,7 +156,7 @@ foreach my $dataset (@datasets) {
     annotation => {
       class            => "CQS::ParalyzerClusterAnnotator",
       perform          => 1,
-      target_dir       => "${target_parclip_dir}/paralyzer",
+      target_dir       => "${target_dir}/paralyzer",
       option           => "-f miRNA",
       source_ref       => [ "PARalyzer", ".cluster.csv" ],
       cqstools         => $cqstools,
@@ -175,10 +172,9 @@ foreach my $dataset (@datasets) {
     sequencetask => {
       class      => "CQS::SequenceTask",
       perform    => 1,
-      target_dir => "${target_parclip_dir}/sequencetask",
+      target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
-        T0_prepare    => ["demultiplexing"],
         T1_individual => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "bowtie1bam" ],
         T2_summary    => ["annotation"],
       },
@@ -192,8 +188,7 @@ foreach my $dataset (@datasets) {
     }
   };
 
-  #performConfig($parclip_config);
-  #  performTask( $parclip_config, "demultiplexing" );
+  performConfig($parclip_config);
 }
 
 1;
