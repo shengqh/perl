@@ -47,29 +47,28 @@ my $kcv2797human = {
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
   trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
   bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
-  genome2bit       => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
 };
 
 my $kcv2797mouse = {
   files => {
-    "RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
-    "RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
+    "RPI47_Ago2MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
+    "RPI48_Ago3MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
   },
   task_name        => "2797-KCV-mm10",
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
   trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed",
   bowtie1_index    => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
-  genome2bit       => "/data/cqs/guoy1/reference/mm10/mm10.2bit",
+  genome_2bit      => "/data/cqs/guoy1/reference/mm10/mm10.2bit",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/mmu.mature.dna.db",
 };
 
-
-my @datasets = ($kcv2797human, $kcv2797mouse);
+my @datasets = ( $kcv2797human, $kcv2797mouse );
 
 foreach my $dataset (@datasets) {
-  my $target_dir = create_directory_or_die( $root . $dataset->{task_name} );
-  my $parclip_config     = {
+  my $target_dir     = create_directory_or_die( $root . $dataset->{task_name} );
+  my $parclip_config = {
     general  => { "task_name" => "parclip", },
     cutadapt => {
       class      => "Cutadapt",
