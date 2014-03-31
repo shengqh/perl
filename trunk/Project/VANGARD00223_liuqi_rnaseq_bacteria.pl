@@ -129,6 +129,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "rockhopper");
 
 1;
