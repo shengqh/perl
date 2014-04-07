@@ -10,10 +10,10 @@ use CQS::ClassFactory;
 my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $hg19_mirna_gff    = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
-my $hg19_trna_bed     = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed";
-my $hg19_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa";
-my $hg19_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed";
+my $rn4_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
+my $rn4_trna_bed     = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed";
+my $rn4_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa";
+my $rn4_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed";
 
 my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "Vicky2795";
@@ -44,10 +44,10 @@ my $kcv2795 = {
     "2795-KCV-4" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-4.map"],
   },
   task_name           => "2795-KCV",
-  mirna_coordinate    => $hg19_mirna_gff,
-  trna_coordinate     => $hg19_trna_bed,
-  trna_fasta          => $hg19_trna_fasta,
-  smallrna_coordinate => $hg19_smallrna_bed,
+  mirna_coordinate    => $rn4_mrna_gff,
+  trna_coordinate     => $rn4_trna_bed,
+  trna_fasta          => $rn4_trna_fasta,
+  smallrna_coordinate => $rn4_smallrna_bed,
   bowtie1_index       => $bowtie1_human_index,
   target_dir          => $root,
 };
@@ -60,7 +60,7 @@ foreach my $def (@defs) {
     general        => { "task_name" => $def->{task_name}, },
     demultiplexing => {
       class      => "Format::Demultiplexing",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/demultiplexing",
       option     => "",
       source     => $def->{files},
@@ -76,7 +76,7 @@ foreach my $def (@defs) {
     },
     cutadapt => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10 -m 12",
       source_ref => "demultiplexing",
@@ -92,7 +92,7 @@ foreach my $def (@defs) {
     },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
