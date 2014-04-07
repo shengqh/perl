@@ -437,7 +437,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -459,7 +459,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/all_rsmc",
-    option           => "",                                                     #thread mode
+    option           => "-c 8",                                                     #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
     groups_ref       => [ "dna_groups", "rna_groups" ],
     source_type      => "BAM",                                                  #source_type can be BAM/Mpileup
@@ -470,7 +470,7 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "20gb"
     },
@@ -498,7 +498,7 @@ my $config = {
   },
   varscan2_16569 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/16569_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -520,7 +520,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/16569_rsmc",
-    option           => "",
+    option           => "-c 8",
     source_ref       => [ "dna", "rna" ],
     groups_ref       => [ "dna_groups", "rna_groups" ],
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
@@ -531,7 +531,7 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "20gb"
     },
