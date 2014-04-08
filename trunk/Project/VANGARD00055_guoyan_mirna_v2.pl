@@ -14,16 +14,19 @@ my $hg19_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
 my $hg19_trna_bed     = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed";
 my $hg19_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa";
 my $hg19_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed";
+my $hg19_bowtie1_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS";
 
 my $mm10_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/mmu.gff3";
 my $mm10_trna_bed     = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed";
 my $mm10_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa";
 my $mm10_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed";
+my $mm10_bowtie1_index = "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10";
 
 my $rn4_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
 my $rn4_trna_bed     = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed";
 my $rn4_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa";
 my $rn4_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed";
+my $rn4_bowtie1_index = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 
 my $target_dir = $root;
 
@@ -40,10 +43,6 @@ my $bowtie1_option_pm       = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
 my $bowtie1_option_1mm      = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
 my $bowtie1_option_1mm_trim = "-a -m 100 --best --strata -v 1 -l 12 -p 8 --trim3 3";
 my $bowtie1_option_3mm      = "-a -m 100 --best --strata -v 3 -l 12 -p 8";
-
-my $bowtie1_rat_index   = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
-my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS";
-my $bowtie1_mouse_index = "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10";
 
 my $mirnacount_option          = "-s";                                                    #ignore score
 my $trnacount_option           = "--length --sequence";
@@ -114,7 +113,7 @@ my $rat = {
   trna_coordinate     => $rn4_trna_bed,
   trna_fasta          => $rn4_trna_fasta,
   smallrna_coordinate => $rn4_smallrna_bed,
-  bowtie1_index       => $bowtie1_rat_index,
+  bowtie1_index       => $rn4_bowtie1_index,
   target_dir          => $target_rat_dir,
   task_name           => $task_name . "_rat",
   groups              => {
@@ -315,7 +314,7 @@ my $human = {
   trna_coordinate     => $hg19_trna_bed,
   trna_fasta          => $hg19_trna_fasta,
   smallrna_coordinate => $hg19_smallrna_bed,
-  bowtie1_index       => $bowtie1_human_index,
+  bowtie1_index       => $hg19_bowtie1_index,
   target_dir          => $target_human_dir,
   task_name           => $task_name . "_human",
   groups              => {
@@ -363,7 +362,7 @@ my $mouse = {
   trna_coordinate     => $mm10_trna_bed,
   trna_fasta          => $mm10_trna_fasta,
   smallrna_coordinate => $mm10_smallrna_bed,
-  bowtie1_index       => $bowtie1_mouse_index,
+  bowtie1_index       => $mm10_bowtie1_index,
   target_dir          => $target_mouse_dir,
   task_name           => $task_name . "_mouse",
   groups              => { "TransplantLiver" => $transplant }
