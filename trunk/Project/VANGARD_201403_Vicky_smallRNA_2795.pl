@@ -10,10 +10,11 @@ use CQS::ClassFactory;
 my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $rn4_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
-my $rn4_trna_bed     = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed";
-my $rn4_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa";
-my $rn4_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed";
+my $rn4_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
+my $rn4_trna_bed      = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed";
+my $rn4_trna_fasta    = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa";
+my $rn4_smallrna_bed  = "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed";
+my $rn4_bowtie1_index = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 
 my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "Vicky2795";
@@ -23,9 +24,7 @@ my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 my $bowtie1_option_pm  = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
 my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
 
-my $bowtie1_human_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS";
-
-my $mirnacount_option          = "-s";                                                    #ignore score
+my $mirnacount_option          = "-s";                                                     #ignore score
 my $trnacount_option           = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
@@ -48,7 +47,7 @@ my $kcv2795 = {
   trna_coordinate     => $rn4_trna_bed,
   trna_fasta          => $rn4_trna_fasta,
   smallrna_coordinate => $rn4_smallrna_bed,
-  bowtie1_index       => $bowtie1_human_index,
+  bowtie1_index       => $rn4_bowtie1_index,
   target_dir          => $root,
 };
 
@@ -340,7 +339,7 @@ foreach my $def (@defs) {
   };
 
   performConfig($config);
-  
+
 }
 
 1;
