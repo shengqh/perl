@@ -340,6 +340,7 @@ foreach my $def (@defs) {
   };
 
   performConfig($config);
+  
 }
 
 1;
