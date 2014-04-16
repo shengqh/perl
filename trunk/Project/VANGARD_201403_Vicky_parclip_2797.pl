@@ -7,10 +7,13 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797");
-my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797");
+my $cqstools    = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
+my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
+my $email       = "quanhu.sheng\@vanderbilt.edu";
 
-my $email = "quanhu.sheng\@vanderbilt.edu";
+my $mirnacount_option = "-s";    #ignore score
 
 my $demultiplexing_config = {
   general        => { "task_name" => "parclip", },
@@ -68,12 +71,12 @@ performConfig($demultiplexing_config);
 
 my $kcv2797human = {
   files => {
-    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI40_Ago2INS1Huh7.fastq.gz"],
-    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI41_Ago3INS1Huh7.fastq.gz"],
-    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI42_Ago2INS1HCEAC.fastq.gz"],
-    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI43_Ago3INS1HCEAC.fastq.gz"],
-    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
-    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
+    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7.fastq.gz"],
+    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI41_Ago3INS1Huh7.fastq.gz"],
+    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI42_Ago2INS1HCEAC.fastq.gz"],
+    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI43_Ago3INS1HCEAC.fastq.gz"],
+    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
+    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
   },
   task_name        => "2797-KCV-hg19",
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
@@ -85,8 +88,8 @@ my $kcv2797human = {
 
 my $kcv2797mouse = {
   files => {
-    "2797-KCV-1_RPI47_Ago2MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
-    "2797-KCV-1_RPI48_Ago3MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
+    "2797-KCV-1_RPI47_Ago2MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
+    "2797-KCV-1_RPI48_Ago3MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
   },
   task_name        => "2797-KCV-mm10",
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
@@ -107,26 +110,9 @@ foreach my $dataset (@datasets) {
       perform       => 1,
       target_dir    => "${target_dir}/bowtie1out",
       option        => "-v 2 -m 10 --best --strata",
-      source_ref    => [ "cutadapt", "fastq.gz\$" ],
+      source        => $dataset->files,
       bowtie1_index => $dataset->{bowtie1_index},
       samformat     => 0,
-      samonly       => 0,
-      sh_direct     => 0,
-      pbs           => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "20gb"
-      },
-    },
-    bowtie1bam => {
-      class         => "Bowtie1",
-      perform       => 1,
-      target_dir    => "${target_dir}/bowtie1bam",
-      option        => "-v 2 -m 10 --best --strata",
-      source_ref    => [ "cutadapt", "fastq.gz\$" ],
-      bowtie1_index => $dataset->{bowtie1_index},
-      samformat     => 1,
       samonly       => 0,
       sh_direct     => 0,
       pbs           => {
@@ -168,13 +154,48 @@ foreach my $dataset (@datasets) {
         "mem"      => "20gb"
       },
     },
+    bowtie1bam => {
+      class         => "Bowtie1",
+      perform       => 1,
+      target_dir    => "${target_dir}/bowtie1bam",
+      option        => "-v 2 -m 10 --best --strata",
+      source        => $dataset->files,
+      bowtie1_index => $dataset->{bowtie1_index},
+      samformat     => 1,
+      samonly       => 0,
+      sh_direct     => 0,
+      pbs           => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "20gb"
+      },
+    },
+    mirna_count => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/count_miRNA",
+      option          => $mirnacount_option,
+      source_ref      => "bowtie1bam",
+      cqs_tools       => $cqstools,
+      gff_file        => $dataset->{mirna_coordinate},
+      fasta_file      => $mirna_fasta,
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
     sequencetask => {
       class      => "CQS::SequenceTask",
       perform    => 1,
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
-        T1_individual => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "bowtie1bam" ],
+        T1_individual => [ "bowtie1out", "PARalyzer", "bowtie1bam", "mirna_count" ],
         T2_summary    => ["annotation"],
       },
       sh_direct => 0,
@@ -187,7 +208,7 @@ foreach my $dataset (@datasets) {
     }
   };
 
-#  performConfig($parclip_config);
+  #  performConfig($parclip_config);
 }
 
 1;
