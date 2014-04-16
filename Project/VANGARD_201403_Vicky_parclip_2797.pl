@@ -102,7 +102,7 @@ my $kcv2797mouse = {
 my @datasets = ( $kcv2797human, $kcv2797mouse );
 
 foreach my $dataset (@datasets) {
-  my $target_dir     = create_directory_or_die( $root . $dataset->{task_name} );
+  my $target_dir     = create_directory_or_die( $root . "/" . $dataset->{task_name} );
   my $parclip_config = {
     general    => { "task_name" => "parclip", },
     bowtie1out => {
