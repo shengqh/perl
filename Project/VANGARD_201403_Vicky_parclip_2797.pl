@@ -30,9 +30,41 @@ my $demultiplexing_config = {
       "mem"      => "20gb"
     },
   },
+  cutadapt => {
+    class      => "Cutadapt",
+    perform    => 1,
+    target_dir => "${root}/cutadapt",
+    option     => "-O 10 -e 0.083",
+    source_ref => "demultiplexing",
+    adaptor    => "TGGAATTCTCGGGTGCCAAGG",
+    extension  => "_clipped.fastq",
+    sh_direct  => 0,
+    gzipped    => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  fastqlen => {
+    class      => "FastqLen",
+    perform    => 1,
+    target_dir => "${root}/fastqlen",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
 };
 
-#performConfig($demultiplexing_config);
+performConfig($demultiplexing_config);
 
 my $kcv2797human = {
   files => {
@@ -64,46 +96,12 @@ my $kcv2797mouse = {
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/mmu.mature.dna.db",
 };
 
-my @datasets = ( $kcv2797human, 
-$kcv2797mouse 
-);
+my @datasets = ( $kcv2797human, $kcv2797mouse );
 
 foreach my $dataset (@datasets) {
   my $target_dir     = create_directory_or_die( $root . $dataset->{task_name} );
   my $parclip_config = {
-    general  => { "task_name" => "parclip", },
-    cutadapt => {
-      class      => "Cutadapt",
-      perform    => 1,
-      target_dir => "${target_dir}/cutadapt",
-      option     => "-O 10 -e 0.083",
-      source     => $dataset->{files},
-      adaptor    => "TGGAATTCTCGGGTGCCAAGG",
-      extension  => "_clipped.fastq",
-      sh_direct  => 0,
-      gzipped    => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
-      },
-    },
-    fastqlen => {
-      class      => "FastqLen",
-      perform    => 1,
-      target_dir => "${target_dir}/fastqlen",
-      option     => "",
-      source_ref => "cutadapt",
-      cqstools   => $cqstools,
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
-      },
-    },
+    general    => { "task_name" => "parclip", },
     bowtie1out => {
       class         => "Bowtie1",
       perform       => 1,
@@ -189,7 +187,7 @@ foreach my $dataset (@datasets) {
     }
   };
 
-  performConfig($parclip_config);
+#  performConfig($parclip_config);
 }
 
 1;
