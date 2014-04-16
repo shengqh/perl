@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
