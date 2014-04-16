@@ -208,7 +208,7 @@ foreach my $dataset (@datasets) {
     }
   };
 
-  #  performConfig($parclip_config);
+  performConfig($parclip_config);
 }
 
 1;
