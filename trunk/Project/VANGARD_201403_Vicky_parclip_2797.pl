@@ -67,7 +67,7 @@ my $demultiplexing_config = {
   },
 };
 
-#performConfig($demultiplexing_config);
+performConfig($demultiplexing_config);
 
 my $kcv2797human = {
   files => {
@@ -209,6 +209,6 @@ foreach my $dataset (@datasets) {
   };
 
   performConfig($parclip_config);
-}
+};
 
 1;
