@@ -110,7 +110,7 @@ foreach my $dataset (@datasets) {
       perform       => 1,
       target_dir    => "${target_dir}/bowtie1out",
       option        => "-v 2 -m 10 --best --strata",
-      source        => $dataset->files,
+      source        => $dataset->{files},
       bowtie1_index => $dataset->{bowtie1_index},
       samformat     => 0,
       samonly       => 0,
