@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <includepath>
   <includepathentry path="E:/sqh/programs/perl/lib" />
+  <includepathentry path="E:\sqh\programs\ngsperl\trunk\lib" />
 </includepath>
 
