@@ -20,8 +20,6 @@ my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "Vicky2795";
 
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
-
-my $bowtie1_option_pm  = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
 my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
 
 my $mirnacount_option          = "-s";                                                     #ignore score
@@ -133,7 +131,7 @@ foreach my $def (@defs) {
       sh_direct     => 0,
       pbs           => {
         "email"    => $email,
-        "nodes"    => "1:ppn=8",
+        "nodes"    => "1:ppn=1",
         "walltime" => "72",
         "mem"      => "40gb"
       },
@@ -151,7 +149,7 @@ foreach my $def (@defs) {
       sh_direct     => 1,
       pbs           => {
         "email"    => $email,
-        "nodes"    => "1:ppn=8",
+        "nodes"    => "1:ppn=1",
         "walltime" => "72",
         "mem"      => "40gb"
       },
@@ -209,7 +207,7 @@ foreach my $def (@defs) {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
-        "mem"      => "40gb"
+        "mem"      => "20gb"
       },
     },
     miRNA_1mm_overlap_position => {
@@ -244,7 +242,7 @@ foreach my $def (@defs) {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
-        "mem"      => "40gb"
+        "mem"      => "20gb"
       },
     },
     tRNA_1mm_table => {
@@ -294,7 +292,7 @@ foreach my $def (@defs) {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
-        "mem"      => "40gb"
+        "mem"      => "20gb"
       },
     },
     smallRNA_1mm_category => {
