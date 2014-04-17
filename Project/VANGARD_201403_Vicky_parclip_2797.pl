@@ -186,7 +186,7 @@ foreach my $dataset (@datasets) {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
-        "mem"      => "40gb"
+        "mem"      => "20gb"
       },
     },
     sequencetask => {
@@ -201,9 +201,9 @@ foreach my $dataset (@datasets) {
       sh_direct => 0,
       pbs       => {
         "email"    => $email,
-        "nodes"    => "1:ppn=8",
+        "nodes"    => "1:ppn=1",
         "walltime" => "72",
-        "mem"      => "40gb"
+        "mem"      => "20gb"
       },
     }
   };
