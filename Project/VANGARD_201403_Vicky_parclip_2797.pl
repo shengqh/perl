@@ -19,7 +19,7 @@ my $demultiplexing_config = {
   general        => { "task_name" => "parclip", },
   demultiplexing => {
     class      => "Format::Demultiplexing",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${root}/demultiplexing",
     option     => "",
     source     => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
@@ -37,7 +37,7 @@ my $demultiplexing_config = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${root}/cutadapt",
-    option     => "-O 10 -e 0.083",
+    option     => "-m 12 -O 10 -e 0.083",
     source_ref => "demultiplexing",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
