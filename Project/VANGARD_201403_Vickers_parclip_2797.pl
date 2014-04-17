@@ -23,7 +23,7 @@ my $demultiplexing_config = {
     target_dir => "${root}/demultiplexing",
     option     => "",
     source     => { "2797-KCV-1" => ["/autofs/blue_sequencer/Runs/projects/2797-KCV/2014-02-06/2797-KCV-1_1.fastq.gz"], },
-    maps       => { "2797-KCV-1" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_parclip_2797/demultiplexing/pbs/2797-KCV-1.map"], },
+    maps       => { "2797-KCV-1" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/demultiplexing/pbs/2797-KCV-1.map"], },
     cqstools   => $cqstools,
     sh_direct  => 0,
     pbs        => {
