@@ -75,7 +75,7 @@ foreach my $def (@defs) {
     },
     cutadapt => {
       class      => "Cutadapt",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10 -m 12",
       source_ref => "demultiplexing",
@@ -91,7 +91,7 @@ foreach my $def (@defs) {
     },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
