@@ -13,18 +13,19 @@ my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
 my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
 
-my $mirnacount_option = "-s";    #ignore score
+my $mirnacount_option  = "-s";                                #ignore score
+my $bowtie1_option_1mm = "-v 2 -m 10 --best --strata -p 8";
 
 my $dataset = {
   files => {
-    "Parclip_01" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
-    "Parclip_02" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_2_CGATGT_L002_R1.fastq.gz"],
-    "Parclip_03" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_3_TTAGGC_L002_R1.fastq.gz"],
-    "Parclip_04" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_4_TGACCA_L002_R1.fastq.gz"],
-    "Parclip_05" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_5_ACAGTG_L002_R1.fastq.gz"],
-    "Parclip_06" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_6_GCCAAT_L002_R1.fastq.gz"],
-    "Parclip_07" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_7_CAGATC_L002_R1.fastq.gz"],
-    "Parclip_08" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201312_parclip/raw/Vickers_Parclip_8_ACTTGA_L002_R1.fastq.gz"],
+    "Parclip_01" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
+    "Parclip_02" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_2_CGATGT_L002_R1.fastq.gz"],
+    "Parclip_03" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_3_TTAGGC_L002_R1.fastq.gz"],
+    "Parclip_04" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_4_TGACCA_L002_R1.fastq.gz"],
+    "Parclip_05" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_5_ACAGTG_L002_R1.fastq.gz"],
+    "Parclip_06" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_6_GCCAAT_L002_R1.fastq.gz"],
+    "Parclip_07" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_7_CAGATC_L002_R1.fastq.gz"],
+    "Parclip_08" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201312_parclip/raw/Vickers_Parclip_8_ACTTGA_L002_R1.fastq.gz"],
   },
   task_name        => "parclip_human",
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
@@ -72,7 +73,7 @@ my $parclip_config = {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_dir}/bowtie1out",
-    option        => "-v 2 -m 10 --best --strata",
+    option        => $bowtie1_option_1mm,
     source        => $dataset->{files},
     bowtie1_index => $dataset->{bowtie1_index},
     samformat     => 0,
@@ -80,7 +81,7 @@ my $parclip_config = {
     sh_direct     => 0,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "20gb"
     },
@@ -121,15 +122,15 @@ my $parclip_config = {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_dir}/bowtie1bam",
-    option        => "-v 2 -m 10 --best --strata",
+    option        => $bowtie1_option_1mm,
     source        => $dataset->{files},
     bowtie1_index => $dataset->{bowtie1_index},
     samformat     => 1,
     samonly       => 0,
-    sh_direct     => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "20gb"
     },
@@ -161,12 +162,12 @@ my $parclip_config = {
       T1_individual => [ "cutadapt", "fastqlen", "bowtie1out", "PARalyzer", "bowtie1bam", "mirna_count" ],
       T2_summary    => ["annotation"],
     },
-    sh_direct => 0,
+    sh_direct => 1,
     pbs       => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "20gb"
+      "mem"      => "40gb"
     },
   }
 };
