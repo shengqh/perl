@@ -14,7 +14,7 @@ my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
 
 my $mirnacount_option  = "-s";                                #ignore score
-my $bowtie1_option_1mm = "-v 2 -m 10 --best --strata -p 8";
+my $bowtie1_option = "-v 2 -m 10 --best --strata -p 8";
 
 my $dataset = {
   files => {
@@ -73,7 +73,7 @@ my $parclip_config = {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_dir}/bowtie1out",
-    option        => $bowtie1_option_1mm,
+    option        => $bowtie1_option,
     source        => $dataset->{files},
     bowtie1_index => $dataset->{bowtie1_index},
     samformat     => 0,
@@ -122,7 +122,7 @@ my $parclip_config = {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_dir}/bowtie1bam",
-    option        => $bowtie1_option_1mm,
+    option        => $bowtie1_option,
     source        => $dataset->{files},
     bowtie1_index => $dataset->{bowtie1_index},
     samformat     => 1,

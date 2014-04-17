@@ -14,6 +14,7 @@ my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
 
 my $mirnacount_option = "-s";    #ignore score
+my $bowtie1_option = "-v 2 -m 10 --best --strata -p 8";
 
 my $demultiplexing_config = {
   general        => { "task_name" => "parclip", },
@@ -35,7 +36,7 @@ my $demultiplexing_config = {
   },
   cutadapt => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${root}/cutadapt",
     option     => "-m 12 -O 10 -e 0.083",
     source_ref => "demultiplexing",
@@ -52,7 +53,7 @@ my $demultiplexing_config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${root}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -109,7 +110,7 @@ foreach my $dataset (@datasets) {
       class         => "Bowtie1",
       perform       => 1,
       target_dir    => "${target_dir}/bowtie1out",
-      option        => "-v 2 -m 10 --best --strata",
+      option        => $bowtie1_option,
       source        => $dataset->{files},
       bowtie1_index => $dataset->{bowtie1_index},
       samformat     => 0,
@@ -158,7 +159,7 @@ foreach my $dataset (@datasets) {
       class         => "Bowtie1",
       perform       => 1,
       target_dir    => "${target_dir}/bowtie1bam",
-      option        => "-v 2 -m 10 --best --strata",
+      option        => $bowtie1_option,
       source        => $dataset->{files},
       bowtie1_index => $dataset->{bowtie1_index},
       samformat     => 1,
