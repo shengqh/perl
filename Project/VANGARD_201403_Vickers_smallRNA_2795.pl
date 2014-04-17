@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_smallRNA_2795/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $rn4_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
@@ -19,10 +19,10 @@ my $rn4_bowtie1_index = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "Vicky2795";
 
-my $samtools = "/home/shengq1/local/bin/samtools/samtools";
+my $samtools           = "/home/shengq1/local/bin/samtools/samtools";
 my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
 
-my $mirnacount_option          = "-s";                                                     #ignore score
+my $mirnacount_option          = "-s";                                                    #ignore score
 my $trnacount_option           = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
@@ -35,10 +35,10 @@ my $kcv2795 = {
     "2795-KCV-4" => ["/gpfs21/scratch/vantage_repo/Vickers/2795/2795-KCV-4_1_sequence.txt.gz"],
   },
   maps => {
-    "2795-KCV-1" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-1.map"],
-    "2795-KCV-2" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-2.map"],
-    "2795-KCV-3" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-3.map"],
-    "2795-KCV-4" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vicky/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-4.map"],
+    "2795-KCV-1" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-1.map"],
+    "2795-KCV-2" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-2.map"],
+    "2795-KCV-3" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-3.map"],
+    "2795-KCV-4" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_smallRNA_2795/demultiplexing/pbs/2795-KCV-4.map"],
   },
   task_name           => "2795-KCV",
   mirna_coordinate    => $rn4_mrna_gff,
@@ -57,13 +57,13 @@ foreach my $def (@defs) {
     general        => { "task_name" => $def->{task_name}, },
     demultiplexing => {
       class      => "Format::Demultiplexing",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/demultiplexing",
       option     => "",
       source     => $def->{files},
       maps       => $def->{maps},
       cqstools   => $cqstools,
-      sh_direct  => 0,
+      sh_direct  => 1,
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
@@ -131,7 +131,7 @@ foreach my $def (@defs) {
       sh_direct     => 0,
       pbs           => {
         "email"    => $email,
-        "nodes"    => "1:ppn=1",
+        "nodes"    => "1:ppn=8",
         "walltime" => "72",
         "mem"      => "40gb"
       },
@@ -149,7 +149,7 @@ foreach my $def (@defs) {
       sh_direct     => 1,
       pbs           => {
         "email"    => $email,
-        "nodes"    => "1:ppn=1",
+        "nodes"    => "1:ppn=8",
         "walltime" => "72",
         "mem"      => "40gb"
       },
@@ -326,7 +326,7 @@ foreach my $def (@defs) {
         ],
         summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
       },
-      sh_direct => 0,
+      sh_direct => 1,
       pbs       => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
