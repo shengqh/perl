@@ -172,6 +172,7 @@ my $parclip_config = {
   }
 };
 
-performConfig($parclip_config);
+#performConfig($parclip_config);
+performTask($parclip_config, "PARalyzer");
 
 1;
