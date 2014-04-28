@@ -28,8 +28,7 @@ my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
 my $kcv2829 = {
-  files => { "2829-KCV-1" => ["/scratch/vantage_repo/Vickers/2829/2829-KCV-1_1_sequence.txt.gz"], },
-  maps  => { "2829-KCV-1" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201404_smallRNA_2829/2829-KCV-1.map"], },
+  files               => { "2829-KCV-1" => ["/scratch/vantage_repo/Vickers/2829/2829-KCV-1_1_sequence.txt.gz"], },
   task_name           => "2829-KCV",
   mirna_coordinate    => $hg19_mrna_gff,
   trna_coordinate     => $hg19_trna_bed,
@@ -45,13 +44,13 @@ foreach my $def (@defs) {
   my $target_dir = $def->{target_dir};
   my $config     = {
     general       => { "task_name" => $def->{task_name}, },
-    demultiplexing => {
-      class      => "Format::Demultiplexing",
+    fastq_trimmer => {
+      class      => "CQS::FastqTrimmer",
       perform    => 1,
-      target_dir => "${target_dir}/demultiplexing",
-      option     => "",
+      target_dir => "${target_dir}/FastqTrimmer",
+      option     => "-n -z",
       source     => $def->{files},
-      maps       => $def->{maps},
+      extension  => "_trimmed.fastq.gz",
       cqstools   => $cqstools,
       sh_direct  => 1,
       pbs        => {
@@ -66,7 +65,7 @@ foreach my $def (@defs) {
       perform    => 1,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10 -m 12",
-      source_ref => "demultiplexing",
+      source_ref => "fastq_trimmer",
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
       sh_direct  => 1,
@@ -308,7 +307,7 @@ foreach my $def (@defs) {
       option     => "",
       source     => {
         individual => [
-          "demultiplexing", "cutadapt", "fastqlen", "identical",
+          "fastq_trimmer", "cutadapt", "fastqlen", "identical",
           "bowtie1_genome_cutadapt_topN_1mm_notidentical",
           "bowtie1_genome_cutadapt_topN_1mm",
           "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
