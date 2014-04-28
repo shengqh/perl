@@ -50,7 +50,7 @@ foreach my $def (@defs) {
       target_dir => "${target_dir}/FastqTrimmer",
       option     => "-n -z",
       source     => $def->{files},
-      extension  => "_trimmed.fastq",
+      extension  => "_trimmed.fastq.gz",
       cqstools   => $cqstools,
       sh_direct  => 1,
       pbs        => {
