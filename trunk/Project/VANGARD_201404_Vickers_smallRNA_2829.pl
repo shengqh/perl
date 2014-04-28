@@ -66,7 +66,7 @@ foreach my $def (@defs) {
       perform    => 1,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10 -m 12",
-      source_ref => "fastq_trimmer",
+      source_ref => "demultiplexing",
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
       sh_direct  => 1,
