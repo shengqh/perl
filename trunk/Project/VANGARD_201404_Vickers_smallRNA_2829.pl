@@ -28,7 +28,8 @@ my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
 my $kcv2829 = {
-  files               => { "2829-KCV-1" => ["/scratch/vantage_repo/Vickers/2829/2829-KCV-1_1_sequence.txt.gz"], },
+  files => { "2829-KCV-1" => ["/scratch/vantage_repo/Vickers/2829/2829-KCV-1_1_sequence.txt.gz"], },
+  maps  => { "2829-KCV-1" => ["/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201404_smallRNA_2829/2829-KCV-1.map"], },
   task_name           => "2829-KCV",
   mirna_coordinate    => $hg19_mrna_gff,
   trna_coordinate     => $hg19_trna_bed,
@@ -44,13 +45,13 @@ foreach my $def (@defs) {
   my $target_dir = $def->{target_dir};
   my $config     = {
     general       => { "task_name" => $def->{task_name}, },
-    fastq_trimmer => {
-      class      => "CQS::FastqTrimmer",
+    demultiplexing => {
+      class      => "Format::Demultiplexing",
       perform    => 1,
-      target_dir => "${target_dir}/FastqTrimmer",
-      option     => "-n -z",
+      target_dir => "${target_dir}/demultiplexing",
+      option     => "",
       source     => $def->{files},
-      extension  => "_trimmed.fastq.gz",
+      maps       => $def->{maps},
       cqstools   => $cqstools,
       sh_direct  => 1,
       pbs        => {
