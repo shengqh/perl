@@ -308,7 +308,7 @@ foreach my $def (@defs) {
       option     => "",
       source     => {
         individual => [
-          "fastq_trimmer", "cutadapt", "fastqlen", "identical",
+          "demultiplexing", "cutadapt", "fastqlen", "identical",
           "bowtie1_genome_cutadapt_topN_1mm_notidentical",
           "bowtie1_genome_cutadapt_topN_1mm",
           "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
