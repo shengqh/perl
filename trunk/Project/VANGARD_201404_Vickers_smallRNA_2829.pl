@@ -51,6 +51,7 @@ foreach my $def (@defs) {
       option     => "-n -z",
       source     => $def->{files},
       extension  => "_trimmed.fastq",
+      cqstools   => $cqstools,
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
