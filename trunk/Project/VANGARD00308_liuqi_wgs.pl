@@ -86,10 +86,11 @@ my $config = {
     coefficientOfVariation => 0.05,
     inputFormat            => "bam",
     mateOrientation        => "FR",
+    maxThreads             => "8",
     sh_direct              => 0,
     pbs                    => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
