@@ -35,8 +35,8 @@ my $config = {
   muTect => {
     class       => "GATK::MuTect",
     perform     => 1,
-    target_dir  => "${target_dir}/muTect2",
-    option      => "-nt 26",
+    target_dir  => "${target_dir}/muTect",
+    option      => "",
     source_ref  => "files",
     groups_ref  => "groups",
     java_option => "-Xmx40g",
@@ -47,7 +47,7 @@ my $config = {
     muTect_jar  => $mutect,
     pbs         => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -55,7 +55,7 @@ my $config = {
   annovar_mutect => {
     class      => "Annovar",
     perform    => 1,
-    target_dir => "${target_dir}/muTect2",
+    target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", ".pass.vcf\$" ],
     annovar_db => $annovar_db,
