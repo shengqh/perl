@@ -10,9 +10,9 @@ my $vangard = "VANGARD00308";
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_liuqi_wgs");
 
-my $fasta_file = "/data/cqs/shengq1/reference/hg19/hg19_chr.fa";
-my $chrLenFile = "/data/cqs/shengq1/reference/hg19/hg19_chr.len";
-my $chrFiles   = "/data/cqs/shengq1/reference/hg19/chromosomes";
+my $fasta_file = "/data/cqs/shengq1/reference/hg19_illumina/hg19_illumina_16571_chr.fa";
+my $chrLenFile = "/data/cqs/shengq1/reference/hg19_illumina/hg19_illumina_16571_chr.len";
+my $chrFiles   = "/data/cqs/shengq1/reference/hg19_illumina/chromosomes";
 
 my $mutect = "/home/shengq1/local/bin/muTect-1.1.4.jar";
 my $cosmic = "/data/cqs/shengq1/reference/cosmic/cosmic_v67_20131024.hg19.16571.vcf";
