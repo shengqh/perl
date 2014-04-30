@@ -7,11 +7,16 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797");
-my $cqstools    = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
-my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
+my $root        = "H:/shengquanhu/projects/vangard/VANGARD_Vickers/201403_parclip_2797/";
+my $cqstools    = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
+my $samtools    = "C:/tools/samtools/samtools.exe";
+my $mirna_fasta = "H:/shengquanhu/projects/database/mirbase20/mature.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
+#my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797");
+#my $cqstools    = "/home/shengq1/cqstools/CQS.Tools.exe";
+#my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
+#my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
+#my $email       = "quanhu.sheng\@vanderbilt.edu";
 
 my $mirnacount_option = "-s";    #ignore score
 my $bowtie1_option = "-v 2 -m 10 --best --strata -p 8";
@@ -68,7 +73,7 @@ my $demultiplexing_config = {
   },
 };
 
-performConfig($demultiplexing_config);
+#performConfig($demultiplexing_config);
 
 my $kcv2797human = {
   files => {
@@ -80,13 +85,27 @@ my $kcv2797human = {
     "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
   },
   task_name        => "2797-KCV-hg19",
-  mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
-  trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
-  bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
-  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  mirna_coordinate => "H:/shengquanhu/projects/database/mirbase20/hsa.gff3",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
 };
 
+#my $kcv2797human = {
+#  files => {
+#    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped.fastq.gz"],
+#    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI41_Ago3INS1Huh7_clipped.fastq.gz"],
+#    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI42_Ago2INS1HCEAC_clipped.fastq.gz"],
+#    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI43_Ago3INS1HCEAC_clipped.fastq.gz"],
+#    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
+#    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
+#  },
+#  task_name        => "2797-KCV-hg19",
+#  mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
+#  trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
+#  bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+#  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+#  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+#};
+#
 my $kcv2797mouse = {
   files => {
     "2797-KCV-1_RPI47_Ago2MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
@@ -100,7 +119,9 @@ my $kcv2797mouse = {
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/mmu.mature.dna.db",
 };
 
-my @datasets = ( $kcv2797human, $kcv2797mouse );
+my @datasets = ( $kcv2797human
+#, $kcv2797mouse 
+);
 
 foreach my $dataset (@datasets) {
   my $target_dir     = create_directory_or_die( $root . "/" . $dataset->{task_name} );
@@ -108,7 +129,7 @@ foreach my $dataset (@datasets) {
     general    => { "task_name" => "parclip", },
     bowtie1out => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/bowtie1out",
       option        => $bowtie1_option,
       source        => $dataset->{files},
@@ -125,7 +146,7 @@ foreach my $dataset (@datasets) {
     },
     PARalyzer => {
       class      => "ParClip::PARalyzer",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/paralyzer",
       option     => "",
       source_ref => "bowtie1out",
@@ -141,7 +162,7 @@ foreach my $dataset (@datasets) {
     },
     annotation => {
       class            => "CQS::ParalyzerClusterAnnotator",
-      perform          => 1,
+      perform          => 0,
       target_dir       => "${target_dir}/paralyzer",
       option           => "-f miRNA",
       source_ref       => [ "PARalyzer", ".cluster.csv" ],
@@ -157,7 +178,7 @@ foreach my $dataset (@datasets) {
     },
     bowtie1bam => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/bowtie1bam",
       option        => $bowtie1_option,
       source        => $dataset->{files},
@@ -192,7 +213,7 @@ foreach my $dataset (@datasets) {
     },
     sequencetask => {
       class      => "CQS::SequenceTask",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
