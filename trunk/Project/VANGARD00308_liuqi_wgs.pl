@@ -15,8 +15,8 @@ my $chrLenFile = "/data/cqs/shengq1/reference/hg19_illumina/hg19_illumina_16571_
 my $chrFiles   = "/data/cqs/shengq1/reference/hg19_illumina/chromosomes";
 
 my $mutect = "/home/shengq1/local/bin/muTect-1.1.4.jar";
-my $cosmic = "/data/cqs/shengq1/reference/cosmic/cosmic_v67_20131024.hg19.16571.vcf";
-my $dbsnp  = "/data/cqs/guoy1/reference/dbsnp138/00-All.vcf";
+my $cosmic = "/data/cqs/shengq1/reference/hg19_illumina/illumina-cosmicv67.vcf";
+my $dbsnp  = "/data/cqs/shengq1/reference/hg19_illumina/illumina-dbsnp138.vcf";
 
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
