@@ -16,8 +16,9 @@ close(REF);
 
 open(REF, $oldvcf);
 while(<REF>){
-  if($_=~m/^M/){
-    print ILL "chr$_";
+  if($_=~m/^MT/){
+    $data = substr $_, 2;
+    print ILL "chrM$data";
   }
 }
 close(REF);
