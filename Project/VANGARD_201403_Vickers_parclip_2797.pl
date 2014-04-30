@@ -7,16 +7,11 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root        = "H:/shengquanhu/projects/vangard/VANGARD_Vickers/201403_parclip_2797/";
-my $cqstools    = "E:/sqh/programs/csharp/OmicsLabCSharp/CQS.Tools/bin/Release/CQS.Tools.exe";
-my $samtools    = "C:/tools/samtools/samtools.exe";
-my $mirna_fasta = "H:/shengquanhu/projects/database/mirbase20/mature.fa";
+my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797");
+my $cqstools    = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
+my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
-#my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797");
-#my $cqstools    = "/home/shengq1/cqstools/CQS.Tools.exe";
-#my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
-#my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
-#my $email       = "quanhu.sheng\@vanderbilt.edu";
 
 my $mirnacount_option = "-s";    #ignore score
 my $bowtie1_option = "-v 2 -m 10 --best --strata -p 8";
