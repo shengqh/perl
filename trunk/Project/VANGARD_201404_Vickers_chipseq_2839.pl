@@ -66,11 +66,11 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
-    source_ref => "fastqfiles",
+    source_ref => "fastq_trimmer",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -79,62 +79,43 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  markdup => {
-    class              => "Picard::MarkDuplicates",
-    perform            => 0,
-    target_dir         => "${target_dir}/markdup",
-    option             => "-Xmx40g",
-    source_ref         => "bwa",
-    thread_count       => 8,
-    markDuplicates_jar => "${picard_dir}/MarkDuplicates.jar",
-    sh_direct          => 0,
-    pbs                => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  refine => {
-    class              => "GATKRefine",
-    perform            => 0,
-    target_dir         => "${target_dir}/refine",
-    option             => "-Xmx40g",
-    fasta_file         => $fasta_file,
-    source_ref         => "pretrim_bwa",
-    thread_count       => 8,
-    vcf_files          => [$dbsnp],
-    gatk_jar           => $gatk,
-    markDuplicates_jar => "${picard_dir}/MarkDuplicates.jar",
-    sh_direct          => 0,
-    pbs                => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  homerMakeTagDirectory => {
-    class      => "Homer::MakeTagDirectory",
-    perform    => 0,
-    target_dir => "${target_dir}/homerMakeTagDirectory",
-    option     => "",
-    source_ref => "pretrim_markdup",
-    groups_ref => "groups",
-    sh_direct  => 1,
+  filter => {
+    class      => "Samtools::View",
+    perform    => 1,
+    target_dir => "${target_dir}/filter",
+    option     => "-b -q 20",
+    source_ref => "bwa",
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  markdup => {
+    class              => "Picard::MarkDuplicates",
+    perform            => 1,
+    target_dir         => "${target_dir}/markdup",
+    option             => "-Xmx40g",
+    source_ref         => "filter",
+    thread_count       => 8,
+    markDuplicates_jar => "${picard_dir}/MarkDuplicates.jar",
+    sh_direct          => 0,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
       "mem"      => "40gb"
     },
   },
-  homerFindPeaks => {
-    class      => "Homer::FindPeaks",
-    perform    => 0,
-    target_dir => "${target_dir}/homerFindPeaks",
+  MACS => {
+    class      => "Chipseq::MACS",
+    perform    => 1,
+    target_dir => "${target_dir}/MACS",
     option     => "",
-    source_ref => "homerMakeTagDirectory",
+    source_ref => "markdup",
+    groups_ref => "groups",
     pairs_ref  => "pairs",
     sh_direct  => 1,
     pbs        => {
@@ -149,9 +130,12 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { individual => [ "fastq_trimmer", "fastqc" ] },
-    sh_direct  => 0,
-    pbs        => {
+    source     => {
+      individual => [ "fastq_trimmer", "fastqc", "bwa", "filter", "markdup" ],
+      pair       => ["MACS"]
+    },
+    sh_direct => 1,
+    pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
