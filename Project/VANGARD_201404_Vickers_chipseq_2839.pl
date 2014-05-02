@@ -11,7 +11,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_V
 
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $fasta_file = "/data/cqs/shengq1/reference/hg19.16569/bwa_index_0.7.4/hg19_rCRS.fa";
+my $fasta_file = "/data/cqs/shengq1/reference/hg19.16569.chr/bwa_0.7.8_index/hg19_16569_chr.fa";
 my $dbsnp      = "/data/cqs/guoy1/reference/dbsnp138/00-All.vcf";
 my $gatk       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_dir = "/home/shengq1/local/bin/picard/";
@@ -36,7 +36,7 @@ my $config = {
   },
   fastq_trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/FastqTrimmer",
     option     => "-n -z",
     source_ref => "fastqfiles",
@@ -52,7 +52,7 @@ my $config = {
   },
   fastqc => {
     class      => "FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastq_trimmer",
