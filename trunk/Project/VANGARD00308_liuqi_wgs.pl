@@ -20,7 +20,7 @@ my $dbsnp  = "/data/cqs/shengq1/reference/hg19_illumina/illumina-dbsnp138.vcf";
 
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $annovar_param = "-protocol refGene,snp137,cosmic64,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove";
+my $annovar_param = "-protocol refGene,snp138,cosmic68,esp6500si_all,1000g2012apr_all -operation g,f,f,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -34,7 +34,7 @@ my $config = {
   groups => { "VANGARD00308" => [ "LP6005748-NT", "LP6005749-TP" ], },
   muTect => {
     class       => "GATK::MuTect",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/muTect",
     option      => "",
     source_ref  => "files",
