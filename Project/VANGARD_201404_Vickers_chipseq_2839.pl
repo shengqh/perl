@@ -31,8 +31,9 @@ my $config = {
     "Control"    => ["2839-KCV-3"],
   },
   pairs => {
-    "2839-KCV-1_vs_Control" => [ "Control", "2839-KCV-1" ],
-    "2839-KCV-2_vs_Control" => [ "Control", "2839-KCV-2" ],
+    "Control_vs_2839-KCV-1" => [ "2839-KCV-1", "Control" ],
+    "Control_vs_2839-KCV-2" => [ "2839-KCV-2", "Control" ],
+    "2839-KCV-1_vs_2839-KCV-2" => [ "2839-KCV-2", "Control" ],
   },
   fastq_trimmer => {
     class      => "CQS::FastqTrimmer",
@@ -66,7 +67,7 @@ my $config = {
   },
   bwa => {
     class      => "BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "-t 8",
     fasta_file => $fasta_file,
@@ -81,7 +82,7 @@ my $config = {
   },
   filter => {
     class      => "Samtools::View",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/filter",
     option     => "-b -q 20",
     source_ref => "bwa",
@@ -95,7 +96,7 @@ my $config = {
   },
   markdup => {
     class              => "Picard::MarkDuplicates",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/markdup",
     option             => "-Xmx40g",
     source_ref         => "filter",
@@ -127,7 +128,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
