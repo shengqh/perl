@@ -516,18 +516,18 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  rsmc_16569_rna => {
+  rsmc_16569 => {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/16569_rsmc_positionInRead",
     option           => "-c 9",
-    source_ref       => [ "rna" ],
-    groups_ref       => [ "rna_groups" ],
+    source_ref       => [ "dna", "rna" ],
+    groups_ref       => [ "dna_groups", "rna_groups" ],
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
     fasta_file       => $fasta_file_16569,
     annovar_buildver => "hg19",
     rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
-    sh_direct        => 0,
+    sh_direct        => 1,
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
@@ -536,31 +536,10 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  rsmc_16569_dna => {
-    class            => "RSMC",
-    perform          => 1,
-    target_dir       => "${target_dir}/16569_rsmc_positionInRead",
-    option           => "-c 9 --min_read_tumor 3",
-    source_ref       => [ "dna" ],
-    groups_ref       => [ "dna_groups" ],
-    source_type      => "BAM",                                               #source_type can be BAM/Mpileup
-    fasta_file       => $fasta_file_16569,
-    annovar_buildver => "hg19",
-    rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
-    sh_direct        => 0,
-    execute_file     => "/home/shengq1/rsmc/rsmc.exe",
-    pbs              => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    }, 
-  },
 };
 
 #performConfig($config);
 
-performTask($config, "rsmc_16569_rna");
-performTask($config, "rsmc_16569_dna");
+performTask($config, "rsmc_16569");
 
 1;
