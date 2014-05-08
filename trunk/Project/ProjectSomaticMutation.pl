@@ -538,8 +538,8 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask($config, "muTect2");
+performTask($config, "rsmc_16569");
 
 1;
