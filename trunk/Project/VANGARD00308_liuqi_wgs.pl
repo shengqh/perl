@@ -54,7 +54,7 @@ my $config = {
   },
   annovar_mutect => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/muTect",
     option     => $annovar_param,
     source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -73,19 +73,20 @@ my $config = {
   },
   freec => {
     class                  => "CNV::Freec",
-    perform                => 0,
+    perform                => 1,
     target_dir             => "${target_dir}/freec",
     option                 => "",
     source_ref             => "files",
     groups_ref             => "groups",
     chrLenFile             => "",
-    source_type            => "bam",                   #source_type can be bam/mpileup
+    source_type            => "bam",                                                                                        #source_type can be bam/mpileup
     chrLenFile             => $chrLenFile,
     chrFiles               => $chrFiles,
     ploidy                 => 2,
     coefficientOfVariation => 0.05,
     inputFormat            => "bam",
     mateOrientation        => "FR",
+    SNPfile                => "/scratch/cqs/shengq1/vangard/VANGARD00308_liuqi_wgs/hg19_snp137.SingleDiNucl.1based.txt",
     maxThreads             => "8",
     sh_direct              => 0,
     pbs                    => {
@@ -100,5 +101,4 @@ my $config = {
 performConfig($config);
 
 1;
-
 
