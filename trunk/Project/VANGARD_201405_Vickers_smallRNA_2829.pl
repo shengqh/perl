@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201404_smallRNA_2829/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201405_smallRNA_2829/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $hg19_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
@@ -28,7 +28,6 @@ my $mirna_overlap_count_option = "-s --gtf_key miRNA --no_unmapped_fastq";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
 my $kcv2829 = {
-  files               => { "2829-KCV-1" => ["/scratch/vantage_repo/Vickers/2829/2829-KCV-1_1_sequence.txt.gz"], },
   task_name           => "2829-KCV",
   mirna_coordinate    => $hg19_mrna_gff,
   trna_coordinate     => $hg19_trna_bed,
@@ -43,29 +42,25 @@ my @defs = ($kcv2829);
 foreach my $def (@defs) {
   my $target_dir = $def->{target_dir};
   my $config     = {
-    general       => { "task_name" => $def->{task_name}, },
-    fastq_trimmer => {
-      class      => "CQS::FastqTrimmer",
-      perform    => 1,
-      target_dir => "${target_dir}/FastqTrimmer",
-      option     => "-n -z",
-      source     => $def->{files},
-      extension  => "_trimmed.fastq.gz",
-      cqstools   => $cqstools,
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
-      },
+    general => { "task_name" => $def->{task_name}, },
+    files   => {
+      "2829-KCV-1A" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1A_ATCACG_L008_R1_001.fastq.gz"],
+      "2829-KCV-1B" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1B_CGATGT_L008_R1_001.fastq.gz"],
+      "2829-KCV-1C" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1C_TTAGGC_L008_R1_001.fastq.gz"],
+      "2829-KCV-1D" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1D_TGACCA_L008_R1_001.fastq.gz"],
+      "2829-KCV-1E" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1E_ACAGTG_L008_R1_001.fastq.gz"],
+      "2829-KCV-1F" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1F_GCCAAT_L008_R1_001.fastq.gz"],
+      "2829-KCV-1G" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1G_CAGATC_L008_R1_001.fastq.gz"],
+      "2829-KCV-1H" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1H_ACTTGA_L008_R1_001.fastq.gz"],
+      "2829-KCV-1I" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1I_GATCAG_L008_R1_001.fastq.gz"],
+      "2829-KCV-1J" => ["/gpfs21/scratch/vantage_repo/Vickers/2829/2829-KCV-1J_TAGCTT_L008_R1_001.fastq.gz"],
     },
     cutadapt => {
       class      => "Cutadapt",
       perform    => 1,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10 -m 12",
-      source_ref => "fastq_trimmer",
+      source_ref => "files",
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
       sh_direct  => 1,
@@ -307,7 +302,7 @@ foreach my $def (@defs) {
       option     => "",
       source     => {
         individual => [
-          "fastq_trimmer", "cutadapt", "fastqlen", "identical",
+          "cutadapt", "fastqlen", "identical",
           "bowtie1_genome_cutadapt_topN_1mm_notidentical",
           "bowtie1_genome_cutadapt_topN_1mm",
           "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
