@@ -370,7 +370,7 @@ my $mouse = {
 
 #my @defs = ( $rat, $human, $mouse );
 
-my @defs = ($mouse);
+my @defs = ($human);
 foreach my $def (@defs) {
   my $cur_target_dir = $def->{target_dir};
   my $config         = {
