@@ -815,6 +815,22 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    smallRNA_1mm_table => {
+      class      => "CQSMappedTable",
+      perform    => 1,
+      target_dir => "${cur_target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
+      option     => "",
+      source_ref => [ "smallRNA_1mm_count", ".xml" ],
+      cqs_tools  => $cqstools,
+      prefix     => "smallRNA_1mm_",
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
     smallRNA_1mm_category => {
       class           => "CQSSmallRNACategory",
       perform         => 0,
@@ -845,7 +861,7 @@ foreach my $def (@defs) {
           "bowtie1_genome_cutadapt_topN_1mm_trim",              "mirna_1mm_count",   "miRNA_1mm_count_overlap",                             "miRNA_1mm_overlap_position",
           "tRNA_1mm_count",                                     "tRNA_1mm_position", "smallRNA_1mm_count",                                  
         ],
-        table => [ "miRNA_pm_table", "miRNA_1mm_table", "miRNA_1mm_overlap_table", "tRNA_1mm_table", "smallRNA_1mm_category" ],
+        table => [ "miRNA_pm_table", "miRNA_1mm_table", "miRNA_1mm_overlap_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category" ],
       },
       sh_direct => 1,
       pbs       => {
@@ -857,7 +873,8 @@ foreach my $def (@defs) {
     },
   };
 
-  performConfig($config);
+#  performConfig($config);
+  performTask($config, "smallRNA_1mm_table");
 }
 
 1;
