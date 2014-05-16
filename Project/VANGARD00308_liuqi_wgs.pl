@@ -88,7 +88,6 @@ my $config = {
     inputFormat            => "bam",
     mateOrientation        => "FR",
     SNPfile                => "/scratch/cqs/shengq1/vangard/VANGARD00308_liuqi_wgs/hg19_snp137.SingleDiNucl.1based.txt",
-    maxThreads             => "8",
     sh_direct              => 0,
     pbs                    => {
       "email"    => $email,
