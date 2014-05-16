@@ -31,7 +31,8 @@ my $rn4_bowtie1_index = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 my $target_dir = $root;
 
 my $target_rat_dir   = create_directory_or_die( $target_dir . "/rat" );
-my $target_human_dir = create_directory_or_die( $target_dir . "/human" );
+#my $target_human_dir = create_directory_or_die( $target_dir . "/human" );
+my $target_human_dir = create_directory_or_die( $target_dir . "/human_hg19_16571" );
 my $target_mouse_dir = create_directory_or_die( $target_dir . "/mouse" );
 
 my $email     = "quanhu.sheng\@vanderbilt.edu";
@@ -875,7 +876,7 @@ foreach my $def (@defs) {
   };
 
 #  performConfig($config);
-  performTask($config, "smallRNA_1mm_count");
+#  performTask($config, "smallRNA_1mm_count");
   performTask($config, "smallRNA_1mm_table");
 }
 
