@@ -823,6 +823,7 @@ foreach my $def (@defs) {
       source_ref => [ "smallRNA_1mm_count", ".xml" ],
       cqs_tools  => $cqstools,
       prefix     => "smallRNA_1mm_",
+      groups     => $def->{groups},
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
