@@ -70,20 +70,6 @@ my $demultiplexing_config = {
 
 #performConfig($demultiplexing_config);
 
-my $kcv2797human = {
-  files => {
-    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped.fastq.gz"],
-    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI41_Ago3INS1Huh7_clipped.fastq.gz"],
-    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI42_Ago2INS1HCEAC_clipped.fastq.gz"],
-    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI43_Ago3INS1HCEAC_clipped.fastq.gz"],
-    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
-    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
-  },
-  task_name        => "2797-KCV-hg19",
-  mirna_coordinate => "H:/shengquanhu/projects/database/mirbase20/hsa.gff3",
-  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
-};
-
 #my $kcv2797human = {
 #  files => {
 #    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped.fastq.gz"],
@@ -94,13 +80,27 @@ my $kcv2797human = {
 #    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
 #  },
 #  task_name        => "2797-KCV-hg19",
-#  mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
-#  trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
-#  bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
-#  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+#  mirna_coordinate => "H:/shengquanhu/projects/database/mirbase20/hsa.gff3",
 #  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
 #};
-#
+
+my $kcv2797human = {
+  files => {
+    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped.fastq.gz"],
+    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI41_Ago3INS1Huh7_clipped.fastq.gz"],
+    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI42_Ago2INS1HCEAC_clipped.fastq.gz"],
+    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI43_Ago3INS1HCEAC_clipped.fastq.gz"],
+    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
+    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
+  },
+  task_name        => "2797-KCV-hg19",
+  mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
+  trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
+  bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+};
+
 my $kcv2797mouse = {
   files => {
     "2797-KCV-1_RPI47_Ago2MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
@@ -206,6 +206,23 @@ foreach my $dataset (@datasets) {
         "mem"      => "20gb"
       },
     },
+    utr3_count => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/count_3utr",
+      option          => "-m 0",
+      source_ref      => "bowtie1bam",
+      cqs_tools       => $cqstools,
+      gff_file        => "/gpfs20/data/cqs/shengq1/reference/utr3/hg19_3UTR.bed",
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "20gb"
+      },
+    },
     sequencetask => {
       class      => "CQS::SequenceTask",
       perform    => 0,
@@ -225,7 +242,8 @@ foreach my $dataset (@datasets) {
     }
   };
 
-  performConfig($parclip_config);
+  performTask($parclip_config, "utr3_count");
+#  performConfig($parclip_config);
 };
 
 1;
