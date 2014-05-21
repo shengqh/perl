@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201404_smallRNA_2868/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201405_smallRNA_2868/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $hg19_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
