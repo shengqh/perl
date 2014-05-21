@@ -351,8 +351,8 @@ foreach my $def (@defs) {
     },
   };
 
-  performConfig($config);
-#  performTask($config, "smallRNA_1mm_table");
+#  performConfig($config);
+  performTask($config, "smallRNA_1mm_table");
 }
 
 1;
