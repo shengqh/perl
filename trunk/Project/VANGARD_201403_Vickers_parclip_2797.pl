@@ -13,8 +13,8 @@ my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
 my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
 
-my $mirnacount_option = "-s";    #ignore score
-my $bowtie1_option = "-v 2 -m 10 --best --strata -p 8";
+my $mirnacount_option = "-s";                                #ignore score
+my $bowtie1_option    = "-v 2 -m 10 --best --strata -p 8";
 
 my $demultiplexing_config = {
   general        => { "task_name" => "parclip", },
@@ -99,6 +99,8 @@ my $kcv2797human = {
   bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
   genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+  binding_db       => "/data/cqs/shengq1/reference/targetscan/targetscan_v61_hg19.bed",
+  utr3_db          => "/data/cqs/shengq1/reference/utr3/hg19_3UTR.bed"
 };
 
 my $kcv2797mouse = {
@@ -114,8 +116,10 @@ my $kcv2797mouse = {
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/mmu.mature.dna.db",
 };
 
-my @datasets = ( $kcv2797human
-#, $kcv2797mouse 
+my @datasets = (
+  $kcv2797human
+
+    #, $kcv2797mouse
 );
 
 foreach my $dataset (@datasets) {
@@ -189,17 +193,17 @@ foreach my $dataset (@datasets) {
       },
     },
     mirna_count => {
-      class           => "MirnaCount",
-      perform         => 1,
-      target_dir      => "${target_dir}/count_miRNA",
-      option          => $mirnacount_option,
-      source_ref      => "bowtie1bam",
-      cqs_tools       => $cqstools,
-      gff_file        => $dataset->{mirna_coordinate},
-      fasta_file      => $mirna_fasta,
-      samtools        => $samtools,
-      sh_direct       => 1,
-      pbs             => {
+      class      => "MirnaCount",
+      perform    => 1,
+      target_dir => "${target_dir}/count_miRNA",
+      option     => $mirnacount_option,
+      source_ref => "bowtie1bam",
+      cqs_tools  => $cqstools,
+      gff_file   => $dataset->{mirna_coordinate},
+      fasta_file => $mirna_fasta,
+      samtools   => $samtools,
+      sh_direct  => 1,
+      pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
@@ -207,16 +211,33 @@ foreach my $dataset (@datasets) {
       },
     },
     utr3_count => {
-      class           => "CQSMappedCount",
-      perform         => 1,
-      target_dir      => "${target_dir}/count_3utr",
-      option          => "-m 0",
-      source_ref      => "bowtie1bam",
-      cqs_tools       => $cqstools,
-      gff_file        => "/gpfs20/data/cqs/shengq1/reference/utr3/hg19_3UTR.bed",
-      samtools        => $samtools,
-      sh_direct       => 1,
-      pbs             => {
+      class      => "CQSMappedCount",
+      perform    => 1,
+      target_dir => "${target_dir}/count_3utr",
+      option     => "-m 0",
+      source_ref => "bowtie1bam",
+      cqs_tools  => $cqstools,
+      gff_file   => $dataset->{utr3_db},
+      samtools   => $samtools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "20gb"
+      },
+    },
+    binding_count => {
+      class      => "CQSMappedCount",
+      perform    => 1,
+      target_dir => "${target_dir}/count_binding",
+      option     => "-m 0",
+      source_ref => "bowtie1bam",
+      cqs_tools  => $cqstools,
+      gff_file   => $dataset->{binding_db},
+      samtools   => $samtools,
+      sh_direct  => 1,
+      pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
@@ -242,8 +263,9 @@ foreach my $dataset (@datasets) {
     }
   };
 
-  performTask($parclip_config, "utr3_count");
-#  performConfig($parclip_config);
-};
+  performTask( $parclip_config, "binding_count" );
+
+  #  performConfig($parclip_config);
+}
 
 1;
