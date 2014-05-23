@@ -57,7 +57,7 @@ foreach my $def (@defs) {
     general        => { "task_name" => $def->{task_name}, },
     demultiplexing => {
       class      => "Format::Demultiplexing",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/demultiplexing",
       option     => "",
       source     => $def->{files},
@@ -73,7 +73,7 @@ foreach my $def (@defs) {
     },
     cutadapt => {
       class      => "Cutadapt",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/cutadapt",
       option     => "-O 10 -m 12",
       source_ref => "demultiplexing",
@@ -89,7 +89,7 @@ foreach my $def (@defs) {
     },
     fastqlen => {
       class      => "FastqLen",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
@@ -104,7 +104,7 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/identical",
       option     => "",
       source_ref => [ "cutadapt", ".fastq.gz" ],
@@ -122,7 +122,7 @@ foreach my $def (@defs) {
     #not identical, for IGV
     bowtie1_genome_cutadapt_topN_1mm_notidentical => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "cutadapt", ".fastq.gz" ],
@@ -140,7 +140,7 @@ foreach my $def (@defs) {
     #1 mismatch search
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "identical", ".fastq\$" ],
@@ -156,7 +156,7 @@ foreach my $def (@defs) {
     },
     mirna_1mm_count => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -176,7 +176,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_table => {
       class      => "CQSMirnaTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table",
       option     => "",
       source_ref => "mirna_1mm_count",
@@ -192,7 +192,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_count_overlap => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
       option          => $mirna_overlap_count_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -212,7 +212,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
       option     => "-o " . $task_name . "_miRNA.position",
       source_ref => "miRNA_1mm_count_overlap",
@@ -227,7 +227,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_count => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -247,7 +247,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_table",
       option     => "",
       source_ref => [ "tRNA_1mm_count", ".xml" ],
@@ -263,7 +263,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
       option     => "-o " . $task_name . "_tRNA.position",
       source_ref => "tRNA_1mm_count",
@@ -278,7 +278,7 @@ foreach my $def (@defs) {
     },
     smallRNA_1mm_count => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -295,9 +295,25 @@ foreach my $def (@defs) {
         "mem"      => "20gb"
       },
     },
+    smallRNA_1mm_table => {
+      class      => "CQSMappedTable",
+      perform    => 1,
+      target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
+      option     => "",
+      source_ref => [ "smallRNA_1mm_count", ".xml" ],
+      cqs_tools  => $cqstools,
+      prefix     => "smallRNA_1mm_",
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
     smallRNA_1mm_category => {
       class           => "CQSSmallRNACategory",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category",
       option          => "",
       source_ref      => [ "smallRNA_1mm_count", ".mapped.xml\$" ],
@@ -313,7 +329,7 @@ foreach my $def (@defs) {
     },
     sequencetask => {
       class      => "CQS::SequenceTask",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
@@ -324,7 +340,7 @@ foreach my $def (@defs) {
           "bowtie1_genome_cutadapt_topN_1mm",
           "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         ],
-        summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
+        summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
       },
       sh_direct => 1,
       pbs       => {
