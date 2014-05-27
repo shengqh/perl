@@ -427,7 +427,7 @@ foreach my $def (@defs) {
       option     => "",
       source_ref => "cutadapt_len",
       cqstools   => $cqstools,
-      extension  => "_clipped_identical.fastq",
+      extension  => "_clipped_identical.fastq.gz",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
