@@ -10,22 +10,22 @@ use CQS::ClassFactory;
 my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $hg19_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
-my $hg19_trna_bed     = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed";
-my $hg19_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa";
-my $hg19_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed";
+my $hg19_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
+my $hg19_trna_bed      = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed";
+my $hg19_trna_fasta    = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa";
+my $hg19_smallrna_bed  = "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed";
 my $hg19_bowtie1_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS";
 
-my $mm10_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/mmu.gff3";
-my $mm10_trna_bed     = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed";
-my $mm10_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa";
-my $mm10_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed";
+my $mm10_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/mmu.gff3";
+my $mm10_trna_bed      = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed";
+my $mm10_trna_fasta    = "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa";
+my $mm10_smallrna_bed  = "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed";
 my $mm10_bowtie1_index = "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10";
 
-my $rn4_mrna_gff     = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
-my $rn4_trna_bed     = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed";
-my $rn4_trna_fasta   = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa";
-my $rn4_smallrna_bed = "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed";
+my $rn4_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
+my $rn4_trna_bed      = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed";
+my $rn4_trna_fasta    = "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa";
+my $rn4_smallrna_bed  = "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed";
 my $rn4_bowtie1_index = "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4";
 
 my $target_rat_dir   = create_directory_or_die( $root . "/rat" );
@@ -107,7 +107,7 @@ my $rat = {
     "Vehicle-3271.1_GTCCGC"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.1_GTCCGC_L003_R1_001.fastq.gz"],
     "Vehicle-3271.2_GTAGAG"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.2_GTAGAG_L003_R1_001.fastq.gz"],
   },
-  coordinate          => $rn4_mrna_gff,
+  mirna_coordinate    => $rn4_mrna_gff,
   trna_coordinate     => $rn4_trna_bed,
   trna_fasta          => $rn4_trna_fasta,
   smallrna_coordinate => $rn4_smallrna_bed,
@@ -308,7 +308,7 @@ my $human = {
     "03-17-Post_TAGCTT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Post_TAGCTT_L004_R1_001.fastq.gz"],
     "03-17-Pre_GATCAG"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Pre_GATCAG_L004_R1_001.fastq.gz"],
   },
-  coordinate          => $hg19_mrna_gff,
+  mirna_coordinate    => $hg19_mrna_gff,
   trna_coordinate     => $hg19_trna_bed,
   trna_fasta          => $hg19_trna_fasta,
   smallrna_coordinate => $hg19_smallrna_bed,
@@ -356,7 +356,7 @@ my $mouse = {
     "2570-KCV-01-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/mouseLiverControl4_ATGAGC_L003_R1_001.fastq.gz"],
     "2570-KCV-01-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/mouseLiverControl5_ATTCCT_L003_R1_001.fastq.gz"],
   },
-  coordinate          => $mm10_mrna_gff,
+  mirna_coordinate    => $mm10_mrna_gff,
   trna_coordinate     => $mm10_trna_bed,
   trna_fasta          => $mm10_trna_fasta,
   smallrna_coordinate => $mm10_smallrna_bed,
@@ -367,10 +367,11 @@ my $mouse = {
 };
 
 my @defs = ( $rat, $human, $mouse );
+
 #my @defs = ($human, $mouse);
 foreach my $def (@defs) {
   my $target_dir = $def->{target_dir};
-  my $config         = {
+  my $config     = {
     general  => { "task_name" => $def->{task_name}, },
     cutadapt => {
       class      => "Cutadapt",
@@ -480,7 +481,7 @@ foreach my $def (@defs) {
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
-      gff_file        => $def->{mirna_coordinate},
+      _file           => $def->{mirna_coordinate},
       fasta_file      => $mirna_fasta,
       samtools        => $samtools,
       sh_direct       => 1,
@@ -516,7 +517,7 @@ foreach my $def (@defs) {
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
-      gff_file        => $def->{mirna_coordinate},
+      _file           => $def->{mirna_coordinate},
       fasta_file      => $mirna_fasta,
       samtools        => $samtools,
       sh_direct       => 1,
@@ -551,7 +552,7 @@ foreach my $def (@defs) {
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
-      gff_file        => $def->{trna_coordinate},
+      _file           => $def->{trna_coordinate},
       fasta_file      => $def->{trna_fasta},
       samtools        => $samtools,
       sh_direct       => 1,
