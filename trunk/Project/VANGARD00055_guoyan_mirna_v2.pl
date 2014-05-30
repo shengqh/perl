@@ -443,7 +443,7 @@ foreach my $def (@defs) {
       perform       => 1,
       target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
-      source_ref    => [ "cutadapt", ".fastq.gz" ],
+      source_ref    => [ "cutadapt_len", ".fastq.gz" ],
       bowtie1_index => $def->{bowtie1_index},
       samonly       => 0,
       sh_direct     => 0,
@@ -667,7 +667,8 @@ foreach my $def (@defs) {
     },
   };
 
-  performConfig($config);
+  #performConfig($config);
+  performTask($config, "bowtie1_genome_cutadapt_topN_1mm_notidentical");
 }
 
 1;
