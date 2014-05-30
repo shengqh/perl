@@ -446,7 +446,7 @@ foreach my $def (@defs) {
       source_ref    => [ "cutadapt_len", ".fastq.gz" ],
       bowtie1_index => $def->{bowtie1_index},
       samonly       => 0,
-      sh_direct     => 0,
+      sh_direct     => 1,
       pbs           => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
