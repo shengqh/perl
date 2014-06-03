@@ -4,6 +4,12 @@ use warnings;
 use File::Basename;
 use Getopt::Long;
 
+sub run_command {
+  my $command = shift;
+  print "$command \n";
+  `$command `;
+}
+
 my $usage = "
 
 Synopsis:
