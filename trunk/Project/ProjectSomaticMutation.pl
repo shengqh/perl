@@ -12,10 +12,10 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 ##hg19.16569###
-my $fasta_file_16569    = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS.fa";
+my $fasta_file_16569    = "/scratch/cqs/shengq1/somaticmutation_comparison/tcga_fasta/hg19_TCGA_rCRS.fa";
 my $cosmic_file_16569   = "/data/cqs/shengq1/reference/cosmic/cosmic_v66_20130725.hg19.16569.vcf";
 my $snp_file_16569      = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
-my $bowtie2_index_16569 = "/data/cqs/shengq1/reference/hg19.16569/bowtie2_index_2.1.0/hg19_rCRS";
+my $bowtie2_index_16569 = "/scratch/cqs/shengq1/somaticmutation_comparison/tcga_fasta/hg19_TCGA_rCRS";
 
 ##hg19.16571###
 my $fasta_file    = "/data/cqs/guoy1/reference/hg19/bwa_index_0.7.4/hg19_chr.fa";
@@ -477,7 +477,7 @@ my $config = {
   },
   muTect_16569 => {
     class        => "GATK::MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/16569_muTect",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -498,7 +498,7 @@ my $config = {
   },
   varscan2_16569 => {
     class           => "VarScan2::Somatic",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/16569_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -538,8 +538,8 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask($config, "rsmc_16569");
+#performTask($config, "rsmc_16569");
 
 1;
