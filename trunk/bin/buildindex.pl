@@ -39,11 +39,11 @@ if ( !defined($fastaFile) ) {
   exit(1);
 }
 
-my ($base, $dir, $ext) = fileparse($fastaFile);
-print $base;
-exit(1);
-
 my $basename = basename($fastaFile);
+(my $base = $basename) =~ s/\.[^.]+$//;
+
+print $base "\n";
+exit(1);
 
 # index fasta file
 run_command("samtools faidx $fastaFile ");
