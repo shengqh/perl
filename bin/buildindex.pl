@@ -14,7 +14,6 @@ Options:
 
   -f|--file {fastaFile}        Fasta format sequence file
   -h|--help                    This page.
-
 ";
 
 Getopt::Long::Configure('bundling');
