@@ -15,13 +15,13 @@ my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 my $fasta_file_16569_MT    = "/data/cqs/shengq1/reference/hg19_16569_MT/hg19_16569_MT.fa";
 my $bowtie2_index_16569_MT = "/data/cqs/shengq1/reference/hg19_16569_MT/bowtie2_index_2.1.0/hg19_16569_MT";
 my $cosmic_file_16569_MT   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_MT.vcf";
-my $snp_file_16569_MT      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh38_v141_16569_MT.vcf";
+my $snp_file_16569_MT      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_MT.vcf";
 
 ##hg19.16569.M###
 my $fasta_file_16569_M    = "/data/cqs/shengq1/reference/hg19_16569_M/hg19_16569_M.fa";
 my $bowtie2_index_16569_M = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
 my $cosmic_file_16569_M   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_M.vcf";
-my $snp_file_16569_M      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh38_v141_16569_M.vcf";
+my $snp_file_16569_M      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
 
 my $transcript_gtf       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.MT.gtf";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/Homo_sapiens.GRCh37.75.MT";
