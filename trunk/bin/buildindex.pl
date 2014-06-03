@@ -40,6 +40,9 @@ if ( !defined($fastaFile) ) {
 }
 
 my ($base, $dir, $ext) = fileparse($fastaFile);
+print $base;
+exit(1);
+
 my $basename = basename($fastaFile);
 
 # index fasta file
