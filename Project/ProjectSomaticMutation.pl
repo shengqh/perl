@@ -13,8 +13,8 @@ my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 ##hg19.16569###
 my $fasta_file_16569    = "/scratch/cqs/shengq1/somaticmutation_comparison/tcga_fasta/hg19_TCGA_rCRS.fa";
-my $cosmic_file_16569   = "/data/cqs/shengq1/reference/cosmic/cosmic_v66_20130725.hg19.16569.vcf";
-my $snp_file_16569      = "/data/cqs/shengq1/reference/snp137/hg19.16569/dbsnp_137.b37.vcf";
+my $cosmic_file_16569   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69.hg19.16569MT.vcf";
+my $snp_file_16569      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh38_v141_17569MT.vcf";
 my $bowtie2_index_16569 = "/scratch/cqs/shengq1/somaticmutation_comparison/tcga_fasta/hg19_TCGA_rCRS";
 
 ##hg19.16571###
