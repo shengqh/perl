@@ -42,6 +42,13 @@ if ( !defined($fastaFile) ) {
 my ($base, $dir, $ext) = fileparse($fastaFile);
 my $basename = basename($fastaFile);
 
+# index fasta file
+run_command("samtools faidx $fastaFile ");
+run_command("java -jar /home/shengq1/local/bin/picard/CreateSequenceDictionary.jar R=$fastaFile O=${base}.dict");
+run_command("perl /scratch/cqs/shengq1/source/scripts_FREEC/get_fasta_lengths.pl $fastaFile");
+run_command("mv res_${basename} ${base}.len ");
+
+# bowtie2
 my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
 chomp($bowtie2);
 if ( !-e "bowtie2_index_${bowtie2}" ) {
@@ -54,6 +61,7 @@ if ( !-e $basename ) {
 run_command("bowtie2-build $basename $base ");
 chdir("..");
 
+#bwa
 `bwa 2> 1`;
 my $bwa = `grep Version 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
 chomp($bwa);
