@@ -49,8 +49,8 @@ if ( !-e "bowtie2_index_${bowtie2}" ) {
 }
 chdir("bowtie2_index_${bowtie2}");
 if ( !-e $basename ) {
-  print "ln -s $fastaFile $basename \n";
-  run_command("ln -s $fastaFile $basename ");
+  print "ln -s ../$fastaFile $basename \n";
+  run_command("ln -s ../$fastaFile $basename ");
 }
 run_command("bowtie2-build $basename $base ");
 chdir("..");
@@ -64,8 +64,8 @@ if ( !-e "bwa_index_${bwa}" ) {
 }
 chdir("bwa_index_${bwa}");
 if ( !-e $basename ) {
-  print "ln -s $fastaFile $basename \n";
-  run_command("ln -s $fastaFile $basename ");
+  print "ln -s ../$fastaFile $basename \n";
+  run_command("ln -s ../$fastaFile $basename ");
 }
 print "bwa index $basename \n";
 run_command("bwa index $basename");
