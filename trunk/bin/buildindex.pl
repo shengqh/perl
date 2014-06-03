@@ -40,10 +40,8 @@ if ( !defined($fastaFile) ) {
 }
 
 my $basename = basename($fastaFile);
-my $base = $basename;
-$base =~ s/\.[^.]+$//;
-
-print $base "\n";
+(my $base = $basename) =~ s/\.[^.]+$//;
+print "$base \n";
 exit(1);
 
 # index fasta file
