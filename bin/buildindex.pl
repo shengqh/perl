@@ -40,7 +40,8 @@ if ( !defined($fastaFile) ) {
 }
 
 my $basename = basename($fastaFile);
-(my $base = $basename) =~ s/\.[^.]+$//;
+my $base = $basename;
+$base =~ s/\.[^.]+$//;
 
 print $base "\n";
 exit(1);
