@@ -409,7 +409,7 @@ my $config = {
     class            => "RSMC",
     perform          => 0,
     target_dir       => "${target_dir}/all_rsmc",
-    option           => "-c 8",                                                 #thread mode
+    option           => "",                                                 #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
     groups_ref       => [ "dna_groups", "rna_groups" ],
     source_type      => "BAM",                                                  #source_type can be BAM/Mpileup
@@ -420,14 +420,14 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
   },
   muTect_TCGA_DNA => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/TCGA_muTect_DNA",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -448,7 +448,7 @@ my $config = {
   },
   muTect_TCGA_RNA => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/TCGA_muTect_RNA",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -469,7 +469,7 @@ my $config = {
   },
   varscan2_TCGA_DNA => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/TCGA_varscan2_DNA",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -489,7 +489,7 @@ my $config = {
   },
   varscan2_TCGA_RNA => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/TCGA_varscan2_RNA",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -511,7 +511,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/TCGA_rsmc_positionInRead_DNA",
-    option           => "-c 26",
+    option           => "",
     source_ref       => "dna",
     groups_ref       => "dna_groups",
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
@@ -522,7 +522,7 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
@@ -531,7 +531,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/TCGA_rsmc_positionInRead_RNA",
-    option           => "-c 26",
+    option           => "",
     source_ref       => "rna",
     groups_ref       => "rna_groups",
     source_type      => "BAM",                                               #source_type can be BAM/Mpileup
@@ -542,7 +542,7 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
