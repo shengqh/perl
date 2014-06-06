@@ -109,7 +109,7 @@ my $config = {
   },
   bowtie2 => {
     class         => "Bowtie2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/bowtie2",
     source_ref    => "trimmer",
     bowtie2_index => $bowtie2_index,
@@ -124,7 +124,7 @@ my $config = {
   },
   overall => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/overall",
     option     => "",
     source     => { individual => [ "fastqc", "trimmer", "fastqlen", ], },
