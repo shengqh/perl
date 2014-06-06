@@ -39,7 +39,7 @@ my $config = {
     "isdGisdI_plgt_mhuD" => [ "2763-EPS-11", "2763-EPS-12", "2763-EPS-14" ],
   },
   pairs => {
-    "IsdI" => [ "isdGisdI_plgt", "isdGisdI_plgt_IsdI" ],
+    "IsdI" => [ "isdGisdI_plgt", "isdGisdI_plgt_IsdI" ], #control, sample
     "hmuO" => [ "isdGisdI_plgt", "isdGisdI_plgt_hmuO" ],
     "mhuD" => [ "isdGisdI_plgt", "isdGisdI_plgt_mhuD" ],
   },

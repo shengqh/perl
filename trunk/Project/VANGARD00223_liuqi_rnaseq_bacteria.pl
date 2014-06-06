@@ -11,7 +11,9 @@ use CQS::ClassFactory;
 
 my $vangard = "VANGARD00223";
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/vangard/${vangard}_liuqi_rnaseq_bacteria");
+my $target_dir =
+  create_directory_or_die(
+  "/scratch/cqs/shengq1/vangard/${vangard}_liuqi_rnaseq_bacteria");
 
 my $email    = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
@@ -43,10 +45,10 @@ my $config = {
     "20uM_targocil"        => [ "2732-EPS-13", "2732-EPS-14", "2732-EPS-15" ],
   },
   pairs => {
-    "50uM_0070_vs_DMSO"            => [ "50uM_0070",            "DMSO" ],
-    "20uM_NDGA_vs_DMSO"            => [ "20uM_NDGA",            "DMSO" ],
-    "100uM_chlorpromazine_vs_DMSO" => [ "100uM_chlorpromazine", "DMSO" ],
-    "20uM_targocil_vs_DMSO"        => [ "20uM_targocil",        "DMSO" ]
+    "50uM_0070_vs_DMSO"            => [ "DMSO", "50uM_0070" ],
+    "20uM_NDGA_vs_DMSO"            => [ "DMSO", "20uM_NDGA" ],
+    "100uM_chlorpromazine_vs_DMSO" => [ "DMSO", "100uM_chlorpromazine" ],
+    "20uM_targocil_vs_DMSO" => [ "DMSO", "20uM_targocil" ]
   },
   fastqc => {
     class      => "FastQC",
@@ -130,6 +132,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "rockhopper");
+performTask( $config, "rockhopper" );
 
 1;
