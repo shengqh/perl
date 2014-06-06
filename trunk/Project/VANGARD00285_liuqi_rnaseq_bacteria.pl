@@ -99,7 +99,7 @@ my $config = {
     rockhopper_jar => $rockhopper_jar,
     genome_dir     => $genome_dir,
     option         => "-p 8 -TIME -v true -c true",
-    sh_direct      => 0,
+    sh_direct      => 1,
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
