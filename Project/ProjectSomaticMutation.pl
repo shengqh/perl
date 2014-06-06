@@ -12,13 +12,13 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
 ##hg19.16569.MT###
-my $fasta_file_16569_MT    = "/data/cqs/shengq1/reference/hg19_16569_MT/hg19_16569_MT.fa";
+my $fasta_file_16569_MT    = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_index_0.7.8/hg19_16569_MT.fa";
 my $bowtie2_index_16569_MT = "/data/cqs/shengq1/reference/hg19_16569_MT/bowtie2_index_2.1.0/hg19_16569_MT";
 my $cosmic_file_16569_MT   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_MT.vcf";
 my $snp_file_16569_MT      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_MT.vcf";
 
 ##hg19.16569.M###
-my $fasta_file_16569_M    = "/data/cqs/shengq1/reference/hg19_16569_M/hg19_16569_M.fa";
+my $fasta_file_16569_M    = "/data/cqs/shengq1/reference/hg19_16569_M/bwa_index_0.7.8/hg19_16569_M.fa";
 my $bowtie2_index_16569_M = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
 my $cosmic_file_16569_M   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_M.vcf";
 my $snp_file_16569_M      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
@@ -235,7 +235,7 @@ my $config = {
   },
   dna_bwa => {
     class      => "BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/dna_bwa",
     option     => "-T 15 -t 8",
     fasta_file => $fasta_file_16569_MT,
@@ -250,7 +250,7 @@ my $config = {
   },
   dna_bwa_refine => {
     class              => "GATKRefine",
-    perform            => 0,
+    perform            => 1,
     target_dir         => "${target_dir}/dna_bwa_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file_16569_MT,
@@ -287,7 +287,7 @@ my $config = {
   },
   tophat2_rna => {
     class                => "Tophat2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/rna_tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "bam2fastq_rna",
@@ -305,7 +305,7 @@ my $config = {
   },
   tophat2_rna_removeduplicates => {
     class              => "Picard::MarkDuplicates",
-    perform            => 0,
+    perform            => 1,
     target_dir         => "${target_dir}/rna_tophat2_redup",
     option             => "-Xmx20g",
     source_ref         => "tophat2_rna",
@@ -366,7 +366,7 @@ my $config = {
   },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/all_muTect",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -387,7 +387,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -407,7 +407,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/all_rsmc",
     option           => "",                                                 #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
@@ -509,7 +509,7 @@ my $config = {
   },
   rsmc_TCGA_DNA => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/TCGA_rsmc_positionInRead_DNA",
     option           => "",
     source_ref       => "dna",
@@ -529,7 +529,7 @@ my $config = {
   },
   rsmc_TCGA_RNA => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/TCGA_rsmc_positionInRead_RNA",
     option           => "",
     source_ref       => "rna",
