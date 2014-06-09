@@ -240,6 +240,7 @@ my $config = {
     option     => "-T 15 -t 8",
     fasta_file => $fasta_file_16569_MT,
     source_ref => "bam2fastq_dna",
+    addOrReplaceReadGroups_jar => "/home/shengq1/local/bin/picard/AddOrReplaceReadGroups.jar",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
