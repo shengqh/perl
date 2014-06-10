@@ -431,7 +431,7 @@ foreach my $def (@defs) {
       target_dir => "${root}/fastq_trimmer",
       option     => "-n -z",
       source_ref     => "cutadapt_len",
-      extension  => "_clipped_trimN.fastq",
+      extension  => "_clipped_trimN.fastq.gz",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
@@ -447,7 +447,7 @@ foreach my $def (@defs) {
       option     => "",
       source_ref => ["fastq_trimmer", "fastq.gz\$"],
       cqstools   => $cqstools,
-      extension  => "_clipped_identical.fastq.gz",
+      extension  => "_clipped_trimN_identical.fastq.gz",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
