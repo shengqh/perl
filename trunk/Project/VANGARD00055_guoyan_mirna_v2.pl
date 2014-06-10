@@ -47,6 +47,11 @@ my $trnacount_option           = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
+my $less50_mirnacount_option          = "-s --maxlen 49";                  
+my $less50_mirna_overlap_count_option = "-s --maxlen 49 --gtf_key miRNA";
+my $less50_trnacount_option           = "--length --sequence --maxlen 49";
+
+
 my $rat = {
   source => {
     "NIH_Rat_HDL_01"            => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/20130925_NIH_Rat_HDL/Vickers_Rat_HDL_1_ATCACG_L001_R1.fastq.gz"],
@@ -422,7 +427,7 @@ foreach my $def (@defs) {
     },
     identical => {
       class      => "FastqIdentical",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${root}/identical",
       option     => "",
       source_ref => ["cutadapt_len", "fastq.gz\$"],
@@ -440,7 +445,7 @@ foreach my $def (@defs) {
     #not identical, for IGV
     bowtie1_genome_cutadapt_topN_1mm_notidentical => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "cutadapt_len", ".fastq.gz" ],
@@ -458,7 +463,7 @@ foreach my $def (@defs) {
     #1 mismatch search
     bowtie1_genome_cutadapt_topN_1mm => {
       class         => "Bowtie1",
-      perform       => 1,
+      perform       => 0,
       target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
       source_ref    => [ "identical", ".fastq.gz\$" ],
@@ -474,7 +479,7 @@ foreach my $def (@defs) {
     },
     mirna_1mm_count => {
       class           => "MirnaCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -494,7 +499,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_table => {
       class      => "CQSMirnaTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table",
       option     => "",
       source_ref => "mirna_1mm_count",
@@ -510,7 +515,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_count_overlap => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
       option          => $mirna_overlap_count_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -530,7 +535,7 @@ foreach my $def (@defs) {
     },
     miRNA_1mm_overlap_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
       option     => "-o " . $task_name . "_miRNA.position",
       source_ref => "miRNA_1mm_count_overlap",
@@ -545,7 +550,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_count => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -565,7 +570,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_table",
       option     => "",
       source_ref => [ "tRNA_1mm_count", ".xml" ],
@@ -581,7 +586,7 @@ foreach my $def (@defs) {
     },
     tRNA_1mm_position => {
       class      => "CQSMappedPosition",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
       option     => "-o " . $task_name . "_tRNA.position",
       source_ref => "tRNA_1mm_count",
@@ -596,7 +601,7 @@ foreach my $def (@defs) {
     },
     smallRNA_1mm_count => {
       class           => "CQSMappedCount",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -615,7 +620,7 @@ foreach my $def (@defs) {
     },
     smallRNA_1mm_table => {
       class      => "CQSMappedTable",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
       option     => "",
       source_ref => [ "smallRNA_1mm_count", ".xml" ],
@@ -631,7 +636,7 @@ foreach my $def (@defs) {
     },
     smallRNA_1mm_category => {
       class           => "CQSSmallRNACategory",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category",
       option          => "",
       source_ref      => [ "smallRNA_1mm_count", ".mapped.xml\$" ],
@@ -645,9 +650,10 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    
     sequencetask => {
       class      => "CQS::SequenceTask",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
@@ -665,10 +671,206 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
+    
+    #ignore all reads larger than 50
+    less50_mirna_1mm_count => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
+      option          => $less50_mirnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{mirna_coordinate},
+      fasta_file      => $mirna_fasta,
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    less50_miRNA_1mm_table => {
+      class      => "CQSMirnaTable",
+      perform    => 1,
+      target_dir => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table",
+      option     => "",
+      source_ref => "less50_mirna_1mm_count",
+      cqs_tools  => $cqstools,
+      prefix     => "miRNA_1mm_",
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
+    less50_miRNA_1mm_count_overlap => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
+      option          => $less50_mirna_overlap_count_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{mirna_coordinate},
+      fasta_file      => $mirna_fasta,
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "20gb"
+      },
+    },
+    less50_miRNA_1mm_overlap_position => {
+      class      => "CQSMappedPosition",
+      perform    => 1,
+      target_dir => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
+      option     => "-o " . $task_name . "_miRNA.position",
+      source_ref => "less50_miRNA_1mm_count_overlap",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
+    less50_tRNA_1mm_count => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
+      option          => $less50_trnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{trna_coordinate},
+      fasta_file      => $def->{trna_fasta},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "20gb"
+      },
+    },
+    less50_tRNA_1mm_table => {
+      class      => "CQSMappedTable",
+      perform    => 1,
+      target_dir => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_tRNA_table",
+      option     => "",
+      source_ref => [ "less50_tRNA_1mm_count", ".xml" ],
+      cqs_tools  => $cqstools,
+      prefix     => "tRNA_1mm_",
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
+    less50_tRNA_1mm_position => {
+      class      => "CQSMappedPosition",
+      perform    => 1,
+      target_dir => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
+      option     => "-o " . $task_name . "_tRNA.position",
+      source_ref => "less50_tRNA_1mm_count",
+      cqs_tools  => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
+    less50_smallRNA_1mm_count => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
+      option          => $less50_trnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{smallrna_coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "20gb"
+      },
+    },
+    less50_smallRNA_1mm_table => {
+      class      => "CQSMappedTable",
+      perform    => 1,
+      target_dir => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
+      option     => "",
+      source_ref => [ "less50_smallRNA_1mm_count", ".xml" ],
+      cqs_tools  => $cqstools,
+      prefix     => "smallRNA_1mm_",
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "10",
+        "mem"      => "10gb"
+      },
+    },
+    less50_smallRNA_1mm_category => {
+      class           => "CQSSmallRNACategory",
+      perform         => 1,
+      target_dir      => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category",
+      option          => "",
+      source_ref      => [ "less50_smallRNA_1mm_count", ".mapped.xml\$" ],
+      mirna_count_ref => [ "less50_mirna_1mm_count", ".mapped.xml\$" ],
+      cqs_tools       => $cqstools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    less50_sequencetask => {
+      class      => "CQS::SequenceTask",
+      perform    => 1,
+      target_dir => "${target_dir}/less50_sequencetask",
+      option     => "",
+      source     => {
+        individual => [
+          "less50_mirna_1mm_count", "less50_miRNA_1mm_count_overlap", "less50_tRNA_1mm_count", "less50_smallRNA_1mm_count",
+        ],
+        summary => [ "less50_miRNA_1mm_table", "less50_tRNA_1mm_table", "less50_smallRNA_1mm_table", "less50_smallRNA_1mm_category", "less50_miRNA_1mm_overlap_position", "less50_tRNA_1mm_position" ],
+      },
+      sh_direct => 0,
+      pbs       => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    
+    
   };
 
-  #performConfig($config);
-  performTask($config, "bowtie1_genome_cutadapt_topN_1mm_notidentical");
+  performConfig($config);
+  #performTask($config, "bowtie1_genome_cutadapt_topN_1mm_notidentical");
 }
 
 1;
