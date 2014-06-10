@@ -857,7 +857,7 @@ foreach my $def (@defs) {
         ],
         summary => [ "less50_miRNA_1mm_table", "less50_tRNA_1mm_table", "less50_smallRNA_1mm_table", "less50_smallRNA_1mm_category", "less50_miRNA_1mm_overlap_position", "less50_tRNA_1mm_position" ],
       },
-      sh_direct => 0,
+      sh_direct => 1,
       pbs       => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
