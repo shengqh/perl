@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_smallRNA_2795/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_smallRNA_2795");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $rn4_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/rno.gff3";
@@ -159,6 +159,26 @@ foreach my $def (@defs) {
       perform         => 0,
       target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
+      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $def->{mirna_coordinate},
+      fasta_file      => $mirna_fasta,
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    less_50_mirna_1mm_count => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
+      option          => $mirnacount_option . " --maxlen 46",
       source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => "identical",
       seqcount_ref    => [ "identical", ".dupcount\$" ],
