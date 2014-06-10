@@ -425,29 +425,14 @@ foreach my $def (@defs) {
         "mem"      => "20gb"
       },
     },
-    fastq_trimmer => {
-      class      => "CQS::FastqTrimmer",
-      perform    => 1,
-      target_dir => "${root}/fastq_trimmer",
-      option     => "-n -z",
-      source_ref     => "cutadapt_len",
-      extension  => "_clipped_trimN.fastq.gz",
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
-      },
-    },
     identical => {
       class      => "FastqIdentical",
       perform    => 1,
       target_dir => "${root}/identical",
       option     => "",
-      source_ref => ["fastq_trimmer", "fastq.gz\$"],
+      source_ref => ["cutadapt_len", "fastq.gz\$"],
       cqstools   => $cqstools,
-      extension  => "_clipped_trimN_identical.fastq.gz",
+      extension  => "_clipped_identical.fastq.gz",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
