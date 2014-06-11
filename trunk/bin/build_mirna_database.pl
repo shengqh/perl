@@ -2,7 +2,12 @@
 use strict;
 use warnings;
 
-chdir("/data/cqs/shengq1/reference/miRBase20");
+my $version = 17;
+my $dir = "/data/cqs/shengq1/reference/miRBase$version";
+if( ! -e $dir){
+  mkdir($dir)
+}
+chdir($dir);
 
 my @dbs = ( "mature", "hairpin" );
 my @species = ( "hsa", "mmu", "rno" );
@@ -15,14 +20,14 @@ sub run_command {
 
 foreach my $spec (@species) {
   if ( !-s "${spec}.gff3" ) {
-    run_command("wget ftp://mirbase.org/pub/mirbase/CURRENT/genomes/${spec}.gff3 ");
+    run_command("wget ftp://mirbase.org/pub/mirbase/$version/genomes/${spec}.gff3 ");
   }
 }
 
 my $files = {};
 foreach my $db (@dbs) {
   if ( !-s "${db}.fa" ) {
-    run_command("wget ftp://mirbase.org/pub/mirbase/CURRENT/${db}.fa.gz; gunzip -f ${db}.fa.gz ");
+    run_command("wget ftp://mirbase.org/pub/mirbase/$version/${db}.fa.gz; gunzip -f ${db}.fa.gz ");
   }
   if ( !-s "${db}.dna.fa" ) {
     run_command("cat ${db}.fa | perl -lane 'unless(/^>/){s/U/T/g;} print' >${db}.dna.fa ");
