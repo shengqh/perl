@@ -21,6 +21,7 @@ sub run_command {
 foreach my $spec (@species) {
   if ( !-s "${spec}.gff3" ) {
     run_command("wget ftp://mirbase.org/pub/mirbase/$version/genomes/${spec}.gff3 ");
+    run_command("wget ftp://mirbase.org/pub/mirbase/$version/genomes/${spec}.gff ");
   }
 }
 
