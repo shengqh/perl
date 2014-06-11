@@ -28,6 +28,7 @@ foreach my $spec (@species) {
       $text =~ s/ID="/Name=/g ;
       $text =~ s/ACC="/ID=/g ;
       $text =~ s/";/;/g ;
+      $text =~ s/; /;/g ;
       write_file("${spec}.gff3", $text);
     }
   }
