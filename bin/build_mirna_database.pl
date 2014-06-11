@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use File::Slurp;
 
 my $version = 17;
 my $dir = "/data/cqs/shengq1/reference/miRBase$version";
@@ -20,8 +21,15 @@ sub run_command {
 
 foreach my $spec (@species) {
   if ( !-s "${spec}.gff3" ) {
-    run_command("wget ftp://mirbase.org/pub/mirbase/$version/genomes/${spec}.gff3 ");
     run_command("wget ftp://mirbase.org/pub/mirbase/$version/genomes/${spec}.gff ");
+    run_command("wget ftp://mirbase.org/pub/mirbase/$version/genomes/${spec}.gff3 ");
+    if (-s "${spec}.gff"){
+      my $text = read_file("${spec}.gff");
+      $text =~ s/ID="/Name=/g ;
+      $text =~ s/ACC="/ID=/g ;
+      $text =~ s/";/;/g ;
+      write_file("${spec}.gff3", $text);
+    }
   }
 }
 
