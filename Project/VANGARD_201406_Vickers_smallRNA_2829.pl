@@ -399,7 +399,7 @@ foreach my $def (@defs) {
       class      => "Cutadapt",
       perform    => 1,
       target_dir => "${target_dir}/less50_cutadapt",
-      option     => "-O 10 -m 12",
+      option     => "-O 10 -m 12 -M 48",
       source_ref => "trimmer",
       adaptor    => "TGGAATTCTCGGGTGCCAAGG",
       extension  => "_clipped.fastq",
