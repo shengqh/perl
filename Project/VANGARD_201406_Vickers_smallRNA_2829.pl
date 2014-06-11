@@ -671,7 +671,7 @@ foreach my $def (@defs) {
           "less50_cutadapt",
           "less50_fastqlen",
           "less50_identical",
-          "less50_bowtie1_genome_cutadapt_topN_1mm_notidentical",
+          #"less50_bowtie1_genome_cutadapt_topN_1mm_notidentical",
           "less50_bowtie1_genome_cutadapt_topN_1mm",
           "less50_mirna_1mm_count",
           "less50_miRNA_1mm_count_overlap",
