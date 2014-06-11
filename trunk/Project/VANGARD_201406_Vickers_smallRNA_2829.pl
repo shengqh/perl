@@ -485,7 +485,7 @@ foreach my $def (@defs) {
       target_dir =>
         "${target_dir}/less50_topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
       option          => $mirnacount_option,
-      source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+      source_ref      => "less50_bowtie1_genome_cutadapt_topN_1mm",
       fastq_files_ref => [ "less50_identical", ".fastq.gz\$" ],
       seqcount_ref    => [ "less50_identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
