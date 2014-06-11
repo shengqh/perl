@@ -28,8 +28,8 @@ my $task_name = "Vicky2829";
 my $samtools           = "/home/shengq1/local/bin/samtools/samtools";
 my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
 
-my $mirnacount_option = "-s --no_unmapped_fastq";                  #ignore score
-my $trnacount_option  = "--length --sequence --no_unmapped_fastq";
+my $mirnacount_option = "-s";                  #ignore score
+my $trnacount_option  = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA --no_unmapped_fastq";
 my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
