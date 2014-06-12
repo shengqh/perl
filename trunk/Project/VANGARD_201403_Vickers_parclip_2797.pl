@@ -100,7 +100,7 @@ my $kcv2797human = {
   genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
   binding_db       => "/data/cqs/shengq1/reference/targetscan/targetscan_v61_hg19.bed",
-  utr3_db          => "/data/cqs/shengq1/reference/utr3/hg19_3UTR.bed"
+  utr3_db          => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt"
 };
 
 my $kcv2797mouse = {
@@ -194,7 +194,7 @@ foreach my $dataset (@datasets) {
     },
     mirna_count => {
       class      => "MirnaCount",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/count_miRNA",
       option     => $mirnacount_option,
       source_ref => "bowtie1bam",
@@ -263,9 +263,9 @@ foreach my $dataset (@datasets) {
     }
   };
 
-  performTask( $parclip_config, "binding_count" );
+  #performTask( $parclip_config, "binding_count" );
 
-  #  performConfig($parclip_config);
+  performConfig($parclip_config);
 }
 
 1;
