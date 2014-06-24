@@ -45,7 +45,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
