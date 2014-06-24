@@ -5,7 +5,7 @@ use warnings;
 use CQS::FileUtils;
 use CQS::ClassFactory;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/20140623_brian_rnaseq_somaticmutation");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20140623_brian_rnaseq_somaticmutation");
 
 my $email    = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
