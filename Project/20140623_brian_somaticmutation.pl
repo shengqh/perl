@@ -16,7 +16,7 @@ my $fasta_file_16569_MT    = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_inde
 my $cosmic_file_16569_MT   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_MT.vcf";
 my $snp_file_16569_MT      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_MT.vcf";
 
-my $annovar_param = "-protocol refGene,snp138,cosmic68 -operation g,f,f --remove";
+my $annovar_param = "-protocol refGene,snp138,cosmic68,esp6500si_all,1000g2012feb -operation g,f,f,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $config = {
