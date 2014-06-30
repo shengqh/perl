@@ -13,9 +13,9 @@ my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
 my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
 
-my $mirnacount_option = "-s";                                #ignore score
-my $trnacount_option = "--length --sequence";
-my $bowtie1_option    = "-v 2 -m 10 --best --strata -p 8";
+my $mirnacount_option = "-s";                                    #ignore score
+my $trnacount_option  = "-m 1 --length --sequence";
+my $bowtie1_option    = "-a -m 100 --best --strata -v 1 -p 8";
 
 my $demultiplexing_config = {
   general        => { "task_name" => "parclip", },
@@ -71,20 +71,6 @@ my $demultiplexing_config = {
 
 #performConfig($demultiplexing_config);
 
-#my $kcv2797human = {
-#  files => {
-#    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped.fastq.gz"],
-#    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI41_Ago3INS1Huh7_clipped.fastq.gz"],
-#    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI42_Ago2INS1HCEAC_clipped.fastq.gz"],
-#    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI43_Ago3INS1HCEAC_clipped.fastq.gz"],
-#    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
-#    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
-#  },
-#  task_name        => "2797-KCV-hg19",
-#  mirna_coordinate => "H:/shengquanhu/projects/database/mirbase20/hsa.gff3",
-#  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
-#};
-
 my $kcv2797human = {
   files => {
     "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped.fastq.gz"],
@@ -94,14 +80,14 @@ my $kcv2797human = {
     "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
     "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
   },
-  task_name        => "2797-KCV-hg19",
-  mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
-  trna_coordinate  => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
-  bowtie1_index    => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
-  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
-  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
-  binding_db       => "/data/cqs/shengq1/reference/targetscan/targetscan_v61_hg19.bed",
-  utr3_db          => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
+  task_name           => "2797-KCV-hg19",
+  mirna_coordinate    => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
+  trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
+  bowtie1_index       => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+  genome_2bit         => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  mirna_db            => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
+  binding_db          => "/data/cqs/shengq1/reference/targetscan/targetscan_v61_hg19.bed",
+  utr3_db             => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
   smallrna_coordinate => "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed"
 };
 
@@ -127,64 +113,80 @@ my @datasets = (
 foreach my $dataset (@datasets) {
   my $target_dir     = create_directory_or_die( $root . "/" . $dataset->{task_name} );
   my $parclip_config = {
-    general    => { "task_name" => "parclip", },
-    bowtie1out => {
-      class         => "Bowtie1",
-      perform       => 0,
-      target_dir    => "${target_dir}/bowtie1out",
-      option        => $bowtie1_option,
-      source        => $dataset->{files},
-      bowtie1_index => $dataset->{bowtie1_index},
-      samformat     => 0,
-      samonly       => 0,
-      sh_direct     => 0,
-      pbs           => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "20gb"
-      },
-    },
-    PARalyzer => {
-      class      => "ParClip::PARalyzer",
-      perform    => 0,
-      target_dir => "${target_dir}/paralyzer",
+    general => { "task_name" => "parclip", },
+
+    #    bowtie1out => {
+    #      class         => "Bowtie1",
+    #      perform       => 1,
+    #      target_dir    => "${target_dir}/bowtie1out",
+    #      option        => $bowtie1_option,
+    #      source        => $dataset->{files},
+    #      bowtie1_index => $dataset->{bowtie1_index},
+    #      samformat     => 0,
+    #      samonly       => 0,
+    #      sh_direct     => 0,
+    #      pbs           => {
+    #        "email"    => $email,
+    #        "nodes"    => "1:ppn=1",
+    #        "walltime" => "72",
+    #        "mem"      => "20gb"
+    #      },
+    #    },
+    #    PARalyzer => {
+    #      class      => "ParClip::PARalyzer",
+    #      perform    => 1,
+    #      target_dir => "${target_dir}/paralyzer",
+    #      option     => "",
+    #      source_ref => "bowtie1out",
+    #      genome2bit => $dataset->{genome_2bit},
+    #      mirna_db   => $dataset->{mirna_db},
+    #      sh_direct  => 1,
+    #      pbs        => {
+    #        "email"    => $email,
+    #        "nodes"    => "1:ppn=1",
+    #        "walltime" => "72",
+    #        "mem"      => "20gb"
+    #      },
+    #    },
+    #    annotation => {
+    #      class            => "CQS::ParalyzerClusterAnnotator",
+    #      perform          => 1,
+    #      target_dir       => "${target_dir}/paralyzer",
+    #      option           => "-f miRNA",
+    #      source_ref       => [ "PARalyzer", ".cluster.csv" ],
+    #      cqstools         => $cqstools,
+    #      coordinate_files => [ $dataset->{mirna_coordinate}, $dataset->{trna_coordinate} ],
+    #      sh_direct        => 1,
+    #      pbs              => {
+    #        "email"    => $email,
+    #        "nodes"    => "1:ppn=1",
+    #        "walltime" => "72",
+    #        "mem"      => "20gb"
+    #      },
+    #    },
+    identical => {
+      class      => "FastqIdentical",
+      perform    => 1,
+      target_dir => "${root}/identical",
       option     => "",
-      source_ref => "bowtie1out",
-      genome2bit => $dataset->{genome_2bit},
-      mirna_db   => $dataset->{mirna_db},
+      source     => $dataset->{files},
+      cqstools   => $cqstools,
+      extension  => "_clipped_identical.fastq.gz",
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "20gb"
-      },
-    },
-    annotation => {
-      class            => "CQS::ParalyzerClusterAnnotator",
-      perform          => 0,
-      target_dir       => "${target_dir}/paralyzer",
-      option           => "-f miRNA",
-      source_ref       => [ "PARalyzer", ".cluster.csv" ],
-      cqstools         => $cqstools,
-      coordinate_files => [ $dataset->{mirna_coordinate}, $dataset->{trna_coordinate} ],
-      sh_direct        => 1,
-      pbs              => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
+        "walltime" => "24",
         "mem"      => "20gb"
       },
     },
     bowtie1bam => {
       class         => "Bowtie1",
-      perform       => 0,
+      perform       => 1,
       target_dir    => "${target_dir}/bowtie1bam",
       option        => $bowtie1_option,
-      source        => $dataset->{files},
+      source_ref    => "identical",
       bowtie1_index => $dataset->{bowtie1_index},
-      samformat     => 1,
       samonly       => 0,
       sh_direct     => 0,
       pbs           => {
@@ -195,17 +197,19 @@ foreach my $dataset (@datasets) {
       },
     },
     mirna_count => {
-      class      => "MirnaCount",
-      perform    => 0,
-      target_dir => "${target_dir}/count_miRNA",
-      option     => $mirnacount_option,
-      source_ref => "bowtie1bam",
-      cqs_tools  => $cqstools,
-      gff_file   => $dataset->{mirna_coordinate},
-      fasta_file => $mirna_fasta,
-      samtools   => $samtools,
-      sh_direct  => 1,
-      pbs        => {
+      class           => "MirnaCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/count_miRNA",
+      option          => $mirnacount_option,
+      source_ref      => "bowtie1bam",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $dataset->{mirna_coordinate},
+      fasta_file      => $mirna_fasta,
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
@@ -218,6 +222,8 @@ foreach my $dataset (@datasets) {
       target_dir      => "${target_dir}/count_smallRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1bam",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
       cqs_tools       => $cqstools,
       gff_file        => $dataset->{smallrna_coordinate},
       samtools        => $samtools,
@@ -230,16 +236,18 @@ foreach my $dataset (@datasets) {
       },
     },
     utr3_count => {
-      class      => "CQSMappedCount",
-      perform    => 0,
-      target_dir => "${target_dir}/count_3utr",
-      option     => "-m 0",
-      source_ref => "bowtie1bam",
-      cqs_tools  => $cqstools,
-      gff_file   => $dataset->{utr3_db},
-      samtools   => $samtools,
-      sh_direct  => 1,
-      pbs        => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/count_3utr",
+      option          => "-m 0",
+      source_ref      => "bowtie1bam",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $dataset->{utr3_db},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
@@ -247,16 +255,18 @@ foreach my $dataset (@datasets) {
       },
     },
     binding_count => {
-      class      => "CQSMappedCount",
-      perform    => 0,
-      target_dir => "${target_dir}/count_binding",
-      option     => "-m 0",
-      source_ref => "bowtie1bam",
-      cqs_tools  => $cqstools,
-      gff_file   => $dataset->{binding_db},
-      samtools   => $samtools,
-      sh_direct  => 1,
-      pbs        => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/count_binding",
+      option          => "-m 0",
+      source_ref      => "bowtie1bam",
+      fastq_files_ref => "identical",
+      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      cqs_tools       => $cqstools,
+      gff_file        => $dataset->{binding_db},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
@@ -265,7 +275,7 @@ foreach my $dataset (@datasets) {
     },
     sequencetask => {
       class      => "CQS::SequenceTask",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
