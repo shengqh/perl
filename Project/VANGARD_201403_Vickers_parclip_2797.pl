@@ -279,7 +279,9 @@ foreach my $dataset (@datasets) {
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
-        T1_individual => [ "bowtie1out", "PARalyzer", "bowtie1bam", "mirna_count" ],
+        T1_individual => [ 
+        #"bowtie1out", "PARalyzer", 
+        "bowtie1bam", "mirna_count", "smallRNA_1mm_count", "utr3_count", "binding_count" ],
         T2_summary    => ["annotation"],
       },
       sh_direct => 0,
