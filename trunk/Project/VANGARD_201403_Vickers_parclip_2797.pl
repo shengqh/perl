@@ -14,6 +14,7 @@ my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
 
 my $mirnacount_option = "-s";                                #ignore score
+my $trnacount_option = "--length --sequence";
 my $bowtie1_option    = "-v 2 -m 10 --best --strata -p 8";
 
 my $demultiplexing_config = {
@@ -100,7 +101,8 @@ my $kcv2797human = {
   genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
   binding_db       => "/data/cqs/shengq1/reference/targetscan/targetscan_v61_hg19.bed",
-  utr3_db          => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt"
+  utr3_db          => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
+  smallrna_coordinate => "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed"
 };
 
 my $kcv2797mouse = {
@@ -210,9 +212,26 @@ foreach my $dataset (@datasets) {
         "mem"      => "20gb"
       },
     },
+    smallRNA_1mm_count => {
+      class           => "CQSMappedCount",
+      perform         => 1,
+      target_dir      => "${target_dir}/count_smallRNA",
+      option          => $trnacount_option,
+      source_ref      => "bowtie1bam",
+      cqs_tools       => $cqstools,
+      gff_file        => $dataset->{smallrna_coordinate},
+      samtools        => $samtools,
+      sh_direct       => 1,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "20gb"
+      },
+    },
     utr3_count => {
       class      => "CQSMappedCount",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/count_3utr",
       option     => "-m 0",
       source_ref => "bowtie1bam",
@@ -229,7 +248,7 @@ foreach my $dataset (@datasets) {
     },
     binding_count => {
       class      => "CQSMappedCount",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/count_binding",
       option     => "-m 0",
       source_ref => "bowtie1bam",
