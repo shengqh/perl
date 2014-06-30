@@ -14,8 +14,8 @@ my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $email       = "quanhu.sheng\@vanderbilt.edu";
 
 my $mirnacount_option = "-s";                                    #ignore score
-my $trnacount_option  = "-m 1 --length --sequence";
-my $bowtie1_option    = "-a -m 100 --best --strata -v 1 -p 8";
+my $trnacount_option  = "--length --sequence";
+my $bowtie1_option    = "-a -m 100 --best --strata -v 2 -p 8";
 
 my $demultiplexing_config = {
   general        => { "task_name" => "parclip", },
