@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797");
+my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797_v2");
 my $cqstools    = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
 my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
