@@ -420,6 +420,7 @@ foreach my $def (@defs) {
       option     => "",
       source     => {
         individual => [
+          "trimmer",
           "cutadapt",
           "fastqlen",
           "identical",
