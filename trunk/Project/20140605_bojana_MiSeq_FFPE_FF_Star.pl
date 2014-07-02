@@ -9,7 +9,7 @@ use CQS::ConfigUtils;
 
 my $task = "20140605_bojana_FFPE_FF";
 
-my $target_dir = "/scratch/cqs/shengq1/rnaseq/20140605_bojana_MiSeq_FFPE_FF/star";
+my $target_dir = "/scratch/cqs/shengq1/rnaseq/20140605_bojana_MiSeq_FFPE_FF";
 
 my $fasta_file_16569_MT  = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_index_0.7.8/hg19_16569_MT.fa";
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/hg19/Homo_sapiens.GRCh37.73.gtf";
