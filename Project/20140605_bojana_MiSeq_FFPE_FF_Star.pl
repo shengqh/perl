@@ -240,7 +240,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { individual => [ "star_varscan2", "star_annovar", "tophat2", "tophat2_varscan2", "tophat2_annovar_varscan2", "fastqc" ], },
+    source     => { individual => [ "star_varscan2", "star_annovar_varscan2", "tophat2", "tophat2_varscan2", "tophat2_annovar_varscan2", "fastqc" ], },
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
