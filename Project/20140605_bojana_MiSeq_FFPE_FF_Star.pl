@@ -234,23 +234,21 @@ my $config = {
       "walltime" => "72",
       "mem"      => "10gb"
     },
-    sequencetask => {
-      class      => "CQS::SequenceTask",
-      perform    => 1,
-      target_dir => "${target_dir}/sequencetask",
-      option     => "",
-      source     => { individual => [ "star_varscan2", "star_annovar", "tophat2", "tophat2_varscan2", "tophat2_annovar_varscan2", "fastqc" ], },
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-
   },
-
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => { individual => [ "star_varscan2", "star_annovar", "tophat2", "tophat2_varscan2", "tophat2_annovar_varscan2", "fastqc" ], },
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 };
 
 performConfig($config);
