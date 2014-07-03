@@ -560,14 +560,13 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  mpileup_TCGA => {
-    class           => "Samtools::Mpileup",
+  depth_TCGA => {
+    class           => "Samtools::Depth",
     perform         => 1,
-    target_dir      => "${target_dir}/mpileup",
-    option          => "-A -q 20 -Q 20",
+    target_dir      => "${target_dir}/depth",
+    option          => "-q 20 -Q 20",
     source_ref      => ["dna", "rna"],
     groups_ref      => "sample_groups",
-    fasta_file      => $fasta_file_16569_M,
     sh_direct       => 0,
     pbs             => {
       "email"    => $email,
@@ -580,7 +579,7 @@ my $config = {
 
 #performConfig($config);
 
-performTask($config, "mpileup_TCGA");
+performTask($config, "depth_TCGA");
 
 1;
 
