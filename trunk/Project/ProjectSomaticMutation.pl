@@ -200,6 +200,18 @@ my $config = {
     "TCGA-BH-A0E0-RNA-TP-NT" => [ "TCGA-BH-A0E0-RNA-NT", "TCGA-BH-A0E0-RNA-TP" ],
     "TCGA-BH-A0H7-RNA-TP-NT" => [ "TCGA-BH-A0H7-RNA-NT", "TCGA-BH-A0H7-RNA-TP" ],
   },
+  sample_groups => {
+    "TCGA-A7-A0D9" => [ "TCGA-A7-A0D9-DNA-NT", "TCGA-A7-A0D9-DNA-TP", "TCGA-A7-A0D9-RNA-NT", "TCGA-A7-A0D9-RNA-TP" ],
+    "TCGA-BH-A0B3" => [ "TCGA-BH-A0B3-DNA-NT", "TCGA-BH-A0B3-DNA-TP", "TCGA-BH-A0B3-RNA-NT", "TCGA-BH-A0B3-RNA-TP" ],
+    "TCGA-BH-A0B8" => [ "TCGA-BH-A0B8-DNA-NB", "TCGA-BH-A0B8-DNA-TP", "TCGA-BH-A0B8-RNA-NT", "TCGA-BH-A0B8-RNA-TP" ],
+    "TCGA-BH-A0BJ" => [ "TCGA-BH-A0BJ-DNA-NB", "TCGA-BH-A0BJ-DNA-TP", "TCGA-BH-A0BJ-RNA-NT", "TCGA-BH-A0BJ-RNA-TP" ],
+    "TCGA-BH-A0BM" => [ "TCGA-BH-A0BM-DNA-NB", "TCGA-BH-A0BM-DNA-TP", "TCGA-BH-A0BM-RNA-NT", "TCGA-BH-A0BM-RNA-TP" ],
+    "TCGA-BH-A0C0" => [ "TCGA-BH-A0C0-DNA-NB", "TCGA-BH-A0C0-DNA-TP", "TCGA-BH-A0C0-RNA-NT", "TCGA-BH-A0C0-RNA-TP" ],
+    "TCGA-BH-A0DK" => [ "TCGA-BH-A0DK-DNA-NB", "TCGA-BH-A0DK-DNA-TP", "TCGA-BH-A0DK-RNA-NT", "TCGA-BH-A0DK-RNA-TP" ],
+    "TCGA-BH-A0DP" => [ "TCGA-BH-A0DP-DNA-NB", "TCGA-BH-A0DP-DNA-TP", "TCGA-BH-A0DP-RNA-NT", "TCGA-BH-A0DP-RNA-TP" ],
+    "TCGA-BH-A0E0" => [ "TCGA-BH-A0E0-DNA-NB", "TCGA-BH-A0E0-DNA-TP", "TCGA-BH-A0E0-RNA-NT", "TCGA-BH-A0E0-RNA-TP" ],
+    "TCGA-BH-A0H7" => [ "TCGA-BH-A0H7-DNA-NB", "TCGA-BH-A0H7-DNA-TP", "TCGA-BH-A0H7-RNA-NT", "TCGA-BH-A0H7-RNA-TP" ],
+  },
   sortbam_dna => {
     class         => "Sortbam",
     perform       => 0,
@@ -234,15 +246,15 @@ my $config = {
     },
   },
   dna_bwa => {
-    class      => "BWA",
-    perform    => 1,
-    target_dir => "${target_dir}/dna_bwa",
-    option     => "-T 15 -t 8",
-    fasta_file => $fasta_file_16569_MT,
-    source_ref => "bam2fastq_dna",
+    class                      => "BWA",
+    perform                    => 1,
+    target_dir                 => "${target_dir}/dna_bwa",
+    option                     => "-T 15 -t 8",
+    fasta_file                 => $fasta_file_16569_MT,
+    source_ref                 => "bam2fastq_dna",
     addOrReplaceReadGroups_jar => "/home/shengq1/local/bin/picard/AddOrReplaceReadGroups.jar",
-    sh_direct  => 0,
-    pbs        => {
+    sh_direct                  => 0,
+    pbs                        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -410,7 +422,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/all_rsmc",
-    option           => "",                                                 #thread mode
+    option           => "",                                                     #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
     groups_ref       => [ "dna_groups", "rna_groups" ],
     source_type      => "BAM",                                                  #source_type can be BAM/Mpileup
@@ -548,13 +560,27 @@ my $config = {
       "mem"      => "20gb"
     },
   },
+  mpileup_TCGA => {
+    class           => "Samtools::Mpileup",
+    perform         => 1,
+    target_dir      => "${target_dir}/mpileup",
+    option          => "-A -q 20 -Q 20",
+    source_ref      => ["dna", "rna"],
+    groups_ref      => "groups",
+    fasta_file      => $fasta_file_16569_M,
+    sh_direct       => 0,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask($config, "rsmc_16569");
+performTask($config, "mpileup_TCGA");
 
 1;
-
-
 
