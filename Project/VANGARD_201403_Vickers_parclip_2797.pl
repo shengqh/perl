@@ -296,7 +296,7 @@ foreach my $dataset (@datasets) {
       source     => {
         T1_individual => [
           #"bowtie1out", "PARalyzer",
-          "bowtie1bam", "mirna_count", "smallRNA_1mm_count", "utr3_count", "binding_count", "smallRNA_1mm_count"
+          "bowtie1bam", "mirna_count", "smallRNA_1mm_count", "utr3_count", "binding_count"
         ],
         #T2_summary => ["annotation"],
       },
