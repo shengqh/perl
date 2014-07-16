@@ -18,7 +18,7 @@ my $trnacount_option  = "--length --sequence";
 my $utr3_option  = "-m 0";
 
 
-my $bowtie1_option    = "-a -m 100 --best --strata -v 2 -p 8";
+my $bowtie1_option    = "-a -m 100 --best --strata -v 1 -p 8";
 
 my $demultiplexing_config = {
   general        => { "task_name" => "parclip", },
