@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797_v2");
+my $root        = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797");
 my $cqstools    = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools    = "/home/shengq1/local/bin/samtools/samtools";
 my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
@@ -15,6 +15,9 @@ my $email       = "quanhu.sheng\@vanderbilt.edu";
 
 my $mirnacount_option = "-s";                                    #ignore score
 my $trnacount_option  = "--length --sequence";
+my $utr3_option  = "-m 0";
+
+
 my $bowtie1_option    = "-a -m 100 --best --strata -v 2 -p 8";
 
 my $demultiplexing_config = {
@@ -67,18 +70,42 @@ my $demultiplexing_config = {
       "mem"      => "20gb"
     },
   },
+  identical => {
+    class      => "FastqIdentical",
+    perform    => 1,
+    target_dir => "${root}/identical",
+    option     => "",
+    source_ref => [ "cutadapt", ".fastq.gz" ],
+    cqstools   => $cqstools,
+    extension  => "_clipped_identical.fastq",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
 };
 
 #performConfig($demultiplexing_config);
 
 my $kcv2797human = {
   files => {
-    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped.fastq.gz"],
-    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI41_Ago3INS1Huh7_clipped.fastq.gz"],
-    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI42_Ago2INS1HCEAC_clipped.fastq.gz"],
-    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI43_Ago3INS1HCEAC_clipped.fastq.gz"],
-    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
-    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
+    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped_identical.fastq.gz"],
+    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI41_Ago3INS1Huh7_clipped_identical.fastq.gz"],
+    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI42_Ago2INS1HCEAC_clipped_identical.fastq.gz"],
+    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI43_Ago3INS1HCEAC_clipped_identical.fastq.gz"],
+    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped_identical.fastq.gz"],
+    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped_identical.fastq.gz"],
+  },
+  countfiles => {
+    "2797-KCV-1_RPI40_Ago2INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI40_Ago2INS1Huh7_clipped_identical.fastq.dupcount"],
+    "2797-KCV-1_RPI41_Ago3INS1Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI41_Ago3INS1Huh7_clipped_identical.fastq.dupcount"],
+    "2797-KCV-1_RPI42_Ago2INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI42_Ago2INS1HCEAC_clipped_identical.fastq.dupcount"],
+    "2797-KCV-1_RPI43_Ago3INS1HCEAC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI43_Ago3INS1HCEAC_clipped_identical.fastq.dupcount"],
+    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped_identical.fastq.dupcount"],
+    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped_identical.fastq.dupcount"],
   },
   task_name           => "2797-KCV-hg19",
   mirna_coordinate    => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
@@ -93,8 +120,12 @@ my $kcv2797human = {
 
 my $kcv2797mouse = {
   files => {
-    "2797-KCV-1_RPI47_Ago2MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped.fastq.gz"],
-    "2797-KCV-1_RPI48_Ago3MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/cutadapt/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped.fastq.gz"],
+    "2797-KCV-1_RPI47_Ago2MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped_identical.fastq.gz"],
+    "2797-KCV-1_RPI48_Ago3MIN6Huh7" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped_identical.fastq.gz"],
+  },
+  countfiles => {
+    "2797-KCV-1_RPI47_Ago2MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI47_Ago2MIN6Huh7_clipped_identical.fastq.dupcount"],
+    "2797-KCV-1_RPI48_Ago3MIN6Huh7"  => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201403_parclip_2797/identical/result/2797-KCV-1_RPI48_Ago3MIN6Huh7_clipped_identical.fastq.dupcount"],
   },
   task_name        => "2797-KCV-mm10",
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
@@ -164,28 +195,12 @@ foreach my $dataset (@datasets) {
     #        "mem"      => "20gb"
     #      },
     #    },
-    identical => {
-      class      => "FastqIdentical",
-      perform    => 1,
-      target_dir => "${root}/identical",
-      option     => "",
-      source     => $dataset->{files},
-      cqstools   => $cqstools,
-      extension  => "_clipped_identical.fastq.gz",
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
-      },
-    },
     bowtie1bam => {
       class         => "Bowtie1",
       perform       => 1,
       target_dir    => "${target_dir}/bowtie1bam",
       option        => $bowtie1_option,
-      source_ref    => "identical",
+      source        => $dataset->{files},
       bowtie1_index => $dataset->{bowtie1_index},
       samonly       => 0,
       sh_direct     => 0,
@@ -202,8 +217,8 @@ foreach my $dataset (@datasets) {
       target_dir      => "${target_dir}/count_miRNA",
       option          => $mirnacount_option,
       source_ref      => "bowtie1bam",
-      fastq_files_ref => "identical",
-      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      fastq_files => $dataset->{files},
+      seqcount    => $dataset->{countfiles},
       cqs_tools       => $cqstools,
       gff_file        => $dataset->{mirna_coordinate},
       fasta_file      => $mirna_fasta,
@@ -222,8 +237,8 @@ foreach my $dataset (@datasets) {
       target_dir      => "${target_dir}/count_smallRNA",
       option          => $trnacount_option,
       source_ref      => "bowtie1bam",
-      fastq_files_ref => "identical",
-      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      fastq_files => $dataset->{files},
+      seqcount    => $dataset->{countfiles},
       cqs_tools       => $cqstools,
       gff_file        => $dataset->{smallrna_coordinate},
       samtools        => $samtools,
@@ -241,8 +256,8 @@ foreach my $dataset (@datasets) {
       target_dir      => "${target_dir}/count_3utr",
       option          => "-m 0",
       source_ref      => "bowtie1bam",
-      fastq_files_ref => "identical",
-      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      fastq_files => $dataset->{files},
+      seqcount    => $dataset->{countfiles},
       cqs_tools       => $cqstools,
       gff_file        => $dataset->{utr3_db},
       samtools        => $samtools,
@@ -260,8 +275,8 @@ foreach my $dataset (@datasets) {
       target_dir      => "${target_dir}/count_binding",
       option          => "-m 0",
       source_ref      => "bowtie1bam",
-      fastq_files_ref => "identical",
-      seqcount_ref    => [ "identical", ".dupcount\$" ],
+      fastq_files => $dataset->{files},
+      seqcount    => $dataset->{countfiles},
       cqs_tools       => $cqstools,
       gff_file        => $dataset->{binding_db},
       samtools        => $samtools,
@@ -279,10 +294,11 @@ foreach my $dataset (@datasets) {
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
-        T1_individual => [ 
-        #"bowtie1out", "PARalyzer", 
-        "bowtie1bam", "mirna_count", "smallRNA_1mm_count", "utr3_count", "binding_count" ],
-        T2_summary    => ["annotation"],
+        T1_individual => [
+          #"bowtie1out", "PARalyzer",
+          "bowtie1bam", "mirna_count", "smallRNA_1mm_count", "utr3_count", "binding_count", "smallRNA_1mm_count"
+        ],
+        #T2_summary => ["annotation"],
       },
       sh_direct => 0,
       pbs       => {
@@ -293,8 +309,6 @@ foreach my $dataset (@datasets) {
       },
     }
   };
-
-  #performTask( $parclip_config, "binding_count" );
 
   performConfig($parclip_config);
 }
