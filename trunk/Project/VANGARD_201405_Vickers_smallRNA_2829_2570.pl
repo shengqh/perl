@@ -225,7 +225,7 @@ my $config = {
   },
   smallRNA_1mm_table => {
     class      => "CQSMappedTable",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
     option     => "",
     source     => {
@@ -333,15 +333,14 @@ my $config = {
   groups => {
     "2829" => [ "2829-KCV-1A", "2829-KCV-1B", "2829-KCV-1C", "2829-KCV-1D", "2829-KCV-1E", "2829-KCV-1F", "2829-KCV-1G", "2829-KCV-1H", "2829-KCV-1I", "2829-KCV-1J" ],
 
-    #cqstools file_def -i . -r -f .+Pre.+xml$ -n \(.+-Pre\) -g \(Pre\)
+    #cqstools file_def -i . -r -f .+Pre.+xml$ -n \(.+\).bam -g \(Pre\)
     "2570PRE" => [
-      "01-018-Pre", "01-031-Pre", "01-061-Pre", "01-28-Pre",  "01-29-Pre",  "01-36-Pre",  "03-007-Pre", "03-011-Pre", "03-015-Pre", "03-018-Pre",
-      "03-026-Pre", "03-031-Pre", "03-033-Pre", "03-036-Pre", "03-047-Pre", "03-049-Pre", "03-063-Pre", "03-065-Pre", "03-16-Pre",  "03-17-Pre"
+      "01-018-Pre_GGCTAC", "01-031-Pre_GAGTGG", "01-061-Pre_ACTGAT", "01-28-Pre_ATCACG",  "01-29-Pre_TGACCA",  "01-29-Pre_TTAGGC",  "01-36-Pre_ACAGTG",  "03-007-Pre_ATTCCT",
+      "03-011-Pre_CAACTA", "03-015-Pre_CACGAT", "03-018-Pre_GTTTCG", "03-026-Pre_AGTCAA", "03-031-Pre_CAGGCG", "03-033-Pre_CATTTT", "03-036-Pre_ATGTCA", "03-047-Pre_CGGAAT",
+      "03-049-Pre_CTATAC", "03-063-Pre_GTGAAA", "03-065-Pre_GTAGAG", "03-16-Pre_CAGATC",  "03-17-Pre_GATCAG"
     ],
   },
-  pairs => {
-    "2819_VS_2570PRE" => { groups => [ "2829", "2570PRE" ], },
-  },
+  pairs  => { "2819_VS_2570PRE" => { groups => [ "2829", "2570PRE" ], }, },
   deseq2 => {
     class         => "DESeq2",
     perform       => 1,
