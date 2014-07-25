@@ -55,7 +55,7 @@ my $config     = {
     "FIRST"  => [ "DB115_5166", "DB117_5182", "DB119_5216", "DB121_5238", "DB113_5036" ],
     "SECOND" => [ "DB114_5165", "DB116_5181", "DB118_5215", "DB120_5237", "DB123_9999" ],
   },
-  paired => {
+  pairs => {
     "DEATH_ORDER" => {
       groups => [ "FIRST", "SECOND" ],
       paired => [ "P2083", "P2091", "P2108", "P2119", "P2018" ],
