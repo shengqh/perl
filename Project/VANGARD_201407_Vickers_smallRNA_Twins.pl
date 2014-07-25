@@ -16,8 +16,7 @@ my $hg19_trna_fasta    = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ense
 my $hg19_smallrna_bed  = "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed";
 my $hg19_bowtie1_index = "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS";
 
-my $email     = "quanhu.sheng\@vanderbilt.edu";
-my $task_name = "2261";
+my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $samtools           = "/home/shengq1/local/bin/samtools/samtools";
 my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
@@ -52,6 +51,16 @@ my $config     = {
     "DB121_5238" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201407_smallRNA_Twins/raw/Combined_DB121_2_CTGATC_3.fastq.gz"],
     "DB123_9999" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201407_smallRNA_Twins/raw/Combined_DB123_2_GTAGCC_3.fastq.gz"],
   },
+  groups => {
+    "FIRST"  => [ "DB115_5166", "DB117_5182", "DB119_5216", "DB121_5238", "DB113_5036" ],
+    "SECOND" => [ "DB114_5165", "DB116_5181", "DB118_5215", "DB120_5237", "DB123_9999" ],
+  },
+  paired => {
+    "DEATH_ORDER" => {
+      groups => [ "FIRST", "SECOND" ],
+      paired => [ "P2083", "P2091", "P2108", "P2119", "P2018" ],
+    },
+  },
   trimmer => {
     class      => "CQS::FastqTrimmer",
     perform    => 1,
@@ -85,7 +94,8 @@ my $config     = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
-    option     => "-q 3 -O 10 -m 12 -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATGTATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTAGGCATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACACAGTGATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAGATCATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACTAGCTTATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGGCTACATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACCTTGTAATCTCGTATGCCGTCTTCTGCTTG",
+    option     =>
+"-q 3 -O 10 -m 12 -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATGTATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTAGGCATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACACAGTGATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAGATCATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACTAGCTTATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACGGCTACATCTCGTATGCCGTCTTCTGCTTG -a GATCGGAAGAGCACACGTCTGAACTCCAGTCACCTTGTAATCTCGTATGCCGTCTTCTGCTTG",
     source_ref => "trimmer",
     adaptor    => "GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG",
     extension  => "_clipped.fastq",
@@ -200,6 +210,22 @@ my $config     = {
       "mem"      => "10gb"
     },
   },
+  miRNA_deseq2 => {
+    class      => "DESeq2",
+    perform    => 1,
+    target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table_deseq2",
+    option     => "",
+    source_ref => "pairs",
+    groups_ref => "groups",
+    countfile_ref  => "miRNA_1mm_table",
+    sh_direct => 1,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },  
   miRNA_1mm_count_overlap => {
     class           => "CQSMappedCount",
     perform         => 1,
@@ -347,7 +373,7 @@ my $config     = {
         "trimmer", "fastqc", "cutadapt", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
         "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count", "bowtie1_genome_cutadapt_topN_1mm_notidentical",
       ],
-      summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
+      summary => [ "miRNA_1mm_table", "miRNA_deseq2", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -360,7 +386,7 @@ my $config     = {
 };
 
 #performConfig($config);
-performTask($config, "cutadapt");
+performTask( $config, "miRNA_deseq2" );
 
 1;
 
