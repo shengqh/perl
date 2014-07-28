@@ -38,7 +38,7 @@ my $config = {
     target_dir  => "${target_dir}/samtoolsindex",
     option      => "",
     source_ref  => "bamfiles",
-    isbamsorted => 0,
+    isbamsorted => 1,
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
