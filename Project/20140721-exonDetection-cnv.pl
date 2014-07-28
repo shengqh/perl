@@ -7,7 +7,7 @@ use CQS::CNV;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 
-my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1//scratch/cqs/shengq1/exon_deletion");
+my $target_dir     = create_directory_or_die("/scratch/cqs/shengq1/exon_deletion");
 my $bedfile        = "/scratch/cqs/lij17/cnv/SureSelect_XT_Human_All_Exon_V4_withoutchr_withoutY_lite.bed";
 my $chromosome_dir = "/data/cqs/shengq1/reference/hg19_16569_MT_TCGA/chromosomes";
 my $chromosome_len = "/data/cqs/shengq1/reference/hg19_16569_MT_TCGA/GRCh37-lite.len";
