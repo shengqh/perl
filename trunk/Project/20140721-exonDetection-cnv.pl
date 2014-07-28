@@ -105,7 +105,6 @@ my $config = {
     chrFiles               => $chromosome_dir,
     inputFormat            => "BAM",
     mateOrientation        => "FR",
-
     #bedfile                => $bedfile, #provide bed file will make freec asking for the control samples
     pbs => {
       "email"    => $email,
@@ -127,3 +126,4 @@ cnmops( $config, "cnmops" );
 freec( $config, "freec" );
 
 1;
+
