@@ -18,7 +18,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
   general => {
     path_file => "/home/shengq1/local/bin/path.txt",
-    task_name => "exon_deletion"
+    task_name => "TCGA"
   },
   bamfiles => {
     "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/somaticmutation_comparison/bam/DNA_TP/TCGA-A7-A0D9-01A-31W-A071-09_HOLD_QC_PENDING_IlluminaGA-DNASeq_exome.bam"],
@@ -73,7 +73,7 @@ my $config = {
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "720",
+      "walltime" => "72",
       "mem"      => "10gb"
     },
   },
@@ -89,7 +89,7 @@ my $config = {
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "720",
+      "walltime" => "72",
       "mem"      => "40gb"
     },
   },
@@ -110,7 +110,7 @@ my $config = {
     pbs => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "720",
+      "walltime" => "72",
       "mem"      => "40gb"
     },
   }
