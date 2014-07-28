@@ -33,6 +33,8 @@ my $config = {
     "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/somaticmutation_comparison/bam/DNA_TP/TCGA-BH-A0H7-01A-13W-A071-09_HOLD_QC_PENDING_IlluminaGA-DNASeq_exome.bam"],
   },
   samtoolsindex => {
+    class => "Samtools::Index",
+    perform => 1,
     target_dir  => "${target_dir}/samtoolsindex",
     option      => "",
     source_ref  => "bamfiles",
@@ -60,6 +62,8 @@ my $config = {
     },
   },
   conifer => {
+    class =>"CNV::Conifer",
+    perform => 1,
     target_dir  => "${target_dir}/conifer",
     option      => "",
     source_ref  => "bamfiles",
@@ -74,6 +78,8 @@ my $config = {
     },
   },
   cnmops => {
+    class => "CNV::cnMops",
+    perform => 1,
     target_dir  => "${target_dir}/cnmops",
     option      => "",
     source_ref  => "bamfiles",
@@ -88,6 +94,8 @@ my $config = {
     },
   },
   freec => {
+    class => "CNV::Freec",
+    perform => 1,
     target_dir             => "${target_dir}/freec",
     option                 => "",
     source_ref             => "bamfiles",
