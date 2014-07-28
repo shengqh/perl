@@ -104,7 +104,7 @@ my $config = {
     coefficientOfVariation => 0.01,
     chrFiles               => $chromosome_dir,
     inputFormat            => "BAM",
-    mateOrientation        => "FR",
+    mateOrientation        => "0",
     #bedfile                => $bedfile, #provide bed file will make freec asking for the control samples
     pbs => {
       "email"    => $email,
@@ -115,13 +115,13 @@ my $config = {
   }
 };
 
-samtools_index($config, "samtoolsindex");
-
-cnvnator( $config, "cnvnator1000" );
-
-conifer( $config, "conifer" );
-
-cnmops( $config, "cnmops" );
+#samtools_index($config, "samtoolsindex");
+#
+#cnvnator( $config, "cnvnator1000" );
+#
+#conifer( $config, "conifer" );
+#
+#cnmops( $config, "cnmops" );
 
 freec( $config, "freec" );
 
