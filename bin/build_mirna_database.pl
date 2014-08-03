@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Slurp;
 
-my $version = 17;
+my $version = 21;
 my $dir = "/data/cqs/shengq1/reference/miRBase$version";
 if( ! -e $dir){
   mkdir($dir)
@@ -64,6 +64,22 @@ for my $file ( sort keys %filemap ) {
     run_command("ln -s ../${file} $file ");
   }
   run_command("bowtie2-build $file $name ");
+}
+chdir("..");
+
+my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
+chomp($bowtie);
+if ( !-e "bowtie_index_${bowtie}" ) {
+  mkdir("bowtie_index_${bowtie}");
+}
+chdir("bowtie_index_${bowtie}");
+for my $file ( sort keys %filemap ) {
+  my $name = $filemap{$file};
+  if ( !-e $file ) {
+    print "ln -s ../${file} $file \n";
+    run_command("ln -s ../${file} $file ");
+  }
+  run_command("bowtie-build $file $name ");
 }
 chdir("..");
 
