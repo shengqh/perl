@@ -339,8 +339,19 @@ my $config = {
       "03-011-Pre_CAACTA", "03-015-Pre_CACGAT", "03-018-Pre_GTTTCG", "03-026-Pre_AGTCAA", "03-031-Pre_CAGGCG", "03-033-Pre_CATTTT", "03-036-Pre_ATGTCA", "03-047-Pre_CGGAAT",
       "03-049-Pre_CTATAC", "03-063-Pre_GTGAAA", "03-065-Pre_GTAGAG", "03-16-Pre_CAGATC",  "03-17-Pre_GATCAG"
     ],
+    "2570POST_Placebo" => [
+      "01-28-Post_CGATGT",  "01-36-Post_GCCAAT",  "03-16-Post_ACTTGA", "03-17-Post_TAGCTT", "03-018-Post_CGTACG", "03-026-Post_AGTTCC",
+      "03-036-Post_CCGTCC", "03-063-Post_GTGGCC", "03-065-Post_GTCCGC"
+    ],
+    "2570POST_Colesevelam" => [
+      "01-018-Post_CTTGTA", "01-031-Post_GGTAGC", "01-061-Post_ATGAGC", "03-007-Post_CAAAAG", "03-011-Post_CACCGG", "03-015-Post_CACTCA",
+      "03-031-Post_CATGGC", "03-033-Post_CCAACA", "03-047-Post_CTAGCT", "03-049-Post_CTCAGA"
+    ],
   },
-  pairs  => { "2819_VS_2570PRE" => { groups => [ "2829", "2570PRE" ], }, },
+  pairs => {
+    "2819_VS_2570PRE" => { groups => [ "2829", "2570PRE" ], },
+    #"2819_VS_2570"    => { groups => [ "2829", "2570PRE", "2570POST_Placebo", "2570POST_Colesevelam" ], },
+  },
   deseq2 => {
     class         => "DESeq2",
     perform       => 1,
