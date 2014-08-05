@@ -382,8 +382,8 @@ my $config     = {
   },
 };
 
-#performConfig($config);
-performTask( $config, "bowtie1_genome_cutadapt_topN_pm" );
+performConfig($config);
+#performTask( $config, "bowtie1_genome_cutadapt_topN_pm" );
 
 1;
 
