@@ -485,6 +485,7 @@ my $config = {
     },
     cqs_tools => $cqstools,
     samtools  => $samtools,
+    sh_direct => 1,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
