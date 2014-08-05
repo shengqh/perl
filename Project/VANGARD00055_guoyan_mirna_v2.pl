@@ -47,10 +47,9 @@ my $trnacount_option           = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
-my $less50_mirnacount_option          = "-s --maxlen 49";                  
+my $less50_mirnacount_option          = "-s --maxlen 49";
 my $less50_mirna_overlap_count_option = "-s --maxlen 49 --gtf_key miRNA";
 my $less50_trnacount_option           = "--length --sequence --maxlen 49";
-
 
 my $rat = {
   source => {
@@ -92,25 +91,25 @@ my $rat = {
     "2570-16"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-16_1.fastq.gz"],
     "2570-17"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-17_1.fastq.gz"],
     "2570-18"                   => ["/autofs/blue_sequencer/Runs/projects/2570-KCV/2013-06-19/2570-KCV-18_1.fastq.gz"],
-    "Colesevelam-3251.1_CGATGT" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3251.1_CGATGT_L003_R1_001.fastq.gz"],
-    "Colesevelam-3251.2_ATCACG" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3251.2_ATCACG_L003_R1_001.fastq.gz"],
-    "Colesevelam-3258.1_ACAGTG" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3258.1_ACAGTG_L003_R1_001.fastq.gz"],
-    "Colesevelam-3258.2_TGACCA" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3258.2_TGACCA_L003_R1_001.fastq.gz"],
-    "Colesevelam-3269.1_GCCAAT" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3269.1_GCCAAT_L003_R1_001.fastq.gz"],
-    "Colesevelam-3269.2_TTAGGC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Colesevelam-3269.2_TTAGGC_L003_R1_001.fastq.gz"],
-    "Lean-3183.1_GATCAG"        => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Lean-3183.1_GATCAG_L003_R1_001.fastq.gz"],
-    "Lean-3185.1_CAGATC"        => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Lean-3185.1_CAGATC_L003_R1_001.fastq.gz"],
-    "Lean-3185.2_ACTTGA"        => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Lean-3185.2_ACTTGA_L003_R1_001.fastq.gz"],
-    "Lean-KR-4073.1_TAGCTT"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Lean-KR-4073.1_TAGCTT_L003_R1_001.fastq.gz"],
-    "Lean-KR-4073.2_CTTGTA"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Lean-KR-4073.2_CTTGTA_L003_R1_001.fastq.gz"],
-    "Lean-KR-4074.2_AGTCAA"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Lean-KR-4074.2_AGTCAA_L003_R1_001.fastq.gz"],
-    "Lean-KR-4074.3_GGCTAC"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Lean-KR-4074.3_GGCTAC_L003_R1_001.fastq.gz"],
-    "Vehicle-3259.1_CCGTCC"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3259.1_CCGTCC_L003_R1_001.fastq.gz"],
-    "Vehicle-3259.2_ATGTCA"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3259.2_ATGTCA_L003_R1_001.fastq.gz"],
-    "Vehicle-3263.1_GTGAAA"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3263.1_GTGAAA_L003_R1_001.fastq.gz"],
-    "Vehicle-3263.2_AGTTCC"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3263.2_AGTTCC_L003_R1_001.fastq.gz"],
-    "Vehicle-3271.1_GTCCGC"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.1_GTCCGC_L003_R1_001.fastq.gz"],
-    "Vehicle-3271.2_GTAGAG"     => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/Vehicle-3271.2_GTAGAG_L003_R1_001.fastq.gz"],
+    "Colesevelam-3251.1_CGATGT" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Colesevelam-3251.1_CGATGT_L003_R1_001.fastq.gz"],
+    "Colesevelam-3251.2_ATCACG" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Colesevelam-3251.2_ATCACG_L003_R1_001.fastq.gz"],
+    "Colesevelam-3258.1_ACAGTG" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Colesevelam-3258.1_ACAGTG_L003_R1_001.fastq.gz"],
+    "Colesevelam-3258.2_TGACCA" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Colesevelam-3258.2_TGACCA_L003_R1_001.fastq.gz"],
+    "Colesevelam-3269.1_GCCAAT" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Colesevelam-3269.1_GCCAAT_L003_R1_001.fastq.gz"],
+    "Colesevelam-3269.2_TTAGGC" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Colesevelam-3269.2_TTAGGC_L003_R1_001.fastq.gz"],
+    "Lean-3183.1_GATCAG"        => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Lean-3183.1_GATCAG_L003_R1_001.fastq.gz"],
+    "Lean-3185.1_CAGATC"        => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Lean-3185.1_CAGATC_L003_R1_001.fastq.gz"],
+    "Lean-3185.2_ACTTGA"        => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Lean-3185.2_ACTTGA_L003_R1_001.fastq.gz"],
+    "Lean-KR-4073.1_TAGCTT"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Lean-KR-4073.1_TAGCTT_L003_R1_001.fastq.gz"],
+    "Lean-KR-4073.2_CTTGTA"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Lean-KR-4073.2_CTTGTA_L003_R1_001.fastq.gz"],
+    "Lean-KR-4074.2_AGTCAA"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Lean-KR-4074.2_AGTCAA_L003_R1_001.fastq.gz"],
+    "Lean-KR-4074.3_GGCTAC"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Lean-KR-4074.3_GGCTAC_L003_R1_001.fastq.gz"],
+    "Vehicle-3259.1_CCGTCC"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Vehicle-3259.1_CCGTCC_L003_R1_001.fastq.gz"],
+    "Vehicle-3259.2_ATGTCA"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Vehicle-3259.2_ATGTCA_L003_R1_001.fastq.gz"],
+    "Vehicle-3263.1_GTGAAA"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Vehicle-3263.1_GTGAAA_L003_R1_001.fastq.gz"],
+    "Vehicle-3263.2_AGTTCC"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Vehicle-3263.2_AGTTCC_L003_R1_001.fastq.gz"],
+    "Vehicle-3271.1_GTCCGC"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Vehicle-3271.1_GTCCGC_L003_R1_001.fastq.gz"],
+    "Vehicle-3271.2_GTAGAG"     => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/Vehicle-3271.2_GTAGAG_L003_R1_001.fastq.gz"],
   },
   mirna_coordinate    => $rn4_mrna_gff,
   trna_coordinate     => $rn4_trna_bed,
@@ -272,46 +271,6 @@ my $human = {
     "2572-KCV-1-28"      => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/CHL001_CAAAAG_L002_R1_001.fastq.gz"],
     "2572-KCV-1-29"      => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/CHL002_CAACTA_L002_R1_001.fastq.gz"],
     "2572-KCV-1-30"      => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/data/VickersTemp/CHL003_CACCGG_L002_R1_001.fastq.gz"],
-    "01-018-Post_CTTGTA" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-018-Post_CTTGTA_L005_R1_001.fastq.gz"],
-    "01-018-Pre_GGCTAC"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-018-Pre_GGCTAC_L005_R1_001.fastq.gz"],
-    "01-031-Post_GGTAGC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-031-Post_GGTAGC_L005_R1_001.fastq.gz"],
-    "01-031-Pre_GAGTGG"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-031-Pre_GAGTGG_L005_R1_001.fastq.gz"],
-    "01-061-Post_ATGAGC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-061-Post_ATGAGC_L004_R1_001.fastq.gz"],
-    "01-061-Pre_ACTGAT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-061-Pre_ACTGAT_L004_R1_001.fastq.gz"],
-    "01-28-Post_CGATGT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-28-Post_CGATGT_L004_R1_001.fastq.gz"],
-    "01-28-Pre_ATCACG"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-28-Pre_ATCACG_L004_R1_001.fastq.gz"],
-    "01-29-Pre_TGACCA"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-29-Pre_TGACCA_L005_R1_001.fastq.gz"],
-    "01-29-Pre_TTAGGC"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-29-Pre_TTAGGC_L005_R1_001.fastq.gz"],
-    "01-36-Post_GCCAAT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-36-Post_GCCAAT_L004_R1_001.fastq.gz"],
-    "01-36-Pre_ACAGTG"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/01-36-Pre_ACAGTG_L004_R1_001.fastq.gz"],
-    "03-007-Post_CAAAAG" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-007-Post_CAAAAG_L005_R1_001.fastq.gz"],
-    "03-007-Pre_ATTCCT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-007-Pre_ATTCCT_L005_R1_001.fastq.gz"],
-    "03-011-Post_CACCGG" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-011-Post_CACCGG_L004_R1_001.fastq.gz"],
-    "03-011-Pre_CAACTA"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-011-Pre_CAACTA_L004_R1_001.fastq.gz"],
-    "03-015-Post_CACTCA" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-015-Post_CACTCA_L005_R1_001.fastq.gz"],
-    "03-015-Pre_CACGAT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-015-Pre_CACGAT_L005_R1_001.fastq.gz"],
-    "03-018-Post_CGTACG" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-018-Post_CGTACG_L004_R1_001.fastq.gz"],
-    "03-018-Pre_GTTTCG"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-018-Pre_GTTTCG_L004_R1_001.fastq.gz"],
-    "03-026-Post_AGTTCC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-026-Post_AGTTCC_L004_R1_001.fastq.gz"],
-    "03-026-Pre_AGTCAA"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-026-Pre_AGTCAA_L004_R1_001.fastq.gz"],
-    "03-031-Post_CATGGC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-031-Post_CATGGC_L004_R1_001.fastq.gz"],
-    "03-031-Pre_CAGGCG"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-031-Pre_CAGGCG_L004_R1_001.fastq.gz"],
-    "03-033-Post_CCAACA" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-033-Post_CCAACA_L005_R1_001.fastq.gz"],
-    "03-033-Pre_CATTTT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-033-Pre_CATTTT_L005_R1_001.fastq.gz"],
-    "03-036-Post_CCGTCC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-036-Post_CCGTCC_L005_R1_001.fastq.gz"],
-    "03-036-Pre_ATGTCA"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-036-Pre_ATGTCA_L005_R1_001.fastq.gz"],
-    "03-047-Post_CTAGCT" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-047-Post_CTAGCT_L004_R1_001.fastq.gz"],
-    "03-047-Pre_CGGAAT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-047-Pre_CGGAAT_L004_R1_001.fastq.gz"],
-    "03-049-Post_CTCAGA" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-049-Post_CTCAGA_L005_R1_001.fastq.gz"],
-    "03-049-Pre_CTATAC"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-049-Pre_CTATAC_L005_R1_001.fastq.gz"],
-    "03-063-Post_GTGGCC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-063-Post_GTGGCC_L005_R1_001.fastq.gz"],
-    "03-063-Pre_GTGAAA"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-063-Pre_GTGAAA_L005_R1_001.fastq.gz"],
-    "03-065-Post_GTCCGC" => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-065-Post_GTCCGC_L004_R1_001.fastq.gz"],
-    "03-065-Pre_GTAGAG"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-065-Pre_GTAGAG_L004_R1_001.fastq.gz"],
-    "03-16-Post_ACTTGA"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-16-Post_ACTTGA_L005_R1_001.fastq.gz"],
-    "03-16-Pre_CAGATC"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-16-Pre_CAGATC_L005_R1_001.fastq.gz"],
-    "03-17-Post_TAGCTT"  => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Post_TAGCTT_L004_R1_001.fastq.gz"],
-    "03-17-Pre_GATCAG"   => ["/autofs/blue_sequencer/Runs/130823_SN508_0279_AD2BAFACXX/publish/03-17-Pre_GATCAG_L004_R1_001.fastq.gz"],
   },
   mirna_coordinate    => $hg19_mrna_gff,
   trna_coordinate     => $hg19_trna_bed,
@@ -341,7 +300,7 @@ my $human = {
     "Plasma_fractions" => [ "Sample1", "Sample2", "Sample3", "Sample4", "Sample5", ],
     "Human_HDL_N10"    => [
       "01-018-Post_CTTGTA", "01-018-Pre_GGCTAC", "01-031-Post_GGTAGC", "01-031-Pre_GAGTGG", "01-061-Post_ATGAGC", "01-061-Pre_ACTGAT", "01-28-Post_CGATGT",  "01-28-Pre_ATCACG",
-      "01-29-Pre_TGACCA",   "01-29-Pre_TTAGGC",  "01-36-Post_GCCAAT",  "01-36-Pre_ACAGTG",  "03-007-Post_CAAAAG", "03-007-Pre_ATTCCT", "03-011-Post_CACCGG", "03-011-Pre_CAACTA",
+      "01-29-Post_TGACCA",   "01-29-Pre_TTAGGC",  "01-36-Post_GCCAAT",  "01-36-Pre_ACAGTG",  "03-007-Post_CAAAAG", "03-007-Pre_ATTCCT", "03-011-Post_CACCGG", "03-011-Pre_CAACTA",
       "03-015-Post_CACTCA", "03-015-Pre_CACGAT", "03-018-Post_CGTACG", "03-018-Pre_GTTTCG", "03-026-Post_AGTTCC", "03-026-Pre_AGTCAA", "03-031-Post_CATGGC", "03-031-Pre_CAGGCG",
       "03-033-Post_CCAACA", "03-033-Pre_CATTTT", "03-036-Post_CCGTCC", "03-036-Pre_ATGTCA", "03-047-Post_CTAGCT", "03-047-Pre_CGGAAT", "03-049-Post_CTCAGA", "03-049-Pre_CTATAC",
       "03-063-Post_GTGGCC", "03-063-Pre_GTGAAA", "03-065-Post_GTCCGC", "03-065-Pre_GTAGAG", "03-16-Post_ACTTGA",  "03-16-Pre_CAGATC",  "03-17-Post_TAGCTT",  "03-17-Pre_GATCAG"
@@ -430,7 +389,7 @@ foreach my $def (@defs) {
       perform    => 1,
       target_dir => "${root}/identical",
       option     => "",
-      source_ref => ["cutadapt_len", "fastq.gz\$"],
+      source_ref => [ "cutadapt_len", "fastq.gz\$" ],
       cqstools   => $cqstools,
       extension  => "_clipped_identical.fastq.gz",
       sh_direct  => 1,
@@ -650,17 +609,15 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    
+
     sequencetask => {
       class      => "CQS::SequenceTask",
       perform    => 0,
       target_dir => "${target_dir}/sequencetask",
       option     => "",
       source     => {
-        individual => [
-          "identical", "bowtie1_genome_cutadapt_topN_1mm_notidentical", "bowtie1_genome_cutadapt_topN_1mm",
-          "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
-        ],
+        individual =>
+          [ "identical", "bowtie1_genome_cutadapt_topN_1mm_notidentical", "bowtie1_genome_cutadapt_topN_1mm", "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count", ],
         summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
       },
       sh_direct => 0,
@@ -671,7 +628,7 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    
+
     #ignore all reads larger than 50
     less50_mirna_1mm_count => {
       class           => "MirnaCount",
@@ -852,9 +809,7 @@ foreach my $def (@defs) {
       target_dir => "${target_dir}/less50_sequencetask",
       option     => "",
       source     => {
-        individual => [
-          "less50_mirna_1mm_count", "less50_miRNA_1mm_count_overlap", "less50_tRNA_1mm_count", "less50_smallRNA_1mm_count",
-        ],
+        individual => [ "less50_mirna_1mm_count", "less50_miRNA_1mm_count_overlap", "less50_tRNA_1mm_count", "less50_smallRNA_1mm_count", ],
         summary => [ "less50_miRNA_1mm_table", "less50_tRNA_1mm_table", "less50_smallRNA_1mm_table", "less50_smallRNA_1mm_category", "less50_miRNA_1mm_overlap_position", "less50_tRNA_1mm_position" ],
       },
       sh_direct => 1,
@@ -865,11 +820,11 @@ foreach my $def (@defs) {
         "mem"      => "40gb"
       },
     },
-    
-    
+
   };
 
   performConfig($config);
+
   #performTask($config, "bowtie1_genome_cutadapt_topN_1mm_notidentical");
 }
 
