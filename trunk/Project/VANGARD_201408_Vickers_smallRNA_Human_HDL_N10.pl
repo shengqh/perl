@@ -26,6 +26,8 @@ my $trnacount_option           = "--length --sequence --no_unmapped_fastq";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA --no_unmapped_fastq";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
+my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
+
 my $def = {
   task_name           => "Human_HDL_N10",
   mirna_coordinate    => $hg19_mrna_gff,
@@ -337,6 +339,25 @@ my $config     = {
       "mem"      => "40gb"
     },
   },
+
+  #2 perfect match search
+  bowtie1_genome_cutadapt_topN_pm => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm",
+    option        => $bowtie1_option_pm,
+    source_ref    => [ "identical", ".fastq\$" ],
+    bowtie1_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.0.1/mature.dna",
+    samonly       => 0,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -361,6 +382,7 @@ my $config     = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask( $config, "bowtie1_genome_cutadapt_topN_pm" );
 
 1;
