@@ -375,7 +375,7 @@ my $config = {
 
   #2 perfect match search
   chromosome_count => {
-    class      => "CQS::ChromosomeCount",
+    class      => "CQS::CQSChromosomeCount",
     perform    => 1,
     target_dir => "${target_dir}/chromoeome_count",
     option     => "",
