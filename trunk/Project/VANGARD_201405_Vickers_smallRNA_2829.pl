@@ -129,7 +129,7 @@ foreach my $def (@defs) {
       perform       => 1,
       target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm",
       option        => $bowtie1_option_1mm,
-      source_ref    => [ "identical", ".fastq\$" ],
+      source_ref    => [ "identical", ".fastq.gz\$" ],
       bowtie1_index => $def->{bowtie1_index},
       samonly       => 0,
       sh_direct     => 1,
