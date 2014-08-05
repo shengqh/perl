@@ -48,14 +48,14 @@ my $config = {
     "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/ref_panel/genetic_map_chr22_combined_b37.txt"],
   },
   shapeit => {
-    class      => "Imputation::Shapeit",
-    perform    => 1,
-    target_dir => "${target_dir}/shapeit",
-    option     => "",
-    source_ref => "ped_files",
-    map_ref    => "map_files",
-    sh_direct  => 1,
-    pbs        => {
+    class        => "Imputation::Shapeit",
+    perform      => 1,
+    target_dir   => "${target_dir}/shapeit",
+    option       => "",
+    source_ref   => "ped_files",
+    map_file_ref => "map_files",
+    sh_direct    => 1,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
