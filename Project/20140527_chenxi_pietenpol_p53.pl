@@ -54,7 +54,7 @@ my $config = {
     option       => "",
     source_ref   => "ped_files",
     map_file_ref => "map_files",
-    sh_direct    => 1,
+    sh_direct    => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
