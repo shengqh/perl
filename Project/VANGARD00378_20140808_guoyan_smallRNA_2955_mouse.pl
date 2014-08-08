@@ -64,6 +64,19 @@ my $config     = {
       "mem"      => "10gb"
     },
   },
+  fastqc => {
+    class      => "CQS::FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc",
+    option     => "",
+    source_ref => "trimmer",
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   cutadapt => {
     class      => "Cutadapt",
     perform    => 1,
@@ -327,7 +340,7 @@ my $config     = {
     option     => "",
     source     => {
       individual => [
-        "trimmer", "cutadapt", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
+        "trimmer", "fastqc", "cutadapt", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
         "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count", "bowtie1_genome_cutadapt_topN_1mm_notidentical",
       ],
       summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
@@ -342,7 +355,8 @@ my $config     = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "fastqc");
 
 1;
 
