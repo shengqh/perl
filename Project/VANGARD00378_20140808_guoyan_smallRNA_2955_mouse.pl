@@ -355,8 +355,8 @@ my $config     = {
   },
 };
 
-#performConfig($config);
-performTask( $config, "fastqc" );
+performConfig($config);
+#performTask( $config, "fastqc" );
 
 1;
 
