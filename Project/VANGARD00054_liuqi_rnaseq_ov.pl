@@ -6,6 +6,7 @@ use CQS::QC;
 use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
+use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/VANGARD00054");
 
@@ -76,7 +77,9 @@ my $config = {
     },
   },
   rnaseqc => {
-    target_dir     => "${target_dir}/RNASeQC",
+    class => "QualityControl::RNASeQC",
+    perform => 1,
+    target_dir     => "${target_dir}/RNASeQC_2",
     option         => "",
     transcript_gtf => $transcript_gtf,
     genome_fasta   => "/data/cqs/guoy1/reference/hg19/hg19_chr.fa",
@@ -133,6 +136,8 @@ my $config = {
   },
 };
 
+performTask($config, "rnaseqc");
+
 #fastqc_by_pbs( $config, "fastqc" );
 
 #tophat2_by_pbs( $config, "tophat2" );
@@ -147,6 +152,6 @@ my $config = {
 #
 ##cuffdiff_by_pbs( $config, "cufflinks_cuffdiff" );
 #
-copy_and_rename_cuffdiff_file($config, "rename_diff");
+#copy_and_rename_cuffdiff_file($config, "rename_diff");
 
 1;
