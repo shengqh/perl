@@ -77,7 +77,7 @@ my $config = {
     },
   },
   rnaseqc => {
-    class => "QualityControl::RNASeQC",
+    class => "CQS::RNASeQC",
     perform => 1,
     target_dir     => "${target_dir}/RNASeQC_2",
     option         => "",
