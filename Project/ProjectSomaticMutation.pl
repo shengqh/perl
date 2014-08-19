@@ -247,7 +247,7 @@ my $config = {
   },
   dna_bwa => {
     class                      => "BWA",
-    perform                    => 1,
+    perform                    => 0,
     target_dir                 => "${target_dir}/dna_bwa",
     option                     => "-T 15 -t 8",
     fasta_file                 => $fasta_file_16569_MT,
@@ -263,7 +263,7 @@ my $config = {
   },
   dna_bwa_refine => {
     class              => "GATKRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/dna_bwa_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file_16569_MT,
@@ -300,7 +300,7 @@ my $config = {
   },
   tophat2_rna => {
     class                => "Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/rna_tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "bam2fastq_rna",
@@ -318,7 +318,7 @@ my $config = {
   },
   tophat2_rna_removeduplicates => {
     class              => "Picard::MarkDuplicates",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/rna_tophat2_redup",
     option             => "-Xmx20g",
     source_ref         => "tophat2_rna",
@@ -379,7 +379,7 @@ my $config = {
   },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/all_muTect",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -400,7 +400,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/all_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -420,7 +420,7 @@ my $config = {
   },
   rsmc => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/all_rsmc",
     option           => "",                                                     #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
@@ -459,7 +459,26 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  muTect_TCGA_RNA => {
+  annovar_muTect_TCGA_DNA => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/TCGA_muTect_DNA",
+    option     => $annovar_param,
+    source_ref => [ "muTect_TCGA_DNA", ".pass.vcf\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+   muTect_TCGA_RNA => {
     class        => "GATK::MuTect",
     perform      => 0,
     target_dir   => "${target_dir}/TCGA_muTect_RNA",
@@ -478,6 +497,25 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "240",
       "mem"      => "40gb"
+    },
+  },
+  annovar_TCGA_muTect_RNA => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/TCGA_muTect_RNA",
+    option     => $annovar_param,
+    source_ref => [ "TCGA_muTect_RNA", ".pass.vcf\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
     },
   },
   varscan2_TCGA_DNA => {
@@ -500,6 +538,25 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  annovar_varscan2_TCGA_DNA => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/varscan2_TCGA_DNA",
+    option     => $annovar_param,
+    source_ref => [ "varscan2_TCGA_DNA", "Somatic.hc\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   varscan2_TCGA_RNA => {
     class           => "VarScan2::Somatic",
     perform         => 0,
@@ -518,6 +575,25 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "40gb"
+    },
+  },
+  annovar_varscan2_TCGA_RNA => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/varscan2_TCGA_RNA",
+    option     => $annovar_param,
+    source_ref => [ "varscan2_TCGA_RNA", "Somatic.hc\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
     },
   },
   rsmc_TCGA_DNA => {
@@ -562,7 +638,7 @@ my $config = {
   },
   depth_TCGA => {
     class           => "Samtools::Depth",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/depth",
     option          => "-q 20 -Q 20",
     source_ref      => ["dna", "rna"],
@@ -579,9 +655,9 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask($config, "depth_TCGA");
+#performTask($config, "depth_TCGA");
 
 1;
 
