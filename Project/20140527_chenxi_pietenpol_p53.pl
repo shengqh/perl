@@ -8,7 +8,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
 my $target_dir = "/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53";
- 
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
