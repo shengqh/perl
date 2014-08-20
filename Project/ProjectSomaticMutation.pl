@@ -478,7 +478,7 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-   muTect_TCGA_RNA => {
+  muTect_TCGA_RNA => {
     class        => "GATK::MuTect",
     perform      => 0,
     target_dir   => "${target_dir}/TCGA_muTect_RNA",
@@ -520,7 +520,7 @@ my $config = {
   },
   varscan2_TCGA_DNA => {
     class           => "VarScan2::Somatic",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/TCGA_varscan2_DNA",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -559,7 +559,7 @@ my $config = {
   },
   varscan2_TCGA_RNA => {
     class           => "VarScan2::Somatic",
-    perform         => 0,
+    perform         => 1,
     target_dir      => "${target_dir}/TCGA_varscan2_RNA",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -603,7 +603,7 @@ my $config = {
     option           => "",
     source_ref       => "dna",
     groups_ref       => "dna_groups",
-    source_type      => "BAM",                                               #source_type can be BAM/Mpileup
+    source_type      => "BAM",                                          #source_type can be BAM/Mpileup
     fasta_file       => $fasta_file_16569_MT,
     annovar_buildver => "hg19",
     sh_direct        => 0,
@@ -636,16 +636,16 @@ my $config = {
     },
   },
   depth_TCGA => {
-    class           => "Samtools::Depth",
-    perform         => 0,
-    target_dir      => "${target_dir}/depth",
-    option          => "-q 20 -Q 20",
-    source_ref      => ["dna", "rna"],
-    groups_ref      => ["dna_groups", "rna_groups", "sample_groups"],
-    minimum_depth   => 10,
-    cqs_tools       => $cqstools,
-    sh_direct       => 0,
-    pbs             => {
+    class         => "Samtools::Depth",
+    perform       => 0,
+    target_dir    => "${target_dir}/depth",
+    option        => "-q 20 -Q 20",
+    source_ref    => [ "dna", "rna" ],
+    groups_ref    => [ "dna_groups", "rna_groups", "sample_groups" ],
+    minimum_depth => 10,
+    cqs_tools     => $cqstools,
+    sh_direct     => 0,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
