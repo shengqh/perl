@@ -461,7 +461,7 @@ my $config = {
   },
   annovar_muTect_TCGA_DNA => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/TCGA_muTect_DNA",
     option     => $annovar_param,
     source_ref => [ "muTect_TCGA_DNA", ".pass.vcf\$" ],
@@ -501,7 +501,7 @@ my $config = {
   },
   annovar_TCGA_muTect_RNA => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/TCGA_muTect_RNA",
     option     => $annovar_param,
     source_ref => [ "muTect_TCGA_RNA", ".pass.vcf\$" ],
@@ -520,7 +520,7 @@ my $config = {
   },
   varscan2_TCGA_DNA => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/TCGA_varscan2_DNA",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -540,7 +540,7 @@ my $config = {
   },
   annovar_varscan2_TCGA_DNA => {
     class      => "Annotation::Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/TCGA_varscan2_DNA",
     option     => $annovar_param,
     source_ref => [ "varscan2_TCGA_DNA", "snp.vcf.Somatic.hc\$" ],
@@ -559,7 +559,7 @@ my $config = {
   },
   varscan2_TCGA_RNA => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/TCGA_varscan2_RNA",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -579,7 +579,7 @@ my $config = {
   },
   annovar_varscan2_TCGA_RNA => {
     class      => "Annotation::Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/TCGA_varscan2_RNA",
     option     => $annovar_param,
     source_ref => [ "varscan2_TCGA_RNA", "snp.vcf.Somatic.hc\$" ],
@@ -598,7 +598,7 @@ my $config = {
   },
   rsmc_TCGA_DNA => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/TCGA_rsmc_positionInRead_DNA",
     option           => "",
     source_ref       => "dna",
@@ -617,7 +617,7 @@ my $config = {
   },
   rsmc_TCGA_RNA => {
     class            => "RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/TCGA_rsmc_positionInRead_RNA",
     option           => "",
     source_ref       => "rna",
