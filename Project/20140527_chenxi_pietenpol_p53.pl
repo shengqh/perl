@@ -66,7 +66,7 @@ my $config = {
   },
   shapeit => {
     class        => "Imputation::Shapeit",
-    perform      => 1,
+    perform      => 0,
     path_file    => "/home/shengq1/local/bin/path_glibc2.14.txt",
     target_dir   => "${target_dir}/shapeit",
     option       => "",
