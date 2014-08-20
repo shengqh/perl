@@ -15,6 +15,7 @@ my $email     = "quanhu.sheng\@vanderbilt.edu";
 my $task_name = "2572";
 
 my $raconfig = {
+  name => "RA_", 
   source => {
     "2572-KCV-1-19" =>
       ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA/result/2572-KCV-1-19/2572-KCV-1-19.bam.count.mapped.xml"],
@@ -37,6 +38,7 @@ my $raconfig = {
 };
 
 my $sleconfig = {
+  name => "SLE_", 
   source => {
     "2572-KCV-1-25" =>
       ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA/result/2572-KCV-1-25/2572-KCV-1-25.bam.count.mapped.xml"],
@@ -66,7 +68,7 @@ foreach my $def (@defs) {
     smallRNA_1mm_table => {
       class      => "CQSMappedTable",
       perform    => 1,
-      target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
+      target_dir => "${target_dir}/" . $def->{name} . "topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
       option     => "",
       source     => $def->{source},
       cqs_tools  => $cqstools,
@@ -81,7 +83,7 @@ foreach my $def (@defs) {
     deseq2 => {
       class         => "DESeq2",
       perform       => 1,
-      target_dir    => "${target_dir}/deseq2",
+      target_dir    => "${target_dir}/" . $def->{name} . "topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table_deseq2",
       option        => "",
       source_ref    => $def->{pairs},
       groups_ref    => $def->{groups},
