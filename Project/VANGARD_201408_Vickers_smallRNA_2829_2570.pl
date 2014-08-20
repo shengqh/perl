@@ -248,7 +248,7 @@ my $config     = {
     },
   },
   microRNA_deseq2 => {
-    class         => "Comparision::DESeq2",
+    class         => "Comparison::DESeq2",
     perform       => 1,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table_deseq2",
     option        => "",
@@ -385,7 +385,7 @@ my $config     = {
     },
   },
   smallRNA_deseq2 => {
-    class         => "Comparision::DESeq2",
+    class         => "Comparison::DESeq2",
     perform       => 1,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table_deseq2",
     option        => "",
