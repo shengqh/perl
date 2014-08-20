@@ -90,6 +90,7 @@ my $config = {
     source_ref            => [ "shapeit", "phased\$" ],
     map_file_ref          => "map_files",
     haplo_file_ref        => "haplo_files",
+    ped_file_ref          => "ped_files",
     sh_direct             => 0,
     pbs                   => {
       "email"    => $email,
