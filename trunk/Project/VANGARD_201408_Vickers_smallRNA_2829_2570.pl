@@ -10,7 +10,7 @@ use CQS::ClassFactory;
 my $root     = create_directory_or_die("/scratch/cqs/shengq1/vangard/VANGARD_Vickers/201408_smallRNA_2829_2570/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $hg19_mrna_gff      = "/data/cqs/shengq1/reference/miRBase21/hsa.gff3";
+my $hg19_mrna_gff      = "/data/cqs/shengq1/reference/miRBase20/hsa.gff3";
 my $hg19_trna_bed      = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed";
 my $hg19_trna_fasta    = "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa";
 my $hg19_smallrna_bed  = "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed";
@@ -24,7 +24,7 @@ my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
 my $mirnacount_option          = "-s";                                                    #ignore score
 my $trnacount_option           = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
-my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase21/mature.dna.fa";
+my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
 my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
 
@@ -117,7 +117,7 @@ my $config     = {
 
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -130,7 +130,7 @@ my $config     = {
   },
   cutadapt => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/cutadapt",
     option     => "-O 10 -m 12",
     source_ref => "files",
@@ -146,7 +146,7 @@ my $config     = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -161,7 +161,7 @@ my $config     = {
   },
   identical => {
     class      => "FastqIdentical",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/identical",
     option     => "",
     source_ref => [ "cutadapt", ".fastq.gz" ],
@@ -179,7 +179,7 @@ my $config     = {
   #not identical, for IGV
   bowtie1_genome_cutadapt_topN_1mm_notidentical => {
     class         => "Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
     option        => $bowtie1_option_1mm,
     source_ref    => [ "cutadapt", ".fastq.gz\$" ],
@@ -197,7 +197,7 @@ my $config     = {
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
     class         => "Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm",
     option        => $bowtie1_option_1mm,
     source_ref    => [ "identical", ".fastq.gz\$" ],
@@ -233,7 +233,7 @@ my $config     = {
   },
   miRNA_1mm_table => {
     class      => "CQSMirnaTable",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table",
     option     => "",
     source_ref => "mirna_1mm_count",
@@ -249,7 +249,7 @@ my $config     = {
   },
   microRNA_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -285,7 +285,7 @@ my $config     = {
   },
   miRNA_1mm_overlap_position => {
     class      => "CQSMappedPosition",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap_position",
     option     => "-o " . $def->{task_name} . "_miRNA.position",
     source_ref => "miRNA_1mm_count_overlap",
@@ -300,7 +300,7 @@ my $config     = {
   },
   tRNA_1mm_count => {
     class           => "CQSMappedCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
     option          => $trnacount_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -320,7 +320,7 @@ my $config     = {
   },
   tRNA_1mm_table => {
     class      => "CQSMappedTable",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_table",
     option     => "",
     source_ref => [ "tRNA_1mm_count", ".xml" ],
@@ -336,7 +336,7 @@ my $config     = {
   },
   tRNA_1mm_position => {
     class      => "CQSMappedPosition",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA_position",
     option     => "-o " . $def->{task_name} . "_tRNA.position",
     source_ref => "tRNA_1mm_count",
@@ -351,7 +351,7 @@ my $config     = {
   },
   smallRNA_1mm_count => {
     class           => "CQSMappedCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
     option          => $trnacount_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -370,7 +370,7 @@ my $config     = {
   },
   smallRNA_1mm_table => {
     class      => "CQSMappedTable",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table",
     option     => "",
     source_ref => [ "smallRNA_1mm_count", ".xml" ],
@@ -386,7 +386,7 @@ my $config     = {
   },
   smallRNA_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -402,7 +402,7 @@ my $config     = {
   },
   smallRNA_1mm_category => {
     class           => "CQSSmallRNACategory",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category",
     option          => "",
     source_ref      => [ "smallRNA_1mm_count", ".mapped.xml\$" ],
