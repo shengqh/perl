@@ -95,19 +95,13 @@ my $config     = {
   },
 
   groups => {
-    "2829" => [ "2829-KCV-1A", "2829-KCV-1B", "2829-KCV-1C", "2829-KCV-1D", "2829-KCV-1E", "2829-KCV-1F", "2829-KCV-1G", "2829-KCV-1H", "2829-KCV-1I", "2829-KCV-1J" ],
-
+    "2829"    => [ "2829-KCV-1A", "2829-KCV-1B", "2829-KCV-1C", "2829-KCV-1D", "2829-KCV-1E", "2829-KCV-1F", "2829-KCV-1G", "2829-KCV-1H", "2829-KCV-1I", "2829-KCV-1J" ],
     "2570PRE" => [
-      "01-18-Pre_GGCTAC", "01-31-Pre_GAGTGG", "01-61-Pre_ACTGAT", "01-28-Pre_ATCACG", "01-29-Pre_TGACCA", "01-29-Pre_TTAGGC", "01-36-Pre_ACAGTG", "03-07-Pre_ATTCCT",
-      "03-11-Pre_CAACTA", "03-15-Pre_CACGAT", "03-18-Pre_GTTTCG", "03-26-Pre_AGTCAA", "03-31-Pre_CAGGCG", "03-33-Pre_CATTTT", "03-36-Pre_ATGTCA", "03-47-Pre_CGGAAT",
-      "03-49-Pre_CTATAC", "03-63-Pre_GTGAAA", "03-65-Pre_GTAGAG", "03-16-Pre_CAGATC", "03-17-Pre_GATCAG"
+      "01-18-Pre", "01-28-Pre", "01-29-Pre", "01-31-Pre", "01-36-Pre", "01-61-Pre", "03-07-Pre", "03-11-Pre", "03-15-Pre", "03-16-Pre",
+      "03-17-Pre", "03-18-Pre", "03-26-Pre", "03-31-Pre", "03-33-Pre", "03-36-Pre", "03-47-Pre", "03-49-Pre", "03-63-Pre", "03-65-Pre"
     ],
-    "2570POST_Placebo" =>
-      [ "01-28-Post_CGATGT", "01-36-Post_GCCAAT", "03-16-Post_ACTTGA", "03-17-Post_TAGCTT", "03-18-Post_CGTACG", "03-26-Post_AGTTCC", "03-36-Post_CCGTCC", "03-63-Post_GTGGCC", "03-65-Post_GTCCGC" ],
-    "2570POST_Colesevelam" => [
-      "01-18-Post_CTTGTA", "01-31-Post_GGTAGC", "01-61-Post_ATGAGC", "03-07-Post_CAAAAG", "03-11-Post_CACCGG", "03-15-Post_CACTCA",
-      "03-31-Post_CATGGC", "03-33-Post_CCAACA", "03-47-Post_CTAGCT", "03-49-Post_CTCAGA"
-    ],
+    "2570POST_Placebo"     => [ "01-28-Post", "01-29-Post", "01-36-Post", "03-16-Post", "03-17-Post", "03-18-Post", "03-26-Post", "03-36-Post", "03-63-Post", "03-65-Post" ],
+    "2570POST_Colesevelam" => [ "01-18-Post", "01-31-Post", "01-61-Post", "03-07-Post", "03-11-Post", "03-15-Post", "03-31-Post", "03-33-Post", "03-47-Post", "03-49-Post" ],
   },
   pairs => {
     "2819_VS_2570PRE" => { groups => [ "2829", "2570PRE" ], },
@@ -463,9 +457,7 @@ my $config     = {
         "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count", "bowtie1_genome_cutadapt_topN_miRbase_pm",
         "chromosome_count", "bowtie1_genome_cutadapt_topN_1mm_notidentical",
       ],
-      summary =>
-        [ "miRNA_1mm_table", "microRNA_deseq2", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_deseq2", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ]
-      ,
+      summary => [ "miRNA_1mm_table", "microRNA_deseq2", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_deseq2", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position" ],
     },
     sh_direct => 0,
     pbs       => {
