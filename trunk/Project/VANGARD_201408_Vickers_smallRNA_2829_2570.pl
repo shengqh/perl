@@ -111,7 +111,7 @@ my $config     = {
 
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -469,9 +469,9 @@ my $config     = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "bowtie1_genome_cutadapt_topN_pm" );
+performTask( $config, "fastqc" );
 
 1;
 
