@@ -78,7 +78,7 @@ my $config     = {
     },
   },
   fastqc => {
-    class      => "CQS::FastQC",
+    class      => "QC::FastQC",
     perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
@@ -386,7 +386,7 @@ my $config     = {
 };
 
 #performConfig($config);
-performTask( $config, "miRNA_deseq2" );
+performTask( $config, "fastqc" );
 
 1;
 
