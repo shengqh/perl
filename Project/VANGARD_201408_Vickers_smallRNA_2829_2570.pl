@@ -257,6 +257,22 @@ my $config     = {
       "mem"      => "10gb"
     },
   },
+  microRNA_isomir_deseq2 => {
+    class         => "Comparison::DESeq2",
+    perform       => 1,
+    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table_isomir_deseq2",
+    option        => "",
+    source_ref    => "pairs",
+    groups_ref    => "groups",
+    countfile_ref => ["miRNA_1mm_table", "isomir.tsv\$"],
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
   miRNA_1mm_count_overlap => {
     class           => "CQSMappedCount",
     perform         => 1,
@@ -471,7 +487,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask( $config, "fastqc" );
+performTask( $config, "microRNA_isomir_deseq2" );
 
 1;
 
