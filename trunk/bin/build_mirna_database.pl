@@ -4,7 +4,7 @@ use warnings;
 use File::Slurp;
 
 my $version = 20;
-my $dir = "/data/cqs/shengq1/reference/miRBase$version_2";
+my $dir = "/data/cqs/shengq1/reference/miRBase${version}_2";
 if( ! -e $dir){
   mkdir($dir)
 }
