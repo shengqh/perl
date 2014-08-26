@@ -440,7 +440,7 @@ my $config = {
   },
   muTect_TCGA_DNA => {
     class        => "GATK::MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/TCGA_muTect_DNA",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -480,7 +480,7 @@ my $config = {
   },
   muTect_TCGA_RNA => {
     class        => "GATK::MuTect",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/TCGA_muTect_RNA",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -540,7 +540,7 @@ my $config = {
   },
   annovar_varscan2_TCGA_DNA => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/TCGA_varscan2_DNA",
     option     => $annovar_param,
     source_ref => [ "varscan2_TCGA_DNA", "snp.vcf.Somatic.hc\$" ],
@@ -579,7 +579,7 @@ my $config = {
   },
   annovar_varscan2_TCGA_RNA => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/TCGA_varscan2_RNA",
     option     => $annovar_param,
     source_ref => [ "varscan2_TCGA_RNA", "snp.vcf.Somatic.hc\$" ],
