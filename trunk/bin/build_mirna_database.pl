@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use File::Slurp;
 
-my $version = 21;
+my $version = 20;
 my $dir = "/data/cqs/shengq1/reference/miRBase$version";
 if( ! -e $dir){
   mkdir($dir)
