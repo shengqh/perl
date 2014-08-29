@@ -150,13 +150,13 @@ my $config = {
 
   #2 perfect match search to mirbase only
   bowtie1_genome_cutadapt_topN_genome_pmnames => {
-    class         => "Samtools::PerfectMappedReadNames",
-    perform       => 1,
-    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_pmnames",
-    option        => "",
-    source_ref    => "bam_files",
-    sh_direct     => 1,
-    pbs           => {
+    class      => "Samtools::PerfectMappedReadNames",
+    perform    => 1,
+    target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_pmnames",
+    option     => "",
+    source_ref => "bam_files",
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -180,16 +180,17 @@ my $config = {
     },
   },
   chromosome_count => {
-    class        => "CQS::CQSChromosomeCount",
-    perform      => 0,
-    target_dir   => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm_count",
-    option       => "",
-    source_ref   => "bowtie1_genome_cutadapt_topN_miRbase_pm",
-    seqcount_ref => "count_files",
-    cqs_tools    => $cqstools,
-    samtools     => $samtools,
-    sh_direct    => 1,
-    pbs          => {
+    class                   => "CQS::CQSChromosomeCount",
+    perform                 => 1,
+    target_dir              => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm_count",
+    option                  => "-p hsa",
+    source_ref              => "bowtie1_genome_cutadapt_topN_miRbase_pm",
+    seqcount_ref            => "count_files",
+    perfect_mapped_name_ref => "bowtie1_genome_cutadapt_topN_genome_pmnames",
+    cqs_tools               => $cqstools,
+    samtools                => $samtools,
+    sh_direct               => 1,
+    pbs                     => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
