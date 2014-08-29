@@ -151,7 +151,7 @@ my $config = {
   #2 perfect match search to mirbase only
   bowtie1_genome_cutadapt_topN_genome_pmnames => {
     class      => "Samtools::PerfectMappedReadNames",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_pmnames",
     option     => "",
     source_ref => "bam_files",
