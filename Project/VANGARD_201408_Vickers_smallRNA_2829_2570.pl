@@ -500,9 +500,9 @@ my $config     = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "microRNA_isomir_deseq2" );
+#performTask( $config, "microRNA_isomir_deseq2" );
 
 1;
 
