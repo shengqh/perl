@@ -119,6 +119,20 @@ my $config = {
     "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-29_clipped_identical.fastq.gz"],
     "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-30_clipped_identical.fastq.gz"],
   },
+  bam_files => {
+    "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-19/2572-KCV-1-19.bam"],
+    "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-20/2572-KCV-1-20.bam"],
+    "2572-KCV-1-21" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-21/2572-KCV-1-21.bam"],
+    "2572-KCV-1-22" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-22/2572-KCV-1-22.bam"],
+    "2572-KCV-1-23" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-23/2572-KCV-1-23.bam"],
+    "2572-KCV-1-24" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-24/2572-KCV-1-24.bam"],
+    "2572-KCV-1-25" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-25/2572-KCV-1-25.bam"],
+    "2572-KCV-1-26" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-26/2572-KCV-1-26.bam"],
+    "2572-KCV-1-27" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-27/2572-KCV-1-27.bam"],
+    "2572-KCV-1-28" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-28/2572-KCV-1-28.bam"],
+    "2572-KCV-1-29" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-29/2572-KCV-1-29.bam"],
+    "2572-KCV-1-30" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/human/topN_bowtie1_genome_cutadapt_1mm/result/2572-KCV-1-30/2572-KCV-1-30.bam"],
+  },
   count_files => {
     "2572-KCV-1-19" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-19_clipped_identical.fastq.dupcount"],
     "2572-KCV-1-20" => ["/gpfs21/scratch/cqs/shengq1/vangard/VANGARD00055_guoyan_mirna_v2/identical/result/2572-KCV-1-20_clipped_identical.fastq.dupcount"],
@@ -135,9 +149,23 @@ my $config = {
   },
 
   #2 perfect match search to mirbase only
+  bowtie1_genome_cutadapt_topN_genome_pmnames => {
+    class         => "Samtools::PerfectMappedReadNames",
+    perform       => 1,
+    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_pmnames",
+    option        => "",
+    source_ref    => "bam_files",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bowtie1_genome_cutadapt_topN_miRbase_pm => {
     class         => "Alignment::Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm",
     option        => $bowtie1_option_pm,
     source_ref    => "fastq_files",
@@ -153,7 +181,7 @@ my $config = {
   },
   chromosome_count => {
     class        => "CQS::CQSChromosomeCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm_count",
     option       => "",
     source_ref   => "bowtie1_genome_cutadapt_topN_miRbase_pm",
