@@ -476,10 +476,25 @@ my $config     = {
       "mem"      => "40gb"
     },
   },
-
+  chromosome_count_table => {
+    class      => "CQSChromosomeTable",
+    perform    => 1,
+    target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_chromosome_table",
+    option     => "",
+    source_ref => [ "chromosome_count", ".xml" ],
+    cqs_tools  => $cqstools,
+    prefix     => "miRBase_pm_",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
