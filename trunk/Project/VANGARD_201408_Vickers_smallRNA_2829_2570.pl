@@ -111,7 +111,7 @@ my $config     = {
 
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -207,7 +207,7 @@ my $config     = {
   },
   mirna_1mm_count => {
     class           => "MirnaCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
     option          => $mirnacount_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -243,7 +243,7 @@ my $config     = {
   },
   microRNA_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -259,7 +259,7 @@ my $config     = {
   },
   microRNA_isomir_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table_isomir_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -275,7 +275,7 @@ my $config     = {
   },
   miRNA_1mm_count_overlap => {
     class           => "CQSMappedCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
     option          => $mirna_overlap_count_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -396,7 +396,7 @@ my $config     = {
   },
   smallRNA_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_table_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -428,9 +428,23 @@ my $config     = {
   },
 
   #2 perfect match search to mirbase only
+  bowtie1_genome_cutadapt_topN_genome_pmnames => {
+    class      => "Samtools::PerfectMappedReadNames",
+    perform    => 1,
+    target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_pmnames",
+    option     => "",
+    source_ref => "bowtie1_genome_cutadapt_topN_1mm",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bowtie1_genome_cutadapt_topN_miRbase_pm => {
     class         => "Alignment::Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm",
     option        => $bowtie1_option_pm,
     source_ref    => [ "identical", ".fastq.gz\$" ],
@@ -451,6 +465,7 @@ my $config     = {
     option       => "",
     source_ref   => "bowtie1_genome_cutadapt_topN_miRbase_pm",
     seqcount_ref => [ "identical", ".dupcount\$" ],
+    perfect_mapped_name_ref => "bowtie1_genome_cutadapt_topN_genome_pmnames",
     cqs_tools    => $cqstools,
     samtools     => $samtools,
     sh_direct    => 1,
