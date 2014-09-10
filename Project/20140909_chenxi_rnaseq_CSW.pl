@@ -17,6 +17,8 @@ my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_75";
 my $bowtie2_index        = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
 my $fasta_file           = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M.fa";
 
+my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
@@ -55,12 +57,28 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  trimmer => {
+    class      => "CQS::FastqTrimmer",
+    perform    => 1,
+    target_dir => "${target_dir}/FastqTrimmer",
+    option     => "-n -z",
+    extension  => "_trim.fastq.gz",
+    source_ref => "files",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   tophat2 => {
     class                => "Tophat2",
     perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
-    source_ref           => "fastqfiles",
+    source_ref           => "trimmer",
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     bowtie2_index        => $bowtie2_index,
