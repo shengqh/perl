@@ -44,7 +44,7 @@ my $config = {
     "POP3_siRNA_VS_Nontarget_siRNA_control"             => [ "Nontarget_siRNA_control", "POP3_siRNA" ]
   },
   fastqc => {
-    class      => "FastQC",
+    class      => "QC::FastQC",
     perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
@@ -91,7 +91,7 @@ my $config = {
     },
   },
   rnaseqc => {
-    class          => "RNASeQC",
+    class          => "QC::RNASeQC",
     perform        => 1,
     target_dir     => "${target_dir}/rnaseqc",
     option         => "",
@@ -107,7 +107,7 @@ my $config = {
     },
   },
   sortbam => {
-    class         => "Sortbam",
+    class         => "Samtools::Sortbam",
     perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
@@ -122,7 +122,7 @@ my $config = {
     },
   },
   htseqcount => {
-    class      => "HTSeqCount",
+    class      => "Count::HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
@@ -137,7 +137,7 @@ my $config = {
     },
   },
   genetable => {
-    class         => "CQSDatatable",
+    class         => "CQS::CQSDatatable",
     perform       => 1,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENSG",
@@ -153,7 +153,7 @@ my $config = {
     },
   },
   deseq2 => {
-    class         => "DESeq2",
+    class         => "Comparison::DESeq2",
     perform       => 1,
     target_dir    => "${target_dir}/deseq2",
     option        => "",
@@ -169,7 +169,7 @@ my $config = {
     },
   },
   sequencetask => {
-    class      => "SequenceTask",
+    class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     source     => {
