@@ -12,6 +12,7 @@ my $task_name  = "CSW";
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/chenxi/20140909_chenxi_rnaseq_CSW");
 
 my $transcript_gtf       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.M.gtf";
+my $transcript_gtf_map       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_75";
 my $bowtie2_index        = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
 my $fasta_file           = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M.fa";
@@ -124,7 +125,7 @@ my $config = {
     target_dir    => "${target_dir}/datatable",
     option        => "-p ENSG",
     source_ref    => "htseqcount",
-    name_map_file => "/data/cqs/shengq1/reference/hg19/hg19.gene.map",
+    name_map_file => $transcript_gtf_map,
     cqs_tools     => "/home/shengq1/cqstools/CQS.Tools.exe",
     sh_direct     => 1,
     pbs           => {
