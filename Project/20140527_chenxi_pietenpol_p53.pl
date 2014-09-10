@@ -101,7 +101,8 @@ my $config = {
   }
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "impute2");
 
 1;
 
