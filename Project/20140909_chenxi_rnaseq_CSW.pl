@@ -172,7 +172,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     source     => {
-      "sample" => [ "fastqc",  "tophat2",   "sortbam", "htseqcount" ],
+      "sample" => [ "fastqc", "trimmer", "tophat2",   "sortbam", "htseqcount" ],
       "task"   => [ "rnaseqc", "genetable", "deseq2" ],
     },
     sh_direct => 0,
