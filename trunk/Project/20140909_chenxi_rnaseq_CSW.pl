@@ -15,7 +15,7 @@ my $transcript_gtf       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens
 my $transcript_gtf_map   = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_75";
 my $bowtie2_index        = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
-my $fasta_file           = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M.fa";
+my $fasta_file           = "/data/cqs/shengq1/reference/hg19_16569_M/hg19_16569_M.fa";
 
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
@@ -74,7 +74,7 @@ my $config = {
     },
   },
   tophat2 => {
-    class                => "Tophat2",
+    class                => "Alignment::Tophat2",
     perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
@@ -82,6 +82,7 @@ my $config = {
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     bowtie2_index        => $bowtie2_index,
+    rename_bam           => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -172,7 +173,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     source     => {
-      "sample" => [ "fastqc", "trimmer", "tophat2",   "sortbam", "htseqcount" ],
+      "sample" => [ "fastqc",  "trimmer",   "tophat2", "sortbam", "htseqcount" ],
       "task"   => [ "rnaseqc", "genetable", "deseq2" ],
     },
     sh_direct => 0,
