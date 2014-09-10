@@ -107,7 +107,7 @@ my $config = {
     },
   },
   sortbam => {
-    class         => "Samtools::Sortbam",
+    class         => "Samtools::Sort",
     perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
