@@ -12,7 +12,7 @@ my $task_name  = "CSW";
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/chenxi/20140909_chenxi_rnaseq_CSW");
 
 my $transcript_gtf       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.M.gtf";
-my $transcript_gtf_map       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
+my $transcript_gtf_map   = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/hg19_GRCh37_75";
 my $bowtie2_index        = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
 my $fasta_file           = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M.fa";
@@ -20,28 +20,26 @@ my $fasta_file           = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_ind
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
-  general => {
-    task_name => $task_name,
-  },
+  general    => { task_name => $task_name, },
   fastqfiles => {
-  "3009-CSW-1" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-1_1_sequence.txt.gz"],
-  "3009-CSW-2" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-2_1_sequence.txt.gz"],
-  "3009-CSW-3" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-3_1_sequence.txt.gz"],
-  "3009-CSW-4" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-4_1_sequence.txt.gz"],
-  "3009-CSW-5" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-5_1_sequence.txt.gz"],
-  "3009-CSW-6" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-6_1_sequence.txt.gz"],
-  "3009-CSW-7" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-7_1_sequence.txt.gz"],
-  "3009-CSW-8" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-8_1_sequence.txt.gz"],
+    "3009-CSW-1" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-1_1_sequence.txt.gz"],
+    "3009-CSW-2" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-2_1_sequence.txt.gz"],
+    "3009-CSW-3" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-3_1_sequence.txt.gz"],
+    "3009-CSW-4" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-4_1_sequence.txt.gz"],
+    "3009-CSW-5" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-5_1_sequence.txt.gz"],
+    "3009-CSW-6" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-6_1_sequence.txt.gz"],
+    "3009-CSW-7" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-7_1_sequence.txt.gz"],
+    "3009-CSW-8" => ["/gpfs20/data/cqs/chenx/cw2014/3009-CSW-8_1_sequence.txt.gz"],
   },
-  groups =>{
-    "Nontarget_shRNA_control" => ["3009-CSW-1","3009-CSW-2"],
-    "STK17A_shRNA_construct" => ["3009-CSW-3","3009-CSW-4"],
-    "Nontarget_siRNA_control" => ["3009-CSW-5","3009-CSW-6"],
-    "POP3_siRNA" => ["3009-CSW-7","3009-CSW-8"],
+  groups => {
+    "Nontarget_shRNA_control" => [ "3009-CSW-1", "3009-CSW-2" ],
+    "STK17A_shRNA_construct"  => [ "3009-CSW-3", "3009-CSW-4" ],
+    "Nontarget_siRNA_control" => [ "3009-CSW-5", "3009-CSW-6" ],
+    "POP3_siRNA"              => [ "3009-CSW-7", "3009-CSW-8" ],
   },
-  pairs =>{
-    "STK17A_shRNA_construct_VS_Nontarget_shRNA_control" => ["Nontarget_shRNA_control", "STK17A_shRNA_construct"],
-    "POP3_siRNA_VS_Nontarget_siRNA_control" => ["Nontarget_siRNA_control", "POP3_siRNA"]
+  pairs => {
+    "STK17A_shRNA_construct_VS_Nontarget_shRNA_control" => [ "Nontarget_shRNA_control", "STK17A_shRNA_construct" ],
+    "POP3_siRNA_VS_Nontarget_siRNA_control"             => [ "Nontarget_siRNA_control", "POP3_siRNA" ]
   },
   fastqc => {
     class      => "FastQC",
@@ -119,10 +117,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  datatable => {
+  genetable => {
     class         => "CQSDatatable",
     perform       => 1,
-    target_dir    => "${target_dir}/datatable",
+    target_dir    => "${target_dir}/genetable",
     option        => "-p ENSG",
     source_ref    => "htseqcount",
     name_map_file => $transcript_gtf_map,
@@ -136,22 +134,38 @@ my $config = {
     },
   },
   deseq2 => {
-    class      => "DESeq2",
-    perform    => 1,
-    target_dir => "${target_dir}/deseq2",
-    option     => "",
-    source_ref => "pairs",
-    groups_ref => "groups",
-    countfile_ref  => "datatable",
-    sh_direct => 1,
-    pbs       => {
+    class         => "DESeq2",
+    perform       => 1,
+    target_dir    => "${target_dir}/deseq2",
+    option        => "",
+    source_ref    => "pairs",
+    groups_ref    => "groups",
+    countfile_ref => "datatable",
+    sh_direct     => 1,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
       "mem"      => "10gb"
     },
-  }
-  
+  },
+  sequencetask => {
+    class      => "SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    source     => {
+      "sample" => [ "fastqc",  "tophat2",   "sortbam", "htseqcount" ],
+      "task"   => [ "rnaseqc", "genetable", "deseq2" ],
+    },
+    sh_direct => 0,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    }
+    }
+
 };
 
 performConfig($config);
