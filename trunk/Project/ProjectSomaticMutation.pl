@@ -654,9 +654,10 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask($config, "depth_TCGA");
+performTask($config, "rsmc_TCGA_DNA");
+performTask($config, "rsmc_TCGA_RNA");
 
 
 1;
