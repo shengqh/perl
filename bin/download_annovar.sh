@@ -1,4 +1,4 @@
-cd /scratch/cqs/shengq1/references/annovar
+cd /scratch/cqs/shengq1/references/annovar 
 annotate_variation.pl -buildver hg19 -downdb -webfrom annovar refGene humandb/
 annotate_variation.pl -buildver hg19 -downdb -webfrom annovar cosmic70 humandb/
 annotate_variation.pl -buildver hg19 -downdb -webfrom annovar 1000g2014aug  humandb/
