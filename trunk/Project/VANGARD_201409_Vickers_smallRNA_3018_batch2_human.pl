@@ -407,7 +407,7 @@ my $config     = {
 };
 
 #performConfig($config);
-performTask($config, "bowtie1_genome_cutadapt_topN_genome_pmnames");
+performTask($config, "sequencetask");
 
 1;
 
