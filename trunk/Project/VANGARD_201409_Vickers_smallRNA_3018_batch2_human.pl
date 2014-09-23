@@ -406,7 +406,8 @@ my $config     = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "sequencetask");
 
 1;
 
