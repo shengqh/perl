@@ -390,8 +390,9 @@ my $config     = {
     source     => {
       individual => [
         "fastqc", "cutadapt", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
-        "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count", "bowtie1_genome_cutadapt_topN_miRbase_pm",
-        "chromosome_count", "bowtie1_genome_cutadapt_topN_1mm_notidentical",
+        "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count", 
+        "bowtie1_genome_cutadapt_topN_genome_pmnames", "bowtie1_genome_cutadapt_topN_miRbase_pm", "chromosome_count", 
+        "bowtie1_genome_cutadapt_topN_1mm_notidentical",
       ],
       summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position", "chromosome_count_table" ],
     },
