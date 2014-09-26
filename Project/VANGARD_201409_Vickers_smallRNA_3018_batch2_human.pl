@@ -419,8 +419,8 @@ my $config     = {
   },
 };
 
-#performConfig($config);
-performTask($config, "fastqc_post");
+performConfig($config);
+#performTask($config, "fastqc_post");
 
 1;
 
