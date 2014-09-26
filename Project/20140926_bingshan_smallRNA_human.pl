@@ -23,7 +23,7 @@ my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.d
 my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
 
 my $def = {
-  task_name           => "3018_b2",
+  task_name           => "bingshan_smallRNA_human",
   mirna_coordinate    => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
   trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
   trna_fasta          => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa",
@@ -93,9 +93,25 @@ my $config     = {
   fastqc  => {
     class      => "QC::FastQC",
     perform    => 1,
-    target_dir => "${target_dir}/fastqc",
+    target_dir => "${target_dir}/fastqc_pretrim",
     option     => "",
     source_ref => "files",
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  trimmer => {
+    class      => "CQS::FastqTrimmer",
+    perform    => 1,
+    target_dir => "${target_dir}/trimN",
+    option     => "-n -z",
+    extension  => "_trim.fastq.gz",
+    source_ref => "files",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -107,8 +123,8 @@ my $config     = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
-    option     => "-O 10 -m 12",
-    source_ref => "files",
+    option     => "-O 10 -m 17",
+    source_ref => "trimmer",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
     sh_direct  => 1,
@@ -445,7 +461,7 @@ my $config     = {
     option     => "",
     source     => {
       individual => [
-        "fastqc", "cutadapt", "fastqc_post", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
+        "fastqc", "trimmer", "cutadapt", "fastqc_post", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
         "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         "bowtie1_genome_cutadapt_topN_genome_pmnames",
         "bowtie1_genome_cutadapt_topN_miRbase_pm",
