@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/smallRNA/20140926_bingshan_smallRNA_human_remove5adapter/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/smallRNA/20140926_bingshan_smallRNA_human_remove5adapter_b/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -123,7 +123,7 @@ my $config     = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
-    option     => "-O 10 -m 17 -a GTTCAGAGTTCTACAGTCCGACGATC",
+    option     => "-O 10 -m 17 -b GTTCAGAGTTCTACAGTCCGACGATC",
     source_ref => "trimmer",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
@@ -180,23 +180,23 @@ my $config     = {
     },
   },
 
-  #not identical, for IGV
-  bowtie1_genome_cutadapt_topN_1mm_notidentical => {
-    class         => "Bowtie1",
-    perform       => 1,
-    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
-    option        => $bowtie1_option_1mm,
-    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
-    bowtie1_index => $def->{bowtie1_index},
-    samonly       => 0,
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
+#  #not identical, for IGV
+#  bowtie1_genome_cutadapt_topN_1mm_notidentical => {
+#    class         => "Bowtie1",
+#    perform       => 1,
+#    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
+#    option        => $bowtie1_option_1mm,
+#    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
+#    bowtie1_index => $def->{bowtie1_index},
+#    samonly       => 0,
+#    sh_direct     => 0,
+#    pbs           => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=8",
+#      "walltime" => "72",
+#      "mem"      => "40gb"
+#    },
+#  },
 
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
@@ -465,7 +465,8 @@ my $config     = {
         "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         "bowtie1_genome_cutadapt_topN_genome_pmnames",
         "bowtie1_genome_cutadapt_topN_miRbase_pm",
-        "chromosome_count", "bowtie1_genome_cutadapt_topN_1mm_notidentical",
+        "chromosome_count"
+        #, "bowtie1_genome_cutadapt_topN_1mm_notidentical",
       ],
       summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position", "chromosome_count_table" ],
     },
