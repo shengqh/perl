@@ -481,8 +481,8 @@ my $config     = {
 
 #performConfig($config);
 
-performTask($config, "fastqc_pretrim");
-performTask($config, "fastqc_posttrim");
+performTask($config, "fastqc");
+performTask($config, "fastqc_post");
 
 1;
 
