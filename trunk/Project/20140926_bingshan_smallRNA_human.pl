@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $root     = create_directory_or_die("/scratch/cqs/shengq1/smallRNA/20140926_bingshan_smallRNA_human/");
+my $root     = create_directory_or_die("/scratch/cqs/shengq1/smallRNA/20140926_bingshan_smallRNA_human_remove5adapter/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -123,7 +123,7 @@ my $config     = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
-    option     => "-O 10 -m 17",
+    option     => "-O 10 -m 17 -a GTTCAGAGTTCTACAGTCCGACGATC",
     source_ref => "trimmer",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
@@ -479,10 +479,9 @@ my $config     = {
   },
 };
 
-#performConfig($config);
-
-performTask($config, "fastqc");
-performTask($config, "fastqc_post");
+performConfig($config);
+#performTask($config, "fastqc");
+#performTask($config, "fastqc_post");
 
 1;
 
