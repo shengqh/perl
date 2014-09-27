@@ -479,9 +479,10 @@ my $config     = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask($config, "fastqc_post");
+performTask($config, "fastqc_pretrim");
+performTask($config, "fastqc_posttrim");
 
 1;
 
