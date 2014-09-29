@@ -84,6 +84,25 @@ my $def = {
     "3034-BL-1-08" => ["/gpfs21/scratch/shengq1/bingshan/batch3_10samples_pooledByHushan/fastq/3034-BL-1-8_ACTTGA_L008_R1_001.fastq.gz"],
     "3034-BL-1-09" => ["/gpfs21/scratch/shengq1/bingshan/batch3_10samples_pooledByHushan/fastq/3034-BL-1-9_GATCAG_L008_R1_001.fastq.gz"],
   },
+  groups => {
+    "normal"     => [ "2812-BL-01", "2812-BL-08", "3005-BL-07", "3005-BL-10", "3005-BL-16", "3005-BL-27" ],
+    "tumor"      => [ "2812-BL-02", "2812-BL-09", "3005-BL-08", "3005-BL-11", "3005-BL-17", "3005-BL-28" ],
+    "metastasis" => [ "2812-BL-06", "2812-BL-10", "3005-BL-09", "3005-BL-13", "3005-BL-20", "3005-BL-29" ],
+  },
+  pairs => {
+    "tumor_vs_normal" => {
+      groups => [ "normal", "tumor" ],
+      paired => [ "P01",    "P02", "P03", "P04", "P05", "P06" ],
+    },
+    "metastasis_vs_normal" => {
+      groups => [ "normal", "metastasis" ],
+      paired => [ "P01",    "P02", "P03", "P04", "P05", "P06" ],
+    },
+    "metastasis_vs_tumor" => {
+      groups => [ "tumor", "metastasis" ],
+      paired => [ "P01",   "P02", "P03", "P04", "P05", "P06" ],
+    },
+  },
 };
 
 my $target_dir = $def->{target_dir};
@@ -180,23 +199,23 @@ my $config     = {
     },
   },
 
-#  #not identical, for IGV
-#  bowtie1_genome_cutadapt_topN_1mm_notidentical => {
-#    class         => "Bowtie1",
-#    perform       => 1,
-#    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
-#    option        => $bowtie1_option_1mm,
-#    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
-#    bowtie1_index => $def->{bowtie1_index},
-#    samonly       => 0,
-#    sh_direct     => 0,
-#    pbs           => {
-#      "email"    => $email,
-#      "nodes"    => "1:ppn=8",
-#      "walltime" => "72",
-#      "mem"      => "40gb"
-#    },
-#  },
+  #  #not identical, for IGV
+  #  bowtie1_genome_cutadapt_topN_1mm_notidentical => {
+  #    class         => "Bowtie1",
+  #    perform       => 1,
+  #    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
+  #    option        => $bowtie1_option_1mm,
+  #    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
+  #    bowtie1_index => $def->{bowtie1_index},
+  #    samonly       => 0,
+  #    sh_direct     => 0,
+  #    pbs           => {
+  #      "email"    => $email,
+  #      "nodes"    => "1:ppn=8",
+  #      "walltime" => "72",
+  #      "mem"      => "40gb"
+  #    },
+  #  },
 
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
@@ -251,6 +270,23 @@ my $config     = {
       "mem"      => "10gb"
     },
   },
+  miRNA_deseq2 => {
+    class         => "DESeq2",
+    perform       => 1,
+    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_table_deseq2",
+    option        => "",
+    source        => $def->{pairs},
+    groups        => $def->{groups},
+    countfile_ref => "miRNA_1mm_table",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+
   miRNA_1mm_count_overlap => {
     class           => "CQSMappedCount",
     perform         => 1,
@@ -461,14 +497,15 @@ my $config     = {
     option     => "",
     source     => {
       individual => [
-        "fastqc", "trimmer", "cutadapt", "fastqc_post", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
+        "fastqc",          "trimmer",                 "cutadapt",       "fastqc_post", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
         "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         "bowtie1_genome_cutadapt_topN_genome_pmnames",
         "bowtie1_genome_cutadapt_topN_miRbase_pm",
         "chromosome_count"
-        #, "bowtie1_genome_cutadapt_topN_1mm_notidentical",
+
+          #, "bowtie1_genome_cutadapt_topN_1mm_notidentical",
       ],
-      summary => [ "miRNA_1mm_table", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position", "chromosome_count_table" ],
+      summary => [ "miRNA_1mm_table", "miRNA_deseq2", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position", "chromosome_count_table" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -480,8 +517,9 @@ my $config     = {
   },
 };
 
-performConfig($config);
-#performTask($config, "fastqc");
+#performConfig($config);
+
+performTask($config, "miRNA_deseq2");
 #performTask($config, "fastqc_post");
 
 1;
