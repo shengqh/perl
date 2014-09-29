@@ -43,7 +43,7 @@ my $def = {
     "2812-BL-07"   => ["/gpfs21/scratch/shengq1/bingshan/batch1_12samples/fastq/2812-BL-7_1_sequence.txt.gz"],
     "2812-BL-08"   => ["/gpfs21/scratch/shengq1/bingshan/batch1_12samples/fastq/2812-BL-8_1_sequence.txt.gz"],
     "2812-BL-09"   => ["/gpfs21/scratch/shengq1/bingshan/batch1_12samples/fastq/2812-BL-9_1_sequence.txt.gz"],
-    "3005-BL-01"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-1_1_sequence.txt.gz"],
+    "3005-BL-01"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-1_1_combined.sequence.txt.gz"],
     "3005-BL-10"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-10_1_sequence.txt.gz"],
     "3005-BL-11"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-11_1_sequence.txt.gz"],
     "3005-BL-12"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-12_1_sequence.txt.gz"],
@@ -56,7 +56,7 @@ my $def = {
     "3005-BL-19"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-19_1_sequence.txt.gz"],
     "3005-BL-02"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-2_1_sequence.txt.gz"],
     "3005-BL-20"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-20_1_sequence.txt.gz"],
-    "3005-BL-21"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-21_1_sequence.txt.gz"],
+    "3005-BL-21"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-21_1_combined.sequence.txt.gz"],
     "3005-BL-22"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-22_1_sequence.txt.gz"],
     "3005-BL-23"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-23_1_sequence.txt.gz"],
     "3005-BL-24"   => ["/gpfs21/scratch/shengq1/bingshan/batch2_30samples/fastq/3005-BL-24_1_sequence.txt.gz"],
@@ -517,9 +517,9 @@ my $config     = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask($config, "miRNA_deseq2");
+#performTask($config, "miRNA_deseq2");
 #performTask($config, "fastqc_post");
 
 1;
