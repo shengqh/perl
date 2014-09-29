@@ -101,9 +101,9 @@ my $def = {
     "metastasis" => [ "Pt1", "Pt1", "Pt1", "Pt2", "Pt3", "Pt4", "Pt5", "Pt5", "Pt5", "Pt6", "Pt6", "Pt6", "Pt8", "Pt8" ],
   },
   pairs => {
-    "tumor_vs_normal"      => { groups => [ "normal", "tumor" ], },
-    "metastasis_vs_normal" => { groups => [ "normal", "metastasis" ], },
-    "metastasis_vs_tumor"  => { groups => [ "tumor",  "metastasis" ], },
+    "tumor_vs_normal"      => [ "normal", "tumor" ],
+    "metastasis_vs_normal" => [ "normal", "metastasis" ],
+    "metastasis_vs_tumor"  => [ "tumor",  "metastasis" ]
   },
 };
 
@@ -521,7 +521,8 @@ my $config     = {
 
 #performConfig($config);
 
-performTask($config, "miRNA_deseq2");
+performTask( $config, "miRNA_deseq2" );
+
 #performTask($config, "fastqc_post");
 
 1;
