@@ -96,7 +96,7 @@ my $def = {
     ],
   },
   groupids => {
-    "normal"     => [ "Pt1", "Pt2", "Pt3", "Pt4", "Pt5", "Pt6", "Pt7" ],
+    "normal"     => [ "Pt1", "Pt2", "Pt3", "Pt4", "Pt5", "Pt6", "Pt8" ],
     "tumor"      => [ "Pt1", "Pt1", "Pt1", "Pt2", "Pt3", "Pt3", "Pt3", "Pt4", "Pt5", "Pt5", "Pt6", "Pt6", "Pt6", "Pt8" ],
     "metastasis" => [ "Pt1", "Pt1", "Pt1", "Pt2", "Pt3", "Pt4", "Pt5", "Pt5", "Pt5", "Pt6", "Pt6", "Pt6", "Pt8", "Pt8" ],
   },
