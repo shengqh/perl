@@ -85,23 +85,25 @@ my $def = {
     "3034-BL-1-09" => ["/gpfs21/scratch/shengq1/bingshan/batch3_10samples_pooledByHushan/fastq/3034-BL-1-9_GATCAG_L008_R1_001.fastq.gz"],
   },
   groups => {
-    "normal"     => [ "2812-BL-01", "2812-BL-08", "3005-BL-07", "3005-BL-10", "3005-BL-16", "3005-BL-27" ],
-    "tumor"      => [ "2812-BL-02", "2812-BL-09", "3005-BL-08", "3005-BL-11", "3005-BL-17", "3005-BL-28" ],
-    "metastasis" => [ "2812-BL-06", "2812-BL-10", "3005-BL-09", "3005-BL-13", "3005-BL-20", "3005-BL-29" ],
+    "normal" => [ "2812-BL-01", "2812-BL-08", "3005-BL-01", "3005-BL-07", "3005-BL-10", "3005-BL-16", "3005-BL-27" ],
+    "tumor"  => [
+      "2812-BL-02", "2812-BL-03", "2812-BL-04", "2812-BL-09", "3005-BL-02", "3005-BL-03", "3005-BL-04", "3005-BL-08",
+      "3005-BL-11", "3005-BL-12", "3005-BL-17", "3005-BL-18", "3005-BL-19", "3005-BL-28"
+    ],
+    "metastasis" => [
+      "2812-BL-05", "2812-BL-06", "2812-BL-07", "2812-BL-10", "3005-BL-06", "3005-BL-09", "3005-BL-13", "3005-BL-14",
+      "3005-BL-15", "3005-BL-20", "3005-BL-21", "3005-BL-22", "3005-BL-29", "3005-BL-30"
+    ],
+  },
+  groupids => {
+    "normal"     => [ "Pt1", "Pt2", "Pt3", "Pt4", "Pt5", "Pt6", "Pt7" ],
+    "tumor"      => [ "Pt1", "Pt1", "Pt1", "Pt2", "Pt3", "Pt3", "Pt3", "Pt4", "Pt5", "Pt5", "Pt6", "Pt6", "Pt6", "Pt8" ],
+    "metastasis" => [ "Pt1", "Pt1", "Pt1", "Pt2", "Pt3", "Pt4", "Pt5", "Pt5", "Pt5", "Pt6", "Pt6", "Pt6", "Pt8", "Pt8" ],
   },
   pairs => {
-    "tumor_vs_normal" => {
-      groups => [ "normal", "tumor" ],
-      paired => [ "P01",    "P02", "P03", "P04", "P05", "P06" ],
-    },
-    "metastasis_vs_normal" => {
-      groups => [ "normal", "metastasis" ],
-      paired => [ "P01",    "P02", "P03", "P04", "P05", "P06" ],
-    },
-    "metastasis_vs_tumor" => {
-      groups => [ "tumor", "metastasis" ],
-      paired => [ "P01",   "P02", "P03", "P04", "P05", "P06" ],
-    },
+    "tumor_vs_normal"      => { groups => [ "normal", "tumor" ], },
+    "metastasis_vs_normal" => { groups => [ "normal", "metastasis" ], },
+    "metastasis_vs_tumor"  => { groups => [ "tumor",  "metastasis" ], },
   },
 };
 
@@ -277,6 +279,7 @@ my $config     = {
     option        => "",
     source        => $def->{pairs},
     groups        => $def->{groups},
+    groupids      => $def->{groupids},
     countfile_ref => "miRNA_1mm_table",
     sh_direct     => 1,
     pbs           => {
@@ -286,7 +289,6 @@ my $config     = {
       "mem"      => "10gb"
     },
   },
-
   miRNA_1mm_count_overlap => {
     class           => "CQSMappedCount",
     perform         => 1,
@@ -517,9 +519,9 @@ my $config     = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask($config, "miRNA_deseq2");
+performTask($config, "miRNA_deseq2");
 #performTask($config, "fastqc_post");
 
 1;
