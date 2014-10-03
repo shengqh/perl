@@ -142,7 +142,7 @@ my $config     = {
   },
   cutadapt => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/cutadapt",
     option     => "-O 10 -m 17 -a GGAAGAGCACACGTCTGAACTCCAGTCAC",
     source_ref => "trimmer",
@@ -158,7 +158,7 @@ my $config     = {
   },
   fastqc_post => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc_posttrim",
     option     => "",
     source_ref => [ "cutadapt", ".fastq.gz" ],
@@ -186,7 +186,7 @@ my $config     = {
   },
   identical => {
     class      => "FastqIdentical",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/identical",
     option     => "",
     source_ref => [ "cutadapt", ".fastq.gz" ],
@@ -204,7 +204,7 @@ my $config     = {
   #not identical, for IGV
   bowtie1_genome_cutadapt_topN_1mm_notidentical => {
     class         => "Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
     option        => $bowtie1_option_1mm,
     source_ref    => [ "cutadapt", ".fastq.gz\$" ],
@@ -222,7 +222,7 @@ my $config     = {
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
     class         => "Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm",
     option        => $bowtie1_option_1mm,
     source_ref    => [ "identical", ".fastq.gz\$" ],
@@ -238,7 +238,7 @@ my $config     = {
   },
   mirna_1mm_count => {
     class           => "MirnaCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA",
     option          => $mirnacount_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -292,7 +292,7 @@ my $config     = {
   },
   miRNA_1mm_count_overlap => {
     class           => "CQSMappedCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
     option          => $mirna_overlap_count_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -327,7 +327,7 @@ my $config     = {
   },
   tRNA_1mm_count => {
     class           => "CQSMappedCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_tRNA",
     option          => $trnacount_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -378,7 +378,7 @@ my $config     = {
   },
   smallRNA_1mm_count => {
     class           => "CQSMappedCount",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA",
     option          => $trnacount_option,
     source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
@@ -431,7 +431,7 @@ my $config     = {
   #2 perfect match search to mirbase only
   bowtie1_genome_cutadapt_topN_genome_pmnames => {
     class      => "Samtools::PerfectMappedReadNames",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_pmnames",
     option     => "",
     source_ref => "bowtie1_genome_cutadapt_topN_1mm",
@@ -445,7 +445,7 @@ my $config     = {
   },
   bowtie1_genome_cutadapt_topN_miRbase_pm => {
     class         => "Alignment::Bowtie1",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm",
     option        => $bowtie1_option_pm,
     source_ref    => [ "identical", ".fastq.gz\$" ],
@@ -461,7 +461,7 @@ my $config     = {
   },
   chromosome_count => {
     class                   => "CQS::CQSChromosomeCount",
-    perform                 => 1,
+    perform                 => 0,
     target_dir              => "${target_dir}/topN_bowtie1_genome_cutadapt_miRbase_pm_count",
     option                  => "",
     source_ref              => "bowtie1_genome_cutadapt_topN_miRbase_pm",
