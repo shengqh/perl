@@ -113,7 +113,7 @@ my $config     = {
   files   => $def->{files},
   fastqc  => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc_pretrim",
     option     => "",
     source_ref => "files",
@@ -126,7 +126,7 @@ my $config     = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trimN",
     option     => "-n -z",
     extension  => "_trim.fastq.gz",
@@ -144,7 +144,7 @@ my $config     = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
-    option     => "-O 10 -m 17 -b GTTCAGAGTTCTACAGTCCGACGATC",
+    option     => "-O 10 -m 17 -a GGAAGAGCACACGTCTGAACTCCAGTCAC",
     source_ref => "trimmer",
     adaptor    => "TGGAATTCTCGGGTGCCAAGG",
     extension  => "_clipped.fastq",
@@ -201,23 +201,23 @@ my $config     = {
     },
   },
 
-  #  #not identical, for IGV
-  #  bowtie1_genome_cutadapt_topN_1mm_notidentical => {
-  #    class         => "Bowtie1",
-  #    perform       => 1,
-  #    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
-  #    option        => $bowtie1_option_1mm,
-  #    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
-  #    bowtie1_index => $def->{bowtie1_index},
-  #    samonly       => 0,
-  #    sh_direct     => 0,
-  #    pbs           => {
-  #      "email"    => $email,
-  #      "nodes"    => "1:ppn=8",
-  #      "walltime" => "72",
-  #      "mem"      => "40gb"
-  #    },
-  #  },
+  #not identical, for IGV
+  bowtie1_genome_cutadapt_topN_1mm_notidentical => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_notidentical",
+    option        => $bowtie1_option_1mm,
+    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
+    bowtie1_index => $def->{bowtie1_index},
+    samonly       => 0,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
@@ -500,13 +500,13 @@ my $config     = {
     option     => "",
     source     => {
       individual => [
-        "fastqc",          "trimmer",                 "cutadapt",       "fastqc_post", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
+        #"fastqc",          "trimmer",                 
+        "cutadapt",       "fastqc_post", "fastqlen", "identical", "bowtie1_genome_cutadapt_topN_1mm",
         "mirna_1mm_count", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         "bowtie1_genome_cutadapt_topN_genome_pmnames",
         "bowtie1_genome_cutadapt_topN_miRbase_pm",
         "chromosome_count"
-
-          #, "bowtie1_genome_cutadapt_topN_1mm_notidentical",
+          , "bowtie1_genome_cutadapt_topN_1mm_notidentical",
       ],
       summary => [ "miRNA_1mm_table", "miRNA_deseq2", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "miRNA_1mm_overlap_position", "tRNA_1mm_position", "chromosome_count_table" ],
     },
@@ -520,9 +520,9 @@ my $config     = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "miRNA_deseq2" );
+#performTask( $config, "miRNA_deseq2" );
 
 #performTask($config, "fastqc_post");
 
