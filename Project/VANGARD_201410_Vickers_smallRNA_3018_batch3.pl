@@ -23,7 +23,7 @@ my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.d
 my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
 
 my $def = {
-  task_name           => "3018_b2",
+  task_name           => "3018_b3",
   mirna_coordinate    => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
   trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
   trna_fasta          => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa",
