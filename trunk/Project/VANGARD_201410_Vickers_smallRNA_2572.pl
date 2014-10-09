@@ -13,14 +13,14 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $samtools           = "/home/shengq1/local/bin/samtools/samtools";
-my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 8";
+my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 6";
 
 my $mirnacount_option          = "-s";                                                    #ignore score
 my $trnacount_option           = "--length --sequence";
 my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta                = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
-my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -l 12 -p 8";
+my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -l 12 -p 6";
 
 my $def = {
   task_name           => "2572",
@@ -152,7 +152,7 @@ my $config     = {
     sh_direct     => 0,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=6",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -170,7 +170,7 @@ my $config     = {
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=6",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -359,7 +359,7 @@ my $config     = {
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=6",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -375,7 +375,7 @@ my $config     = {
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=6",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -393,7 +393,7 @@ my $config     = {
     sh_direct               => 1,
     pbs                     => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=6",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -432,7 +432,7 @@ my $config     = {
     sh_direct => 0,
     pbs       => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=6",
       "walltime" => "72",
       "mem"      => "40gb"
     },
