@@ -139,6 +139,23 @@ my $config     = {
       "mem"      => "20gb"
     },
   },
+  fastq_mirna => {
+    class        => "CQS::FastqMirna",
+    perform      => 1,
+    target_dir   => "${target_dir}/fastq_mirna",
+    option       => "",
+    source_ref   => [ "identical", ".fastq.gz\$" ],
+    seqcount_ref => [ "identical", ".dupcount\$" ],
+    cqstools     => $cqstools,
+    extension    => "_clipped_identical_mirna.fastq.gz",
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
 
   #not identical, for IGV
   bowtie1_genome_cutadapt_topN_1mm_notidentical => {
@@ -439,9 +456,9 @@ my $config     = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask($config, "fastqc_post");
+performTask($config, "fastq_mirna");
 
 1;
 
