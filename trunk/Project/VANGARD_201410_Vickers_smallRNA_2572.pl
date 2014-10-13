@@ -193,6 +193,26 @@ my $config     = {
       "mem"      => "40gb"
     },
   },
+  mirna_1mm_count_mirna => {
+    class           => "MirnaCount",
+    perform         => 1,
+    target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_mirna_count_miRNA",
+    option          => $mirnacount_option,
+    source_ref      => "bowtie1_genome_cutadapt_topN_1mm_mirna",
+    fastq_files_ref => "fastq_mirna",
+    seqcount_ref    => [ "fastq_mirna", ".dupcount\$" ],
+    cqs_tools       => $cqstools,
+    gff_file        => $def->{mirna_coordinate},
+    fasta_file      => $mirna_fasta,
+    samtools        => $samtools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
@@ -477,7 +497,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask($config, "bowtie1_genome_cutadapt_topN_1mm_mirna");
+performTask($config, "mirna_1mm_count_mirna");
 
 1;
 
