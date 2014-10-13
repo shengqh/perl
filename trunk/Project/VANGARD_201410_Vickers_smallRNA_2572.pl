@@ -175,6 +175,25 @@ my $config     = {
     },
   },
 
+
+  #1 mismatch search
+  bowtie1_genome_cutadapt_topN_1mm_mirna => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_mirna",
+    option        => $bowtie1_option_1mm,
+    source_ref    => [ "fastq_mirna", ".fastq.gz\$" ],
+    bowtie1_index => $def->{bowtie1_index},
+    samonly       => 0,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=6",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
     class         => "Bowtie1",
@@ -458,7 +477,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask($config, "fastq_mirna");
+performTask($config, "bowtie1_genome_cutadapt_topN_1mm_mirna");
 
 1;
 
