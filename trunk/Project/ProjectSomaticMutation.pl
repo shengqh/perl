@@ -499,7 +499,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  annovar_TCGA_muTect_RNA => {
+  annovar_muTect_TCGA_RNA => {
     class      => "Annotation::Annovar",
     perform    => 0,
     target_dir => "${target_dir}/TCGA_muTect_RNA",
