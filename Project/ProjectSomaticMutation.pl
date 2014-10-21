@@ -27,7 +27,7 @@ my $transcript_gtf       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens
 my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/Homo_sapiens.GRCh37.75.MT";
 my $hg19_map             = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
 
-my $annovar_param = "-protocol refGene,snp138,cosmic68 -operation g,f,f --remove";
+my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $config = {
@@ -540,7 +540,7 @@ my $config = {
   },
   annovar_varscan2_TCGA_DNA => {
     class      => "Annotation::Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/TCGA_varscan2_DNA",
     option     => $annovar_param,
     source_ref => [ "varscan2_TCGA_DNA", "snp.vcf.Somatic.hc\$" ],
@@ -579,7 +579,7 @@ my $config = {
   },
   annovar_varscan2_TCGA_RNA => {
     class      => "Annotation::Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/TCGA_varscan2_RNA",
     option     => $annovar_param,
     source_ref => [ "varscan2_TCGA_RNA", "snp.vcf.Somatic.hc\$" ],
@@ -656,8 +656,10 @@ my $config = {
 
 #performConfig($config);
 
-performTask($config, "rsmc_TCGA_DNA");
-performTask($config, "rsmc_TCGA_RNA");
+performTask($config, "annovar_muTect_TCGA_DNA");
+performTask($config, "annovar_muTect_TCGA_RNA");
+performTask($config, "annovar_varscan2_TCGA_DNA");
+performTask($config, "annovar_varscan2_TCGA_RNA");
 
 
 1;
