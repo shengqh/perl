@@ -1,4 +1,4 @@
-cd /data/cqs/shengq1/reference/dbsnp
+cd /scratch/cqs/shengq1/references/dbsnp
 
 wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b142_GRCh37p13/VCF/All.vcf.gz
 gunzip All.vcf.gz
