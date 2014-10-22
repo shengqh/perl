@@ -12,7 +12,7 @@ if [[ ! -s human_GRCh37_v142_16569_M.vcf ]]; then
   cat human_GRCh37_v142_16569_MT.vcf | awk 'BEGIN {OFS="\t"} {if($1=="MT")$1="M"; print }' > human_GRCh37_v142_16569_M.vcf
 fi 
 
-if [[ ! -s human_GRCh38_v142_16569_M.bed ]]; then
+if [[ ! -s human_GRCh37_v142_16569_MT.bed ]]; then
   wget ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b142_GRCh37p13/BED/bed_chr_1.bed.gz 
   wget ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b142_GRCh37p13/BED/bed_chr_2.bed.gz 
   wget ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b142_GRCh37p13/BED/bed_chr_3.bed.gz 
@@ -39,8 +39,11 @@ if [[ ! -s human_GRCh38_v142_16569_M.bed ]]; then
   wget ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b142_GRCh37p13/BED/bed_chr_Y.bed.gz 
   wget ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b142_GRCh37p13/BED/bed_chr_MT.bed.gz 
   gunzip *.bed.gz 
-  cat bed_chr_1.bed bed_chr_2.bed bed_chr_3.bed bed_chr_4.bed bed_chr_5.bed bed_chr_6.bed bed_chr_7.bed bed_chr_8.bed bed_chr_9.bed bed_chr_10.bed bed_chr_11.bed bed_chr_12.bed bed_chr_13.bed bed_chr_14.bed bed_chr_15.bed bed_chr_16.bed bed_chr_17.bed bed_chr_18.bed bed_chr_19.bed bed_chr_20.bed bed_chr_21.bed bed_chr_22.bed bed_chr_X.bed bed_chr_Y.bed bed_chr_MT.bed >human_GRCh37_v142_16569_MT.bed 
+  cat bed_chr_1.bed bed_chr_2.bed bed_chr_3.bed bed_chr_4.bed bed_chr_5.bed bed_chr_6.bed bed_chr_7.bed bed_chr_8.bed bed_chr_9.bed bed_chr_10.bed bed_chr_11.bed bed_chr_12.bed bed_chr_13.bed bed_chr_14.bed bed_chr_15.bed bed_chr_16.bed bed_chr_17.bed bed_chr_18.bed bed_chr_19.bed bed_chr_20.bed bed_chr_21.bed bed_chr_22.bed bed_chr_X.bed bed_chr_Y.bed bed_chr_MT.bed >human_GRCh37_v142_16569_MT.bed
   rm bed_chr*.bed   
+fi  
+ 
+if [[ ! -s human_GRCh37_v142_16569_M.bed ]]; then
   cat human_GRCh37_v142_16569_MT.bed | awk 'BEGIN {OFS="\t"} {if($1=="chrMT")$1="chrM"; print }' > human_GRCh38_v142_16569_M.bed 
 fi
 
