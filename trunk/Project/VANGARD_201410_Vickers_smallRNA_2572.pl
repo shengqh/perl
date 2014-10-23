@@ -213,6 +213,23 @@ my $config     = {
       "mem"      => "40gb"
     },
   },
+  miRNA_1mm_NTA_table => {
+    class      => "CQSMirnaNTATable",
+    perform    => 1,
+    target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_mirna_count_miRNA_table",
+    option     => "",
+    source_ref => ["mirna_1mm_count_mirna", ".mapped.xml"],
+    cqs_tools  => $cqstools,
+    prefix     => "miRNA_1mm_NTA_",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  
 
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
@@ -497,7 +514,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask($config, "mirna_1mm_count_mirna");
+performTask($config, "miRNA_1mm_NTA_table");
 
 1;
 
