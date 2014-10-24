@@ -174,6 +174,23 @@ my $config     = {
       "mem"      => "40gb"
     },
   },
+  #not identical, for IGV
+  bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench => {
+    class         => "Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_dir}/bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench",
+    option        => "--chunkmbs 2000 -p 8 -n 1 -l 19  -a -m 40  --best --strata  -e 2000",
+    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
+    bowtie1_index => $def->{bowtie1_index},
+    samonly       => 0,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=6",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm_mirna => {
@@ -529,7 +546,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask( $config, "smallRNA_1mm_NTA_category" );
+performTask( $config, "bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench" );
 
 1;
 
