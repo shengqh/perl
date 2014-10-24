@@ -14,6 +14,8 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $samtools           = "/home/shengq1/local/bin/samtools/samtools";
 my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 6";
+my $bowtie1_option_1mm_old = "-a -m 100 --best --strata -v 1 -l 12 -p 6";
+my $bowtie1_option_genboree = "--chunkmbs 2000 -p 8 -n 1 -l 19  -a -m 40  --best --strata  -e 2000";
 
 my $mirnacount_option          = "-s";                                                    #ignore score
 my $trnacount_option           = "--length --sequence";
@@ -546,7 +548,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask( $config, "bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench" );
+performTask( $config, "smallRNA_1mm_NTA_category" );
 
 1;
 
