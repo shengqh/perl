@@ -15,7 +15,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $samtools           = "/home/shengq1/local/bin/samtools/samtools";
 my $bowtie1_option_1mm = "-a -m 100 --best --strata -v 1 -l 12 -p 6";
 my $bowtie1_option_1mm_old = "-a -m 100 --best --strata -v 1 -l 12 -p 6";
-my $bowtie1_option_genboree = "--chunkmbs 2000 -p 8 -n 1 -l 19  -a -m 40  --best --strata  -e 2000";
+my $bowtie1_option_genboree = "--chunkmbs 2000 -p 8 -n 1 -l 19  -a -m 40  --best --strata";
 
 my $mirnacount_option          = "-s";                                                    #ignore score
 my $trnacount_option           = "--length --sequence";
@@ -180,8 +180,8 @@ my $config     = {
   bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench => {
     class         => "Bowtie1",
     perform       => 1,
-    target_dir    => "${target_dir}/bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench",
-    option        => "--chunkmbs 2000 -p 8 -n 1 -l 19  -a -m 40  --best --strata  -e 2000",
+    target_dir    => "${target_dir}/bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench_2",
+    option        => "--chunkmbs 2000 -p 8 -n 1 -l 19  -a -m 40  --best --strata",
     source_ref    => [ "cutadapt", ".fastq.gz\$" ],
     bowtie1_index => $def->{bowtie1_index},
     samonly       => 0,
@@ -548,7 +548,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask( $config, "smallRNA_1mm_NTA_category" );
+performTask( $config, "bowtie1_genome_cutadapt_topN_1mm_notidentical_sRNAbench" );
 
 1;
 
