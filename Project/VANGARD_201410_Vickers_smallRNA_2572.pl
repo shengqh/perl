@@ -175,7 +175,6 @@ my $config     = {
     },
   },
 
-
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm_mirna => {
     class         => "Bowtie1",
@@ -193,7 +192,7 @@ my $config     = {
       "mem"      => "40gb"
     },
   },
-  mirna_1mm_count_mirna => {
+  mirna_1mm_count_NTA => {
     class           => "MirnaCount",
     perform         => 1,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_mirna_count_miRNA",
@@ -218,7 +217,7 @@ my $config     = {
     perform    => 1,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_mirna_count_miRNA_table",
     option     => "",
-    source_ref => ["mirna_1mm_count_mirna", ".mapped.xml"],
+    source_ref => [ "mirna_1mm_count_NTA", ".mapped.xml" ],
     cqs_tools  => $cqstools,
     prefix     => "miRNA_1mm_NTA_",
     sh_direct  => 1,
@@ -229,7 +228,6 @@ my $config     = {
       "mem"      => "10gb"
     },
   },
-  
 
   #1 mismatch search
   bowtie1_genome_cutadapt_topN_1mm => {
@@ -422,6 +420,23 @@ my $config     = {
     },
   },
 
+  smallRNA_1mm_NTA_category => {
+    class           => "CQSSmallRNACategory",
+    perform         => 1,
+    target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_smallRNA_category_NTA",
+    option          => "",
+    source_ref      => [ "smallRNA_1mm_count", ".mapped.xml\$" ],
+    mirna_count_ref => [ "mirna_1mm_count_NTA", ".mapped.xml\$" ],
+    cqs_tools       => $cqstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   #2 perfect match search to mirbase only
   bowtie1_genome_cutadapt_topN_genome_pmnames => {
     class      => "Samtools::PerfectMappedReadNames",
@@ -514,7 +529,7 @@ my $config     = {
 
 #performConfig($config);
 
-performTask($config, "miRNA_1mm_NTA_table");
+performTask( $config, "smallRNA_1mm_NTA_category" );
 
 1;
 
