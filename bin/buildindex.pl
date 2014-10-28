@@ -48,6 +48,20 @@ run_command("java -jar /home/shengq1/local/bin/picard/CreateSequenceDictionary.j
 run_command("perl /scratch/cqs/shengq1/source/scripts_FREEC/get_fasta_lengths.pl $fastaFile");
 run_command("mv res_${basename} ${base}.len ");
 
+# bowtie
+my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
+chomp($bowtie);
+if ( !-e "bowtie_index_${bowtie}" ) {
+  mkdir("bowtie_index_${bowtie}");
+}
+chdir("bowtie_index_${bowtie}");
+if ( !-e $basename ) {
+  run_command("ln -s ../$fastaFile $basename ");
+  run_command("ln -s ../${base}.dict ${base}.dict ");
+}
+run_command("bowtie-build $basename $base ");
+chdir("..");
+
 # bowtie2
 my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
 chomp($bowtie2);
