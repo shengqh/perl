@@ -38,7 +38,7 @@ my $config     = {
     source_ref    => "files",
     bowtie1_index => "/scratch/cqs/shengq1/references/soybean/bowtie_index_1.1.0/gma_ref_V1.1",
     samonly       => 0,
-    sh_direct     => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -73,7 +73,7 @@ my $config     = {
     source_ref    => ["soybean_bowtie1_pm_count", "fastq.gz"],
     bowtie1_index => "/scratch/cqs/shengq1/references/chicken/bowtie_index_1.1.0/gga_ref_Gallus_gallus-4.0",
     samonly       => 0,
-    sh_direct     => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
