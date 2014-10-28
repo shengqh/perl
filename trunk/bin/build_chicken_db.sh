@@ -5,6 +5,7 @@ for i in "${chrs[@]}"
     do
         wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/Assembled_chromosomes/seq/gga_ref_Gallus_gallus-4.0_chr${i}.fa.gz
         gunzip gga_ref_Gallus_gallus-4.0_chr${i}.fa.gz
-        cat gga_ref_Gallus_gallus-4.0_chr${i}.fa >> gga_ref_Gallus_gallus-4.0.fa
+        echo ">chr${i}" >> gga_ref_Gallus_gallus-4.0.fa
+        awk 'NR>1' gga_ref_Gallus_gallus-4.0_chr${i}.fa >> gga_ref_Gallus_gallus-4.0.fa
         rm gga_ref_Gallus_gallus-4.0_chr${i}.fa
     done
