@@ -30,7 +30,24 @@ my $config = {
     "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.20.ped"],
     "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.22.ped"]
   },
-  map_files => {
+  gen_files => {
+    "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.1.gen"],
+    "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.3.gen"],
+    "Pietenpol_p53.06" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.6.gen"],
+    "Pietenpol_p53.07" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.7.gen"],
+    "Pietenpol_p53.09" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.9.gen"],
+    "Pietenpol_p53.10" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.10.gen"],
+    "Pietenpol_p53.11" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.11.gen"],
+    "Pietenpol_p53.12" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.12.gen"],
+    "Pietenpol_p53.15" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.15.gen"],
+    "Pietenpol_p53.16" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.16.gen"],
+    "Pietenpol_p53.17" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.17.gen"],
+    "Pietenpol_p53.18" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.18.gen"],
+    "Pietenpol_p53.19" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.19.gen"],
+    "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.20.gen"],
+    "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.22.gen"]
+  },
+  genetic_map_files => {
     "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/ref_panel/genetic_map_chr1_combined_b37.txt"],
     "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/ref_panel/genetic_map_chr3_combined_b37.txt"],
     "Pietenpol_p53.06" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/ref_panel/genetic_map_chr6_combined_b37.txt"],
@@ -66,18 +83,18 @@ my $config = {
   },
   shapeit => {
     class        => "Imputation::Shapeit",
-    perform      => 0,
+    perform      => 1,
     path_file    => "/home/shengq1/local/bin/path_glibc2.14.txt",
     target_dir   => "${target_dir}/shapeit",
-    option       => "",
-    source_ref   => "ped_files",
-    map_file_ref => "map_files",
-    sh_direct    => 0,
+    option       => "--seed 1414591741 -T 24",
+    source_ref   => "gen_files",
+    genetic_map_file_ref => "genetic_map_files",
+    sh_direct    => 1,
     pbs          => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "10gb"
+      "mem"      => "40gb"
     },
   },
   impute2 => {
@@ -102,7 +119,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "impute2");
+performTask($config, "shapeit");
 
 
 1;
