@@ -13,23 +13,6 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general   => { task_name => "20140527_chenxi_pietenpol_p53" },
-  ped_files => {
-    "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.1.ped"],
-    "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.3.ped"],
-    "Pietenpol_p53.06" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.6.ped"],
-    "Pietenpol_p53.07" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.7.ped"],
-    "Pietenpol_p53.09" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.9.ped"],
-    "Pietenpol_p53.10" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.10.ped"],
-    "Pietenpol_p53.11" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.11.ped"],
-    "Pietenpol_p53.12" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.12.ped"],
-    "Pietenpol_p53.15" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.15.ped"],
-    "Pietenpol_p53.16" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.16.ped"],
-    "Pietenpol_p53.17" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.17.ped"],
-    "Pietenpol_p53.18" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.18.ped"],
-    "Pietenpol_p53.19" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.19.ped"],
-    "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.20.ped"],
-    "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.22.ped"]
-  },
   gen_files => {
     "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.1.gen"],
     "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/data_by_chrom/Pietenpol_p53.3.gen"],
@@ -82,32 +65,33 @@ my $config = {
     "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/ref_panel/ALL.chr22.integrated_phase1_v3.20101123.snps_indels_svs.genotypes.nomono.haplotypes"],
   },
   shapeit => {
-    class        => "Imputation::Shapeit",
-    perform      => 1,
-    path_file    => "/home/shengq1/local/bin/path_glibc2.14.txt",
-    target_dir   => "${target_dir}/shapeit",
-    option       => "--seed 1414591741 -T 24",
-    source_ref   => "gen_files",
+    class                => "Imputation::Shapeit",
+    perform              => 1,
+    path_file            => "/home/shengq1/local/bin/path_glibc2.14.txt",
+    target_dir           => "${target_dir}/shapeit",
+    option               => "--seed 1414591741 -T 8",
+    source_ref           => "gen_files",
     genetic_map_file_ref => "genetic_map_files",
-    sh_direct    => 1,
-    pbs          => {
+    sh_direct            => 1,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
   },
-  impute2 => {
+  shapeit_impute2 => {
     class                 => "Imputation::Impute2",
     perform               => 1,
-    target_dir            => "${target_dir}/impute2",
+    target_dir            => "${target_dir}/shapeit_impute2",
     option                => "",
     max_chromosome_length => "250000000",
     interval              => "5000000",
     source_ref            => [ "shapeit", "phased\$" ],
-    map_file_ref          => "map_files",
+    genetic_map_file_ref  => "genetic_map_files",
     haplo_file_ref        => "haplo_files",
-    ped_file_ref          => "ped_files",
+    gen_file_ref          => "gen_files",
+    isPhased              => 1,
     sh_direct             => 0,
     pbs                   => {
       "email"    => $email,
@@ -118,12 +102,8 @@ my $config = {
   }
 };
 
-#performConfig($config);
-performTask($config, "shapeit");
-
-
-
-
+performConfig($config);
+#performTask( $config, "shapeit" );
 
 1;
 
