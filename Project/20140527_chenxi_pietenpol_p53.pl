@@ -66,7 +66,7 @@ my $config = {
   },
   shapeit => {
     class                => "Imputation::Shapeit",
-    perform              => 1,
+    perform              => 0,
     path_file            => "/home/shengq1/local/bin/path_glibc2.14.txt",
     target_dir           => "${target_dir}/shapeit",
     option               => "--seed 1414591741 -T 8",
@@ -82,7 +82,7 @@ my $config = {
   },
   shapeit_impute2 => {
     class                 => "Imputation::Impute2",
-    perform               => 1,
+    perform               => 0,
     target_dir            => "${target_dir}/shapeit_impute2",
     option                => "",
     max_chromosome_length => "250000000",
@@ -92,6 +92,25 @@ my $config = {
     haplo_file_ref        => "haplo_files",
     gen_file_ref          => "gen_files",
     isPhased              => 1,
+    sh_direct             => 0,
+    pbs                   => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  impute2_direct => {
+    class                 => "Imputation::Impute2",
+    perform               => 1,
+    target_dir            => "${target_dir}/impute2_direct",
+    option                => "",
+    max_chromosome_length => "250000000",
+    interval              => "5000000",
+    source_ref            => "gen_files",
+    genetic_map_file_ref  => "genetic_map_files",
+    haplo_file_ref        => "haplo_files",
+    isPhased              => 0,
     sh_direct             => 0,
     pbs                   => {
       "email"    => $email,
