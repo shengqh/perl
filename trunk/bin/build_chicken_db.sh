@@ -19,3 +19,4 @@ wget ftp://ftp.ncbi.nlm.nih.gov/genomes/Gallus_gallus/GFF/ref_Gallus_gallus-4.0_
 gunzip ref_Gallus_gallus-4.0_scaffolds.gff3.gz
 
 perl ~/program/perl/bin/buildindex.pl -f gga_ref_Gallus_gallus-4.0.fa
+
