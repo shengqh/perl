@@ -9,8 +9,12 @@ use CQS::ConfigUtils;
 
 my $target_dir = "/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53";
 
+my $seed = "1414591741";
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
-my $impute2_option = "-filt_rules_l 'eur.maf<0.01' 'afr.maf<0.01' ";
+
+my $impute2_option = "-seed ". $seed;
+my $impute2_option_filter = $impute2_option . " -filt_rules_l 'eur.maf<0.01' 'afr.maf<0.01' ";
 
 my $config = {
   general   => { task_name => "20140527_chenxi_pietenpol_p53" },
@@ -70,7 +74,7 @@ my $config = {
     perform              => 0,
     path_file            => "/home/shengq1/local/bin/path_glibc2.14.txt",
     target_dir           => "${target_dir}/shapeit",
-    option               => "--seed 1414591741 -T 8",
+    option               => "-T 8 --seed " . $seed,
     source_ref           => "gen_files",
     genetic_map_file_ref => "genetic_map_files",
     sh_direct            => 0,
@@ -85,7 +89,7 @@ my $config = {
     class                 => "Imputation::Impute2",
     perform               => 0,
     target_dir            => "${target_dir}/shapeit_impute2",
-    option                => "",
+    option                => $impute2_option,
     max_chromosome_length => "250000000",
     interval              => "5000000",
     source_ref            => [ "shapeit", "phased\$" ],
@@ -105,7 +109,7 @@ my $config = {
     class                 => "Imputation::Impute2",
     perform               => 1,
     target_dir            => "${target_dir}/impute2_direct",
-    option                => "",
+    option                => $impute2_option,
     max_chromosome_length => "250000000",
     interval              => "5000000",
     source_ref            => "gen_files",
@@ -124,7 +128,7 @@ my $config = {
     class                 => "Imputation::Impute2",
     perform               => 1,
     target_dir            => "${target_dir}/impute2_direct_filter",
-    option                => $impute2_option,
+    option                => $impute2_option_filter,
     max_chromosome_length => "250000000",
     interval              => "5000000",
     source_ref            => "gen_files",
