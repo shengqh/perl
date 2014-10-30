@@ -90,7 +90,7 @@ my $config     = {
     fastq_files_ref => "files",
     seqcount_ref    => "count_files",
     cqs_tools       => $cqstools,
-    gff_file        => "/scratch/cqs/shengq1/references/soybean/ref_V1.1_top_level.gff3",
+    gff_file        => "/scratch/cqs/shengq1/references/chicken/ref_Gallus_gallus-4.0_top_level.gff3",
     samtools        => $samtools,
     sh_direct       => 1,
     pbs             => {
@@ -109,7 +109,7 @@ my $config     = {
     fastq_files_ref => "files",
     seqcount_ref    => "count_files",
     cqs_tools       => $cqstools,
-    gff_file        => "/scratch/cqs/shengq1/references/soybean/ref_V1.1_top_level.gff3",
+    gff_file        => "/scratch/cqs/shengq1/references/chicken/ref_Gallus_gallus-4.0_top_level.gff3",
     samtools        => $samtools,
     sh_direct       => 1,
     pbs             => {
@@ -122,6 +122,8 @@ my $config     = {
 };
 
 #performConfig($config);
+
+performTask($config, "chicken_bowtie1_pm_count");
 performTask($config, "chicken_bowtie1_pm_count_orientationfree");
 
 1;
