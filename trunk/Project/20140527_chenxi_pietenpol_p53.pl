@@ -10,6 +10,7 @@ use CQS::ConfigUtils;
 my $target_dir = "/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
+my $impute2_option = "-filt_rules_l 'eur.maf<0.01' 'afr.maf<0.01' ";
 
 my $config = {
   general   => { task_name => "20140527_chenxi_pietenpol_p53" },
@@ -118,11 +119,30 @@ my $config = {
       "walltime" => "72",
       "mem"      => "20gb"
     },
+  },
+  impute2_direct_filter => {
+    class                 => "Imputation::Impute2",
+    perform               => 1,
+    target_dir            => "${target_dir}/impute2_direct_filter",
+    option                => $impute2_option,
+    max_chromosome_length => "250000000",
+    interval              => "5000000",
+    source_ref            => "gen_files",
+    genetic_map_file_ref  => "genetic_map_files",
+    haplo_file_ref        => "haplo_files",
+    isPhased              => 0,
+    sh_direct             => 0,
+    pbs                   => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
   }
 };
 
-performConfig($config);
-#performTask( $config, "shapeit" );
+#performConfig($config);
+performTask( $config, "impute2_direct_filter" );
 
 1;
 
