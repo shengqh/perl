@@ -65,6 +65,23 @@ my $config     = {
       "mem"      => "20gb"
     },
   },
+  soybean_bowtie1_pm_count_table => {
+    class      => "CQSMappedTable",
+    perform    => 1,
+    target_dir => "${target_dir}/soybean_bowtie1_pm_count_table",
+    option     => "",
+    source_ref => [ "soybean_bowtie1_pm_count", ".xml" ],
+    cqs_tools  => $cqstools,
+    prefix     => "soybean_pm",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  
   chicken_bowtie1 => {
     class         => "Bowtie1",
     perform       => 1,
@@ -100,6 +117,22 @@ my $config     = {
       "mem"      => "20gb"
     },
   },
+  chicken_bowtie1_pm_count_table => {
+    class      => "CQSMappedTable",
+    perform    => 1,
+    target_dir => "${target_dir}/chicken_bowtie1_pm_count_table",
+    option     => "",
+    source_ref => [ "chicken_bowtie1_pm_count", ".xml" ],
+    cqs_tools  => $cqstools,
+    prefix     => "chicken_pm",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
   chicken_bowtie1_pm_count_orientationfree => {
     class           => "CQSMappedCount",
     perform         => 1,
@@ -123,8 +156,10 @@ my $config     = {
 
 #performConfig($config);
 
-performTask($config, "chicken_bowtie1_pm_count");
-performTask($config, "chicken_bowtie1_pm_count_orientationfree");
+#performTask($config, "chicken_bowtie1_pm_count");
+#performTask($config, "chicken_bowtie1_pm_count_orientationfree");
+performTask($config, "soybean_bowtie1_pm_count_table");
+performTask($config, "chicken_bowtie1_pm_count_table");
 
 1;
 
