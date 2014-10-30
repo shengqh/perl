@@ -100,9 +100,29 @@ my $config     = {
       "mem"      => "20gb"
     },
   },
+  chicken_bowtie1_pm_count_orientationfree => {
+    class           => "CQSMappedCount",
+    perform         => 1,
+    target_dir      => "${target_dir}/chicken_bowtie1_pm_count_orientationfree",
+    option          => $count_option . " --orientation_free",
+    source_ref      => "chicken_bowtie1",
+    fastq_files_ref => "files",
+    seqcount_ref    => "count_files",
+    cqs_tools       => $cqstools,
+    gff_file        => "/scratch/cqs/shengq1/references/soybean/ref_V1.1_top_level.gff3",
+    samtools        => $samtools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "chicken_bowtie1_pm_count_orientationfree");
 
 1;
 
