@@ -96,7 +96,7 @@ my $config     = {
     },
   },
   
-  chicken_bowtie1 => {
+  chicken_bowtie1_pm => {
     class         => "Bowtie1",
     perform       => 1,
     target_dir    => "${target_dir}/chicken_bowtie1_pm",
@@ -117,7 +117,7 @@ my $config     = {
     perform         => 1,
     target_dir      => "${target_dir}/chicken_bowtie1_pm_count",
     option          => $count_option,
-    source_ref      => "chicken_bowtie1",
+    source_ref      => "chicken_bowtie1_pm",
     fastq_files_ref => "files",
     seqcount_ref    => "count_files",
     cqs_tools       => $cqstools,
@@ -152,7 +152,7 @@ my $config     = {
     perform         => 1,
     target_dir      => "${target_dir}/chicken_bowtie1_pm_count_orientationfree",
     option          => $count_option . " --orientation_free",
-    source_ref      => "chicken_bowtie1",
+    source_ref      => "chicken_bowtie1_pm",
     fastq_files_ref => "files",
     seqcount_ref    => "count_files",
     cqs_tools       => $cqstools,
