@@ -81,6 +81,20 @@ my $config     = {
       "mem"      => "10gb"
     },
   },
+  soybean_bowtie1_pm_pmnames => {
+    class      => "Samtools::PerfectMappedReadNames",
+    perform    => 1,
+    target_dir => "${target_dir}/soybean_bowtie1_pm_pmnames",
+    option     => "",
+    source_ref => "soybean_bowtie1_pm",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   
   chicken_bowtie1 => {
     class         => "Bowtie1",
@@ -152,14 +166,28 @@ my $config     = {
       "mem"      => "20gb"
     },
   },
+  chicken_bowtie1_pm_pmnames => {
+    class      => "Samtools::PerfectMappedReadNames",
+    perform    => 1,
+    target_dir => "${target_dir}/chicken_bowtie1_pm_pmnames",
+    option     => "",
+    source_ref => "chicken_bowtie1_pm",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 };
 
 #performConfig($config);
 
 #performTask($config, "chicken_bowtie1_pm_count");
 #performTask($config, "chicken_bowtie1_pm_count_orientationfree");
-performTask($config, "soybean_bowtie1_pm_count_table");
-performTask($config, "chicken_bowtie1_pm_count_table");
+performTask($config, "soybean_bowtie1_pm_pmnames");
+performTask($config, "chicken_bowtie1_pm_pmnames");
 
 1;
 
