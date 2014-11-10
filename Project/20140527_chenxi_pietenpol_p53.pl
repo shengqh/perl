@@ -108,10 +108,10 @@ my $config = {
     perform              => 0,
     path_file            => "/home/shengq1/local/bin/path_glibc2.14.txt",
     target_dir           => "${target_dir}/shapeit_gen",
-    option               => "--aligned -T 8 --seed " . $seed,
+    option               => "--aligned -T 24 --seed " . $seed,
     source_ref           => "gen_files",
     genetic_map_file_ref => "genetic_map_files",
-    sh_direct            => 0,
+    sh_direct            => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
