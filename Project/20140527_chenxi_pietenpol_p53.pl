@@ -35,6 +35,23 @@ my $config = {
     "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.20.ped"],
     "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.22.ped"]
   },
+  gen_files => {
+    "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.1.gen"],
+    "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.3.gen"],
+    "Pietenpol_p53.06" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.6.gen"],
+    "Pietenpol_p53.07" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.7.gen"],
+    "Pietenpol_p53.09" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.9.gen"],
+    "Pietenpol_p53.10" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.10.gen"],
+    "Pietenpol_p53.11" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.11.gen"],
+    "Pietenpol_p53.12" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.12.gen"],
+    "Pietenpol_p53.15" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.15.gen"],
+    "Pietenpol_p53.16" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.16.gen"],
+    "Pietenpol_p53.17" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.17.gen"],
+    "Pietenpol_p53.18" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.18.gen"],
+    "Pietenpol_p53.19" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.19.gen"],
+    "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.20.gen"],
+    "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.22.gen"]
+  },
   haps_files => {
     "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.1.haps"],
     "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.3.haps"],
@@ -90,9 +107,9 @@ my $config = {
     class                => "Imputation::Shapeit",
     perform              => 0,
     path_file            => "/home/shengq1/local/bin/path_glibc2.14.txt",
-    target_dir           => "${target_dir}/shapeit",
+    target_dir           => "${target_dir}/shapeit_gen",
     option               => "--aligned -T 8 --seed " . $seed,
-    source_ref           => "ped_files",
+    source_ref           => "gen_files",
     genetic_map_file_ref => "genetic_map_files",
     sh_direct            => 0,
     pbs                  => {
@@ -181,7 +198,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "impute2_direct_missing_filter" );
+performTask( $config, "shapeit" );
 
 
 1;
