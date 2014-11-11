@@ -235,7 +235,7 @@ my $mouse_def = {
 my @defs = ( $human_def, $mouse_def );
 
 foreach my $def (@defs) {
-  my $target_dir = $def->{target_dir};
+  my $target_dir = create_directory_or_die($def->{target_dir});
   my $config     = {
     general => { "task_name" => $def->{task_name} },
 
