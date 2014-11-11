@@ -156,6 +156,24 @@ my $preprocessing     = {
       "mem"      => "20gb"
     },
   },
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/preprocessing_sequencetask",
+    option     => "",
+    source     => {
+      individual => [
+        "trimmer", "fastqc_pre", "cutadapt", "fastqc_post", "fastqlen", "identical",
+      ],
+    },
+    sh_direct => 1,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 };
 
 performConfig($preprocessing);
