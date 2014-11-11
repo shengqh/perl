@@ -175,7 +175,7 @@ my $preprocessing = {
 #performConfig($preprocessing);
 
 my $human_def = {
-  general             => { "task_name" => $def->{task_name}, },
+  task_name           => $def->{task_name},
   mirna_coordinate    => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
   trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
   trna_fasta          => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa",
@@ -197,7 +197,7 @@ my $human_def = {
 };
 
 my $mouse_def = {
-  general             => { "task_name" => $def->{task_name}, },
+  task_name           => $def->{task_name},
   mirna_coordinate    => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
   trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed",
   trna_fasta          => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa",
@@ -237,7 +237,7 @@ my @defs = ( $human_def, $mouse_def );
 foreach my $def (@defs) {
   my $target_dir = $def->{target_dir};
   my $config     = {
-    general => { "task_name" => $def->{task_name}, },
+    general => { "task_name" => $def->{task_name} },
 
     #1 mismatch search
     bowtie1_genome_cutadapt_topN_1mm => {
