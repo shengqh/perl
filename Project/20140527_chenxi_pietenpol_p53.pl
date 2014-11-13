@@ -13,7 +13,7 @@ my $seed = "1414591741";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
-my $impute2_option = "-seed ". $seed;
+my $impute2_option        = "-seed " . $seed;
 my $impute2_option_filter = $impute2_option . " -filt_rules_l 'eur.maf<0.01' 'afr.maf<0.01' ";
 
 my $config = {
@@ -51,6 +51,23 @@ my $config = {
     "Pietenpol_p53.19" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.19.haps"],
     "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.20.haps"],
     "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.22.haps"]
+  },
+  haps_ref_files => {
+    "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.01/Pietenpol_p53.01.ref.haps"],
+    "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.03/Pietenpol_p53.03.ref.haps"],
+    "Pietenpol_p53.06" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.06/Pietenpol_p53.06.ref.haps"],
+    "Pietenpol_p53.07" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.07/Pietenpol_p53.07.ref.haps"],
+    "Pietenpol_p53.09" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.09/Pietenpol_p53.09.ref.haps"],
+    "Pietenpol_p53.10" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.10/Pietenpol_p53.10.ref.haps"],
+    "Pietenpol_p53.11" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.11/Pietenpol_p53.11.ref.haps"],
+    "Pietenpol_p53.12" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.12/Pietenpol_p53.12.ref.haps"],
+    "Pietenpol_p53.15" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.15/Pietenpol_p53.15.ref.haps"],
+    "Pietenpol_p53.16" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.16/Pietenpol_p53.16.ref.haps"],
+    "Pietenpol_p53.17" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.17/Pietenpol_p53.17.ref.haps"],
+    "Pietenpol_p53.18" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.18/Pietenpol_p53.18.ref.haps"],
+    "Pietenpol_p53.19" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.19/Pietenpol_p53.19.ref.haps"],
+    "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.20/Pietenpol_p53.20.ref.haps"],
+    "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.22/Pietenpol_p53.22.ref.haps"],
   },
   genetic_map_files => {
     "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/ref_panel/genetic_map_chr1_combined_b37.txt"],
@@ -105,11 +122,11 @@ my $config = {
   shapeit_impute2 => {
     class                 => "Imputation::Impute2",
     perform               => 0,
-    target_dir            => "${target_dir}/shapeit_impute2",
+    target_dir            => "${target_dir}/shapeit_gen_impute2",
     option                => $impute2_option_filter . " -use_prephased_g",
     max_chromosome_length => "250000000",
     interval              => "5000000",
-    source_ref            => [ "shapeit", "haps\$" ],
+    source_ref            => "haps_ref_files",
     genetic_map_file_ref  => "genetic_map_files",
     haplo_file_ref        => "haplo_files",
     isPhased              => 1,
@@ -181,8 +198,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "shapeit" );
-
+performTask( $config, "shapeit_impute2" );
 
 1;
 
