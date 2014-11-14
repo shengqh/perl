@@ -52,6 +52,13 @@ my $config = {
     "Pietenpol_p53.20" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.20.haps"],
     "Pietenpol_p53.22" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/Pietenpol_p53.22.haps"]
   },
+
+  #for i in $(ls -d */); do
+  #        for j in $(ls ${i}*.haps); do
+  #                grep "ref:" ${j} >> ${i}/${i%%/}.ref.haps
+  #        done
+  #done
+  #cqstools file_def -i . -r -f .ref.haps$ -n \(.+\).ref
   haps_ref_files => {
     "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.01/Pietenpol_p53.01.ref.haps"],
     "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/shapeit_gen/result/Pietenpol_p53.03/Pietenpol_p53.03.ref.haps"],
