@@ -184,7 +184,7 @@ for my $platform ( sort keys %{$gens} ) {
     },
     shapeit_impute2 => {
       class                 => "Imputation::Impute2",
-      perform               => 1,
+      perform               => 0,
       target_dir            => "${target_dir}/shapeit_gen_impute2_" . $platform,
       option                => $impute2_option_filter . " -use_prephased_g",
       max_chromosome_length => "250000000",
