@@ -17,7 +17,7 @@ my $impute2_option        = "-seed " . $seed;
 my $impute2_option_filter = $impute2_option . " -filt_rules_l 'eur.maf<0.01' 'afr.maf<0.01' ";
 
 my $gens = {
-  "660w" => {
+  "660W" => {
     "Pietenpol_p53.01" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/byplatforms/Pietenpol_p53.660W.01.gen"],
     "Pietenpol_p53.03" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/byplatforms/Pietenpol_p53.660W.03.gen"],
     "Pietenpol_p53.06" => ["/gpfs21/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/preimputation/byplatforms/Pietenpol_p53.660W.06.gen"],
