@@ -204,9 +204,7 @@ for my $platform ( sort keys %{$gens} ) {
       perform               => 1,
       target_dir            => "${target_dir}/shapeit_impute2_gen_" . $platform,
       option                => $impute2_option_filter . " -use_prephased_g",
-      max_chromosome_length => "250000000",
-      interval              => "5000000",
-      source_ref            => "haps_ref_files",
+      source_ref            => "shapeit",
       genetic_map_file_ref  => "genetic_map_files",
       haplo_file_ref        => "haplo_files",
       range_file_ref        => "range_files",
@@ -276,9 +274,9 @@ for my $platform ( sort keys %{$gens} ) {
     }
   };
 
-  performConfig($config);
+  #performConfig($config);
 
-  #performTask( $config, "shapeit_impute2" );
+  performTask( $config, "shapeit_impute2" );
 }
 
 1;
