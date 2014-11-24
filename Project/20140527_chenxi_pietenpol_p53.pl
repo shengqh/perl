@@ -200,17 +200,32 @@ for my $platform ( sort keys %{$gens} ) {
       },
     },
     shapeit_impute2 => {
-      class                 => "Imputation::Impute2",
-      perform               => 1,
-      target_dir            => "${target_dir}/shapeit_impute2_gen_" . $platform,
-      option                => $impute2_option_filter . " -use_prephased_g",
-      source_ref            => "shapeit",
-      genetic_map_file_ref  => "genetic_map_files",
-      haplo_file_ref        => "haplo_files",
-      range_file_ref        => "range_files",
-      isPhased              => 1,
-      sh_direct             => 0,
-      pbs                   => {
+      class                => "Imputation::Impute2",
+      perform              => 1,
+      target_dir           => "${target_dir}/shapeit_impute2_gen_" . $platform,
+      option               => $impute2_option_filter . " -use_prephased_g",
+      source_ref           => "shapeit",
+      genetic_map_file_ref => "genetic_map_files",
+      haplo_file_ref       => "haplo_files",
+      range_file_ref       => "range_files",
+      isPhased             => 1,
+      sh_direct            => 0,
+      pbs                  => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    distiller => {
+      class           => "CQS::Impute2Distiller",
+      perform         => 1,
+      target_dir      => "${target_dir}/shapeit_impute2_distiller_gen_" . $platform,
+      option          => "",
+      source_ref      => [ "shapeit_impute2", "tmp\$" ],
+      target_snp_file => "/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/STEP07_Pietenpol_p53_CandidateSNP_flip_targetsnp.tsv",
+      sh_direct       => 1,
+      pbs             => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
@@ -218,16 +233,16 @@ for my $platform ( sort keys %{$gens} ) {
       },
     },
     impute2_direct => {
-      class                 => "Imputation::Impute2",
-      perform               => 0,
-      target_dir            => "${target_dir}/impute2_direct",
-      option                => $impute2_option,
-      source_ref            => "gen_files",
-      genetic_map_file_ref  => "genetic_map_files",
-      haplo_file_ref        => "haplo_files",
-      isPhased              => 0,
-      sh_direct             => 0,
-      pbs                   => {
+      class                => "Imputation::Impute2",
+      perform              => 0,
+      target_dir           => "${target_dir}/impute2_direct",
+      option               => $impute2_option,
+      source_ref           => "gen_files",
+      genetic_map_file_ref => "genetic_map_files",
+      haplo_file_ref       => "haplo_files",
+      isPhased             => 0,
+      sh_direct            => 0,
+      pbs                  => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
@@ -276,7 +291,7 @@ for my $platform ( sort keys %{$gens} ) {
 
   #performConfig($config);
 
-  performTask( $config, "shapeit_impute2" );
+  performTask( $config, "distiller" );
 }
 
 1;
