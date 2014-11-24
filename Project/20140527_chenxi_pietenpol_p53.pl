@@ -280,4 +280,3 @@ for my $platform ( sort keys %{$gens} ) {
 }
 
 1;
-
