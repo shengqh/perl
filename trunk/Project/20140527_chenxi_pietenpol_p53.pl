@@ -8,6 +8,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
 my $target_dir = "/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53";
+my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $seed = "1414591741";
 
@@ -221,6 +222,7 @@ for my $platform ( sort keys %{$gens} ) {
       class           => "CQS::Impute2Distiller",
       perform         => 1,
       target_dir      => "${target_dir}/shapeit_impute2_distiller_gen_" . $platform,
+      cqstools        => $cqstools,
       option          => "",
       source_ref      => [ "shapeit_impute2", "tmp\$" ],
       target_snp_file => "/scratch/cqs/shengq1/chenxi/20140527_chenxi_pietenpol_p53/STEP07_Pietenpol_p53_CandidateSNP_flip_targetsnp.tsv",
