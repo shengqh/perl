@@ -210,7 +210,7 @@ my $config     = {
     },
   },
   miRNA_1mm_table_NTA => {
-    class      => "CQSMirnaNTATable",
+    class      => "CQS::CQSMirnaNTATable",
     perform    => 1,
     target_dir => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_NTA_mirna_table",
     option     => "",
