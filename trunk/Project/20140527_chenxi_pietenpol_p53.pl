@@ -192,7 +192,7 @@ for my $platform ( sort keys %{$gens} ) {
       option               => "--aligned -T 8 --seed " . $seed,
       source_ref           => "gen_files",
       genetic_map_file_ref => "genetic_map_files",
-      sh_direct            => 1,
+      sh_direct            => 0,
       pbs                  => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
