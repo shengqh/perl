@@ -456,7 +456,7 @@ my $config     = {
         #data preparation
         "trimmer", "fastqc_pre", "cutadapt", "fastqc_post", "fastqlen", "identical", "identical_NTA",
         #NTA data analysis
-        "bowtie1_genome_cutadapt_topN_1mm_NTA", "mirna_1mm_count_NTA", "mirna_1mm_table_NTA",
+        "bowtie1_genome_cutadapt_topN_1mm_NTA", "mirna_1mm_count_NTA",
         #non-NTA count
         "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         #miRBase analysis
