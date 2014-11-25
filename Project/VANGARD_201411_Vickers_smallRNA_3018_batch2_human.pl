@@ -472,7 +472,7 @@ my $config     = {
         #miRBase 
         "chromosome_count_table" ],
     },
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=6",
