@@ -186,13 +186,13 @@ for my $platform ( sort keys %{$gens} ) {
     },
     shapeit => {
       class                => "Imputation::Shapeit",
-      perform              => 0,
+      perform              => 1,
       path_file            => "/home/shengq1/local/bin/path_glibc2.14.txt",
       target_dir           => "${target_dir}/shapeit_gen_" . $platform,
       option               => "--aligned -T 8 --seed " . $seed,
       source_ref           => "gen_files",
       genetic_map_file_ref => "genetic_map_files",
-      sh_direct            => 0,
+      sh_direct            => 1,
       pbs                  => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
@@ -293,7 +293,7 @@ for my $platform ( sort keys %{$gens} ) {
 
   #performConfig($config);
 
-  performTask( $config, "distiller" );
+  performTask( $config, "shapeit" );
 }
 
 1;
