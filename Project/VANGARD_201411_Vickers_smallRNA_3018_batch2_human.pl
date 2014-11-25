@@ -468,7 +468,7 @@ my $config     = {
         #NTA table
         "miRNA_1mm_table_NTA",
         #non-NTA table and graph
-        "miRNA_1mm_overlap_position", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_category", "tRNA_1mm_position",
+        "miRNA_1mm_overlap_position", "tRNA_1mm_table", "smallRNA_1mm_table", "smallRNA_1mm_NTA_category", "tRNA_1mm_position",
         #miRBase 
         "chromosome_count_table" ],
     },
