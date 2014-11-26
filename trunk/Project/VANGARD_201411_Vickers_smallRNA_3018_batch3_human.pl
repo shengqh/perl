@@ -248,9 +248,9 @@ my $config     = {
     perform         => 1,
     target_dir      => "${target_dir}/topN_bowtie1_genome_cutadapt_1mm_count_miRNA_overlap",
     option          => $mirna_overlap_count_option,
-    source_ref      => "bowtie1_genome_cutadapt_topN_1mm_NTA",
-    fastq_files_ref => "identical_NTA",
-    seqcount_ref    => [ "identical_NTA", ".dupcount\$" ],
+    source_ref      => "bowtie1_genome_cutadapt_topN_1mm",
+    fastq_files_ref => "identical",
+    seqcount_ref    => [ "identical", ".dupcount\$" ],
     cqs_tools       => $cqstools,
     gff_file        => $def->{mirna_coordinate},
     fasta_file      => $mirna_fasta,
@@ -458,7 +458,7 @@ my $config     = {
         #NTA data analysis
         "bowtie1_genome_cutadapt_topN_1mm_NTA", "mirna_1mm_count_NTA",
         #non-NTA count
-        "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
+        "bowtie1_genome_cutadapt_topN_1mm", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         #miRBase analysis
         "bowtie1_genome_cutadapt_topN_genome_pmnames", "bowtie1_genome_cutadapt_topN_miRbase_pm", "chromosome_count",
         #for IGV 
