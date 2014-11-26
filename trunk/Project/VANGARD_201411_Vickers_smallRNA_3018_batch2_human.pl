@@ -458,7 +458,7 @@ my $config     = {
         #NTA data analysis
         "bowtie1_genome_cutadapt_topN_1mm_NTA", "mirna_1mm_count_NTA",
         #non-NTA count
-        "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
+        "bowtie1_genome_cutadapt_topN_1mm", "miRNA_1mm_count_overlap", "tRNA_1mm_count", "smallRNA_1mm_count",
         #miRBase analysis
         "bowtie1_genome_cutadapt_topN_genome_pmnames", "bowtie1_genome_cutadapt_topN_miRbase_pm", "chromosome_count",
         #for IGV 
