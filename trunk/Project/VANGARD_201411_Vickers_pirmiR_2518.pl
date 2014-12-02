@@ -14,7 +14,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
 
-my $overlap_count_option = "--gtf_key pri-miR --min_overlap 0.5 -e 2";
+my $overlap_count_option = "--gtf_key pri-miR --min_overlap 0.5 -e 2 --not_smallrna";
 
 my $config = {
   general => { "task_name" => "2518", },
