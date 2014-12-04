@@ -8,7 +8,7 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
 my $root = create_directory_or_die(
-	"/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch4/");
+	"/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050/");
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -24,7 +24,7 @@ my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -p 8";
 
 my $def = {
-	task_name        => "3050_b4",
+	task_name        => "3050",
 	mirna_coordinate => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
 	trna_coordinate =>
 	  "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
@@ -53,6 +53,24 @@ my $def = {
 		],
 		"3050-KCV-4-42" => [
 "/gpfs21/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch4/raw/3050-KCV-4-42_TAATCG_L006_R1_001.fastq.gz"
+		],
+		"3050-KCV-6-27" => [
+"/gpfs21/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch6/raw/3050-KCV-6-27_ATTCCT_L008_R1_001.fastq.gz"
+		],
+		"3050-KCV-6-28" => [
+"/gpfs21/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch6/raw/3050-KCV-6-28_CAAAAG_L008_R1_001.fastq.gz"
+		],
+		"3050-KCV-6-34" => [
+"/gpfs21/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch6/raw/3050-KCV-6-34_CATGGC_L008_R1_001.fastq.gz"
+		],
+		"3050-KCV-6-38" => [
+"/gpfs21/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch6/raw/3050-KCV-6-38_CTAGCT_L008_R1_001.fastq.gz"
+		],
+		"3050-KCV-6-40" => [
+"/gpfs21/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch6/raw/3050-KCV-6-40_CTCAGA_L008_R1_001.fastq.gz"
+		],
+		"3050-KCV-6-43" => [
+"/gpfs21/scratch/cqs/shengq1/vickers/Vickers_201412_smallRNA_3050_batch6/raw/3050-KCV-6-43_TACAGC_L008_R1_001.fastq.gz"
 		],
 	},
 };
