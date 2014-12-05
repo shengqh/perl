@@ -22,6 +22,7 @@ my $mirna_overlap_count_option = "-s --gtf_key miRNA";
 my $mirna_fasta = "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa";
 
 my $bowtie1_option_pm = "-a -m 100 --best --strata -v 0 -p 8";
+my $min_read_length = 16;
 
 my $def = {
 	task_name        => "3050",
@@ -112,7 +113,7 @@ my $config     = {
 		class      => "Cutadapt",
 		perform    => 1,
 		target_dir => "${target_dir}/cutadapt",
-		option     => "-O 10 -m 16",
+		option     => "-O 10 -m " . $min_read_length,
 		source_ref => "trimmer",
 		adaptor    => "TGGAATTCTCGGGTGCCAAGG",
 		extension  => "_clipped.fastq",
@@ -172,7 +173,7 @@ my $config     = {
 		class        => "CQS::FastqMirna",
 		perform      => 1,
 		target_dir   => "${target_dir}/identical_NTA",
-		option       => "",
+		option       => "-l " . $min_read_length,
 		source_ref   => [ "identical", ".fastq.gz\$" ],
 		seqcount_ref => [ "identical", ".dupcount\$" ],
 		cqstools     => $cqstools,
