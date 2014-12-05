@@ -21,6 +21,7 @@ my $def = {
 	trna_fasta          => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa",
 	smallrna_coordinate => "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed",
 	bowtie1_index       => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+	bowtie1_miRBase_index =>  "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.0.1/mature.dna",
 
 	#parameters
 	bowtie1_option_1mm         => "-a -m 100 --best --strata -v 1 -p 8",
@@ -43,3 +44,4 @@ my $def = {
 performSmallRNA($def);
 
 1;
+
