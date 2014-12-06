@@ -12,7 +12,15 @@ my $def = {
 	target_dir => "/scratch/cqs/shengq1/vickers/201412_smallRNA_3050/",
 	max_thread => 8,
 
-	#Software and database options
+	#Default software parameter (don't change it except you really know it)
+	bowtie1_option_1mm         => "-a -m 100 --best --strata -v 1 -p 8",
+	bowtie1_option_pm          => "-a -m 100 --best --strata -v 0 -p 8",
+	mirnacount_option          => "-s",                                          #ignore score
+	smallrnacount_option       => "-s --min_overlap 0.5 --length --sequence",
+	mirna_overlap_count_option => "-s --min_overlap 0.5 --gtf_key miRNA",
+	min_read_length            => 16,
+
+	#Software and miRBase database options
 	samtools              => "/home/shengq1/local/bin/samtools/samtools",
 	cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
 	mirna_fasta           => "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa",
@@ -25,14 +33,8 @@ my $def = {
 	smallrna_coordinate => "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed",
 	bowtie1_index       => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
 
-	#parameters
-	bowtie1_option_1mm         => "-a -m 100 --best --strata -v 1 -p 8",
-	bowtie1_option_pm          => "-a -m 100 --best --strata -v 0 -p 8",
-	mirnacount_option          => "-s",                                    #ignore score
-	trnacount_option           => "--length --sequence",
-	mirna_overlap_count_option => "-s --gtf_key miRNA",
-	min_read_length            => 16,
-	files                      => {
+	#Data
+	files => {
 		"3050-KCV-4-25" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3050/raw/3050-KCV-4-25_ACTGAT_L006_R1_001.fastq.gz"],
 		"3050-KCV-4-30" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3050/raw/3050-KCV-4-30_CACCGG_L006_R1_001.fastq.gz"],
 		"3050-KCV-4-33" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3050/raw/3050-KCV-4-33_CAGGCG_L006_R1_001.fastq.gz"],
