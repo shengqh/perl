@@ -24,12 +24,14 @@ my $def = {
 	samtools              => "/home/shengq1/local/bin/samtools/samtools",
 	cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
 	mirna_fasta           => "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa",
-	mirna_coordinate      => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
-	trna_coordinate       => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed",
-	trna_fasta            => "/data/cqs/guoy1/reference/smallrna/hg19_tRNA_ucsc_ensembl.bed.fa",
-	smallrna_coordinate   => "/data/cqs/guoy1/reference/smallrna/hg19_smallRNA_ucsc_ensembl.bed",
-	bowtie1_index         => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+	mirna_coordinate      => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
 	bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.0.1/mature.dna",
+
+	#genome database
+	trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed",
+	trna_fasta          => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa",
+	smallrna_coordinate => "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed",
+	bowtie1_index       => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
 
 	#Data
 	files                      => {
