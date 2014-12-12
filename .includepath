@@ -2,5 +2,7 @@
 <includepath>
   <includepathentry path="D:\sqh\programs\perl\ngsperl\lib" />
   <includepathentry path="D:/sqh/programs/perl/perl/lib" />
+  <includepathentry path="E:/sqh/programs/perl/ngsperl/lib" />
+  <includepathentry path="E:/sqh/programs/perl/perl/lib" />
 </includepath>
 
