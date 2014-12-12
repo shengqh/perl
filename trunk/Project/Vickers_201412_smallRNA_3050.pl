@@ -26,7 +26,7 @@ my $def = {
 	mirna_fasta           => "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa",
 	mirna_coordinate      => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
 	bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.0.1/mature.dna",
-
+	mirbase_count_option  => "-p mmu",
 	#genome database
 	trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed",
 	trna_fasta          => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa",

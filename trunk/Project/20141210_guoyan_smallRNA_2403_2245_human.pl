@@ -25,6 +25,7 @@ my $def = {
 	cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
 	mirna_fasta           => "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa",
 	bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.0.1/mature.dna",
+	mirbase_count_option  => "-p hsa",
 
 	#genome database
 	mirna_coordinate    => "/data/cqs/shengq1/reference/miRBase20/hsa.gff3",
@@ -71,7 +72,7 @@ my $def = {
 		"2245-CRF-09" => ["/scratch/cqs/guoy1/2245/rawdata/2245-CRF-9_1_sequence.txt.gz"],
 		"2245-CRF-10" => ["/scratch/cqs/guoy1/2245/rawdata/2245-CRF-10_1_sequence.txt.gz"],
 		"2245-CRF-11" => ["/scratch/cqs/guoy1/2245/rawdata/2245-CRF-11_1_sequence.txt.gz"],
-	  }
+	}
 };
 
 performSmallRNA($def);
