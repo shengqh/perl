@@ -34,7 +34,7 @@ my $config = {
 	},
 	primiR_count => {
 		class      => "CQSMappedCount",
-		perform    => 0,
+		perform    => 1,
 		target_dir => "${root}/count_overlap",
 		option     => $overlap_count_option,
 		source_ref => "files",
