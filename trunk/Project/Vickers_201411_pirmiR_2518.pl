@@ -41,7 +41,7 @@ my $config = {
 		cqs_tools  => $cqstools,
 		gff_file   => "/scratch/cqs/shengq1/vickers/database/20141119_hg19_primiR.gff3",
 		samtools   => $samtools,
-		sh_direct  => 1,
+		sh_direct  => 0,
 		pbs        => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=1",
