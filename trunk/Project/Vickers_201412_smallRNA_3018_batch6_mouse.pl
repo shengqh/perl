@@ -7,7 +7,7 @@ use Pipeline::SmallRNA;
 my $def = {
 
 	#General options
-	task_name  => "3018_b5",
+	task_name  => "3018_b6",
 	email      => "quanhu.sheng\@vanderbilt.edu",
 	target_dir => "/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch6_mouse/",
 	max_thread => 8,
