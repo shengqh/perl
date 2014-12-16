@@ -7,7 +7,7 @@ use Pipeline::SmallRNA;
 my $def = {
 
 	#General options
-	task_name  => "2403_2245",
+	task_name  => "3018_b7",
 	email      => "quanhu.sheng\@vanderbilt.edu",
 	target_dir => "/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/",
 	max_thread => 8,
@@ -36,8 +36,15 @@ my $def = {
 
 	#Data
 	files => {
-		"3018-KCV-7-1" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch5_liver/raw/3018-KCV-5-1_ATCACG_L005_R1_001.fastq.gz"],
-	}
+		"3018-KCV-7-18" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-18_GTCCGC_L006_R1_001.fastq.gz"],
+		"3018-KCV-7-19" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-19_GTGAAA_L006_R1_001.fastq.gz"],
+		"3018-KCV-7-20" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-20_GTGGCC_L006_R1_001.fastq.gz"],
+		"3018-KCV-7-21" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-21_GTTTCG_L006_R1_001.fastq.gz"],
+		"3018-KCV-7-22" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-22_CGTACG_L006_R1_001.fastq.gz"],
+		"3018-KCV-7-23" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-23_GAGTGG_L006_R1_001.fastq.gz"],
+		"3018-KCV-7-24" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-24_GGTAGC_L006_R1_001.fastq.gz"],
+		"3018-KCV-7-25" => ["/gpfs21/scratch/cqs/shengq1/vickers/201412_smallRNA_3018_batch7_human/raw/3018-KCV-7-25_ACTGAT_L006_R1_001.fastq.gz"],
+	  }
 };
 
 performSmallRNA($def);
