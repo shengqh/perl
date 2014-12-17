@@ -29,6 +29,7 @@ my $mouse_genome = {
 
 	#genome database
 	mirbase_count_option => "-p mmu",
+	mirna_coordinate     => "/data/cqs/shengq1/reference/miRBase20/mmu.gff3",
 	trna_coordinate     => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed",
 	trna_fasta          => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa",
 	smallrna_coordinate => "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed",
