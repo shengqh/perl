@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package Pipeline::SmallRNA;
+package CQS::SmallRNA;
 
 use strict;
 use warnings;
