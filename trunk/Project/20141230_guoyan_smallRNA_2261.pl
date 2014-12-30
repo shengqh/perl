@@ -110,6 +110,7 @@ my $def = {
       "2261-ASK-101"   => ["/gpfs21/scratch/cqs/guom1/2261/rawdata_3/2261-ASK-101_1.fastq"],
       "2261-ASK-102"   => ["/gpfs21/scratch/cqs/guom1/2261/rawdata_4/2261-ASK-102_1.fastq"],
       "2261-ASK-103"   => ["/gpfs21/scratch/cqs/guom1/2261/rawdata_4/2261-ASK-103_1.fastq"],
+    }
 };
 
 performSmallRNAHuman($def);
