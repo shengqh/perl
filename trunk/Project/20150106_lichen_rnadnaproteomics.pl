@@ -66,9 +66,9 @@ files => {
   },
   sra2fastq => {
     class      => "SRA::FastqDump",
-    perform    => 1,
+    perform    => 0,
     ispaired   => 1,
-    target_dir => "${target_dir}/FastqDump2",
+    target_dir => "${target_dir}/FastqDump",
     option     => "",
     source_ref => "files",
     sh_direct  => 0,
@@ -87,6 +87,7 @@ files => {
     option     => "",
     source_ref => "sra2fastq",
     sh_direct  => 0,
+    cluster => "slurm",
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=2",
