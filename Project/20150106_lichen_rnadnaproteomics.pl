@@ -12,7 +12,7 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
-  general    => { task_name => "chipseq_clayton" },
+  general    => { task_name => "lichen" },
 
 files => {
   "DNA_273_SRR926701" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150106-lichen-rnadnaproteomics/raw/DNA_273_SRR926701.sra"],
