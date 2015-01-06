@@ -72,6 +72,7 @@ files => {
     option     => "",
     source_ref => "files",
     sh_direct  => 0,
+    cluster => "slurm",
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
