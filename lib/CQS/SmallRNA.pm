@@ -52,7 +52,7 @@ sub getDefinition {
 
 	my $cluster="torque";
 	
-	if(def $userdef->{cluster}){
+	if(defined $userdef->{cluster}){
 		$cluster = $userdef->{cluster};
 	}
 	
