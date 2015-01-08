@@ -10,6 +10,7 @@ my $def = {
 	email      => "quanhu.sheng\@vanderbilt.edu",
 	target_dir => "/scratch/cqs/shengq1/vickers/201501_smallRNA_2829_2570_human/",
 	max_thread => 8,
+	cluster    => "slurm",
 
 	#Data
 	files => {
