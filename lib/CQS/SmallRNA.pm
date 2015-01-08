@@ -50,6 +50,12 @@ my $rat_genome = {
 sub getDefinition {
 	my ( $userdef, $genome ) = @_;
 
+	my $cluster="torque";
+	
+	if(def $userdef->{cluster}){
+		$cluster = $userdef->{cluster};
+	}
+	
 	my $def = {
 
 		#General options
@@ -57,7 +63,8 @@ sub getDefinition {
 		email      => $userdef->{email},
 		target_dir => $userdef->{target_dir},
 		max_thread => $userdef->{max_thread},
-
+		cluster    => $cluster,
+		
 		#Data
 		files => $userdef->{files},
 
