@@ -8,7 +8,7 @@ use Pipeline::SmallRNA;
 require Exporter;
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS = ( 'all' => [qw(performSmallRNAHuman performSmallRNAMouse performSmallRNAHumanTask performSmallRNAMouseTask)] );
+our %EXPORT_TAGS = ( 'all' => [qw(performSmallRNAHuman performSmallRNAMouse performSmallRNAHumanTask performSmallRNAMouseTask performSmallRNARat performSmallRNARatTask)] );
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -34,6 +34,17 @@ my $mouse_genome = {
 	trna_fasta          => "/data/cqs/guoy1/reference/smallrna/mm10_tRNA_ucsc_ensembl.bed.fa",
 	smallrna_coordinate => "/data/cqs/guoy1/reference/smallrna/mm10_smallRNA_ucsc_ensembl.bed",
 	bowtie1_index       => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
+};
+
+my $rat_genome = {
+
+	#genome database
+	mirbase_count_option => "-p rno",
+	mirna_coordinate     => "/data/cqs/shengq1/reference/miRBase20/rno.gff3",
+	trna_coordinate      => "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed",
+	trna_fasta           => "/data/cqs/guoy1/reference/smallrna/rn4_tRNA_ucsc_ensembl.bed.fa",
+	smallrna_coordinate  => "/data/cqs/guoy1/reference/smallrna/rn4_smallRNA_ucsc_ensembl.bed",
+	bowtie1_index        => "/data/cqs/shengq1/reference/rn4/bowtie1_index/rn4",
 };
 
 sub getDefinition {
@@ -83,13 +94,6 @@ sub performSmallRNAHuman {
 	performSmallRNA($def);
 }
 
-sub performSmallRNAMouse {
-	my ($userdef) = @_;
-	my $def = getDefinition($userdef, $mouse_genome);
-
-	performSmallRNA($def);
-}
-
 sub performSmallRNAHumanTask {
 	my ($userdef, $task) = @_;
 	my $def = getDefinition($userdef, $human_genome);
@@ -97,9 +101,30 @@ sub performSmallRNAHumanTask {
 	performSmallRNATask($def, $task);
 }
 
+sub performSmallRNAMouse {
+	my ($userdef) = @_;
+	my $def = getDefinition($userdef, $mouse_genome);
+
+	performSmallRNA($def);
+}
+
 sub performSmallRNAMouseTask {
 	my ($userdef, $task) = @_;
 	my $def = getDefinition($userdef, $mouse_genome);
+
+	performSmallRNATask($def, $task);
+}
+
+sub performSmallRNARat {
+	my ($userdef) = @_;
+	my $def = getDefinition($userdef, $rat_genome);
+
+	performSmallRNA($def);
+}
+
+sub performSmallRNARatTask {
+	my ($userdef, $task) = @_;
+	my $def = getDefinition($userdef, $rat_genome);
 
 	performSmallRNATask($def, $task);
 }
