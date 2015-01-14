@@ -56,6 +56,11 @@ sub getDefinition {
 		$cluster = $userdef->{cluster};
 	}
 	
+	my $min_read_length = 16;
+	if(defined $userdef->{min_read_length}){
+		$min_read_length = $userdef->{min_read_length};
+	}
+	
 	my $def = {
 
 		#General options
@@ -74,7 +79,7 @@ sub getDefinition {
 		mirnacount_option          => "-s",                                         #ignore score
 		smallrnacount_option       => "-s --min_overlap 0.5 --length --sequence",
 		mirna_overlap_count_option => "-s --min_overlap 0.5 --gtf_key miRNA",
-		min_read_length            => 16,
+		min_read_length            => $min_read_length,
 
 		#Software and miRBase database options
 		samtools              => "/home/shengq1/local/bin/samtools/samtools",
