@@ -14,6 +14,7 @@ if [[ ! -s hg20.fa ]]; then
       awk 'NR>1' chr${i}.fa >> hg20.fa.tmp
       rm chr${i}.fa
     done
+  cat rCRS.fa >> hg20.fa.tmp
   mv hg20.fa.tmp hg20.fa
 fi
 
