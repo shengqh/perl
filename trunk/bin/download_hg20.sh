@@ -20,3 +20,4 @@ fi
 
 perl ~/program/perl/bin/buildindex.pl -f hg20.fa
 
+
