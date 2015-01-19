@@ -17,6 +17,8 @@ my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl/Homo_sapiens
 my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl/index/Homo_sapiens.GRCh38.78";
 my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl/Homo_sapiens.GRCh38.78.map";
 
+my $cluster = "slurm";
+
 my $config = {
   general => { task_name => "lichen" },
 
@@ -119,7 +121,7 @@ my $rna_config = {
     option     => "",
     source_ref => "files",
     sh_direct  => 0,
-    cluster    => "slurm",
+    cluster    => $cluster,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=2",
@@ -127,8 +129,21 @@ my $rna_config = {
       "mem"      => "40gb"
     },
   },
+  fastqc_summary => {
+    class      => "QC::FastQCSummary",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc",
+    option     => "",
+    cluster    => $cluster,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   tophat2 => {
-    class                => "Tophat2",
+    class                => "Alignment::Tophat2",
     perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
