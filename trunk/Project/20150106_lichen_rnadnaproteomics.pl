@@ -219,14 +219,14 @@ my $dna_config = {
     },
   },
   bwa => {
-    class                      => "BWA",
+    class                      => "Alignment::BWA",
     perform                    => 1,
     target_dir                 => "${target_dir}/dna_bwa",
-    option                     => "-T 15 -t 8",
+    option                     => "-T 15",
     fasta_file                 => $bwa_fasta,
     source_ref                 => "files",
     addOrReplaceReadGroups_jar => "/home/shengq1/local/bin/picard/AddOrReplaceReadGroups.jar",
-    sh_direct                  => 1,
+    sh_direct                  => 0,
     pbs                        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -235,7 +235,7 @@ my $dna_config = {
     },
   },
   bwa_refine => {
-    class              => "GATKRefine",
+    class              => "GATK::Refine",
     perform            => 1,
     target_dir         => "${target_dir}/dna_bwa_refine",
     option             => "-Xmx40g",
@@ -245,7 +245,7 @@ my $dna_config = {
     vcf_files          => [$snp_file_16569_MT],
     gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
     markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
-    sh_direct          => 1,
+    sh_direct          => 0,
     pbs                => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
