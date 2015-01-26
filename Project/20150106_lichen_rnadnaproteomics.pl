@@ -168,6 +168,7 @@ my $rna_config = {
 
 performConfig($rna_config);
 
+
 my $dna_config = {
   general => { task_name => "lichen" },
 
@@ -191,7 +192,7 @@ my $dna_config = {
   },
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/dna_fastqc",
     option     => "",
     source_ref => "files",
@@ -206,7 +207,7 @@ my $dna_config = {
   },
   fastqc_summary => {
     class      => "QC::FastQCSummary",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/dna_fastqc",
     option     => "",
     cluster    => $cluster,
