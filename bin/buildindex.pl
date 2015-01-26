@@ -45,7 +45,7 @@ my $basename = basename($fastaFile);
 # index fasta file
 run_command("samtools faidx $fastaFile ");
 run_command("java -jar /home/shengq1/local/bin/picard/CreateSequenceDictionary.jar R=$fastaFile O=${base}.dict");
-run_command("perl /scratch/cqs/shengq1/source/scripts_FREEC/get_fasta_lengths.pl $fastaFile");
+run_command("perl /home/shengq1/local/bin/get_fasta_lengths.pl $fastaFile");
 run_command("mv res_${basename} ${base}.len ");
 
 # bowtie2
