@@ -380,6 +380,7 @@ my $config = {
   muTect => {
     class        => "GATK::MuTect",
     perform      => 1,
+    java         => "/usr/lib/jvm/java-1.6.0/bin/java",
     target_dir   => "${target_dir}/all_muTect",
     option       => "--min_qscore 20",
     java_option  => "-Xmx40g",
@@ -660,7 +661,6 @@ performConfig($config);
 #performTask($config, "annovar_muTect_TCGA_RNA");
 #performTask($config, "annovar_varscan2_TCGA_DNA");
 #performTask($config, "annovar_varscan2_TCGA_RNA");
-
 
 1;
 
