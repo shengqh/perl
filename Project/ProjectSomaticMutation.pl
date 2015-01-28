@@ -423,7 +423,7 @@ my $config = {
     class            => "RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/realign_rsmc",
-    option           => "",                                                     #thread mode
+    option           => "-c 8",                                                     #thread mode
     source_ref       => [ "dna_bwa_refine", "tophat2_rna_removeduplicates" ],
     groups_ref       => [ "dna_groups", "rna_groups" ],
     source_type      => "BAM",                                                  #source_type can be BAM/Mpileup
@@ -434,9 +434,9 @@ my $config = {
     execute_file     => "/home/shengq1/rsmc/rsmc.exe",
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "20gb"
+      "mem"      => "40gb"
     },
   },
   muTect_TCGA_DNA => {
