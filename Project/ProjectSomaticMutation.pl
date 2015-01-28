@@ -540,7 +540,7 @@ for my $cfg (@cfgs) {
     rsmc => {
       class            => "RSMC",
       perform          => 1,
-      target_dir       => "${target_dir}/realign_rsmc",
+      target_dir       => "${target_dir}/${task_name}_rsmc",
       option           => "-c 8",                                              #thread mode
       source_type      => "BAM",                                               #source_type can be BAM/Mpileup
       source_ref       => $cfg->{files},
