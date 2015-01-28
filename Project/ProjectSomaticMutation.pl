@@ -431,16 +431,25 @@ my $tcga_rna = {
   dbsnp_file  => $snp_file_16569_M,
 };
 
-my $realign = {
-  general     => { task_name => "realign" },
+my $realign_dna = {
+  general     => { task_name => "realign_dna" },
+  files       => $tcga->{dna},
+  fasta_file  => $fasta_file_16569_MT,
+  cosmic_file => $cosmic_file_16569_MT,
+  dbsnp_file  => $snp_file_16569_MT,
+  groups      => $tcga->{dna_groups},
+};
+
+my $realign_rna = {
+  general     => { task_name => "realign_rna" },
   files       => $tcga->{rna},
   fasta_file  => $fasta_file_16569_MT,
   cosmic_file => $cosmic_file_16569_MT,
   dbsnp_file  => $snp_file_16569_MT,
-  groups => [ $tcga->{dna_groups}, $tcga->{dna_groups} ],
+  groups      => $tcga->{rna_groups},
 };
 
-my @cfgs = ( $tcga_dna, $tcga_rna, $realign );
+my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
