@@ -30,7 +30,7 @@ my $hg19_map             = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens
 my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
-my $mutect        = "/home/shengq1/local/bin/muTect-1.1.7.jar";
+my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
 my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
 my $affy_file     = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
 my $picard        = "/home/shengq1/local/bin/picard/";
