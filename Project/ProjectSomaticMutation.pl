@@ -398,8 +398,9 @@ my $preparation = {
       preparation => [
 
         #data preparation
-        "sortbam_dna", "bam2fastq_dna", "dna_bwa", "dna_bwa_refine", "bam2fastq_rna", "tophat2_rna", "tophat2_rna_removeduplicates", "sortbam_tophat2_rna", "htseqcount_rna", "genetable_rna",
+        "sortbam_dna", "bam2fastq_dna", "dna_bwa", "dna_bwa_refine", "bam2fastq_rna", "tophat2_rna", "tophat2_rna_removeduplicates", "sortbam_tophat2_rna", "htseqcount_rna",
       ],
+      table => [ "genetable_rna", ],
     },
     sh_direct => 0,
     pbs       => {
