@@ -411,7 +411,7 @@ my $preparation = {
   }
 };
 
-performConfig($preparation);
+#performConfig($preparation);
 
 my $tcga_dna = {
   general     => { task_name => "tcga_dna" },
