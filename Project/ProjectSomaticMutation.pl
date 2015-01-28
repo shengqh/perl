@@ -379,7 +379,7 @@ my $config = {
   },
   muTect => {
     class        => "GATK::MuTect",
-    perform      => 1,
+    perform      => 0,
     java         => "/usr/lib/jvm/java-1.6.0/bin/java",
     target_dir   => "${target_dir}/realign_muTect",
     option       => "--min_qscore 20",
@@ -401,7 +401,7 @@ my $config = {
   },
   varscan2 => {
     class           => "VarScan2::Somatic",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/realign_varscan2",
     option          => "--min-coverage 10",
     mpileup_options => "-A -q 20 -Q 20",
@@ -436,7 +436,7 @@ my $config = {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "20gb"
     },
   },
   muTect_TCGA_DNA => {
