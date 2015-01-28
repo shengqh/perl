@@ -226,7 +226,7 @@ my $preparation = {
   rna         => $tcga->{rna},
   sortbam_dna => {
     class         => "Sortbam",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/dna_sortname",
     option        => "",
     source_ref    => "dna",
@@ -241,7 +241,7 @@ my $preparation = {
   },
   bam2fastq_dna => {
     class               => "Bam2Fastq",
-    perform             => 0,
+    perform             => 1,
     target_dir          => "${target_dir}/dna_bam2fastq",
     option              => "",
     source_ref          => "sortbam_dna",
@@ -294,7 +294,7 @@ my $preparation = {
   },
   bam2fastq_rna => {
     class               => "Bam2Fastq",
-    perform             => 0,
+    perform             => 1,
     target_dir          => "${target_dir}/rna_bam2fastq",
     option              => "",
     source_ref          => "rna",
