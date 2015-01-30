@@ -234,6 +234,21 @@ my $dna_config = {
       "mem"      => "40gb"
     },
   },
+  bowtie2 => {
+    class                      => "Alignment::Bowtie2",
+    perform                    => 1,
+    target_dir                 => "${target_dir}/dna_bowtie2",
+    option                     => "-T 15",
+    bowtie2_index                 => $bowtie2_index,
+    source_ref                 => "files",
+    sh_direct                  => 0,
+    pbs                        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bwa_refine => {
     class              => "GATK::Refine",
     perform            => 1,
