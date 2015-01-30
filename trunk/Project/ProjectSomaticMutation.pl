@@ -561,7 +561,7 @@ for my $cfg (@cfgs) {
     },
   };
 
-  performConfig($def);
+#  performConfig($def);
 }
 
 1;
