@@ -525,7 +525,7 @@ for my $cfg (@cfgs) {
       perform    => 1,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
-      source_ref => [ "varscan2", "snp.vcf.Somatic.hc.vcf\$" ],
+      source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
       annovar_db => $annovar_db,
       buildver   => "hg19",
       cqstools   => $cqstools,
