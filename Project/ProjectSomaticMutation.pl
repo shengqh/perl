@@ -398,7 +398,7 @@ my $preparation = {
       preparation => [
 
         #data preparation
-        # "sortbam_dna", "bam2fastq_dna", "bam2fastq_rna", 
+        # "sortbam_dna", "bam2fastq_dna", "bam2fastq_rna",
         "dna_bwa", "dna_bwa_refine", "tophat2_rna", "tophat2_rna_removeduplicates", "sortbam_tophat2_rna", "htseqcount_rna",
       ],
       table => [ "genetable_rna", ],
@@ -413,7 +413,7 @@ my $preparation = {
   }
 };
 
-performConfig($preparation);
+#performConfig($preparation);
 
 my $tcga_dna = {
   general     => { task_name => "tcga_dna" },
@@ -457,12 +457,9 @@ for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
   my $def       = {
     general => { task_name => $task_name },
-
     muTect => {
       class   => "GATK::MuTect",
-      perform => 1,
-
-      #java         => "/usr/lib/jvm/java-1.6.0/bin/java",
+      perform => 0,
       target_dir   => "${target_dir}/${task_name}_muTect",
       option       => "--min_qscore 20",
       java_option  => "-Xmx40g",
@@ -483,7 +480,7 @@ for my $cfg (@cfgs) {
     },
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -502,7 +499,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class           => "VarScan2::Somatic",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${task_name}_varscan2",
       option          => "--min-coverage 10",
       mpileup_options => "-A -q 20 -Q 20",
@@ -522,7 +519,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.vcf.Somatic.hc\$" ],
@@ -541,7 +538,7 @@ for my $cfg (@cfgs) {
     },
     rsmc => {
       class            => "RSMC",
-      perform          => 1,
+      perform          => 0,
       target_dir       => "${target_dir}/${task_name}_rsmc",
       option           => "-c 8",                                              #thread mode
       source_type      => "BAM",                                               #source_type can be BAM/Mpileup
@@ -559,9 +556,23 @@ for my $cfg (@cfgs) {
         "mem"      => "20gb"
       },
     },
+    sequencetask => {
+      class      => "CQS::SequenceTask",
+      perform    => 1,
+      target_dir => "${target_dir}/${task_name}_sequencetask",
+      option     => "",
+      source     => { individual => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "rsmc" ] },
+      sh_direct  => 0,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
   };
 
-#  performConfig($def);
+  performConfig($def);
 }
 
 1;
