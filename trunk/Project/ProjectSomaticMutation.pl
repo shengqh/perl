@@ -7,12 +7,11 @@ use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_comparison");
 
-my $email    = "quanhu.sheng\@vanderbilt.edu";
-my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $samtools = "/home/shengq1/local/bin/samtools/samtools";
-my $rnaediting_db    = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
-my $rsmc = "/home/shengq1/rsmc/rsmc.exe";
-
+my $email         = "quanhu.sheng\@vanderbilt.edu";
+my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $samtools      = "/home/shengq1/local/bin/samtools/samtools";
+my $rnaediting_db = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
+my $rsmc          = "/home/shengq1/rsmc/rsmc.exe";
 
 ##hg19.16569.MT###
 my $fasta_file_16569_MT    = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_index_0.7.8/hg19_16569_MT.fa";
@@ -460,11 +459,11 @@ for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
   my $def       = {
     general => { task_name => $task_name },
-    muTect => {
-      class   => "GATK::MuTect",
-      perform => 0,
+    muTect  => {
+      class        => "GATK::MuTect",
+      perform      => 1,
       target_dir   => "${target_dir}/${task_name}_muTect",
-      option       => "--min_qscore 20",
+      option       => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option  => "-Xmx40g",
       source_ref   => $cfg->{files},
       groups_ref   => $cfg->{groups},
@@ -543,8 +542,8 @@ for my $cfg (@cfgs) {
       class            => "RSMC",
       perform          => 0,
       target_dir       => "${target_dir}/${task_name}_rsmc",
-      option           => "-c 8",                                              #thread mode
-      source_type      => "BAM",                                               #source_type can be BAM/Mpileup
+      option           => "-c 8",                              #thread mode
+      source_type      => "BAM",                               #source_type can be BAM/Mpileup
       source_ref       => $cfg->{files},
       groups_ref       => $cfg->{groups},
       fasta_file       => $cfg->{fasta_file},
