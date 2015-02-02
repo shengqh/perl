@@ -10,6 +10,9 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_c
 my $email    = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools = "/home/shengq1/local/bin/samtools/samtools";
+my $rnaediting_db    = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
+my $rsmc = "/home/shengq1/rsmc/rsmc.exe";
+
 
 ##hg19.16569.MT###
 my $fasta_file_16569_MT    = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_index_0.7.8/hg19_16569_MT.fa";
@@ -519,10 +522,10 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
-      source_ref => [ "varscan2", "snp.vcf.Somatic.hc\$" ],
+      source_ref => [ "varscan2", "snp.vcf.Somatic.hc.vcf\$" ],
       annovar_db => $annovar_db,
       buildver   => "hg19",
       cqstools   => $cqstools,
@@ -546,9 +549,9 @@ for my $cfg (@cfgs) {
       groups_ref       => $cfg->{groups},
       fasta_file       => $cfg->{fasta_file},
       annovar_buildver => "hg19",
-      rnaediting_db    => "/data/cqs/shengq1/reference/rnaediting/hg19.txt",
+      rnaediting_db    => $rnaediting_db,
       sh_direct        => 0,
-      execute_file     => "/home/shengq1/rsmc/rsmc.exe",
+      execute_file     => $rsmc,
       pbs              => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
