@@ -415,7 +415,7 @@ my $preparation = {
   }
 };
 
-#performConfig($preparation);
+performConfig($preparation);
 
 my $tcga_dna = {
   general     => { task_name => "tcga_dna" },
@@ -574,7 +574,7 @@ for my $cfg (@cfgs) {
     },
   };
 
-  performConfig($def);
+#  performConfig($def);
 }
 
 1;
