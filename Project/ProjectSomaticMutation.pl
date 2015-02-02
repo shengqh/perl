@@ -18,7 +18,7 @@ my $cosmic_file_16569_MT   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19
 my $snp_file_16569_MT      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_MT.vcf";
 
 ##hg19.16569.M###
-my $fasta_file_16569_M    = "/data/cqs/shengq1/reference/hg19_16569_M/bwa_index_0.7.8/hg19_16569_M.fa";
+my $fasta_file_16569_M    = "/data/cqs/shengq1/reference/hg19_16569_M/hg19_16569_M.fa";
 my $bowtie2_index_16569_M = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
 my $cosmic_file_16569_M   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_M.vcf";
 my $snp_file_16569_M      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
