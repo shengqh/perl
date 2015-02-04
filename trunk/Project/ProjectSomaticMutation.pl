@@ -36,8 +36,6 @@ my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
 my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
 my $affy_file     = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
 my $picard        = "/home/shengq1/local/bin/picard/";
-my $rnaediting_db = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
-my $rsmc          = "/home/shengq1/rsmc/rsmc.exe";
 
 my $tcga = {
   dna => {
