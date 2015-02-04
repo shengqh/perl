@@ -471,7 +471,7 @@ for my $cfg (@cfgs) {
       cosmic_file  => $cfg->{cosmic_file},
       dbsnp_file   => $cfg->{dbsnp_file},
       bychromosome => 0,
-      sh_direct    => 0,
+      sh_direct    => 1,
       muTect_jar   => $mutect,
       pbs          => {
         "email"    => $email,
@@ -510,7 +510,7 @@ for my $cfg (@cfgs) {
       groups_ref      => $cfg->{groups},
       fasta_file      => $cfg->{fasta_file},
       somatic_p_value => 0.05,
-      sh_direct       => 0,
+      sh_direct       => 1,
       VarScan2_jar    => $varscan2,
       pbs             => {
         "email"    => $email,
@@ -549,7 +549,7 @@ for my $cfg (@cfgs) {
       fasta_file       => $cfg->{fasta_file},
       annovar_buildver => "hg19",
       rnaediting_db    => $rnaediting_db,
-      sh_direct        => 0,
+      sh_direct        => 1,
       execute_file     => $rsmc,
       pbs              => {
         "email"    => $email,
@@ -564,7 +564,7 @@ for my $cfg (@cfgs) {
       target_dir => "${target_dir}/${task_name}_sequencetask",
       option     => "",
       source     => { individual => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "rsmc" ] },
-      sh_direct  => 0,
+      sh_direct  => 1,
       pbs        => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
