@@ -25,7 +25,7 @@ my $species = {
 #  "hg19" => "http://gtrnadb.ucsc.edu/Hsapi19/Hsapi19-by-locus-txt.html",
 #  "mm10" => "http://gtrnadb.ucsc.edu/Mmusc10/Mmusc10-by-locus-txt.html",
 #  "rn4"  => "http://gtrnadb.ucsc.edu/Rnorv/Rnorv-by-locus-txt.html",
-  "cel_ws190" => "http://gtrnadb.ucsc.edu/Celeg/Celeg-by-locus.html"
+  "cel_ws190" => "http://gtrnadb.ucsc.edu/Celeg/Celeg-by-locus-txt.html"
 };
 
 my $files = {};
