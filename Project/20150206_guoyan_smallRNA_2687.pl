@@ -9,7 +9,7 @@ my $def_human = {
   #General options
   task_name       => "2687_human",
   email           => "quanhu.sheng\@vanderbilt.edu",
-  target_dir      => "/scratch/cqs/shengq1/smallRNA/20150206_guoyan_smallRNA_2687/human/",
+  target_dir      => "/scratch/cqs/shengq1/smallRNA/20150206_guoyan_2687_human_mouse/human/",
   max_thread      => 8,
   min_read_length => 16,
   cluster         => "slurm",
@@ -37,7 +37,7 @@ my $def_mouse = {
   #General options
   task_name       => "2687_mouse",
   email           => "quanhu.sheng\@vanderbilt.edu",
-  target_dir      => "/scratch/cqs/shengq1/smallRNA/20150206_guoyan_smallRNA_2687/mouse/",
+  target_dir      => "/scratch/cqs/shengq1/smallRNA/20150206_guoyan_2687_human_mouse/mouse/",
   max_thread      => 8,
   min_read_length => 16,
   cluster         => "slurm",
