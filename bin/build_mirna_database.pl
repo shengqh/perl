@@ -11,7 +11,8 @@ if( ! -e $dir){
 chdir($dir);
 
 my @dbs = ( "mature", "hairpin" );
-my @species = ( "hsa", "mmu", "rno" );
+#my @species = ( "hsa", "mmu", "rno", "cel" );
+my @species = ( "cel" );
 
 sub run_command {
   my $command = shift;
