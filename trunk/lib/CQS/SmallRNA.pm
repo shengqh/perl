@@ -82,7 +82,7 @@ sub getDefinition {
 		min_read_length            => $min_read_length,
 
 		#Software and miRBase database options
-		samtools              => "/home/shengq1/local/bin/samtools/samtools",
+		samtools              => "/home/shengq1/local/bin/samtools",
 		cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
 		mirna_fasta           => "/data/cqs/shengq1/reference/miRBase20/mature.dna.fa",
 		bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.0.1/mature.dna",
