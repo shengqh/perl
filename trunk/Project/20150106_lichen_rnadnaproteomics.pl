@@ -168,7 +168,6 @@ my $rna_config = {
 
 performConfig($rna_config);
 
-
 my $dna_config = {
   general => { task_name => "lichen" },
 
@@ -220,7 +219,7 @@ my $dna_config = {
   },
   bwa => {
     class                      => "Alignment::BWA",
-    perform                    => 1,
+    perform                    => 0,
     target_dir                 => "${target_dir}/dna_bwa",
     option                     => "-T 15",
     fasta_file                 => $bwa_fasta,
@@ -235,14 +234,14 @@ my $dna_config = {
     },
   },
   bowtie2 => {
-    class                      => "Alignment::Bowtie2",
-    perform                    => 1,
-    target_dir                 => "${target_dir}/dna_bowtie2",
-    option                     => "-T 15",
-    bowtie2_index                 => $bowtie2_index,
-    source_ref                 => "files",
-    sh_direct                  => 0,
-    pbs                        => {
+    class         => "Alignment::Bowtie2",
+    perform       => 0,
+    target_dir    => "${target_dir}/dna_bowtie2",
+    option        => "-T 15",
+    bowtie2_index => $bowtie2_index,
+    source_ref    => "files",
+    sh_direct     => 0,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -254,6 +253,7 @@ my $dna_config = {
     perform            => 1,
     target_dir         => "${target_dir}/dna_bwa_refine",
     option             => "-Xmx40g",
+    gatk_option        => "--fix_misencoded_quality_scores",
     fasta_file         => $bwa_fasta,
     source_ref         => "bwa",
     thread_count       => 8,
