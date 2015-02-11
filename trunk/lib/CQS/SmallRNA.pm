@@ -71,7 +71,7 @@ sub getDefinition {
     target_dir => $userdef->{target_dir},
     max_thread => $userdef->{max_thread},
     cluster    => $cluster,
-
+    
     #Data
     files => $userdef->{files},
 
