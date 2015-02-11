@@ -96,7 +96,7 @@ sub getDefinition {
     trna_fasta           => $genome->{trna_fasta},
     smallrna_coordinate  => $genome->{smallrna_coordinate},
 
-    coordinate_fasta       => $genome->{coordinate_fasta},
+    coordinate       => $genome->{coordinate},
     coordinate_fasta => $genome->{coordinate_fasta},
 
     bowtie1_index => $genome->{bowtie1_index},
