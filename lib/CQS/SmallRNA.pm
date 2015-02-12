@@ -69,7 +69,7 @@ my $cel235_genome = {
 sub getDefinition {
   my ( $userdef, $genome ) = @_;
 
-  my $cluster = "torque";
+  my $cluster = "slurm";
 
   if ( defined $userdef->{cluster} ) {
     $cluster = $userdef->{cluster};
