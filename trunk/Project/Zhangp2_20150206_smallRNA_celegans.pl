@@ -32,6 +32,9 @@ my $def = {
   bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.0.1/mature.dna",
   mirbase_count_option  => "-p cel",
 
+  coordinate       => "/scratch/cqs/shengq1/references/wbcel235/WBcel235.bed",
+  coordinate_fasta => "/scratch/cqs/shengq1/references/wbcel235/WBcel235.bed.fa",
+  
   #genome database
   mirna_coordinate => "/data/cqs/shengq1/reference/miRBase21/cel.gff3",
   bowtie1_index    => "/scratch/cqs/zhangp2/reference/wormbase/bowtie_index_1.1.0/Caenorhabditis_elegans.WBcel235.dna.toplevel",
