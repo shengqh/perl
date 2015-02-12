@@ -14,7 +14,7 @@ my $def = {
 
   #Default software parameter (don't change it except you really know it)
   fastq_remove_N             => 0,
-  adapter                    => "ATGGAATTCTCG",
+  adapter                    => "CTGTAGGCACCATCAATC",
 
   #Data
   files => {
