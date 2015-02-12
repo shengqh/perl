@@ -30,7 +30,7 @@ my $def_human = {
   }
 };
 
-performSmallRNAHuman($def_human);
+performSmallRNA_hg20($def_human);
 
 my $def_mouse = {
 
@@ -69,7 +69,7 @@ my $def_mouse = {
     }
 };
 
-performSmallRNAMouse($def_mouse);
+performSmallRNA_mm10($def_mouse);
 
 1;
 
