@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Pipeline::SmallRNA;
+use CQS::SmallRNA;
 
 my $def = {
 
