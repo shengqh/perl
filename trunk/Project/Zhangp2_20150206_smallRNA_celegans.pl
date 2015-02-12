@@ -19,7 +19,7 @@ my $def = {
   smallrnacount_option       => "-s --min_overlap 0.5 --length --sequence",
   mirna_overlap_count_option => "-s --min_overlap 0.5 --gtf_key miRNA",
   min_read_length            => 16,
-  #adapter                    => "CAAGCAGAAGACGGCATACGAGCTCTTCCGATCT",
+  adapter                    => "AGATCGGAAGAG",
 
   #Software and miRBase database options
   samtools              => "/home/shengq1/local/bin/samtools/samtools",
