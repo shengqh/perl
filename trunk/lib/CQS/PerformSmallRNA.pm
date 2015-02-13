@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package CQS::SmallRNA;
+package CQS::PerformSmallRNA;
 
 use strict;
 use warnings;
