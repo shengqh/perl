@@ -20,8 +20,8 @@ my $hg19_genome = {
 
   #genome database
   mirbase_count_option  => "-p hsa",
-  coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg19_mirBase20_ucsc-tRNA_ensembl75.bed",
-  coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg19_mirBase20_ucsc-tRNA_ensembl75.bed.fa",
+  coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed",
+  coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa",
   bowtie1_index         => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
   bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase20/bowtie_index_1.1.1/mature.dna",
 };
@@ -30,8 +30,8 @@ my $hg20_genome = {
 
   #genome database
   mirbase_count_option  => "-p hsa",
-  coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg20_mirBase21_ucsc-tRNA_ensembl78.bed",
-  coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg20_mirBase21_ucsc-tRNA_ensembl78.bed.fa",
+  coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg20_miRBase21_ucsc-tRNA_ensembl78.bed",
+  coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg20_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
   bowtie1_index         => "/scratch/cqs/shengq1/references/hg20/bowtie_index_1.1.0/hg20",
   bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
 };
