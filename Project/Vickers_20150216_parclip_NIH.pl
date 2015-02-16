@@ -25,6 +25,6 @@ my $def = {
 	},
 };
 
-performSmallRNAHuman_hg19($def);
+performSmallRNA_hg19($def);
 
 1;
