@@ -12,6 +12,10 @@ my $def = {
 	max_thread => 8,
 	cluster    => "slurm",
 
+  #Default software parameter (don't change it except you really know it)
+  fastq_remove_N             => 0,
+  adapter                    => "TGGAATTCTCGGGTGCCAAGG",
+
 	#Data
 	files => {
     "Parclip_01" => ["/scratch/cqs/shengq1/vickers/data/201312_parclip_NIH/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
