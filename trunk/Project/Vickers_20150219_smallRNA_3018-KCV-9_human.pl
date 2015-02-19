@@ -12,6 +12,9 @@ my $def = {
   target_dir => "/scratch/cqs/shengq1/vickers/20150219_smallRNA_3018-KCV-9_human",
   max_thread => 8,
 
+  #Default software parameter (don't change it except you really know it)
+  fastq_remove_N             => 0,
+
   #Data
   files => {
     "3018-KCV-01" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-9_Human/3018-KCV-1_ATCACG_L005_R1_001.fastq.gz"],
