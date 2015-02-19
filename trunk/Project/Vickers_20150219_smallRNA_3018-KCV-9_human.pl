@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use CQS::SmallRNA;
+use CQS::PerformSmallRNA;
 
 my $def = {
 
@@ -31,7 +31,7 @@ my $def = {
   }
 };
 
-performSmallRNAHuman($def);
+performSmallRNA_hg19($def);
 
 1;
 
