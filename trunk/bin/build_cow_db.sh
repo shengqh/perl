@@ -10,7 +10,7 @@ if [[ ! -s Bos_taurus_UMD_3.1.fa ]]; then
     do
       wget ftp://ftp.ncbi.nih.gov/genbank/genomes/Eukaryotes/vertebrates_mammals/Bos_taurus/Bos_taurus_UMD_3.1/Primary_Assembly/assembled_chromosomes/FASTA/chr${i}.fa.gz
       gunzip chr${i}.fa.gz
-      cat ">chr" ${i} "\n" >> Bos_taurus_UMD_3.1.fa.tmp
+      echo ">chr" ${i} >> Bos_taurus_UMD_3.1.fa.tmp
       awk 'NR>1' chr${i}.fa >> Bos_taurus_UMD_3.1.fa.tmp
       rm chr${i}.fa
     done
