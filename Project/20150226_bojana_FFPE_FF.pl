@@ -224,25 +224,25 @@ my $config = {
     ],
   },
   groups => {
-    "FF"       => [ "IG-01", "IG-07", "IG-11", "IG-16", "IG-21", "IG-42", "IG-43", "IG-60", "IG-61" ],
-    "FFPE"     => [ "IG-02", "IG-08", "IG-12", "IG-17", "IG-22", "IG-51", "IG-52", "IG-59", "IG-58" ],
-    "FF_OLD"   => [ "IG-01", "IG-07", "IG-11", "IG-16", "IG-21" ],
-    "FFPE_OLD" => [ "IG-02", "IG-08", "IG-12", "IG-17", "IG-22" ],
-    "FF_NEW"   => [ "IG-42", "IG-43", "IG-60", "IG-61" ],
-    "FFPE_NEW" => [ "IG-51", "IG-52", "IG-59", "IG-58" ],
+    "MiSeq_FF"       => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-060", "IG-061" ],
+    "MiSeq_FFPE"     => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022", "IG-051", "IG-052", "IG-059", "IG-058" ],
+    "MiSeq_FF_OLD"   => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021" ],
+    "MiSeq_FFPE_OLD" => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022" ],
+    "MiSeq_FF_NEW"   => [ "IG-042", "IG-043", "IG-060", "IG-061" ],
+    "MiSeq_FFPE_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
   },
   pairs => {
-    "FFPE_VS_FF" => {
-      groups => [ "FFPE", "FF" ],
-      paired => [ "B30A", "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+    "MiSeq_FFPE_VS_FF" => {
+      groups => [ "MiSeq_FFPE", "MiSeq_FF" ],
+      paired => [ "B30A",       "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
     },
-    "FFPE_VS_FF_OLD" => {
-      groups => [ "FFPE_OLD", "FF_OLD" ],
-      paired => [ "B30A",     "B32A", "B33A", "B40A", "B42" ]
+    "MiSeq_FFPE_VS_FF_OLD" => {
+      groups => [ "MiSeq_FFPE_OLD", "MiSeq_FF_OLD" ],
+      paired => [ "B30A",           "B32A", "B33A", "B40A", "B42" ]
     },
-    "FFPE_VS_FF_NEW" => {
-      groups => [ "FFPE_NEW", "FF_NEW" ],
-      paired => [ "P06",      "P07", "P14", "P13" ]
+    "MiSeq_FFPE_VS_FF_NEW" => {
+      groups => [ "MiSeq_FFPE_NEW", "MiSeq_FF_NEW" ],
+      paired => [ "P06",            "P07", "P14", "P13" ]
     },
   },
 
@@ -309,22 +309,22 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-#  deseq2 => {
-#    class         => "Comparison::DESeq2",
-#    perform       => 1,
-#    target_dir    => "${target_dir}/deseq2",
-#    option        => "",
-#    source_ref    => "pairs",
-#    groups_ref    => "groups",
-#    countfile_ref => "genetable",
-#    sh_direct     => 1,
-#    pbs           => {
-#      "email"    => $email,
-#      "nodes"    => "1:ppn=1",
-#      "walltime" => "10",
-#      "mem"      => "10gb"
-#    },
-#  },
+  deseq2 => {
+    class         => "Comparison::DESeq2",
+    perform       => 1,
+    target_dir    => "${target_dir}/deseq2",
+    option        => "",
+    source_ref    => "pairs",
+    groups_ref    => "groups",
+    countfile_ref => "genetable",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
