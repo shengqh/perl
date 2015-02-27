@@ -12,7 +12,7 @@ my $task = "20150226_bojana_FFPE_FF";
 my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF";
 
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
-my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf.map";
+my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.index";
 my $fasta_file_16569_M   = "/data/cqs/shengq1/reference/hg19_16569_M/hg19_16569_M.fa";
 my $bowtie2_index        = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
@@ -309,22 +309,22 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  deseq2 => {
-    class         => "Comparison::DESeq2",
-    perform       => 1,
-    target_dir    => "${target_dir}/deseq2",
-    option        => "",
-    source_ref    => "pairs",
-    groups_ref    => "groups",
-    countfile_ref => "genetable",
-    sh_direct     => 1,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "10",
-      "mem"      => "10gb"
-    },
-  },
+#  deseq2 => {
+#    class         => "Comparison::DESeq2",
+#    perform       => 1,
+#    target_dir    => "${target_dir}/deseq2",
+#    option        => "",
+#    source_ref    => "pairs",
+#    groups_ref    => "groups",
+#    countfile_ref => "genetable",
+#    sh_direct     => 1,
+#    pbs           => {
+#      "email"    => $email,
+#      "nodes"    => "1:ppn=1",
+#      "walltime" => "10",
+#      "mem"      => "10gb"
+#    },
+#  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
