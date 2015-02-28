@@ -13,7 +13,6 @@ my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF";
 
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
 my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
-my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.index";
 my $fasta_file_16569_M   = "/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa";
 my $bowtie2_index        = "/scratch/cqs/shengq1/references/hg19_16569_M/bowtie2_index_2.2.4/hg19_16569_M";
 my $cqstools             = "/home/shengq1/cqstools/CQS.Tools.exe";
@@ -274,7 +273,6 @@ my $config = {
     source_ref           => "fastqfiles",
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => $transcript_gtf_index,
     rename_bam           => 1,
     sh_direct            => 0,
     pbs                  => {
