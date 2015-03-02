@@ -230,25 +230,47 @@ my $config = {
     ],
   },
   groups => {
-    "MiSeq_FF"       => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-060", "IG-061" ],
-    "MiSeq_FFPE"     => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022", "IG-051", "IG-052", "IG-059", "IG-058" ],
-    "MiSeq_FF_OLD"   => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021" ],
-    "MiSeq_FFPE_OLD" => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022" ],
-    "MiSeq_FF_NEW"   => [ "IG-042", "IG-043", "IG-060", "IG-061" ],
-    "MiSeq_FFPE_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
+
+    #    "MiSeq_FF"       => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-060", "IG-061" ],
+    #    "MiSeq_FFPE"     => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022", "IG-051", "IG-052", "IG-059", "IG-058" ],
+    #    "MiSeq_FF_OLD"   => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021" ],
+    #    "MiSeq_FFPE_OLD" => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022" ],
+    #    "MiSeq_FF_NEW"   => [ "IG-042", "IG-043", "IG-060", "IG-061" ],
+    #    "MiSeq_FFPE_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
+    "HiSeq_FF" =>
+      [ "IG-062", "IG-064", "IG-066", "IG-068", "IG-070", "IG-072", "IG-074", "IG-076", "IG-078", "IG-080", "IG-082", "IG-086", "IG-088", "IG-090", "IG-092", "IG-094", "IG-096", "IG-098", "IG-100", ],
+    "HiSeq_FFPE" =>
+      [ "IG-063", "IG-065", "IG-067", "IG-069", "IG-071", "IG-073", "IG-075", "IG-077", "IG-079", "IG-081", "IG-083", "IG-087", "IG-089", "IG-091", "IG-093", "IG-095", "IG-097", "IG-099", "IG-101", ],
+    "HiSeq_FF2"   => [ "IG-062", "IG-064", "IG-066", "IG-068", "IG-070", "IG-072", "IG-074", "IG-076", "IG-078", "IG-080", "IG-082", "IG-086", "IG-088", "IG-090" ],
+    "HiSeq_FFPE2" => [ "IG-063", "IG-065", "IG-067", "IG-069", "IG-071", "IG-073", "IG-075", "IG-077", "IG-079", "IG-081", "IG-083", "IG-087", "IG-089", "IG-091" ],
+    "HiSeq_FF3"   => [ "IG-092", "IG-094", "IG-096", "IG-098", "IG-100", ],
+    "HiSeq_FFPE3" => [ "IG-093", "IG-095", "IG-097", "IG-099", "IG-101", ],
   },
   pairs => {
-    "MiSeq_FFPE_VS_FF" => {
-      groups => [ "MiSeq_FFPE", "MiSeq_FF" ],
-      paired => [ "B30A",       "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+
+    #    "MiSeq_FFPE_VS_FF" => {
+    #      groups => [ "MiSeq_FFPE", "MiSeq_FF" ],
+    #      paired => [ "B30A",       "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+    #    },
+    #    "MiSeq_FFPE_VS_FF_OLD" => {
+    #      groups => [ "MiSeq_FFPE_OLD", "MiSeq_FF_OLD" ],
+    #      paired => [ "B30A",           "B32A", "B33A", "B40A", "B42" ]
+    #    },
+    #    "MiSeq_FFPE_VS_FF_NEW" => {
+    #      groups => [ "MiSeq_FFPE_NEW", "MiSeq_FF_NEW" ],
+    #      paired => [ "P06",            "P07", "P14", "P13" ]
+    #    },
+    "HiSeq_FFPE_VS_FF" => {
+      groups => [ "HiSeq_FF", "HiSeq_FFPE" ],
+      paired => [ "P01",      "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20" ]
     },
-    "MiSeq_FFPE_VS_FF_OLD" => {
-      groups => [ "MiSeq_FFPE_OLD", "MiSeq_FF_OLD" ],
-      paired => [ "B30A",           "B32A", "B33A", "B40A", "B42" ]
+    "HiSeq_FFPE2_VS_FF2" => {
+      groups => [ "HiSeq_FF2", "HiSeq_FFPE2" ],
+      paired => [ "P01",       "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15" ]
     },
-    "MiSeq_FFPE_VS_FF_NEW" => {
-      groups => [ "MiSeq_FFPE_NEW", "MiSeq_FF_NEW" ],
-      paired => [ "P06",            "P07", "P14", "P13" ]
+    "HiSeq_FFPE3_VS_FF3" => {
+      groups => [ "HiSeq_FF3", "HiSeq_FFPE3" ],
+      paired => [ "P16",       "P17", "P18", "P19", "P20" ]
     },
   },
 
@@ -286,7 +308,7 @@ my $config = {
   },
   sortbam => {
     class         => "Samtools::Sort",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -301,7 +323,7 @@ my $config = {
   },
   htseqcount => {
     class      => "Count::HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -316,7 +338,7 @@ my $config = {
   },
   genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -348,7 +370,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => { individual => [ "tophat2", "sortbam", "htseqcount" ] },
