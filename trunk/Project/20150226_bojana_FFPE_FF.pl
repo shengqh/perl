@@ -351,7 +351,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { individual => [ "fastqc", "tophat2", "htseqcount" ] },
+    source     => { individual => [ "sortbam", "htseqcount" ] },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
