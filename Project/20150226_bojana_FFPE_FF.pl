@@ -285,7 +285,7 @@ my $config = {
     },
   },
   sortbam => {
-    class         => "Samtools::Sortbam",
+    class         => "Samtools::Sort",
     perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
@@ -351,7 +351,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { individual => [ "sortbam", "htseqcount" ] },
+    source     => { individual => [ "tophat2", "sortbam", "htseqcount" ] },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
