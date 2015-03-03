@@ -40,7 +40,7 @@ my $def = {
 
 my $config = {
   general => { "task_name" => $def->{task_name}, },
-  identificalfiles => {
+  identicalfiles => {
     "Parclip_01" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150216_parclip_NIH/identical/result/Parclip_01_clipped_identical.fastq.gz"],
     "Parclip_02" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150216_parclip_NIH/identical/result/Parclip_02_clipped_identical.fastq.gz"],
     "Parclip_03" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150216_parclip_NIH/identical/result/Parclip_03_clipped_identical.fastq.gz"],
