@@ -39,7 +39,7 @@ my $def = {
 #performSmallRNA_hg19($def);
 
 my $config = {
-  general => { "task_name" => $def->{task_name}, },
+  general        => { "task_name" => $def->{task_name}, },
   identicalfiles => {
     "Parclip_01" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150216_parclip_NIH/identical/result/Parclip_01_clipped_identical.fastq.gz"],
     "Parclip_02" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150216_parclip_NIH/identical/result/Parclip_02_clipped_identical.fastq.gz"],
@@ -81,7 +81,7 @@ my $config = {
     cqs_tools       => $def->{cqstools},
     gff_file        => $def->{utr3_db},
     samtools        => $def->{samtools},
-    sh_direct       => 1,
+    sh_direct       => 0,
     pbs             => {
       "email"    => $def->{email},
       "nodes"    => "1:ppn=1",
@@ -100,14 +100,28 @@ my $config = {
     cqs_tools       => $def->{cqstools},
     gff_file        => $def->{binding_db},
     samtools        => $def->{samtools},
-    sh_direct       => 1,
+    sh_direct       => 0,
     pbs             => {
       "email"    => $def->{email},
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "20gb"
     },
-  }
+  },
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 0,
+    target_dir => $def->{target_dir} . "/sequencetask2",
+    option     => "",
+    source     => { count => [ "utr3_count", "binding_count" ], },
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $def->{email},
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
 };
 
 performConfig($config);
