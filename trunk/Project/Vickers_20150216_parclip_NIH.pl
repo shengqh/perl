@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 
+use CQS::ClassFactory;
 use CQS::PerformSmallRNA;
 
 my $def = {
