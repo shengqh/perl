@@ -284,7 +284,7 @@ my $config = {
   },
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -298,7 +298,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Alignment::Tophat2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "trimmer",
@@ -316,7 +316,7 @@ my $config = {
   },
   sortbam => {
     class         => "Samtools::Sort",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -331,7 +331,7 @@ my $config = {
   },
   htseqcount => {
     class      => "Count::HTSeqCount",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -346,7 +346,7 @@ my $config = {
   },
   genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -378,7 +378,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
