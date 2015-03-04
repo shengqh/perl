@@ -71,7 +71,7 @@ my $config = {
     "Parclip_08" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150216_parclip_NIH/bowtie1_genome_1mm_NTA/result/Parclip_08/Parclip_08.bam"],
   },
   utr3_count => {
-    class           => "CQSMappedCount",
+    class           => "CQS::SmallRNACount",
     perform         => 1,
     target_dir      => $def->{target_dir} . "/count_3utr",
     option          => "-m 0",
@@ -90,7 +90,7 @@ my $config = {
     },
   },
   binding_count => {
-    class           => "CQSMappedCount",
+    class           => "CQS::SmallRNACount",
     perform         => 1,
     target_dir      => $def->{target_dir} . "/count_binding",
     option          => "-m 0",
