@@ -226,7 +226,7 @@ my $config = {
     source_ref => "files",
     adapter    => "AGATCGGAAGAG",
     extension  => "_clipped.fastq",
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
