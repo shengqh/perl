@@ -320,7 +320,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      individual => [ "trimmer",   "fastqc", "tophat2", "sortbam", "htseqcount" ],
+      individual => [ "cutadapt", "tophat2", "sortbam", "htseqcount", "fastqc" ],
       summary    => [ "genetable", "deseq2" ],
     },
     sh_direct => 0,
