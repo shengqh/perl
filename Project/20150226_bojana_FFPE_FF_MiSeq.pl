@@ -435,6 +435,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performConfigTask($config, "fastqlen");
 
 1;
