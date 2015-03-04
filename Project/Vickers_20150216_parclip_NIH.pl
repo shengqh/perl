@@ -81,7 +81,7 @@ my $config = {
     cqs_tools       => $def->{cqstools},
     coordinate_file => $def->{utr3_db},
     samtools        => $def->{samtools},
-    sh_direct       => 0,
+    sh_direct       => 1,
     pbs             => {
       "email"    => $def->{email},
       "nodes"    => "1:ppn=1",
@@ -100,7 +100,7 @@ my $config = {
     cqs_tools       => $def->{cqstools},
     coordinate_file => $def->{binding_db},
     samtools        => $def->{samtools},
-    sh_direct       => 0,
+    sh_direct       => 1,
     pbs             => {
       "email"    => $def->{email},
       "nodes"    => "1:ppn=1",
