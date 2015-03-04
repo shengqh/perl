@@ -7,7 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
-my $task = "20150226_bojana_FFPE_FF";
+my $task = "FFPE_FF_MiSeq";
 
 my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq";
 

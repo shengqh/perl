@@ -7,7 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
-my $task = "20150226_bojana_FFPE_FF";
+my $task = "FFPE_FF_HiSeq";
 
 my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq";
 
@@ -22,7 +22,7 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general    => { task_name => $task },
-  fastqfiles => {
+  files => {
     "IG-062" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-10-1_AGTCAA_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-10-1_AGTCAA_L001_R2_001.fastq.gz"
