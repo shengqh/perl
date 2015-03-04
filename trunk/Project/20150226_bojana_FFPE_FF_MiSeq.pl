@@ -274,7 +274,7 @@ my $config = {
     "MiSeq_Pilot_FFPE_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
   },
   pairs => {
-    "MiSeq_FFPE_VS_FF_All" => { groups => [ "MiSeq_FFPE_All", "MiSeq_FF_All" ], },
+    "MiSeq_FFPE_VS_FF_All" => [ "MiSeq_FFPE_All", "MiSeq_FF_All" ],
 
     "MiSeq_FFPE_VS_FF_Pilot" => {
       groups => [ "MiSeq_Pilot_FFPE", "MiSeq_Pilot_FF" ],
