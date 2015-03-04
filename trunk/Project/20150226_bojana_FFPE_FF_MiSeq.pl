@@ -307,6 +307,21 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  fastqlen => {
+    class      => "FastqLen",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqlen",
+    option     => "",
+    source_ref => "trimmer",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   fastqc => {
     class      => "QC::FastQC",
     perform    => 1,
