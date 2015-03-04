@@ -234,9 +234,86 @@ my $config = {
       "mem"      => "20gb"
     },
   },
+  fastqlen => {
+    class      => "FastqLen",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqlen",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  cutadapt_trueseq_universal => {
+    class      => "Cutadapt",
+    perform    => 1,
+    target_dir => "${target_dir}/cutadapt_trueseq_universal",
+    option     => "-O 12 -m 30",
+    source_ref => "files",
+    adapter    => "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
+    extension  => "_clipped.fastq",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  fastqlen_trueseq_universal => {
+    class      => "FastqLen",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqlen_trueseq_universal",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  cutadapt_trueseq => {
+    class      => "Cutadapt",
+    perform    => 1,
+    target_dir => "${target_dir}/cutadapt_trueseq",
+    option     => "-O 12 -m 30",
+    source_ref => "files",
+    adapter    => "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
+    extension  => "_clipped.fastq",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  fastqlen_trueseq => {
+    class      => "FastqLen",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqlen_trueseq",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
   tophat2 => {
     class                => "Alignment::Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "cutadapt",
@@ -254,7 +331,7 @@ my $config = {
   },
   sortbam => {
     class         => "Samtools::Sort",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -269,7 +346,7 @@ my $config = {
   },
   htseqcount => {
     class      => "Count::HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
     source_ref => "sortbam",
@@ -284,7 +361,7 @@ my $config = {
   },
   genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "htseqcount",
@@ -300,7 +377,7 @@ my $config = {
   },
   deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -316,7 +393,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
