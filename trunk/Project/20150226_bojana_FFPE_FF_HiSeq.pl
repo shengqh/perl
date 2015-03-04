@@ -204,22 +204,6 @@ my $config = {
       paired => [ "P16",       "P17", "P18", "P19", "P20" ]
     },
   },
-  trimmer => {
-    class      => "CQS::FastqTrimmer",
-    perform    => 1,
-    target_dir => "${target_dir}/trim_terminalN",
-    option     => "-n -z",
-    extension  => "_trim.fastq.gz",
-    source_ref => "files",
-    cqstools   => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "2",
-      "mem"      => "10gb"
-    },
-  },
   fastqc => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -239,7 +223,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
     option     => "-O 12 -m 30",
-    source_ref => "trimmer",
+    source_ref => "files",
     adapter    => "AGATCGGAAGAG",
     extension  => "_clipped.fastq",
     sh_direct  => 1,
