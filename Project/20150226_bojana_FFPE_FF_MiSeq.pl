@@ -23,15 +23,13 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
   general => { task_name => $task },
   files   => {
-
-#Unknown => ["/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-TA_S3_L001_R1_001.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-TA_S3_L001_R2_001.fastq.gz"],
-#"IG-12_S3" => ["/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-12_S3_L001_R1_001.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-12_S3_L001_R2_001.fastq.gz"],
-#"IG-29B_S2" => ["/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-29B_S2_L001_R1_001.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-29B_S2_L001_R2_001.fastq.gz"],
-#repeat "IG-39-2nd_S3" => ["/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-39-2nd_S3_L001_R1_001.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-39-2nd_S3_L001_R2_001.fastq.gz"],
-#repeat "IG-049" => ["/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-49_S1_L001_R1_001.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-49_S1_L001_R2_001.fastq.gz"],
     "IG-001" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-PA_S1_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-PA_S1_L001_R2_001.fastq.gz"
+    ],
+    "IG-002" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-TA_S3_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-TA_S3_L001_R2_001.fastq.gz"
     ],
     "IG-003" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-TC_S1_L001_R1_001.fastq.gz",
@@ -72,6 +70,10 @@ my $config = {
     "IG-012" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/33-PI_S3_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/33-PI_S3_L001_R2_001.fastq.gz"
+    ],
+    "IG-012-2nd" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-12_S3_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-12_S3_L001_R2_001.fastq.gz"
     ],
     "IG-013" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/33-TA_S2_L001_R1_001.fastq.gz",
@@ -141,6 +143,10 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/407730_S4_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/407730_S4_L001_R2_001.fastq.gz"
     ],
+    "IG-029-2nd" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-29B_S2_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-29B_S2_L001_R2_001.fastq.gz"
+    ],
     "IG-033" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/408637_S4_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/408637_S4_L001_R2_001.fastq.gz"
@@ -152,6 +158,10 @@ my $config = {
     "IG-039" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/408648_S5_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/408648_S5_L001_R2_001.fastq.gz"
+    ],
+    "IG-039-2nd" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-39-2nd_S3_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-39-2nd_S3_L001_R2_001.fastq.gz"
     ],
     "IG-040" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-40_S1_L001_R1_001.fastq.gz",
@@ -192,6 +202,10 @@ my $config = {
     "IG-049" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-49_S3_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-49_S3_L001_R2_001.fastq.gz"
+    ],
+    "IG-049-2nd" => [
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-49_S1_L001_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-49_S1_L001_R2_001.fastq.gz"
     ],
     "IG-050" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/IG-50_S2_L001_R1_001.fastq.gz",
@@ -243,27 +257,36 @@ my $config = {
     ],
   },
   groups => {
+    "MiSeq_FF_All" => [
+      "IG-001",     "IG-003", "IG-005", "IG-007", "IG-009", "IG-011", "IG-013", "IG-016", "IG-019", "IG-021", "IG-023", "IG-033", "IG-034", "IG-039",
+      "IG-039-2nd", "IG-040", "IG-041", "IG-042", "IG-043", "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-060", "IG-061"
+    ],
+    "MiSeq_FFPE_All" => [
+      "IG-002", "IG-004", "IG-006", "IG-008",     "IG-010", "IG-012", "IG-014", "IG-015", "IG-017", "IG-018", "IG-020", "IG-022", "IG-024", "IG-025", "IG-026", "IG-027",
+      "IG-028", "IG-029", "IG-049", "IG-049-2nd", "IG-050", "IG-051", "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059"
+    ],
 
-    "MiSeq_FF"       => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-060", "IG-061" ],
-    "MiSeq_FFPE"     => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022", "IG-051", "IG-052", "IG-059", "IG-058" ],
-    "MiSeq_FF_OLD"   => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021" ],
-    "MiSeq_FFPE_OLD" => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022" ],
-    "MiSeq_FF_NEW"   => [ "IG-042", "IG-043", "IG-060", "IG-061" ],
-    "MiSeq_FFPE_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
+    "MiSeq_Pilot_FF"       => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-060", "IG-061" ],
+    "MiSeq_Pilot_FFPE"     => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022", "IG-051", "IG-052", "IG-059", "IG-058" ],
+    "MiSeq_Pilot_FF_OLD"   => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021" ],
+    "MiSeq_Pilot_FFPE_OLD" => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022" ],
+    "MiSeq_Pilot_FF_NEW"   => [ "IG-042", "IG-043", "IG-060", "IG-061" ],
+    "MiSeq_Pilot_FFPE_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
   },
   pairs => {
+    "MiSeq_FFPE_VS_FF_All" => { groups => [ "MiSeq_FFPE_All", "MiSeq_FF_All" ], },
 
-    "MiSeq_FFPE_VS_FF" => {
-      groups => [ "MiSeq_FFPE", "MiSeq_FF" ],
-      paired => [ "B30A",       "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+    "MiSeq_FFPE_VS_FF_Pilot" => {
+      groups => [ "MiSeq_Pilot_FFPE", "MiSeq_Pilot_FF" ],
+      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
     },
-    "MiSeq_FFPE_VS_FF_OLD" => {
-      groups => [ "MiSeq_FFPE_OLD", "MiSeq_FF_OLD" ],
-      paired => [ "B30A",           "B32A", "B33A", "B40A", "B42" ]
+    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
+      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
+      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
     },
-    "MiSeq_FFPE_VS_FF_NEW" => {
-      groups => [ "MiSeq_FFPE_NEW", "MiSeq_FF_NEW" ],
-      paired => [ "P06",            "P07", "P14", "P13" ]
+    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
+      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
+      paired => [ "P06",                  "P07", "P14", "P13" ]
     },
   },
   trimmer => {
@@ -306,7 +329,7 @@ my $config = {
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     rename_bam           => 1,
-    sh_direct            => 0,
+    sh_direct            => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -321,7 +344,7 @@ my $config = {
     option        => "",
     source_ref    => "tophat2",
     sort_by_query => 1,
-    sh_direct     => 0,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -336,7 +359,7 @@ my $config = {
     option     => "",
     source_ref => "sortbam",
     gff_file   => $transcript_gtf,
-    sh_direct  => 0,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
