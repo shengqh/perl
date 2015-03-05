@@ -436,6 +436,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "fastqlen");
+performTask($config, "trimmer");
 
 1;
