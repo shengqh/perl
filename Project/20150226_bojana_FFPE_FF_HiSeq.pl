@@ -18,6 +18,9 @@ my $fasta_file_16569_M   = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa
 my $bowtie2_index        = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $cqstools             = "/home/shengq1/cqstools/CQS.Tools.exe";
 
+#minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
+my $cutadapt_option = "-q 10 -O 4 -m 30";
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
@@ -222,10 +225,10 @@ my $config = {
     class      => "Cutadapt",
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
-    option     => "-O 4 -m 30",
+    option     => $cutadapt_option,
     source_ref => "files",
     adapter    => "AGATCGGAAGAG",
-    extension  => "_clipped.fastq",
+    extension  => "_clipped.fastq.gz",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -238,68 +241,6 @@ my $config = {
     class      => "FastqLen",
     perform    => 1,
     target_dir => "${target_dir}/fastqlen",
-    option     => "",
-    source_ref => "cutadapt",
-    cqstools   => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  cutadapt_trueseq_universal => {
-    class      => "Cutadapt",
-    perform    => 1,
-    target_dir => "${target_dir}/cutadapt_trueseq_universal",
-    option     => "-O 4 -m 30",
-    source_ref => "files",
-    adapter    => "AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT",
-    extension  => "_clipped.fastq",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  fastqlen_trueseq_universal => {
-    class      => "FastqLen",
-    perform    => 1,
-    target_dir => "${target_dir}/fastqlen_trueseq_universal",
-    option     => "",
-    source_ref => "cutadapt",
-    cqstools   => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  cutadapt_trueseq => {
-    class      => "Cutadapt",
-    perform    => 1,
-    target_dir => "${target_dir}/cutadapt_trueseq",
-    option     => "-O 4 -m 30",
-    source_ref => "files",
-    adapter    => "GATCGGAAGAGCACACGTCTGAACTCCAGTCAC",
-    extension  => "_clipped.fastq",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  fastqlen_trueseq => {
-    class      => "FastqLen",
-    perform    => 1,
-    target_dir => "${target_dir}/fastqlen_trueseq",
     option     => "",
     source_ref => "cutadapt",
     cqstools   => $cqstools,
