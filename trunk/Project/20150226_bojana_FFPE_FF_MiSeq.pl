@@ -274,21 +274,19 @@ my $config = {
     "MiSeq_FFPE_Pilot_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
   },
   pairs => {
-    "MiSeq_FFPE_VS_FF_All" => {
-      groups => [ "MiSeq_FFPE_All", "MiSeq_FF_All" ],
-    },
+    "MiSeq_FFPE_VS_FF_All" => { groups => [ "MiSeq_FFPE_All", "MiSeq_FF_All" ], },
 
     "MiSeq_FFPE_VS_FF_Pilot" => {
       groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
-      paired => [ "B30A",       "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
     },
     "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
       groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
-      paired => [ "B30A",           "B32A", "B33A", "B40A", "B42" ]
+      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
     },
     "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
       groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
-      paired => [ "P06",            "P07", "P14", "P13" ]
+      paired => [ "P06",                  "P07", "P14", "P13" ]
     },
   },
   trimmer => {
@@ -376,6 +374,7 @@ my $config = {
     option     => "",
     source_ref => "sortbam",
     gff_file   => $transcript_gtf,
+    ispairend  => 1,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -436,6 +435,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "trimmer");
+performTask( $config, "trimmer" );
 
 1;
