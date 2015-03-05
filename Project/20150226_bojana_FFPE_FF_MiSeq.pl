@@ -336,7 +336,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Alignment::Tophat2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "trimmer",
