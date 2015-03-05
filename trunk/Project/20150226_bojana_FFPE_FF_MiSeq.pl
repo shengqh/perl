@@ -435,6 +435,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "trimmer" );
+performTask( $config, "htseqcount" );
 
 1;
