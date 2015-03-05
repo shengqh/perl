@@ -261,7 +261,6 @@ my $config = {
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
-    sort_by_query        => 1,
     rename_bam           => 1,
     sh_direct            => 0,
     pbs                  => {
@@ -271,12 +270,27 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  sortbam => {
+    class         => "Samtools::Sort",
+    perform       => 1,
+    target_dir    => "${target_dir}/sortname",
+    option        => "",
+    source_ref    => "tophat2",
+    sort_by_query => 1,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   htseqcount => {
     class      => "Count::HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
-    source_ref => ["tophat2", "sortedname.bam"],
+    source_ref => "sortbam",
     gff_file   => $transcript_gtf,
     sh_direct  => 0,
     pbs        => {
