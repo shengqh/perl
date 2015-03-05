@@ -435,6 +435,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "htseqcount" );
+performTask( $config, "tophat2" );
 
 1;
