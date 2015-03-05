@@ -291,7 +291,7 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trim_terminalN",
     option     => "-n -z -m 30",
     extension  => "_trim.fastq.gz",
@@ -307,7 +307,7 @@ my $config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "trimmer",
@@ -322,7 +322,7 @@ my $config = {
   },
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -336,7 +336,7 @@ my $config = {
   },
   tophat2 => {
     class                => "Alignment::Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "--segment-length 25 -r 0 -p 8",
     source_ref           => "trimmer",
@@ -353,12 +353,27 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  sortbam => {
+    class         => "Samtools::Sort",
+    perform       => 1,
+    target_dir    => "${target_dir}/sortname",
+    option        => "",
+    source_ref    => "tophat2",
+    sort_by_query => 1,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   htseqcount => {
     class      => "Count::HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
-    source_ref => ["tophat2", "sortedname.bam"],
+    source_ref => "sortbam",
     gff_file   => $transcript_gtf,
     ispairend  => 1,
     sh_direct  => 1,
@@ -420,7 +435,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask( $config, "htseqcount" );
+performConfig($config);
+#performTask( $config, "tophat2" );
 
 1;
