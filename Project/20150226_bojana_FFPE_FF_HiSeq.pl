@@ -402,7 +402,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { individual => [ "trimmer", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
+    source     => { individual => [ "cutadapt", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
