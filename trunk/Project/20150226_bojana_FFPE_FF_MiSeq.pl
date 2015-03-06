@@ -416,7 +416,7 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  tophat_sortbam => {
+  tophat2_sortbam => {
     class         => "Samtools::Sort",
     perform       => 1,
     target_dir    => "${target_dir}/tophat_sortname",
@@ -431,12 +431,12 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  tophat_htseqcount => {
+  tophat2_htseqcount => {
     class      => "Count::HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/tophat_htseqcount",
     option     => "",
-    source_ref => "tophat_sortbam",
+    source_ref => "tophat2_sortbam",
     gff_file   => $transcript_gtf,
     ispairend  => 1,
     sh_direct  => 1,
@@ -447,12 +447,12 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  tophat_genetable => {
+  tophat2_genetable => {
     class         => "CQS::CQSDatatable",
     perform       => 1,
     target_dir    => "${target_dir}/tophat_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
-    source_ref    => "tophat_htseqcount",
+    source_ref    => "tophat2_htseqcount",
     name_map_file => $name_map_file,
     cqs_tools     => $cqstools,
     sh_direct     => 1,
@@ -463,14 +463,14 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  tophat_deseq2 => {
+  tophat2_deseq2 => {
     class         => "Comparison::DESeq2",
     perform       => 1,
     target_dir    => "${target_dir}/tophat_deseq2",
     option        => "",
     source_ref    => "pairs",
     groups_ref    => "groups",
-    countfile_ref => "tophat_genetable",
+    countfile_ref => "tophat2_genetable",
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
@@ -484,11 +484,9 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => {
-      individual => [ "trimmer", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ],
-    },
-    sh_direct => 0,
-    pbs       => {
+    source     => { individual => [ "trimmer", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
