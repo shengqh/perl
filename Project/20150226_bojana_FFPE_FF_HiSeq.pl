@@ -402,7 +402,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { individual => [ "cutadapt", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
+    source     => { one => [ "cutadapt", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -416,7 +416,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { summary => [ "star_genetable", "star_deseq2", "tophat2_genetable", "tophat2_deseq2" ], },
+    source     => { all => [ "star_genetable", "star_deseq2", "tophat2_genetable", "tophat2_deseq2" ], },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
