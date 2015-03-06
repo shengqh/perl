@@ -334,6 +334,70 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  star => {
+    class      => "Alignment::STAR",
+    perform    => 1,
+    target_dir => "${target_dir}/star",
+    option     => "",
+    source_ref => "trimmer",
+    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
+  star_htseqcount => {
+    class      => "Count::HTSeqCount",
+    perform    => 1,
+    target_dir => "${target_dir}/star_htseqcount",
+    option     => "",
+    source_ref => "star",
+    gff_file   => $transcript_gtf,
+    ispairend  => 1,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_genetable => {
+    class         => "CQS::CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/star_genetable",
+    option        => "-p ENS --noheader -o ${task}_gene.count",
+    source_ref    => "star_htseqcount",
+    name_map_file => $name_map_file,
+    cqs_tools     => $cqstools,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  star_deseq2 => {
+    class         => "Comparison::DESeq2",
+    perform       => 1,
+    target_dir    => "${target_dir}/star_deseq2",
+    option        => "",
+    source_ref    => "pairs",
+    groups_ref    => "groups",
+    countfile_ref => "star_genetable",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+
   tophat2 => {
     class                => "Alignment::Tophat2",
     perform              => 1,
@@ -352,10 +416,10 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  sortbam => {
+  tophat_sortbam => {
     class         => "Samtools::Sort",
     perform       => 1,
-    target_dir    => "${target_dir}/sortname",
+    target_dir    => "${target_dir}/tophat_sortname",
     option        => "",
     source_ref    => "tophat2",
     sort_by_query => 1,
@@ -367,12 +431,12 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  htseqcount => {
+  tophat_htseqcount => {
     class      => "Count::HTSeqCount",
     perform    => 1,
-    target_dir => "${target_dir}/htseqcount",
+    target_dir => "${target_dir}/tophat_htseqcount",
     option     => "",
-    source_ref => "sortbam",
+    source_ref => "tophat_sortbam",
     gff_file   => $transcript_gtf,
     ispairend  => 1,
     sh_direct  => 1,
@@ -383,12 +447,12 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  genetable => {
+  tophat_genetable => {
     class         => "CQS::CQSDatatable",
     perform       => 1,
-    target_dir    => "${target_dir}/genetable",
+    target_dir    => "${target_dir}/tophat_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
-    source_ref    => "htseqcount",
+    source_ref    => "tophat_htseqcount",
     name_map_file => $name_map_file,
     cqs_tools     => $cqstools,
     sh_direct     => 1,
@@ -399,14 +463,14 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  deseq2 => {
+  tophat_deseq2 => {
     class         => "Comparison::DESeq2",
     perform       => 1,
-    target_dir    => "${target_dir}/deseq2",
+    target_dir    => "${target_dir}/tophat_deseq2",
     option        => "",
     source_ref    => "pairs",
     groups_ref    => "groups",
-    countfile_ref => "genetable",
+    countfile_ref => "tophat_genetable",
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
@@ -415,14 +479,13 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  sequencetask => {
+  sequencetask_individual => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      individual => [ "trimmer",   "fastqc", "tophat2", "sortbam", "htseqcount" ],
-      summary    => [ "genetable", "deseq2" ],
+      individual => [ "trimmer", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -432,9 +495,24 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  sequencetask_summary => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => { summary => [ "star_genetable", "star_deseq2", "tophat2_genetable", "tophat2_deseq2" ], },
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 };
 
 performConfig($config);
+
 #performTask( $config, "tophat2" );
 
 1;
