@@ -223,7 +223,7 @@ my $config = {
   },
   cutadapt => {
     class      => "Cutadapt",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/cutadapt",
     option     => $cutadapt_option,
     source_ref => "files",
@@ -239,7 +239,7 @@ my $config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -252,17 +252,81 @@ my $config = {
       "mem"      => "20gb"
     },
   },
+  star => {
+    class      => "Alignment::STAR",
+    perform    => 1,
+    target_dir => "${target_dir}/star",
+    option     => "",
+    source_ref => "cutadapt",
+    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
+  star_htseqcount => {
+    class      => "Count::HTSeqCount",
+    perform    => 1,
+    target_dir => "${target_dir}/star_htseqcount",
+    option     => "",
+    source_ref => "star",
+    gff_file   => $transcript_gtf,
+    ispairend  => 1,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_genetable => {
+    class         => "CQS::CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/star_genetable",
+    option        => "-p ENS --noheader -o ${task}_gene.count",
+    source_ref    => "star_htseqcount",
+    name_map_file => $name_map_file,
+    cqs_tools     => $cqstools,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  star_deseq2 => {
+    class         => "Comparison::DESeq2",
+    perform       => 1,
+    target_dir    => "${target_dir}/star_deseq2",
+    option        => "",
+    source_ref    => "pairs",
+    groups_ref    => "groups",
+    countfile_ref => "star_genetable",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+
   tophat2 => {
     class                => "Alignment::Tophat2",
     perform              => 1,
     target_dir           => "${target_dir}/tophat2",
-    option               => "--segment-length 25 -r 0 -p 8",
+    option               => "-p 8",
     source_ref           => "cutadapt",
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     rename_bam           => 1,
-    sh_direct            => 0,
+    sh_direct            => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -270,10 +334,10 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  sortbam => {
+  tophat2_sortbam => {
     class         => "Samtools::Sort",
     perform       => 1,
-    target_dir    => "${target_dir}/sortname",
+    target_dir    => "${target_dir}/tophat2_sortname",
     option        => "",
     source_ref    => "tophat2",
     sort_by_query => 1,
@@ -285,14 +349,15 @@ my $config = {
       "mem"      => "20gb"
     },
   },
-  htseqcount => {
+  tophat2_htseqcount => {
     class      => "Count::HTSeqCount",
     perform    => 1,
-    target_dir => "${target_dir}/htseqcount",
+    target_dir => "${target_dir}/tophat2_htseqcount",
     option     => "",
-    source_ref => "sortbam",
+    source_ref => "tophat2_sortbam",
     gff_file   => $transcript_gtf,
-    sh_direct  => 0,
+    ispairend  => 1,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -300,12 +365,12 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  genetable => {
+  tophat2_genetable => {
     class         => "CQS::CQSDatatable",
     perform       => 1,
-    target_dir    => "${target_dir}/genetable",
+    target_dir    => "${target_dir}/tophat2_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
-    source_ref    => "htseqcount",
+    source_ref    => "tophat2_htseqcount",
     name_map_file => $name_map_file,
     cqs_tools     => $cqstools,
     sh_direct     => 1,
@@ -316,14 +381,14 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  deseq2 => {
+  tophat2_deseq2 => {
     class         => "Comparison::DESeq2",
     perform       => 1,
-    target_dir    => "${target_dir}/deseq2",
+    target_dir    => "${target_dir}/tophat2_deseq2",
     option        => "",
     source_ref    => "pairs",
     groups_ref    => "groups",
-    countfile_ref => "genetable",
+    countfile_ref => "tophat2_genetable",
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
@@ -332,25 +397,38 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  sequencetask => {
+  sequencetask_individual => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => {
-      individual => [ "cutadapt", "tophat2", "sortbam", "htseqcount", "fastqc" ],
-      summary    => [ "genetable", "deseq2" ],
-    },
-    sh_direct => 0,
-    pbs       => {
+    source     => { individual => [ "trimmer", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
   },
+  sequencetask_summary => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => { summary => [ "star_genetable", "star_deseq2", "tophat2_genetable", "tophat2_deseq2" ], },
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 };
 
 performConfig($config);
+
+#performTask( $config, "tophat2" );
 
 1;
