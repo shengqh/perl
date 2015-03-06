@@ -239,7 +239,7 @@ my $config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -427,8 +427,8 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "tophat2" );
+performTask( $config, "fastqlen" );
 
 1;
