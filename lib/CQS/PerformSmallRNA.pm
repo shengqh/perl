@@ -8,9 +8,11 @@ use Pipeline::SmallRNA;
 require Exporter;
 our @ISA = qw(Exporter);
 
-our %EXPORT_TAGS =
-  ( 'all' =>
-    [qw(performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)] );
+our %EXPORT_TAGS = (
+  'all' => [
+    qw(performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
+  ]
+);
 
 our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -80,6 +82,11 @@ sub getDefinition {
     $min_read_length = $userdef->{min_read_length};
   }
 
+  my $smallrnacount_option = "-s";
+  if ( defined $userdef->{smallrnacount_option} ) {
+    $smallrnacount_option = $userdef->{smallrnacount_option};
+  }
+
   my $def = {
 
     #General options
@@ -93,12 +100,10 @@ sub getDefinition {
     files => $userdef->{files},
 
     #Default software parameter (don't change it except you really know it)
-    bowtie1_option_1mm         => "-a -m 100 --best --strata -v 1 -p 8",
-    bowtie1_option_pm          => "-a -m 100 --best --strata -v 0 -p 8",
-    mirnacount_option          => "-s",                                         #ignore score
-    smallrnacount_option       => "-s --min_overlap 0.5 --length --sequence",
-    mirna_overlap_count_option => "-s --min_overlap 0.5 --gtf_key miRNA",
-    min_read_length            => $min_read_length,
+    bowtie1_option_1mm   => "-a -m 100 --best --strata -v 1 -p 8",
+    bowtie1_option_pm    => "-a -m 100 --best --strata -v 0 -p 8",
+    smallrnacount_option => $smallrnacount_option,
+    min_read_length      => $min_read_length,
 
     #Software and miRBase database options
     samtools => "/scratch/cqs/shengq1/local/bin/samtools",
