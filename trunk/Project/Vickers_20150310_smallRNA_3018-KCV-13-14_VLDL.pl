@@ -14,6 +14,7 @@ my $def = {
 
   #Default software parameter (don't change it except you really know it)
   fastq_remove_N => 1,
+  smallrnacount_option => "-s --unmapped_fastq", #export unmapped fastq for following up analysis
 
   #Data
   files => {
