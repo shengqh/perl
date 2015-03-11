@@ -44,17 +44,9 @@ my $def_human = {
 #my $config_human = performSmallRNA_hg19($def_human);
 my $definition_human = getSmallRNADefinition($def_human, hg19_genome());
 my $config_human = getSmallRNAConfig($definition_human);
-print Dumper($config_human);
+#print Dumper($config_human);
 
-my $mm10_genome = {
-
-  #genome database
-  mirbase_count_option  => "-p mmu",
-  coordinate            => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed",
-  coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
-  bowtie1_index         => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
-  bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
-};
+my $mm10 = mm10_genome();
 
 my $def_mouse = {
 
@@ -75,9 +67,9 @@ my $def_mouse = {
   samtools => "/scratch/cqs/shengq1/local/bin/samtools",
   cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
-  coordinate       => $mm10_genome->{coordinate},
-  coordinate_fasta => $mm10_genome->{coordinate_fasta},
-  bowtie1_index    => $mm10_genome->{bowtie1_index},
+  coordinate       => $mm10->{coordinate},
+  coordinate_fasta => $mm10->{coordinate_fasta},
+  bowtie1_index    => $mm10->{bowtie1_index},
 };
 
 my $config_mouse = {
