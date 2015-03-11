@@ -10,7 +10,7 @@ my $def_human = {
   #General options
   task_name            => "2687_b2",
   email                => "quanhu.sheng\@vanderbilt.edu",
-  target_dir           => "/scratch/cqs/shengq1/smallRNA/20150310_guoyan_2687_human_mouse_batch2/human",
+  target_dir           => "/scratch/cqs/shengq1/smallRNA/20150310_guoyan_2687_human_mouse_batch2/human2",
   max_thread           => 8,
   min_read_length      => 16,
   cluster              => "slurm",
@@ -39,8 +39,8 @@ my $def_human = {
   }
 };
 
-#my $config_human = performSmallRNA_hg19($def_human);
-my $config_human = getDefinition($def_human, hg19_genome());
+my $config_human = performSmallRNA_hg19($def_human);
+#my $config_human = getDefinition($def_human, hg19_genome());
 
 my $mm10_genome = {
 
@@ -194,7 +194,7 @@ my $config_mouse = {
   },
 };
 
-performConfig($config_mouse);
+#performConfig($config_mouse);
 
 1;
 
