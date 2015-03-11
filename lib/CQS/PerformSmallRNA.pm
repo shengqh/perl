@@ -10,7 +10,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(getSmallRNADefinition hg19_genome mm10_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
+    qw(hg19_genome hg20_genome mm10_genome rn5_genome cel235_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
   ]
 );
 
@@ -134,10 +134,10 @@ sub getSmallRNADefinition {
 }
 
 sub performSmallRNA_hg19 {
-  my ($userdef) = @_;
+  my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, hg19_genome() );
 
-  performSmallRNA($def);
+  performSmallRNA( $def, $perform );
 }
 
 sub performSmallRNATask_hg19 {
@@ -148,9 +148,9 @@ sub performSmallRNATask_hg19 {
 }
 
 sub performSmallRNA_hg20 {
-  my ($userdef) = @_;
+  my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, hg20_genome() );
-  performSmallRNA($def);
+  performSmallRNA( $def, $perform );
 }
 
 sub performSmallRNATask_hg20 {
@@ -161,10 +161,10 @@ sub performSmallRNATask_hg20 {
 }
 
 sub performSmallRNA_mm10 {
-  my ($userdef) = @_;
+  my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, mm10_genome() );
 
-  performSmallRNA($def);
+  performSmallRNA( $def, $perform );
 }
 
 sub performSmallRNATask_mm10 {
@@ -175,9 +175,9 @@ sub performSmallRNATask_mm10 {
 }
 
 sub performSmallRNA_rn5 {
-  my ($userdef) = @_;
+  my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, rn5_genome() );
-  performSmallRNA($def);
+  performSmallRNA( $def, $perform );
 }
 
 sub performSmallRNATask_rn5 {
@@ -188,9 +188,9 @@ sub performSmallRNATask_rn5 {
 }
 
 sub performSmallRNA_cel235 {
-  my ($userdef) = @_;
+  my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, cel235_genome() );
-  performSmallRNA($def);
+  performSmallRNA( $def, $perform );
 }
 
 sub performSmallRNATask_cel235 {
