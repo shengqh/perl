@@ -10,7 +10,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(getDefinition hg19_genome mm10_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
+    qw(getSmallRNADefinition hg19_genome mm10_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
   ]
 );
 
@@ -72,7 +72,7 @@ my $cel235_genome = {
   bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
 };
 
-sub getDefinition {
+sub getSmallRNADefinition {
   my ( $userdef, $genome ) = @_;
 
   my $cluster = "slurm";
@@ -129,68 +129,68 @@ sub getDefinition {
 
 sub performSmallRNA_hg19 {
   my ($userdef) = @_;
-  my $def = getDefinition( $userdef, hg19_genome() );
+  my $def = getSmallRNADefinition( $userdef, hg19_genome() );
 
   performSmallRNA($def);
 }
 
 sub performSmallRNATask_hg19 {
   my ( $userdef, $task ) = @_;
-  my $def = getDefinition( $userdef, hg19_genome() );
+  my $def = getSmallRNADefinition( $userdef, hg19_genome() );
 
   performSmallRNATask( $def, $task );
 }
 
 sub performSmallRNA_hg20 {
   my ($userdef) = @_;
-  my $def = getDefinition( $userdef, $hg20_genome );
+  my $def = getSmallRNADefinition( $userdef, $hg20_genome );
 
   performSmallRNA($def);
 }
 
 sub performSmallRNATask_hg20 {
   my ( $userdef, $task ) = @_;
-  my $def = getDefinition( $userdef, $hg20_genome );
+  my $def = getSmallRNADefinition( $userdef, $hg20_genome );
 
   performSmallRNATask( $def, $task );
 }
 
 sub performSmallRNA_mm10 {
   my ($userdef) = @_;
-  my $def = getDefinition( $userdef, mm10_genome() );
+  my $def = getSmallRNADefinition( $userdef, mm10_genome() );
 
   performSmallRNA($def);
 }
 
 sub performSmallRNATask_mm10 {
   my ( $userdef, $task ) = @_;
-  my $def = getDefinition( $userdef, mm10_genome() );
+  my $def = getSmallRNADefinition( $userdef, mm10_genome() );
 
   performSmallRNATask( $def, $task );
 }
 
 sub performSmallRNA_rn5 {
   my ($userdef) = @_;
-  my $def = getDefinition( $userdef, $rn5_genome );
+  my $def = getSmallRNADefinition( $userdef, $rn5_genome );
   performSmallRNA($def);
 }
 
 sub performSmallRNATask_rn5 {
   my ( $userdef, $task ) = @_;
-  my $def = getDefinition( $userdef, $rn5_genome );
+  my $def = getSmallRNADefinition( $userdef, $rn5_genome );
 
   performSmallRNATask( $def, $task );
 }
 
 sub performSmallRNA_cel235 {
   my ($userdef) = @_;
-  my $def = getDefinition( $userdef, $cel235_genome );
+  my $def = getSmallRNADefinition( $userdef, $cel235_genome );
   performSmallRNA($def);
 }
 
 sub performSmallRNATask_cel235 {
   my ( $userdef, $task ) = @_;
-  my $def = getDefinition( $userdef, $cel235_genome );
+  my $def = getSmallRNADefinition( $userdef, $cel235_genome );
 
   performSmallRNATask( $def, $task );
 }
