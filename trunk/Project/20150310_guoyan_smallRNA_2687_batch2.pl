@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use CQS::PerformSmallRNA;
-use CQS::SmallRNA;
+use Pipeline::SmallRNA;
 use CQS::ClassFactory;
 use Data::Dumper;
 
