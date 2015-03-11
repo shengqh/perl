@@ -10,7 +10,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
+    qw(getDefinition hg19_genome mm10_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
   ]
 );
 
@@ -18,15 +18,17 @@ our @EXPORT = ( @{ $EXPORT_TAGS{'all'} } );
 
 our $VERSION = '0.01';
 
-my $hg19_genome = {
+sub hg19_genome {
+  return {
 
-  #genome database
-  mirbase_count_option  => "-p hsa",
-  coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed",
-  coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa",
-  bowtie1_index         => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
-  bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase20/bowtie_index_1.1.1/mature.dna",
-};
+    #genome database
+    mirbase_count_option  => "-p hsa",
+    coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed",
+    coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa",
+    bowtie1_index         => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+    bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase20/bowtie_index_1.1.1/mature.dna",
+  };
+}
 
 my $hg20_genome = {
 
@@ -38,14 +40,16 @@ my $hg20_genome = {
   bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
 };
 
-my $mm10_genome = {
+sub mm10_genome {
+  return {
 
-  #genome database
-  mirbase_count_option  => "-p mmu",
-  coordinate            => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed",
-  coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
-  bowtie1_index         => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
-  bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
+    #genome database
+    mirbase_count_option  => "-p mmu",
+    coordinate            => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed",
+    coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
+    bowtie1_index         => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
+    bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
+  };
 };
 
 my $rn5_genome = {
@@ -99,8 +103,7 @@ sub getDefinition {
     #Data
     files => $userdef->{files},
 
-    #Default software parameter (don't change it except you really know it)
-    bowtie1_option_1mm   => "-a -m 100 --best --strata -v 1 -p 8",
+    #Default software parameter (don' t change it except you really know it ) bowtie1_option_1mm => "-a -m 100 --best --strata -v 1 -p 8",
     bowtie1_option_pm    => "-a -m 100 --best --strata -v 0 -p 8",
     smallrnacount_option => $smallrnacount_option,
     min_read_length      => $min_read_length,
@@ -126,14 +129,14 @@ sub getDefinition {
 
 sub performSmallRNA_hg19 {
   my ($userdef) = @_;
-  my $def = getDefinition( $userdef, $hg19_genome );
+  my $def = getDefinition( $userdef, hg19_genome() );
 
   performSmallRNA($def);
 }
 
 sub performSmallRNATask_hg19 {
   my ( $userdef, $task ) = @_;
-  my $def = getDefinition( $userdef, $hg19_genome );
+  my $def = getDefinition( $userdef, hg19_genome() );
 
   performSmallRNATask( $def, $task );
 }
@@ -154,14 +157,14 @@ sub performSmallRNATask_hg20 {
 
 sub performSmallRNA_mm10 {
   my ($userdef) = @_;
-  my $def = getDefinition( $userdef, $mm10_genome );
+  my $def = getDefinition( $userdef, mm10_genome() );
 
   performSmallRNA($def);
 }
 
 sub performSmallRNATask_mm10 {
   my ( $userdef, $task ) = @_;
-  my $def = getDefinition( $userdef, $mm10_genome );
+  my $def = getDefinition( $userdef, mm10_genome() );
 
   performSmallRNATask( $def, $task );
 }
