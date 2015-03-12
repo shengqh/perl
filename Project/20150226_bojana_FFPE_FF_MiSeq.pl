@@ -512,8 +512,9 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "tophat2" );
+performTask( $config, "star_deseq2" );
+performTask( $config, "tophat2_deseq2" );
 
 1;
