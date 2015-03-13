@@ -43,7 +43,7 @@ my $def_cow = {
   #General options
   task_name  => "3018-KCV-10",
   email      => "quanhu.sheng\@vanderbilt.edu",
-  target_dir => "/scratch/cqs/shengq1/smallRNA/20150227_smallRNA_3018-KCV-10_cow/",
+  target_dir => "/scratch/cqs/shengq1/vickers/20150227_smallRNA_3018-KCV-10_cow/",
   max_thread => 8,
   cluster    => "slurm",
 
