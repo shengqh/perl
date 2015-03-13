@@ -79,7 +79,7 @@ my $config_cow = {
     },
   },
   bowtie1_genome_pm_count => {
-    class               => "CQS::MappedCount",
+    class               => "CQS::CQSMappedCount",
     perform             => 1,
     target_dir          => $def_cow->{target_dir} . "/bowtie1_genome_pm_count",
     option              => "-s",
@@ -98,7 +98,7 @@ my $config_cow = {
     },
   },
   bowtie1_genome_pm_table => {
-    class      => "CQS::MappedTable",
+    class      => "CQS::CQSMappedTable",
     perform    => 1,
     target_dir => $def_cow->{target_dir} . "/bowtie1_genome_pm_table",
     option     => "",
