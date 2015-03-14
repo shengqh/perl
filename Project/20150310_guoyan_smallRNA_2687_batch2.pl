@@ -191,4 +191,3 @@ my $config_mouse = {
 performConfig($config_mouse);
 
 1;
-
