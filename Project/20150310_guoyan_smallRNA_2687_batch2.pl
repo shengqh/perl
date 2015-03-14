@@ -42,7 +42,7 @@ my $def_human = {
 };
 
 my $config_human = performSmallRNA_hg19($def_human, 0);
-#print Dumper($config_human);
+print Dumper($config_human);
 
 my $mm10 = mm10_genome();
 
