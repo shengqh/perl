@@ -141,4 +141,3 @@ my $config_cow = {
 performConfig($config_cow);
 
 1;
-
