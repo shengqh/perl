@@ -240,6 +240,6 @@ my $config_bacteria = {
   },
 };
 
-performConfig($def_bacteria);
+performConfig($config_bacteria);
 
 1;
