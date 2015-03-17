@@ -175,7 +175,7 @@ my $config_bacteria = {
     cluster           => $def_bacteria->{cluster},
     pbs               => {
       "email"    => $def_bacteria->{email},
-      "nodes"    => "1:ppn=" . $def_cow->{max_thread},
+      "nodes"    => "1:ppn=" . $def_bacteria->{max_thread},
       "walltime" => "72",
       "mem"      => "40gb"
     },
