@@ -21,9 +21,9 @@ my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remov
 my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picar.jar";
-my $mutect_jar = "/home/shengq1/local/bin/muTect-1.1.4.jar";
+my $mutect_jar     = "/home/shengq1/local/bin/muTect-1.1.4.jar";
 
-  my $cluster = "slurm";
+my $cluster = "slurm";
 
 my $config = {
   general => { task_name => "lichen" },
@@ -121,8 +121,8 @@ my $rna_config = {
     ],
   },
   groups => {
-    "RNA_GLC" => ["RNA_283", "RNA_273"],
-    "RNA_DZC" => ["RNA_321", "RNA_311"],
+    "RNA_GLC" => [ "RNA_283", "RNA_273" ],
+    "RNA_DZC" => [ "RNA_321", "RNA_311" ],
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -193,8 +193,8 @@ my $dna_config = {
     ],
   },
   groups => {
-    "DNA_GLC" => ["DNA_283", "DNA_273"],
-    "DNA_DZC" => ["DNA_321", "DNA_311"],
+    "DNA_GLC" => [ "DNA_283", "DNA_273" ],
+    "DNA_DZC" => [ "DNA_321", "DNA_311" ],
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -225,15 +225,15 @@ my $dna_config = {
     },
   },
   bwa => {
-    class                      => "Alignment::BWA",
-    perform                    => 1,
-    target_dir                 => "${target_dir}/dna_bwa",
-    option                     => "-T 15",
-    fasta_file                 => $bwa_fasta,
-    source_ref                 => "files",
-    addOrReplaceReadGroups_jar => $picard_jar . " AddOrReplaceReadGroups",
-    sh_direct                  => 0,
-    pbs                        => {
+    class      => "Alignment::BWA",
+    perform    => 1,
+    target_dir => "${target_dir}/dna_bwa",
+    option     => "-T 15",
+    fasta_file => $bwa_fasta,
+    source_ref => "files",
+    picard_jar => $picard_jar,
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -241,19 +241,19 @@ my $dna_config = {
     },
   },
   bwa_refine => {
-    class              => "GATK::Refine",
-    perform            => 1,
-    target_dir         => "${target_dir}/dna_bwa_refine",
-    option             => "-Xmx40g",
-    gatk_option        => "--fix_misencoded_quality_scores",
-    fasta_file         => $bwa_fasta,
-    source_ref         => "bwa",
-    thread_count       => 8,
-    vcf_files          => [$dbsnp],
-    gatk_jar           => $gatk_jar,
-    markDuplicates_jar => $picard_jar . " MarkDuplicates",
-    sh_direct          => 1,
-    pbs                => {
+    class        => "GATK::Refine",
+    perform      => 1,
+    target_dir   => "${target_dir}/dna_bwa_refine",
+    option       => "-Xmx40g",
+    gatk_option  => "--fix_misencoded_quality_scores",
+    fasta_file   => $bwa_fasta,
+    source_ref   => "bwa",
+    thread_count => 8,
+    vcf_files    => [$dbsnp],
+    gatk_jar     => $gatk_jar,
+    picard_jar   => $picard_jar,
+    sh_direct    => 1,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -298,11 +298,11 @@ my $dna_config = {
     },
   },
   dna_snpindel => {
-    class      => "GATK::SNPIndel",
-    perform    => 1,
-    target_dir => "${target_dir}/dna_SNPindel",
-    option     => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
-    source_ref => "bwa_refine",
+    class       => "GATK::SNPIndel",
+    perform     => 1,
+    target_dir  => "${target_dir}/dna_SNPindel",
+    option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
+    source_ref  => "bwa_refine",
     java_option => "-Xmx40g",
     fasta_file  => $bwa_fasta,
     vcf_files   => [$dbsnp],

@@ -188,6 +188,7 @@ my $config_mouse = {
   },
 };
 
-performConfig($config_mouse);
+#performConfig($config_mouse);
+performTask($config_mouse, "sequencetask");
 
 1;
