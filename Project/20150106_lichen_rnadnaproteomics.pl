@@ -155,14 +155,15 @@ my $rna_config = {
     },
   },
   star => {
-    class      => "Alignment::STAR",
-    perform    => 0,
-    target_dir => "${target_dir}/rna_star",
-    option     => "",
-    source_ref => "files",
-    genome_dir => $star_index,
-    sh_direct  => 1,
-    pbs        => {
+    class              => "Alignment::STAR",
+    perform            => 1,
+    target_dir         => "${target_dir}/rna_star",
+    option             => "",
+    source_ref         => "files",
+    genome_dir         => $star_index,
+    sort_by_coordinate => 1,
+    sh_direct          => 1,
+    pbs                => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
