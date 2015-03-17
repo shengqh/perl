@@ -94,7 +94,7 @@ chdir("bowtie_index_${bowtie}");
 if ( !-e $basename ) {
   run_command("ln -s ../$fastaFile $basename ");
   run_command("ln -s ../${base}.dict ${base}.dict ");
-  run_command("ln -s ../${base}.fa.fai ${base}.fa.fai ");
+  run_command("ln -s ../${basename}.fai ${basename}.fai ");
   run_command("ln -s ../${base}.len ${base}.len ");
 }
 run_command("bowtie-build $basename $base ");
