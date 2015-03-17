@@ -145,7 +145,7 @@ my $def_bacteria = {
   #General options
   task_name  => "3018-KCV-10",
   email      => "quanhu.sheng\@vanderbilt.edu",
-  target_dir => "/scratch/cqs/shengq1/vickers/20150227_smallRNA_3018-KCV-10/bacteria",
+  target_dir => "/scratch/cqs/shengq1/vickers/20150224_smallRNA_3018-KCV-10/bacteria",
   max_thread => 8,
   cluster    => "slurm",
 
