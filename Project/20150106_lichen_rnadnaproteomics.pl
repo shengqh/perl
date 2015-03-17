@@ -120,6 +120,10 @@ my $rna_config = {
       "/gpfs21/scratch/cqs/shengq1/proteomics/20150106-lichen-rnadnaproteomics/FastqDump/result/RNA_321_2.fastq.gz"
     ],
   },
+  groups => {
+    "RNA_GLC" => ["RNA_283", "RNA_273"],
+    "RNA_DZC" => ["RNA_321", "RNA_311"],
+  },
   fastqc => {
     class      => "QC::FastQC",
     perform    => 0,
@@ -187,6 +191,10 @@ my $dna_config = {
       "/gpfs21/scratch/cqs/shengq1/proteomics/20150106-lichen-rnadnaproteomics/FastqDump/result/DNA_321_1.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/proteomics/20150106-lichen-rnadnaproteomics/FastqDump/result/DNA_321_2.fastq.gz"
     ],
+  },
+  groups => {
+    "DNA_GLC" => ["DNA_283", "DNA_273"],
+    "DNA_DZC" => ["DNA_321", "DNA_311"],
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -295,7 +303,6 @@ my $dna_config = {
     target_dir => "${target_dir}/dna_SNPindel",
     option     => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
     source_ref => "bwa_refine",
-    #groups_ref  => "groups",
     java_option => "-Xmx40g",
     fasta_file  => $bwa_fasta,
     vcf_files   => [$dbsnp],
