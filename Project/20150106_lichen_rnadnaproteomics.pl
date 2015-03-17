@@ -22,6 +22,8 @@ my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $mutect_jar     = "/home/shengq1/local/bin/muTect-1.1.4.jar";
+my $rnaediting_db  = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
+my $rsmc           = "/home/shengq1/rsmc/rsmc.exe";
 
 my $cluster = "slurm";
 
@@ -97,7 +99,7 @@ my $config = {
   }
 };
 
-performConfig($config);
+#performConfig($config);
 
 my $rna_config = {
   general => { task_name => "lichen" },
@@ -154,7 +156,7 @@ my $rna_config = {
   },
   star => {
     class      => "Alignment::STAR",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/rna_star",
     option     => "",
     source_ref => "files",
@@ -165,6 +167,26 @@ my $rna_config = {
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
       "mem"      => "30gb"
+    },
+  },
+  rsmc => {
+    class            => "CQS::RSMC",
+    perform          => 1,
+    target_dir       => "${target_dir}/rna_rsmc",
+    option           => "-c 24",                    #thread mode
+    source_type      => "BAM",                      #source_type can be BAM/Mpileup
+    source_ref       => "star",
+    groups_ref       => "groups",
+    fasta_file       => $bwa_fasta,
+    annovar_buildver => "hg19",
+    rnaediting_db    => $rnaediting_db,
+    sh_direct        => 1,
+    execute_file     => $rsmc,
+    pbs              => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=24",
+      "walltime" => "72",
+      "mem"      => "20gb"
     },
   },
 };
@@ -334,6 +356,6 @@ my $dna_config = {
 
 };
 
-performConfig($dna_config);
+#performConfig($dna_config);
 
 1
