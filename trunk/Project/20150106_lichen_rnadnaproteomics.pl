@@ -11,15 +11,19 @@ my $target_dir = "/scratch/cqs/shengq1/proteomics/20150106-lichen-rnadnaproteomi
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
-my $fasta_file           = "/scratch/cqs/shengq1/references/hg20/hg20.fa";
-my $bowtie2_index        = "/scratch/cqs/shengq1/references/hg20/bowtie2_index_2.2.3/hg20";
-my $bwa_fasta            = "/scratch/cqs/shengq1/references/hg20/bwa_index_0.7.10/hg20.fa";
-my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl/Homo_sapiens.GRCh38.78.gtf";
-my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl/index/Homo_sapiens.GRCh38.78";
-my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl/Homo_sapiens.GRCh38.78.map";
-my $snp_file_16569_MT    = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh38_v142_16569_MT.vcf";
+my $bwa_fasta      = "/scratch/cqs/shengq1/references/hg19_16569_M/bwa_index_0.7.12/hg19_16569_M.fa";
+my $star_index     = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j";
+my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
+my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
+my $cosmic         = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
+my $dbsnp          = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
+my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
+my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picar.jar";
+my $mutect_jar = "/home/shengq1/local/bin/muTect-1.1.4.jar";
 
-my $cluster = "slurm";
+  my $cluster = "slurm";
 
 my $config = {
   general => { task_name => "lichen" },
@@ -144,26 +148,21 @@ my $rna_config = {
       "mem"      => "10gb"
     },
   },
-  tophat2 => {
-    class                => "Alignment::Tophat2",
-    perform              => 0,
-    target_dir           => "${target_dir}/tophat2",
-    option               => "--segment-length 25 -r 0 -p 8",
-    source_ref           => "files",
-    bowtie2_index        => $bowtie2_index,
-    transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => $transcript_gtf_index,
-    rename_bam           => 1,
-    sh_direct            => 1,
-    cluster              => "slurm",
-    pbs                  => {
+  star => {
+    class      => "Alignment::STAR",
+    perform    => 1,
+    target_dir => "${target_dir}/rna_star",
+    option     => "",
+    source_ref => "files",
+    genome_dir => $star_index,
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "30gb"
     },
   },
-
 };
 
 performConfig($rna_config);
@@ -219,29 +218,14 @@ my $dna_config = {
   },
   bwa => {
     class                      => "Alignment::BWA",
-    perform                    => 0,
+    perform                    => 1,
     target_dir                 => "${target_dir}/dna_bwa",
     option                     => "-T 15",
     fasta_file                 => $bwa_fasta,
     source_ref                 => "files",
-    addOrReplaceReadGroups_jar => "/home/shengq1/local/bin/picard/AddOrReplaceReadGroups.jar",
+    addOrReplaceReadGroups_jar => $picard_jar . " AddOrReplaceReadGroups",
     sh_direct                  => 0,
     pbs                        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bowtie2 => {
-    class         => "Alignment::Bowtie2",
-    perform       => 0,
-    target_dir    => "${target_dir}/dna_bowtie2",
-    option        => "-T 15",
-    bowtie2_index => $bowtie2_index,
-    source_ref    => "files",
-    sh_direct     => 0,
-    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -257,10 +241,10 @@ my $dna_config = {
     fasta_file         => $bwa_fasta,
     source_ref         => "bwa",
     thread_count       => 8,
-    vcf_files          => [$snp_file_16569_MT],
-    gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
-    markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
-    sh_direct          => 0,
+    vcf_files          => [$dbsnp],
+    gatk_jar           => $gatk_jar,
+    markDuplicates_jar => $picard_jar . " MarkDuplicates",
+    sh_direct          => 1,
     pbs                => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -268,6 +252,79 @@ my $dna_config = {
       "mem"      => "40gb"
     },
   },
+  dna_muTect => {
+    class       => "GATK::MuTect",
+    perform     => 1,
+    target_dir  => "${target_dir}/dna_muTect",
+    option      => "-nt 8",
+    source_ref  => "bwa_refine",
+    groups_ref  => "groups",
+    java_option => "-Xmx40g",
+    fasta_file  => $bwa_fasta,
+    cosmic_file => $cosmic,
+    dbsnp_file  => $dbsnp,
+    sh_direct   => 1,
+    muTect_jar  => $mutect_jar,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  dna_muTect_annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/dna_muTect",
+    option     => $annovar_param,
+    source_ref => [ "dna_muTect", "\.vcf\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  dna_snpindel => {
+    class      => "GATK::SNPIndel",
+    perform    => 1,
+    target_dir => "${target_dir}/dna_SNPindel",
+    option     => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
+    source_ref => "bwa_refine",
+    #groups_ref  => "groups",
+    java_option => "-Xmx40g",
+    fasta_file  => $bwa_fasta,
+    vcf_files   => [$dbsnp],
+    gatk_jar    => $gatk_jar,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  dna_snpindel_annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/dna_SNPindel",
+    source_ref => "dna_snpindel",
+    option     => $annovar_param,
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+
 };
 
 performConfig($dna_config);
