@@ -162,7 +162,7 @@ my $rna_config = {
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
       "mem"      => "30gb"
     },
@@ -228,14 +228,14 @@ my $dna_config = {
     class      => "Alignment::BWA",
     perform    => 1,
     target_dir => "${target_dir}/dna_bwa",
-    option     => "-T 15",
+    option     => "",
     fasta_file => $bwa_fasta,
     source_ref => "files",
     picard_jar => $picard_jar,
-    sh_direct  => 0,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -255,7 +255,7 @@ my $dna_config = {
     sh_direct    => 1,
     pbs          => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -264,7 +264,7 @@ my $dna_config = {
     class       => "GATK::MuTect",
     perform     => 1,
     target_dir  => "${target_dir}/dna_muTect",
-    option      => "-nt 8",
+    option      => "",
     source_ref  => "bwa_refine",
     groups_ref  => "groups",
     java_option => "-Xmx40g",
@@ -275,7 +275,7 @@ my $dna_config = {
     muTect_jar  => $mutect_jar,
     pbs         => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -301,7 +301,7 @@ my $dna_config = {
     class       => "GATK::SNPIndel",
     perform     => 1,
     target_dir  => "${target_dir}/dna_SNPindel",
-    option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200 -nct 8",
+    option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200",
     source_ref  => "bwa_refine",
     java_option => "-Xmx40g",
     fasta_file  => $bwa_fasta,
@@ -309,7 +309,7 @@ my $dna_config = {
     gatk_jar    => $gatk_jar,
     pbs         => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
       "mem"      => "40gb"
     },
