@@ -12,6 +12,7 @@ my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $bwa_fasta      = "/scratch/cqs/shengq1/references/hg19_16569_M/bwa_index_0.7.12/hg19_16569_M.fa";
+my $bwa_index     = "/scratch/cqs/shengq1/references/hg19_16569_M/bwa_index_0.7.12/hg19_16569_M";
 my $star_index     = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j";
 my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
 my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
@@ -229,7 +230,7 @@ my $dna_config = {
     perform    => 1,
     target_dir => "${target_dir}/dna_bwa",
     option     => "",
-    fasta_file => $bwa_fasta,
+    bwa_index => $bwa_index,
     source_ref => "files",
     picard_jar => $picard_jar,
     sh_direct  => 1,
