@@ -20,7 +20,7 @@ my $dbsnp          = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16
 my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
-my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picar.jar";
+my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $mutect_jar     = "/home/shengq1/local/bin/muTect-1.1.4.jar";
 
 my $cluster = "slurm";
