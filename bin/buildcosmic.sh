@@ -1,5 +1,5 @@
-cd /data/cqs/shengq1/reference/cosmic
-version="v69"
+cd /scratch/cqs/shengq1/references/cosmic
+version="v71"
 
 grep "^#" CosmicCodingMuts.vcf > VCF_Header 
 grep -v "^#" CosmicCodingMuts.vcf > Coding.clean 
