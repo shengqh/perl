@@ -156,7 +156,7 @@ my $rna_config = {
   },
   star => {
     class              => "Alignment::STAR",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/rna_star",
     option             => "",
     source_ref         => "files",
@@ -170,9 +170,25 @@ my $rna_config = {
       "mem"      => "30gb"
     },
   },
+  star_index => {
+    class          => "Alignment::STARIndex",
+    perform        => 1,
+    target_dir     => "${target_dir}/rna_star_index",
+    option         => "",
+    source_ref     => "star",
+    fasta_file     => $bwa_fasta,
+    transcript_gtf => $transcript_gtf,
+    sh_direct      => 1,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=24",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
   rsmc => {
     class            => "CQS::RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rna_rsmc",
     option           => "-c 24",                    #thread mode
     source_type      => "BAM",                      #source_type can be BAM/Mpileup
