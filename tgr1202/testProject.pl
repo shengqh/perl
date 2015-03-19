@@ -29,3 +29,4 @@ my $project = `curl -H "Authorization: $token" $server/projects/$applicationid/c
 
 my $json_print = JSON->new;
 print $json_print->pretty->encode($json_print->decode($project));
+
