@@ -294,7 +294,7 @@ my $config = {
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/trim_terminalN",
     option     => "-n -z -m 30",
     extension  => "_trim.fastq.gz",
