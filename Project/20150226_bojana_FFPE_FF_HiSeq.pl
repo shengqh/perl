@@ -239,7 +239,7 @@ my $config = {
   },
   fastqlen => {
     class      => "FastqLen",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -254,7 +254,7 @@ my $config = {
   },
   star => {
     class      => "Alignment::STAR",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/star",
     option     => "",
     source_ref => "cutadapt",
@@ -267,12 +267,44 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  star_index => {
+    class          => "Alignment::STARIndex",
+    perform        => 1,
+    target_dir     => "${target_dir}/star_index",
+    option         => "--sjdbOverhang 100",
+    source_ref     => [ "star", "tab\$" ],
+    fasta_file     => $fasta_file_16569_M,
+    transcript_gtf => $transcript_gtf,
+    sh_direct      => 1,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=24",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
+  star_2nd_pass => {
+    class              => "Alignment::STAR",
+    perform            => 1,
+    target_dir         => "${target_dir}/star_2nd_pass",
+    option             => "",
+    source_ref         => "trimmer",
+    genome_dir_ref     => "star_index",
+    sort_by_coordinate => 0,
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=24",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
   star_htseqcount => {
     class      => "Count::HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/star_htseqcount",
     option     => "",
-    source_ref => "star",
+    source_ref => "star_2nd_pass",
     gff_file   => $transcript_gtf,
     ispairend  => 1,
     sh_direct  => 1,
@@ -285,7 +317,7 @@ my $config = {
   },
   star_genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/star_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "star_htseqcount",
@@ -301,7 +333,7 @@ my $config = {
   },
   star_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/star_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -318,7 +350,7 @@ my $config = {
 
   tophat2 => {
     class                => "Alignment::Tophat2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "-p 8",
     source_ref           => "cutadapt",
@@ -336,7 +368,7 @@ my $config = {
   },
   tophat2_sortbam => {
     class         => "Samtools::Sort",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/tophat2_sortname",
     option        => "",
     source_ref    => "tophat2",
@@ -351,7 +383,7 @@ my $config = {
   },
   tophat2_htseqcount => {
     class      => "Count::HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/tophat2_htseqcount",
     option     => "",
     source_ref => "tophat2_sortbam",
@@ -367,7 +399,7 @@ my $config = {
   },
   tophat2_genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/tophat2_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "tophat2_htseqcount",
@@ -383,7 +415,7 @@ my $config = {
   },
   tophat2_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/tophat2_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -399,7 +431,7 @@ my $config = {
   },
   sequencetask_individual => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => { one => [ "cutadapt", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
@@ -413,7 +445,7 @@ my $config = {
   },
   sequencetask_summary => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => { all => [ "star_genetable", "star_deseq2", "tophat2_genetable", "tophat2_deseq2" ], },
@@ -427,8 +459,8 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "fastqlen" );
+#performTask( $config, "fastqlen" );
 
 1;
