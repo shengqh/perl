@@ -172,7 +172,7 @@ my $rna_config = {
   },
   star_index => {
     class          => "Alignment::STARIndex",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/rna_star_index",
     option         => "--sjdbOverhang 100",
     source_ref     => [ "star", "tab\$" ],
@@ -186,13 +186,29 @@ my $rna_config = {
       "mem"      => "30gb"
     },
   },
+  star_2nd_pass => {
+    class              => "Alignment::STAR",
+    perform            => 1,
+    target_dir         => "${target_dir}/rna_star_2nd_pass",
+    option             => "",
+    source_ref         => "files",
+    genome_dir_ref     => "star_index",
+    sort_by_coordinate => 1,
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=24",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
   rsmc => {
     class            => "CQS::RSMC",
     perform          => 0,
     target_dir       => "${target_dir}/rna_rsmc",
     option           => "-c 24",                    #thread mode
     source_type      => "BAM",                      #source_type can be BAM/Mpileup
-    source_ref       => "star",
+    source_ref       => "star_2nd_pass",
     groups_ref       => "groups",
     fasta_file       => $bwa_fasta,
     annovar_buildver => "hg19",
