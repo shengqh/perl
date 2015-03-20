@@ -188,7 +188,7 @@ my $rna_config = {
   },
   star_2nd_pass => {
     class              => "Alignment::STAR",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/rna_star_2nd_pass",
     option             => "",
     source_ref         => "files",
@@ -204,7 +204,7 @@ my $rna_config = {
   },
   rsmc => {
     class            => "CQS::RSMC",
-    perform          => 0,
+    perform          => 1,
     target_dir       => "${target_dir}/rna_rsmc",
     option           => "-c 24",                    #thread mode
     source_type      => "BAM",                      #source_type can be BAM/Mpileup
