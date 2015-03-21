@@ -37,9 +37,24 @@ my $hg19Config = performSmallRNA_hg19($def);
 
 my $config = {
   general    => { "task_name" => $def->{task_name}, },
+  t2c => {
+    class                  => "CQS::ParclipT2CFinder",
+    perform                => 1,
+    target_dir             => $def->{target_dir} . "/t2c_finder",
+    option                 => "-q 0.05 -e 0.013",
+    source_config_ref      => [ $hg19Config, "bowtie1_genome_1mm_NTA_smallRNA_count", ".mapped.xml\$" ],
+    cqs_tools              => $def->{cqstools},
+    sh_direct              => 1,
+    pbs                    => {
+      "email"    => $def->{email},
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   utr3_count => {
     class                  => "CQS::SmallRNACount",
-    perform                => 1,
+    perform                => 0,
     target_dir             => $def->{target_dir} . "/count_3utr",
     option                 => "-m 0",
     source_config_ref      => [ $hg19Config, "bowtie1_genome_1mm_NTA", ".bam\$" ],
@@ -58,7 +73,7 @@ my $config = {
   },
   binding_count => {
     class                  => "CQS::SmallRNACount",
-    perform                => 1,
+    perform                => 0,
     target_dir             => $def->{target_dir} . "/count_binding",
     option                 => "-m 0",
     source_config_ref      => [ $hg19Config, "bowtie1_genome_1mm_NTA", ".bam\$" ],
