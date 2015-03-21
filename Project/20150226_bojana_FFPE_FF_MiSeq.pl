@@ -10,6 +10,7 @@ use CQS::ConfigUtils;
 my $task = "FFPE_FF_MiSeq";
 
 my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq";
+#my $target_dir = "e:/temp";
 
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
 my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
