@@ -10,6 +10,7 @@ use CQS::ConfigUtils;
 my $task = "FFPE_FF_MiSeq";
 
 my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq";
+
 #my $target_dir = "e:/temp";
 
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
@@ -277,21 +278,20 @@ my $config = {
     "MiSeq_FFPE_ALL_NEW" => [ "IG-049", "IG-049-2nd", "IG-050", "IG-051",     "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
   },
   pairs => {
-#    "MiSeq_FFPE_VS_FF_All" => { groups => [ "MiSeq_FFPE_All", "MiSeq_FF_All" ], },
-#
-#    "MiSeq_FFPE_VS_FF_Pilot" => {
-#      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
-#      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
-#    },
-#    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
-#      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
-#      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
-#    },
-#    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
-#      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
-#      paired => [ "P06",                  "P07", "P14", "P13" ]
-#    },
+    "MiSeq_FFPE_VS_FF_All"     => { groups => [ "MiSeq_FFPE_All",     "MiSeq_FF_All" ], },
     "MiSeq_FFPE_VS_FF_ALL_NEW" => { groups => [ "MiSeq_FFPE_ALL_NEW", "MiSeq_FF_ALL_NEW" ], },
+    "MiSeq_FFPE_VS_FF_Pilot"   => {
+      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
+      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+    },
+    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
+      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
+      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
+    },
+    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
+      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
+      paired => [ "P06",                  "P07", "P14", "P13" ]
+    },
   },
   trimmer => {
     class      => "CQS::FastqTrimmer",
@@ -546,6 +546,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "star_deseq2");
+performTask( $config, "star_deseq2" );
 
 1;
