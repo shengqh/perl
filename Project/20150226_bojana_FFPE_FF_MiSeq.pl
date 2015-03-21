@@ -418,7 +418,7 @@ my $config = {
   },
   star_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/star_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -544,6 +544,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "star_deseq2");
 
 1;
