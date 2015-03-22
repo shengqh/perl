@@ -436,10 +436,10 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  refine => {
+  star_2nd_pass_refine => {
     class        => "GATK::RNASeqRefine",
     perform      => 1,
-    target_dir   => "${target_dir}/preparation_dna_bwa_refine",
+    target_dir   => "${target_dir}/star_2nd_pass_refine",
     option       => "-Xmx40g",
     fasta_file   => $fasta_file_16569_M,
     source_ref   => "star_2nd_pass",
@@ -567,7 +567,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "refine" );
+performTask( $config, "star_2nd_pass_refine" );
 
 1;
 
