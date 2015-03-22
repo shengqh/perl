@@ -19,6 +19,9 @@ my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/gtfi
 my $fasta_file_16569_M   = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
 my $bowtie2_index        = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
 my $cqstools             = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $dbsnp                = "data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
+my $gatk_jar             = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -433,7 +436,25 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-
+  refine => {
+    class        => "GATK::RNASeqRefine",
+    perform      => 1,
+    target_dir   => "${target_dir}/preparation_dna_bwa_refine",
+    option       => "-Xmx40g",
+    fasta_file   => $fasta_file_16569_M,
+    source_ref   => "star_2nd_pass",
+    thread_count => 8,
+    vcf_files    => [$dbsnp],
+    gatk_jar     => $gatk_jar,
+    picard_jar   => $picard_jar,
+    sh_direct    => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   tophat2 => {
     class                => "Alignment::Tophat2",
     perform              => 0,
@@ -546,6 +567,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "star_deseq2" );
+performTask( $config, "refine" );
 
 1;
+
