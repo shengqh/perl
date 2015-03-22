@@ -542,9 +542,9 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "trimmer", "fastqlen", "fastqc", "star", "star_htseqcount" ],
+      step_1 => [ "trimmer", "fastqlen", "fastqc", "star" ],
       step_2 => ["star_index"],
-      step_3 => [ "star_2nd_pass",  "star_2nd_pass_refine" ],
+      step_3 => [ "star_2nd_pass",  "star_htseqcount", "star_2nd_pass_refine" ],
       step_4 => [ "star_genetable", "star_deseq2", ],
     },
     sh_direct => 1,
