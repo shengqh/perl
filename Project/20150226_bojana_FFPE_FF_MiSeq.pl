@@ -22,6 +22,7 @@ my $cqstools             = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $dbsnp                = "data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
 my $gatk_jar             = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -347,7 +348,7 @@ my $config = {
     target_dir => "${target_dir}/star",
     option     => "",
     source_ref => "trimmer",
-    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
+    genome_dir => $star_index,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
