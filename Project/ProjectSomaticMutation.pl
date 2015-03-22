@@ -28,12 +28,12 @@ my $snp_file_16569_MT    = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v
 my $gtf_file_16569_MT    = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.gtf";
 
 ##hg19.16569.M###
-my $fasta_file_16569_M    = "/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa";
-my $bowtie2_index_16569_M = "/scratch/cqs/shengq1/references/hg19_16569_M/bowtie2_index_2.2.4/hg19_16569_M";
-my $cosmic_file_16569_M   = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_M.vcf";
-my $snp_file_16569_M      = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
-my $gtf_file_16569_M      = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
-my $star_index_16569_M    = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb50";
+my $fasta_file_16569_M  = "/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa";
+my $bwa_index_16569_M   = "/scratch/cqs/shengq1/references/hg19_16569_M/bwa_index_0.7.12/hg19_16569_M.fa";
+my $cosmic_file_16569_M = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_M.vcf";
+my $snp_file_16569_M    = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
+my $gtf_file_16569_M    = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
+my $star_index_16569_M  = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb50";
 
 my $tcga = {
   dna => {
@@ -219,9 +219,9 @@ my $tcga = {
 };
 
 my $preparation = {
-  general     => { task_name => "preparation" },
-  dna         => $tcga->{dna},
-  rna         => $tcga->{rna},
+  general       => { task_name => "preparation" },
+  dna           => $tcga->{dna},
+  rna           => $tcga->{rna},
   bam2fastq_dna => {
     class               => "CQS::Bam2Fastq",
     perform             => 1,
@@ -245,7 +245,7 @@ my $preparation = {
     perform    => 1,
     target_dir => "${target_dir}/preparation_dna_bwa",
     option     => "-T 15 -t 8",
-    fasta_file => $fasta_file_16569_MT,
+    bwa_index  => $bwa_index_16569_M,
     source_ref => "bam2fastq_dna",
     picard_jar => $picard_jar,
     sh_direct  => 0,
@@ -261,10 +261,10 @@ my $preparation = {
     perform      => 1,
     target_dir   => "${target_dir}/preparation_dna_bwa_refine",
     option       => "-Xmx40g",
-    fasta_file   => $fasta_file_16569_MT,
+    fasta_file   => $fasta_file_16569_M,
     source_ref   => "dna_bwa",
     thread_count => 8,
-    vcf_files    => [$snp_file_16569_MT],
+    vcf_files    => [$snp_file_16569_M],
     gatk_jar     => $gatk_jar,
     picard_jar   => $picard_jar,
     sh_direct    => 0,
