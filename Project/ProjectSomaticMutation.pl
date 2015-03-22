@@ -5,37 +5,35 @@ use warnings;
 use CQS::FileUtils;
 use CQS::ClassFactory;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_comparison");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/tcga");
 
 my $email         = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools      = "/home/shengq1/local/bin/samtools/samtools";
 my $rnaediting_db = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
 my $rsmc          = "/home/shengq1/rsmc/rsmc.exe";
-
-##hg19.16569.MT###
-my $fasta_file_16569_MT    = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_index_0.7.8/hg19_16569_MT.fa";
-my $bowtie2_index_16569_MT = "/data/cqs/shengq1/reference/hg19_16569_MT/bowtie2_index_2.1.0/hg19_16569_MT";
-my $cosmic_file_16569_MT   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_MT.vcf";
-my $snp_file_16569_MT      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_MT.vcf";
-
-##hg19.16569.M###
-my $fasta_file_16569_M    = "/data/cqs/shengq1/reference/hg19_16569_M/hg19_16569_M.fa";
-my $bowtie2_index_16569_M = "/data/cqs/shengq1/reference/hg19_16569_M/bowtie2_index_2.1.0/hg19_16569_M";
-my $cosmic_file_16569_M   = "/data/cqs/shengq1/reference/cosmic/cosmic_v69_hg19_16569_M.vcf";
-my $snp_file_16569_M      = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
-
-my $transcript_gtf       = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.MT.gtf";
-my $transcript_gtf_index = "/scratch/cqs/shengq1/gtfindex/Homo_sapiens.GRCh37.75.MT";
-my $hg19_map             = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
-
+my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
+my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
+my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $hg19_map      = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
+my $affy_file     = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
 my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
-my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
-my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
-my $affy_file     = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
-my $picard        = "/home/shengq1/local/bin/picard/";
+##hg19.16569.MT###
+my $fasta_file_16569_MT  = "/data/cqs/shengq1/reference/hg19_16569_MT/hg19_16569_MT.fa";
+my $cosmic_file_16569_MT = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
+my $snp_file_16569_MT    = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_MT.vcf";
+my $gtf_file_16569_MT    = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.gtf";
+
+##hg19.16569.M###
+my $fasta_file_16569_M    = "/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa";
+my $bowtie2_index_16569_M = "/scratch/cqs/shengq1/references/hg19_16569_M/bowtie2_index_2.2.4/hg19_16569_M";
+my $cosmic_file_16569_M   = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_M.vcf";
+my $snp_file_16569_M      = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
+my $gtf_file_16569_M      = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
+my $star_index_16569_M    = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb50";
 
 my $tcga = {
   dna => {
@@ -258,15 +256,15 @@ my $preparation = {
     },
   },
   dna_bwa => {
-    class                      => "Alignment::BWA",
-    perform                    => 1,
-    target_dir                 => "${target_dir}/preparation_dna_bwa",
-    option                     => "-T 15 -t 8",
-    fasta_file                 => $fasta_file_16569_MT,
-    source_ref                 => "bam2fastq_dna",
-    addOrReplaceReadGroups_jar => "/home/shengq1/local/bin/picard/AddOrReplaceReadGroups.jar",
-    sh_direct                  => 0,
-    pbs                        => {
+    class      => "Alignment::BWA",
+    perform    => 1,
+    target_dir => "${target_dir}/preparation_dna_bwa",
+    option     => "-T 15 -t 8",
+    fasta_file => $fasta_file_16569_MT,
+    source_ref => "bam2fastq_dna",
+    picard_jar => $picard_jar,
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -274,25 +272,25 @@ my $preparation = {
     },
   },
   dna_bwa_refine => {
-    class              => "GATK::Refine",
-    perform            => 1,
-    target_dir         => "${target_dir}/preparation_dna_bwa_refine",
-    option             => "-Xmx40g",
-    fasta_file         => $fasta_file_16569_MT,
-    source_ref         => "dna_bwa",
-    thread_count       => 8,
-    vcf_files          => [$snp_file_16569_MT],
-    gatk_jar           => "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar",
-    markDuplicates_jar => "/home/shengq1/local/bin/picard/MarkDuplicates.jar",
-    sh_direct          => 0,
-    pbs                => {
+    class        => "GATK::Refine",
+    perform      => 1,
+    target_dir   => "${target_dir}/preparation_dna_bwa_refine",
+    option       => "-Xmx40g",
+    fasta_file   => $fasta_file_16569_MT,
+    source_ref   => "dna_bwa",
+    thread_count => 8,
+    vcf_files    => [$snp_file_16569_MT],
+    gatk_jar     => $gatk_jar,
+    picard_jar   => $picard_jar,
+    sh_direct    => 0,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
   },
-  bam2fastq_rna => {
+  rna_bam2fastq => {
     class               => "Bam2Fastq",
     perform             => 1,
     target_dir          => "${target_dir}/preparation_rna_bam2fastq",
@@ -310,88 +308,76 @@ my $preparation = {
       "mem"      => "40gb"
     },
   },
-  tophat2_rna => {
-    class                => "Alignment::Tophat2",
-    perform              => 1,
-    target_dir           => "${target_dir}/preparation_rna_tophat2",
-    option               => "--segment-length 25 -r 0 -p 8",
-    source_ref           => "bam2fastq_rna",
-    bowtie2_index        => $bowtie2_index_16569_MT,
-    transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => $transcript_gtf_index,
-    rename_bam           => 1,
-    sh_direct            => 0,
-    pbs                  => {
+  rna_star => {
+    class                     => "Alignment::STAR",
+    perform                   => 1,
+    target_dir                => "${target_dir}/preparation_rna_star",
+    option                    => "",
+    source_ref                => "rna_bam2fastq",
+    genome_dir                => $star_index_16569_M,
+    output_sort_by_coordinate => 1,
+    sh_direct                 => 1,
+    pbs                       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "30gb"
     },
   },
-  tophat2_rna_removeduplicates => {
-    class              => "Picard::MarkDuplicates",
-    perform            => 1,
-    target_dir         => "${target_dir}/preparation_rna_tophat2_redup",
-    option             => "-Xmx20g",
-    source_ref         => "tophat2_rna",
-    markDuplicates_jar => $picard . "MarkDuplicates.jar",
-    sh_direct          => 0,
-    pbs                => {
+  rna_star_index => {
+    class          => "Alignment::STARIndex",
+    perform        => 1,
+    target_dir     => "${target_dir}/preparation_rna_star_index",
+    option         => "--sjdbOverhang 50",
+    source_ref     => [ "rna_star", "tab\$" ],
+    fasta_file     => $fasta_file_16569_M,
+    transcript_gtf => $gtf_file_16569_M,
+    sh_direct      => 1,
+    pbs            => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
-      "mem"      => "20gb"
+      "mem"      => "30gb"
     },
   },
-  sortbam_tophat2_rna => {
-    class         => "Samtools::Sort",
-    perform       => 1,
-    target_dir    => "${target_dir}/preparation_rna_tophat2_sortname",
-    option        => "",
-    source_ref    => "tophat2_rna",
-    sort_by_query => 1,
-    sh_direct     => 0,
-    pbs           => {
+  rna_star_2nd_pass => {
+    class                     => "Alignment::STAR",
+    perform                   => 1,
+    target_dir                => "${target_dir}/preparation_rna_star_2nd_pass",
+    option                    => "",
+    source_ref                => "rna_bam2fastq",
+    genome_dir_ref            => "rna_star_index",
+    output_sort_by_coordinate => 1,
+    sh_direct                 => 1,
+    pbs                       => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
-      "mem"      => "20gb"
+      "mem"      => "30gb"
     },
   },
-  htseqcount_rna => {
-    class      => "Count::HTSeqCount",
+  star_2nd_pass_refine => {
+    class      => "GATK::RNASeqRefine",
     perform    => 1,
-    target_dir => "${target_dir}/preparation_rna_htseqcount",
-    option     => "",
-    source_ref => "sortbam_tophat2_rna",
-    gff_file   => $transcript_gtf,
+    target_dir => "${target_dir}/preparation_star_2nd_pass_refine",
+    option     => "-Xmx40g",
+    fasta_file => $fasta_file_16569_M,
+    source_ref => "rna_star_2nd_pass",
+    vcf_files  => [$snp_file_16569_M],
+    gatk_jar   => $gatk_jar,
+    picard_jar => $picard_jar,
+    sorted     => 1,
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
-    },
-  },
-  genetable_rna => {
-    class         => "CQS::CQSDatatable",
-    perform       => 1,
-    target_dir    => "${target_dir}/preparation_rna_genetable",
-    option        => "-p ENS --noheader -o TCGA_rna_gene.count",
-    source_ref    => "htseqcount_rna",
-    name_map_file => $hg19_map,
-    cqs_tools     => $cqstools,
-    sh_direct     => 1,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "10",
-      "mem"      => "10gb"
     },
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/preparation_sequencetask",
     option     => "",
     source     => {
@@ -416,39 +402,39 @@ my $preparation = {
 performConfig($preparation);
 
 my $tcga_dna = {
-  general     => { task_name => "tcga_dna" },
-  files       => $tcga->{dna},
-  groups      => $tcga->{dna_groups},
-  fasta_file  => $fasta_file_16569_MT,
-  cosmic_file => $cosmic_file_16569_MT,
-  dbsnp_file  => $snp_file_16569_MT,
+  general => { task_name => "tcga_dna" },
+  files_config_ref => [ $tcga, "dna" ],
+  groups           => $tcga->{dna_groups},
+  fasta_file       => $fasta_file_16569_MT,
+  cosmic_file      => $cosmic_file_16569_MT,
+  dbsnp_file       => $snp_file_16569_MT,
 };
 
 my $tcga_rna = {
-  general     => { task_name => "tcga_rna" },
-  files       => $tcga->{rna},
-  groups      => $tcga->{rna_groups},
-  fasta_file  => $fasta_file_16569_M,
-  cosmic_file => $cosmic_file_16569_M,
-  dbsnp_file  => $snp_file_16569_M,
+  general => { task_name => "tcga_rna" },
+  files_config_ref => [ $tcga, "rna" ],
+  groups           => $tcga->{rna_groups},
+  fasta_file       => $fasta_file_16569_M,
+  cosmic_file      => $cosmic_file_16569_M,
+  dbsnp_file       => $snp_file_16569_M,
 };
 
 my $realign_dna = {
-  general     => { task_name => "realign_dna" },
-  files       => $tcga->{dna},
-  fasta_file  => $fasta_file_16569_MT,
-  cosmic_file => $cosmic_file_16569_MT,
-  dbsnp_file  => $snp_file_16569_MT,
-  groups      => $tcga->{dna_groups},
+  general => { task_name => "realign_dna" },
+  files_config_ref => [ $preparation, "dna_bwa_refine" ],
+  fasta_file       => $fasta_file_16569_M,
+  cosmic_file      => $cosmic_file_16569_M,
+  dbsnp_file       => $snp_file_16569_M,
+  groups           => $tcga->{dna_groups},
 };
 
 my $realign_rna = {
-  general     => { task_name => "realign_rna" },
-  files       => $tcga->{rna},
-  fasta_file  => $fasta_file_16569_MT,
-  cosmic_file => $cosmic_file_16569_MT,
-  dbsnp_file  => $snp_file_16569_MT,
-  groups      => $tcga->{rna_groups},
+  general => { task_name => "realign_rna" },
+  files_config_ref => [ $preparation, "star_2nd_pass_refine" ],
+  fasta_file       => $fasta_file_16569_M,
+  cosmic_file      => $cosmic_file_16569_M,
+  dbsnp_file       => $snp_file_16569_M,
+  groups           => $tcga->{rna_groups},
 };
 
 my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
@@ -458,20 +444,20 @@ for my $cfg (@cfgs) {
   my $def       = {
     general => { task_name => $task_name },
     muTect  => {
-      class        => "GATK::MuTect",
-      perform      => 1,
-      target_dir   => "${target_dir}/${task_name}_muTect",
-      option       => "--min_qscore 20 --filter_reads_with_N_cigar",
-      java_option  => "-Xmx40g",
-      source_ref   => $cfg->{files},
-      groups_ref   => $cfg->{groups},
-      fasta_file   => $cfg->{fasta_file},
-      cosmic_file  => $cfg->{cosmic_file},
-      dbsnp_file   => $cfg->{dbsnp_file},
-      bychromosome => 0,
-      sh_direct    => 1,
-      muTect_jar   => $mutect,
-      pbs          => {
+      class             => "GATK::MuTect",
+      perform           => 1,
+      target_dir        => "${target_dir}/${task_name}_muTect",
+      option            => "--min_qscore 20 --filter_reads_with_N_cigar",
+      java_option       => "-Xmx40g",
+      source_config_ref => $cfg->{files_config_ref},
+      groups_ref        => $cfg->{groups},
+      fasta_file        => $cfg->{fasta_file},
+      cosmic_file       => $cfg->{cosmic_file},
+      dbsnp_file        => $cfg->{dbsnp_file},
+      bychromosome      => 0,
+      sh_direct         => 1,
+      muTect_jar        => $mutect,
+      pbs               => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "240",
@@ -480,7 +466,7 @@ for my $cfg (@cfgs) {
     },
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -537,10 +523,10 @@ for my $cfg (@cfgs) {
       },
     },
     rsmc => {
-      class            => "RSMC",
-      perform          => 0,
+      class            => "CQS::RSMC",
+      perform          => 1,
       target_dir       => "${target_dir}/${task_name}_rsmc",
-      option           => "-c 8",                              #thread mode
+      option           => "",                                  #thread mode
       source_type      => "BAM",                               #source_type can be BAM/Mpileup
       source_ref       => $cfg->{files},
       groups_ref       => $cfg->{groups},
@@ -561,7 +547,7 @@ for my $cfg (@cfgs) {
       perform    => 1,
       target_dir => "${target_dir}/${task_name}_sequencetask",
       option     => "",
-      source     => { individual => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "rsmc" ] },
+      source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "rsmc" ] },
       sh_direct  => 1,
       pbs        => {
         "email"    => $email,
@@ -572,7 +558,7 @@ for my $cfg (@cfgs) {
     },
   };
 
-#  performConfig($def);
+  #performConfig($def);
 }
 
 1;
