@@ -370,7 +370,7 @@ my $preparation = {
       step2 => ["rna_star_index"],
       step3 => [ "rna_star_2nd_pass", "rna_star_2nd_pass_refine" ],
     },
-    sh_direct => 0,
+    sh_direct => 1,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
