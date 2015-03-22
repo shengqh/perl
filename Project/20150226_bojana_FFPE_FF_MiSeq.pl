@@ -373,15 +373,15 @@ my $config = {
     },
   },
   star_2nd_pass => {
-    class           => "Alignment::STAR",
-    perform         => 0,
-    target_dir      => "${target_dir}/star_2nd_pass",
-    option          => "",
-    source_ref      => "trimmer",
-    genome_dir_ref  => "star_index",
-    output_unsorted => 1,
-    sh_direct       => 1,
-    pbs             => {
+    class                     => "Alignment::STAR",
+    perform                   => 1,
+    target_dir                => "${target_dir}/star_2nd_pass",
+    option                    => "",
+    source_ref                => "trimmer",
+    genome_dir_ref            => "star_index",
+    output_unsorted           => 1,
+    sh_direct                 => 1,
+    pbs                       => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
@@ -442,8 +442,7 @@ my $config = {
     target_dir   => "${target_dir}/star_2nd_pass_refine",
     option       => "-Xmx40g",
     fasta_file   => $fasta_file_16569_M,
-    source_ref   => [ "star_2nd_pass", "_Aligned.out.bam" ],
-    thread_count => 8,
+    source_ref   => "star_2nd_pass",
     vcf_files    => [$dbsnp],
     gatk_jar     => $gatk_jar,
     picard_jar   => $picard_jar,
@@ -567,8 +566,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask( $config, "star_2nd_pass_refine" );
+performConfig($config);
 
 1;
 
