@@ -222,30 +222,15 @@ my $preparation = {
   general     => { task_name => "preparation" },
   dna         => $tcga->{dna},
   rna         => $tcga->{rna},
-  sortbam_dna => {
-    class         => "Sortbam",
-    perform       => 1,
-    target_dir    => "${target_dir}/preparation_dna_sortname",
-    option        => "",
-    source_ref    => "dna",
-    sort_by_query => 1,
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "20gb"
-    },
-  },
   bam2fastq_dna => {
-    class               => "Bam2Fastq",
+    class               => "CQS::Bam2Fastq",
     perform             => 1,
     target_dir          => "${target_dir}/preparation_dna_bam2fastq",
     option              => "",
     source_ref          => "sortbam_dna",
     cqstools            => $cqstools,
     ispaired            => 1,
-    sort_before_convert => 0,
+    sort_before_convert => 1,
     sort_thread         => 12,
     sh_direct           => 1,
     pbs                 => {
@@ -298,7 +283,7 @@ my $preparation = {
     source_ref          => "rna",
     cqstools            => $cqstools,
     ispaired            => 1,
-    sort_before_convert => 0,
+    sort_before_convert => 1,
     sort_thread         => 12,
     sh_direct           => 1,
     pbs                 => {
@@ -399,7 +384,7 @@ my $preparation = {
   }
 };
 
-#performConfig($preparation);
+performConfig($preparation);
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
