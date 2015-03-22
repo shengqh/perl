@@ -373,15 +373,15 @@ my $config = {
     },
   },
   star_2nd_pass => {
-    class                     => "Alignment::STAR",
-    perform                   => 1,
-    target_dir                => "${target_dir}/star_2nd_pass",
-    option                    => "",
-    source_ref                => "trimmer",
-    genome_dir_ref            => "star_index",
-    output_unsorted           => 1,
-    sh_direct                 => 1,
-    pbs                       => {
+    class           => "Alignment::STAR",
+    perform         => 1,
+    target_dir      => "${target_dir}/star_2nd_pass",
+    option          => "",
+    source_ref      => "trimmer",
+    genome_dir_ref  => "star_index",
+    output_unsorted => 1,
+    sh_direct       => 1,
+    pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
@@ -437,18 +437,18 @@ my $config = {
     },
   },
   star_2nd_pass_refine => {
-    class        => "GATK::RNASeqRefine",
-    perform      => 1,
-    target_dir   => "${target_dir}/star_2nd_pass_refine",
-    option       => "-Xmx40g",
-    fasta_file   => $fasta_file_16569_M,
-    source_ref   => "star_2nd_pass",
-    vcf_files    => [$dbsnp],
-    gatk_jar     => $gatk_jar,
-    picard_jar   => $picard_jar,
-    sorted       => 0,
-    sh_direct    => 0,
-    pbs          => {
+    class      => "GATK::RNASeqRefine",
+    perform    => 1,
+    target_dir => "${target_dir}/star_2nd_pass_refine",
+    option     => "-Xmx40g",
+    fasta_file => $fasta_file_16569_M,
+    source_ref => "star_2nd_pass",
+    vcf_files  => [$dbsnp],
+    gatk_jar   => $gatk_jar,
+    picard_jar => $picard_jar,
+    sorted     => 0,
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -536,32 +536,23 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  sequencetask_individual => {
+  sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { one => [ "trimmer", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
-    sh_direct  => 0,
-    pbs        => {
+    source     => {
+      step_1 => [ "trimmer", "fastqlen", "fastqc", "star", "star_htseqcount" ],
+      step_2 => ["star_index"],
+      step_3 => [ "star_2nd_pass",  "star_2nd_pass_refine" ],
+      step_4 => [ "star_genetable", "star_deseq2", ],
+    },
+    sh_direct => 1,
+    pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
-    },
-  },
-  sequencetask_summary => {
-    class      => "CQS::SequenceTask",
-    perform    => 0,
-    target_dir => "${target_dir}/sequencetask",
-    option     => "",
-    source     => { all => [ "star_genetable", "star_deseq2", "tophat2_genetable", "tophat2_deseq2" ], },
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "10gb"
     },
   },
 };
