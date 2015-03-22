@@ -222,7 +222,7 @@ my $preparation = {
   general       => { task_name => "preparation" },
   dna           => $tcga->{dna},
   rna           => $tcga->{rna},
-  bam2fastq_dna => {
+  dna_bam2fastq => {
     class               => "CQS::Bam2Fastq",
     perform             => 1,
     target_dir          => "${target_dir}/preparation_dna_bam2fastq",
@@ -246,7 +246,7 @@ my $preparation = {
     target_dir => "${target_dir}/preparation_dna_bwa",
     option     => "-T 15",
     bwa_index  => $bwa_index_16569_M,
-    source_ref => "bam2fastq_dna",
+    source_ref => "dna_bam2fastq",
     picard_jar => $picard_jar,
     sh_direct  => 0,
     pbs        => {
@@ -366,7 +366,7 @@ my $preparation = {
     target_dir => "${target_dir}/preparation_sequencetask",
     option     => "",
     source     => {
-      step1 => [ "bam2fastq_dna", "bam2fastq_rna", "dna_bwa", "dna_bwa_refine", "rna_star", ],
+      step1 => [ "dna_bam2fastq", "rna_bam2fastq", "dna_bwa", "dna_bwa_refine", "rna_star", ],
       step2 => ["rna_star_index"],
       step3 => [ "rna_star_2nd_pass", "rna_star_2nd_pass_refine" ],
     },
