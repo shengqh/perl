@@ -14,9 +14,13 @@ my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq";
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
 my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/gtfindex/Homo_sapiens.GRCh37.75.M";
-my $fasta_file_16569_M   = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19.fa";
-my $bowtie2_index        = "/data/cqs/guoy1/reference/hg19/bowtie2_index/hg19";
+my $fasta_file_16569_M   = "/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa";
+my $bowtie2_index        = "/scratch/cqs/shengq1/references/hg19_16569_M/bowtie2_index_2.2.4/hg19_16569_M";
 my $cqstools             = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $dbsnp                = "data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
+my $gatk_jar             = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb100";
 
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
@@ -24,8 +28,8 @@ my $cutadapt_option = "-q 10 -O 4 -m 30";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
-  general    => { task_name => $task },
-  files => {
+  general => { task_name => $task },
+  files   => {
     "IG-062" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-10-1_AGTCAA_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-10-1_AGTCAA_L001_R2_001.fastq.gz"
@@ -254,11 +258,11 @@ my $config = {
   },
   star => {
     class      => "Alignment::STAR",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/star",
     option     => "",
     source_ref => "cutadapt",
-    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j",
+    genome_dir => $star_index,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -271,7 +275,7 @@ my $config = {
     class          => "Alignment::STARIndex",
     perform        => 1,
     target_dir     => "${target_dir}/star_index",
-    option         => "--sjdbOverhang 100",
+    option         => "--sjdbOverhang 75",
     source_ref     => [ "star", "tab\$" ],
     fasta_file     => $fasta_file_16569_M,
     transcript_gtf => $transcript_gtf,
@@ -284,15 +288,15 @@ my $config = {
     },
   },
   star_2nd_pass => {
-    class              => "Alignment::STAR",
-    perform            => 1,
-    target_dir         => "${target_dir}/star_2nd_pass",
-    option             => "",
-    source_ref         => "cutadapt",
-    genome_dir_ref     => "star_index",
-    sort_by_coordinate => 0,
-    sh_direct          => 1,
-    pbs                => {
+    class           => "Alignment::STAR",
+    perform         => 1,
+    target_dir      => "${target_dir}/star_2nd_pass",
+    option          => "",
+    source_ref      => "cutadapt",
+    genome_dir_ref  => "star_index",
+    output_unsorted => 1,
+    sh_direct       => 1,
+    pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
@@ -304,7 +308,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/star_htseqcount",
     option     => "",
-    source_ref => "star_2nd_pass",
+    source_ref => [ "star_2nd_pass", "_Aligned.out.bam" ],
     gff_file   => $transcript_gtf,
     ispairend  => 1,
     sh_direct  => 1,
@@ -345,6 +349,25 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
       "mem"      => "10gb"
+    },
+  },
+  star_2nd_pass_refine => {
+    class      => "GATK::RNASeqRefine",
+    perform    => 1,
+    target_dir => "${target_dir}/star_2nd_pass_refine",
+    option     => "-Xmx40g",
+    fasta_file => $fasta_file_16569_M,
+    source_ref => "star_2nd_pass",
+    vcf_files  => [$dbsnp],
+    gatk_jar   => $gatk_jar,
+    picard_jar => $picard_jar,
+    sorted     => 0,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
 
@@ -429,37 +452,29 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  sequencetask_individual => {
+  sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { one => [ "cutadapt", "star", "star_htseqcount", "tophat2", "tophat2_sortbam", "tophat2_htseqcount" ], },
-    sh_direct  => 0,
-    pbs        => {
+    source     => {
+      step_1 => [ "fastqc", "cutadapt", "fastqlen", "star" ],
+      step_2 => ["star_index"],
+      step_3 => [ "star_2nd_pass",  "star_htseqcount", "star_2nd_pass_refine" ],
+      step_4 => [ "star_genetable", "star_deseq2", ],
+    },
+    sh_direct => 1,
+    pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
   },
-  sequencetask_summary => {
-    class      => "CQS::SequenceTask",
-    perform    => 0,
-    target_dir => "${target_dir}/sequencetask",
-    option     => "",
-    source     => { all => [ "star_genetable", "star_deseq2", "tophat2_genetable", "tophat2_deseq2" ], },
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "10gb"
-    },
-  },
 };
 
-#performConfig($config);
-performTask($config, "star_deseq2");
+performConfig($config);
+
+#performTask( $config, "star_deseq2" );
 
 1;
