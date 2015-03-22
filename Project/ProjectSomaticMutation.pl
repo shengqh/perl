@@ -341,10 +341,10 @@ my $preparation = {
       "mem"      => "30gb"
     },
   },
-  star_2nd_pass_refine => {
+  rna_star_2nd_pass_refine => {
     class      => "GATK::RNASeqRefine",
     perform    => 1,
-    target_dir => "${target_dir}/preparation_star_2nd_pass_refine",
+    target_dir => "${target_dir}/preparation_rna_star_2nd_pass_refine",
     option     => "-Xmx40g",
     fasta_file => $fasta_file_16569_M,
     source_ref => "rna_star_2nd_pass",
@@ -362,17 +362,13 @@ my $preparation = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/preparation_sequencetask",
     option     => "",
     source     => {
-      preparation => [
-
-        #data preparation
-        # "sortbam_dna", "bam2fastq_dna", "bam2fastq_rna",
-        "dna_bwa", "dna_bwa_refine", "tophat2_rna", "tophat2_rna_removeduplicates", "sortbam_tophat2_rna", "htseqcount_rna",
-      ],
-      table => [ "genetable_rna", ],
+      step1 => [ "bam2fastq_dna", "bam2fastq_rna", "dna_bwa", "dna_bwa_refine", "rna_star", ],
+      step2 => ["rna_star_index"],
+      step3 => [ "rna_star_2nd_pass", "rna_star_2nd_pass_refine" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -415,7 +411,7 @@ my $realign_dna = {
 
 my $realign_rna = {
   general => { task_name => "realign_rna" },
-  files_config_ref => [ $preparation, "star_2nd_pass_refine" ],
+  files_config_ref => [ $preparation, "rna_star_2nd_pass_refine" ],
   fasta_file       => $fasta_file_16569_M,
   cosmic_file      => $cosmic_file_16569_M,
   dbsnp_file       => $snp_file_16569_M,
