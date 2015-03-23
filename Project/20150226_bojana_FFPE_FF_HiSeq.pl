@@ -473,9 +473,9 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "star_deseq2" );
+performTask( $config, "star_2nd_pass" );
 
 1;
 
