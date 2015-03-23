@@ -295,10 +295,10 @@ my $config = {
     source_ref      => "cutadapt",
     genome_dir_ref  => "star_index",
     output_unsorted => 1,
-    sh_direct       => 1,
+    sh_direct       => 0,
     pbs             => {
       "email"    => $email,
-      "nodes"    => "1:ppn=24",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "30gb"
     },
