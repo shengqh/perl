@@ -381,8 +381,8 @@ my $preparation = {
 };
 
 #performConfig($preparation);
-performTask($preparation, "rna_star_2nd_pass");
-performTask($preparation, "sequencetask");
+performTask($preparation, "dna_bwa_refine");
+#performTask($preparation, "sequencetask");
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
