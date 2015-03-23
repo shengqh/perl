@@ -333,10 +333,10 @@ my $preparation = {
     source_ref                => "rna_bam2fastq",
     genome_dir_ref            => "rna_star_index",
     output_sort_by_coordinate => 1,
-    sh_direct                 => 1,
+    sh_direct                 => 0,
     pbs                       => {
       "email"    => $email,
-      "nodes"    => "1:ppn=24",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "30gb"
     },
@@ -370,7 +370,7 @@ my $preparation = {
       step2 => ["rna_star_index"],
       step3 => [ "rna_star_2nd_pass", "rna_star_2nd_pass_refine" ],
     },
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -382,6 +382,7 @@ my $preparation = {
 
 #performConfig($preparation);
 performTask($preparation, "rna_star_2nd_pass");
+performTask($preparation, "sequencetask");
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
