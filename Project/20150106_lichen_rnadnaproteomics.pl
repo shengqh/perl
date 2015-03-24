@@ -243,7 +243,7 @@ my $rna_config = {
   },
 };
 
-#performConfig($rna_config);
+performConfig($rna_config);
 
 my $dna_config = {
   general => { task_name => "lichen" },
