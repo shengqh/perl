@@ -267,6 +267,7 @@ my $preparation = {
     vcf_files    => [$snp_file_16569_M],
     gatk_jar     => $gatk_jar,
     picard_jar   => $picard_jar,
+    sorted       => 1,
     sh_direct    => 0,
     pbs          => {
       "email"    => $email,
@@ -381,7 +382,8 @@ my $preparation = {
 };
 
 #performConfig($preparation);
-performTask($preparation, "rna_star_2nd_pass_refine");
+performTask( $preparation, "dna_bwa_refine" );
+
 #performTask($preparation, "sequencetask");
 
 my $tcga_dna = {
