@@ -213,10 +213,10 @@ my $rna_config = {
     gatk_jar   => $gatk_jar,
     picard_jar => $picard_jar,
     sorted     => 0,
-    sh_direct  => 0,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -225,7 +225,7 @@ my $rna_config = {
     class            => "CQS::RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rna_rsmc",
-    option           => "-c 24",                    #thread mode
+    option           => "",                    #thread mode
     source_type      => "BAM",                      #source_type can be BAM/Mpileup
     source_ref       => "star_2nd_pass_refine",
     groups_ref       => "groups",
