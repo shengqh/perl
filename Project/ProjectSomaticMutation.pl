@@ -382,7 +382,7 @@ my $preparation = {
 };
 
 #performConfig($preparation);
-performTask( $preparation, "dna_bwa_refine" );
+#performTask( $preparation, "dna_bwa_refine" );
 
 #performTask($preparation, "sequencetask");
 
