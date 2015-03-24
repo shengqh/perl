@@ -15,7 +15,7 @@ my $bwa_fasta      = "/scratch/cqs/shengq1/references/hg19_16569_M/bwa_index_0.7
 my $star_index     = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j";
 my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
 my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
-my $cosmic         = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
+my $cosmic         = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_M.vcf";
 my $dbsnp          = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
 my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
@@ -202,13 +202,32 @@ my $rna_config = {
       "mem"      => "30gb"
     },
   },
+  star_2nd_pass_refine => {
+    class      => "GATK::RNASeqRefine",
+    perform    => 1,
+    target_dir => "${target_dir}/rna_star_2nd_pass_refine",
+    option     => "-Xmx40g",
+    fasta_file => $bwa_fasta,
+    source_ref => "star_2nd_pass",
+    vcf_files  => [$dbsnp],
+    gatk_jar   => $gatk_jar,
+    picard_jar => $picard_jar,
+    sorted     => 0,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   rsmc => {
     class            => "CQS::RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rna_rsmc",
     option           => "-c 24",                    #thread mode
     source_type      => "BAM",                      #source_type can be BAM/Mpileup
-    source_ref       => "star_2nd_pass",
+    source_ref       => "star_2nd_pass_refine",
     groups_ref       => "groups",
     fasta_file       => $bwa_fasta,
     annovar_buildver => "hg19",
@@ -296,19 +315,18 @@ my $dna_config = {
     },
   },
   bwa_refine => {
-    class        => "GATK::Refine",
-    perform      => 1,
-    target_dir   => "${target_dir}/dna_bwa_refine",
-    option       => "-Xmx40g",
-    gatk_option  => "--fix_misencoded_quality_scores",
-    fasta_file   => $bwa_fasta,
-    source_ref   => "bwa",
-    thread_count => 8,
-    vcf_files    => [$dbsnp],
-    gatk_jar     => $gatk_jar,
-    picard_jar   => $picard_jar,
-    sh_direct    => 1,
-    pbs          => {
+    class       => "GATK::Refine",
+    perform     => 1,
+    target_dir  => "${target_dir}/dna_bwa_refine",
+    option      => "-Xmx40g",
+    gatk_option => "--fix_misencoded_quality_scores",
+    fasta_file  => $bwa_fasta,
+    source_ref  => "bwa",
+    vcf_files   => [$dbsnp],
+    gatk_jar    => $gatk_jar,
+    picard_jar  => $picard_jar,
+    sh_direct   => 1,
+    pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
