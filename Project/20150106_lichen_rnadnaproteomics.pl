@@ -326,6 +326,7 @@ my $dna_config = {
     gatk_jar    => $gatk_jar,
     picard_jar  => $picard_jar,
     sh_direct   => 1,
+    sorted      => 1,
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
