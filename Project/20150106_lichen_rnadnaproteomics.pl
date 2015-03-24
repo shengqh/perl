@@ -155,15 +155,15 @@ my $rna_config = {
     },
   },
   star => {
-    class              => "Alignment::STAR",
-    perform            => 0,
-    target_dir         => "${target_dir}/rna_star",
-    option             => "",
-    source_ref         => "files",
-    genome_dir         => $star_index,
-    sort_by_coordinate => 1,
-    sh_direct          => 1,
-    pbs                => {
+    class                     => "Alignment::STAR",
+    perform                   => 0,
+    target_dir                => "${target_dir}/rna_star",
+    option                    => "",
+    source_ref                => "files",
+    genome_dir                => $star_index,
+    output_sort_by_coordinate => 1,
+    sh_direct                 => 1,
+    pbs                       => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
@@ -187,15 +187,15 @@ my $rna_config = {
     },
   },
   star_2nd_pass => {
-    class              => "Alignment::STAR",
-    perform            => 0,
-    target_dir         => "${target_dir}/rna_star_2nd_pass",
-    option             => "",
-    source_ref         => "files",
-    genome_dir_ref     => "star_index",
-    sort_by_coordinate => 1,
-    sh_direct          => 1,
-    pbs                => {
+    class                     => "Alignment::STAR",
+    perform                   => 0,
+    target_dir                => "${target_dir}/rna_star_2nd_pass",
+    option                    => "",
+    source_ref                => "files",
+    genome_dir_ref            => "star_index",
+    output_sort_by_coordinate => 1,
+    sh_direct                 => 1,
+    pbs                       => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
@@ -225,7 +225,7 @@ my $rna_config = {
     class            => "CQS::RSMC",
     perform          => 1,
     target_dir       => "${target_dir}/rna_rsmc",
-    option           => "",                    #thread mode
+    option           => "",                         #thread mode
     source_type      => "BAM",                      #source_type can be BAM/Mpileup
     source_ref       => "star_2nd_pass_refine",
     groups_ref       => "groups",
