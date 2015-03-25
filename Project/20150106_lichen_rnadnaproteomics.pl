@@ -188,7 +188,7 @@ my $rna_config = {
   },
   star_2nd_pass => {
     class                     => "Alignment::STAR",
-    perform                   => 0,
+    perform                   => 1,
     target_dir                => "${target_dir}/rna_star_2nd_pass",
     option                    => "",
     source_ref                => "files",
@@ -204,7 +204,7 @@ my $rna_config = {
   },
   star_2nd_pass_refine => {
     class      => "GATK::RNASeqRefine",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/rna_star_2nd_pass_refine",
     option     => "-Xmx40g",
     fasta_file => $bwa_fasta,
@@ -223,7 +223,7 @@ my $rna_config = {
   },
   rsmc => {
     class            => "CQS::RSMC",
-    perform          => 1,
+    perform          => 0,
     target_dir       => "${target_dir}/rna_rsmc",
     option           => "",                         #thread mode
     source_type      => "BAM",                      #source_type can be BAM/Mpileup
@@ -300,7 +300,7 @@ my $dna_config = {
   },
   bwa => {
     class      => "Alignment::BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/dna_bwa",
     option     => "",
     bwa_index  => $bwa_fasta,
@@ -316,7 +316,7 @@ my $dna_config = {
   },
   bwa_refine => {
     class       => "GATK::Refine",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/dna_bwa_refine",
     option      => "-Xmx40g",
     gatk_option => "--fix_misencoded_quality_scores",
@@ -336,7 +336,7 @@ my $dna_config = {
   },
   dna_muTect => {
     class       => "GATK::MuTect",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/dna_muTect",
     option      => "",
     source_ref  => "bwa_refine",
@@ -356,7 +356,7 @@ my $dna_config = {
   },
   dna_muTect_annovar => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/dna_muTect",
     option     => $annovar_param,
     source_ref => [ "dna_muTect", "\.vcf\$" ],
@@ -373,7 +373,7 @@ my $dna_config = {
   },
   dna_snpindel => {
     class       => "GATK::SNPIndel",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/dna_SNPindel",
     option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200",
     source_ref  => "bwa_refine",
@@ -390,7 +390,7 @@ my $dna_config = {
   },
   dna_snpindel_annovar => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/dna_SNPindel",
     source_ref => "dna_snpindel",
     option     => $annovar_param,
