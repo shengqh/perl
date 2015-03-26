@@ -244,7 +244,7 @@ my $rna_config = {
   },
 };
 
-performConfig($rna_config);
+#performConfig($rna_config);
 
 my $dna_config = {
   general => { task_name => "lichen" },
@@ -317,7 +317,7 @@ my $dna_config = {
   },
   bwa_refine => {
     class       => "GATK::Refine",
-    perform     => 0,
+    perform     => 1,
     target_dir  => "${target_dir}/dna_bwa_refine",
     option      => "-Xmx40g",
     gatk_option => "--fix_misencoded_quality_scores",
