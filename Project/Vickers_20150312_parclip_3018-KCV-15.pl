@@ -23,6 +23,10 @@ my $def = {
   samtools   => "/scratch/cqs/shengq1/local/bin/samtools",
   cqstools   => "/home/shengq1/cqstools/CQS.Tools.exe",
 
+  #for parclip target
+  fasta_file   => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
+  refgene_file => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
+
   #Data
   files => {
     "3018-KCV-15-15" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-15_ATGTCA_L006_R1_001.fastq.gz"],
@@ -33,19 +37,19 @@ my $def = {
   },
 };
 
-my $hg19Config = performSmallRNA_hg19($def, 0);
+my $hg19Config = performSmallRNA_hg19( $def, 0 );
 
 my $config = {
-  general    => { "task_name" => $def->{task_name}, },
-  t2c => {
-    class                  => "CQS::ParclipT2CFinder",
-    perform                => 1,
-    target_dir             => $def->{target_dir} . "/t2c_finder",
-    option                 => "-p 0.05 -e 0.013",
-    source_config_ref      => [ $hg19Config, "bowtie1_genome_1mm_NTA_smallRNA_count", ".mapped.xml\$" ],
-    cqs_tools              => $def->{cqstools},
-    sh_direct              => 1,
-    pbs                    => {
+  general => { "task_name" => $def->{task_name}, },
+  t2c     => {
+    class             => "CQS::ParclipT2CFinder",
+    perform           => 0,
+    target_dir        => $def->{target_dir} . "/t2c_finder",
+    option            => "-p 0.05 -e 0.013",
+    source_config_ref => [ $hg19Config, "bowtie1_genome_1mm_NTA_smallRNA_count", ".mapped.xml\$" ],
+    cqs_tools         => $def->{cqstools},
+    sh_direct         => 1,
+    pbs               => {
       "email"    => $def->{email},
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -71,6 +75,25 @@ my $config = {
       "mem"      => "20gb"
     },
   },
+  mirna_target => {
+    class          => "CQS::ParclipMirnaTarget",
+    perform        => 1,
+    target_dir     => $def->{target_dir} . "/mirna_target",
+    option         => "-m 0",
+    source_ref     => [ "t2c", ".xml\$" ],
+    utr3_count_xml => [ "utr3_count", ".xml\$" ],
+    fasta_file     => $def->{fasta_file},
+    refgene_file   => $def->{refgene_file},
+    cqs_tools      => $def->{cqstools},
+    sh_direct      => 1,
+    pbs            => {
+      "email"    => $def->{email},
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
+
   binding_count => {
     class                  => "CQS::SmallRNACount",
     perform                => 0,
