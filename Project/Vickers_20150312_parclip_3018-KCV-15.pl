@@ -26,7 +26,7 @@ my $def = {
   #for parclip target
   fasta_file   => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
   refgene_file => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
-  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  genome_2bit      => "/scratch/cqs/shengq1/source/PARpipe/files/GRCh37.p12.genome.2bit",
   mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
 
   #Data
