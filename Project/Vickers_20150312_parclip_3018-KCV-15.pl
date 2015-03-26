@@ -26,6 +26,8 @@ my $def = {
   #for parclip target
   fasta_file   => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
   refgene_file => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
+  genome_2bit      => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
+  mirna_db         => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
 
   #Data
   files => {
@@ -77,7 +79,7 @@ my $config = {
   },
   mirna_target => {
     class        => "CQS::ParclipMirnaTarget",
-    perform      => 1,
+    perform      => 0,
     target_dir   => $def->{target_dir} . "/mirna_3utr_target",
     option       => "",
     source_ref   => [ "t2c", ".xml\$" ],
@@ -87,6 +89,22 @@ my $config = {
     cqs_tools    => $def->{cqstools},
     sh_direct    => 1,
     pbs          => {
+      "email"    => $def->{email},
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
+  PARalyzer => {
+    class      => "ParClip::PARalyzer",
+    perform    => 1,
+    target_dir => $def->{target_dir} . "/paralyzer",
+    option     => "",
+    source_config_ref => [ $hg19Config, "bowtie1_genome_1mm_notidentical", ".bam\$" ],
+    genome2bit => $def->{genome_2bit},
+    mirna_db   => $def->{mirna_db},
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $def->{email},
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
