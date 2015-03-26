@@ -412,4 +412,3 @@ my $dna_config = {
 performConfig($dna_config);
 
 1;
-
