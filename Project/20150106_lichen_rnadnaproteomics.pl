@@ -217,8 +217,8 @@ my $rna_config = {
     sh_direct          => 1,
     pbs                => {
       "email"    => $email,
-      "nodes"    => "1:ppn=24",
-      "walltime" => "72",
+      "nodes"    => "1:ppn=8",
+      "walltime" => "240",
       "mem"      => "40gb"
     },
   },
@@ -244,7 +244,7 @@ my $rna_config = {
   },
 };
 
-#performConfig($rna_config);
+performConfig($rna_config);
 
 my $dna_config = {
   general => { task_name => "lichen" },
@@ -330,8 +330,8 @@ my $dna_config = {
     sorted      => 1,
     pbs         => {
       "email"    => $email,
-      "nodes"    => "1:ppn=24",
-      "walltime" => "72",
+      "nodes"    => "1:ppn=8",
+      "walltime" => "240",
       "mem"      => "40gb"
     },
   },
