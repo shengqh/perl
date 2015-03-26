@@ -39,7 +39,7 @@ my $def = {
   },
 };
 
-my $hg19Config = performSmallRNA_hg19( $def, 0 );
+my $hg19Config = performSmallRNA_hg19( $def, 1 );
 
 my $config = {
   general => { "task_name" => $def->{task_name}, },
@@ -150,4 +150,3 @@ my $config = {
 performConfig($config);
 
 1;
-
