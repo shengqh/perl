@@ -109,7 +109,8 @@ sub getSmallRNADefinition {
     #Data
     files => $userdef->{files},
 
-    #Default software parameter (don' t change it except you really know it ) bowtie1_option_1mm => "-a -m 100 --best --strata -v 1 -p 8",
+    #Default software parameter (don' t change it except you really know it ) 
+    bowtie1_option_1mm => "-a -m 100 --best --strata -v 1 -p 8",
     bowtie1_option_pm    => "-a -m 100 --best --strata -v 0 -p 8",
     smallrnacount_option => $smallrnacount_option,
     min_read_length      => $min_read_length,
