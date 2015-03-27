@@ -34,7 +34,7 @@ my $def_human = {
   }
 };
 
-my $config_human = performSmallRNA_hg19( $def_human, 1 );
+my $config_human = performSmallRNA_hg19( $def_human, 0 );
 
 #print Dumper($config_human);
 
