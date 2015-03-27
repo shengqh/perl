@@ -137,7 +137,7 @@ my $config = {
     target_dir => $def->{target_dir} . "/sequencetask",
     option     => "",
     source     => { step3 => [ "t2c", "utr3_count", "mirna_target", "PARalyzer", "binding_count" ], },
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $def->{email},
       "nodes"    => "1:ppn=1",
