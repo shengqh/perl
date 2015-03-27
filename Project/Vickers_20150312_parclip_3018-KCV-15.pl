@@ -39,13 +39,13 @@ my $def = {
   },
 };
 
-my $hg19Config = performSmallRNA_hg19( $def, 1 );
+my $hg19Config = performSmallRNA_hg19( $def, 0 );
 
 my $config = {
   general => { "task_name" => $def->{task_name}, },
   t2c     => {
     class             => "CQS::ParclipT2CFinder",
-    perform           => 0,
+    perform           => 1,
     target_dir        => $def->{target_dir} . "/t2c_finder",
     option            => "-p 0.05 -e 0.013",
     source_config_ref => [ $hg19Config, "bowtie1_genome_1mm_NTA_smallRNA_count", ".mapped.xml\$" ],
@@ -60,7 +60,7 @@ my $config = {
   },
   utr3_count => {
     class                  => "CQS::SmallRNACount",
-    perform                => 0,
+    perform                => 1,
     target_dir             => $def->{target_dir} . "/count_3utr",
     option                 => "-m 0",
     source_config_ref      => [ $hg19Config, "bowtie1_genome_1mm_NTA", ".bam\$" ],
@@ -79,7 +79,7 @@ my $config = {
   },
   mirna_target => {
     class        => "CQS::ParclipMirnaTarget",
-    perform      => 0,
+    perform      => 1,
     target_dir   => $def->{target_dir} . "/mirna_3utr_target",
     option       => "",
     source_ref   => [ "t2c", ".xml\$" ],
@@ -114,7 +114,7 @@ my $config = {
 
   binding_count => {
     class                  => "CQS::SmallRNACount",
-    perform                => 0,
+    perform                => 1,
     target_dir             => $def->{target_dir} . "/count_binding",
     option                 => "-m 0",
     source_config_ref      => [ $hg19Config, "bowtie1_genome_1mm_NTA", ".bam\$" ],
