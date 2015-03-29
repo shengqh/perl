@@ -21,6 +21,8 @@ my $dbsnp                = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_
 my $gatk_jar             = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb100";
+my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
+my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
@@ -258,7 +260,7 @@ my $config = {
   },
   star => {
     class      => "Alignment::STAR",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/star",
     option     => "",
     source_ref => "cutadapt",
@@ -273,7 +275,7 @@ my $config = {
   },
   star_index => {
     class          => "Alignment::STARIndex",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/star_index",
     option         => "--sjdbOverhang 75",
     source_ref     => [ "star", "tab\$" ],
@@ -289,7 +291,7 @@ my $config = {
   },
   star_2nd_pass => {
     class           => "Alignment::STAR",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/star_2nd_pass",
     option          => "",
     source_ref      => "cutadapt",
@@ -305,7 +307,7 @@ my $config = {
   },
   star_htseqcount => {
     class      => "Count::HTSeqCount",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/star_htseqcount",
     option     => "",
     source_ref => [ "star_2nd_pass", "_Aligned.out.bam" ],
@@ -337,7 +339,7 @@ my $config = {
   },
   star_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/star_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -353,7 +355,7 @@ my $config = {
   },
   star_2nd_pass_refine => {
     class      => "GATK::RNASeqRefine",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/star_2nd_pass_refine",
     option     => "-Xmx40g",
     fasta_file => $fasta_file_16569_M,
@@ -368,6 +370,40 @@ my $config = {
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
+    },
+  },
+  star_2nd_pass_refine_SNPindel => {
+    class       => "GATK::SNPIndel",
+    perform     => 1,
+    target_dir  => "${target_dir}/star_2nd_pass_refine_SNPindel",
+    option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200",
+    source_ref  => "star_2nd_pass_refine",
+    java_option => "",
+    fasta_file  => $fasta_file_16569_M,
+    vcf_files   => [$dbsnp],
+    gatk_jar    => $gatk_jar,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_2nd_pass_refine_SNPindel_annovar => {
+    class      => "Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/star_2nd_pass_refine_SNPindel_annovar",
+    source_ref => "star_2nd_pass_refine_SNPindel",
+    option     => $annovar_param,
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
     },
   },
 
@@ -460,10 +496,11 @@ my $config = {
     source     => {
       step_1 => [ "fastqc", "cutadapt", "fastqlen", "star" ],
       step_2 => ["star_index"],
-      step_3 => [ "star_2nd_pass",  "star_htseqcount", "star_2nd_pass_refine" ],
-      step_4 => [ "star_genetable", "star_deseq2", ],
+      step_3 => [ "star_2nd_pass",                 "star_htseqcount", "star_2nd_pass_refine" ],
+      step_4 => [ "star_genetable",                "star_deseq2", ],
+      step_5 => [ "star_2nd_pass_refine_SNPindel", "star_2nd_pass_refine_SNPindel_annovar" ]
     },
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -473,9 +510,9 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "star_2nd_pass_refine" );
+#performTask( $config, "star_2nd_pass_refine" );
 
 1;
 
