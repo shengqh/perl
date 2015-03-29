@@ -476,7 +476,7 @@ my $config = {
   },
   star_2nd_pass_refine_SNPindel_annovar => {
     class      => "Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/star_2nd_pass_refine_SNPindel_annovar",
     source_ref => "snpindel",
     option     => $annovar_param,
@@ -575,7 +575,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
