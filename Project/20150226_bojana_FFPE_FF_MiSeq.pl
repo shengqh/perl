@@ -25,7 +25,7 @@ my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75";
 my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
-my $email = "quanhu.sheng\@vanderbilt.edu";
+my $email                = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => { task_name => $task },
@@ -581,9 +581,9 @@ my $config = {
     source     => {
       step_1 => [ "trimmer", "fastqlen", "fastqc", "star" ],
       step_2 => ["star_index"],
-      step_3 => [ "star_2nd_pass",  "star_htseqcount", "star_2nd_pass_refine" ],
-      step_4 => [ "star_genetable", "star_deseq2", ],
-      step_5 => ["star_2nd_pass_refine_SNPindel", "star_2nd_pass_refine_SNPindel_annovar"]
+      step_3 => [ "star_2nd_pass",                 "star_htseqcount", "star_2nd_pass_refine" ],
+      step_4 => [ "star_genetable",                "star_deseq2", ],
+      step_5 => [ "star_2nd_pass_refine_SNPindel", "star_2nd_pass_refine_SNPindel_annovar" ]
     },
     sh_direct => 1,
     pbs       => {
