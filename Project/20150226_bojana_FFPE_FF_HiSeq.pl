@@ -120,10 +120,11 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-14-1_GGTAGC_L005_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-14-1_GGTAGC_L005_R2_001.fastq.gz"
     ],
-    "IG-085" => [
-      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-14-2_CCAACA_L005_R1_001.fastq.gz",
-      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-14-2_CCAACA_L005_R2_001.fastq.gz"
-    ],
+
+    #    "IG-085" => [
+    #      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-14-2_CCAACA_L005_R1_001.fastq.gz",
+    #      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-14-2_CCAACA_L005_R2_001.fastq.gz"
+    #    ],
     "IG-086" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-11-1_CCGTCC_L002_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/hiseq/rawdata/2059-JP-11-1_CCGTCC_L002_R2_001.fastq.gz"
@@ -510,9 +511,10 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "star_2nd_pass_refine" );
+performTask( $config, "star_genetable" );
+performTask( $config, "tophat2_genetable" );
 
 1;
 
