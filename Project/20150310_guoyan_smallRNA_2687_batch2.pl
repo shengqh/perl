@@ -189,6 +189,6 @@ my $config_mouse = {
 };
 
 #performConfig($config_mouse);
-performTask($config_mouse, "sequencetask");
+performTask($config_mouse, "bowtie1_genome_1mm_NTA_smallRNA_count");
 
 1;
