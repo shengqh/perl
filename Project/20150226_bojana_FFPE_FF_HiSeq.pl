@@ -513,8 +513,8 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "star_genetable" );
-performTask( $config, "tophat2_genetable" );
+performTask( $config, "star_deseq2" );
+performTask( $config, "tophat2_deseq2" );
 
 1;
 
