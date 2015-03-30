@@ -596,8 +596,8 @@ my $config = {
 };
 
 performConfig($config);
-
-#performTask( $config, "star_2nd_pass_refine" );
+#performTask( $config, "star_genetable" );
+#performTask( $config, "tophat2_genetable" );
 
 1;
 
