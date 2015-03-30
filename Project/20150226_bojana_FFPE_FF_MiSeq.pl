@@ -269,7 +269,7 @@ my $config = {
       "IG-039-2nd", "IG-040", "IG-041", "IG-042", "IG-043", "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-060", "IG-061"
     ],
     "MiSeq_FFPE_All" => [
-      "IG-002", "IG-004", "IG-006", "IG-008",     "IG-010", "IG-012", "IG-014", "IG-015", "IG-017", "IG-018", "IG-020", "IG-022", "IG-024", "IG-025", "IG-026", "IG-027",
+      "IG-002", "IG-004", "IG-006", "IG-008", "IG-010", "IG-012", "IG-012-2nd", "IG-014", "IG-015", "IG-017", "IG-018", "IG-020", "IG-022", "IG-024", "IG-025", "IG-026", "IG-027",
       "IG-028", "IG-029", "IG-049", "IG-049-2nd", "IG-050", "IG-051", "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059"
     ],
 
@@ -424,7 +424,7 @@ my $config = {
   },
   star_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/star_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -559,7 +559,7 @@ my $config = {
   },
   tophat2_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/tophat2_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -575,7 +575,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
@@ -596,6 +596,7 @@ my $config = {
 };
 
 performConfig($config);
+
 #performTask( $config, "star_genetable" );
 #performTask( $config, "tophat2_genetable" );
 
