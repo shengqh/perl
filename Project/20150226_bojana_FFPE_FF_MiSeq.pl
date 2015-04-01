@@ -269,8 +269,9 @@ my $config = {
       "IG-039-2nd", "IG-040", "IG-041", "IG-042", "IG-043", "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-060", "IG-061"
     ],
     "MiSeq_FFPE_All" => [
-      "IG-002", "IG-004", "IG-006",     "IG-008", "IG-010",     "IG-012", "IG-012-2nd", "IG-014", "IG-015", "IG-017", "IG-018", "IG-020", "IG-022", "IG-024", "IG-025", "IG-026", "IG-027",
-      "IG-028", "IG-029", "IG-029-2nd", "IG-049", "IG-049-2nd", "IG-050", "IG-051",     "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059"
+      "IG-002", "IG-004", "IG-006", "IG-008", "IG-010", "IG-012", "IG-012-2nd", "IG-014",     "IG-015", "IG-017",     "IG-018", "IG-020",
+      "IG-022", "IG-024", "IG-025", "IG-026", "IG-027", "IG-028", "IG-029",     "IG-029-2nd", "IG-049", "IG-049-2nd", "IG-050", "IG-051",
+      "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058",     "IG-059"
     ],
 
     "MiSeq_FF_Pilot"       => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-060", "IG-061" ],
@@ -281,21 +282,27 @@ my $config = {
     "MiSeq_FFPE_Pilot_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
     "MiSeq_FF_ALL_NEW"   => [ "IG-033", "IG-034",     "IG-039", "IG-039-2nd", "IG-040", "IG-041", "IG-042", "IG-043", "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-060", "IG-061" ],
     "MiSeq_FFPE_ALL_NEW" => [ "IG-049", "IG-049-2nd", "IG-050", "IG-051",     "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
+    "MiSeq_FF_PAIRNEW"   => [ "IG-040", "IG-041",     "IG-042", "IG-043",     "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-061", "IG-060" ],
+    "MiSeq_FFPE_PAIRNEW" => [ "IG-049", "IG-050",     "IG-051", "IG-052",     "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
   },
   pairs => {
-    "MiSeq_FFPE_VS_FF_All"     => { groups => [ "MiSeq_FFPE_All",     "MiSeq_FF_All" ], },
-    "MiSeq_FFPE_VS_FF_ALL_NEW" => { groups => [ "MiSeq_FFPE_ALL_NEW", "MiSeq_FF_ALL_NEW" ], },
-    "MiSeq_FFPE_VS_FF_Pilot"   => {
-      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
-      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
-    },
-    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
-      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
-      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
-    },
-    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
-      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
-      paired => [ "P06",                  "P07", "P14", "P13" ]
+#    "MiSeq_FFPE_VS_FF_All"     => { groups => [ "MiSeq_FFPE_All",     "MiSeq_FF_All" ], },
+#    "MiSeq_FFPE_VS_FF_ALL_NEW" => { groups => [ "MiSeq_FFPE_ALL_NEW", "MiSeq_FF_ALL_NEW" ], },
+#    "MiSeq_FFPE_VS_FF_Pilot"   => {
+#      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
+#      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+#    },
+#    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
+#      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
+#      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
+#    },
+#    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
+#      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
+#      paired => [ "P06",                  "P07", "P14", "P13" ]
+#    },
+    "MiSeq_FFPE_VS_FF_Paired_NEW" => {
+      groups => [ "MiSeq_FFPE_PAIRNEW", "MiSeq_FF_PAIRNEW" ],
+      paired => [ "P04",                "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P12", "P13", "P14" ]
     },
   },
   trimmer => {
@@ -595,9 +602,9 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "star_genetable" );
+performTask( $config, "star_deseq2" );
 #performTask( $config, "tophat2_genetable" );
 
 1;
