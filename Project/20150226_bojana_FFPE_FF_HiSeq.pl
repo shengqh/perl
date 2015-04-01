@@ -199,19 +199,26 @@ my $config = {
     "HiSeq_FFPE2" => [ "IG-063", "IG-065", "IG-067", "IG-069", "IG-071", "IG-073", "IG-075", "IG-077", "IG-079", "IG-081", "IG-083", "IG-087", "IG-089", "IG-091" ],
     "HiSeq_FF3"   => [ "IG-092", "IG-094", "IG-096", "IG-098", "IG-100", ],
     "HiSeq_FFPE3" => [ "IG-093", "IG-095", "IG-097", "IG-099", "IG-101", ],
+    "HiSeq_FF_NoMismatch"   => [ "IG-064", "IG-066", "IG-068", "IG-070", "IG-072", "IG-074", "IG-076", "IG-078", "IG-080", "IG-086", "IG-088", "IG-090" ],
+    "HiSeq_FFPE_NoMismatch" => [ "IG-065", "IG-067", "IG-069", "IG-071", "IG-073", "IG-075", "IG-077", "IG-079", "IG-081", "IG-087", "IG-089", "IG-091" ],
   },
   pairs => {
-    "HiSeq_FFPE_VS_FF" => {
-      groups => [ "HiSeq_FF", "HiSeq_FFPE" ],
-      paired => [ "P01",      "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20" ]
-    },
-    "HiSeq_FFPE2_VS_FF2" => {
-      groups => [ "HiSeq_FF2", "HiSeq_FFPE2" ],
-      paired => [ "P01",       "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15" ]
-    },
-    "HiSeq_FFPE3_VS_FF3" => {
-      groups => [ "HiSeq_FF3", "HiSeq_FFPE3" ],
-      paired => [ "P16",       "P17", "P18", "P19", "P20" ]
+
+    #    "HiSeq_FFPE_VS_FF" => {
+    #      groups => [ "HiSeq_FF", "HiSeq_FFPE" ],
+    #      paired => [ "P01",      "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20" ]
+    #    },
+    #    "HiSeq_FFPE2_VS_FF2" => {
+    #      groups => [ "HiSeq_FF2", "HiSeq_FFPE2" ],
+    #      paired => [ "P01",       "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15" ]
+    #    },
+    #    "HiSeq_FFPE3_VS_FF3" => {
+    #      groups => [ "HiSeq_FF3", "HiSeq_FFPE3" ],
+    #      paired => [ "P16",       "P17", "P18", "P19", "P20" ]
+    #    },
+    "HiSeq_FFPE2_VS_FF2_NoMismatch" => {
+      groups => [ "HiSeq_FF_NoMismatch", "HiSeq_FFPE_NoMismatch" ],
+      paired => [ "P02",                 "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P13", "P14", "P15" ]
     },
   },
   fastqc => {
