@@ -604,7 +604,7 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "star_deseq2" );
+performTask( $config, "star_2nd_pass_refine_SNPindel" );
 #performTask( $config, "tophat2_genetable" );
 
 1;
