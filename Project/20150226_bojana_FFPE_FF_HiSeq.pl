@@ -216,7 +216,7 @@ my $config = {
     #      groups => [ "HiSeq_FF3", "HiSeq_FFPE3" ],
     #      paired => [ "P16",       "P17", "P18", "P19", "P20" ]
     #    },
-    "HiSeq_FFPE2_VS_FF2_NoMismatch" => {
+    "HiSeq_FFPE_VS_FF_12Pairs_NoMismatch" => {
       groups => [ "HiSeq_FF_NoMismatch", "HiSeq_FFPE_NoMismatch" ],
       paired => [ "P02",                 "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P13", "P14", "P15" ]
     },
