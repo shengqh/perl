@@ -286,20 +286,21 @@ my $config = {
     "MiSeq_FFPE_PAIRNEW" => [ "IG-049", "IG-050",     "IG-051", "IG-052",     "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
   },
   pairs => {
-#    "MiSeq_FFPE_VS_FF_All"     => { groups => [ "MiSeq_FFPE_All",     "MiSeq_FF_All" ], },
-#    "MiSeq_FFPE_VS_FF_ALL_NEW" => { groups => [ "MiSeq_FFPE_ALL_NEW", "MiSeq_FF_ALL_NEW" ], },
-#    "MiSeq_FFPE_VS_FF_Pilot"   => {
-#      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
-#      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
-#    },
-#    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
-#      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
-#      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
-#    },
-#    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
-#      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
-#      paired => [ "P06",                  "P07", "P14", "P13" ]
-#    },
+
+    #    "MiSeq_FFPE_VS_FF_All"     => { groups => [ "MiSeq_FFPE_All",     "MiSeq_FF_All" ], },
+    #    "MiSeq_FFPE_VS_FF_ALL_NEW" => { groups => [ "MiSeq_FFPE_ALL_NEW", "MiSeq_FF_ALL_NEW" ], },
+    #    "MiSeq_FFPE_VS_FF_Pilot"   => {
+    #      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
+    #      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+    #    },
+    #    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
+    #      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
+    #      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
+    #    },
+    #    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
+    #      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
+    #      paired => [ "P06",                  "P07", "P14", "P13" ]
+    #    },
     "MiSeq_FFPE_VS_FF_Paired_NEW" => {
       groups => [ "MiSeq_FFPE_PAIRNEW", "MiSeq_FF_PAIRNEW" ],
       paired => [ "P04",                "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P12", "P13", "P14" ]
@@ -472,7 +473,7 @@ my $config = {
     source_ref  => "star_2nd_pass_refine",
     java_option => "",
     fasta_file  => $fasta_file_16569_M,
-    vcf_files   => [$dbsnp],
+    dbsnp_file  => $dbsnp,
     gatk_jar    => $gatk_jar,
     pbs         => {
       "email"    => $email,
@@ -605,6 +606,7 @@ my $config = {
 #performConfig($config);
 
 performTask( $config, "star_2nd_pass_refine_SNPindel" );
+
 #performTask( $config, "tophat2_genetable" );
 
 1;
