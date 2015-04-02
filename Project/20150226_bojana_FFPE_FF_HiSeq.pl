@@ -346,15 +346,18 @@ my $config = {
     },
   },
   star_deseq2 => {
-    class         => "Comparison::DESeq2",
-    perform       => 0,
-    target_dir    => "${target_dir}/star_deseq2",
-    option        => "",
-    source_ref    => "pairs",
-    groups_ref    => "groups",
-    countfile_ref => "star_genetable",
-    sh_direct     => 1,
-    pbs           => {
+    class                => "Comparison::DESeq2",
+    perform              => 0,
+    target_dir           => "${target_dir}/star_deseq2",
+    option               => "",
+    source_ref           => "pairs",
+    groups_ref           => "groups",
+    countfile_ref        => "star_genetable",
+    sh_direct            => 1,
+    show_DE_gene_cluster => 1,
+    pvalue               => 0.05,
+    fold_change          => 2.0,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
@@ -521,7 +524,7 @@ my $config = {
 #performConfig($config);
 
 performTask( $config, "star_deseq2" );
-performTask( $config, "tophat2_deseq2" );
+
+#performTask( $config, "tophat2_deseq2" );
 
 1;
-
