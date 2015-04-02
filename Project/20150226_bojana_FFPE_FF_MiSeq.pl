@@ -475,6 +475,7 @@ my $config = {
     fasta_file  => $fasta_file_16569_M,
     dbsnp_vcf   => $dbsnp,
     gatk_jar    => $gatk_jar,
+    is_rna      => 1,
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
