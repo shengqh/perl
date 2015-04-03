@@ -72,7 +72,7 @@ my $refgene_file = "/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.ts
 my $hg19config = {
   general           => { "task_name" => "Parclip2797", },
   bowtie1_genome_pm => {
-    class             => "Bowtie1",
+    class             => "Alignment::Bowtie1",
     perform           => 1,
     target_dir        => "${hg19target}/bowtie1_genome_pm",
     option            => $bowtie1_pm,
@@ -159,4 +159,3 @@ my $hg19config = {
 performConfig($hg19config);
 
 1;
-
