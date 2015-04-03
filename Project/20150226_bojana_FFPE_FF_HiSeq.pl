@@ -405,7 +405,7 @@ my $config = {
   },
   star_2nd_pass_refine_SNPindel => {
     class       => "GATK::SNPIndel",
-    perform     => 0,
+    perform     => 1,
     target_dir  => "${target_dir}/star_2nd_pass_refine_SNPindel",
     option      => "",
     source_ref  => "star_2nd_pass_refine",
@@ -423,7 +423,7 @@ my $config = {
   },
   star_2nd_pass_refine_SNPindel_annovar => {
     class      => "Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/star_2nd_pass_refine_SNPindel_annovar",
     source_ref => "star_2nd_pass_refine_SNPindel",
     option     => $annovar_param,
