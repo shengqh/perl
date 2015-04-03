@@ -25,7 +25,7 @@ sub hg19_genome {
     mirbase_count_option  => "-p hsa",
     coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed",
     coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa",
-    bowtie1_index         => "/scratch/cqs/shengq1/references/hg19_16569_M/bowtie_index_1.1.1/hg19_16569_M",
+    bowtie1_index         => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
     bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase20/bowtie_index_1.1.1/mature.dna",
   };
 }
