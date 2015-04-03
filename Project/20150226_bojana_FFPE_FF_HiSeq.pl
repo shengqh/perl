@@ -204,19 +204,20 @@ my $config = {
   },
   pairs => {
 
-    #    "HiSeq_FFPE_VS_FF" => {
-    #      groups => [ "HiSeq_FF", "HiSeq_FFPE" ],
-    #      paired => [ "P01",      "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20" ]
-    #    },
-    #    "HiSeq_FFPE2_VS_FF2" => {
-    #      groups => [ "HiSeq_FF2", "HiSeq_FFPE2" ],
-    #      paired => [ "P01",       "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15" ]
-    #    },
-    #    "HiSeq_FFPE3_VS_FF3" => {
-    #      groups => [ "HiSeq_FF3", "HiSeq_FFPE3" ],
-    #      paired => [ "P16",       "P17", "P18", "P19", "P20" ]
-    #    },
-    "HiSeq_FFPE_VS_FF_12Pairs_NoMismatch" => {
+    "HiSeq_FFPE_VS_FF" => {
+      groups => [ "HiSeq_FF", "HiSeq_FFPE" ],
+      paired => [ "P01",      "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15", "P16", "P17", "P18", "P19", "P20" ]
+    },
+
+    #        "HiSeq_FFPE_VS_FF_14Pairs" => {
+    #          groups => [ "HiSeq_FF2", "HiSeq_FFPE2" ],
+    #          paired => [ "P01",       "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P13", "P14", "P15" ]
+    #        },
+    "HiSeq_FFPE_VS_FF_RNeasy" => {
+      groups => [ "HiSeq_FF3", "HiSeq_FFPE3" ],
+      paired => [ "P16",       "P17", "P18", "P19", "P20" ]
+    },
+    "HiSeq_FFPE_VS_FF_12Pairs" => {
       groups => [ "HiSeq_FF_NoMismatch", "HiSeq_FFPE_NoMismatch" ],
       paired => [ "P02",                 "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P10", "P13", "P14", "P15" ]
     },
@@ -347,7 +348,7 @@ my $config = {
   },
   star_deseq2 => {
     class                => "Comparison::DESeq2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/star_deseq2",
     option               => "",
     source_ref           => "pairs",
@@ -357,6 +358,25 @@ my $config = {
     show_DE_gene_cluster => 1,
     pvalue               => 0.05,
     fold_change          => 2.0,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  star_deseq2_strict_criteria => {
+    class                => "Comparison::DESeq2",
+    perform              => 1,
+    target_dir           => "${target_dir}/star_deseq2_strict_criteria",
+    option               => "",
+    source_ref           => "pairs",
+    groups_ref           => "groups",
+    countfile_ref        => "star_genetable",
+    sh_direct            => 1,
+    show_DE_gene_cluster => 1,
+    pvalue               => 0.01,
+    fold_change          => 4.0,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -385,14 +405,15 @@ my $config = {
   },
   star_2nd_pass_refine_SNPindel => {
     class       => "GATK::SNPIndel",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/star_2nd_pass_refine_SNPindel",
-    option      => "-l INFO -G Standard -stand_call_conf 50.0 -stand_emit_conf 10.0 -dcov 200",
+    option      => "",
     source_ref  => "star_2nd_pass_refine",
     java_option => "",
     fasta_file  => $fasta_file_16569_M,
-    vcf_files   => [$dbsnp],
+    dbsnp_vcf   => $dbsnp,
     gatk_jar    => $gatk_jar,
+    is_rna      => 1,
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -402,7 +423,7 @@ my $config = {
   },
   star_2nd_pass_refine_SNPindel_annovar => {
     class      => "Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/star_2nd_pass_refine_SNPindel_annovar",
     source_ref => "star_2nd_pass_refine_SNPindel",
     option     => $annovar_param,
@@ -423,7 +444,7 @@ my $config = {
     perform              => 0,
     target_dir           => "${target_dir}/tophat2",
     option               => "-p 8",
-    source_ref           => "cutadapt",
+    source_ref           => "trimmer",
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
@@ -505,13 +526,13 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc", "cutadapt", "fastqlen", "star" ],
+      step_1 => [ "trimmer", "fastqlen", "fastqc", "star" ],
       step_2 => ["star_index"],
       step_3 => [ "star_2nd_pass",                 "star_htseqcount", "star_2nd_pass_refine" ],
-      step_4 => [ "star_genetable",                "star_deseq2", ],
+      step_4 => [ "star_genetable",                "star_deseq2",     "star_deseq2_strict_criteria" ],
       step_5 => [ "star_2nd_pass_refine_SNPindel", "star_2nd_pass_refine_SNPindel_annovar" ]
     },
-    sh_direct => 0,
+    sh_direct => 1,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -521,11 +542,12 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "star_deseq2" );
+#performTask( $config, "star_deseq2" );
+#performTask( $config, "star_deseq2_strict_criteria" );
 
-#performTask( $config, "tophat2_deseq2" );
+#performTask( $config, "tophat2_genetable" );
 
 1;
 
