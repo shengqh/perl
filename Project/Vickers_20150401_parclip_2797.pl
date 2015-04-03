@@ -52,10 +52,6 @@ my $mouse_def = {
 
   #Data
   files => {
-    "RPI40" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI40_Ago2INS1Huh7.fastq.gz"],
-    "RPI41" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI41_Ago3INS1Huh7.fastq.gz"],
-    "RPI42" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI42_Ago2INS1HCEAC.fastq.gz"],
-    "RPI43" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI43_Ago3INS1HCEAC.fastq.gz"],
     "RPI47" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
     "RPI48" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
   },
