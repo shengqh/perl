@@ -25,7 +25,7 @@ sub hg19_genome {
     mirbase_count_option  => "-p hsa",
     coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed",
     coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa",
-    bowtie1_index         => "/data/cqs/guoy1/reference/hg19/bowtie_index_hg19_rCRS_1.0.0/hg19_rCRS",
+    bowtie1_index         => "/scratch/cqs/shengq1/references/hg19_16569_M/bowtie_index_1.1.1/hg19_16569_M",
     bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase20/bowtie_index_1.1.1/mature.dna",
   };
 }
@@ -49,7 +49,7 @@ sub mm10_genome {
     mirbase_count_option  => "-p mmu",
     coordinate            => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed",
     coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/mm10_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
-    bowtie1_index         => "/data/cqs/shengq1/reference/mm10/bowtie_index/mm10",
+    bowtie1_index         => "/scratch/cqs/shengq1/references/mm10/bowtie_index_1.1.1/mm10",
     bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
   };
 }
@@ -61,7 +61,7 @@ sub rn5_genome {
     mirbase_count_option  => "-p rno",
     coordinate            => "/scratch/cqs/shengq1/references/smallrna/rn5_miRBase21_ucsc-tRNA_ensembl78.bed",
     coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/rn5_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
-    bowtie1_index         => "/data/cqs/shengq1/reference/rn5/bowtie_index_1.1.0/rn5",
+    bowtie1_index         => "/scratch/cqs/shengq1/references/rn5/bowtie_index_1.1.1/rn5",
     bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
   };
 }
