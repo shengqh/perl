@@ -280,30 +280,30 @@ my $config = {
     "MiSeq_FFPE_Pilot_OLD" => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022" ],
     "MiSeq_FF_Pilot_NEW"   => [ "IG-042", "IG-043", "IG-060", "IG-061" ],
     "MiSeq_FFPE_Pilot_NEW" => [ "IG-051", "IG-052", "IG-059", "IG-058" ],
-    "MiSeq_FF_ALL_NEW"   => [ "IG-033", "IG-034",     "IG-039", "IG-039-2nd", "IG-040", "IG-041", "IG-042", "IG-043", "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-060", "IG-061" ],
-    "MiSeq_FFPE_ALL_NEW" => [ "IG-049", "IG-049-2nd", "IG-050", "IG-051",     "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
-    "MiSeq_FF_PAIRNEW"   => [ "IG-040", "IG-041",     "IG-042", "IG-043",     "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-061", "IG-060" ],
-    "MiSeq_FFPE_PAIRNEW" => [ "IG-049", "IG-050",     "IG-051", "IG-052",     "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
+    "MiSeq_FF_ALL_NEW"      => [ "IG-033", "IG-034",     "IG-039", "IG-039-2nd", "IG-040", "IG-041", "IG-042", "IG-043", "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-060", "IG-061" ],
+    "MiSeq_FFPE_ALL_NEW"    => [ "IG-049", "IG-049-2nd", "IG-050", "IG-051",     "IG-052", "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
+    "MiSeq_FF_Paired_NEW"   => [ "IG-040", "IG-041",     "IG-042", "IG-043",     "IG-044", "IG-045", "IG-046", "IG-047", "IG-048", "IG-061", "IG-060" ],
+    "MiSeq_FFPE_Paired_NEW" => [ "IG-049", "IG-050",     "IG-051", "IG-052",     "IG-053", "IG-054", "IG-055", "IG-056", "IG-057", "IG-058", "IG-059" ],
   },
   pairs => {
 
-    #    "MiSeq_FFPE_VS_FF_All"     => { groups => [ "MiSeq_FFPE_All",     "MiSeq_FF_All" ], },
-    #    "MiSeq_FFPE_VS_FF_ALL_NEW" => { groups => [ "MiSeq_FFPE_ALL_NEW", "MiSeq_FF_ALL_NEW" ], },
-    #    "MiSeq_FFPE_VS_FF_Pilot"   => {
-    #      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
-    #      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
-    #    },
-    #    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
-    #      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
-    #      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
-    #    },
-    #    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
-    #      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
-    #      paired => [ "P06",                  "P07", "P14", "P13" ]
-    #    },
+    "MiSeq_FFPE_VS_FF_All"     => { groups => [ "MiSeq_FFPE_All",     "MiSeq_FF_All" ], },
+    "MiSeq_FFPE_VS_FF_ALL_NEW" => { groups => [ "MiSeq_FFPE_ALL_NEW", "MiSeq_FF_ALL_NEW" ], },
+    "MiSeq_FFPE_VS_FF_Pilot"   => {
+      groups => [ "MiSeq_FFPE_Pilot", "MiSeq_FF_Pilot" ],
+      paired => [ "B30A",             "B32A", "B33A", "B40A", "B42", "P06", "P07", "P14", "P13" ]
+    },
+    "MiSeq_FFPE_VS_FF_Pilot_OLD" => {
+      groups => [ "MiSeq_FFPE_Pilot_OLD", "MiSeq_FF_Pilot_OLD" ],
+      paired => [ "B30A",                 "B32A", "B33A", "B40A", "B42" ]
+    },
+    "MiSeq_FFPE_VS_FF_Pilot_NEW" => {
+      groups => [ "MiSeq_FFPE_Pilot_NEW", "MiSeq_FF_Pilot_NEW" ],
+      paired => [ "P06",                  "P07", "P14", "P13" ]
+    },
     "MiSeq_FFPE_VS_FF_Paired_NEW" => {
-      groups => [ "MiSeq_FFPE_PAIRNEW", "MiSeq_FF_PAIRNEW" ],
-      paired => [ "P04",                "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P12", "P13", "P14" ]
+      groups => [ "MiSeq_FFPE_Paired_NEW", "MiSeq_FF_Paired_NEW" ],
+      paired => [ "P04",                   "P05", "P06", "P07", "P08", "P09", "P10", "P11", "P12", "P13", "P14" ]
     },
   },
   trimmer => {
@@ -416,7 +416,7 @@ my $config = {
   },
   star_genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/star_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "star_htseqcount",
@@ -431,15 +431,37 @@ my $config = {
     },
   },
   star_deseq2 => {
-    class         => "Comparison::DESeq2",
-    perform       => 1,
-    target_dir    => "${target_dir}/star_deseq2",
-    option        => "",
-    source_ref    => "pairs",
-    groups_ref    => "groups",
-    countfile_ref => "star_genetable",
-    sh_direct     => 1,
-    pbs           => {
+    class                => "Comparison::DESeq2",
+    perform              => 1,
+    target_dir           => "${target_dir}/star_deseq2",
+    option               => "",
+    source_ref           => "pairs",
+    groups_ref           => "groups",
+    countfile_ref        => "star_genetable",
+    sh_direct            => 1,
+    show_DE_gene_cluster => 1,
+    pvalue               => 0.05,
+    fold_change          => 2.0,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  star_deseq2_strict_criteria => {
+    class                => "Comparison::DESeq2",
+    perform              => 1,
+    target_dir           => "${target_dir}/star_deseq2_strict_criteria",
+    option               => "",
+    source_ref           => "pairs",
+    groups_ref           => "groups",
+    countfile_ref        => "star_genetable",
+    sh_direct            => 1,
+    show_DE_gene_cluster => 1,
+    pvalue               => 0.01,
+    fold_change          => 4.0,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
@@ -552,7 +574,7 @@ my $config = {
   },
   tophat2_genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/tophat2_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "tophat2_htseqcount",
@@ -568,7 +590,7 @@ my $config = {
   },
   tophat2_deseq2 => {
     class         => "Comparison::DESeq2",
-    perform       => 1,
+    perform       => 0,
     target_dir    => "${target_dir}/tophat2_deseq2",
     option        => "",
     source_ref    => "pairs",
@@ -584,14 +606,14 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
       step_1 => [ "trimmer", "fastqlen", "fastqc", "star" ],
       step_2 => ["star_index"],
       step_3 => [ "star_2nd_pass",                 "star_htseqcount", "star_2nd_pass_refine" ],
-      step_4 => [ "star_genetable",                "star_deseq2", ],
+      step_4 => [ "star_genetable",                "star_deseq2",     "star_deseq2_strict_criteria" ],
       step_5 => [ "star_2nd_pass_refine_SNPindel", "star_2nd_pass_refine_SNPindel_annovar" ]
     },
     sh_direct => 1,
@@ -604,9 +626,10 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "star_2nd_pass_refine_SNPindel" );
+#performTask( $config, "star_deseq2" );
+#performTask( $config, "star_deseq2_strict_criteria" );
 
 #performTask( $config, "tophat2_genetable" );
 
