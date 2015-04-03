@@ -159,3 +159,4 @@ my $hg19config = {
 performConfig($hg19config);
 
 1;
+
