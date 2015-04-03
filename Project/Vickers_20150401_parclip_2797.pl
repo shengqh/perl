@@ -32,7 +32,7 @@ my $rat_def = {
   },
 };
 
-my $rn5config = performSmallRNA_rn5( $rat_def, 1 );
+my $rn5config = performSmallRNA_rn5( $rat_def, 0 );
 
 my $mouse_def = {
 
@@ -57,7 +57,7 @@ my $mouse_def = {
   },
 };
 
-my $mm10config = performSmallRNA_mm10( $mouse_def, 1 );
+my $mm10config = performSmallRNA_mm10( $mouse_def, 0 );
 
 my $hg19genome   = hg19_genome();
 my $samtools     = "/scratch/cqs/shengq1/local/bin/samtools";
