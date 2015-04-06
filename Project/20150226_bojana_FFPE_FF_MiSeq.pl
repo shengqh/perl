@@ -612,9 +612,10 @@ my $config = {
     source     => {
       step_1 => [ "trimmer", "fastqlen", "fastqc", "star" ],
       step_2 => ["star_index"],
-      step_3 => [ "star_2nd_pass",                 "star_htseqcount", "star_2nd_pass_refine" ],
-      step_4 => [ "star_genetable",                "star_deseq2",     "star_deseq2_strict_criteria" ],
-      step_5 => [ "star_2nd_pass_refine_SNPindel", "star_2nd_pass_refine_SNPindel_annovar" ]
+      step_3 => [ "star_2nd_pass", "star_htseqcount", "star_2nd_pass_refine" ],
+      step_4 => [ "star_genetable", ],
+      step_5 => [ "star_2nd_pass_refine_SNPindel", "star_2nd_pass_refine_SNPindel_annovar" ],
+      step_6 => [ "star_deseq2",                   "star_deseq2_strict_criteria" ]
     },
     sh_direct => 1,
     pbs       => {
