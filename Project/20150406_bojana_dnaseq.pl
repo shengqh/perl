@@ -532,7 +532,7 @@ my $config = {
       step1 => [ "fastqc", "bwa", "bwa_refine", "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
       step2 => ["fastqc_summary"],
     },
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
