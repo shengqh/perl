@@ -460,10 +460,10 @@ my $config = {
     bwa_index  => $bwa_fasta,
     source_ref => "files",
     picard_jar => $picard_jar,
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=24",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -479,7 +479,7 @@ my $config = {
     vcf_files   => [$dbsnp],
     gatk_jar    => $gatk_jar,
     picard_jar  => $picard_jar,
-    sh_direct   => 1,
+    sh_direct   => 0,
     sorted      => 1,
     pbs         => {
       "email"    => $email,
@@ -529,8 +529,10 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc", "bwa", "bwa_refine", "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
-      step2 => ["fastqc_summary"],
+      step1 => [ "fastqc",              "bwa",   "bwa_refine", "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
+      step2 => [ "bwa",                 "bwa_refine" ],
+      step3 => [ "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
+      step4 => ["fastqc_summary"],
     },
     sh_direct => 0,
     pbs       => {
