@@ -426,7 +426,7 @@ my $config = {
   },
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -445,6 +445,7 @@ my $config = {
     target_dir => "${target_dir}/fastqc",
     option     => "",
     cluster    => $cluster,
+    cqstools   => $cqstools,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -454,7 +455,7 @@ my $config = {
   },
   bwa => {
     class      => "Alignment::BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa",
     option     => "",
     bwa_index  => $bwa_fasta,
@@ -470,7 +471,7 @@ my $config = {
   },
   bwa_refine => {
     class       => "GATK::Refine",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/bwa_refine",
     option      => "-Xmx40g",
     gatk_option => "--fix_misencoded_quality_scores",
@@ -529,7 +530,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",              "bwa",   "bwa_refine", "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
+      step1 => [ "fastqc",              "bwa", "bwa_refine", "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
       step2 => [ "bwa",                 "bwa_refine" ],
       step3 => [ "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
       step4 => ["fastqc_summary"],
