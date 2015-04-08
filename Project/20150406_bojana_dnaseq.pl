@@ -507,6 +507,24 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_refine_hc_gvcf_merge => {
+    class       => "GATK::GenotypeGVCFs",
+    perform     => 1,
+    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_merge",
+    option      => "",
+    source_ref  => "bwa_refine_hc_gvcf",
+    java_option => "",
+    fasta_file  => $bwa_fasta,
+    dbsnp_vcf   => $dbsnp,
+    gatk_jar    => $gatk_jar,
+    sh_direct   => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   bwa_refine_SNPindel => {
     class       => "GATK::SNPIndel",
     perform     => 0,
@@ -565,6 +583,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "bwa_refine_hc_gvcf");
+performTask($config, "bwa_refine_hc_gvcf_merge");
 
 1;
