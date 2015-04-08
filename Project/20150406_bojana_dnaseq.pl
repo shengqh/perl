@@ -442,7 +442,7 @@ my $config = {
   },
   fastqc_summary => {
     class      => "QC::FastQCSummary",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     cluster    => $cluster,
@@ -454,10 +454,10 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bwa_mt => {
+  bwa => {
     class      => "Alignment::BWA",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_mt",
+    target_dir => "${target_dir}/bwa",
     option     => "",
     bwa_index  => $bwa_fasta,
     source_ref => "files",
@@ -470,14 +470,14 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_refine_mt => {
+  bwa_refine => {
     class       => "GATK::Refine",
     perform     => 1,
-    target_dir  => "${target_dir}/bwa_refine_mt",
+    target_dir  => "${target_dir}/bwa_refine",
     option      => "-Xmx40g",
     gatk_option => "--fix_misencoded_quality_scores",
     fasta_file  => $bwa_fasta,
-    source_ref  => "bwa_mt",
+    source_ref  => "bwa",
     vcf_files   => [$dbsnp],
     gatk_jar    => $gatk_jar,
     picard_jar  => $picard_jar,
@@ -495,7 +495,7 @@ my $config = {
     perform     => 1,
     target_dir  => "${target_dir}/bwa_refine_hc_gvcf",
     option      => "",
-    source_ref  => "bwa_refine_mt",
+    source_ref  => "bwa_refine",
     java_option => "",
     fasta_file  => $bwa_fasta,
     dbsnp_vcf   => $dbsnp,
@@ -530,30 +530,11 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bwa_refine_SNPindel => {
-    class       => "GATK::SNPIndel",
-    perform     => 0,
-    target_dir  => "${target_dir}/bwa_refine_SNPindel",
-    option      => "",
-    source_ref  => "bwa_refine",
-    java_option => "",
-    fasta_file  => $bwa_fasta,
-    dbsnp_vcf   => $dbsnp,
-    gatk_jar    => $gatk_jar,
-    is_rna      => 0,
-    sh_direct   => 0,
-    pbs         => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bwa_refine_SNPindel_annovar => {
+  bwa_refine_hc_gvcf_vqsr_annovar => {
     class      => "Annotation::Annovar",
-    perform    => 0,
-    target_dir => "${target_dir}/bwa_refine_SNPindel_annovar",
-    source_ref => "bwa_refine_SNPindel",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar",
+    source_ref => "bwa_refine_hc_gvcf_vqsr",
     option     => $annovar_param,
     annovar_db => $annovar_db,
     buildver   => "hg19",
@@ -568,14 +549,15 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",              "bwa", "bwa_refine", "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
-      step2 => [ "bwa",                 "bwa_refine" ],
-      step3 => [ "bwa_refine_SNPindel", "bwa_refine_SNPindel_annovar" ],
-      step4 => ["fastqc_summary"],
+      step1 => ["fastqc"],
+      step2 => ["fastqc_summary"],
+      step3 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
+      step4 => ["bwa_refine_hc_gvcf_vqsr"],
+      step5 => ["bwa_refine_hc_gvcf_vqsr_annovar"],
     },
     sh_direct => 0,
     pbs       => {
@@ -588,6 +570,7 @@ my $config = {
 };
 
 performConfig($config);
+
 #performTask( $config, "bwa_refine_hc_gvcf_merge" );
 
 1;
