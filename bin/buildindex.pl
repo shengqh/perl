@@ -48,22 +48,6 @@ run_command("java -jar /scratch/cqs/shengq1/local/bin/picard/picard.jar CreateSe
 run_command("perl /home/shengq1/local/bin/get_fasta_lengths.pl $fastaFile");
 run_command("mv res_${basename} ${base}.len ");
 
-# bowtie2
-my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
-chomp($bowtie2);
-if ( !-e "bowtie2_index_${bowtie2}" ) {
-  mkdir("bowtie2_index_${bowtie2}");
-}
-chdir("bowtie2_index_${bowtie2}");
-if ( !-e $basename ) {
-  run_command("ln -s ../$fastaFile $basename ");
-  run_command("ln -s ../${base}.dict ${base}.dict ");
-  run_command("ln -s ../${base}.fa.fai ${base}.fa.fai ");
-  run_command("ln -s ../${base}.len ${base}.len ");
-}
-run_command("bowtie2-build $basename $base ");
-chdir("..");
-
 #bwa
 `bwa 2> 1`;
 my $bwa = `grep Version 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
@@ -98,6 +82,22 @@ if ( !-e $basename ) {
   run_command("ln -s ../${base}.len ${base}.len ");
 }
 run_command("bowtie-build $basename $base ");
+chdir("..");
+
+# bowtie2
+my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
+chomp($bowtie2);
+if ( !-e "bowtie2_index_${bowtie2}" ) {
+  mkdir("bowtie2_index_${bowtie2}");
+}
+chdir("bowtie2_index_${bowtie2}");
+if ( !-e $basename ) {
+  run_command("ln -s ../$fastaFile $basename ");
+  run_command("ln -s ../${base}.dict ${base}.dict ");
+  run_command("ln -s ../${base}.fa.fai ${base}.fa.fai ");
+  run_command("ln -s ../${base}.len ${base}.len ");
+}
+run_command("bowtie2-build $basename $base ");
 chdir("..");
 
 1;
