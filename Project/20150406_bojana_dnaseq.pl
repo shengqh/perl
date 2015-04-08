@@ -11,19 +11,20 @@ my $target_dir = "/scratch/cqs/shengq1/dnaseq/20150406_bojana_dnaseq_selectedgen
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
-my $bwa_fasta      = "/scratch/cqs/shengq1/references/hg19_16569_M/bwa_index_0.7.12/hg19_16569_M.fa";
-my $star_index     = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j";
-my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
-my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
-my $cosmic         = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_M.vcf";
-my $dbsnp          = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
-my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
-my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
-my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
-my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
-my $mutect_jar     = "/home/shengq1/local/bin/muTect-1.1.4.jar";
-my $rnaediting_db  = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
-my $rsmc           = "/home/shengq1/rsmc/rsmc.exe";
+my $bwa_fasta      = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_index_0.7.8/hg19_16569_MT.fa";
+my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.gtf";
+my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.map";
+
+my $dbsnp  = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_MT.vcf";
+my $hapmap = "/scratch/cqs/shengq1/references/gatk/b37/hapmap_3.3.b37.vcf";
+my $omni   = "/scratch/cqs/shengq1/references/gatk/b37/1000G_omni2.5.b37.vcf";
+my $g1000  = "/scratch/cqs/shengq1/references/gatk/b37/1000G_phase1.snps.high_confidence.b37.vcf";
+my $mills  = "/scratch/cqs/shengq1/references/gatk/b37/Mills_and_1000G_gold_standard.indels.b37.vcf";
+
+my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
+my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 
 my $cluster = "slurm";
 
@@ -453,10 +454,10 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bwa => {
+  bwa_mt => {
     class      => "Alignment::BWA",
-    perform    => 0,
-    target_dir => "${target_dir}/bwa",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_mt",
     option     => "",
     bwa_index  => $bwa_fasta,
     source_ref => "files",
@@ -469,14 +470,14 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_refine => {
+  bwa_refine_mt => {
     class       => "GATK::Refine",
-    perform     => 0,
-    target_dir  => "${target_dir}/bwa_refine",
+    perform     => 1,
+    target_dir  => "${target_dir}/bwa_refine_mt",
     option      => "-Xmx40g",
     gatk_option => "--fix_misencoded_quality_scores",
     fasta_file  => $bwa_fasta,
-    source_ref  => "bwa",
+    source_ref  => "bwa_mt",
     vcf_files   => [$dbsnp],
     gatk_jar    => $gatk_jar,
     picard_jar  => $picard_jar,
@@ -494,7 +495,7 @@ my $config = {
     perform     => 1,
     target_dir  => "${target_dir}/bwa_refine_hc_gvcf",
     option      => "",
-    source_ref  => "bwa_refine",
+    source_ref  => "bwa_refine_mt",
     java_option => "",
     fasta_file  => $bwa_fasta,
     dbsnp_vcf   => $dbsnp,
@@ -507,15 +508,19 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_refine_hc_gvcf_merge => {
-    class       => "GATK::GenotypeGVCFs",
+  bwa_refine_hc_gvcf_vqsr => {
+    class       => "GATK::VariantFilterVQSR",
     perform     => 1,
-    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_merge",
+    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_vqsr",
     option      => "",
     source_ref  => "bwa_refine_hc_gvcf",
     java_option => "",
     fasta_file  => $bwa_fasta,
     dbsnp_vcf   => $dbsnp,
+    hapmap_vcf  => $hapmap,
+    omni_vcf    => $omni,
+    g1000_vcf   => $g1000,
+    mills_vcf   => $mills,
     gatk_jar    => $gatk_jar,
     sh_direct   => 1,
     pbs         => {
@@ -563,7 +568,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
@@ -582,7 +587,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask($config, "bwa_refine_hc_gvcf_merge");
+performConfig($config);
+#performTask( $config, "bwa_refine_hc_gvcf_merge" );
 
 1;
