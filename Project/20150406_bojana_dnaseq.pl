@@ -489,9 +489,27 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_refine_SNPindel => {
+  bwa_refine_hc_gvcf => {
     class       => "GATK::SNPIndel",
     perform     => 1,
+    target_dir  => "${target_dir}/bwa_refine_hc_gvcf",
+    option      => "",
+    source_ref  => "bwa_refine",
+    java_option => "",
+    fasta_file  => $bwa_fasta,
+    dbsnp_vcf   => $dbsnp,
+    gatk_jar    => $gatk_jar,
+    sh_direct   => 0,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_refine_SNPindel => {
+    class       => "GATK::SNPIndel",
+    perform     => 0,
     target_dir  => "${target_dir}/bwa_refine_SNPindel",
     option      => "",
     source_ref  => "bwa_refine",
@@ -510,7 +528,7 @@ my $config = {
   },
   bwa_refine_SNPindel_annovar => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa_refine_SNPindel_annovar",
     source_ref => "bwa_refine_SNPindel",
     option     => $annovar_param,
@@ -546,6 +564,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "bwa_refine_hc_gvcf");
 
 1;
