@@ -490,7 +490,7 @@ my $config = {
     },
   },
   bwa_refine_hc_gvcf => {
-    class       => "GATK::SNPIndel",
+    class       => "GATK::HaplotypeCallerGVCF",
     perform     => 1,
     target_dir  => "${target_dir}/bwa_refine_hc_gvcf",
     option      => "",
