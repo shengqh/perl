@@ -525,9 +525,9 @@ my $config = {
     sh_direct   => 1,
     pbs         => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=24",
       "walltime" => "72",
-      "mem"      => "10gb"
+      "mem"      => "40gb"
     },
   },
   bwa_refine_hc_gvcf_vqsr_annovar => {
@@ -569,8 +569,8 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "bwa_refine_hc_gvcf_merge" );
+performTask( $config, "bwa_refine_hc_gvcf_vqsr" );
 
 1;
