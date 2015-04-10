@@ -572,5 +572,7 @@ my $config = {
 #performConfig($config);
 
 performTask( $config, "bwa_refine_hc_gvcf_vqsr" );
+performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar" );
+
 
 1;
