@@ -25,6 +25,8 @@ my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my     $conifer     = "/home/shengq1/pylibs/bin/conifer.py";
+my $covered_bed  ="/gpfs21/scratch/cqs/shengq1/dnaseq/20150406_bojana_dnaseq_selectedgenes/0699701_Covered.bed";
 
 my $cluster = "slurm";
 
@@ -547,6 +549,39 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  conifer => {
+    class =>"CNV::Conifer",
+    perform => 1,
+    target_dir  => "${target_dir}/conifer",
+    option      => "",
+    source_ref  => "bwa",
+    conifer     => $conifer,
+    bedfile     => $covered_bed,
+    isbamsorted => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "720",
+      "mem"      => "10gb"
+    },
+  },
+  cnmops => {
+    class =>"CNV::cnMops",
+    perform => 1,
+    target_dir  => "${target_dir}/cnmops",
+    option      => "",
+    source_ref  => "bwa",
+    bedfile     => $covered_bed,
+    pairmode    => "paired",
+    isbamsorted => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "720",
+      "mem"      => "40gb"
+    },
+  },
+  
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -571,8 +606,8 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "bwa_refine_hc_gvcf_vqsr" );
-performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar" );
+performTask( $config, "conifer" );
+performTask( $config, "cnmops" );
 
 
 1;
