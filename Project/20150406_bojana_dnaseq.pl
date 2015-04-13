@@ -21,6 +21,10 @@ my $omni   = "/scratch/cqs/shengq1/references/gatk/b37/1000G_omni2.5.b37.vcf";
 my $g1000  = "/scratch/cqs/shengq1/references/gatk/b37/1000G_phase1.snps.high_confidence.b37.vcf";
 my $mills  = "/scratch/cqs/shengq1/references/gatk/b37/Mills_and_1000G_gold_standard.indels.b37.vcf";
 
+my $cosmic    = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_M.vcf";
+my $mutect    = "/home/shengq1/local/bin/mutect-1.1.7.jar";
+my $affy_file = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
+
 my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
@@ -427,6 +431,19 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20150406_bojana_dnaseq_selectedgenes/raw/Sample_145/145_TCCGTCTA_L008_R2_001.fastq.gz"
     ],
   },
+  groups => {
+    "SA007" => [ "SA007P", "SA007" ],
+    "SA022" => [ "SA022P", "SA022" ],
+    "SA026" => [ "SA026P", "SA026" ],
+    "SA036" => [ "SA036P", "SA036" ],
+    "SA040" => [ "SA040P", "SA040" ],
+    "SA062" => [ "SA062P", "SA062" ],
+    "SA068" => [ "SA068P", "SA068" ],
+    "SA102" => [ "SA102P", "SA102" ],
+    "SA106" => [ "SA106P", "SA106" ],
+    "SA118" => [ "SA118P", "SA118" ],
+  },
+
   fastqc => {
     class      => "QC::FastQC",
     perform    => 0,
@@ -583,6 +600,46 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  muTect => {
+    class        => "GATK::MuTect",
+    perform      => 1,
+    target_dir   => "${target_dir}/muTect",
+    option       => "--min_qscore 20 --filter_reads_with_N_cigar",
+    java_option  => "-Xmx40g",
+    source_ref   => "bwa_refine",
+    groups_ref   => "groups",
+    fasta_file   => $bwa_fasta,
+    cosmic_file  => $cosmic,
+    dbsnp_file   => $dbsnp,
+    bychromosome => 0,
+    sh_direct    => 0,
+    muTect_jar   => $mutect,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
+  annovar_muTect => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/muTect",
+    option     => $annovar_param,
+    source_ref => [ "muTect", ".pass.vcf\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    affy_file  => $affy_file,
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 
   sequencetask => {
     class      => "CQS::SequenceTask",
@@ -608,7 +665,8 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "conifer" );
-#performTask( $config, "cnmops" );
+performTask( $config, "muTect" );
+
+performTask( $config, "annovar_muTect" );
 
 1;
