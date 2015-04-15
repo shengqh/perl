@@ -14,6 +14,7 @@ my $def_human = {
   min_read_length => 16,
   cluster         => "slurm",
   fastq_remove_N  => 0,
+  run_cutadapt    => 0,
 
   #Data
   files => {
