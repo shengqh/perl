@@ -43,4 +43,3 @@ my $def_human = {
 
 performSmallRNA_hg19($def_human);
 1;
-
