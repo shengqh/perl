@@ -124,6 +124,7 @@ sub getSmallRNADefinition {
 
     fastq_remove_N => $userdef->{fastq_remove_N},
     adapter        => $userdef->{adapter},
+    run_cutadapt => $userdef->{run_cutadapt},
 
     coordinate            => $genome->{coordinate},
     coordinate_fasta      => $genome->{coordinate_fasta},
