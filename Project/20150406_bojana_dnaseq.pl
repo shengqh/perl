@@ -670,3 +670,5 @@ performTask( $config, "muTect" );
 performTask( $config, "annovar_muTect" );
 
 1;
+
+
