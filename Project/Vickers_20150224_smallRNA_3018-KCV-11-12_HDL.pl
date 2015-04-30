@@ -44,6 +44,7 @@ my $def = {
     }
 };
 
+#performSmallRNA_hg19($def);
 performSmallRNATask_hg19($def, "identical_sequence_table");
 
 
