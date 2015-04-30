@@ -42,7 +42,7 @@ my $def = {
 };
 
 #performSmallRNA_hg19($def);
-performSmallRNATask_hg19( $def, "bowtie1_genome_1mm_NTA_smallRNA_count" );
+performSmallRNATask_hg19($def, "identical_sequence_table");
 
 1;
 
