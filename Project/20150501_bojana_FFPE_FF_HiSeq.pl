@@ -23,7 +23,7 @@ my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb100";
 my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
-my $rnaseqqc_jar         = "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar";
+my $rnaseqqc_jar         = "/scratch/shengq1/local/bin/RNA-SeQC_v1.1.8.jar";
 
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
