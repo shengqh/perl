@@ -26,7 +26,7 @@ my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_in
 my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $email                = "quanhu.sheng\@vanderbilt.edu";
-
+my $rnaseqqc_jar         = "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar";
 my $config = {
   general => { task_name => $task },
   files   => {
@@ -231,6 +231,22 @@ my $config = {
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "30gb"
+    },
+  },
+  rnaseqc => {
+    class          => "QC::RNASeQC",
+    perform        => 1,
+    target_dir     => "${target_dir}/RNASeQC",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    fasta_file     => $fasta_file_16569_M,
+    jar            => $rnaseqqc_jar,
+    source_ref     => "star_2nd_pass",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
   star_htseqcount => {
