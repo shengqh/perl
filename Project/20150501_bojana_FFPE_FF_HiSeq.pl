@@ -23,6 +23,7 @@ my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb100";
 my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $rnaseqqc_jar         = "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar";
 
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
@@ -128,7 +129,7 @@ my $config = {
   pairs => {
     "HiSeq_FFPE_VS_FF_11Pairs" => {
       groups => [ "HiSeq_FF", "HiSeq_FFPE" ],
-      paired => [ "P02", "P03", "P04", "P06", "P07", "P08", "P09", "P10", "P13", "P14", "P15" ]
+      paired => [ "P02",      "P03", "P04", "P06", "P07", "P08", "P09", "P10", "P13", "P14", "P15" ]
     },
   },
   fastqc => {
@@ -221,6 +222,22 @@ my $config = {
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "30gb"
+    },
+  },
+  rnaseqc => {
+    class          => "QC::RNASeQC",
+    perform        => 1,
+    target_dir     => "${target_dir}/RNASeQC",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    fasta_file     => $fasta_file_16569_M,
+    jar            => $rnaseqqc_jar,
+    source_ref     => "star_2nd_pass",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
   star_htseqcount => {
@@ -378,4 +395,3 @@ performConfig($config);
 #performTask( $config, "tophat2_genetable" );
 
 1;
-
