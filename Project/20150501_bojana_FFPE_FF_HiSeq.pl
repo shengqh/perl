@@ -232,7 +232,7 @@ my $config = {
     transcript_gtf => $transcript_gtf,
     fasta_file     => $fasta_file_16569_M,
     jar            => $rnaseqqc_jar,
-    source_ref     => "star_2nd_pass",
+    source_ref     => [ "star_2nd_pass", "_Aligned.out.bam" ],
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",

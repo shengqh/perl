@@ -139,7 +139,8 @@ sub performSmallRNA_hg19 {
   my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, hg19_genome() );
 
-  performSmallRNA( $def, $perform );
+  my $config = performSmallRNA( $def, $perform );
+  return $config;
 }
 
 sub performSmallRNATask_hg19 {
@@ -152,7 +153,9 @@ sub performSmallRNATask_hg19 {
 sub performSmallRNA_hg20 {
   my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, hg20_genome() );
-  performSmallRNA( $def, $perform );
+
+  my $config = performSmallRNA( $def, $perform );
+  return $config;
 }
 
 sub performSmallRNATask_hg20 {
@@ -166,7 +169,8 @@ sub performSmallRNA_mm10 {
   my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, mm10_genome() );
 
-  performSmallRNA( $def, $perform );
+  my $config = performSmallRNA( $def, $perform );
+  return $config;
 }
 
 sub performSmallRNATask_mm10 {
@@ -179,7 +183,9 @@ sub performSmallRNATask_mm10 {
 sub performSmallRNA_rn5 {
   my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, rn5_genome() );
-  performSmallRNA( $def, $perform );
+
+  my $config = performSmallRNA( $def, $perform );
+  return $config;
 }
 
 sub performSmallRNATask_rn5 {
@@ -192,7 +198,9 @@ sub performSmallRNATask_rn5 {
 sub performSmallRNA_cel235 {
   my ( $userdef, $perform ) = @_;
   my $def = getSmallRNADefinition( $userdef, cel235_genome() );
-  performSmallRNA( $def, $perform );
+
+  my $config = performSmallRNA( $def, $perform );
+  return $config;
 }
 
 sub performSmallRNATask_cel235 {
