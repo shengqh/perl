@@ -27,6 +27,8 @@ my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f -
 my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $email                = "quanhu.sheng\@vanderbilt.edu";
 my $rnaseqqc_jar         = "/scratch/cqs/shengq1/local/bin/RNA-SeQC_v1.1.8.jar";
+my $rnaseqqc_gtf         = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.RNASeQC.gtf";
+
 my $config = {
   general => { task_name => $task },
   files   => {
@@ -238,7 +240,7 @@ my $config = {
     perform        => 1,
     target_dir     => "${target_dir}/RNASeQC",
     option         => "",
-    transcript_gtf => $transcript_gtf,
+    transcript_gtf => $rnaseqqc_gtf,
     fasta_file     => $fasta_file_16569_M,
     jar            => $rnaseqqc_jar,
     source_ref     => [ "star_2nd_pass", "_Aligned.out.bam" ],
