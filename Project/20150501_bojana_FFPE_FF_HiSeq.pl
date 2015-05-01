@@ -258,7 +258,7 @@ my $config = {
   },
   star_genetable => {
     class         => "CQS::CQSDatatable",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/star_genetable",
     option        => "-p ENS --noheader -o ${task}_gene.count",
     source_ref    => "star_htseqcount",
@@ -366,7 +366,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
