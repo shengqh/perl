@@ -127,7 +127,7 @@ my $config = {
     "HiSeq_FFPE" => [ "IG-065", "IG-067", "IG-069", "IG-073", "IG-075", "IG-077", "IG-079", "IG-081", "IG-087", "IG-089", "IG-091" ],
   },
   pairs => {
-    "HiSeq_FFPE_VS_FF_11Pairs" => {
+    "HiSeq_FFPE_VS_FF" => {
       groups => [ "HiSeq_FF", "HiSeq_FFPE" ],
       paired => [ "P02",      "P03", "P04", "P06", "P07", "P08", "P09", "P10", "P13", "P14", "P15" ]
     },
