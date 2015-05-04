@@ -225,6 +225,21 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  star_2nd_pass_sort => {
+    class         => "Samtools::Sort",
+    perform       => 1,
+    target_dir    => "${target_dir}/star_2nd_pass_sort",
+    option        => "",
+    source_ref    => ["star_2nd_pass", "_Aligned.out.bam" ],
+    sort_by_query => 0,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   rnaseqc => {
     class          => "QC::RNASeQC",
     perform        => 1,
@@ -233,7 +248,7 @@ my $config = {
     transcript_gtf => $rnaseqqc_gtf,
     fasta_file     => $fasta_file_16569_M,
     jar            => $rnaseqqc_jar,
-    source_ref     => [ "star_2nd_pass", "_Aligned.out.bam" ],
+    source_ref     => [ "star_2nd_pass_sort", "_Aligned.out.bam" ],
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -275,7 +290,7 @@ my $config = {
   },
   star_deseq2 => {
     class                => "Comparison::DESeq2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/star_deseq2",
     option               => "",
     source_ref           => "pairs",
@@ -294,7 +309,7 @@ my $config = {
   },
   star_deseq2_strict_criteria => {
     class                => "Comparison::DESeq2",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/star_deseq2_strict_criteria",
     option               => "",
     source_ref           => "pairs",
