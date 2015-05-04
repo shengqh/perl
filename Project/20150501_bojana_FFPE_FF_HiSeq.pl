@@ -248,7 +248,7 @@ my $config = {
     transcript_gtf => $rnaseqqc_gtf,
     fasta_file     => $fasta_file_16569_M,
     jar            => $rnaseqqc_jar,
-    source_ref     => [ "star_2nd_pass_sort", "_Aligned.out.bam" ],
+    source_ref     => "star_2nd_pass_sort",
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
