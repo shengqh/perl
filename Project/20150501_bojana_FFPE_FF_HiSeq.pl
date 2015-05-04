@@ -25,6 +25,7 @@ my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f -
 my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $rnaseqqc_jar         = "/scratch/cqs/shengq1/local/bin/RNA-SeQC_v1.1.8.jar";
 my $rnaseqqc_gtf         = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.RNASeQC.gtf";
+my $qc3_perl             = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
@@ -230,7 +231,7 @@ my $config = {
     perform       => 1,
     target_dir    => "${target_dir}/star_2nd_pass_sort",
     option        => "",
-    source_ref    => ["star_2nd_pass", "_Aligned.out.bam" ],
+    source_ref    => [ "star_2nd_pass", "_Aligned.out.bam" ],
     sort_by_query => 0,
     sh_direct     => 0,
     pbs           => {
@@ -248,6 +249,21 @@ my $config = {
     transcript_gtf => $rnaseqqc_gtf,
     fasta_file     => $fasta_file_16569_M,
     jar            => $rnaseqqc_jar,
+    source_ref     => "star_2nd_pass_sort",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  qc3 => {
+    class          => "QC::QC3bam",
+    perform        => 1,
+    target_dir     => "${target_dir}/QC3bam",
+    option         => "",
+    transcript_gtf => $rnaseqqc_gtf,
+    qc3_perl       => $qc3_perl,
     source_ref     => "star_2nd_pass_sort",
     pbs            => {
       "email"    => $email,
