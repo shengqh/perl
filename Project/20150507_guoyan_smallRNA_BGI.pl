@@ -18,27 +18,27 @@ my $def_human = {
 
   #Data
   files => {
-    "01" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/01.gz"],
-    "02" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/02.gz"],
-    "03" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/03.gz"],
-    "04" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/04.gz"],
-    "05" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/05.gz"],
-    "06" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/06.gz"],
-    "07" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/07.gz"],
-    "08" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/08.gz"],
-    "09" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/09.gz"],
-    "10" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/10.gz"],
-    "11" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/11.gz"],
-    "12" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/12.gz"],
-    "13" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/13.gz"],
-    "14" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/14.gz"],
-    "15" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/15.gz"],
-    "16" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/16.gz"],
-    "17" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/17.gz"],
-    "18" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/18.gz"],
-    "19" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/19.gz"],
-    "20" => ["/gpfs21/scratch/cqs/guoy1/BGI_miRNA/raw/20.gz"],
-  }
+    "01" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/01.fastq.gz"],
+    "02" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/02.fastq.gz"],
+    "03" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/03.fastq.gz"],
+    "04" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/04.fastq.gz"],
+    "05" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/05.fastq.gz"],
+    "06" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/06.fastq.gz"],
+    "07" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/07.fastq.gz"],
+    "08" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/08.fastq.gz"],
+    "09" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/09.fastq.gz"],
+    "10" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/10.fastq.gz"],
+    "11" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/11.fastq.gz"],
+    "12" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/12.fastq.gz"],
+    "13" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/13.fastq.gz"],
+    "14" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/14.fastq.gz"],
+    "15" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/15.fastq.gz"],
+    "16" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/16.fastq.gz"],
+    "17" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/17.fastq.gz"],
+    "18" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/18.fastq.gz"],
+    "19" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/19.fastq.gz"],
+    "20" => ["/gpfs21/scratch/cqs/shengq1/smallRNA/20150507_guoyan_smallRNA_BGI/raw/20.fastq.gz"],
+    }
 };
 
 performSmallRNA_hg19($def_human);
