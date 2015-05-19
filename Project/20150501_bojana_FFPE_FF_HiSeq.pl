@@ -164,6 +164,20 @@ my $config = {
       "mem"      => "20gb"
     },
   },
+  qc3fastq => {
+    class          => "QC::QC3fastq",
+    perform        => 1,
+    target_dir     => "${target_dir}/QC3fastq",
+    option         => "",
+    qc3_perl       => $qc3_perl,
+    source_ref     => "cutadapt",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   fastqlen => {
     class      => "FastqLen",
     perform    => 0,
@@ -419,11 +433,7 @@ my $config = {
   },
 };
 
-performConfig($config);
-
-#performTask( $config, "star_deseq2" );
-#performTask( $config, "star_deseq2_strict_criteria" );
-
-#performTask( $config, "tophat2_genetable" );
+#performConfig($config);
+performTask($config, "qc3fastq");
 
 1;
