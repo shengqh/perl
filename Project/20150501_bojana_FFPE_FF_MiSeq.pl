@@ -444,7 +444,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "QC3fastq");
+performTask($config, "qc3fastq");
 
 1;
 
