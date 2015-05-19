@@ -9,11 +9,12 @@ my $def = {
   #General options
   task_name  => "20150518_tRNA",
   email      => "quanhu.sheng\@vanderbilt.edu",
-  target_dir => "/scratch/cqs/shengq1/vickers/Vickers_20150518_tRNA_human",
+  target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human",
   max_thread => 8,
 
   #Default software parameter (don't change it except you really know it)
   fastq_remove_N => 0,
+  adapter        => "AGATCGGAAGAG",
 
   #Data
   files => {
@@ -27,7 +28,7 @@ my $def = {
     "KCVH08" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH8_S14_R1_001.fastq.gz"],
     "KCVH09" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH9_S15_R1_001.fastq.gz"],
     "KCVH10" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH10_S7_R1_001.fastq.gz"],
-    }
+  }
 };
 
 performSmallRNA_hg19($def);
