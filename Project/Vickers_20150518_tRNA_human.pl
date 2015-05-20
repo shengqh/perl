@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use CQS::PerformSmallRNA;
+use CQS::ClassFactory;
 
 my $config = {
   'general' => {
