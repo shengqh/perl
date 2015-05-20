@@ -111,6 +111,21 @@ my $config = {
     'class'      => 'FastqIdentical',
     'option'     => ''
   },
+  star => {
+    class      => "Alignment::STAR",
+    perform    => 1,
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
+    option     => "",
+    source_ref => "identical",
+    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
   'fastq_len' => {
     'pbs' => {
       'email'    => 'quanhu.sheng@vanderbilt.edu',
@@ -236,11 +251,7 @@ my $config = {
   'sequencetask' => {
     'source' => {
       'step2' => [ 'fastqc_pre_trim_summary', 'fastqc_post_trim_summary', 'identical_sequence_table', 'bowtie1_genome_3mm_smallRNA_table', 'bowtie1_genome_3mm_smallRNA_category' ],
-      'step1' => [
-        'fastqc_pre_trim', 'cutadapt',           'fastqc_post_trim', 'fastq_len',
-        'identical',       'bowtie1_genome_3mm', 'bowtie1_genome_3mm_notidentical',
-        'bowtie1_genome_3mm_smallRNA_count'
-      ]
+      'step1' => [ 'fastqc_pre_trim', 'cutadapt', 'fastqc_post_trim', 'fastq_len', 'identical', 'bowtie1_genome_3mm', 'bowtie1_genome_3mm_notidentical', 'bowtie1_genome_3mm_smallRNA_count' ]
     },
     'pbs' => {
       'email'    => 'quanhu.sheng@vanderbilt.edu',
