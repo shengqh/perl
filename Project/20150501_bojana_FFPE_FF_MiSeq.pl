@@ -33,14 +33,6 @@ my $qc3_perl             = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "IG-001" => [
-      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-PA_S1_L001_R1_001.fastq.gz",
-      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-PA_S1_L001_R2_001.fastq.gz"
-    ],
-    "IG-002" => [
-      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-TA_S3_L001_R1_001.fastq.gz",
-      "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/30-TA_S3_L001_R2_001.fastq.gz"
-    ],
     "IG-007" => [
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/32-PD_S1_L001_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq/rawdata/32-PD_S1_L001_R2_001.fastq.gz"
@@ -123,10 +115,10 @@ my $config = {
     ],
   },
   groups => {
-    "MiSeq_FF"       => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-044", "IG-048", "IG-061", "IG-060" ],
-    "MiSeq_FFPE"     => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022", "IG-051", "IG-052", "IG-053", "IG-057", "IG-058", "IG-059" ],
-    "MiSeq_FF_OLD"   => [ "IG-001", "IG-007", "IG-011", "IG-016", "IG-021" ],
-    "MiSeq_FFPE_OLD" => [ "IG-002", "IG-008", "IG-012", "IG-017", "IG-022" ],
+    "MiSeq_FF"       => [ "IG-007", "IG-011", "IG-016", "IG-021", "IG-042", "IG-043", "IG-044", "IG-048", "IG-061", "IG-060" ],
+    "MiSeq_FFPE"     => [ "IG-008", "IG-012", "IG-017", "IG-022", "IG-051", "IG-052", "IG-053", "IG-057", "IG-058", "IG-059" ],
+    "MiSeq_FF_OLD"   => [ "IG-007", "IG-011", "IG-016", "IG-021" ],
+    "MiSeq_FFPE_OLD" => [ "IG-008", "IG-012", "IG-017", "IG-022" ],
     "MiSeq_FF_NEW"   => [ "IG-042", "IG-043", "IG-044", "IG-048", "IG-061", "IG-060" ],
     "MiSeq_FFPE_NEW" => [ "IG-051", "IG-052", "IG-053", "IG-057", "IG-058", "IG-059" ],
   },
@@ -191,10 +183,10 @@ my $config = {
   },
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
-    source_ref => "files",
+    source_ref => "trimmer",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -444,7 +436,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "qc3fastq");
+performTask($config, "fastqc");
 
 1;
 
