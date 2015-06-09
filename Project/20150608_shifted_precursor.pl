@@ -44,7 +44,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { step_1 => ["Elite_CIDIT_Human"], },
+    source     => { step_1 => ["CIDIT_Human"], },
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
