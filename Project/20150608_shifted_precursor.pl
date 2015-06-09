@@ -23,8 +23,8 @@ my $config = {
     target_dir => "${target_dir}/Elite_CIDIT_Human",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
-      "Elite_CIDIT_Human_0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human.plus0.1dalton.mgf"],
-      "Elite_CIDIT_Human_10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human.plus10dalton.mgf"],
+      "Elite_CIDIT_Human.0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human.plus0.1dalton.mgf"],
+      "Elite_CIDIT_Human.10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human.plus10dalton.mgf"],
     },
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
