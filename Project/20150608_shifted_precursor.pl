@@ -142,7 +142,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { step_1 => [ "Elite_CIDIT_Human", "Fusion_HCDIT_Yeast", "Fusion_HCDIT_Yeast", "Fusion_HCDOT_Human", "QExactive_HCDOT_Human", "QTOF_Ecoli" ], },
+    source     => { step_1 => [ "Elite_CIDIT_Human", "Fusion_CIDIT_Human", "Fusion_HCDIT_Yeast", "Fusion_HCDIT_Yeast", "Fusion_HCDOT_Human", "QExactive_HCDOT_Human", "QTOF_Ecoli" ], },
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
