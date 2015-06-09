@@ -29,7 +29,7 @@ my $config = {
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
     database  => $database_human,
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -49,7 +49,7 @@ my $config = {
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
     database  => $database_human,
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -69,7 +69,7 @@ my $config = {
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
     database  => $database_yeast,
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -89,7 +89,7 @@ my $config = {
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
     database  => $database_human,
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -109,7 +109,7 @@ my $config = {
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
     database  => $database_human,
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
@@ -129,7 +129,7 @@ my $config = {
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
     database  => $database_ecoli,
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
