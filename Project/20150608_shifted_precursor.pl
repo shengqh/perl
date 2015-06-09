@@ -17,14 +17,16 @@ my $email          = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general           => { task_name => "ShiftedTargetDecoy" },
-  Elite_CIDIT_Human => {
+  CIDIT_Human => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
-    target_dir => "${target_dir}/Elite_CIDIT_Human",
+    target_dir => "${target_dir}/CIDIT_Human",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
       "Elite_CIDIT_Human" =>
         [ "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human_plus10dalton.mgf", "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human_plus0.1dalton.mgf" ],
+      "Fusion_CIDIT_Human" =>
+        [ "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_CIDIT_Human.plus10dalton.mgf", "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_CIDIT_Human.plus0.1dalton.mgf" ],
     },
     msgf_jar  => $msgf_jar,
     mod_file  => $mod_file,
@@ -32,9 +34,9 @@ my $config = {
     sh_direct => 1,
     pbs       => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "2",
-      "mem"      => "10gb"
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
   sequencetask => {
@@ -42,11 +44,9 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => {
-      step_1 => [ "Elite_CIDIT_Human" ],
-    },
-    sh_direct => 1,
-    pbs       => {
+    source     => { step_1 => ["Elite_CIDIT_Human"], },
+    sh_direct  => 1,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
