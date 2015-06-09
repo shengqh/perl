@@ -19,7 +19,7 @@ my $config = {
   general           => { task_name => "ShiftedTargetDecoy" },
   Elite_CIDIT_Human => {
     class      => "Proteomics::Engine::MSGFPlus",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/Elite_CIDIT_Human",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
@@ -39,7 +39,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
