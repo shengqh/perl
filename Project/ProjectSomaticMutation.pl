@@ -22,7 +22,7 @@ my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 ##hg19.16569.MT###
-my $fasta_file_16569_MT  = "/data/cqs/shengq1/reference/hg19_16569_MT/hg19_16569_MT.fa";
+my $fasta_file_16569_MT  = "/scratch/cqs/shengq1/references/hg19_16569_MT/hg19_16569_MT.fa";
 my $cosmic_file_16569_MT = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
 my $snp_file_16569_MT    = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_MT.vcf";
 my $gtf_file_16569_MT    = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.gtf";
@@ -422,7 +422,8 @@ my $realign_rna = {
   groups           => $tcga->{rna_groups},
 };
 
-my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
+#my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
+my @cfgs = ( $tcga_dna, $tcga_rna );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
