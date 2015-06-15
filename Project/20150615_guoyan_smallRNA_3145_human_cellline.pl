@@ -18,12 +18,12 @@ my $def_human = {
 
   #Data
   files => {
-    "P3145-YG-1" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-1_1_sequence.txt.gz"],
-    "P3145-YG-2" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-2_1_sequence.txt.gz"],
-    "P3145-YG-3" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-3_1_sequence.txt.gz"],
-    "P3145-YG-4" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-4_1_sequence.txt.gz"],
-    "P3145-YG-5" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-5_1_sequence.txt.gz"],
-    "P3145-YG-6" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-6_1_sequence.txt.gz"],
+    "YG-1" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-1_1_sequence.txt.gz"],
+    "YG-2" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-2_1_sequence.txt.gz"],
+    "YG-3" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-3_1_sequence.txt.gz"],
+    "YG-4" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-4_1_sequence.txt.gz"],
+    "YG-5" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-5_1_sequence.txt.gz"],
+    "YG-6" => ["/gpfs21/scratch/cqs/guoy1/3145/3145-YG-6_1_sequence.txt.gz"],
   }
 };
 
