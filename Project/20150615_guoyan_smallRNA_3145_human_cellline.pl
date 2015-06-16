@@ -13,7 +13,7 @@ my $def_human = {
   max_thread      => 8,
   min_read_length => 16,
   cluster         => "slurm",
-  fastq_remove_N  => 0,
+  fastq_remove_N  => 1,
   run_cutadapt    => 1,
 
   #Data
