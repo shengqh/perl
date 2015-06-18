@@ -9,6 +9,7 @@ use CQS::ConfigUtils;
 
 my $target_dir     = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor";
 my $msgf_jar       = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
+my $proteomicstools = "/home/shengq1/proteomicstools/ProteomicsTools.exe";
 my $mod_file       = "/scratch/cqs/shengq1/local/bin/MSGFPlus/Mods.txt";
 my $database_human = "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/rev_Human_uniprot_sprot_v20120613.fasta";
 my $database_yeast = "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/rev_Yeast_uniprot_v20120613.fasta";
@@ -143,7 +144,7 @@ my $config = {
     target_dir => "${target_dir}/PSMDistillerMSGFPlus",
     option     => "-e MSGF -t DTA",
     source_ref     => [ "Elite_CIDIT_Human_MSGFPlus", "Fusion_CIDIT_Human_MSGFPlus", "Fusion_HCDIT_Yeast_MSGFPlus", "Fusion_HCDIT_Yeast_MSGFPlus", "Fusion_HCDOT_Human_MSGFPlus", "QExactive_HCDOT_Human_MSGFPlus", "QTOF_Ecoli_MSGFPlus" ],
-    proteomicstools  => $msgf_jar,
+    proteomicstools  => $proteomicstools,
     sh_direct => 1,
     pbs       => {
       "email"    => $email,
