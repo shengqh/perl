@@ -17,7 +17,7 @@ my $email          = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general           => { task_name => "ShiftedTargetDecoy" },
-  Elite_CIDIT_Human => {
+  Elite_CIDIT_Human_MSGFPlus => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/Elite_CIDIT_Human",
@@ -37,7 +37,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  Fusion_CIDIT_Human => {
+  Fusion_CIDIT_Human_MSGFPlus => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/Fusion_CIDIT_Human",
@@ -57,7 +57,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  Fusion_HCDIT_Yeast => {
+  Fusion_HCDIT_Yeast_MSGFPlus => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/Fusion_HCDIT_Yeast",
@@ -77,7 +77,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  Fusion_HCDOT_Human => {
+  Fusion_HCDOT_Human_MSGFPlus => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/Fusion_HCDOT_Human",
@@ -97,7 +97,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  QExactive_HCDOT_Human => {
+  QExactive_HCDOT_Human_MSGFPlus => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/QExactive_HCDOT_Human",
@@ -117,7 +117,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  QTOF_Ecoli => {
+  QTOF_Ecoli_MSGFPlus => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/QTOF_Ecoli",
@@ -137,12 +137,27 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  MSGFPlus_Distiller => {
+    class      => "Proteomics::Distiller::PSMDistiller",
+    perform    => 1,
+    target_dir => "${target_dir}/PSMDistiller",
+    option     => "-e MSGF -t DTA",
+    source_ref     => [ "Elite_CIDIT_Human_MSGFPlus", "Fusion_CIDIT_Human_MSGFPlus", "Fusion_HCDIT_Yeast_MSGFPlus", "Fusion_HCDIT_Yeast_MSGFPlus", "Fusion_HCDOT_Human_MSGFPlus", "QExactive_HCDOT_Human_MSGFPlus", "QTOF_Ecoli_MSGFPlus" ],
+    proteomicstools  => $msgf_jar,
+    sh_direct => 1,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
-    source     => { step_1 => [ "Elite_CIDIT_Human", "Fusion_CIDIT_Human", "Fusion_HCDIT_Yeast", "Fusion_HCDIT_Yeast", "Fusion_HCDOT_Human", "QExactive_HCDOT_Human", "QTOF_Ecoli" ], },
+    source     => { step_1 => [ "Elite_CIDIT_Human_MSGFPlus", "Fusion_CIDIT_Human_MSGFPlus", "Fusion_HCDIT_Yeast_MSGFPlus", "Fusion_HCDIT_Yeast_MSGFPlus", "Fusion_HCDOT_Human_MSGFPlus", "QExactive_HCDOT_Human_MSGFPlus", "QTOF_Ecoli_MSGFPlus" ], },
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
