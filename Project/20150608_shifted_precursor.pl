@@ -24,6 +24,7 @@ my $config = {
     target_dir => "${target_dir}/Elite_CIDIT_Human",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
+      "Elite_CIDIT_Human.minus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human.minus10dalton.mgf"],
       "Elite_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human.plus0.1dalton.mgf"],
       "Elite_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Elite_CIDIT_Human.plus10dalton.mgf"],
     },
@@ -44,6 +45,7 @@ my $config = {
     target_dir => "${target_dir}/Fusion_CIDIT_Human",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
+      "Fusion_CIDIT_Human.minus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_CIDIT_Human.minus10dalton.mgf"],
       "Fusion_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_CIDIT_Human.plus0.1dalton.mgf"],
       "Fusion_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_CIDIT_Human.plus10dalton.mgf"],
     },
@@ -64,6 +66,7 @@ my $config = {
     target_dir => "${target_dir}/Fusion_HCDIT_Yeast",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
+      "Fusion_HCDIT_Yeast.minus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_HCDIT_Yeast.minus10dalton.mgf"],
       "Fusion_HCDIT_Yeast.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_HCDIT_Yeast.plus0.1dalton.mgf"],
       "Fusion_HCDIT_Yeast.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_HCDIT_Yeast.plus10dalton.mgf"],
     },
@@ -84,6 +87,7 @@ my $config = {
     target_dir => "${target_dir}/Fusion_HCDOT_Human",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
+      "Fusion_HCDOT_Human.minus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_HCDOT_Human.minus10dalton.mgf"],
       "Fusion_HCDOT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_HCDOT_Human.plus0.1dalton.mgf"],
       "Fusion_HCDOT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/Fusion_HCDOT_Human.plus10dalton.mgf"],
     },
@@ -104,6 +108,7 @@ my $config = {
     target_dir => "${target_dir}/QExactive_HCDOT_Human",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
+      "QExactive_HCDOT_Human.minus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/QExactive_HCDOT_Human.minus10dalton.mgf"],
       "QExactive_HCDOT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/QExactive_HCDOT_Human.plus0.1dalton.mgf"],
       "QExactive_HCDOT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/QExactive_HCDOT_Human.plus10dalton.mgf"],
     },
@@ -124,6 +129,7 @@ my $config = {
     target_dir => "${target_dir}/QTOF_Ecoli",
     option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 2 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     source     => {
+      "QTOF_Ecoli.minus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/QTOF_Ecoli.minus10dalton.mgf"],
       "QTOF_Ecoli.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/QTOF_Ecoli.plus0.1dalton.mgf"],
       "QTOF_Ecoli.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/shifted/QTOF_Ecoli.plus10dalton.mgf"],
     },
