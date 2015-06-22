@@ -88,11 +88,12 @@ my $datasets = {
 
 my $configall = { general => { task_name => "ShiftedTargetDecoy" }, };
 
-my @sections  = ();
+my @sections = ();
 
 for my $dataset ( sort keys %{$datasets} ) {
   $configall->{ $dataset . "_MSGF" } = {
     class      => "Proteomics::Engine::MSGFPlus",
+    task_name  => $dataset . "_MSGF",
     perform    => 1,
     target_dir => "${target_dir}/MSGF",
     option     => $datasets->{$dataset}->{MSGF_option},
@@ -111,6 +112,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_MSGF_PSM" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
+    task_name       => $dataset . "_MSGF_PSM",
     perform         => 1,
     target_dir      => "${target_dir}/MSGF",
     option          => "-e MSGF -t DTA",
@@ -130,6 +132,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_comet" } = {
     class           => "Proteomics::Engine::Comet",
+    task_name       => $dataset . "_comet",
     perform         => 1,
     target_dir      => "${target_dir}/comet",
     option          => "",
@@ -149,6 +152,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_comet_PSM" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
+    task_name       => $dataset . "_comet_PSM",
     perform         => 1,
     target_dir      => "${target_dir}/MSGF",
     option          => "-e Comet -t DTA",
@@ -162,7 +166,6 @@ for my $dataset ( sort keys %{$datasets} ) {
       "mem"      => "40gb"
     },
   };
-
 
   push( @sections, $dataset . "_comet" );
   push( @sections, $dataset . "_comet_PSM" );
