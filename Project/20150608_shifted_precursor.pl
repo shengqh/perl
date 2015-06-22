@@ -215,4 +215,3 @@ my $config = {
 performTask($config, "Elite_CIDIT_Human_Comet");
 
 1;
-
