@@ -6,6 +6,7 @@ use CQS::ClassFactory;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
+use Data::Dumper;
 
 my $target_dir      = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor";
 my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
@@ -149,7 +150,8 @@ $configall->{sequencetask} = {
   },
 };
 
-performConfig($configall);
+print Dumper($configall);
+#performConfig($configall);
 
 #my $config = {
 #  Elite_CIDIT_Human_MSGFPlus => {
