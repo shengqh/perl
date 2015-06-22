@@ -40,6 +40,28 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  Elite_CIDIT_Human_Comet => {
+    class      => "Proteomics::Engine::Comet",
+    perform    => 1,
+    target_dir => "${target_dir}/Elite_CIDIT_Human/Comet",
+    option     => "",
+    source     => {
+      "Elite_CIDIT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.mgf"],
+      "Elite_CIDIT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.minus10dalton.mgf"],
+      "Elite_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus0.1dalton.mgf"],
+      "Elite_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus10dalton.mgf"],
+    },
+    proteomicstools  => $proteomicstools,
+    config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/comet.params",
+    database  => $database_human,
+    sh_direct => 0,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   Fusion_CIDIT_Human_MSGFPlus => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
@@ -189,7 +211,8 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "Elite_CIDIT_Human_Comet");
 
 1;
 
