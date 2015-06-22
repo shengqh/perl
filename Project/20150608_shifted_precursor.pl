@@ -12,18 +12,18 @@ my $target_dir      = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precurso
 my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
 my $proteomicstools = "/home/shengq1/proteomicstools/ProteomicsTools.exe";
 my $mod_file        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/Mods.txt";
-my $database_human  = "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/rev_Human_uniprot_sprot_v20120613.fasta";
-my $database_yeast  = "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/rev_Yeast_uniprot_v20120613.fasta";
-my $database_ecoli  = "/gpfs21/scratch/cqs/shengq1/proteomics/shifted/rev_Ecoli_uniprot_v20120613_P4431.fasta";
+my $database_human  = "/scratch/cqs/shengq1/proteomics/shifted/rev_Human_uniprot_sprot_v20120613.fasta";
+my $database_yeast  = "/scratch/cqs/shengq1/proteomics/shifted/rev_Yeast_uniprot_v20120613.fasta";
+my $database_ecoli  = "/scratch/cqs/shengq1/proteomics/shifted/rev_Ecoli_uniprot_v20120613_P4431.fasta";
 my $email           = "quanhu.sheng\@vanderbilt.edu";
 
 my $datasets = {
   Elite_CIDIT_Human => {
     source => {
-      "Elite_CIDIT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.mgf"],
-      "Elite_CIDIT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.minus10dalton.mgf"],
-      "Elite_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus0.1dalton.mgf"],
-      "Elite_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus10dalton.mgf"],
+      "Elite_CIDIT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Elite_CIDIT_Human.mgf"],
+      "Elite_CIDIT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Elite_CIDIT_Human.minus10dalton.mgf"],
+      "Elite_CIDIT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Elite_CIDIT_Human.plus0.1dalton.mgf"],
+      "Elite_CIDIT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Elite_CIDIT_Human.plus10dalton.mgf"],
     },
     database         => $database_human,
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
@@ -31,10 +31,10 @@ my $datasets = {
   },
   Fusion_CIDIT_Human => {
     source => {
-      "Fusion_CIDIT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.mgf"],
-      "Fusion_CIDIT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.minus10dalton.mgf"],
-      "Fusion_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.plus0.1dalton.mgf"],
-      "Fusion_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.plus10dalton.mgf"],
+      "Fusion_CIDIT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_CIDIT_Human.mgf"],
+      "Fusion_CIDIT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_CIDIT_Human.minus10dalton.mgf"],
+      "Fusion_CIDIT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_CIDIT_Human.plus0.1dalton.mgf"],
+      "Fusion_CIDIT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_CIDIT_Human.plus10dalton.mgf"],
     },
     database         => $database_human,
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
@@ -42,10 +42,10 @@ my $datasets = {
   },
   Fusion_HCDIT_Yeast => {
     source => {
-      "Fusion_HCDIT_Yeast"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.mgf"],
-      "Fusion_HCDIT_Yeast.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.minus10dalton.mgf"],
-      "Fusion_HCDIT_Yeast.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.plus0.1dalton.mgf"],
-      "Fusion_HCDIT_Yeast.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.plus10dalton.mgf"],
+      "Fusion_HCDIT_Yeast"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDIT_Yeast.mgf"],
+      "Fusion_HCDIT_Yeast.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDIT_Yeast.minus10dalton.mgf"],
+      "Fusion_HCDIT_Yeast.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDIT_Yeast.plus0.1dalton.mgf"],
+      "Fusion_HCDIT_Yeast.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDIT_Yeast.plus10dalton.mgf"],
     },
     database         => $database_yeast,
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
@@ -53,10 +53,10 @@ my $datasets = {
   },
   Fusion_HCDOT_Human => {
     source => {
-      "Fusion_HCDOT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.mgf"],
-      "Fusion_HCDOT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.minus10dalton.mgf"],
-      "Fusion_HCDOT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.plus0.1dalton.mgf"],
-      "Fusion_HCDOT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.plus10dalton.mgf"],
+      "Fusion_HCDOT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDOT_Human.mgf"],
+      "Fusion_HCDOT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDOT_Human.minus10dalton.mgf"],
+      "Fusion_HCDOT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDOT_Human.plus0.1dalton.mgf"],
+      "Fusion_HCDOT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/Fusion_HCDOT_Human.plus10dalton.mgf"],
     },
     database         => $database_human,
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
@@ -64,10 +64,10 @@ my $datasets = {
   },
   QExactive_HCDOT_Human => {
     source => {
-      "QExactive_HCDOT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.mgf"],
-      "QExactive_HCDOT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.minus10dalton.mgf"],
-      "QExactive_HCDOT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.plus0.1dalton.mgf"],
-      "QExactive_HCDOT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.plus10dalton.mgf"],
+      "QExactive_HCDOT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QExactive_HCDOT_Human.mgf"],
+      "QExactive_HCDOT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QExactive_HCDOT_Human.minus10dalton.mgf"],
+      "QExactive_HCDOT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QExactive_HCDOT_Human.plus0.1dalton.mgf"],
+      "QExactive_HCDOT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QExactive_HCDOT_Human.plus10dalton.mgf"],
     },
     database         => $database_human,
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
@@ -75,10 +75,10 @@ my $datasets = {
   },
   QTOF_Ecoli => {
     source => {
-      "QTOF_Ecoli"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.mgf"],
-      "QTOF_Ecoli.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.minus10dalton.mgf"],
-      "QTOF_Ecoli.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.plus0.1dalton.mgf"],
-      "QTOF_Ecoli.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.plus10dalton.mgf"],
+      "QTOF_Ecoli"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QTOF_Ecoli.mgf"],
+      "QTOF_Ecoli.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QTOF_Ecoli.minus10dalton.mgf"],
+      "QTOF_Ecoli.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QTOF_Ecoli.plus0.1dalton.mgf"],
+      "QTOF_Ecoli.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/mgf/QTOF_Ecoli.plus10dalton.mgf"],
     },
     database         => $database_ecoli,
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 2 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
@@ -196,10 +196,10 @@ performConfig($configall);
 #    target_dir => "${target_dir}/Elite_CIDIT_Human/MSGF",
 #    option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
 #    source     => {
-#      "Elite_CIDIT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.mgf"],
-#      "Elite_CIDIT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.minus10dalton.mgf"],
-#      "Elite_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus0.1dalton.mgf"],
-#      "Elite_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus10dalton.mgf"],
+#      "Elite_CIDIT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.mgf"],
+#      "Elite_CIDIT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.minus10dalton.mgf"],
+#      "Elite_CIDIT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus0.1dalton.mgf"],
+#      "Elite_CIDIT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus10dalton.mgf"],
 #    },
 #    msgf_jar  => $msgf_jar,
 #    mod_file  => $mod_file,
@@ -218,10 +218,10 @@ performConfig($configall);
 #    target_dir => "${target_dir}/Elite_CIDIT_Human/Comet",
 #    option     => "",
 #    source     => {
-#      "Elite_CIDIT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.mgf"],
-#      "Elite_CIDIT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.minus10dalton.mgf"],
-#      "Elite_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus0.1dalton.mgf"],
-#      "Elite_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus10dalton.mgf"],
+#      "Elite_CIDIT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.mgf"],
+#      "Elite_CIDIT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.minus10dalton.mgf"],
+#      "Elite_CIDIT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus0.1dalton.mgf"],
+#      "Elite_CIDIT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/mgf/Elite_CIDIT_Human.plus10dalton.mgf"],
 #    },
 #    param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Elite_CIDIT_Human/comet.params",
 #    proteomicstools => $proteomicstools,
@@ -241,10 +241,10 @@ performConfig($configall);
 #    target_dir => "${target_dir}/Fusion_CIDIT_Human/MSGF",
 #    option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
 #    source     => {
-#      "Fusion_CIDIT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.mgf"],
-#      "Fusion_CIDIT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.minus10dalton.mgf"],
-#      "Fusion_CIDIT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.plus0.1dalton.mgf"],
-#      "Fusion_CIDIT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.plus10dalton.mgf"],
+#      "Fusion_CIDIT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.mgf"],
+#      "Fusion_CIDIT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.minus10dalton.mgf"],
+#      "Fusion_CIDIT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.plus0.1dalton.mgf"],
+#      "Fusion_CIDIT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/Fusion_CIDIT_Human.plus10dalton.mgf"],
 #    },
 #    msgf_jar  => $msgf_jar,
 #    mod_file  => $mod_file,
@@ -263,10 +263,10 @@ performConfig($configall);
 #    target_dir => "${target_dir}/Fusion_HCDIT_Yeast/MSGF",
 #    option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
 #    source     => {
-#      "Fusion_HCDIT_Yeast"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.mgf"],
-#      "Fusion_HCDIT_Yeast.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.minus10dalton.mgf"],
-#      "Fusion_HCDIT_Yeast.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.plus0.1dalton.mgf"],
-#      "Fusion_HCDIT_Yeast.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.plus10dalton.mgf"],
+#      "Fusion_HCDIT_Yeast"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.mgf"],
+#      "Fusion_HCDIT_Yeast.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.minus10dalton.mgf"],
+#      "Fusion_HCDIT_Yeast.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.plus0.1dalton.mgf"],
+#      "Fusion_HCDIT_Yeast.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDIT_Yeast/mgf/Fusion_HCDIT_Yeast.plus10dalton.mgf"],
 #    },
 #    msgf_jar  => $msgf_jar,
 #    mod_file  => $mod_file,
@@ -285,10 +285,10 @@ performConfig($configall);
 #    target_dir => "${target_dir}/Fusion_HCDOT_Human/MSGF",
 #    option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
 #    source     => {
-#      "Fusion_HCDOT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.mgf"],
-#      "Fusion_HCDOT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.minus10dalton.mgf"],
-#      "Fusion_HCDOT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.plus0.1dalton.mgf"],
-#      "Fusion_HCDOT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.plus10dalton.mgf"],
+#      "Fusion_HCDOT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.mgf"],
+#      "Fusion_HCDOT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.minus10dalton.mgf"],
+#      "Fusion_HCDOT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.plus0.1dalton.mgf"],
+#      "Fusion_HCDOT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_HCDOT_Human/mgf/Fusion_HCDOT_Human.plus10dalton.mgf"],
 #    },
 #    msgf_jar  => $msgf_jar,
 #    mod_file  => $mod_file,
@@ -307,10 +307,10 @@ performConfig($configall);
 #    target_dir => "${target_dir}/QExactive_HCDOT_Human/MSGF",
 #    option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
 #    source     => {
-#      "QExactive_HCDOT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.mgf"],
-#      "QExactive_HCDOT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.minus10dalton.mgf"],
-#      "QExactive_HCDOT_Human.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.plus0.1dalton.mgf"],
-#      "QExactive_HCDOT_Human.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.plus10dalton.mgf"],
+#      "QExactive_HCDOT_Human"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.mgf"],
+#      "QExactive_HCDOT_Human.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.minus10dalton.mgf"],
+#      "QExactive_HCDOT_Human.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.plus0.1dalton.mgf"],
+#      "QExactive_HCDOT_Human.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.plus10dalton.mgf"],
 #    },
 #    msgf_jar  => $msgf_jar,
 #    mod_file  => $mod_file,
@@ -329,10 +329,10 @@ performConfig($configall);
 #    target_dir => "${target_dir}/QTOF_Ecoli/MSGF",
 #    option     => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 2 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
 #    source     => {
-#      "QTOF_Ecoli"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.mgf"],
-#      "QTOF_Ecoli.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.minus10dalton.mgf"],
-#      "QTOF_Ecoli.plus0.1dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.plus0.1dalton.mgf"],
-#      "QTOF_Ecoli.plus10dalton"  => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.plus10dalton.mgf"],
+#      "QTOF_Ecoli"               => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.mgf"],
+#      "QTOF_Ecoli.minus10dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.minus10dalton.mgf"],
+#      "QTOF_Ecoli.plus0.1dalton" => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.plus0.1dalton.mgf"],
+#      "QTOF_Ecoli.plus10dalton"  => ["/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.plus10dalton.mgf"],
 #    },
 #    msgf_jar  => $msgf_jar,
 #    mod_file  => $mod_file,
