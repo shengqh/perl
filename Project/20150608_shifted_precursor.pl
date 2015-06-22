@@ -62,7 +62,7 @@ my $datasets = {
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
   },
-  QExactive_HCDOT_Human_MSGFPlus => {
+  QExactive_HCDOT_Human => {
     source => {
       "QExactive_HCDOT_Human"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.mgf"],
       "QExactive_HCDOT_Human.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QExactive_HCDOT_Human/mgf/QExactive_HCDOT_Human.minus10dalton.mgf"],
@@ -73,7 +73,7 @@ my $datasets = {
     MSGF_option      => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
   },
-  QTOF_Ecoli_MSGFPlus => {
+  QTOF_Ecoli => {
     source => {
       "QTOF_Ecoli"               => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.mgf"],
       "QTOF_Ecoli.minus10dalton" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/QTOF_Ecoli/mgf/QTOF_Ecoli.minus10dalton.mgf"],
@@ -93,7 +93,7 @@ my @sections = ();
 for my $dataset ( sort keys %{$datasets} ) {
   $configall->{ $dataset . "_MSGF" } = {
     class      => "Proteomics::Engine::MSGFPlus",
-    task_name  => $dataset . "_MSGF",
+    task_name  => $dataset,
     perform    => 1,
     target_dir => "${target_dir}/MSGF",
     option     => $datasets->{$dataset}->{MSGF_option},
@@ -112,7 +112,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_MSGF_PSM" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
-    task_name       => $dataset . "_MSGF_PSM",
+    task_name       => $dataset,
     perform         => 1,
     target_dir      => "${target_dir}/MSGF",
     option          => "-e MSGF -t DTA",
@@ -132,7 +132,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_comet" } = {
     class           => "Proteomics::Engine::Comet",
-    task_name       => $dataset . "_comet",
+    task_name       => $dataset,
     perform         => 1,
     target_dir      => "${target_dir}/comet",
     option          => "",
@@ -152,7 +152,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_comet_PSM" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
-    task_name       => $dataset . "_comet_PSM",
+    task_name       => $dataset,
     perform         => 1,
     target_dir      => "${target_dir}/MSGF",
     option          => "-e Comet -t DTA",
