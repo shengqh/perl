@@ -167,8 +167,26 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
+  $configall->{ $dataset . "_comet_rank2_PSM" } = {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    task_name       => $dataset . "_rank2",
+    perform         => 1,
+    target_dir      => "${target_dir}/comet",
+    option          => "-e Comet -t DTA --rank2",
+    source_ref      => $dataset . "_comet",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
   push( @sections, $dataset . "_comet" );
   push( @sections, $dataset . "_comet_PSM" );
+  push( @sections, $dataset . "_comet_rank2_PSM" );
 }
 
 $configall->{sequencetask} = {
