@@ -171,7 +171,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     class           => "Proteomics::Distiller::PSMDistiller",
     task_name       => $dataset . "_rank2",
     perform         => 1,
-    target_dir      => "${target_dir}/comet",
+    target_dir      => "${target_dir}/comet_rank2",
     option          => "-e Comet -t DTA --rank2",
     source_ref      => $dataset . "_comet",
     proteomicstools => $proteomicstools,
