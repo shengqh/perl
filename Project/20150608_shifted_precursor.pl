@@ -150,8 +150,8 @@ $configall->{sequencetask} = {
   },
 };
 
-print Dumper($configall);
-#performConfig($configall);
+#print Dumper($configall);
+performConfig($configall);
 
 #my $config = {
 #  Elite_CIDIT_Human_MSGFPlus => {
