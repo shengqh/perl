@@ -154,7 +154,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     class           => "Proteomics::Distiller::PSMDistiller",
     task_name       => $dataset,
     perform         => 1,
-    target_dir      => "${target_dir}/MSGF",
+    target_dir      => "${target_dir}/comet",
     option          => "-e Comet -t DTA",
     source_ref      => $dataset . "_comet",
     proteomicstools => $proteomicstools,
