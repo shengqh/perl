@@ -88,7 +88,7 @@ my $datasets = {
 
 my $configall = { general => { task_name => "ShiftedTargetDecoy" }, };
 
-my @sections = ();
+my @sections  = ();
 
 for my $dataset ( sort keys %{$datasets} ) {
   $configall->{ $dataset . "_MSGF" } = {
@@ -109,7 +109,24 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
+  $configall->{ $dataset . "_MSGF_PSM" } = {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    perform         => 1,
+    target_dir      => "${target_dir}/MSGF",
+    option          => "-e MSGF -t DTA",
+    source_ref      => $dataset . "_MSGF",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
   push( @sections, $dataset . "_MSGF" );
+  push( @sections, $dataset . "_MSGF_PSM" );
 
   $configall->{ $dataset . "_comet" } = {
     class           => "Proteomics::Engine::Comet",
@@ -130,7 +147,25 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
+  $configall->{ $dataset . "_comet_PSM" } = {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    perform         => 1,
+    target_dir      => "${target_dir}/MSGF",
+    option          => "-e Comet -t DTA",
+    source_ref      => $dataset . "_comet",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
+
   push( @sections, $dataset . "_comet" );
+  push( @sections, $dataset . "_comet_PSM" );
 }
 
 $configall->{sequencetask} = {
@@ -138,11 +173,9 @@ $configall->{sequencetask} = {
   perform    => 1,
   target_dir => "${target_dir}/sequencetask",
   option     => "",
-  source     => {
-    step_1 => \@sections
-  },
-  sh_direct => 1,
-  pbs       => {
+  source     => { step_1 => \@sections },
+  sh_direct  => 1,
+  pbs        => {
     "email"    => $email,
     "nodes"    => "1:ppn=8",
     "walltime" => "72",
