@@ -112,7 +112,7 @@ for my $dataset ( sort keys %{$datasets} ) {
   push( @sections, $dataset . "_MSGF" );
 
   $configall->{ $dataset . "_comet" } = {
-    class           => "Proteomics::Engine::MSGFPlus",
+    class           => "Proteomics::Engine::Comet",
     perform         => 1,
     target_dir      => "${target_dir}/comet",
     option          => "",
