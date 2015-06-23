@@ -41,7 +41,29 @@ my $datasets = {
     msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
   },
   Fusion_CIDIT_Human => {
-    source                => {},
+    source => {
+      "B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID.mgf"],
+      "B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID.minus10dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID.minus10dalton.mgf"],
+      "B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID.plus0.1dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID.plus0.1dalton.mgf"],
+      "B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID.plus10dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B01_03_14050113_HCC_Hela_Qu_CID_IT_pepID.plus10dalton.mgf"],
+      "B11_03_140524_HCC_Hela_Qu_CID_IT_pepID" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B11_03_140524_HCC_Hela_Qu_CID_IT_pepID.mgf"],
+      "B11_03_140524_HCC_Hela_Qu_CID_IT_pepID.minus10dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B11_03_140524_HCC_Hela_Qu_CID_IT_pepID.minus10dalton.mgf"],
+      "B11_03_140524_HCC_Hela_Qu_CID_IT_pepID.plus0.1dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B11_03_140524_HCC_Hela_Qu_CID_IT_pepID.plus0.1dalton.mgf"],
+      "B11_03_140524_HCC_Hela_Qu_CID_IT_pepID.plus10dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B11_03_140524_HCC_Hela_Qu_CID_IT_pepID.plus10dalton.mgf"],
+      "B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID.mgf"],
+      "B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID.minus10dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID.minus10dalton.mgf"],
+      "B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID.plus0.1dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID.plus0.1dalton.mgf"],
+      "B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID.plus10dalton" =>
+        ["/gpfs21/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/Fusion_CIDIT_Human/mgf/B13_03_140612_HCC3_Hela_Qu_CID_IT_pepID.plus10dalton.mgf"],
+    },
     database              => $database_human,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_config_file     => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
