@@ -10,7 +10,7 @@ use Data::Dumper;
 
 my $target_dir      = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor";
 my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
-my $msamanda = "/scratch/cqs/shengq1/local/bin/MSAmanda_Standalone_LinuxMac_1.0.0.4485/MSAmanda.exe";
+my $msamanda        = "/scratch/cqs/shengq1/local/bin/MSAmanda_Standalone_LinuxMac_1.0.0.4485/MSAmanda.exe";
 my $proteomicstools = "/home/shengq1/proteomicstools/ProteomicsTools.exe";
 my $mod_file        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/Mods.txt";
 my $database_human  = "/scratch/cqs/shengq1/proteomics/shifted/rev_Human_uniprot_sprot_v20120613.fasta";
@@ -36,49 +36,49 @@ my $datasets = {
     },
     database              => $database_human,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
-    comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
+    comet_config_file     => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
+    msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
   },
   Fusion_CIDIT_Human => {
     source                => {},
     database              => $database_human,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
-    comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
+    comet_config_file     => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
+    msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
   },
   Fusion_HCDIT_Yeast => {
     source                => {},
     database              => $database_yeast,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
-    comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
+    comet_config_file     => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
+    msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
   },
   Fusion_HCDOT_Human => {
     source                => {},
     database              => $database_human,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
-    comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
+    comet_config_file     => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-ot.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
+    msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
   },
   QExactive_HCDOT_Human => {
     source                => {},
     database              => $database_human,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
-    comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
+    comet_config_file     => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-ot.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
+    msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
   },
   QTOF_Ecoli => {
     source                => {},
     database              => $database_ecoli,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 2 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
-    comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-qtof.params",
+    comet_c_file          => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-qtof.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-qtof.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-qtof.xml",
+    msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-qtof.xml",
   },
 };
 
@@ -134,7 +134,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     option          => "",
     source          => $datasets->{$dataset}->{source},
     database        => $datasets->{$dataset}->{database},
-    param_file      => $datasets->{$dataset}->{comet_param_file},
+    param_file      => $datasets->{$dataset}->{comet_config_file},
     proteomicstools => $proteomicstools,
     titleformat     => "DTA",
     sh_direct       => 0,
