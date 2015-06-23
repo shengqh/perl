@@ -38,7 +38,7 @@ my $datasets = {
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.config",
+    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
   },
   Fusion_CIDIT_Human => {
     source                => {},
@@ -46,7 +46,7 @@ my $datasets = {
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.config",
+    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
   },
   Fusion_HCDIT_Yeast => {
     source                => {},
@@ -54,7 +54,7 @@ my $datasets = {
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 0 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.config",
+    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
   },
   Fusion_HCDOT_Human => {
     source                => {},
@@ -62,7 +62,7 @@ my $datasets = {
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-ot.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.config",
+    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
   },
   QExactive_HCDOT_Human => {
     source                => {},
@@ -70,7 +70,7 @@ my $datasets = {
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-ot.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.config",
+    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
   },
   QTOF_Ecoli => {
     source                => {},
@@ -78,7 +78,7 @@ my $datasets = {
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 2 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
     comet_param_file      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-qtof.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-qtof.config",
-    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-qtof.config",
+    msamanda_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-qtof.xml",
   },
 };
 
