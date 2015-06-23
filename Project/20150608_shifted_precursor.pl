@@ -333,7 +333,7 @@ $configall->{sequencetask} = {
   target_dir => "${target_dir}/sequencetask",
   option     => "",
   source     => { step_1 => \@sections },
-  sh_direct  => 0,
+  sh_direct  => 1,
   pbs        => {
     "email"    => $email,
     "nodes"    => "1:ppn=8",
