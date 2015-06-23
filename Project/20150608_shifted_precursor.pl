@@ -297,7 +297,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     executable => $msamanda,
     cfgfile    => $datasets->{$dataset}->{msamanda_config_file},
     database   => $datasets->{$dataset}->{database},
-    sh_direct  => 0,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
