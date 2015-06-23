@@ -188,7 +188,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  push( @sections, $dataset . "_MSGF" );
+  #push( @sections, $dataset . "_MSGF" );
   push( @sections, $dataset . "_MSGF_PSM" );
 
   $configall->{ $dataset . "_comet" } = {
@@ -245,7 +245,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  push( @sections, $dataset . "_comet" );
+  #push( @sections, $dataset . "_comet" );
   push( @sections, $dataset . "_comet_PSM" );
   push( @sections, $dataset . "_comet_rank2_PSM" );
 
@@ -284,7 +284,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  push( @sections, $dataset . "_myrimatch" );
+  #push( @sections, $dataset . "_myrimatch" );
   push( @sections, $dataset . "_myrimatch_PSM" );
 
   $configall->{ $dataset . "_msamanda" } = {
