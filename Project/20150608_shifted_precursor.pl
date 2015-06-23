@@ -323,8 +323,8 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  push( @sections, $dataset . "_msamanda" );
-  push( @sections, $dataset . "_msamanda_PSM" );
+  #push( @sections, $dataset . "_msamanda" );
+  #push( @sections, $dataset . "_msamanda_PSM" );
 }
 
 $configall->{sequencetask} = {
