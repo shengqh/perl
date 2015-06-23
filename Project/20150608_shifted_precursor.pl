@@ -76,7 +76,7 @@ my $datasets = {
     source                => {},
     database              => $database_ecoli,
     MSGF_option           => "-t 20ppm -ti \"0,1\" -tda 0 -m 3 -inst 2 -e 1 -protocol 5 -ntt 2 -n 1 -addFeatures 1",
-    comet_c_file          => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-qtof.params",
+    comet_config_file     => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-qtof.params",
     myrimatch_config_file => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-qtof.config",
     msamanda_config_file  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-qtof.xml",
   },
