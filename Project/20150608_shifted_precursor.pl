@@ -150,6 +150,7 @@ my $datasets = {
 my $configall = { general => { task_name => "ShiftedTargetDecoy" }, };
 
 my @sections = ();
+my @msamanda = ();
 
 for my $dataset ( sort keys %{$datasets} ) {
   $configall->{ $dataset . "_MSGF" } = {
@@ -234,7 +235,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     perform         => 1,
     target_dir      => "${target_dir}/$dataset/comet_rank2",
     option          => "-e Comet -t DTA --rank2",
-    source_ref      => $dataset . "_comet",
+    source_ref      => [$dataset . "_comet", ""],
     proteomicstools => $proteomicstools,
     sh_direct       => 1,
     pbs             => {
@@ -323,8 +324,8 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  #push( @sections, $dataset . "_msamanda" );
-  #push( @sections, $dataset . "_msamanda_PSM" );
+  push( @msamanda, $dataset . "_msamanda" );
+  push( @msamanda, $dataset . "_msamanda_PSM" );
 }
 
 $configall->{sequencetask} = {
@@ -334,6 +335,21 @@ $configall->{sequencetask} = {
   option     => "",
   source     => { step_1 => \@sections },
   sh_direct  => 0,
+  pbs        => {
+    "email"    => $email,
+    "nodes"    => "1:ppn=1",
+    "walltime" => "72",
+    "mem"      => "20gb"
+  },
+};
+
+$configall->{msamanda_sequencetask} = {
+  class      => "CQS::SequenceTask",
+  perform    => 1,
+  target_dir => "${target_dir}/msamanda_sequencetask",
+  option     => "",
+  source     => { step_1 => \@msamanda },
+  sh_direct  => 1,
   pbs        => {
     "email"    => $email,
     "nodes"    => "1:ppn=1",
