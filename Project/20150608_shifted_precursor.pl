@@ -149,8 +149,9 @@ my $datasets = {
 
 my $configall = { general => { task_name => "ShiftedTargetDecoy" }, };
 
-my @sections = ();
-my @msamanda = ();
+my @sections     = ();
+my @psmdistiller = ();
+my @msamanda     = ();
 
 for my $dataset ( sort keys %{$datasets} ) {
   $configall->{ $dataset . "_MSGF" } = {
@@ -189,8 +190,8 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  #push( @sections, $dataset . "_MSGF" );
-  push( @sections, $dataset . "_MSGF_PSM" );
+  push( @sections,     $dataset . "_MSGF" );
+  push( @psmdistiller, $dataset . "_MSGF_PSM" );
 
   $configall->{ $dataset . "_comet" } = {
     class           => "Proteomics::Engine::Comet",
@@ -235,7 +236,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     perform         => 1,
     target_dir      => "${target_dir}/$dataset/comet_rank2",
     option          => "-e Comet -t DTA --rank2",
-    source_ref      => [$dataset . "_comet", ""],
+    source_ref      => [ $dataset . "_comet", "" ],
     proteomicstools => $proteomicstools,
     sh_direct       => 1,
     pbs             => {
@@ -246,9 +247,9 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  #push( @sections, $dataset . "_comet" );
-  push( @sections, $dataset . "_comet_PSM" );
-  push( @sections, $dataset . "_comet_rank2_PSM" );
+  push( @sections,     $dataset . "_comet" );
+  push( @psmdistiller, $dataset . "_comet_PSM" );
+  push( @psmdistiller, $dataset . "_comet_rank2_PSM" );
 
   $configall->{ $dataset . "_myrimatch" } = {
     class      => "Proteomics::Engine::Myrimatch",
@@ -285,8 +286,8 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  #push( @sections, $dataset . "_myrimatch" );
-  push( @sections, $dataset . "_myrimatch_PSM" );
+  push( @sections,     $dataset . "_myrimatch" );
+  push( @psmdistiller, $dataset . "_myrimatch_PSM" );
 
   $configall->{ $dataset . "_msamanda" } = {
     class      => "Proteomics::Engine::Msamanda",
@@ -333,9 +334,12 @@ $configall->{sequencetask} = {
   perform    => 1,
   target_dir => "${target_dir}/sequencetask",
   option     => "",
-  source     => { step_1 => \@sections },
-  sh_direct  => 0,
-  pbs        => {
+  source     => {
+    step_1 => \@sections,
+    step_2 => \@psmdistiller
+  },
+  sh_direct => 0,
+  pbs       => {
     "email"    => $email,
     "nodes"    => "1:ppn=1",
     "walltime" => "72",
