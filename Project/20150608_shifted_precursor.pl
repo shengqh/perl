@@ -192,7 +192,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_MSGF_PSM_rank2" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
-    task_name       => $dataset,
+    task_name       => $dataset . "_rank2",
     perform         => 1,
     target_dir      => "${target_dir}/$dataset/MSGF_PSM_rank2",
     option          => "-e MSGF -t DTA --rank2",
@@ -306,7 +306,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_myrimatch_PSM_rank2" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
-    task_name       => $dataset,
+    task_name       => $dataset . "_rank2",
     perform         => 1,
     target_dir      => "${target_dir}/$dataset/myrimatch_PSM_rank2",
     option          => "-e MyriMatch -t DTA --rank2",
@@ -363,7 +363,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall->{ $dataset . "_msamanda_PSM_rank2" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
-    task_name       => $dataset,
+    task_name       => $dataset . "_rank2",
     perform         => 1,
     target_dir      => "${target_dir}/$dataset/msamanda_PSM_rank2",
     option          => "-e MSAmanda -t DTA --rank2",
