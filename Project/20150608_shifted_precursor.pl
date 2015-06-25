@@ -190,8 +190,26 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
+  $configall->{ $dataset . "_MSGF_PSM_rank2" } = {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    task_name       => $dataset,
+    perform         => 1,
+    target_dir      => "${target_dir}/$dataset/rank2",
+    option          => "-e MSGF -t DTA --rank2",
+    source_ref      => $dataset . "_MSGF",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
   push( @sections,     $dataset . "_MSGF" );
   push( @psmdistiller, $dataset . "_MSGF_PSM" );
+  push( @psmdistiller, $dataset . "_MSGF_PSM_rank2" );
 
   $configall->{ $dataset . "_comet" } = {
     class           => "Proteomics::Engine::Comet",
@@ -230,11 +248,11 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
-  $configall->{ $dataset . "_comet_rank2_PSM" } = {
+  $configall->{ $dataset . "_comet_PSM_rank2" } = {
     class           => "Proteomics::Distiller::PSMDistiller",
     task_name       => $dataset . "_rank2",
     perform         => 1,
-    target_dir      => "${target_dir}/$dataset/comet_rank2",
+    target_dir      => "${target_dir}/$dataset/rank2",
     option          => "-e Comet -t DTA --rank2",
     source_ref      => [ $dataset . "_comet", "" ],
     proteomicstools => $proteomicstools,
@@ -249,7 +267,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   push( @sections,     $dataset . "_comet" );
   push( @psmdistiller, $dataset . "_comet_PSM" );
-  push( @psmdistiller, $dataset . "_comet_rank2_PSM" );
+  push( @psmdistiller, $dataset . "_comet_PSM_rank2" );
 
   $configall->{ $dataset . "_myrimatch" } = {
     class      => "Proteomics::Engine::Myrimatch",
@@ -286,8 +304,26 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
+  $configall->{ $dataset . "_myrimatch_PSM_rank2" } = {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    task_name       => $dataset,
+    perform         => 1,
+    target_dir      => "${target_dir}/$dataset/rank2",
+    option          => "-e MyriMatch -t DTA --rank2",
+    source_ref      => $dataset . "_myrimatch",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
   push( @sections,     $dataset . "_myrimatch" );
   push( @psmdistiller, $dataset . "_myrimatch_PSM" );
+  push( @psmdistiller, $dataset . "_myrimatch_PSM_rank2" );
 
   $configall->{ $dataset . "_msamanda" } = {
     class      => "Proteomics::Engine::Msamanda",
@@ -325,8 +361,26 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
   };
 
+  $configall->{ $dataset . "_msamanda_PSM_rank2" } = {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    task_name       => $dataset,
+    perform         => 1,
+    target_dir      => "${target_dir}/$dataset/rank2",
+    option          => "-e MSAmanda -t DTA --rank2",
+    source_ref      => $dataset . "_msamanda",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
   push( @msamanda, $dataset . "_msamanda" );
   push( @msamanda, $dataset . "_msamanda_PSM" );
+  push( @msamanda, $dataset . "_msamanda_PSM_rank2" );
 }
 
 $configall->{sequencetask} = {
