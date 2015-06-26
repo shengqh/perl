@@ -65,6 +65,7 @@ my $config = {
     sorted             => 0,
     replace_read_group => 1,
     reorder_chromosome => 1,
+    fixMisencodedQuals => 0,
     sh_direct          => 0,
     pbs                => {
       "email"    => $email,
