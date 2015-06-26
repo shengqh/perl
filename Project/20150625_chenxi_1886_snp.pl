@@ -64,6 +64,7 @@ my $config = {
     picard_jar         => $picard_jar,
     sorted             => 0,
     replace_read_group => 1,
+    reorder_chromosome => 1,
     sh_direct          => 0,
     pbs                => {
       "email"    => $email,
