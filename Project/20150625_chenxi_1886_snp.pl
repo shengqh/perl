@@ -74,9 +74,47 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+
+  hc_gvcf => {
+    class       => "GATK::HaplotypeCallerGVCF",
+    perform     => 1,
+    target_dir  => "${target_dir}/hc_gvcf",
+    option      => "",
+    source_ref  => "tophat_refine",
+    java_option => "",
+    fasta_file  => $fasta_file,
+    dbsnp_vcf   => $dbsnp,
+    gatk_jar    => $gatk_jar,
+    sh_direct   => 0,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  hc_gvcf_vqsr => {
+    class       => "GATK::VariantFilterVQSR",
+    perform     => 1,
+    target_dir  => "${target_dir}/hc_gvcf_vqsr",
+    option      => "",
+    source_ref  => "bwa_refine_hc_gvcf",
+    java_option => "",
+    fasta_file  => $fasta_file,
+    dbsnp_vcf   => $dbsnp,
+    gatk_jar    => $gatk_jar,
+    sh_direct   => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=24",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   tophat_refine_SNPindel => {
     class       => "GATK::SNPIndel",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/tophat_refine_SNPindel",
     option      => "",
     source_ref  => "tophat_refine",
