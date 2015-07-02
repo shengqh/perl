@@ -103,6 +103,7 @@ my $config = {
     fasta_file  => $fasta_file,
     dbsnp_vcf   => $dbsnp,
     gatk_jar    => $gatk_jar,
+    is_rna      => 1,
     sh_direct   => 1,
     pbs         => {
       "email"    => $email,
