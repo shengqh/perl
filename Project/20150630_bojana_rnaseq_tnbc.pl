@@ -118,6 +118,20 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  fastqc_summary => {
+    class      => "QC::FastQCSummary",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc",
+    option     => "",
+    source_ref => "fastqc",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   star => {
     class      => "Alignment::STAR",
     perform    => 1,
