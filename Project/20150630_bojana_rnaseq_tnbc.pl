@@ -306,8 +306,7 @@ my $config = {
 #  },
 };
 
-#performConfig($config);
-performTask($config, "qc3fastq");
+performConfig($config);
 
 1;
 
