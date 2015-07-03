@@ -294,7 +294,7 @@ my $config = {
   },
   star_2nd_pass_refine => {
     class      => "GATK::RNASeqRefine",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/star_2nd_pass_refine",
     option     => "-Xmx40g",
     fasta_file => $fasta_file_16569_MT,
@@ -352,6 +352,26 @@ my $config = {
     },
   },
 
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => {
+      step1 => ["fastqc"],
+      step2 => ["fastqc_summary"],
+      step3 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
+      step4 => ["bwa_refine_hc_gvcf_vqsr"],
+      step5 => ["bwa_refine_hc_gvcf_vqsr_annovar"],
+    },
+    sh_direct => 0,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   #  star_2nd_pass_refine_SNPindel_annovar => {
   #    class      => "Annovar",
   #    perform    => 0,
