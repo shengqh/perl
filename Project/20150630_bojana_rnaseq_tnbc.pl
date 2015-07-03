@@ -358,11 +358,10 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => ["fastqc"],
-      step2 => ["fastqc_summary"],
-      step3 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
-      step4 => ["bwa_refine_hc_gvcf_vqsr"],
-      step5 => ["bwa_refine_hc_gvcf_vqsr_annovar"],
+      step1 => [ "fastqc",           "star" ],
+      step2 => [ "fastqc_summary",   "star_index" ],
+      step3 => [ "star_second_pass", "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
+      step4 => [ "qc3", "star_genetable", "hc_gvcf_vqsr" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -372,6 +371,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+
   #  star_2nd_pass_refine_SNPindel_annovar => {
   #    class      => "Annovar",
   #    perform    => 0,
