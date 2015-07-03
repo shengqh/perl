@@ -360,7 +360,7 @@ my $config = {
     source     => {
       step1 => [ "fastqc",           "star" ],
       step2 => [ "fastqc_summary",   "star_index" ],
-      step3 => [ "star_second_pass", "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
+      step3 => [ "star_2nd_pass", "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
       step4 => [ "qc3", "star_genetable", "hc_gvcf_vqsr" ],
     },
     sh_direct => 0,
