@@ -293,18 +293,21 @@ my $config = {
     },
   },
   star_2nd_pass_refine => {
-    class      => "GATK::RNASeqRefine",
-    perform    => 1,
-    target_dir => "${target_dir}/star_2nd_pass_refine",
-    option     => "-Xmx40g",
-    fasta_file => $fasta_file_16569_MT,
-    source_ref => "star_2nd_pass",
-    vcf_files  => [$dbsnp],
-    gatk_jar   => $gatk_jar,
-    picard_jar => $picard_jar,
-    sorted     => 0,
-    sh_direct  => 0,
-    pbs        => {
+    class              => "GATK::RNASeqRefine",
+    perform            => 1,
+    target_dir         => "${target_dir}/star_2nd_pass_refine",
+    option             => "-Xmx40g",
+    fasta_file         => $fasta_file_16569_MT,
+    source_ref         => "star_2nd_pass",
+    vcf_files          => [$dbsnp],
+    gatk_jar           => $gatk_jar,
+    picard_jar         => $picard_jar,
+    fixMisencodedQuals => 0,
+    replace_read_group => 0,
+    reorderChromosome  => 0,
+    sorted             => 0,
+    sh_direct          => 0,
+    pbs                => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -358,9 +361,9 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",           "star" ],
-      step2 => [ "fastqc_summary",   "star_index" ],
-      step3 => [ "star_2nd_pass", "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
+      step1 => [ "fastqc",         "star" ],
+      step2 => [ "fastqc_summary", "star_index" ],
+      step3 => [ "star_2nd_pass",  "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
       step4 => [ "qc3", "star_genetable", "hc_gvcf_vqsr" ],
     },
     sh_direct => 0,
@@ -391,6 +394,7 @@ my $config = {
   #  },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "star_2nd_pass_refine");
 
 1;
