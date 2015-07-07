@@ -439,4 +439,3 @@ my $config = {
 performTask($config, "star_deseq2");
 
 1;
-
