@@ -165,13 +165,13 @@ my $config = {
     },
   },
   qc3fastq => {
-    class          => "QC::QC3fastq",
-    perform        => 1,
-    target_dir     => "${target_dir}/QC3fastq",
-    option         => "",
-    qc3_perl       => $qc3_perl,
-    source_ref     => "cutadapt",
-    pbs            => {
+    class      => "QC::QC3fastq",
+    perform    => 1,
+    target_dir => "${target_dir}/QC3fastq",
+    option     => "",
+    qc3_perl   => $qc3_perl,
+    source_ref => "cutadapt",
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -330,6 +330,7 @@ my $config = {
     show_DE_gene_cluster => 1,
     pvalue               => 0.05,
     fold_change          => 2.0,
+    min_median_read      => 5,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -434,6 +435,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "star_deseq2");
+performTask( $config, "star_deseq2" );
 
 1;
