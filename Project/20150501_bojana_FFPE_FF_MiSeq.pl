@@ -153,13 +153,13 @@ my $config = {
     },
   },
   qc3fastq => {
-    class          => "QC::QC3fastq",
-    perform        => 1,
-    target_dir     => "${target_dir}/QC3fastq",
-    option         => "",
-    qc3_perl       => $qc3_perl,
-    source_ref     => "trimmer",
-    pbs            => {
+    class      => "QC::QC3fastq",
+    perform    => 1,
+    target_dir => "${target_dir}/QC3fastq",
+    option     => "",
+    qc3_perl   => $qc3_perl,
+    source_ref => "trimmer",
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -247,7 +247,7 @@ my $config = {
     perform       => 1,
     target_dir    => "${target_dir}/star_2nd_pass_sort",
     option        => "",
-    source_ref    => ["star_2nd_pass", "_Aligned.out.bam" ],
+    source_ref    => [ "star_2nd_pass", "_Aligned.out.bam" ],
     sort_by_query => 0,
     sh_direct     => 0,
     pbs           => {
@@ -332,6 +332,7 @@ my $config = {
     show_DE_gene_cluster => 1,
     pvalue               => 0.05,
     fold_change          => 2.0,
+    min_median_read      => 5,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -436,7 +437,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "star_deseq2");
+performTask( $config, "star_deseq2" );
 
 1;
 
