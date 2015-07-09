@@ -125,11 +125,11 @@ my $config = {
   pairs => {
     "MiSeq_FFPE_VS_FF" => {
       groups => [ "MiSeq_FFPE", "MiSeq_FF" ],
-      paired => [ "B30A",       "B32A", "B33A", "B40A", "B42", "P06", "P07", "P08", "P12", "P13", "P14" ]
+      paired => [ "B32A",       "B33A", "B40A", "B42", "P06", "P07", "P08", "P12", "P13", "P14" ]
     },
     "MiSeq_FFPE_VS_FF_OLD" => {
       groups => [ "MiSeq_FFPE_OLD", "MiSeq_FF_OLD" ],
-      paired => [ "B30A",           "B32A", "B33A", "B40A", "B42" ]
+      paired => [ "B32A",           "B33A", "B40A", "B42" ]
     },
     "MiSeq_FFPE_VS_FF_NEW" => {
       groups => [ "MiSeq_FFPE_NEW", "MiSeq_FF_NEW" ],
