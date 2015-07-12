@@ -62,7 +62,8 @@ my $def = {
   }
 };
 
-performSmallRNA_hg19($def);
+my $config = performSmallRNA_hg19($def, 0);
+performTask($config, "identical_sequence_count_table");
 
 1;
 
