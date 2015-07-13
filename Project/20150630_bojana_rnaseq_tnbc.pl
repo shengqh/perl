@@ -351,7 +351,7 @@ my $config = {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
       "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "100gb"
     },
   },
 
