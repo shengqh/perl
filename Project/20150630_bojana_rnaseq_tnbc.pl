@@ -395,6 +395,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "star_2nd_pass_refine");
+performTask($config, "hc_gvcf_vqsr");
 
 1;
