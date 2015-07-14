@@ -441,7 +441,7 @@ my $config = {
   #  },
 };
 
-#performConfig($config);
-performTask( $config, "hc_gvcf_vqsr_annovar" );
+performConfig($config);
+#performTask( $config, "hc_gvcf_vqsr_annovar" );
 
 1;
