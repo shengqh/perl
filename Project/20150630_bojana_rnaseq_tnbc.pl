@@ -143,6 +143,16 @@ my $config = {
       [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL112999_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL112999_2.fastq.gz" ],
     "3193-BJ-0045" =>
       [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113000_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113000_2.fastq.gz" ],
+    "3193-BJ-0046" =>
+      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113001_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113001_2.fastq.gz" ],
+    "3193-BJ-0047" =>
+      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113002_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113002_2.fastq.gz" ],
+    "3193-BJ-0048" =>
+      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113003_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113003_2.fastq.gz" ],
+    "3193-BJ-0049" =>
+      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113004_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113004_2.fastq.gz" ],
+    "3193-BJ-0050" =>
+      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113005_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL113005_2.fastq.gz" ],
   },
 
   groups => {
