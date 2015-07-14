@@ -385,7 +385,23 @@ my $config = {
       "mem"      => "100gb"
     },
   },
-
+  hc_gvcf_vqsr_annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/hc_gvcf_vqsr_annovar",
+    source_ref => "hc_gvcf_vqsr",
+    option     => $annovar_param,
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -395,7 +411,7 @@ my $config = {
       step1 => [ "fastqc",         "star" ],
       step2 => [ "fastqc_summary", "star_index" ],
       step3 => [ "star_2nd_pass",  "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
-      step4 => [ "qc3", "star_genetable", "hc_gvcf_vqsr" ],
+      step4 => [ "qc3", "star_genetable", "hc_gvcf_vqsr", "hc_gvcf_vqsr_annovar" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -426,6 +442,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "star_deseq2" );
+performTask( $config, "hc_gvcf_vqsr_annovar" );
 
 1;
