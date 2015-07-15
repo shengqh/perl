@@ -54,7 +54,7 @@ my $config = {
   general => { "task_name" => "3018-KCV-15", },
   gsnap   => {
     class                 => "Alignment::Gsnap",
-    perform               => 1,
+    perform               => 0,
     target_dir            => $def->{target_dir} . "/gsnap",
     option                => "-y 0 -z 0 -Y 0 -Z 0 -m 1 -Q --trim-mismatch-score 0 --trim-indel-score 0 --mode ttoc-nonstranded --gunzip",
     gsnap_index_directory => $def->{gsnap_index_directory},
@@ -67,7 +67,29 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     }
-  }
+  },
+  'gsnap_smallRNA_count' => {
+    'cluster'         => 'slurm',
+    'fasta_file'      => '/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa',
+    'sh_direct'       => 1,
+    'perform'         => 1,
+    'target_dir'      => '/scratch/cqs/shengq1/vickers/20150312_parclip_3018-KCV-15/gsnap_smallRNA_count',
+    'fastq_files_ref' => 'identical_NTA',
+    'coordinate_file' => '/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed',
+    'source_ref'      => 'bowtie1_genome_1mm_NTA',
+    'cqs_tools'       => '/home/shengq1/cqstools/CQS.Tools.exe',
+    'seqcount_ref'    => [ 'identical_NTA', '.dupcount$' ],
+    'samtools'        => '/scratch/cqs/shengq1/local/bin/samtools',
+    'class'           => 'CQS::SmallRNACount',
+    'option'          => '-s -e 4',
+    'pbs'             => {
+      'email'    => 'quanhu.sheng@vanderbilt.edu',
+      'walltime' => '72',
+      'mem'      => '40gb',
+      'nodes'    => '1:ppn=1'
+      }
+    }
+
 };
 
 performConfig($config);
