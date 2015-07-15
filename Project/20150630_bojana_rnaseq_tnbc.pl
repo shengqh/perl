@@ -468,4 +468,5 @@ my $config = {
 
 performTask( $config, "fusion_catcher" );
 
+
 1;
