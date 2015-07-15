@@ -73,12 +73,12 @@ my $config = {
     'fasta_file'      => '/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa',
     'sh_direct'       => 1,
     'perform'         => 1,
-    'target_dir'      => '/scratch/cqs/shengq1/vickers/20150312_parclip_3018-KCV-15/gsnap_smallRNA_count',
+    'target_dir'      =>  $def->{target_dir} . "/gsnap_smallRNA_count",
     'fastq_files_ref' => 'identical_NTA',
     'coordinate_file' => '/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed',
     'source_ref'      => 'gsnap',
-    'cqs_tools'       => '/home/shengq1/cqstools/CQS.Tools.exe',
-    'seqcount_ref'    => [ 'identical_NTA', '.dupcount$' ],
+    'cqs_tools'       => $def->{cqstools},
+    'seqcount'        => $def->{counts},
     'samtools'        => '/scratch/cqs/shengq1/local/bin/samtools',
     'class'           => 'CQS::SmallRNACount',
     'option'          => '-s -e 4',
@@ -87,7 +87,7 @@ my $config = {
       'walltime' => '72',
       'mem'      => '40gb',
       'nodes'    => '1:ppn=1'
-      }
+    }
     }
 
 };
