@@ -25,6 +25,8 @@ my $omni   = "/scratch/cqs/shengq1/references/gatk/b37/1000G_omni2.5.b37.vcf";
 my $g1000  = "/scratch/cqs/shengq1/references/gatk/b37/1000G_phase1.snps.high_confidence.b37.vcf";
 my $mills  = "/scratch/cqs/shengq1/references/gatk/b37/Mills_and_1000G_gold_standard.indels.b37.vcf";
 
+my $fusiondata = "/scratch/cqs/shengq1/local/bin/fusioncatcher/data/current";
+
 my $task       = "20150630_bojana_tnbc";
 my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
@@ -160,22 +162,18 @@ my $config = {
       "3193-BJ-0008", "3193-BJ-0009", "3193-BJ-0011", "3193-BJ-0012", "3193-BJ-0016", "3193-BJ-0017", "3193-BJ-0020", "3193-BJ-0021", "3193-BJ-0023", "3193-BJ-0026",
       "3193-BJ-0027", "3193-BJ-0028", "3193-BJ-0035", "3193-BJ-0037", "3193-BJ-0038", "3193-BJ-0041", "3193-BJ-0042", "3193-BJ-0043", "3193-BJ-0045"
     ],
-    "Group2" => [
-      "3193-BJ-0003", "3193-BJ-0006", "3193-BJ-0013", "3193-BJ-0019", "3193-BJ-0024", "3193-BJ-0029", "3193-BJ-0031", "3193-BJ-0036", "3193-BJ-0040"
-    ],
+    "Group2"  => [ "3193-BJ-0003", "3193-BJ-0006", "3193-BJ-0013", "3193-BJ-0019", "3193-BJ-0024", "3193-BJ-0029", "3193-BJ-0031", "3193-BJ-0036", "3193-BJ-0040" ],
     "Group12" => [
       "3193-BJ-0008", "3193-BJ-0009", "3193-BJ-0011", "3193-BJ-0012", "3193-BJ-0016", "3193-BJ-0017", "3193-BJ-0020", "3193-BJ-0021", "3193-BJ-0023", "3193-BJ-0026",
-      "3193-BJ-0027", "3193-BJ-0028", "3193-BJ-0035", "3193-BJ-0037", "3193-BJ-0038", "3193-BJ-0041", "3193-BJ-0042", "3193-BJ-0043", "3193-BJ-0045",
-      "3193-BJ-0003", "3193-BJ-0006", "3193-BJ-0013", "3193-BJ-0019", "3193-BJ-0024", "3193-BJ-0029", "3193-BJ-0031", "3193-BJ-0036", "3193-BJ-0040"
+      "3193-BJ-0027", "3193-BJ-0028", "3193-BJ-0035", "3193-BJ-0037", "3193-BJ-0038", "3193-BJ-0041", "3193-BJ-0042", "3193-BJ-0043", "3193-BJ-0045", "3193-BJ-0003",
+      "3193-BJ-0006", "3193-BJ-0013", "3193-BJ-0019", "3193-BJ-0024", "3193-BJ-0029", "3193-BJ-0031", "3193-BJ-0036", "3193-BJ-0040"
     ],
-     "Group3" => [
+    "Group3" => [
       "3193-BJ-0001", "3193-BJ-0002", "3193-BJ-0004", "3193-BJ-0005", "3193-BJ-0007", "3193-BJ-0010", "3193-BJ-0014", "3193-BJ-0015", "3193-BJ-0018", "3193-BJ-0022",
       "3193-BJ-0025", "3193-BJ-0030", "3193-BJ-0032", "3193-BJ-0033", "3193-BJ-0034", "3193-BJ-0039", "3193-BJ-0044"
     ],
   },
-  pairs => {
-    "ClinicalResponse"     => { groups => [ "Group12",     "Group3" ], },
-  },
+  pairs  => { "ClinicalResponse" => { groups => [ "Group12", "Group3" ], }, },
   fastqc => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -412,6 +410,21 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  fusion_catcher => {
+    class      => "Fusion::FusionCatcher",
+    perform    => 1,
+    target_dir => "${target_dir}/fusion_catcher",
+    option     => "",
+    source_ref => "files",
+    data_dir   => $fusiondata,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -451,7 +464,8 @@ my $config = {
   #  },
 };
 
-performConfig($config);
-#performTask( $config, "hc_gvcf_vqsr_annovar" );
+#performConfig($config);
+
+performTask( $config, "fusion_catcher" );
 
 1;
