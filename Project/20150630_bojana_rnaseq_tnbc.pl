@@ -324,6 +324,7 @@ my $config = {
     show_DE_gene_cluster => 1,
     pvalue               => 0.05,
     fold_change          => 2.0,
+    min_median_read      => 5,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -466,7 +467,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "fusion_catcher" );
-
+performTask( $config, "star_deseq2" );
 
 1;
