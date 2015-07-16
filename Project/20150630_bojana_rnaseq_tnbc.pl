@@ -53,8 +53,11 @@ my $download = {
 #performConfig($download);
 
 my $config = {
-  general => { task_name => $task },
-  files   => {
+  general => {
+    task_name => $task,
+    path_file => "/home/shengq1/local/bin/path.txt"
+  },
+  files => {
     "3193-BJ-0001" =>
       [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL112956_1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20150630_bojana_tnbc/raw/result/SL112956_2.fastq.gz" ],
     "3193-BJ-0002" =>
