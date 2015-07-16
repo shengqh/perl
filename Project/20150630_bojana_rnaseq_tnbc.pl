@@ -468,5 +468,6 @@ my $config = {
 #performConfig($config);
 
 performTask( $config, "star_deseq2" );
+performTask( $config, "fusion_catcher" );
 
 1;
