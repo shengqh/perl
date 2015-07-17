@@ -476,9 +476,9 @@ my $config = {
   #  },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "star_index" );
+#performTask( $config, "star_index" );
 #performTask( $config, "fusion_catcher" );
 
 1;
