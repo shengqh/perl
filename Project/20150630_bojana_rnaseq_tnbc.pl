@@ -423,6 +423,7 @@ my $config = {
     g1000_vcf   => $g1000,
     mills_vcf   => $mills,
     gatk_jar    => $gatk_jar,
+    cqs_tools   => $cqstools,
     sh_direct   => 1,
     pbs         => {
       "email"    => $email,
