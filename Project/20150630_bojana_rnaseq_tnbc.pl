@@ -512,7 +512,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "tophat2" );
-performTask( $config, "cuffdiff" );
+performTask( $config, "hc_gvcf_vqsr" );
 
 1;
