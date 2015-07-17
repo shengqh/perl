@@ -40,7 +40,7 @@ if ( !defined($fastaFile) ) {
 }
 
 my $basename = basename($fastaFile);
-(my $base = $basename) =~ s/\.[^.]+$//;
+( my $base = $basename ) =~ s/\.[^.]+$//;
 
 # index fasta file
 run_command("samtools faidx $fastaFile ");
@@ -55,49 +55,49 @@ chomp($bwa);
 `rm 1`;
 if ( !-e "bwa_index_${bwa}" ) {
   mkdir("bwa_index_${bwa}");
-}
-chdir("bwa_index_${bwa}");
-if ( !-e $basename ) {
-  run_command("ln -s ../$fastaFile $basename ");
-  run_command("ln -s ../${base}.dict ${base}.dict ");
-  run_command("ln -s ../${basename}.fai ${basename}.fai ");
-  run_command("ln -s ../${base}.len ${base}.len ");
-}
-print "bwa index $basename \n";
-run_command("bwa index $basename");
+  chdir("bwa_index_${bwa}");
+  if ( !-e $basename ) {
+    run_command("ln -s ../$fastaFile $basename ");
+    run_command("ln -s ../${base}.dict ${base}.dict ");
+    run_command("ln -s ../${basename}.fai ${basename}.fai ");
+    run_command("ln -s ../${base}.len ${base}.len ");
+  }
+  print "bwa index $basename \n";
+  run_command("bwa index $basename");
 
-chdir("..");
+  chdir("..");
+}
 
 # bowtie
 my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
 chomp($bowtie);
 if ( !-e "bowtie_index_${bowtie}" ) {
   mkdir("bowtie_index_${bowtie}");
+  chdir("bowtie_index_${bowtie}");
+  if ( !-e $basename ) {
+    run_command("ln -s ../$fastaFile $basename ");
+    run_command("ln -s ../${base}.dict ${base}.dict ");
+    run_command("ln -s ../${basename}.fai ${basename}.fai ");
+    run_command("ln -s ../${base}.len ${base}.len ");
+  }
+  run_command("bowtie-build $basename $base ");
+  chdir("..");
 }
-chdir("bowtie_index_${bowtie}");
-if ( !-e $basename ) {
-  run_command("ln -s ../$fastaFile $basename ");
-  run_command("ln -s ../${base}.dict ${base}.dict ");
-  run_command("ln -s ../${basename}.fai ${basename}.fai ");
-  run_command("ln -s ../${base}.len ${base}.len ");
-}
-run_command("bowtie-build $basename $base ");
-chdir("..");
 
 # bowtie2
 my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
 chomp($bowtie2);
 if ( !-e "bowtie2_index_${bowtie2}" ) {
   mkdir("bowtie2_index_${bowtie2}");
+  chdir("bowtie2_index_${bowtie2}");
+  if ( !-e $basename ) {
+    run_command("ln -s ../$fastaFile $basename ");
+    run_command("ln -s ../${base}.dict ${base}.dict ");
+    run_command("ln -s ../${basename}.fai ${basename}.fai ");
+    run_command("ln -s ../${base}.len ${base}.len ");
+  }
+  run_command("bowtie2-build $basename $base ");
+  chdir("..");
 }
-chdir("bowtie2_index_${bowtie2}");
-if ( !-e $basename ) {
-  run_command("ln -s ../$fastaFile $basename ");
-  run_command("ln -s ../${base}.dict ${base}.dict ");
-  run_command("ln -s ../${basename}.fai ${basename}.fai ");
-  run_command("ln -s ../${base}.len ${base}.len ");
-}
-run_command("bowtie2-build $basename $base ");
-chdir("..");
 
 1;
