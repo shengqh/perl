@@ -435,10 +435,18 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",         "star" ],
-      step2 => [ "fastqc_summary", "star_index" ],
-      step3 => [ "star_2nd_pass",  "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
-      step4 => [ "qc3", "star_genetable", "hc_gvcf_vqsr", "hc_gvcf_vqsr_annovar" ],
+      step1 => [
+
+        #"fastqc",
+        "star"
+      ],
+      step2 => [
+
+        #"fastqc_summary",
+        "star_index"
+      ],
+      step3 => [ "star_2nd_pass", "star_htseqcount", "star_2nd_pass_refine", "hc_gvcf", "star_2nd_pass_sort" ],
+      step4 => [ "qc3",           "star_genetable",  "hc_gvcf_vqsr",         "hc_gvcf_vqsr_annovar" ],
     },
     sh_direct => 0,
     pbs       => {
