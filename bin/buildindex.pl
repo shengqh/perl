@@ -44,7 +44,10 @@ my $basename = basename($fastaFile);
 
 # index fasta file
 run_command("samtools faidx $fastaFile ");
-run_command("java -jar /scratch/cqs/shengq1/local/bin/picard/picard.jar CreateSequenceDictionary R=$fastaFile O=${base}.dict");
+
+if ( !-e "${base}.dict" ) {
+  run_command("java -jar /scratch/cqs/shengq1/local/bin/picard/picard.jar CreateSequenceDictionary R=$fastaFile O=${base}.dict");
+}
 run_command("perl /home/shengq1/local/bin/get_fasta_lengths.pl $fastaFile");
 run_command("mv res_${basename} ${base}.len ");
 
