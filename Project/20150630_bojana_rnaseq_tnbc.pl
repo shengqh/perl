@@ -206,6 +206,40 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  tophat2 => {
+    class         => "Alignment::Tophat2",
+    perform       => 1,
+    target_dir    => "${target_dir}/tophat2",
+    option        => "--segment-length 25 -r 0 -p 8",
+    source_ref    => "files",
+    bowtie2_index => "/scratch/cqs/shengq1/references/hg19_16569_MT/bowtie2_index_2.2.4/hg19_16569_MT",
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=6",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
+  cuffdiff => {
+    class                => "Cufflinks::Cuffdiff",
+    perform              => 1,
+    target_dir           => "${target_dir}/cuffdiff",
+    option               => "-p 8 -u -N",
+    transcript_gtf       => $transcript_gtf,
+    transcript_gtf_index => $transcript_gtf_index,
+    fasta_file           => $fasta_file_16569_MT,
+    source_ref           => "tophat2",
+    groups_ref           => "groups",
+    pairs_ref            => "pairs",
+    sh_direct            => 0,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
   star => {
     class      => "Alignment::STAR",
     perform    => 1,
@@ -476,9 +510,9 @@ my $config = {
   #  },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "star_index" );
-#performTask( $config, "fusion_catcher" );
+performTask( $config, "tophat2" );
+performTask( $config, "cuffdiff" );
 
 1;
