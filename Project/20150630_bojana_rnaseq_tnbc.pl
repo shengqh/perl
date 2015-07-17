@@ -225,7 +225,7 @@ my $config = {
     class          => "Alignment::STARIndex",
     perform        => 1,
     target_dir     => "${target_dir}/star_index",
-    option         => "--sjdbOverhang 100",
+    option         => "--sjdbOverhang 100  --limitSjdbInsertNsj 2000000",
     source_ref     => [ "star", "tab\$" ],
     fasta_file     => $fasta_file_16569_MT,
     transcript_gtf => $transcript_gtf,
@@ -476,9 +476,9 @@ my $config = {
   #  },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "star_deseq2" );
+performTask( $config, "star_index" );
 #performTask( $config, "fusion_catcher" );
 
 1;
