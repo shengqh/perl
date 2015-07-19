@@ -513,6 +513,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "hc_gvcf_vqsr" );
+performTask( $config, "hc_gvcf" );
 
 1;
