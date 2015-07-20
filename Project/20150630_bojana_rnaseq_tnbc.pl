@@ -221,12 +221,27 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  tophat2_sort => {
+    class         => "Samtools::Sort",
+    perform       => 1,
+    target_dir    => "${target_dir}/tophat2_sort",
+    option        => "",
+    source_ref    => [ "tophat2", ".bam" ],
+    sort_by_query => 1,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "20gb"
+    },
+  },
   tophat2_htseqcount => {
     class      => "Count::HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/tophat2_htseqcount",
-    option     => "-r pos",
-    source_ref => [ "tophat2", ".bam" ],
+    option     => "-r name",
+    source_ref => "tophat2_sort",
     gff_file   => $transcript_gtf,
     ispairend  => 1,
     sh_direct  => 0,
@@ -273,7 +288,7 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  
+
   cuffdiff => {
     class                => "Cufflinks::Cuffdiff",
     perform              => 1,
@@ -566,6 +581,7 @@ my $config = {
 
 #performConfig($config);
 
+performTask( $config, "tophat2_sort" );
 performTask( $config, "tophat2_htseqcount" );
 performTask( $config, "tophat2_genetable" );
 performTask( $config, "tophat2_deseq2" );
