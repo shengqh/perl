@@ -443,7 +443,7 @@ my $config = {
   star_2nd_pass_refine => {
     class              => "GATK::RNASeqRefine",
     perform            => 1,
-    target_dir         => "${target_dir}/star_2nd_pass_refine",
+    target_dir         => "${target_dir}/backup/star_2nd_pass_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file_16569_MT,
     source_ref         => "star_2nd_pass",
@@ -472,12 +472,12 @@ my $config = {
     fasta_file  => $fasta_file_16569_MT,
     dbsnp_vcf   => $dbsnp,
     gatk_jar    => $gatk_jar,
-    sh_direct   => 0,
+    sh_direct   => 1,
     pbs         => {
       "email"    => $email,
-      "nodes"    => "1:ppn=2",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "120gb"
     },
   },
   hc_gvcf_vqsr => {
