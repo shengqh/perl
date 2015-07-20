@@ -465,7 +465,7 @@ my $config = {
   hc_gvcf => {
     class       => "GATK::HaplotypeCallerGVCF",
     perform     => 1,
-    target_dir  => "${target_dir}/hc_gvcf",
+    target_dir  => "${target_dir}/backup/hc_gvcf",
     option      => "",
     source_ref  => "star_2nd_pass_refine",
     java_option => "",
@@ -483,7 +483,7 @@ my $config = {
   hc_gvcf_vqsr => {
     class       => "GATK::VariantFilterVQSR",
     perform     => 1,
-    target_dir  => "${target_dir}/hc_gvcf_vqsr",
+    target_dir  => "${target_dir}/backup/hc_gvcf_vqsr",
     option      => "",
     source_ref  => "hc_gvcf",
     java_option => "",
@@ -506,7 +506,7 @@ my $config = {
   hc_gvcf_vqsr_annovar => {
     class      => "Annotation::Annovar",
     perform    => 1,
-    target_dir => "${target_dir}/hc_gvcf_vqsr_annovar",
+    target_dir => "${target_dir}/backup/hc_gvcf_vqsr_annovar",
     source_ref => "hc_gvcf_vqsr",
     option     => $annovar_param,
     annovar_db => $annovar_db,
@@ -584,12 +584,16 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "star" );
-performTask( $config, "star_index" );
-performTask( $config, "star_2nd_pass" );
-performTask( $config, "star_htseqcount" );
-performTask( $config, "star_genetable" );
-performTask( $config, "star_deseq2" );
+#performTask( $config, "star" );
+#performTask( $config, "star_index" );
+#performTask( $config, "star_2nd_pass" );
+#performTask( $config, "star_htseqcount" );
+#performTask( $config, "star_genetable" );
+#performTask( $config, "star_deseq2" );
+
+performTask( $config, "hc_gvcf" );
+performTask( $config, "hc_gvcf_vqsr" );
+performTask( $config, "hc_gvcf_vqsr_annovar" );
 
 #performTask( $config, "hc_gvcf" );
 #performTask( $config, "tophat2_sort" );
