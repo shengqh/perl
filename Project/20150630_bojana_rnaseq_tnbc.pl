@@ -462,7 +462,25 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  hc_gvcf => {
+  star_2nd_pass_refine_SNPindel => {
+    class       => "GATK::SNPIndel",
+    perform     => 1,
+    target_dir  => "${target_dir}/backup/star_2nd_pass_refine_SNPindel",
+    option      => "",
+    source_ref  => "star_2nd_pass_refine",
+    java_option => "",
+    fasta_file  => $fasta_file_16569_MT,
+    dbsnp_vcf   => $dbsnp,
+    gatk_jar    => $gatk_jar,
+    is_rna      => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+    hc_gvcf => {
     class       => "GATK::HaplotypeCallerGVCF",
     perform     => 1,
     target_dir  => "${target_dir}/backup/hc_gvcf",
@@ -591,11 +609,12 @@ my $config = {
 #performTask( $config, "star_genetable" );
 #performTask( $config, "star_deseq2" );
 
-performTask( $config, "hc_gvcf" );
-performTask( $config, "hc_gvcf_vqsr" );
-performTask( $config, "hc_gvcf_vqsr_annovar" );
-
 #performTask( $config, "hc_gvcf" );
+#performTask( $config, "hc_gvcf_vqsr" );
+#performTask( $config, "hc_gvcf_vqsr_annovar" );
+
+performTask( $config, "star_2nd_pass_refine_SNPindel" );
+
 #performTask( $config, "tophat2_sort" );
 #performTask( $config, "tophat2_htseqcount" );
 #performTask( $config, "tophat2_genetable" );
