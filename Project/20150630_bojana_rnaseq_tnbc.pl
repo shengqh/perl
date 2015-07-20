@@ -581,9 +581,10 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "tophat2_sort" );
-performTask( $config, "tophat2_htseqcount" );
-performTask( $config, "tophat2_genetable" );
-performTask( $config, "tophat2_deseq2" );
+performTask( $config, "hc_gvcf" );
+#performTask( $config, "tophat2_sort" );
+#performTask( $config, "tophat2_htseqcount" );
+#performTask( $config, "tophat2_genetable" );
+#performTask( $config, "tophat2_deseq2" );
 
 1;
