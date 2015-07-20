@@ -14,7 +14,8 @@ my $fasta_file_16569_MT  = "/scratch/cqs/shengq1/references/hg19_16569_MT/hg19_1
 my $cqstools             = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $gatk_jar             = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar           = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
-my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_MT/STAR_index_v37.75_2.4.0j_sjdb100";
+#my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_MT/STAR_index_v37.75_2.4.0j_sjdb100";
+my $star_index           = "/scratch/cqs/shengq1/references/hg19_16569_MT/STAR_index_v37.75_2.4.2a_sjdb99";
 my $annovar_param        = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db           = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $qc3_perl             = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
@@ -327,7 +328,7 @@ my $config = {
     class          => "Alignment::STARIndex",
     perform        => 1,
     target_dir     => "${target_dir}/star_index",
-    option         => "--sjdbOverhang 100  --limitSjdbInsertNsj 2000000",
+    option         => "--sjdbOverhang 99 --limitSjdbInsertNsj 2000000",
     source_ref     => [ "star", "tab\$" ],
     fasta_file     => $fasta_file_16569_MT,
     transcript_gtf => $transcript_gtf,
@@ -581,7 +582,14 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "hc_gvcf" );
+performTask( $config, "star" );
+performTask( $config, "star_index" );
+performTask( $config, "star_2nd_pass" );
+performTask( $config, "star_htseqcount" );
+performTask( $config, "star_genetable" );
+performTask( $config, "star_deseq2" );
+
+#performTask( $config, "hc_gvcf" );
 #performTask( $config, "tophat2_sort" );
 #performTask( $config, "tophat2_htseqcount" );
 #performTask( $config, "tophat2_genetable" );
