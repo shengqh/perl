@@ -477,7 +477,7 @@ my $config = {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "120gb"
+      "mem"      => "80gb"
     },
   },
   hc_gvcf_vqsr => {
