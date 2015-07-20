@@ -221,6 +221,59 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  tophat2_htseqcount => {
+    class      => "Count::HTSeqCount",
+    perform    => 1,
+    target_dir => "${target_dir}/tophat2_htseqcount",
+    option     => "-r pos",
+    source_ref => [ "tophat2", ".bam" ],
+    gff_file   => $transcript_gtf,
+    ispairend  => 1,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  tophat2_genetable => {
+    class         => "CQS::CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/tophat2_genetable",
+    option        => "-p ENS --noheader -e -o ${task}_gene.count",
+    source_ref    => "tophat2_htseqcount",
+    name_map_file => $name_map_file,
+    cqs_tools     => $cqstools,
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  tophat2_deseq2 => {
+    class                => "Comparison::DESeq2",
+    perform              => 1,
+    target_dir           => "${target_dir}/tophat2_deseq2",
+    option               => "",
+    source_ref           => "pairs",
+    groups_ref           => "groups",
+    countfile_ref        => "tophat2_genetable",
+    sh_direct            => 1,
+    show_DE_gene_cluster => 1,
+    pvalue               => 0.05,
+    fold_change          => 2.0,
+    min_median_read      => 5,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  
   cuffdiff => {
     class                => "Cufflinks::Cuffdiff",
     perform              => 1,
@@ -513,6 +566,8 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "hc_gvcf" );
+performTask( $config, "tophat2_htseqcount" );
+performTask( $config, "tophat2_genetable" );
+performTask( $config, "tophat2_deseq2" );
 
 1;
