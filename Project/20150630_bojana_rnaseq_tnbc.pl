@@ -614,7 +614,7 @@ my $config = {
 
 #performTask( $config, "hc_gvcf" );
 
-#performTask( $config, "hc_gvcf_vqsr" );
+performTask( $config, "hc_gvcf_vqsr" );
 #performTask( $config, "hc_gvcf_vqsr_annovar" );
 
 #performTask( $config, "star_2nd_pass_sort" );
@@ -625,6 +625,6 @@ my $config = {
 #performTask( $config, "tophat2_genetable" );
 #performTask( $config, "tophat2_deseq2" );
 
-performTask( $config, "fusion_catcher" );
+#performTask( $config, "fusion_catcher" );
 
 1;
