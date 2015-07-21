@@ -32,7 +32,7 @@ my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $conifer       = "/home/shengq1/pylibs/bin/conifer.py";
 my $covered_bed   = "/gpfs21/scratch/cqs/shengq1/dnaseq/20150406_bojana_dnaseq_selectedgenes/0699701_Covered.bed";
 
-my $qc3_perl      = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+my $qc3_perl = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
 my $cluster = "slurm";
 
@@ -521,7 +521,7 @@ my $config = {
     fasta_file  => $bwa_fasta,
     dbsnp_vcf   => $dbsnp,
     gatk_jar    => $gatk_jar,
-    extension => ".gvcf",
+    extension   => ".gvcf",
     sh_direct   => 0,
     pbs         => {
       "email"    => $email,
@@ -544,7 +544,7 @@ my $config = {
     g1000_vcf   => $g1000,
     mills_vcf   => $mills,
     gatk_jar    => $gatk_jar,
-    cqstools => $cqstools,
+    cqstools    => $cqstools,
     sh_direct   => 1,
     pbs         => {
       "email"    => $email,
@@ -572,7 +572,7 @@ my $config = {
     class      => "Annotation::Annovar",
     perform    => 1,
     target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar",
-    source_ref => "bwa_refine_hc_gvcf_vqsr",
+    source_ref => [ "bwa_refine_hc_gvcf_vqsr", "snp" ],
     option     => $annovar_param,
     annovar_db => $annovar_db,
     buildver   => "hg19",
@@ -686,8 +686,7 @@ my $config = {
 
 #performTask( $config, "muTect" );
 
-performTask( $config, "qc3vcf" );
+performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar" );
 
 1;
-
 
