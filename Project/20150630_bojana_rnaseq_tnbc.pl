@@ -179,7 +179,10 @@ my $config = {
       "3193-BJ-0025", "3193-BJ-0030", "3193-BJ-0032", "3193-BJ-0033", "3193-BJ-0034", "3193-BJ-0039", "3193-BJ-0044"
     ],
   },
-  pairs  => { "ClinicalResponse" => { groups => [ "Group12", "Group3" ], }, },
+  pairs => {
+    "ClinicalResponse" => { groups => [ "Group12", "Group3" ], },
+    "Group1_vs_Group3" => { groups => [ "Group1",  "Group3" ], },
+  },
   fastqc => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -607,9 +610,9 @@ my $config = {
 #performTask( $config, "star_2nd_pass" );
 #performTask( $config, "star_htseqcount" );
 #performTask( $config, "star_genetable" );
-#performTask( $config, "star_deseq2" );
+performTask( $config, "star_deseq2" );
 
-performTask( $config, "hc_gvcf" );
+#performTask( $config, "hc_gvcf" );
 
 #performTask( $config, "hc_gvcf_vqsr" );
 #performTask( $config, "hc_gvcf_vqsr_annovar" );
