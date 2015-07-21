@@ -480,10 +480,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-    hc_gvcf => {
+  hc_gvcf => {
     class       => "GATK::HaplotypeCallerGVCF",
     perform     => 1,
-    target_dir  => "${target_dir}/hc_gvcf",
+    target_dir  => "${target_dir}/backup/hc_gvcf",
     option      => "",
     source_ref  => "star_2nd_pass_refine",
     java_option => "",
@@ -610,6 +610,7 @@ my $config = {
 #performTask( $config, "star_deseq2" );
 
 performTask( $config, "hc_gvcf" );
+
 #performTask( $config, "hc_gvcf_vqsr" );
 #performTask( $config, "hc_gvcf_vqsr_annovar" );
 
