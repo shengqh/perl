@@ -541,6 +541,7 @@ my $config = {
     g1000_vcf   => $g1000,
     mills_vcf   => $mills,
     gatk_jar    => $gatk_jar,
+    cqstools => $cqstools,
     sh_direct   => 1,
     pbs         => {
       "email"    => $email,
@@ -665,9 +666,9 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "muTect" );
+#performTask( $config, "muTect" );
 
-performTask( $config, "annovar_muTect" );
+performTask( $config, "bwa_refine_hc_gvcf_vqsr" );
 
 1;
 
