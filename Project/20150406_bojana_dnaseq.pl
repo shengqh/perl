@@ -519,6 +519,7 @@ my $config = {
     fasta_file  => $bwa_fasta,
     dbsnp_vcf   => $dbsnp,
     gatk_jar    => $gatk_jar,
+    extension => ".gvcf",
     sh_direct   => 0,
     pbs         => {
       "email"    => $email,
