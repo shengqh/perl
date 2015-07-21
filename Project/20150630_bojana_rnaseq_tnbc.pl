@@ -524,6 +524,22 @@ my $config = {
       "mem"      => "100gb"
     },
   },
+  qc3vcf => {
+    class      => "QC::QC3vcf",
+    perform    => 1,
+    target_dir => "${target_dir}/backup/hc_gvcf_vqsr_qc3",
+    option     => "",
+    qc3_perl   => $qc3_perl,
+    source_ref => [ "hc_gvcf_vqsr", "snp" ],
+    annovar_db => $annovar_db,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   hc_gvcf_vqsr_annovar => {
     class      => "Annotation::Annovar",
     perform    => 1,
@@ -612,9 +628,11 @@ my $config = {
 #performTask( $config, "star_genetable" );
 #performTask( $config, "star_deseq2" );
 
-#performTask( $config, "hc_gvcf" );
+performTask( $config, "hc_gvcf" );
 
-performTask( $config, "hc_gvcf_vqsr" );
+#performTask( $config, "hc_gvcf_vqsr" );
+#performTask( $config, "qc3vcf" );
+
 #performTask( $config, "hc_gvcf_vqsr_annovar" );
 
 #performTask( $config, "star_2nd_pass_sort" );
