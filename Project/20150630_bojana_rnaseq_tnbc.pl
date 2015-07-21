@@ -553,7 +553,7 @@ my $config = {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "30gb"
+      "mem"      => "80gb"
     },
   },
   sequencetask => {
@@ -610,7 +610,7 @@ my $config = {
 #performTask( $config, "star_2nd_pass" );
 #performTask( $config, "star_htseqcount" );
 #performTask( $config, "star_genetable" );
-performTask( $config, "star_deseq2" );
+#performTask( $config, "star_deseq2" );
 
 #performTask( $config, "hc_gvcf" );
 
@@ -624,5 +624,7 @@ performTask( $config, "star_deseq2" );
 #performTask( $config, "tophat2_htseqcount" );
 #performTask( $config, "tophat2_genetable" );
 #performTask( $config, "tophat2_deseq2" );
+
+performTask( $config, "fusion_catcher" );
 
 1;
