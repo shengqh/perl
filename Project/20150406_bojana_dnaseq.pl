@@ -11,7 +11,7 @@ my $target_dir = "/scratch/cqs/shengq1/dnaseq/20150406_bojana_dnaseq_selectedgen
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
-my $bwa_fasta      = "/data/cqs/shengq1/reference/hg19_16569_MT/bwa_index_0.7.8/hg19_16569_MT.fa";
+my $bwa_fasta      = "/scratch/cqs/shengq1/references/hg19_16569_MT/bwa_index_0.7.12/hg19_16569_MT.fa";
 my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.gtf";
 my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.map";
 
