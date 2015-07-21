@@ -32,6 +32,8 @@ my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $conifer       = "/home/shengq1/pylibs/bin/conifer.py";
 my $covered_bed   = "/gpfs21/scratch/cqs/shengq1/dnaseq/20150406_bojana_dnaseq_selectedgenes/0699701_Covered.bed";
 
+my $qc3_perl      = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+
 my $cluster = "slurm";
 
 my $config = {
@@ -551,6 +553,21 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  qc3vcf => {
+    class      => "QC::QC3vcf",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_qc3",
+    option     => "",
+    qc3_perl   => $qc3_perl,
+    source_ref => [ "bwa_refine_hc_gvcf_vqsr", "snp" ],
+    annovar_db => $annovar_db,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bwa_refine_hc_gvcf_vqsr_annovar => {
     class      => "Annotation::Annovar",
     perform    => 1,
@@ -669,7 +686,7 @@ my $config = {
 
 #performTask( $config, "muTect" );
 
-performTask( $config, "bwa_refine_hc_gvcf_vqsr" );
+performTask( $config, "qc3vcf" );
 
 1;
 
