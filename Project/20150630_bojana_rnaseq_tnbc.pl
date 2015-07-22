@@ -630,10 +630,10 @@ my $config = {
 
 #performTask( $config, "hc_gvcf" );
 
-performTask( $config, "hc_gvcf_vqsr" );
+#performTask( $config, "hc_gvcf_vqsr" );
 #performTask( $config, "qc3vcf" );
 
-#performTask( $config, "hc_gvcf_vqsr_annovar" );
+performTask( $config, "hc_gvcf_vqsr_annovar" );
 
 #performTask( $config, "star_2nd_pass_sort" );
 #performTask( $config, "star_2nd_pass_refine_SNPindel" );
