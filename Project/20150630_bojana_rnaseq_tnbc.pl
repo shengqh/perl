@@ -628,9 +628,9 @@ my $config = {
 #performTask( $config, "star_genetable" );
 #performTask( $config, "star_deseq2" );
 
-performTask( $config, "hc_gvcf" );
+#performTask( $config, "hc_gvcf" );
 
-#performTask( $config, "hc_gvcf_vqsr" );
+performTask( $config, "hc_gvcf_vqsr" );
 #performTask( $config, "qc3vcf" );
 
 #performTask( $config, "hc_gvcf_vqsr_annovar" );
