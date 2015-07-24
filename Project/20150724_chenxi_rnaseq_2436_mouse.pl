@@ -14,7 +14,6 @@ my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150724_chenxi_rnaseq_mouse";
 #my $target_dir = "e:/temp";
 
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl_gtf/v81/Mus_musculus.GRCm38.81.gtf";
-my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl_gtf/v81/Mus_musculus.GRCm38.81.gtf.index";
 my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl_gtf/v81/Mus_musculus.GRCm38.81.map";
 my $bowtie2_index        = "/scratch/cqs/shengq1/references/mm10/bowtie2_index_2.2.4/mm10";
 my $cqstools             = "/home/shengq1/cqstools/CQS.Tools.exe";
@@ -73,7 +72,6 @@ my $config = {
     source_ref           => "files",
     bowtie2_index        => $bowtie2_index,
     transcript_gtf       => $transcript_gtf,
-    transcript_gtf_index => $transcript_gtf_index,
     sh_direct            => 0,
     pbs                  => {
       "email"    => $email,
