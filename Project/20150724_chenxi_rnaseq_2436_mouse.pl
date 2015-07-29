@@ -166,7 +166,9 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+
+performTask($config, "star_htseqcount");
 
 1;
 
