@@ -120,6 +120,7 @@ my $config = {
     source_ref => [ "star_2nd_pass", "_Aligned.out.bam" ],
     gff_file   => $transcript_gtf,
     ispairend  => 0,
+    isstranded => 1,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
