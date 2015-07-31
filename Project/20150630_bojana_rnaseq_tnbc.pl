@@ -213,14 +213,14 @@ my $config = {
     },
   },
   tophat2 => {
-    class         => "Alignment::Tophat2",
-    perform       => 1,
-    target_dir    => "${target_dir}/tophat2",
-    option        => "--segment-length 25 -r 0 -p 8",
-    source_ref    => "files",
-    bowtie2_index => $bowtie2_index,
-    sh_direct     => 0,
-    pbs           => {
+    class                => "Alignment::Tophat2",
+    perform              => 1,
+    target_dir           => "${target_dir}/tophat2",
+    option               => "--segment-length 25 -r 0 -p 8",
+    source_ref           => "files",
+    bowtie2_index        => $bowtie2_index,
+    sh_direct            => 0,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=6",
       "walltime" => "72",
@@ -630,7 +630,7 @@ my $config = {
 
 #performTask( $config, "hc_gvcf" );
 
-#performTask( $config, "hc_gvcf_vqsr" );
+performTask( $config, "hc_gvcf_vqsr" );
 #performTask( $config, "qc3vcf" );
 
 performTask( $config, "hc_gvcf_vqsr_annovar" );
