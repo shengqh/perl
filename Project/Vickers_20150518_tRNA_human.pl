@@ -10,16 +10,16 @@ my $config = {
     'task_name' => '20150518_tRNA'
   },
   'files' => {
-    'KCVH08' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH8_S14_R1_001.fastq.gz'],
+    'KCVH01' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH1_S6_R1_001.fastq.gz'],
     'KCVH02' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH2_S8_R1_001.fastq.gz'],
     'KCVH03' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH3_S9_R1_001.fastq.gz'],
     'KCVH04' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH4_S10_R1_001.fastq.gz'],
-    'KCVH09' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH9_S15_R1_001.fastq.gz'],
+    'KCVH05' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH5_S11_R1_001.fastq.gz'],
     'KCVH06' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH6_S12_R1_001.fastq.gz'],
     'KCVH07' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH7_S13_R1_001.fastq.gz'],
+    'KCVH08' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH8_S14_R1_001.fastq.gz'],
+    'KCVH09' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH9_S15_R1_001.fastq.gz'],
     'KCVH10' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH10_S7_R1_001.fastq.gz'],
-    'KCVH05' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH5_S11_R1_001.fastq.gz'],
-    'KCVH01' => ['/gpfs21/scratch/cqs/shengq1/vickers/data/20150515_tRNA/KCVH1_S6_R1_001.fastq.gz']
   },
   'fastqc_pre_trim' => {
     'pbs' => {
@@ -110,6 +110,23 @@ my $config = {
     'cqstools'   => '/home/shengq1/cqstools/CQS.Tools.exe',
     'class'      => 'FastqIdentical',
     'option'     => ''
+  },
+  fastq_trna => {
+    class        => "SmallRNA::FastqTrna",
+    perform      => 1,
+    target_dir   => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/fastq_trna",
+    option       => "",
+    extension    => '_clipped_identical_trna.fastq.gz',
+    source_ref   => [ 'identical', '.fastq.gz$' ],
+    seqcount_ref => [ 'identical', '.dupcount$' ],
+    cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
   },
   star => {
     class      => "Alignment::STAR",
@@ -268,6 +285,9 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "fastq_trna");
+
+
 1;
 
