@@ -318,6 +318,39 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+
+  star_dexseqcount => {
+    class        => "Count::DexseqCount",
+    perform      => 1,
+    target_dir   => "${target_dir}/star_dexseqcount",
+    option       => "",
+    source_ref   => [ "star_2nd_pass", "_Aligned.out.bam" ],
+    gff_file     => $transcript_gtf,
+    dexseq_count => "/home/shengq1/pylibs/bin/dexseq_count.py",
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_exontable => {
+    class      => "CQS::CQSDatatable",
+    perform    => 1,
+    target_dir => "${target_dir}/star_exontable",
+    option     => "-p ENS --noheader -o ${task}_exon.count",
+    source_ref => "star_dexseqcount",
+    cqs_tools  => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+
   star_deseq2 => {
     class                => "Comparison::DESeq2",
     perform              => 1,
@@ -433,8 +466,8 @@ my $config = {
     },
   },
 };
-
 #performConfig($config);
-performTask( $config, "star_deseq2" );
+performTask( $config, "star_dexseqcount" );
+performTask( $config, "star_exontable" );
 
 1;
