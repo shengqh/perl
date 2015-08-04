@@ -14,6 +14,7 @@ my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150226_bojana_FFPE_FF/miseq";
 #my $target_dir = "e:/temp";
 
 my $transcript_gtf       = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
+my $dexseq_gff           = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.dexseq.gff";
 my $name_map_file        = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.map";
 my $transcript_gtf_index = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/gtfindex/Homo_sapiens.GRCh37.75.M";
 my $fasta_file_16569_M   = "/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa";
@@ -326,7 +327,7 @@ my $config = {
     target_dir   => "${target_dir}/star_dexseqcount",
     option       => "",
     source_ref   => [ "star_2nd_pass", "_Aligned.out.bam" ],
-    gff_file     => $transcript_gtf,
+    gff_file     => $dexseq_gff,
     dexseq_count => "/home/shengq1/pylibs/bin/dexseq_count.py",
     sh_direct    => 0,
     pbs          => {
