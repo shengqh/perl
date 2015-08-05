@@ -470,7 +470,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "star_dexseqcount" );
+#performTask( $config, "star_dexseqcount" );
 performTask( $config, "star_exontable" );
 
 1;
