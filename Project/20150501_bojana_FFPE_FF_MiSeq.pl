@@ -338,14 +338,15 @@ my $config = {
     },
   },
   star_exontable => {
-    class      => "CQS::CQSDatatable",
-    perform    => 1,
-    target_dir => "${target_dir}/star_exontable",
-    option     => "-p ENS --noheader -o ${task}_exon.count",
-    source_ref => "star_dexseqcount",
-    cqs_tools  => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
+    class         => "CQS::CQSDatatable",
+    perform       => 1,
+    target_dir    => "${target_dir}/star_exontable",
+    option        => "-p ENS --noheader -e -o ${task}_exon.count",
+    source_ref    => "star_dexseqcount",
+    name_map_file => $name_map_file,
+    cqs_tools     => $cqstools,
+    sh_direct     => 1,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
