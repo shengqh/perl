@@ -13,14 +13,12 @@ my $target_dir = "/scratch/cqs/shengq1/rnaseq/20150724_chenxi_rnaseq_mouse";
 
 #my $target_dir = "e:/temp";
 
-my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v81/Mus_musculus.GRCm38.81.gtf";
-my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v81/Mus_musculus.GRCm38.81.map";
-my $star_index     = "/scratch/cqs/shengq1/references/mm10/STAR_index_v38.81_2.4.2a_sjdb49";
-my $fasta_file     = "/scratch/cqs/shengq1/references/mm10/mm10.fa";
+my $transcript_gtf = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.gtf";
+my $name_map_file  = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.map";
+my $star_index     = "/scratch/cqs/shengq1/references/mm10_chr/STAR_index_ucsc_sjdb49";
+my $fasta_file     = "/scratch/cqs/shengq1/references/mm10_chr/mm10.fa";
 my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email          = "quanhu.sheng\@vanderbilt.edu";
-my $ucsc_gtf = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.gtf";
-my $ucsc_name_map_file  = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.map";
 
 my $config = {
   general => { task_name => $task },
@@ -40,7 +38,7 @@ my $config = {
   },
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -54,7 +52,7 @@ my $config = {
   },
   fastqc_summary => {
     class      => "QC::FastQCSummary",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "fastqc",
@@ -71,43 +69,11 @@ my $config = {
     class      => "Alignment::STAR",
     perform    => 1,
     target_dir => "${target_dir}/star",
-    option     => "",
+    option     => "--twopassMode",
     source_ref => "files",
     genome_dir => $star_index,
     sh_direct  => 0,
     pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "30gb"
-    },
-  },
-  star_index => {
-    class          => "Alignment::STARIndex",
-    perform        => 1,
-    target_dir     => "${target_dir}/star_index",
-    option         => "--sjdbOverhang 49 --limitSjdbInsertNsj 2000000",
-    source_ref     => [ "star", "tab\$" ],
-    fasta_file     => $fasta_file,
-    transcript_gtf => $transcript_gtf,
-    sh_direct      => 1,
-    pbs            => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=24",
-      "walltime" => "72",
-      "mem"      => "30gb"
-    },
-  },
-  star_2nd_pass => {
-    class           => "Alignment::STAR",
-    perform         => 1,
-    target_dir      => "${target_dir}/star_2nd_pass",
-    option          => "",
-    source_ref      => "files",
-    genome_dir_ref  => "star_index",
-    output_unsorted => 1,
-    sh_direct       => 0,
-    pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -119,8 +85,8 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/star_htseqcount",
     option     => "",
-    source_ref => [ "star_2nd_pass", "_Aligned.out.bam" ],
-    gff_file   => $ucsc_gtf,
+    source_ref => [ "star", "_Aligned.out.bam" ],
+    gff_file   => $transcript_gtf,
     ispairend  => 0,
     stranded   => "reverse",
     sh_direct  => 0,
@@ -135,9 +101,9 @@ my $config = {
     class         => "CQS::CQSDatatable",
     perform       => 1,
     target_dir    => "${target_dir}/star_genetable",
-    option        => "-p ENS --noheader -e -o ${task}_gene.count",
+    option        => "-p uc --noheader -e -o ${task}_gene.count",
     source_ref    => "star_htseqcount",
-    name_map_file => $ucsc_name_map_file,
+    name_map_file => $name_map_file,
     cqs_tools     => $cqstools,
     sh_direct     => 1,
     pbs           => {
@@ -153,10 +119,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "star",          "fastqc" ],
-      step2 => [ "star_index",    "fastqc_summary" ],
-      step3 => [ "star_2nd_pass", "star_htseqcount" ],
-      step4 => ["star_genetable"],
+      step1 => [ "star", "star_htseqcount" ],
+      step2 => ["star_genetable"],
     },
     sh_direct => 0,
     pbs       => {
@@ -168,10 +132,10 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
-performTask( $config, "star_htseqcount" );
-performTask( $config, "star_genetable" );
+#performTask( $config, "star_htseqcount" );
+#performTask( $config, "star_genetable" );
 
 1;
 
