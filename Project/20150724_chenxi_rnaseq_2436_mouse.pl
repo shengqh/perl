@@ -19,6 +19,8 @@ my $star_index     = "/scratch/cqs/shengq1/references/mm10/STAR_index_v38.81_2.4
 my $fasta_file     = "/scratch/cqs/shengq1/references/mm10/mm10.fa";
 my $cqstools       = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email          = "quanhu.sheng\@vanderbilt.edu";
+my $ucsc_gtf = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.gtf";
+my $ucsc_name_map_file  = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.map";
 
 my $config = {
   general => { task_name => $task },
@@ -118,7 +120,7 @@ my $config = {
     target_dir => "${target_dir}/star_htseqcount",
     option     => "",
     source_ref => [ "star_2nd_pass", "_Aligned.out.bam" ],
-    gff_file   => $transcript_gtf,
+    gff_file   => $ucsc_gtf,
     ispairend  => 0,
     stranded   => "reverse",
     sh_direct  => 0,
@@ -135,7 +137,7 @@ my $config = {
     target_dir    => "${target_dir}/star_genetable",
     option        => "-p ENS --noheader -e -o ${task}_gene.count",
     source_ref    => "star_htseqcount",
-    name_map_file => $name_map_file,
+    name_map_file => $ucsc_name_map_file,
     cqs_tools     => $cqstools,
     sh_direct     => 1,
     pbs           => {
@@ -169,6 +171,7 @@ my $config = {
 #performConfig($config);
 
 performTask( $config, "star_htseqcount" );
+performTask( $config, "star_genetable" );
 
 1;
 
