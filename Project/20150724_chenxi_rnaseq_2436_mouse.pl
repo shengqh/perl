@@ -69,7 +69,7 @@ my $config = {
     class      => "Alignment::STAR",
     perform    => 1,
     target_dir => "${target_dir}/star",
-    option     => "--twopassMode",
+    option     => "--twopassMode Basic",
     source_ref => "files",
     genome_dir => $star_index,
     sh_direct  => 0,
@@ -132,9 +132,9 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "star_htseqcount" );
+performTask( $config, "star" );
 #performTask( $config, "star_genetable" );
 
 1;
