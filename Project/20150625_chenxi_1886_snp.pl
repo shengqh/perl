@@ -74,7 +74,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-
   hc_gvcf => {
     class       => "GATK::HaplotypeCallerGVCF",
     perform     => 1,
@@ -108,25 +107,6 @@ my $config = {
     pbs         => {
       "email"    => $email,
       "nodes"    => "1:ppn=24",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-
-  tophat_refine_SNPindel => {
-    class       => "GATK::SNPIndel",
-    perform     => 0,
-    target_dir  => "${target_dir}/tophat_refine_SNPindel",
-    option      => "",
-    source_ref  => "tophat_refine",
-    java_option => "",
-    fasta_file  => $fasta_file,
-    dbsnp_vcf   => $dbsnp,
-    gatk_jar    => $gatk_jar,
-    is_rna      => 1,
-    pbs         => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
