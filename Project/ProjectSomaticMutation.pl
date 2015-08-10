@@ -11,7 +11,7 @@ my $email         = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools      = "/home/shengq1/local/bin/samtools/samtools";
 my $rnaediting_db = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
-my $rsmc          = "/home/shengq1/rsmc/rsmc.exe";
+my $glmvc          = "/home/shengq1/glmvc/glmvc.exe";
 my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
 my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
@@ -431,7 +431,7 @@ for my $cfg (@cfgs) {
     general => { task_name => $task_name },
     muTect  => {
       class             => "GATK::MuTect",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_muTect",
       option            => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
@@ -452,7 +452,7 @@ for my $cfg (@cfgs) {
     },
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -471,7 +471,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -491,7 +491,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
@@ -508,10 +508,10 @@ for my $cfg (@cfgs) {
         "mem"      => "10gb"
       },
     },
-    rsmc => {
-      class             => "CQS::RSMC",
+    Glmvc => {
+      class             => "CQS::Glmvc",
       perform           => 1,
-      target_dir        => "${target_dir}/${task_name}_rsmc",
+      target_dir        => "${target_dir}/${task_name}_glmvc",
       option            => "",                                  #thread mode
       source_type       => "BAM",                               #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
@@ -520,17 +520,17 @@ for my $cfg (@cfgs) {
       annovar_buildver  => "hg19",
       rnaediting_db     => $rnaediting_db,
       sh_direct         => 0,
-      execute_file      => $rsmc,
+      execute_file      => $glmvc,
       pbs               => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
         "walltime" => "72",
-        "mem"      => "20gb"
+        "mem"      => "40gb"
       },
     },
     sequencetask => {
       class      => "CQS::SequenceTask",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_sequencetask",
       option     => "",
       source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "rsmc" ] },
