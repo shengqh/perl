@@ -11,7 +11,7 @@ my $email         = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools      = "/home/shengq1/local/bin/samtools/samtools";
 my $rnaediting_db = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
-my $glmvc          = "/home/shengq1/glmvc/glmvc.exe";
+my $glmvc         = "/home/shengq1/glmvc/glmvc.exe";
 my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
 my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
@@ -393,6 +393,7 @@ my $tcga_dna = {
   fasta_file       => $fasta_file_16569_MT,
   cosmic_file      => $cosmic_file_16569_MT,
   dbsnp_file       => $snp_file_16569_MT,
+  gtf_file         => $gtf_file_16569_MT,
 };
 
 my $tcga_rna = {
@@ -402,6 +403,7 @@ my $tcga_rna = {
   fasta_file       => $fasta_file_16569_M,
   cosmic_file      => $cosmic_file_16569_M,
   dbsnp_file       => $snp_file_16569_M,
+  gtf_file         => $gtf_file_16569_M,
 };
 
 my $realign_dna = {
@@ -411,6 +413,7 @@ my $realign_dna = {
   cosmic_file      => $cosmic_file_16569_M,
   dbsnp_file       => $snp_file_16569_M,
   groups           => $tcga->{dna_groups},
+  gtf_file         => $gtf_file_16569_M,
 };
 
 my $realign_rna = {
@@ -420,6 +423,7 @@ my $realign_rna = {
   cosmic_file      => $cosmic_file_16569_M,
   dbsnp_file       => $snp_file_16569_M,
   groups           => $tcga->{rna_groups},
+  gtf_file         => $gtf_file_16569_M,
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
@@ -512,13 +516,14 @@ for my $cfg (@cfgs) {
       class             => "CQS::Glmvc",
       perform           => 1,
       target_dir        => "${target_dir}/${task_name}_glmvc",
-      option            => "",                                  #thread mode
-      source_type       => "BAM",                               #source_type can be BAM/Mpileup
+      option            => "",                                   #thread mode
+      source_type       => "BAM",                                #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
       fasta_file        => $cfg->{fasta_file},
       annovar_buildver  => "hg19",
       rnaediting_db     => $rnaediting_db,
+      distance_exon_gtf => $cfg->{gtf_file},
       sh_direct         => 0,
       execute_file      => $glmvc,
       pbs               => {
@@ -548,5 +553,4 @@ for my $cfg (@cfgs) {
 }
 
 1;
-
 
