@@ -435,7 +435,7 @@ for my $cfg (@cfgs) {
     general => { task_name => $task_name },
     muTect  => {
       class             => "GATK::MuTect",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_muTect",
       option            => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
@@ -456,7 +456,7 @@ for my $cfg (@cfgs) {
     },
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -514,7 +514,7 @@ for my $cfg (@cfgs) {
     },
     Glmvc => {
       class             => "CQS::Glmvc",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc",
       option            => "",                                   #thread mode
       source_type       => "BAM",                                #source_type can be BAM/Mpileup
