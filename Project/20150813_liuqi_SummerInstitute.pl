@@ -55,7 +55,7 @@ my $config = {
     transcript_gtf       => $transcript_gtf,
     transcript_gtf_index => $transcript_gtf_index,
     bowtie2_index        => $bowtie2_index,
-    rename_bam           => 1,
+    rename_bam           => 0,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
