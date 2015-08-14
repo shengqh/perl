@@ -432,8 +432,8 @@ my $realign_rna = {
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
-#my @cfgs = ( $tcga_dna, $tcga_rna );
-my @cfgs = ($tcga_rna);
+my @cfgs = ( $tcga_dna, $tcga_rna );
+#my @cfgs = ($tcga_rna);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -462,7 +462,7 @@ for my $cfg (@cfgs) {
     },
     qc3vcf => {
       class      => "QC::QC3vcf",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_muTect_qc3",
       option     => "",
       qc3_perl   => $qc3_perl,
@@ -537,7 +537,7 @@ for my $cfg (@cfgs) {
     },
     Glmvc => {
       class             => "CQS::Glmvc",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_glmvc",
       option            => "",                                   #thread mode
       source_type       => "BAM",                                #source_type can be BAM/Mpileup
