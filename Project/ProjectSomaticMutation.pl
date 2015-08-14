@@ -21,6 +21,8 @@ my $affy_file     = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.
 my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
+my $qc3_perl = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+
 ##hg19.16569.MT###
 my $fasta_file_16569_MT  = "/scratch/cqs/shengq1/references/hg19_16569_MT/hg19_16569_MT.fa";
 my $cosmic_file_16569_MT = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
@@ -36,9 +38,7 @@ my $gtf_file_16569_M    = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_
 my $star_index_16569_M  = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb50";
 
 ##hg19.tcga.dna###
-my $fasta_file_tcga_dna  = "/scratch/cqs/shengq1/references/tcga/dna/GRCh37-lite.fa";
-
-
+my $fasta_file_tcga_dna = "/scratch/cqs/shengq1/references/tcga/dna/GRCh37-lite.fa";
 
 my $tcga = {
   dna => {
@@ -433,7 +433,7 @@ my $realign_rna = {
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
 #my @cfgs = ( $tcga_dna, $tcga_rna );
-my @cfgs = ( $tcga_dna );
+my @cfgs = ($tcga_rna);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -441,7 +441,7 @@ for my $cfg (@cfgs) {
     general => { task_name => $task_name },
     muTect  => {
       class             => "GATK::MuTect",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_muTect",
       option            => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
@@ -460,9 +460,26 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
+    qc3vcf => {
+      class      => "QC::QC3vcf",
+      perform    => 1,
+      target_dir => "${target_dir}/backup/${task_name}_muTect_qc3",
+      option     => "",
+      qc3_perl   => $qc3_perl,
+      source_ref => [ "muTect", "vcf" ],
+      annovar_db => $annovar_db,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -481,7 +498,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -501,7 +518,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
@@ -520,7 +537,7 @@ for my $cfg (@cfgs) {
     },
     Glmvc => {
       class             => "CQS::Glmvc",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc",
       option            => "",                                   #thread mode
       source_type       => "BAM",                                #source_type can be BAM/Mpileup
@@ -541,7 +558,7 @@ for my $cfg (@cfgs) {
     },
     sequencetask => {
       class      => "CQS::SequenceTask",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_sequencetask",
       option     => "",
       source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "Glmvc" ] },
