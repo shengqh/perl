@@ -432,7 +432,8 @@ my $realign_rna = {
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
-my @cfgs = ( $tcga_dna, $tcga_rna );
+#my @cfgs = ( $tcga_dna, $tcga_rna );
+my @cfgs = ( $tcga_dna );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -480,7 +481,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -500,7 +501,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
@@ -519,7 +520,7 @@ for my $cfg (@cfgs) {
     },
     Glmvc => {
       class             => "CQS::Glmvc",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_glmvc",
       option            => "",                                   #thread mode
       source_type       => "BAM",                                #source_type can be BAM/Mpileup
@@ -540,10 +541,10 @@ for my $cfg (@cfgs) {
     },
     sequencetask => {
       class      => "CQS::SequenceTask",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_sequencetask",
       option     => "",
-      source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "rsmc" ] },
+      source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "Glmvc" ] },
       sh_direct  => 0,
       pbs        => {
         "email"    => $email,
