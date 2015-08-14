@@ -35,6 +35,11 @@ my $snp_file_16569_M    = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v1
 my $gtf_file_16569_M    = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.M.gtf";
 my $star_index_16569_M  = "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb50";
 
+##hg19.tcga.dna###
+my $fasta_file_tcga_dna  = "/scratch/cqs/shengq1/references/tcga/dna/GRCh37-lite.fa";
+
+
+
 my $tcga = {
   dna => {
     "TCGA-A7-A0D9-DNA-NB" => ["/scratch/cqs/shengq1/variants/tcga/bam/DNA_NB/TCGA-A7-A0D9-10A-01W-A071-09_HOLD_QC_PENDING_IlluminaGA-DNASeq_exome.bam"],
@@ -390,7 +395,7 @@ my $tcga_dna = {
   general => { task_name => "tcga_dna" },
   files_config_ref => [ $tcga, "dna" ],
   groups           => $tcga->{dna_groups},
-  fasta_file       => $fasta_file_16569_MT,
+  fasta_file       => $fasta_file_tcga_dna,
   cosmic_file      => $cosmic_file_16569_MT,
   dbsnp_file       => $snp_file_16569_MT,
   gtf_file         => $gtf_file_16569_MT,
