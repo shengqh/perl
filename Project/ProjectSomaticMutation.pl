@@ -463,7 +463,7 @@ for my $cfg (@cfgs) {
     qc3vcf => {
       class      => "QC::QC3vcf",
       perform    => 1,
-      target_dir => "${target_dir}/backup/${task_name}_muTect_qc3",
+      target_dir => "${target_dir}/${task_name}_muTect_qc3",
       option     => "",
       qc3_perl   => $qc3_perl,
       source_ref => [ "muTect", "vcf" ],
