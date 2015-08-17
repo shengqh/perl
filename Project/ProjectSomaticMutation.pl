@@ -432,8 +432,8 @@ my $realign_rna = {
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
-my @cfgs = ( $tcga_dna, $tcga_rna );
-#my @cfgs = ($tcga_rna);
+#my @cfgs = ( $tcga_dna, $tcga_rna );
+my @cfgs = ($tcga_dna);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -537,9 +537,51 @@ for my $cfg (@cfgs) {
     },
     Glmvc => {
       class             => "CQS::Glmvc",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc",
       option            => "",                                   #thread mode
+      source_type       => "BAM",                                #source_type can be BAM/Mpileup
+      source_config_ref => $cfg->{files_config_ref},
+      groups_ref        => $cfg->{groups},
+      fasta_file        => $cfg->{fasta_file},
+      annovar_buildver  => "hg19",
+      rnaediting_db     => $rnaediting_db,
+      distance_exon_gtf => $cfg->{gtf_file},
+      sh_direct         => 0,
+      execute_file      => $glmvc,
+      pbs               => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    Glmvc01 => {
+      class             => "CQS::Glmvc",
+      perform           => 1,
+      target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.1",
+      option            => "--glm_pvalue 0.1",                                   #thread mode
+      source_type       => "BAM",                                #source_type can be BAM/Mpileup
+      source_config_ref => $cfg->{files_config_ref},
+      groups_ref        => $cfg->{groups},
+      fasta_file        => $cfg->{fasta_file},
+      annovar_buildver  => "hg19",
+      rnaediting_db     => $rnaediting_db,
+      distance_exon_gtf => $cfg->{gtf_file},
+      sh_direct         => 0,
+      execute_file      => $glmvc,
+      pbs               => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    Glmvc001 => {
+      class             => "CQS::Glmvc",
+      perform           => 0,
+      target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.1",
+      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",                                   #thread mode
       source_type       => "BAM",                                #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
