@@ -224,16 +224,16 @@ my $tcga = {
   },
 
   tcga_dna_files => {
-    "TCGA-A7-A0D9-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
-    "TCGA-BH-A0B3-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
-    "TCGA-BH-A0B8-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
-    "TCGA-BH-A0BJ-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
-    "TCGA-BH-A0BM-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
-    "TCGA-BH-A0C0-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
-    "TCGA-BH-A0DK-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
-    "TCGA-BH-A0DP-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
-    "TCGA-BH-A0E0-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
-    "TCGA-BH-A0H7-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
+    "TCGA-A7-A0D9-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
+    "TCGA-BH-A0B3-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
+    "TCGA-BH-A0B8-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
+    "TCGA-BH-A0BJ-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
+    "TCGA-BH-A0BM-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
+    "TCGA-BH-A0C0-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
+    "TCGA-BH-A0DK-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
+    "TCGA-BH-A0DP-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
+    "TCGA-BH-A0E0-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
+    "TCGA-BH-A0H7-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
   },
 
   sample_groups => {
