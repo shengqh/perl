@@ -439,7 +439,21 @@ for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
   my $def       = {
     general => { task_name => $task_name },
-    muTect  => {
+
+    tcgaFiles => {
+      "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
+      "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
+      "TCGA-BH-A0B8" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
+      "TCGA-BH-A0BJ" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
+      "TCGA-BH-A0BM" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
+      "TCGA-BH-A0C0" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
+      "TCGA-BH-A0DK" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
+      "TCGA-BH-A0DP" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
+      "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
+      "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
+    },
+
+    muTect => {
       class             => "GATK::MuTect",
       perform           => 0,
       target_dir        => "${target_dir}/${task_name}_muTect",
@@ -536,7 +550,7 @@ for my $cfg (@cfgs) {
       },
     },
     Glmvc => {
-      class             => "CQS::Glmvc",
+      class             => "Variants::GlmvcCall",
       perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc",
       option            => "",                                   #thread mode
@@ -557,7 +571,7 @@ for my $cfg (@cfgs) {
       },
     },
     Glmvc01 => {
-      class             => "CQS::Glmvc",
+      class             => "Variants::GlmvcCall",
       perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.1",
       option            => "--glm_pvalue 0.1",                             #for DNA
@@ -578,11 +592,11 @@ for my $cfg (@cfgs) {
       },
     },
     GlmvcDNA => {
-      class             => "CQS::Glmvc",
-      perform           => 1,
+      class             => "Variants::GlmvcCall",
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_f0.01_g0.1",
-      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.1",                             #for DNA
-      source_type       => "BAM",                                          #source_type can be BAM/Mpileup
+      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.1",         #for DNA
+      source_type       => "BAM",                                           #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
       fasta_file        => $cfg->{fasta_file},
@@ -599,11 +613,11 @@ for my $cfg (@cfgs) {
       },
     },
     Glmvc001 => {
-      class             => "CQS::Glmvc",
+      class             => "Variants::GlmvcCall",
       perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.01",
-      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",       #for RNA
-      source_type       => "BAM",                                          #source_type can be BAM/Mpileup
+      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",        #for RNA
+      source_type       => "BAM",                                           #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
       fasta_file        => $cfg->{fasta_file},
@@ -613,6 +627,28 @@ for my $cfg (@cfgs) {
       sh_direct         => 0,
       execute_file      => $glmvc,
       pbs               => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+    GlmvcValidation => {
+      class                => "Variants::GlmvcValidate",
+      perform              => 1,
+      target_dir           => "${target_dir}/${task_name}_glmvc_validation",
+      option               => "",
+      source_type          => "BAM",
+      source_ref           => "tcgaFiles",
+      bam_files_config_ref => $cfg->{files_config_ref},
+      groups_ref           => $cfg->{groups},
+      fasta_file           => $cfg->{fasta_file},
+      annovar_buildver     => "hg19",
+      rnaediting_db        => $rnaediting_db,
+      distance_exon_gtf    => $cfg->{gtf_file},
+      sh_direct            => 0,
+      execute_file         => $glmvc,
+      pbs                  => {
         "email"    => $email,
         "nodes"    => "1:ppn=8",
         "walltime" => "72",
