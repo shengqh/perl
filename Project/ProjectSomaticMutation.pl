@@ -209,6 +209,33 @@ my $tcga = {
     "TCGA-BH-A0E0-RNA-TP-NT" => [ "TCGA-BH-A0E0-RNA-NT", "TCGA-BH-A0E0-RNA-TP" ],
     "TCGA-BH-A0H7-RNA-TP-NT" => [ "TCGA-BH-A0H7-RNA-NT", "TCGA-BH-A0H7-RNA-TP" ],
   },
+
+  tcga_rna_files => {
+    "TCGA-A7-A0D9-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
+    "TCGA-BH-A0B3-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
+    "TCGA-BH-A0B8-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
+    "TCGA-BH-A0BJ-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
+    "TCGA-BH-A0BM-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
+    "TCGA-BH-A0C0-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
+    "TCGA-BH-A0DK-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
+    "TCGA-BH-A0DP-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
+    "TCGA-BH-A0E0-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
+    "TCGA-BH-A0H7-RNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
+  },
+
+  tcga_dna_files => {
+    "TCGA-A7-A0D9-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
+    "TCGA-BH-A0B3-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
+    "TCGA-BH-A0B8-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
+    "TCGA-BH-A0BJ-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
+    "TCGA-BH-A0BM-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
+    "TCGA-BH-A0C0-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
+    "TCGA-BH-A0DK-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
+    "TCGA-BH-A0DP-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
+    "TCGA-BH-A0E0-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
+    "TCGA-BH-A0H7-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
+  },
+
   sample_groups => {
     "TCGA-A7-A0D9" => [ "TCGA-A7-A0D9-DNA-NT", "TCGA-A7-A0D9-DNA-TP", "TCGA-A7-A0D9-RNA-NT", "TCGA-A7-A0D9-RNA-TP" ],
     "TCGA-BH-A0B3" => [ "TCGA-BH-A0B3-DNA-NT", "TCGA-BH-A0B3-DNA-TP", "TCGA-BH-A0B3-RNA-NT", "TCGA-BH-A0B3-RNA-TP" ],
@@ -399,6 +426,7 @@ my $tcga_dna = {
   cosmic_file      => $cosmic_file_16569_MT,
   dbsnp_file       => $snp_file_16569_MT,
   gtf_file         => $gtf_file_16569_MT,
+  tcga_file        => $tcga->{tcga_dna_files}
 };
 
 my $tcga_rna = {
@@ -409,6 +437,7 @@ my $tcga_rna = {
   cosmic_file      => $cosmic_file_16569_M,
   dbsnp_file       => $snp_file_16569_M,
   gtf_file         => $gtf_file_16569_M,
+  tcga_file        => $tcga->{tcga_rna_files}
 };
 
 my $realign_dna = {
@@ -419,6 +448,7 @@ my $realign_dna = {
   dbsnp_file       => $snp_file_16569_M,
   groups           => $tcga->{dna_groups},
   gtf_file         => $gtf_file_16569_M,
+  tcga_file        => $tcga->{tcga_dna_files}
 };
 
 my $realign_rna = {
@@ -429,6 +459,7 @@ my $realign_rna = {
   dbsnp_file       => $snp_file_16569_M,
   groups           => $tcga->{rna_groups},
   gtf_file         => $gtf_file_16569_M,
+  tcga_file        => $tcga->{tcga_rna_files}
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
@@ -439,19 +470,6 @@ for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
   my $def       = {
     general => { task_name => $task_name },
-
-    tcgaFiles => {
-      "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
-      "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
-      "TCGA-BH-A0B8" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
-      "TCGA-BH-A0BJ" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
-      "TCGA-BH-A0BM" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
-      "TCGA-BH-A0C0" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
-      "TCGA-BH-A0DK" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
-      "TCGA-BH-A0DP" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
-      "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
-      "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
-    },
 
     muTect => {
       class             => "GATK::MuTect",
@@ -639,7 +657,7 @@ for my $cfg (@cfgs) {
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
       option               => "",
       source_type          => "BAM",
-      source_ref           => "tcgaFiles",
+      source               => $cfg->{tcga_file},
       bam_files_config_ref => $cfg->{files_config_ref},
       groups_ref           => $cfg->{groups},
       fasta_file           => $cfg->{fasta_file},
