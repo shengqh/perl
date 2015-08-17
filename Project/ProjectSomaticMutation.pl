@@ -580,7 +580,7 @@ for my $cfg (@cfgs) {
     Glmvc001 => {
       class             => "CQS::Glmvc",
       perform           => 1,
-      target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.1",
+      target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.01",
       option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",       #for RNA
       source_type       => "BAM",                                          #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
