@@ -664,7 +664,7 @@ for my $cfg (@cfgs) {
       annovar_buildver     => "hg19",
       rnaediting_db        => $rnaediting_db,
       distance_exon_gtf    => $cfg->{gtf_file},
-      sh_direct            => 0,
+      sh_direct            => 1,
       execute_file         => $glmvc,
       pbs                  => {
         "email"    => $email,
