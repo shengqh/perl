@@ -433,7 +433,7 @@ my $realign_rna = {
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
 #my @cfgs = ( $tcga_dna, $tcga_rna );
-my @cfgs = ($tcga_dna);
+my @cfgs = ($tcga_rna);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -558,10 +558,10 @@ for my $cfg (@cfgs) {
     },
     Glmvc01 => {
       class             => "CQS::Glmvc",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.1",
-      option            => "--glm_pvalue 0.1",                                   #thread mode
-      source_type       => "BAM",                                #source_type can be BAM/Mpileup
+      option            => "--glm_pvalue 0.1",                             #for DNA
+      source_type       => "BAM",                                          #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
       fasta_file        => $cfg->{fasta_file},
@@ -579,10 +579,10 @@ for my $cfg (@cfgs) {
     },
     Glmvc001 => {
       class             => "CQS::Glmvc",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.1",
-      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",                                   #thread mode
-      source_type       => "BAM",                                #source_type can be BAM/Mpileup
+      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",       #for RNA
+      source_type       => "BAM",                                          #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
       fasta_file        => $cfg->{fasta_file},
