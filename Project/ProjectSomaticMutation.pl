@@ -464,7 +464,7 @@ my $realign_rna = {
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
 #my @cfgs = ( $tcga_dna, $tcga_rna );
-my @cfgs = ($tcga_dna);
+my @cfgs = ($tcga_rna);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
