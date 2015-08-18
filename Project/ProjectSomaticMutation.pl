@@ -567,11 +567,11 @@ for my $cfg (@cfgs) {
         "mem"      => "10gb"
       },
     },
-    Glmvc => {
+    GlmvcG005 => {
       class             => "Variants::GlmvcCall",
-      perform           => 0,
-      target_dir        => "${target_dir}/${task_name}_glmvc",
-      option            => "",                                   #thread mode
+      perform           => 1,
+      target_dir        => "${target_dir}/${task_name}_glmvc_f0.01_g0.05",
+      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.05",                                   #thread mode
       source_type       => "BAM",                                #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
@@ -588,11 +588,11 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
-    Glmvc01 => {
+    GlmvcG001 => {
       class             => "Variants::GlmvcCall",
-      perform           => 0,
-      target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.1",
-      option            => "--glm_pvalue 0.1",                             #for DNA
+      perform           => 1,
+      target_dir        => "${target_dir}/${task_name}_glmvc_f0.01_g0.01",
+      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.1",                             #for DNA
       source_type       => "BAM",                                          #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
@@ -609,9 +609,9 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
-    GlmvcDNA => {
+    GlmvcG01 => {
       class             => "Variants::GlmvcCall",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_glmvc_f0.01_g0.1",
       option            => "--fisher_pvalue 0.01 --glm_pvalue 0.1",         #for DNA
       source_type       => "BAM",                                           #source_type can be BAM/Mpileup
@@ -630,30 +630,9 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
-    Glmvc001 => {
-      class             => "Variants::GlmvcCall",
-      perform           => 0,
-      target_dir        => "${target_dir}/${task_name}_glmvc_pvalue0.01",
-      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",        #for RNA
-      source_type       => "BAM",                                           #source_type can be BAM/Mpileup
-      source_config_ref => $cfg->{files_config_ref},
-      groups_ref        => $cfg->{groups},
-      fasta_file        => $cfg->{fasta_file},
-      annovar_buildver  => "hg19",
-      rnaediting_db     => $rnaediting_db,
-      distance_exon_gtf => $cfg->{gtf_file},
-      sh_direct         => 0,
-      execute_file      => $glmvc,
-      pbs               => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
     GlmvcValidation => {
       class                => "Variants::GlmvcValidate",
-      perform              => 1,
+      perform              => 0,
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
       option               => "",
       source_type          => "BAM",
