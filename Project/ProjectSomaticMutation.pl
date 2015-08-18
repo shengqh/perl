@@ -569,7 +569,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcG005 => {
       class             => "Variants::GlmvcCall",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_f0.01_g0.05",
       option            => "--fisher_pvalue 0.01 --glm_pvalue 0.05",                                   #thread mode
       source_type       => "BAM",                                #source_type can be BAM/Mpileup
@@ -592,7 +592,7 @@ for my $cfg (@cfgs) {
       class             => "Variants::GlmvcCall",
       perform           => 1,
       target_dir        => "${target_dir}/${task_name}_glmvc_f0.01_g0.01",
-      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.1",                             #for DNA
+      option            => "--fisher_pvalue 0.01 --glm_pvalue 0.01",                             #for DNA
       source_type       => "BAM",                                          #source_type can be BAM/Mpileup
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
@@ -611,7 +611,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcG01 => {
       class             => "Variants::GlmvcCall",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_f0.01_g0.1",
       option            => "--fisher_pvalue 0.01 --glm_pvalue 0.1",         #for DNA
       source_type       => "BAM",                                           #source_type can be BAM/Mpileup
