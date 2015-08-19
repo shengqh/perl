@@ -134,7 +134,7 @@ my $config = {
     class      => "Alignment::Bowtie2",
     perform    => 1,
     target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2_less",
-    option     => "--local -N 2 -k 10",
+    option     => "--local -k 10",
     source_ref => [ 'fastq_trna', 'less_.*.gz$' ],
     bowtie2_index => $bowtie2_index,
     sh_direct  => 1,
@@ -149,7 +149,7 @@ my $config = {
     class      => "Alignment::Bowtie2",
     perform    => 1,
     target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2_plus",
-    option     => "--local -N 4 -k 10",
+    option     => "--local -k 10",
     source_ref => [ 'fastq_trna', 'plus_.*.gz$' ],
     bowtie2_index => $bowtie2_index,
     sh_direct  => 1,
@@ -160,12 +160,27 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  star => {
+  star_less => {
     class      => "Alignment::STAR",
-    perform    => 0,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
-    option     => "",
-    source_ref => [ 'identical', '.fastq.gz$' ],
+    perform    => 1,
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_less",
+    option     => "--clip5pNbases 3",
+    source_ref => [ 'fastq_trna', 'less_.*.gz$' ],
+    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
+  star_plus => {
+    class      => "Alignment::STAR",
+    perform    => 1,
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_plus",
+    option     => "--clip5pNbases 3",
+    source_ref => [ 'fastq_trna', 'plus_.*.gz$' ],
     genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
     sh_direct  => 1,
     pbs        => {
@@ -320,6 +335,8 @@ my $config = {
 #performConfig($config);
 performTask($config, "bowtie2_less");
 performTask($config, "bowtie2_plus");
+performTask($config, "star_less");
+performTask($config, "star_plus");
 
 
 1;
