@@ -130,23 +130,6 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  fastq_trna_2 => {
-    class        => "SmallRNA::FastqTrna",
-    perform      => 1,
-    target_dir   => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/fastq_trna_2",
-    option       => "",
-    extension    => '_clipped_clipped_identical_trna.fastq.gz',
-    source_ref   => [ 'fastq_trna', 'plus.*fastq.gz$' ],
-    seqcount_ref => [ 'fastq_trna', 'plus.*dupcount$' ],
-    cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
-    sh_direct    => 1,
-    pbs          => {
-      "email"    => 'quanhu.sheng@vanderbilt.edu',
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "10gb"
-    },
-  },
   bowtie2 => {
     class      => "Alignment::Bowtie2",
     perform    => 1,
@@ -180,7 +163,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "fastq_trna_2");
+performTask($config, "fastq_trna");
 #performTask($config, "star");
 
 1;
