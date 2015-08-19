@@ -130,12 +130,12 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bowtie2_less => {
+  bowtie2 => {
     class      => "Alignment::Bowtie2",
     perform    => 1,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2_less",
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2",
     option     => "--local -k 10",
-    source_ref => [ 'fastq_trna', 'less_.*.gz$' ],
+    source_ref => [ 'fastq_trna', '*.gz$' ],
     bowtie2_index => $bowtie2_index,
     sh_direct  => 1,
     pbs        => {
@@ -145,42 +145,12 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  bowtie2_plus => {
-    class      => "Alignment::Bowtie2",
-    perform    => 1,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2_plus",
-    option     => "--local -k 10",
-    source_ref => [ 'fastq_trna', 'plus_.*.gz$' ],
-    bowtie2_index => $bowtie2_index,
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => 'quanhu.sheng@vanderbilt.edu',
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "30gb"
-    },
-  },
-  star_less => {
+  star => {
     class      => "Alignment::STAR",
     perform    => 1,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_less",
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
     option     => "--clip5pNbases 3 --alignEndsType EndToEnd",
-    source_ref => [ 'fastq_trna', 'less_.*.gz$' ],
-    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => 'quanhu.sheng@vanderbilt.edu',
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "30gb"
-    },
-  },
-  star_plus => {
-    class      => "Alignment::STAR",
-    perform    => 1,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_plus",
-    option     => "--clip5pNbases 3 --alignEndsType EndToEnd",
-    source_ref => [ 'fastq_trna', 'plus_.*.gz$' ],
+    source_ref => [ 'fastq_trna', '*.gz$' ],
     genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
     sh_direct  => 1,
     pbs        => {
@@ -333,11 +303,8 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "bowtie2_less");
-performTask($config, "bowtie2_plus");
-performTask($config, "star_less");
-performTask($config, "star_plus");
-
+performTask($config, "bowtie2");
+performTask($config, "star");
 
 1;
 
