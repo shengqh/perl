@@ -130,12 +130,27 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bowtie2 => {
+  bowtie2_less => {
     class      => "Alignment::Bowtie2",
     perform    => 1,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2",
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2_less",
+    option     => "--local -N 2 -k 10",
+    source_ref => [ 'fastq_trna', 'less_' ],
+    bowtie2_index => $bowtie2_index,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
+  bowtie2_plus => {
+    class      => "Alignment::Bowtie2",
+    perform    => 1,
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2_plus",
     option     => "--local -N 4 -k 10",
-    source_ref => [ 'identical', '.fastq.gz$' ],
+    source_ref => [ 'fastq_trna', 'plus_' ],
     bowtie2_index => $bowtie2_index,
     sh_direct  => 1,
     pbs        => {
@@ -303,7 +318,8 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "bowtie2");
+performTask($config, "bowtie2_less");
+performTask($config, "bowtie2_plus");
 
 
 1;
