@@ -164,7 +164,7 @@ my $config = {
 
 #performConfig($config);
 performTask($config, "bowtie2");
-performTask($config, "star");
+#performTask($config, "star");
 
 1;
 
