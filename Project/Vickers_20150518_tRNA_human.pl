@@ -4,6 +4,8 @@ use warnings;
 
 use CQS::ClassFactory;
 
+my $bowtie2_index = "/scratch/cqs/shengq1/references/hg19_16569_MT/bowtie2_index/hg19_16569_MT";
+
 my $config = {
   'general' => {
     'cluster'   => 'slurm',
@@ -128,9 +130,24 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  bowtie2 => {
+    class      => "Alignment::Bowtie2",
+    perform    => 1,
+    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2",
+    option     => "--local -N 4 -k 10",
+    source_ref => [ 'identical', '.fastq.gz$' ],
+    bowtie2_index => $bowtie2_index,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
   star => {
     class      => "Alignment::STAR",
-    perform    => 1,
+    perform    => 0,
     target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
     option     => "",
     source_ref => [ 'identical', '.fastq.gz$' ],
@@ -286,7 +303,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "fastq_trna");
+performTask($config, "bowtie2");
 
 
 1;
