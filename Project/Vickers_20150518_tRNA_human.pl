@@ -134,7 +134,7 @@ my $config = {
     class      => "Alignment::Bowtie2",
     perform    => 1,
     target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2",
-    option     => "--end-to-end -k 10 --trim5 3",
+    option     => "--end-to-end -k 20 --trim5 3",
     source_ref => [ 'fastq_trna', '.*.gz$' ],
     bowtie2_index => $bowtie2_index,
     sh_direct  => 1,
@@ -163,8 +163,8 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "fastq_trna");
-#performTask($config, "star");
+#performTask($config, "fastq_trna");
+performTask($config, "bowtie2");
 
 1;
 
