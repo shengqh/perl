@@ -620,7 +620,7 @@ for my $cfg (@cfgs) {
           perform           => 1,
           target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_f${fp}_g${gp}_withoutBAQ",
           option            => "--max_normal_percentage ${np} --fisher_pvalue ${fp} --glm_pvalue ${gp}",
-          mpileup_option    => "-B",
+          #mpileup_option    => "-B",
           source_type       => "BAM",
           source_config_ref => $cfg->{files_config_ref},
           groups_ref        => $cfg->{groups},
