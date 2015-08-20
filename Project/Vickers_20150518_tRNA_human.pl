@@ -164,8 +164,8 @@ my $config = {
 
 #performConfig($config);
 #performTask($config, "fastq_trna");
-#performTask($config, "bowtie2");
-performTask($config, "star");
+performTask($config, "bowtie2");
+#performTask($config, "star");
 
 1;
 
