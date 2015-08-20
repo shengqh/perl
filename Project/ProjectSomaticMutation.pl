@@ -465,7 +465,7 @@ my $realign_rna = {
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
 #my @cfgs = ( $tcga_dna, $tcga_rna );
 
-my @cfgs = ($tcga_rna);
+my @cfgs = ($tcga_dna);
 
 my @nps = (0.01);
 my @fps = (0.05);
