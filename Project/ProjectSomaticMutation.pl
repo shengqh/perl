@@ -463,8 +463,13 @@ my $realign_rna = {
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
-my @cfgs = ( $tcga_dna, $tcga_rna );
-#my @cfgs = ($tcga_rna);
+#my @cfgs = ( $tcga_dna, $tcga_rna );
+
+my @cfgs = ($tcga_rna);
+
+my @nps = (0.01);
+my @fps = (0.05);
+my @gps = (0.01);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -567,69 +572,6 @@ for my $cfg (@cfgs) {
         "mem"      => "10gb"
       },
     },
-    GlmvcG005 => {
-      class             => "Variants::GlmvcCall",
-      perform           => 1,
-      target_dir        => "${target_dir}/${task_name}_glmvc_np0.02_f0.05_g0.05",
-      option            => "--max_normal_percentage 0.02 --fisher_pvalue 0.05 --glm_pvalue 0.05",                                   #thread mode
-      source_type       => "BAM",                                #source_type can be BAM/Mpileup
-      source_config_ref => $cfg->{files_config_ref},
-      groups_ref        => $cfg->{groups},
-      fasta_file        => $cfg->{fasta_file},
-      annovar_buildver  => "hg19",
-      rnaediting_db     => $rnaediting_db,
-      distance_exon_gtf => $cfg->{gtf_file},
-      sh_direct         => 0,
-      execute_file      => $glmvc,
-      pbs               => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-    GlmvcG001 => {
-      class             => "Variants::GlmvcCall",
-      perform           => 1,
-      target_dir        => "${target_dir}/${task_name}_glmvc_np0.02_f0.05_g0.01",
-      option            => "--max_normal_percentage 0.02 --fisher_pvalue 0.05 --glm_pvalue 0.01",                             #for DNA
-      source_type       => "BAM",                                          #source_type can be BAM/Mpileup
-      source_config_ref => $cfg->{files_config_ref},
-      groups_ref        => $cfg->{groups},
-      fasta_file        => $cfg->{fasta_file},
-      annovar_buildver  => "hg19",
-      rnaediting_db     => $rnaediting_db,
-      distance_exon_gtf => $cfg->{gtf_file},
-      sh_direct         => 0,
-      execute_file      => $glmvc,
-      pbs               => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-    GlmvcG01 => {
-      class             => "Variants::GlmvcCall",
-      perform           => 1,
-      target_dir        => "${target_dir}/${task_name}_glmvc_np0.02_f0.05_g0.1",
-      option            => "--max_normal_percentage 0.02 --fisher_pvalue 0.05 --glm_pvalue 0.1",         #for DNA
-      source_type       => "BAM",                                           #source_type can be BAM/Mpileup
-      source_config_ref => $cfg->{files_config_ref},
-      groups_ref        => $cfg->{groups},
-      fasta_file        => $cfg->{fasta_file},
-      annovar_buildver  => "hg19",
-      rnaediting_db     => $rnaediting_db,
-      distance_exon_gtf => $cfg->{gtf_file},
-      sh_direct         => 0,
-      execute_file      => $glmvc,
-      pbs               => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
     GlmvcValidation => {
       class                => "Variants::GlmvcValidate",
       perform              => 0,
@@ -665,9 +607,40 @@ for my $cfg (@cfgs) {
         "walltime" => "72",
         "mem"      => "40gb"
       },
-    },
+    }
   };
 
+  my $index = 0;
+  for my $np (@nps) {
+    for my $fp (@fps) {
+      for my $gp (@gps) {
+        $index = $index + 1;
+        $def->{"Glmvc$index"} = {
+          class             => "Variants::GlmvcCall",
+          perform           => 1,
+          target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_f${fp}_g${gp}_withoutBAQ",
+          option            => "--max_normal_percentage ${np} --fisher_pvalue ${fp} --glm_pvalue ${gp}",
+          mpileup_option    => "-B",
+          source_type       => "BAM",
+          source_config_ref => $cfg->{files_config_ref},
+          groups_ref        => $cfg->{groups},
+          fasta_file        => $cfg->{fasta_file},
+          annovar_buildver  => "hg19",
+          rnaediting_db     => $rnaediting_db,
+          distance_exon_gtf => $cfg->{gtf_file},
+          sh_direct         => 0,
+          execute_file      => $glmvc,
+          pbs               => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=8",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        };
+      }
+    }
+  }
+  
   performConfig($def);
 }
 
