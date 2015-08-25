@@ -236,9 +236,22 @@ my $tcga = {
     "TCGA-BH-A0H7-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
   },
 
+  tcga_files => {
+    "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
+    "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
+    "TCGA-BH-A0B8" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
+    "TCGA-BH-A0BJ" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
+    "TCGA-BH-A0BM" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
+    "TCGA-BH-A0C0" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
+    "TCGA-BH-A0DK" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
+    "TCGA-BH-A0DP" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
+    "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
+    "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"],
+  },
+
   sample_groups => {
-    "TCGA-A7-A0D9" => [ "TCGA-A7-A0D9-DNA-NT", "TCGA-A7-A0D9-DNA-TP", "TCGA-A7-A0D9-RNA-NT", "TCGA-A7-A0D9-RNA-TP" ],
-    "TCGA-BH-A0B3" => [ "TCGA-BH-A0B3-DNA-NT", "TCGA-BH-A0B3-DNA-TP", "TCGA-BH-A0B3-RNA-NT", "TCGA-BH-A0B3-RNA-TP" ],
+    "TCGA-A7-A0D9" => [ "TCGA-A7-A0D9-DNA-NB", "TCGA-A7-A0D9-DNA-TP", "TCGA-A7-A0D9-RNA-NT", "TCGA-A7-A0D9-RNA-TP" ],
+    "TCGA-BH-A0B3" => [ "TCGA-BH-A0B3-DNA-NB", "TCGA-BH-A0B3-DNA-TP", "TCGA-BH-A0B3-RNA-NT", "TCGA-BH-A0B3-RNA-TP" ],
     "TCGA-BH-A0B8" => [ "TCGA-BH-A0B8-DNA-NB", "TCGA-BH-A0B8-DNA-TP", "TCGA-BH-A0B8-RNA-NT", "TCGA-BH-A0B8-RNA-TP" ],
     "TCGA-BH-A0BJ" => [ "TCGA-BH-A0BJ-DNA-NB", "TCGA-BH-A0BJ-DNA-TP", "TCGA-BH-A0BJ-RNA-NT", "TCGA-BH-A0BJ-RNA-TP" ],
     "TCGA-BH-A0BM" => [ "TCGA-BH-A0BM-DNA-NB", "TCGA-BH-A0BM-DNA-TP", "TCGA-BH-A0BM-RNA-NT", "TCGA-BH-A0BM-RNA-TP" ],
@@ -639,9 +652,33 @@ for my $cfg (@cfgs) {
       }
     }
   }
-  
-  performConfig($def);
+
+  #performConfig($def);
 }
+
+my $extractDef = {
+  general      => { task_name => "tcga" },
+  GlmvcExtract => {
+    class                => "Variants::GlmvcExtract",
+    perform              => 1,
+    target_dir           => "${target_dir}/tcga_glmvc_extract",
+    option               => "-B",
+    source_config_ref    => [ $tcga, "tcga_files" ],
+    bam_files_config_ref => [ $tcga, "dna", $tcga, "rna" ],
+    groups_ref           => $tcga->{sample_groups},
+    fasta_file           => $fasta_file_tcga_dna,
+    sh_direct            => 1,
+    execute_file         => $glmvc,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+};
+
+performConfig($extractDef);
 
 1;
 
