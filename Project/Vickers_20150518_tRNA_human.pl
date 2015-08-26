@@ -131,14 +131,14 @@ my $config = {
     },
   },
   bowtie2 => {
-    class      => "Alignment::Bowtie2",
-    perform    => 1,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2",
-    option     => "--end-to-end -k 20 --trim5 3",
-    source_ref => [ 'fastq_trna', '.*.gz$' ],
+    class         => "Alignment::Bowtie2",
+    perform       => 1,
+    target_dir    => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2",
+    option        => "--end-to-end -k 20 --trim5 3",
+    source_ref    => [ 'fastq_trna', '.*.gz$' ],
     bowtie2_index => $bowtie2_index,
-    sh_direct  => 1,
-    pbs        => {
+    sh_direct     => 1,
+    pbs           => {
       "email"    => 'quanhu.sheng@vanderbilt.edu',
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -146,14 +146,16 @@ my $config = {
     },
   },
   star => {
-    class      => "Alignment::STAR",
-    perform    => 1,
-    target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
-    option     => "--outFilterMismatchNmax 4 --clip5pNbases 3 --alignEndsType EndToEnd --outSAMattributes NH HI NM MD AS XS",
-    source_ref => [ 'fastq_trna', '.*.gz$' ],
-    genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
-    sh_direct  => 1,
-    pbs        => {
+    class                     => "Alignment::STAR",
+    perform                   => 1,
+    target_dir                => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
+    option                    => "--outSAMtype BAM Unsorted SortedByCoordinate --outFilterMismatchNmax 4 --clip5pNbases 3 --alignEndsType EndToEnd --outSAMattributes NH HI NM MD AS XS",
+    source_ref                => [ 'fastq_trna', '.*.gz$' ],
+    genome_dir                => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
+    output_sort_by_coordinate => 1,
+    output_unsorted           => 1,
+    sh_direct                 => 1,
+    pbs                       => {
       "email"    => 'quanhu.sheng@vanderbilt.edu',
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -165,7 +167,7 @@ my $config = {
 #performConfig($config);
 #performTask($config, "fastq_trna");
 #performTask($config, "bowtie2");
-performTask($config, "star");
+performTask( $config, "star" );
 
 1;
 
