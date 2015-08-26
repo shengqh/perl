@@ -149,7 +149,7 @@ my $config = {
     class      => "Alignment::STAR",
     perform    => 1,
     target_dir => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
-    option     => "--clip5pNbases 3 --alignEndsType EndToEnd --outSAMattributes NH HI NM MD AS XS",
+    option     => "--outFilterMismatchNmax 4 --clip5pNbases 3 --alignEndsType EndToEnd --outSAMattributes NH HI NM MD AS XS",
     source_ref => [ 'fastq_trna', '.*.gz$' ],
     genome_dir => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
     sh_direct  => 1,
@@ -164,8 +164,8 @@ my $config = {
 
 #performConfig($config);
 #performTask($config, "fastq_trna");
-performTask($config, "bowtie2");
-#performTask($config, "star");
+#performTask($config, "bowtie2");
+performTask($config, "star");
 
 1;
 
