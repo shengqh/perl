@@ -587,7 +587,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class                => "Variants::GlmvcValidate",
-      perform              => 0,
+      perform              => 1,
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
       option               => "",
       source_type          => "BAM",
@@ -602,7 +602,7 @@ for my $cfg (@cfgs) {
       execute_file         => $glmvc,
       pbs                  => {
         "email"    => $email,
-        "nodes"    => "1:ppn=8",
+        "nodes"    => "1:ppn=1",
         "walltime" => "72",
         "mem"      => "40gb"
       },
@@ -630,7 +630,7 @@ for my $cfg (@cfgs) {
         $index = $index + 1;
         $def->{"Glmvc$index"} = {
           class             => "Variants::GlmvcCall",
-          perform           => 1,
+          perform           => 0,
           target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_f${fp}_g${gp}_withoutBAQ",
           option            => "-B --max_normal_percentage ${np} --fisher_pvalue ${fp} --glm_pvalue ${gp}",
           source_type       => "BAM",
@@ -653,7 +653,7 @@ for my $cfg (@cfgs) {
     }
   }
 
-  #performConfig($def);
+  performConfig($def);
 }
 
 my $extractDef = {
@@ -678,7 +678,7 @@ my $extractDef = {
   },
 };
 
-performConfig($extractDef);
+#performConfig($extractDef);
 
 1;
 
