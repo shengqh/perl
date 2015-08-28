@@ -439,7 +439,8 @@ my $tcga_dna = {
   cosmic_file      => $cosmic_file_16569_MT,
   dbsnp_file       => $snp_file_16569_MT,
   gtf_file         => $gtf_file_16569_MT,
-  tcga_file        => $tcga->{tcga_dna_files}
+  tcga_file        => $tcga->{tcga_dna_files},
+  glm_pvalue       => "0.1"
 };
 
 my $tcga_rna = {
@@ -450,7 +451,8 @@ my $tcga_rna = {
   cosmic_file      => $cosmic_file_16569_M,
   dbsnp_file       => $snp_file_16569_M,
   gtf_file         => $gtf_file_16569_M,
-  tcga_file        => $tcga->{tcga_rna_files}
+  tcga_file        => $tcga->{tcga_rna_files},
+  glm_pvalue       => "0.05"
 };
 
 my $realign_dna = {
@@ -461,7 +463,8 @@ my $realign_dna = {
   dbsnp_file       => $snp_file_16569_M,
   groups           => $tcga->{dna_groups},
   gtf_file         => $gtf_file_16569_M,
-  tcga_file        => $tcga->{tcga_dna_files}
+  tcga_file        => $tcga->{tcga_dna_files},
+  glm_pvalue       => "0.1"
 };
 
 my $realign_rna = {
@@ -472,7 +475,8 @@ my $realign_rna = {
   dbsnp_file       => $snp_file_16569_M,
   groups           => $tcga->{rna_groups},
   gtf_file         => $gtf_file_16569_M,
-  tcga_file        => $tcga->{tcga_rna_files}
+  tcga_file        => $tcga->{tcga_rna_files},
+  glm_pvalue       => "0.05"
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
@@ -482,7 +486,7 @@ my @cfgs = ( $tcga_dna, $tcga_rna );
 
 my @nps = (0.01);
 my @fps = (0.05);
-my @gps = (0.01);
+my @gps = ( 0.05, 0.1 );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -589,7 +593,7 @@ for my $cfg (@cfgs) {
       class                => "Variants::GlmvcValidate",
       perform              => 1,
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
-      option               => "",
+      option               => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type          => "BAM",
       source               => $cfg->{tcga_file},
       bam_files_config_ref => $cfg->{files_config_ref},
