@@ -201,7 +201,8 @@ my $config = {
 #performConfig($config);
 #performTask($config, "fastq_trna");
 #performTask($config, "bowtie2");
-performTask( $config, "star_2" );
+performTask( $config, "star_tRNA" );
+performTask( $config, "star_otherSmallRNA" );
 
 1;
 
