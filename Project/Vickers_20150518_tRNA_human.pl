@@ -145,11 +145,11 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  star => {
+  star_tRNA => {
     class                     => "Alignment::STAR",
-    perform                   => 0,
-    target_dir                => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star",
-    option                    => "--alignIntronMax 117 --outFilterMismatchNmax 4 --clip5pNbases 3 --alignEndsType EndToEnd --outSAMattributes NH HI NM MD AS XS",
+    perform                   => 1,
+    target_dir                => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_tRNA",
+    option                    => "--alignIntronMax 117 --outFilterMismatchNoverLmax 0.05 --clip5pNbases 3 --alignEndsType EndToEnd --outSAMattributes NH HI NM MD AS XS",
     source_ref                => [ 'fastq_trna', '.*.gz$' ],
     genome_dir                => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
     output_sort_by_coordinate => 1,
@@ -164,10 +164,27 @@ my $config = {
   },
   star_2 => {
     class                     => "Alignment::STAR",
-    perform                   => 1,
+    perform                   => 0,
     target_dir                => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_2",
     option                    => "--alignIntronMax 117 --outFilterMismatchNoverLmax 0.05 --alignEndsType Extend3pOfRead1 --outSAMattributes NH HI NM MD AS XS",
     source_ref                => [ 'fastq_trna', '.*.gz$' ],
+    genome_dir                => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
+    output_sort_by_coordinate => 1,
+    output_unsorted           => 1,
+    sh_direct                 => 1,
+    pbs                       => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
+  star_otherSmallRNA => {
+    class                     => "Alignment::STAR",
+    perform                   => 1,
+    target_dir                => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_otherSmallRNA",
+    option                    => "--alignIntronMax 1 --outFilterMismatchNoverLmax 0.05  --alignEndsType EndToEnd --outSAMattributes NH HI NM MD AS XS",
+    source_ref                => [ 'identical', '.fastq.gz$' ],
     genome_dir                => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
     output_sort_by_coordinate => 1,
     output_unsorted           => 1,
