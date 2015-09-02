@@ -113,6 +113,22 @@ my $config = {
     'class'      => 'FastqIdentical',
     'option'     => ''
   },
+  check_cca => {
+    class        => "SmallRNA::CheckCCA",
+    perform      => 1,
+    target_dir   => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/check_cca",
+    option       => "",
+    source_ref   => [ 'identical', '.fastq.gz$' ],
+    untrimmedFastq_ref => "files",
+    cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
+    sh_direct    => 1,
+    pbs          => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   fastq_trna => {
     class        => "SmallRNA::FastqTrna",
     perform      => 1,
@@ -199,10 +215,10 @@ my $config = {
 };
 
 #performConfig($config);
+performTask($config, "check_cca");
 #performTask($config, "fastq_trna");
-#performTask($config, "bowtie2");
-performTask( $config, "star_tRNA" );
-performTask( $config, "star_otherSmallRNA" );
+#performTask( $config, "star_tRNA" );
+#performTask( $config, "star_otherSmallRNA" );
 
 1;
 
