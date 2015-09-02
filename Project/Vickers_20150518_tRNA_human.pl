@@ -121,7 +121,7 @@ my $config = {
     source_ref   => [ 'identical', '.fastq.gz$' ],
     untrimmedFastq_ref => "files",
     cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
-    sh_direct    => 1,
+    sh_direct    => 0,
     pbs          => {
       "email"    => 'quanhu.sheng@vanderbilt.edu',
       "nodes"    => "1:ppn=1",
@@ -138,7 +138,7 @@ my $config = {
     source_ref   => [ 'identical', '.fastq.gz$' ],
     seqcount_ref => [ 'identical', '.dupcount$' ],
     cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
-    sh_direct    => 1,
+    sh_direct    => 0,
     pbs          => {
       "email"    => 'quanhu.sheng@vanderbilt.edu',
       "nodes"    => "1:ppn=1",
