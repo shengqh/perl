@@ -136,6 +136,7 @@ my $config = {
     option       => "",
     extension    => '_clipped_identical_trna.fastq.gz',
     source_ref   => [ 'identical', '.fastq.gz$' ],
+    ccaFile_ref   => "check_cca",
     seqcount_ref => [ 'identical', '.dupcount$' ],
     cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
     sh_direct    => 0,
@@ -215,8 +216,8 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "check_cca");
-#performTask($config, "fastq_trna");
+#performTask($config, "check_cca");
+performTask($config, "fastq_trna");
 #performTask( $config, "star_tRNA" );
 #performTask( $config, "star_otherSmallRNA" );
 
