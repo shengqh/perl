@@ -187,8 +187,8 @@ my $config = {
     perform            => 1,
     target_dir         => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/tgirt_count",
     option             => "",
-    source_ref         => ["star_tRNA", "_Aligned.out.bam"],
-    other_smallrna_ref => ["star_otherSmallRNA", "_Aligned.out.bam"],
+    source_ref         => [ "star_tRNA", "_Aligned.out.bam" ],
+    other_smallrna_ref => [ "star_otherSmallRNA", "_Aligned.out.bam" ],
     fastq_files_ref    => "identical",
     seqcount_ref       => [ "identical", ".dupcount\$" ],
     cqs_tools          => $cqstools,
@@ -202,12 +202,28 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+
+  'star_tgirt_category' => {
+    'class'      => 'CQS::SmallRNACategory',
+    'option'     => '',
+    'sh_direct'  => 1,
+    'perform'    => 1,
+    'target_dir' => '/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_tgirt_category',
+    'source_ref' => [ 'star_tgirt_count', '.info$' ],
+    'cqs_tools'  => $cqstools,
+    'pbs' => {
+      'email'    => 'quanhu.sheng@vanderbilt.edu',
+      'walltime' => '72',
+      'mem'      => '40gb',
+      'nodes'    => '1:ppn=1'
+    },
+  },
 };
 
 #performConfig($config);
 #performTask($config, "check_cca");
 #performTask($config, "fastq_trna");
-performTask( $config, "star_tgirt_count" );
+performTask( $config, "star_tgirt_category" );
 
 #performTask( $config, "star_otherSmallRNA" );
 
