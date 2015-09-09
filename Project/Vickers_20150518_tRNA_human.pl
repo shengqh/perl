@@ -5,6 +5,7 @@ use warnings;
 use CQS::ClassFactory;
 
 my $bowtie2_index = "/scratch/cqs/shengq1/references/hg19_16569_MT/bowtie2_index/hg19_16569_MT";
+my $cqstools      = '/home/shengq1/cqstools/CQS.Tools.exe';
 
 my $config = {
   'general' => {
@@ -91,7 +92,7 @@ my $config = {
     },
     'cluster'    => 'slurm',
     'perform'    => 1,
-    'cqstools'   => '/home/shengq1/cqstools/CQS.Tools.exe',
+    'cqstools'   => $cqstools,
     'class'      => 'QC::FastQCSummary',
     'target_dir' => '/scratch/cqs/shengq1/vickers/20150518_tRNA_human/fastqc_post_trim',
     'option'     => ''
@@ -114,15 +115,15 @@ my $config = {
     'option'     => ''
   },
   check_cca => {
-    class        => "SmallRNA::CheckCCA",
-    perform      => 1,
-    target_dir   => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/check_cca",
-    option       => "",
-    source_ref   => [ 'identical', '.fastq.gz$' ],
+    class              => "SmallRNA::TGIRTCheckCCA",
+    perform            => 1,
+    target_dir         => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/check_cca",
+    option             => "",
+    source_ref         => [ 'identical', '.fastq.gz$' ],
     untrimmedFastq_ref => "files",
-    cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
-    sh_direct    => 0,
-    pbs          => {
+    cqs_tools          => '/home/shengq1/cqstools/CQS.Tools.exe',
+    sh_direct          => 0,
+    pbs                => {
       "email"    => 'quanhu.sheng@vanderbilt.edu',
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -130,13 +131,13 @@ my $config = {
     },
   },
   fastq_trna => {
-    class        => "SmallRNA::FastqTrna",
+    class        => "SmallRNA::TGIRTNTA",
     perform      => 1,
     target_dir   => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/fastq_trna",
     option       => "",
     extension    => '_clipped_identical_trna.fastq.gz',
     source_ref   => [ 'identical', '.fastq.gz$' ],
-    ccaFile_ref   => "check_cca",
+    ccaFile_ref  => "check_cca",
     seqcount_ref => [ 'identical', '.dupcount$' ],
     cqs_tools    => '/home/shengq1/cqstools/CQS.Tools.exe',
     sh_direct    => 0,
@@ -145,21 +146,6 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
       "mem"      => "10gb"
-    },
-  },
-  bowtie2 => {
-    class         => "Alignment::Bowtie2",
-    perform       => 1,
-    target_dir    => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/bowtie2",
-    option        => "--end-to-end -k 20 --trim5 3",
-    source_ref    => [ 'fastq_trna', '.*.gz$' ],
-    bowtie2_index => $bowtie2_index,
-    sh_direct     => 1,
-    pbs           => {
-      "email"    => 'quanhu.sheng@vanderbilt.edu',
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "30gb"
     },
   },
   star_tRNA => {
@@ -172,23 +158,6 @@ my $config = {
     output_sort_by_coordinate => 1,
     output_unsorted           => 1,
     sh_direct                 => 0,
-    pbs                       => {
-      "email"    => 'quanhu.sheng@vanderbilt.edu',
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "30gb"
-    },
-  },
-  star_2 => {
-    class                     => "Alignment::STAR",
-    perform                   => 0,
-    target_dir                => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/star_2",
-    option                    => "--alignIntronMax 117 --outFilterMismatchNoverLmax 0.05 --alignEndsType Extend3pOfRead1 --outSAMattributes NH HI NM MD AS XS",
-    source_ref                => [ 'fastq_trna', '.*.gz$' ],
-    genome_dir                => "/scratch/cqs/shengq1/references/hg19_16569_M/STAR_index_v37.75_2.4.0j_sjdb75",
-    output_sort_by_coordinate => 1,
-    output_unsorted           => 1,
-    sh_direct                 => 1,
     pbs                       => {
       "email"    => 'quanhu.sheng@vanderbilt.edu',
       "nodes"    => "1:ppn=8",
@@ -213,12 +182,33 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  star_tgirt_count => {
+    class              => "SmallRNA::TGIRTCount",
+    perform            => 1,
+    target_dir         => "/scratch/cqs/shengq1/vickers/20150518_tRNA_human/tgirt_count",
+    option             => "",
+    source_ref         => "star_tRNA",
+    other_smallrna_ref => "star_otherSmallRNA",
+    fastq_files_ref    => "identical",
+    seqcount_ref       => [ "identical", ".dupcount\$" ],
+    cqs_tools          => $cqstools,
+    coordinate_file    => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed",
+    fasta_file         => "/scratch/cqs/shengq1/references/smallrna/hg19_miRBase20_ucsc-tRNA_ensembl75.bed.fa",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => 'quanhu.sheng@vanderbilt.edu',
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "30gb"
+    },
+  },
 };
 
 #performConfig($config);
 #performTask($config, "check_cca");
 #performTask($config, "fastq_trna");
-performTask( $config, "star_tRNA" );
+performTask( $config, "star_tgirt_count" );
+
 #performTask( $config, "star_otherSmallRNA" );
 
 1;
