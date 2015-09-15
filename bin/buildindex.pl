@@ -43,7 +43,7 @@ my $basename = basename($fastaFile);
 ( my $base = $basename ) =~ s/\.[^.]+$//;
 
 # index fasta file
-if(!-e "${base}.fai"){
+if(!-e "${basename}.fai"){
 	run_command("samtools faidx $fastaFile ");
 }
 
@@ -70,7 +70,7 @@ if ( !-e "gsnap_index_${gsnap}" ) {
     run_command("ln -s ../${basename}.fai ${basename}.fai ");
     run_command("ln -s ../${base}.len ${base}.len ");
   }
-  run_command("gmap-build -D . -d $base -s none $basename");
+  run_command("gmap_build -D . -d $base -s none $basename");
   run_command("atoiindex -F . -d $base");
   chdir("..");
 }
