@@ -51,6 +51,25 @@ if ( !-e "${base}.dict" ) {
 run_command("perl /home/shengq1/local/bin/get_fasta_lengths.pl $fastaFile");
 run_command("mv res_${basename} ${base}.len ");
 
+# gsnap
+`gsnap 2> 1`;
+my $gsnap = `grep version 1 | cut -d " " -f 3`;
+chomp($gsnap);
+`rm 1`;
+if ( !-e "gsnap_index_${gsnap}" ) {
+  mkdir("gsnap_index_${gsnap}");
+  chdir("gsnap_index_${gsnap}");
+  if ( !-e $basename ) {
+    run_command("ln -s ../$fastaFile $basename ");
+    run_command("ln -s ../${base}.dict ${base}.dict ");
+    run_command("ln -s ../${basename}.fai ${basename}.fai ");
+    run_command("ln -s ../${base}.len ${base}.len ");
+  }
+  run_command("gmap-build -D . -d $base -s none $basename");
+  run_command("atoiindex -F . -d $base");
+  chdir("..");
+}
+
 # bowtie
 my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
 chomp($bowtie);
