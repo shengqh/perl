@@ -43,7 +43,7 @@ my $basename = basename($fastaFile);
 ( my $base = $basename ) =~ s/\.[^.]+$//;
 
 # index fasta file
-if(!-e "${basename}.fai"){
+if ( !-e "${basename}.fai" ) {
 	run_command("samtools faidx $fastaFile ");
 }
 
