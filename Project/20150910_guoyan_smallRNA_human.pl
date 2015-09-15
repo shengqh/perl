@@ -37,7 +37,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
 my $def = {
 
@@ -142,18 +142,27 @@ my $def = {
     "T166"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T166.fq.gz"],
 
     #"T169"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
+    "T169" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T169_valid.fastq.gz"],
     "T172" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T172.fq.gz"],
 
     #"T173"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
+    "T173" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T173_valid.fastq.gz"],
     "T174" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T174.fq.gz"],
     "T175" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T175.fq.gz"],
 
     #"T176"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
+    "T176" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T176_valid.fastq.gz"],
     "T177" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T177.fq.gz"],
 
     #"T178"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
+    "T178" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T178_valid.fastq.gz"],
+
     #"T179"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
+    "T179" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T179_valid.fastq.gz"],
+
     #"T180"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
+    "T180" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T180_valid.fastq.gz"],
+
     "T181" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T181.fq.gz"],
     "T182" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T182.fq.gz"],
     "T183" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T183.fq.gz"],
@@ -167,7 +176,9 @@ my $def = {
     "T191" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T191.fq.gz"],
     "T192" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T192.fq.gz"],
 
-    #"T193"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
+    #"T193" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
+    "T193" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T193_valid.fastq.gz"],
+
     #"T194"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T194.fq.gz"],
     "T196" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T196.fq.gz"],
     "T197" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T197.fq.gz"],
@@ -178,7 +189,7 @@ my $def = {
   },
 };
 
-#performSmallRNA_hg19($def);
+performSmallRNA_hg19($def);
 
 1;
 
