@@ -4,6 +4,39 @@ use warnings;
 
 use CQS::PerformSmallRNA;
 
+my $config = {
+  'general' => {
+    'cluster'   => 'slurm',
+    'task_name' => 'wael'
+  },
+  'files' =>{
+    "T169"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
+    "T173"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
+    "T176"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
+    "T178"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
+    "T179"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
+    "T180"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
+    "T193"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
+  },
+  'valid_fastq' => {
+    'pbs' => {
+      'email'    => 'quanhu.sheng@vanderbilt.edu',
+      'walltime' => '24',
+      'mem'      => '20gb',
+      'nodes'    => '1:ppn=1'
+    },
+    'cluster'    => 'slurm',
+    'sh_direct'  => 1,
+    'perform'    => 1,
+    'target_dir' => '/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq',
+    'source_ref' => 'files',
+    'option'     => '',
+    'class'      => 'CQS::ValidFastqExtractor'
+  },
+};
+
+performConfig($config);
+
 my $def = {
 
   #General options
@@ -58,17 +91,17 @@ my $def = {
     "N199"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/E/N199.fq.gz"],
     "N200"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/E/N200.fq.gz"],
     "N201"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/E/N201.fq.gz"],
-    "normal01"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal1.fq.gz"],
-    "normal02"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal2.fq.gz"],
-    "normal03"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal3.fq.gz"],
-    "normal04"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal4.fq.gz"],
-    "normal05"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal5.fq.gz"],
-    "normal06"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal6.fq.gz"],
-    "normal08"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal8.fq.gz"],
-    "normal09"  => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal9.fq.gz"],
+    "normal01" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal1.fq.gz"],
+    "normal02" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal2.fq.gz"],
+    "normal03" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal3.fq.gz"],
+    "normal04" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal4.fq.gz"],
+    "normal05" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal5.fq.gz"],
+    "normal06" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal6.fq.gz"],
+    "normal08" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal8.fq.gz"],
+    "normal09" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal9.fq.gz"],
     "normal10" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/A/normal10.fq.gz"],
-    "T029"      => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T29.fq.gz"],
-    "T042"      => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T42.fq.gz"],
+    "T029"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T29.fq.gz"],
+    "T042"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T42.fq.gz"],
     "T103"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T103.fq.gz"],
     "T111"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T111.fq.gz"],
     "T112"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T112.fq.gz"],
@@ -105,40 +138,45 @@ my $def = {
     "T159"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T159.fq.gz"],
     "T162"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T162.fq.gz"],
     "T166"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T166.fq.gz"],
-    "T169"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
-    "T172"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T172.fq.gz"],
-    "T173"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
-    "T174"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T174.fq.gz"],
-    "T175"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T175.fq.gz"],
-    "T176"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
-    "T177"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T177.fq.gz"],
-    "T178"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
-    "T179"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
-    "T180"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
-    "T181"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T181.fq.gz"],
-    "T182"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T182.fq.gz"],
-    "T183"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T183.fq.gz"],
-    "T184"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T184.fq.gz"],
-    "T185"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T185.fq.gz"],
-    "T186"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T186.fq.gz"],
-    "T187"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T187.fq.gz"],
-    "T188"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T188.fq.gz"],
-    "T189"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T189.fq.gz"],
-    "T190"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T190.fq.gz"],
-    "T191"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T191.fq.gz"],
-    "T192"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T192.fq.gz"],
+
+    #"T169"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
+    "T172" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T172.fq.gz"],
+
+    #"T173"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
+    "T174" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T174.fq.gz"],
+    "T175" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T175.fq.gz"],
+
+    #"T176"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
+    "T177" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T177.fq.gz"],
+
+    #"T178"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
+    #"T179"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
+    #"T180"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
+    "T181" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T181.fq.gz"],
+    "T182" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T182.fq.gz"],
+    "T183" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T183.fq.gz"],
+    "T184" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T184.fq.gz"],
+    "T185" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T185.fq.gz"],
+    "T186" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T186.fq.gz"],
+    "T187" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T187.fq.gz"],
+    "T188" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T188.fq.gz"],
+    "T189" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T189.fq.gz"],
+    "T190" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T190.fq.gz"],
+    "T191" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T191.fq.gz"],
+    "T192" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T192.fq.gz"],
+
     #"T193"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
     #"T194"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T194.fq.gz"],
-    "T196"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T196.fq.gz"],
-    "T197"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T197.fq.gz"],
-    "T198"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T198.fq.gz"],
-    "T199"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T199.fq.gz"],
-    "T200"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T200.fq.gz"],
-    "T201"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T201.fq.gz"],
+    "T196" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T196.fq.gz"],
+    "T197" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T197.fq.gz"],
+    "T198" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T198.fq.gz"],
+    "T199" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T199.fq.gz"],
+    "T200" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T200.fq.gz"],
+    "T201" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T201.fq.gz"],
   },
 };
 
-performSmallRNA_hg19($def);
+#performSmallRNA_hg19($def);
 
 1;
 
