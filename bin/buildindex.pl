@@ -70,7 +70,9 @@ if ( !-e "gsnap_index_${gsnap}" ) {
     run_command("ln -s ../${basename}.fai ${basename}.fai ");
     run_command("ln -s ../${base}.len ${base}.len ");
   }
-  run_command("gmap_build -D . -d $base -s none $basename");
+  #min_read_length = kmers + interval - 1
+  #in order to control the min_read_length = 16, we have to smaller the kmers from 15 to 14 when keep the "sampling interval for genome" equals 3
+  run_command("gmap_build -D . -d $base -k 14 -s none $basename");
   run_command("atoiindex -F . -d $base");
   chdir("..");
 }
