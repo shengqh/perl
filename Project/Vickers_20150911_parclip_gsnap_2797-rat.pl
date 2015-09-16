@@ -17,7 +17,7 @@ my $def = {
 
   cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
-  gsnap_index_directory => "/scratch/cqs/shengq1/references/rn5/STAR_index_v38.81_2.4.2a_sjdb49/",
+  gsnap_index_directory => "/scratch/cqs/shengq1/references/rn5/gsnap_index_2015-06-23/",
   gsnap_index_name      => "rn5",
 
   #Data
@@ -53,21 +53,21 @@ my $config = {
       "mem"      => "40gb"
     }
   },
-  'gsnap_smallRNA_count' => {
-    'cluster'         => 'slurm',
-    'fasta_file'      => "/scratch/cqs/shengq1/references/smallrna/rn5_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
-    'sh_direct'       => 1,
-    'perform'         => 1,
-    'target_dir'      => $def->{target_dir} . "/gsnap_smallRNA_count",
-    'fastq_files'     => $def->{files},
-    'coordinate_file' => "/scratch/cqs/shengq1/references/smallrna/rn5_miRBase21_ucsc-tRNA_ensembl78.bed",
-    'source_ref'      => 'gsnap',
-    'cqs_tools'       => $def->{cqstools},
-    'seqcount'        => $def->{counts},
-    'samtools'        => '/scratch/cqs/shengq1/local/bin/samtools',
-    'class'           => 'CQS::SmallRNACount',
-    'option'          => '-s -e 4',
-    'pbs'             => {
+  gsnap_smallRNA_count => {
+    class           => 'CQS::SmallRNACount',
+    perform         => 1,
+    target_dir      => $def->{target_dir} . "/gsnap_smallRNA_count",
+    option          => '-s -e 4',
+    cluster         => 'slurm',
+    sh_direct       => 1,
+    fastq_files     => $def->{files},
+    coordinate_file => "/scratch/cqs/shengq1/references/smallrna/rn5_miRBase21_ucsc-tRNA_ensembl78.bed",
+    fasta_file      => "/scratch/cqs/shengq1/references/smallrna/rn5_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
+    source_ref      => 'gsnap',
+    cqs_tools       => $def->{cqstools},
+    seqcount        => $def->{counts},
+    samtools        => '/scratch/cqs/shengq1/local/bin/samtools',
+    pbs             => {
       'email'    => 'quanhu.sheng@vanderbilt.edu',
       'walltime' => '72',
       'mem'      => '40gb',
