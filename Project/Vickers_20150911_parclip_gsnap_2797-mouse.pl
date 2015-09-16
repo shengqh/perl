@@ -17,7 +17,7 @@ my $def = {
 
   cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
-  gsnap_index_directory => "/scratch/cqs/shengq1/references/mm10/STAR_index_v38.81_2.4.2a_sjdb49/",
+  gsnap_index_directory => "/scratch/cqs/shengq1/references/mm10/gsnap_index_2015-06-23/",
   gsnap_index_name      => "mm10",
 
   #Data
