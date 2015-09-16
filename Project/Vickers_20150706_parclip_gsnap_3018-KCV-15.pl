@@ -14,22 +14,9 @@ my $def = {
   max_thread => 8,
   cluster    => "slurm",
 
-  #Default software parameter (don't change it except you really know it)
-  fastq_remove_N => 0,
-  adapter        => "TGGAATTCTCGGGTGCCAAGG",
+  cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
-  binding_db => "/data/cqs/shengq1/reference/targetscan/targetscan_v61_hg19.bed",
-  utr3_db    => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
-  samtools   => "/scratch/cqs/shengq1/local/bin/samtools",
-  cqstools   => "/home/shengq1/cqstools/CQS.Tools.exe",
-
-  #for parclip target
-  fasta_file   => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
-  refgene_file => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
-  genome_2bit  => "/data/cqs/guoy1/reference/hg19/hg19_rCRS.2bit",
-  mirna_db     => "/data/cqs/shengq1/reference/miRBase20/hsa.mature.dna.db",
-
-  gsnap_index_directory => "/scratch/cqs/shengq1/references/hg19_16569_MT/gsnap_index_2014-12-30/",
+  gsnap_index_directory => "/scratch/cqs/shengq1/references/hg19_16569_MT/gsnap_index_k14_2015-06-23/",
   gsnap_index_name      => "hg19_16569_MT",
 
   #Data
@@ -87,9 +74,8 @@ my $config = {
       'walltime' => '72',
       'mem'      => '40gb',
       'nodes'    => '1:ppn=1'
-    }
-    }
-
+    },
+  },
 };
 
 performConfig($config);

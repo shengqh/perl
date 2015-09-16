@@ -11,13 +11,13 @@ my $def = {
   #General options
   task_name  => "2797_mouse",
   email      => "quanhu.sheng\@vanderbilt.edu",
-  target_dir => create_directory_or_die("/scratch/cqs/shengq1/vickers/Vickers_20150911_parclip_gsnap_2797-mouse/"),
+  target_dir => create_directory_or_die("/scratch/cqs/shengq1/vickers/20150911_parclip_gsnap_2797-mouse/"),
   max_thread => 8,
   cluster    => "slurm",
 
   cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
-  gsnap_index_directory => "/scratch/cqs/shengq1/references/mm10/gsnap_index_2015-06-23/",
+  gsnap_index_directory => "/scratch/cqs/shengq1/references/mm10/gsnap_index_k14_2015-06-23/",
   gsnap_index_name      => "mm10",
 
   #Data
