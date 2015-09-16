@@ -61,9 +61,9 @@ if ( !-e "${base}.len" ) {
 my $gsnap = `grep version 1 | cut -d " " -f 3`;
 chomp($gsnap);
 `rm 1`;
-if ( !-e "gsnap_index_${gsnap}" ) {
-  mkdir("gsnap_index_${gsnap}");
-  chdir("gsnap_index_${gsnap}");
+if ( !-e "gsnap_index_k14_${gsnap}" ) {
+  mkdir("gsnap_index_k14_${gsnap}");
+  chdir("gsnap_index_k14_${gsnap}");
   if ( !-e $basename ) {
     run_command("ln -s ../$fastaFile $basename ");
     run_command("ln -s ../${base}.dict ${base}.dict ");
