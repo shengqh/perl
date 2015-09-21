@@ -12,13 +12,13 @@ my $config = {
   },
   'files' => {
     "T134" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T134.fq.gz"],
-#    "T169" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
-#    "T173" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
-#    "T176" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
-#    "T178" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
-#    "T179" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
-#    "T180" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
-#    "T193" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
+    "T169" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
+    "T173" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
+    "T176" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
+    "T178" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
+    "T179" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
+    "T180" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
+    "T193" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
   },
   'valid_fastq' => {
     'pbs' => {
@@ -118,7 +118,8 @@ my $def = {
     "T130"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T130.fq.gz"],
     "T131"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T131.fq.gz"],
     "T132"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T132.fq.gz"],
-    "T134"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T134.fq.gz"],
+    #"T134"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T134.fq.gz"],
+    "T134" => ["/scratch/cqs/shengq1/smallRNA/20150910_guoyan_smallRNA_human/valid_fastq/result/T134_valid.fastq.gz"],
     "T135"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T135.fq.gz"],
     "T136"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T136.fq.gz"],
     "T138"     => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T138.fq.gz"],
@@ -190,7 +191,7 @@ my $def = {
   },
 };
 
-#performSmallRNA_hg19($def);
+performSmallRNA_hg19($def);
 
 1;
 
