@@ -62,7 +62,6 @@ my $config = {
     source_ref      => 'gsnap',
     cqs_tools       => $def->{cqstools},
     seqcount        => $def->{counts},
-    samtools        => '/scratch/cqs/shengq1/local/bin/samtools',
     pbs             => {
       'email'    => 'quanhu.sheng@vanderbilt.edu',
       'walltime' => '72',
@@ -70,9 +69,25 @@ my $config = {
       'nodes'    => '1:ppn=1'
     },
   },
+  gsnap_smallRNA_t2c_summary => {
+    class           => 'SmallRNA::T2CSummary',
+    perform         => 1,
+    target_dir      => $def->{target_dir} . "/gsnap_smallRNA_t2c",
+    option          => '',
+    cluster         => 'slurm',
+    sh_direct       => 1,
+    source_ref      => ['gsnap_smallRNA_count','.count.xml$'],
+    cqs_tools       => $def->{cqstools},
+    pbs             => {
+      'email'    => 'quanhu.sheng@vanderbilt.edu',
+      'walltime' => '72',
+      'mem'      => '40gb',
+      'nodes'    => '1:ppn=1'
+    },
+  }
 };
 
-performConfig($config);
+performConfigTask($config, "gsnap_smallRNA_t2c_summary");
 
 1;
 
