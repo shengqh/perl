@@ -11,13 +11,14 @@ my $config = {
     'task_name' => 'wael'
   },
   'files' => {
-    "T169" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
-    "T173" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
-    "T176" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
-    "T178" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
-    "T179" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
-    "T180" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
-    "T193" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
+    "T134" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T134.fq.gz"],
+#    "T169" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T169.fq.gz"],
+#    "T173" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T173.fq.gz"],
+#    "T176" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T176.fq.gz"],
+#    "T178" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T178.fq.gz"],
+#    "T179" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T179.fq.gz"],
+#    "T180" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/D/T180.fq.gz"],
+#    "T193" => ["/gpfs21/scratch/cqs/guoy1/wael/miRNA/B/F/T193.fq.gz"],
   },
   'valid_fastq' => {
     'pbs' => {
@@ -37,7 +38,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
+performConfig($config);
 
 my $def = {
 
@@ -189,7 +190,7 @@ my $def = {
   },
 };
 
-performSmallRNA_hg19($def);
+#performSmallRNA_hg19($def);
 
 1;
 
