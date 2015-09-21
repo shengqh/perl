@@ -87,7 +87,7 @@ my $config = {
   }
 };
 
-performConfigTask($config, "gsnap_smallRNA_t2c_summary");
+performTask($config, "gsnap_smallRNA_t2c_summary");
 
 1;
 
