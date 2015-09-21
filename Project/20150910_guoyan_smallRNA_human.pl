@@ -38,7 +38,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
 my $def = {
 
