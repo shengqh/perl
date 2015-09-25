@@ -6,6 +6,7 @@ use CQS::ClassFactory;
 use Pipeline::SmallRNAUtils;
 use Pipeline::ParclipSmallRNA;
 use CQS::PerformSmallRNA;
+use Data::Dumper;
 
 my $userdef = {
 
@@ -33,6 +34,8 @@ my $userdef = {
 };
 
 my $def = getSmallRNADefinition($userdef, hg19_genome());
+
+print Dumper($def);
 
 my $config = getParclipSmallRNAConfig($def);
 
