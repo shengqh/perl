@@ -5,6 +5,7 @@ use warnings;
 use CQS::ClassFactory;
 use Pipeline::SmallRNAUtils;
 use Pipeline::ParclipSmallRNA;
+use CQS::PerformSmallRNA;
 
 my $userdef = {
 
