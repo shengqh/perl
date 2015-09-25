@@ -10,7 +10,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(hg19_genome hg20_genome mm10_genome rn5_genome cel235_genome getSmallRNADefinition performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
+    qw(hg19_genome hg20_genome mm10_genome rn5_genome cel235_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
   ]
 );
 
@@ -93,66 +93,6 @@ sub cel235_genome {
   };
 }
 
-sub getSmallRNADefinition {
-  my ( $userdef, $genome ) = @_;
-
-  my $cluster = "slurm";
-
-  if ( defined $userdef->{cluster} ) {
-    $cluster = $userdef->{cluster};
-  }
-
-  my $min_read_length = 16;
-  if ( defined $userdef->{min_read_length} ) {
-    $min_read_length = $userdef->{min_read_length};
-  }
-
-  my $smallrnacount_option = "-s";
-  if ( defined $userdef->{smallrnacount_option} ) {
-    $smallrnacount_option = $userdef->{smallrnacount_option};
-  }
-
-  my $def = {
-
-    #General options
-    task_name  => $userdef->{task_name},
-    email      => $userdef->{email},
-    target_dir => $userdef->{target_dir},
-    max_thread => $userdef->{max_thread},
-    cluster    => $cluster,
-
-    #Data
-    files => $userdef->{files},
-
-    #Default software parameter (don' t change it except you really know it ) 
-    bowtie1_option_1mm => "-a -m 100 --best --strata -v 1 -p 8",
-    bowtie1_option_pm    => "-a -m 100 --best --strata -v 0 -p 8",
-    smallrnacount_option => $smallrnacount_option,
-    min_read_length      => $min_read_length,
-
-    #Software and miRBase database options
-    samtools => "/scratch/cqs/shengq1/local/bin/samtools",
-    cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
-
-    #genome database
-    mirbase_count_option => $genome->{mirbase_count_option},
-
-    fastq_remove_N => $userdef->{fastq_remove_N},
-    adapter        => $userdef->{adapter},
-    run_cutadapt => $userdef->{run_cutadapt},
-
-    coordinate            => $genome->{coordinate},
-    coordinate_fasta      => $genome->{coordinate_fasta},
-    bowtie1_index         => $genome->{bowtie1_index},
-    bowtie1_miRBase_index => $genome->{bowtie1_miRBase_index},
-    
-    gsnap_index_directory => $genome->{gsnap_index_directory},
-    gsnap_index_name      => $genome->{gsnap_index_name},
-    star_index_directory => $genome->{star_index_directory}
-  };
-
-  return $def;
-}
 
 sub performSmallRNA_hg19 {
   my ( $userdef, $perform ) = @_;
