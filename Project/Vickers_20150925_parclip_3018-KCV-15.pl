@@ -37,9 +37,7 @@ my $def = getSmallRNADefinition($userdef, hg19_genome());
 
 #print Dumper($def);
 
-my $config = getParclipSmallRNAConfig($def);
-
-performParclipSmallRNA($config);
+performParclipSmallRNA($def);
 
 1;
 
