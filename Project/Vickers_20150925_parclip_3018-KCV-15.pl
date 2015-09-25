@@ -3,9 +3,8 @@ use strict;
 use warnings;
 
 use CQS::ClassFactory;
-use CQS::PerformSmallRNA;
-
-my $genome = hg19_genome();
+use Pipeline::SmallRNAUtils;
+use Pipeline::ParclipSmallRNA;
 
 my $userdef = {
 
@@ -32,8 +31,11 @@ my $userdef = {
   },
 };
 
-my $config = getSmallRNADefinition($userdef, hg19_genome());
+my $def = getSmallRNADefinition($userdef, hg19_genome());
+
+my $config = getParclipSmallRNAConfig($def);
 
 performConfig($config);
 
 1;
+
