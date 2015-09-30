@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use CQS::ClassFactory;
+use CQS::PerformSmallRNA;
 use Pipeline::SmallRNAUtils;
 
 my $userdef = {
