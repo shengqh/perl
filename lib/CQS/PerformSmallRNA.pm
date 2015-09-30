@@ -10,7 +10,7 @@ our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
   'all' => [
-    qw(hg19_genome hg20_genome mm10_genome rn5_genome cel235_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
+    qw(hg19_genome hg38_genome mm10_genome rn5_genome cel235_genome performSmallRNA_hg19 performSmallRNATask_hg19 performSmallRNA_hg20 performSmallRNATask_hg20 performSmallRNA_mm10 performSmallRNATask_mm10 performSmallRNA_rn5 performSmallRNATask_rn5 performSmallRNA_cel235 performSmallRNATask_cel235)
   ]
 );
 
@@ -33,18 +33,18 @@ sub hg19_genome {
   };
 }
 
-sub hg20_genome {
+sub hg38_genome {
   return {
 
     #genome database
     mirbase_count_option  => "-p hsa",
     coordinate            => "/scratch/cqs/shengq1/references/smallrna/hg20_miRBase21_ucsc-tRNA_ensembl78.bed",
     coordinate_fasta      => "/scratch/cqs/shengq1/references/smallrna/hg20_miRBase21_ucsc-tRNA_ensembl78.bed.fa",
-    bowtie1_index         => "/scratch/cqs/shengq1/references/hg20/bowtie_index_1.1.0/hg20",
+    bowtie1_index         => "/scratch/cqs/shengq1/references/hg38_MT/bowtie_index_1.1.2/hg38_MT",
     bowtie1_miRBase_index => "/data/cqs/shengq1/reference/miRBase21/bowtie_index_1.1.1/mature.dna",
-    gsnap_index_directory => "/scratch/cqs/shengq1/references/hg20/gsnap_index_k14_2015-06-23/",
-    gsnap_index_name      => "hg20",
-    star_index_directory => "/scratch/cqs/shengq1/references/hg20/STAR_index_v38.81_2.4.2a_sjdb49"
+    gsnap_index_directory => "/scratch/cqs/shengq1/references/hg38_MT/gsnap_index_k14_2015-06-23/",
+    gsnap_index_name      => "hg38_MT",
+    star_index_directory => "/scratch/cqs/shengq1/references/hg38_MT/STAR_index_v38.81_2.4.2a_sjdb49"
   };
 }
 
