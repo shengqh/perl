@@ -4,6 +4,7 @@ package CQS::PerformSmallRNA;
 use strict;
 use warnings;
 use Pipeline::SmallRNA;
+use Pipeline::SmallRNAUtils;
 
 require Exporter;
 our @ISA = qw(Exporter);
