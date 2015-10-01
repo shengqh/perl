@@ -136,12 +136,12 @@ my $config = {
     shiftmass       => -10,
     shiftscan       => 10000000,
     titleformat     => "DTA",
-    sh_direct       => 0,
+    sh_direct       => 1,
     pbs             => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=1",
       "walltime" => "72",
-      "mem"      => "40gb"
+      "mem"      => "10gb"
     },
   }
 };
