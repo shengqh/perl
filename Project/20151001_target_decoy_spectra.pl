@@ -1394,7 +1394,7 @@ my $config = {
   },
   msgf_target_decoy => {
     class      => "Proteomics::Engine::MSGFPlus",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/msgf_target_decoy",
     option     => $msgf_option,
     source_ref => ["msconvert"],
@@ -1411,7 +1411,7 @@ my $config = {
   },
   msgf_target_decoy_psm => {
     class           => "Proteomics::Distiller::PSMDistiller",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/msgf_target_decoy",
     option          => "-e MSGF -t DTA",
     source_ref      => "msgf_target_decoy",
@@ -1424,6 +1424,20 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => { T1_individual => [ "msconvert", "shift_precursor", "msgf_target", "msgf_target_psm", "msgf_target_decoy", "msgf_target_decoy_psm" ], },
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  }
 };
 
 performConfig($config);
