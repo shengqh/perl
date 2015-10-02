@@ -1362,7 +1362,7 @@ my $config = {
   },
   msgf_target => {
     class      => "Proteomics::Engine::MSGFPlus",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/msgf_target",
     option     => $msgf_option,
     source_ref => [ "msconvert", "shift_precursor" ],
@@ -1379,7 +1379,7 @@ my $config = {
   },
   msgf_target_psm => {
     class           => "Proteomics::Distiller::PSMDistiller",
-    perform         => 1,
+    perform         => 0,
     target_dir      => "${target_dir}/msgf_target",
     option          => "-e MSGF -t DTA",
     source_ref      => "msgf_target",
@@ -1391,7 +1391,39 @@ my $config = {
       "walltime" => "72",
       "mem"      => "10gb"
     },
-  }
+  },
+  msgf_target_decoy => {
+    class      => "Proteomics::Engine::MSGFPlus",
+    perform    => 1,
+    target_dir => "${target_dir}/msgf_target_decoy",
+    option     => $msgf_option,
+    source_ref => ["msconvert"],
+    msgf_jar   => $msgf_jar,
+    mod_file   => $msgf_mod_file,
+    database   => $target_database,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  msgf_target_decoy_psm => {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    perform         => 1,
+    target_dir      => "${target_dir}/msgf_target_decoy",
+    option          => "-e MSGF -t DTA",
+    source_ref      => "msgf_target_decoy",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 };
 
 performConfig($config);
