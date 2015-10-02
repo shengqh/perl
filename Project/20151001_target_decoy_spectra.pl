@@ -1372,7 +1372,7 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=24",
       "walltime" => "2",
       "mem"      => "40gb"
     },
@@ -1404,7 +1404,7 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=24",
       "walltime" => "2",
       "mem"      => "40gb"
     },
@@ -1426,14 +1426,14 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => { T1_individual => [ "msconvert", "shift_precursor", "msgf_target", "msgf_target_psm", "msgf_target_decoy", "msgf_target_decoy_psm" ], },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "3",
       "mem"      => "40gb"
     },
