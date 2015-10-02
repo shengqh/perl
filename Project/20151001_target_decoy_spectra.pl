@@ -1369,7 +1369,7 @@ my $config = {
     msgf_jar   => $msgf_jar,
     mod_file   => $msgf_mod_file,
     database   => $target_database,
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
