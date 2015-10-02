@@ -1372,7 +1372,7 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=24",
+      "nodes"    => "1:ppn=8",
       "walltime" => "2",
       "mem"      => "40gb"
     },
@@ -1404,7 +1404,7 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=24",
+      "nodes"    => "1:ppn=8",
       "walltime" => "2",
       "mem"      => "40gb"
     },
