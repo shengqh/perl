@@ -1394,7 +1394,7 @@ my $config = {
   },
   msgf_target_decoy => {
     class      => "Proteomics::Engine::MSGFPlus",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/msgf_target_decoy",
     option     => $msgf_option,
     source_ref => ["msconvert"],
@@ -1426,7 +1426,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => { T1_individual => [ "msconvert", "shift_precursor", "msgf_target", "msgf_target_psm", "msgf_target_decoy", "msgf_target_decoy_psm" ], },
