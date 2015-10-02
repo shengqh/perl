@@ -24,6 +24,11 @@ my $config = {
 		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR01" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR01.mz5"],
 		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR02" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR02.mz5"],
 		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR03" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR03.mz5"],
+	},
+	allfiles   => {
+		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR01" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR01.mz5"],
+		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR02" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR02.mz5"],
+		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR03" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR03.mz5"],
 		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR04" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR04.mz5"],
 		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR05" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR05.mz5"],
 		"TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR06" => ["/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR06.mz5"],
