@@ -1362,7 +1362,7 @@ my $config = {
   },
   msgf_target => {
     class      => "Proteomics::Engine::MSGFPlus",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/msgf_target",
     option     => $msgf_option,
     source_ref => [ "msconvert", "shift_precursor" ],
@@ -1394,7 +1394,7 @@ my $config = {
   },
   msgf_target_decoy => {
     class      => "Proteomics::Engine::MSGFPlus",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/msgf_target_decoy",
     option     => $msgf_option,
     source_ref => ["msconvert"],
@@ -1424,14 +1424,81 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  sequencetask => {
-    class      => "CQS::SequenceTask",
-    perform    => 0,
-    target_dir => "${target_dir}/sequencetask",
+  myrimatch_target => {
+    class      => "Proteomics::Engine::Myrimatch",
+    perform    => 1,
+    target_dir => "${target_dir}/myrimatch_target",
     option     => "",
-    source     => { T1_individual => [ "msconvert", "shift_precursor", "msgf_target", "msgf_target_psm", "msgf_target_decoy", "msgf_target_decoy_psm" ], },
+    source_ref => [ "msconvert", "shift_precursor" ],
+    cfgfile    => $myrimatch_config_file,
+    database   => $target_database,
     sh_direct  => 0,
     pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  myrimatch_target_psm => {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    perform         => 1,
+    target_dir      => "${target_dir}/myrimatch_target",
+    option          => "-e MyriMatch -t DTA",
+    source_ref      => "myrimatch_target",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "1",
+      "mem"      => "10gb"
+    },
+  },
+  myrimatch_target_decoy => {
+    class      => "Proteomics::Engine::Myrimatch",
+    perform    => 1,
+    target_dir => "${target_dir}/myrimatch_target_decoy",
+    option     => "",
+    source_ref => ["msconvert"],
+    cfgfile    => $myrimatch_config_file,
+    database   => $target_decoy_database,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  myrimatch_target_decoy_psm => {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    perform         => 1,
+    target_dir      => "${target_dir}/myrimatch_target_decoy",
+    option          => "-e MyriMatch -t DTA",
+    source_ref      => "myrimatch_target_decoy",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "1",
+      "mem"      => "10gb"
+    },
+  },
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => {
+      T1_individual => [
+        "msconvert",        "shift_precursor",      "msgf_target",            "msgf_target_psm", "msgf_target_decoy", "msgf_target_decoy_psm",
+        "myrimatch_target", "myrimatch_target_psm", "myrimatch_target_decoy", "myrimatch_target_decoy_psm"
+      ],
+    },
+    sh_direct => 0,
+    pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
