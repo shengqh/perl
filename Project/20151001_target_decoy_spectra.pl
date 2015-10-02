@@ -1426,15 +1426,15 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => { T1_individual => [ "msconvert", "shift_precursor", "msgf_target", "msgf_target_psm", "msgf_target_decoy", "msgf_target_decoy_psm" ], },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
+      "nodes"    => "1:ppn=1",
+      "walltime" => "3",
       "mem"      => "40gb"
     },
   }
