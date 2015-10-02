@@ -1384,7 +1384,7 @@ my $config = {
 	},
 	msgf_target_psm => {
 		class           => "Proteomics::Distiller::PSMDistiller",
-		perform         => 1,
+		perform         => 0,
 		target_dir      => "${target_dir}/msgf_target",
 		option          => "-e MSGF -t DTA",
 		source_ref      => "msgf_target",
