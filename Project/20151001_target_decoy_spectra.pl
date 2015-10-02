@@ -1362,7 +1362,7 @@ my $config = {
   },
   msgf_target => {
     class      => "Proteomics::Engine::MSGFPlus",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/msgf_target",
     option     => $msgf_option,
     source_ref => [ "msconvert", "shift_precursor" ],
@@ -1372,8 +1372,8 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
       "mem"      => "40gb"
     },
   },
@@ -1388,7 +1388,7 @@ my $config = {
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "72",
+      "walltime" => "1",
       "mem"      => "10gb"
     },
   },
@@ -1404,8 +1404,8 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
       "mem"      => "40gb"
     },
   },
@@ -1420,7 +1420,7 @@ my $config = {
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "72",
+      "walltime" => "1",
       "mem"      => "10gb"
     },
   },
