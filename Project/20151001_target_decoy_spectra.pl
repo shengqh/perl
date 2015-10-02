@@ -1329,7 +1329,7 @@ my $config = {
 	},
 	msconvert => {
 		class            => "Proteomics::Format::Msconvert",
-		perform          => 1,
+		perform          => 0,
 		target_dir       => "${target_dir}/msconvert",
 		option           => "--mgf --filter \"chargeState 2-5\"",
 		expect_extension => ".mgf",
@@ -1344,7 +1344,7 @@ my $config = {
 	},
 	shift_precursor => {
 		class           => "Proteomics::Format::PrecursorShiftProcessor",
-		perform         => 1,
+		perform         => 0,
 		target_dir      => "${target_dir}/shift_precursor",
 		option          => "",
 		source_ref      => "msconvert",
