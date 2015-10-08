@@ -1537,7 +1537,7 @@ my $config = {
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "2",
+      "walltime" => "72",
       "mem"      => "40gb"
     },
   },
@@ -1552,7 +1552,7 @@ my $config = {
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "1",
+      "walltime" => "24",
       "mem"      => "10gb"
     },
   },
@@ -1569,7 +1569,7 @@ my $config = {
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "2",
+      "walltime" => "72",
       "mem"      => "40gb"
     },
   },
@@ -1584,7 +1584,7 @@ my $config = {
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "1",
+      "walltime" => "24",
       "mem"      => "10gb"
     },
   },
@@ -1615,7 +1615,7 @@ my $config = {
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "1",
+      "walltime" => "24",
       "mem"      => "10gb"
     },
   },
@@ -1646,7 +1646,7 @@ my $config = {
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "1",
+      "walltime" => "24",
       "mem"      => "10gb"
     },
   },
