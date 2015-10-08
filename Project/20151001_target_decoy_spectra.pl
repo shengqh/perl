@@ -15,6 +15,7 @@ my $msgf_jar              = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.ja
 my $msgf_mod_file         = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/msgf_mods.txt";
 my $msgf_option           = "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 1 -e 1 -protocol 5 -ntt 2 -n 2 -minLength 7 -addFeatures 1";
 my $myrimatch_config_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/myrimatch-it.config";
+my $comet_config_file     = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/comet-it.config";
 my $target_database       = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp.fasta";
 my $target_decoy_database = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp_DECOY.fasta";
 
@@ -1650,6 +1651,72 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  comet_target => {
+    class           => "Proteomics::Engine::Comet",
+    perform         => 1,
+    target_dir      => "${target_dir}/comet_target",
+    option          => "",
+    source_ref      => [ "msconvert", "shift_precursor" ],
+    database        => $target_database,
+    param_file      => $comet_config_file,
+    proteomicstools => $proteomicstools,
+    titleformat     => "DTA",
+    sh_direct       => 0,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  comet_target_psm => {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    perform         => 1,
+    target_dir      => "${target_dir}/comet_target",
+    option          => "-e Comet -t DTA",
+    source_ref      => "comet_target",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  comet_target_decoy => {
+    class           => "Proteomics::Engine::Comet",
+    perform         => 1,
+    target_dir      => "${target_dir}/comet_target_decoy",
+    option          => "",
+    source_ref      => ["msconvert"],
+    database        => $target_decoy_database,
+    param_file      => $comet_config_file,
+    proteomicstools => $proteomicstools,
+    titleformat     => "DTA",
+    sh_direct       => 0,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  comet_target_decoy_psm => {
+    class           => "Proteomics::Distiller::PSMDistiller",
+    perform         => 1,
+    target_dir      => "${target_dir}/comet_target_decoy",
+    option          => "-e Comet -t DTA",
+    source_ref      => "comet_target_decoy",
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -1657,8 +1724,9 @@ my $config = {
     option     => "",
     source     => {
       T1_individual => [
-        "msconvert",        "shift_precursor",      "msgf_target",            "msgf_target_psm", "msgf_target_decoy", "msgf_target_decoy_psm",
-        "myrimatch_target", "myrimatch_target_psm", "myrimatch_target_decoy", "myrimatch_target_decoy_psm"
+        "msconvert",          "shift_precursor",      "msgf_target",            "msgf_target_psm",            "msgf_target_decoy", "msgf_target_decoy_psm",
+        "myrimatch_target",   "myrimatch_target_psm", "myrimatch_target_decoy", "myrimatch_target_decoy_psm", "comet_target",      "comet_target_psm",
+        "comet_target_decoy", "comet_target_decoy_psm",
       ],
     },
     sh_direct => 0,
