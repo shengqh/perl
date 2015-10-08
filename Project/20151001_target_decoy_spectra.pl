@@ -19,6 +19,8 @@ my $comet_config_file     = "/scratch/cqs/shengq1/proteomics/20151001_target_dec
 my $target_database       = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp.fasta";
 my $target_decoy_database = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp_DECOY.fasta";
 
+my $buildsummary_msgf_target_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target.param";
+
 my $config = {
   general => { task_name => "ShiftedTargetDecoy" },
   files   => {
@@ -1567,6 +1569,21 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  msgf_target_buildsummary => {
+    class      => "Proteomics::Summary::BuildSummary",
+    perform    => 1,
+    target_dir => "${target_dir}/msgf_target_buildsummary",
+    option     => "",
+    source_ref => [ "msgf_target" ],
+    parameter_file   => $buildsummary_msgf_target_file,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   msgf_target_decoy => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
@@ -1749,6 +1766,7 @@ my $config = {
   }
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "msgf_target_buildsummary");
 
 1;
