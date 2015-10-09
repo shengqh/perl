@@ -19,9 +19,9 @@ my $comet_config_file     = "/scratch/cqs/shengq1/proteomics/20151001_target_dec
 my $target_database       = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp.fasta";
 my $target_decoy_database = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp_DECOY.fasta";
 
-my $buildsummary_msgf_target_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target.param";
-my $buildsummary_msgf_target_decoy_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_decoy.param";
-my $buildsummary_msgf_target_unique2_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_unique2.param";
+my $buildsummary_msgf_target_file               = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target.param";
+my $buildsummary_msgf_target_decoy_file         = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_decoy.param";
+my $buildsummary_msgf_target_unique2_file       = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_unique2.param";
 my $buildsummary_msgf_target_decoy_unique2_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_decoy_unique2.param";
 
 my $config = {
@@ -1603,7 +1603,8 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     },
-  },  msgf_target_decoy => {
+  },
+  msgf_target_decoy => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/msgf_target_decoy",
@@ -1666,7 +1667,8 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     },
-  },  myrimatch_target => {
+  },
+  myrimatch_target => {
     class      => "Proteomics::Engine::Myrimatch",
     perform    => 1,
     target_dir => "${target_dir}/myrimatch_target",
