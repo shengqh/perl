@@ -23,6 +23,7 @@ my $buildsummary_msgf_target_file               = "/scratch/cqs/shengq1/proteomi
 my $buildsummary_msgf_target_decoy_file         = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_decoy.param";
 my $buildsummary_msgf_target_unique2_file       = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_unique2.param";
 my $buildsummary_msgf_target_decoy_unique2_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_decoy_unique2.param";
+my $buildsummary_bins                           = [ 1, 2, 3, 4, 5 ];
 
 my $config = {
   general => { task_name => "ShiftedTargetDecoy" },
@@ -1598,6 +1599,7 @@ my $config = {
     proteomicstools => $proteomicstools,
     sh_direct       => 0,
     bin_size        => 5,
+    bins            => $buildsummary_bins,
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -1615,7 +1617,7 @@ my $config = {
     proteomicstools => $proteomicstools,
     sh_direct       => 0,
     bin_size        => 5,
-    bins            => [ 1, 2, 3, 4, 5 ],
+    bins            => $buildsummary_bins,
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -1680,6 +1682,7 @@ my $config = {
     parameter_file  => $buildsummary_msgf_target_decoy_file,
     proteomicstools => $proteomicstools,
     bin_size        => 5,
+    bins            => $buildsummary_bins,
     sh_direct       => 0,
     pbs             => {
       "email"    => $email,
@@ -1697,6 +1700,7 @@ my $config = {
     parameter_file  => $buildsummary_msgf_target_decoy_unique2_file,
     proteomicstools => $proteomicstools,
     bin_size        => 5,
+    bins            => $buildsummary_bins,
     sh_direct       => 0,
     pbs             => {
       "email"    => $email,
@@ -1856,8 +1860,9 @@ my $config = {
 };
 
 #performConfig($config);
+performTask( $config, "msgf_target_accumulate_buildsummary" );
+performTask( $config, "msgf_target_decoy_accumulate_buildsummary" );
 performTask( $config, "msgf_target_accumulate_buildsummary_unique2" );
-
-#performTask( $config, "msgf_target_decoy_accumulate_buildsummary_unique2" );
+performTask( $config, "msgf_target_decoy_accumulate_buildsummary_unique2" );
 
 1;
