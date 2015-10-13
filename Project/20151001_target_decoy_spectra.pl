@@ -25,7 +25,7 @@ my $buildsummary_msgf_target_unique2_file       = "/scratch/cqs/shengq1/proteomi
 my $buildsummary_msgf_target_decoy_unique2_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_decoy_unique2.param";
 
 my $config = {
-  general => { task_name => "td" },
+  general => { task_name => "ShiftedTargetDecoy" },
   files   => {
     "TCGA-AA-3534-01A-22" => [
       "/dors/bioinfo/zhanglab/tcga_colon_proteomics/TCGA-AA-3534-01A-22_W_VU_20130208_A0218_10B_R_FR01.mz5",
