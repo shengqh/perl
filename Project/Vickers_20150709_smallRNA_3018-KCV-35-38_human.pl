@@ -15,6 +15,7 @@ my $def = {
 
   #Default software parameter (don't change it except you really know it)
   fastq_remove_N => 0,
+  cqstools       => "/home/shengq1/cqstools/CQS.Tools.exe",
 
   #Data
   files => {
@@ -79,8 +80,8 @@ my $def = {
   },
 };
 
-my $config = performSmallRNA_hg19($def, 0);
-performTask($config, "bowtie1_miRbase_pm_count");
+my $config = performSmallRNA_hg19( $def, 0 );
+performTask( $config, "bowtie1_miRbase_pm_count" );
 
 1;
 
