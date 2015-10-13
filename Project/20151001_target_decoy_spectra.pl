@@ -1615,6 +1615,7 @@ my $config = {
     proteomicstools => $proteomicstools,
     sh_direct       => 0,
     bin_size        => 5,
+    bins            => [ 1, 2, 3, 4, 5 ],
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -1856,6 +1857,7 @@ my $config = {
 
 #performConfig($config);
 performTask( $config, "msgf_target_accumulate_buildsummary_unique2" );
-performTask( $config, "msgf_target_decoy_accumulate_buildsummary_unique2" );
+
+#performTask( $config, "msgf_target_decoy_accumulate_buildsummary_unique2" );
 
 1;
