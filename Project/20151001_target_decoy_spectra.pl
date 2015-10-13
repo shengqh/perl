@@ -1588,6 +1588,23 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  msgf_target_accumulate_buildsummary => {
+    class           => "Proteomics::Summary::AccumulateBuildSummary",
+    perform         => 1,
+    target_dir      => "${target_dir}/msgf_target_accumulate_buildsummary",
+    option          => "",
+    source_ref      => ["msgf_target"],
+    parameter_file  => $buildsummary_msgf_target_file,
+    proteomicstools => $proteomicstools,
+    sh_direct       => 0,
+    bin_size        => 10,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   msgf_target_buildsummary_unique2 => {
     class           => "Proteomics::Summary::BuildSummary",
     perform         => 1,
@@ -1644,6 +1661,23 @@ my $config = {
     source_ref      => ["msgf_target_decoy"],
     parameter_file  => $buildsummary_msgf_target_decoy_file,
     proteomicstools => $proteomicstools,
+    sh_direct       => 0,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  msgf_target_decoy_accumulate_buildsummary => {
+    class           => "Proteomics::Summary::AccumulateBuildSummary",
+    perform         => 1,
+    target_dir      => "${target_dir}/msgf_target_decoy_accumulate_buildsummary",
+    option          => "",
+    source_ref      => ["msgf_target_decoy"],
+    parameter_file  => $buildsummary_msgf_target_decoy_file,
+    proteomicstools => $proteomicstools,
+    bin_size        => 10,
     sh_direct       => 0,
     pbs             => {
       "email"    => $email,
@@ -1819,7 +1853,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "msgf_target_buildsummary_unique2" );
-performTask( $config, "msgf_target_decoy_buildsummary_unique2" );
+performTask( $config, "msgf_target_accumulate_buildsummary" );
+performTask( $config, "msgf_target_decoy_accumulate_buildsummary" );
 
 1;
