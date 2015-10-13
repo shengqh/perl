@@ -1597,7 +1597,7 @@ my $config = {
     parameter_file  => $buildsummary_msgf_target_file,
     proteomicstools => $proteomicstools,
     sh_direct       => 0,
-    bin_size        => 10,
+    bin_size        => 5,
     pbs             => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -1677,7 +1677,7 @@ my $config = {
     source_ref      => ["msgf_target_decoy"],
     parameter_file  => $buildsummary_msgf_target_decoy_file,
     proteomicstools => $proteomicstools,
-    bin_size        => 10,
+    bin_size        => 5,
     sh_direct       => 0,
     pbs             => {
       "email"    => $email,
