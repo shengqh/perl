@@ -300,7 +300,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
       option          => "",
       source_ref      => [ "${dataset}_MSGF", "_??.msgf.mzid", "${dataset}_MSGF", "-10daltons.msgf.mzid", ],
-      parameter_file  => $dataset->{buildsummary_config_file},
+      parameter_file  => $datasets->{$dataset}->{buildsummary_config_file},
       proteomicstools => $proteomicstools,
       sh_direct       => 0,
       pbs             => {
