@@ -9,6 +9,7 @@ use CQS::ConfigUtils;
 use Data::Dumper;
 use Hash::Merge qw( merge );
 
+#my $target_dir      = "E:/temp";
 my $target_dir      = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor";
 my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
 my $msamanda        = "/scratch/cqs/shengq1/local/bin/MSAmanda_Standalone_LinuxMac_1.0.0.4485/MSAmanda.exe";
@@ -306,7 +307,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_MSGF_buildsummary_-10daltons" => {
       task_name       => "${dataset}_MSGF_-10daltons",
       class           => "Proteomics::Summary::BuildSummary",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
       option          => "",
       source_ref      => [ "${dataset}_MSGF", "_??.msgf.mzid", "${dataset}_MSGF", "-10daltons.msgf.mzid", ],
