@@ -19,6 +19,9 @@ my $database_yeast  = "${target_dir}/database/rev_Yeast_uniprot_v20120613.fasta"
 my $database_ecoli  = "${target_dir}/database/rev_Ecoli_uniprot_v20120613_P4431.fasta";
 my $email           = "quanhu.sheng\@vanderbilt.edu";
 
+my $buildsummary_msgf_human_file = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/buildsummary_msgf_human.param";
+my $buildsummary_msgf_yeast_file = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/buildsummary_msgf_yeast.param";
+
 my $datasets = {
   Elite_CIDIT_Human => {
     source => {
@@ -93,7 +96,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_source"         => $def->{source},
     "${dataset}_shift_minus_15" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_minus_15",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -111,7 +114,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_shift_minus_10" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_minus_10",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -129,7 +132,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_shift_minus_5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_minus_5",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -147,7 +150,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_shift_minus_0.5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_minus_0.5",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -165,7 +168,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_shift_plus_0.5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_plus_0.5",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -183,7 +186,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_shift_plus_5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_plus_5",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -201,7 +204,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_shift_plus_10" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_plus_10",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -219,7 +222,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_shift_plus_15" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/${dataset}/shift_plus_15",
       option          => "",
       source_ref      => "${dataset}_source",
@@ -253,7 +256,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_MSGF" => {
       class      => "Proteomics::Engine::MSGFPlus",
       task_name  => $dataset,
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/$dataset/MSGF",
       option     => $datasets->{$dataset}->{MSGF_option},
       source_ref => @mgf,
@@ -271,7 +274,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_MSGF_PSM" => {
       class           => "Proteomics::Distiller::PSMDistiller",
       task_name       => $dataset,
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/$dataset/MSGF",
       option          => "-e MSGF -t DTA",
       source_ref      => $dataset . "_MSGF",
@@ -284,10 +287,29 @@ for my $dataset ( sort keys %{$datasets} ) {
         "mem"      => "40gb"
       },
     },
+
+    "${dataset}_MSGF_buildsummary_-10daltons" => {
+      task_name       => "${dataset}_MSGF_-10daltons",
+      class           => "Proteomics::Summary::BuildSummary",
+      perform         => 1,
+      target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
+      option          => "",
+      source_ref      => [ "${dataset}_MSGF", "_??.msgf.mzid", "${dataset}_MSGF", "-10daltons.msgf.mzid", ],
+      parameter_file  => $buildsummary_msgf_human_file,
+      proteomicstools => $proteomicstools,
+      sh_direct       => 0,
+      pbs             => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    },
+
     "${dataset}_comet" => {
       class           => "Proteomics::Engine::Comet",
       task_name       => $dataset,
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/$dataset/comet",
       option          => "",
       source_ref      => @mgf,
@@ -306,7 +328,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_comet_PSM" => {
       class           => "Proteomics::Distiller::PSMDistiller",
       task_name       => $dataset,
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/$dataset/comet",
       option          => "-e Comet -t DTA",
       source_ref      => $dataset . "_comet",
@@ -322,7 +344,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_myrimatch" => {
       class      => "Proteomics::Engine::Myrimatch",
       task_name  => $dataset,
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/$dataset/myrimatch",
       option     => "",
       source_ref => @mgf,
@@ -339,7 +361,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_myrimatch_PSM" => {
       class           => "Proteomics::Distiller::PSMDistiller",
       task_name       => $dataset,
-      perform         => 1,
+      perform         => 0,
       target_dir      => "${target_dir}/$dataset/myrimatch",
       option          => "-e MyriMatch -t DTA",
       source_ref      => $dataset . "_myrimatch",
@@ -355,6 +377,7 @@ for my $dataset ( sort keys %{$datasets} ) {
   };
 
   push( @individual, ( "${dataset}_MSGF", "${dataset}_MSGF_PSM", "${dataset}_comet", "${dataset}_comet_PSM", "${dataset}_myrimatch", "${dataset}_myrimatch_PSM", ) );
+  push( @summary, ("${dataset}_MSGF_buildsummary_-10daltons") );
 
   $configall = merge( $configall, $search );
 }
