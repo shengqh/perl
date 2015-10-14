@@ -115,7 +115,6 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_MSGF_source" => {
       task_name  => "MSGF_source",
       class      => "Proteomics::Engine::MSGFPlus",
-      task_name  => $dataset,
       perform    => 1,
       target_dir => "${target_dir}/$dataset/MSGF",
       option     => $datasets->{$dataset}->{MSGF_option},
@@ -139,9 +138,10 @@ for my $dataset ( sort keys %{$datasets} ) {
     my $deltaconfig = {
       "${dataset}_shift_${delta}" => {
         task_name       => "shift_${delta}",
+        prefix          => "shift_${delta}",
         class           => "Proteomics::Format::PrecursorShiftProcessor",
         perform         => 1,
-        target_dir      => "${target_dir}/${dataset}/shift_${delta}",
+        target_dir      => "${target_dir}/${dataset}/shift",
         option          => "",
         source_ref      => "${dataset}_source",
         proteomicstools => $proteomicstools,
@@ -157,10 +157,11 @@ for my $dataset ( sort keys %{$datasets} ) {
         },
       },
       "${dataset}_MSGF_${delta}" => {
-        task_name  => "MSGF_${delta}",
+        task_name       => "shift_${delta}",
+        prefix          => "shift_${delta}",
         class      => "Proteomics::Engine::MSGFPlus",
         perform    => 1,
-        target_dir => "${target_dir}/$dataset/MSGF_${delta}",
+        target_dir => "${target_dir}/$dataset/MSGF",
         option     => $datasets->{$dataset}->{MSGF_option},
         source_ref => "${dataset}_shift_${delta}",
         msgf_jar   => $msgf_jar,
