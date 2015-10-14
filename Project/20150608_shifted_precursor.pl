@@ -137,7 +137,6 @@ for my $dataset ( sort keys %{$datasets} ) {
   for my $delta (@deltas) {
     my $deltaconfig = {
       "${dataset}_shift_${delta}" => {
-        task_name       => "shift_${delta}",
         prefix          => "shift_${delta}",
         class           => "Proteomics::Format::PrecursorShiftProcessor",
         perform         => 1,
@@ -157,8 +156,7 @@ for my $dataset ( sort keys %{$datasets} ) {
         },
       },
       "${dataset}_MSGF_${delta}" => {
-        task_name       => "shift_${delta}",
-        prefix          => "shift_${delta}",
+        prefix     => "shift_${delta}",
         class      => "Proteomics::Engine::MSGFPlus",
         perform    => 1,
         target_dir => "${target_dir}/$dataset/MSGF",
