@@ -7,19 +7,21 @@ use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/tcga");
 
-my $email         = "quanhu.sheng\@vanderbilt.edu";
-my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $samtools      = "/home/shengq1/local/bin/samtools/samtools";
-my $rnaediting_db = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
-my $glmvc         = "/home/shengq1/glmvc/glmvc.exe";
-my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
-my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
-my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
-my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
-my $hg19_map      = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
-my $affy_file     = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
-my $annovar_param = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
-my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $email             = "quanhu.sheng\@vanderbilt.edu";
+my $cqstools          = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $samtools          = "/home/shengq1/local/bin/samtools/samtools";
+my $rnaediting_db     = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
+my $glmvc             = "/home/shengq1/glmvc/glmvc.exe";
+my $mutect            = "/home/shengq1/local/bin/mutect-1.1.7.jar";
+my $varscan2          = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
+my $gatk_jar          = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar        = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $hg19_map          = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
+my $affy_file         = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
+my $annovar_protocol  = "refGene,snp138,cosmic70";
+my $annovar_operation = "g,f,f";
+my $annovar_param     = "-protocol ${$annovar_protocol} -operation ${$annovar_operation} --remove";
+my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/humandb/";
 
 my $qc3_perl = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
@@ -577,7 +579,6 @@ for my $cfg (@cfgs) {
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
       annovar_db => $annovar_db,
-      buildver   => "hg19",
       cqstools   => $cqstools,
       affy_file  => $affy_file,
       sh_direct  => 1,
@@ -600,6 +601,8 @@ for my $cfg (@cfgs) {
       groups_ref           => $cfg->{groups},
       fasta_file           => $cfg->{fasta_file},
       annovar_buildver     => "hg19",
+      annovar_protocol     => $annovar_protocol,
+      annovar_operation    => $annovar_operation,
       rnaediting_db        => $rnaediting_db,
       distance_exon_gtf    => $cfg->{gtf_file},
       sh_direct            => 1,
