@@ -106,176 +106,20 @@ my $configall = { general => { task_name => "td" }, };
 my @individual = ();
 my @summary    = ();
 
+my @deltas = ( -15, -10, -5, -0.5, 0.5, 5, 10, 15 );
+
 for my $dataset ( sort keys %{$datasets} ) {
   my $def   = $datasets->{$dataset};
   my $shift = {
-    "${dataset}_source"         => $def->{source},
-    "${dataset}_shift_minus_15" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_minus_15",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => -15,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    "${dataset}_shift_minus_10" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_minus_10",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => -10,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    "${dataset}_shift_minus_5" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_minus_5",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => -5,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    "${dataset}_shift_minus_0.5" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_minus_0.5",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => -0.5,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    "${dataset}_shift_plus_0.5" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_plus_0.5",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => 0.5,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    "${dataset}_shift_plus_5" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_plus_5",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => 5,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    "${dataset}_shift_plus_10" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_plus_10",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => 10,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    "${dataset}_shift_plus_15" => {
-      class           => "Proteomics::Format::PrecursorShiftProcessor",
-      perform         => 0,
-      target_dir      => "${target_dir}/${dataset}/shift_plus_15",
-      option          => "",
-      source_ref      => "${dataset}_source",
-      proteomicstools => $proteomicstools,
-      shiftmass       => 15,
-      shiftscan       => 10000000,
-      titleformat     => "DTA",
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-  };
-
-  $configall = merge( $configall, $shift );
-  my @mgf = [
-    "${dataset}_source",       "${dataset}_shift_minus_15", "${dataset}_shift_minus_10", "${dataset}_shift_minus_5", "${dataset}_shift_minus_0.5", "${dataset}_shift_plus_0.5",
-    "${dataset}_shift_plus_5", "${dataset}_shift_plus_10",  "${dataset}_shift_plus_15"
-  ];
-  push(
-    @individual,
-    (
-      "${dataset}_shift_minus_15", "${dataset}_shift_minus_10", "${dataset}_shift_minus_5", "${dataset}_shift_minus_0.5",
-      "${dataset}_shift_plus_0.5", "${dataset}_shift_plus_5",   "${dataset}_shift_plus_10", "${dataset}_shift_plus_15"
-    )
-  );
-  my $search = {
-    "${dataset}_MSGF" => {
+    "${dataset}_source"      => $def->{source},
+    "${dataset}_MSGF_source" => {
+      task_name  => "MSGF_source",
       class      => "Proteomics::Engine::MSGFPlus",
       task_name  => $dataset,
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/$dataset/MSGF",
       option     => $datasets->{$dataset}->{MSGF_option},
-      source_ref => @mgf,
+      source_ref => "${dataset}_source",
       msgf_jar   => $msgf_jar,
       mod_file   => $mod_file,
       database   => $datasets->{$dataset}->{database},
@@ -286,116 +130,157 @@ for my $dataset ( sort keys %{$datasets} ) {
         "walltime" => "72",
         "mem"      => "40gb"
       },
-    },
-    "${dataset}_MSGF_PSM" => {
-      class           => "Proteomics::Distiller::PSMDistiller",
-      task_name       => $dataset,
-      perform         => 0,
-      target_dir      => "${target_dir}/$dataset/MSGF",
-      option          => "-e MSGF -t DTA",
-      source_ref      => $dataset . "_MSGF",
-      proteomicstools => $proteomicstools,
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-
-    "${dataset}_MSGF_buildsummary_-10daltons" => {
-      task_name       => "${dataset}_MSGF_-10daltons",
-      class           => "Proteomics::Summary::BuildSummary",
-      perform         => 1,
-      target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
-      option          => "",
-      source_ref      => [ "${dataset}_MSGF", "((?!daltons).)*\$" ],
-      parameter_file  => $datasets->{$dataset}->{buildsummary_config_file},
-      proteomicstools => $proteomicstools,
-      sh_direct       => 0,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-
-    "${dataset}_comet" => {
-      class           => "Proteomics::Engine::Comet",
-      task_name       => $dataset,
-      perform         => 0,
-      target_dir      => "${target_dir}/$dataset/comet",
-      option          => "",
-      source_ref      => @mgf,
-      database        => $datasets->{$dataset}->{database},
-      param_file      => $datasets->{$dataset}->{comet_config_file},
-      proteomicstools => $proteomicstools,
-      titleformat     => "DTA",
-      sh_direct       => 0,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-    "${dataset}_comet_PSM" => {
-      class           => "Proteomics::Distiller::PSMDistiller",
-      task_name       => $dataset,
-      perform         => 0,
-      target_dir      => "${target_dir}/$dataset/comet",
-      option          => "-e Comet -t DTA",
-      source_ref      => $dataset . "_comet",
-      proteomicstools => $proteomicstools,
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-    "${dataset}_myrimatch" => {
-      class      => "Proteomics::Engine::Myrimatch",
-      task_name  => $dataset,
-      perform    => 0,
-      target_dir => "${target_dir}/$dataset/myrimatch",
-      option     => "",
-      source_ref => @mgf,
-      cfgfile    => $datasets->{$dataset}->{myrimatch_config_file},
-      database   => $datasets->{$dataset}->{database},
-      sh_direct  => 0,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-    "${dataset}_myrimatch_PSM" => {
-      class           => "Proteomics::Distiller::PSMDistiller",
-      task_name       => $dataset,
-      perform         => 0,
-      target_dir      => "${target_dir}/$dataset/myrimatch",
-      option          => "-e MyriMatch -t DTA",
-      source_ref      => $dataset . "_myrimatch",
-      proteomicstools => $proteomicstools,
-      sh_direct       => 1,
-      pbs             => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
+    }
   };
 
-  push( @individual, ( "${dataset}_MSGF", "${dataset}_MSGF_PSM", "${dataset}_comet", "${dataset}_comet_PSM", "${dataset}_myrimatch", "${dataset}_myrimatch_PSM", ) );
-  push( @summary, ("${dataset}_MSGF_buildsummary_-10daltons") );
+  $configall = merge( $configall, $shift );
 
-  $configall = merge( $configall, $search );
+  for my $delta (@deltas) {
+    my $deltaconfig = {
+      "${dataset}_shift_${delta}" => {
+        task_name       => "shift_${delta}",
+        class           => "Proteomics::Format::PrecursorShiftProcessor",
+        perform         => 1,
+        target_dir      => "${target_dir}/${dataset}/shift",
+        option          => "",
+        source_ref      => "${dataset}_source",
+        proteomicstools => $proteomicstools,
+        shiftmass       => -15,
+        shiftscan       => 10000000,
+        titleformat     => "DTA",
+        sh_direct       => 1,
+        pbs             => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "10gb"
+        },
+      },
+      "${dataset}_MSGF_${delta}" => {
+        task_name  => "MSGF_${delta}",
+        class      => "Proteomics::Engine::MSGFPlus",
+        perform    => 1,
+        target_dir => "${target_dir}/$dataset/MSGF",
+        option     => $datasets->{$dataset}->{MSGF_option},
+        source_ref => "${dataset}_shift_${delta}",
+        msgf_jar   => $msgf_jar,
+        mod_file   => $mod_file,
+        database   => $datasets->{$dataset}->{database},
+        sh_direct  => 0,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+      "${dataset}_MSGF_${delta}_PSM" => {
+        task_name       => "MSGF_${delta}",
+        class           => "Proteomics::Distiller::PSMDistiller",
+        perform         => 0,
+        target_dir      => "${target_dir}/$dataset/MSGF",
+        option          => "-e MSGF -t DTA",
+        source_ref      => $dataset . "_MSGF",
+        proteomicstools => $proteomicstools,
+        sh_direct       => 1,
+        pbs             => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+
+      "${dataset}_MSGF_${delta}_buildsummary" => {
+        task_name       => "MSGF_${delta}",
+        class           => "Proteomics::Summary::BuildSummary",
+        perform         => 1,
+        target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
+        option          => "",
+        source_ref      => [ "${dataset}_MSGF_source", "${dataset}_MSGF_${delta}" ],
+        parameter_file  => $datasets->{$dataset}->{buildsummary_config_file},
+        proteomicstools => $proteomicstools,
+        sh_direct       => 0,
+        pbs             => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+
+      "${dataset}_comet_${delta}" => {
+        class           => "Proteomics::Engine::Comet",
+        task_name       => "comet_${delta}",
+        perform         => 0,
+        target_dir      => "${target_dir}/$dataset/comet",
+        option          => "",
+        source_ref      => "${dataset}_shift_${delta}",
+        database        => $datasets->{$dataset}->{database},
+        param_file      => $datasets->{$dataset}->{comet_config_file},
+        proteomicstools => $proteomicstools,
+        titleformat     => "DTA",
+        sh_direct       => 0,
+        pbs             => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+      "${dataset}_comet_${delta}_PSM" => {
+        class           => "Proteomics::Distiller::PSMDistiller",
+        task_name       => "comet_${delta}",
+        perform         => 0,
+        target_dir      => "${target_dir}/$dataset/comet",
+        option          => "-e Comet -t DTA",
+        source_ref      => "${dataset}_comet_${delta}",
+        proteomicstools => $proteomicstools,
+        sh_direct       => 1,
+        pbs             => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+      "${dataset}_myrimatch_${delta}" => {
+        class      => "Proteomics::Engine::Myrimatch",
+        task_name  => "myrimatch_${delta}",
+        perform    => 0,
+        target_dir => "${target_dir}/$dataset/myrimatch",
+        option     => "",
+        source_ref => "${dataset}_shift_${delta}",
+        cfgfile    => $datasets->{$dataset}->{myrimatch_config_file},
+        database   => $datasets->{$dataset}->{database},
+        sh_direct  => 0,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+      "${dataset}_myrimatch_${delta}_PSM" => {
+        class           => "Proteomics::Distiller::PSMDistiller",
+        task_name       => "myrimatch_${delta}",
+        perform         => 0,
+        target_dir      => "${target_dir}/$dataset/myrimatch",
+        option          => "-e MyriMatch -t DTA",
+        source_ref      => $dataset . "_myrimatch",
+        proteomicstools => $proteomicstools,
+        sh_direct       => 1,
+        pbs             => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+    };
+
+    $configall = merge( $configall, $deltaconfig );
+  }
 }
 
 $configall->{sequencetask} = {
@@ -404,8 +289,9 @@ $configall->{sequencetask} = {
   target_dir => $target_dir . "/sequencetask",
   option     => "",
   source     => {
+
     #step1 => \@individual,
-    step2 => \@summary,
+    #step2 => \@summary,
   },
   sh_direct => 0,
   pbs       => {
