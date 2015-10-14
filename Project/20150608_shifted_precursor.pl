@@ -7,6 +7,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use Data::Dumper;
+use Hash::Merge qw( merge );
 
 my $target_dir      = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor";
 my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
