@@ -145,7 +145,7 @@ for my $dataset ( sort keys %{$datasets} ) {
         "mem"      => "10gb"
       },
     },
-    " ${dataset}_shift_minus_0.5" => {
+    "${dataset}_shift_minus_0.5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
       target_dir      => "${target_dir}/${dataset}/shift_minus_0.5",
