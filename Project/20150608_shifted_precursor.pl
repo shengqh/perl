@@ -113,7 +113,6 @@ for my $dataset ( sort keys %{$datasets} ) {
   my $shift = {
     "${dataset}_source"      => $def->{source},
     "${dataset}_MSGF_source" => {
-      task_name  => "MSGF_source",
       class      => "Proteomics::Engine::MSGFPlus",
       perform    => 1,
       target_dir => "${target_dir}/$dataset/MSGF",
