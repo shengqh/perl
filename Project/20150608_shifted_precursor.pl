@@ -193,7 +193,7 @@ for my $dataset ( sort keys %{$datasets} ) {
         task_name       => "${dataset}_MSGF_${delta}",
         class           => "Proteomics::Summary::BuildSummary",
         perform         => 1,
-        target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
+        target_dir      => "${target_dir}/$dataset/buildsummary",
         option          => "",
         source_ref      => [ "${dataset}_MSGF_source", "${dataset}_MSGF_${delta}" ],
         parameter_file  => $datasets->{$dataset}->{buildsummary_config_file},
