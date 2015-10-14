@@ -333,7 +333,7 @@ for my $dataset ( sort keys %{$datasets} ) {
         perform         => 1,
         target_dir      => "${target_dir}/$dataset/myrimatch",
         option          => "-e MyriMatch -t DTA",
-        source_ref      => $dataset . "_myrimatch",
+        source_ref      => "${dataset}_myrimatch_${delta}",
         proteomicstools => $proteomicstools,
         sh_direct       => 1,
         pbs             => {
