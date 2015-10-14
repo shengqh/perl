@@ -95,7 +95,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_shift_minus_15" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_minus_15",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -113,7 +113,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_shift_minus_10" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_minus_10",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -131,7 +131,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_shift_minus_5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_minus_5",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -146,10 +146,10 @@ for my $dataset ( sort keys %{$datasets} ) {
         "mem"      => "10gb"
       },
     },
-    " ${dataset}_shift_minus_0_5" => {
+    " ${dataset}_shift_minus_0.5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_minus_0.5",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -164,10 +164,10 @@ for my $dataset ( sort keys %{$datasets} ) {
         "mem"      => "10gb"
       },
     },
-    "${dataset}_shift_plus_0_5" => {
+    "${dataset}_shift_plus_0.5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_plus_0.5",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -185,7 +185,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_shift_plus_5" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_plus_5",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -203,7 +203,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_shift_plus_10" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_plus_10",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -221,7 +221,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_shift_plus_15" => {
       class           => "Proteomics::Format::PrecursorShiftProcessor",
       perform         => 1,
-      target_dir      => "${target_dir}/${dataset}/shift_precursor",
+      target_dir      => "${target_dir}/${dataset}/shift_plus_15",
       option          => "",
       source_ref      => "${dataset}_source",
       proteomicstools => $proteomicstools,
@@ -240,7 +240,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
   $configall = merge( $configall, $shift );
   my @mgf = [
-    "${dataset}_source",       "${dataset}_shift_minus_15", "${dataset}_shift_minus_10", "${dataset}_shift_minus_5", "${dataset}_shift_minus_0_5", "${dataset}_shift_plus_0_5",
+    "${dataset}_source",       "${dataset}_shift_minus_15", "${dataset}_shift_minus_10", "${dataset}_shift_minus_5", "${dataset}_shift_minus_0.5", "${dataset}_shift_plus_0.5",
     "${dataset}_shift_plus_5", "${dataset}_shift_plus_10",  "${dataset}_shift_plus_15"
   ];
 
