@@ -307,7 +307,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_MSGF_buildsummary_-10daltons" => {
       task_name       => "${dataset}_MSGF_-10daltons",
       class           => "Proteomics::Summary::BuildSummary",
-      perform         => 0,
+      perform         => 1,
       target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
       option          => "",
       source_ref      => [ "${dataset}_MSGF", "_??.msgf.mzid\$", "${dataset}_MSGF", "-10daltons.msgf.mzid\$", ],
@@ -400,7 +400,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
 $configall->{sequencetask} = {
   class      => "CQS::SequenceTask",
-  perform    => 1,
+  perform    => 0,
   target_dir => $target_dir . "/sequencetask",
   option     => "",
   source     => {
