@@ -552,7 +552,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -591,7 +591,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class                => "Variants::GlmvcValidate",
-      perform              => 1,
+      perform              => 0,
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
       option               => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type          => "BAM",
