@@ -114,7 +114,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_source"      => $def->{source},
     "${dataset}_MSGF_source" => {
       class      => "Proteomics::Engine::MSGFPlus",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/$dataset/MSGF",
       option     => $datasets->{$dataset}->{MSGF_option},
       source_ref => "${dataset}_source",
@@ -138,7 +138,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_shift_${delta}" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Format::PrecursorShiftProcessor",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/${dataset}/shift",
         option          => "",
         source_ref      => "${dataset}_source",
@@ -157,7 +157,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_MSGF_${delta}" => {
         suffix     => "_${delta}",
         class      => "Proteomics::Engine::MSGFPlus",
-        perform    => 1,
+        perform    => 0,
         target_dir => "${target_dir}/$dataset/MSGF",
         option     => $datasets->{$dataset}->{MSGF_option},
         source_ref => "${dataset}_shift_${delta}",
