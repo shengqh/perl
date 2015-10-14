@@ -84,9 +84,8 @@ my $datasets = {
 
 my $configall = { general => { task_name => "td" }, };
 
-my @sections     = ();
-my @psmdistiller = ();
-my @msamanda     = ();
+my @individual = ();
+my @summary    = ();
 
 for my $dataset ( sort keys %{$datasets} ) {
   my $def   = $datasets->{$dataset};
@@ -243,7 +242,13 @@ for my $dataset ( sort keys %{$datasets} ) {
     "${dataset}_source",       "${dataset}_shift_minus_15", "${dataset}_shift_minus_10", "${dataset}_shift_minus_5", "${dataset}_shift_minus_0.5", "${dataset}_shift_plus_0.5",
     "${dataset}_shift_plus_5", "${dataset}_shift_plus_10",  "${dataset}_shift_plus_15"
   ];
-
+  push(
+    @individual,
+    (
+      "${dataset}_shift_minus_15", "${dataset}_shift_minus_10", "${dataset}_shift_minus_5", "${dataset}_shift_minus_0.5",
+      "${dataset}_shift_plus_0.5", "${dataset}_shift_plus_5",   "${dataset}_shift_plus_10", "${dataset}_shift_plus_15"
+    )
+  );
   my $search = {
     "${dataset}_MSGF" => {
       class      => "Proteomics::Engine::MSGFPlus",
@@ -348,9 +353,29 @@ for my $dataset ( sort keys %{$datasets} ) {
       },
     },
   };
-  
-  $configall = merge($configall, $search);
+
+  push( @individual, ( "${dataset}_MSGF", "${dataset}_MSGF_PSM", "${dataset}_comet", "${dataset}_comet_PSM", "${dataset}_myrimatch", "${dataset}_myrimatch_PSM", ) );
+
+  $configall = merge( $configall, $search );
 }
+
+$configall->{sequencetask} = {
+  class      => "CQS::SequenceTask",
+  perform    => 1,
+  target_dir => $target_dir . "/sequencetask",
+  option     => "",
+  source     => {
+    step1 => \@individual,
+    step2 => \@summary,
+  },
+  sh_direct => 0,
+  pbs       => {
+    "email"    => $email,
+    "nodes"    => "1:ppn=8",
+    "walltime" => "72",
+    "mem"      => "40gb"
+  },
+};
 
 #print Dumper($configall);
 performConfig($configall);
