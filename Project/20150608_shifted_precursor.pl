@@ -145,7 +145,7 @@ for my $dataset ( sort keys %{$datasets} ) {
         option          => "",
         source_ref      => "${dataset}_source",
         proteomicstools => $proteomicstools,
-        shiftmass       => -15,
+        shiftmass       => ${delta},
         shiftscan       => 10000000,
         titleformat     => "DTA",
         sh_direct       => 1,
