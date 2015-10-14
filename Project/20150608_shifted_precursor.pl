@@ -173,10 +173,10 @@ for my $dataset ( sort keys %{$datasets} ) {
         },
       },
       "${dataset}_MSGF_${delta}_PSM" => {
-        task_name       => "MSGF_${delta}",
+        suffix          => "_${delta}",
         class           => "Proteomics::Distiller::PSMDistiller",
-        perform         => 0,
-        target_dir      => "${target_dir}/$dataset/MSGF_${delta}",
+        perform         => 1,
+        target_dir      => "${target_dir}/$dataset/MSGF",
         option          => "-e MSGF -t DTA",
         source_ref      => $dataset . "_MSGF",
         proteomicstools => $proteomicstools,
@@ -190,10 +190,10 @@ for my $dataset ( sort keys %{$datasets} ) {
       },
 
       "${dataset}_MSGF_${delta}_buildsummary" => {
-        task_name       => "MSGF_${delta}",
+        suffix          => "_${delta}",
         class           => "Proteomics::Summary::BuildSummary",
         perform         => 1,
-        target_dir      => "${target_dir}/$dataset/MSGF_${delta}_buildsummary",
+        target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
         option          => "",
         source_ref      => [ "${dataset}_MSGF_source", "${dataset}_MSGF_${delta}" ],
         parameter_file  => $datasets->{$dataset}->{buildsummary_config_file},
