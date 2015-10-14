@@ -347,9 +347,12 @@ for my $dataset ( sort keys %{$datasets} ) {
       },
     },
   };
+  
+  $configall = merge($configall, $search);
 }
 
 #print Dumper($configall);
 performConfig($configall);
 
 1;
+
