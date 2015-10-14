@@ -161,7 +161,7 @@ for my $dataset ( sort keys %{$datasets} ) {
         "mem"      => "40gb"
       },
     },
-    "${dataset}_myrimatch" => {
+    "${dataset}_myrimatch_source" => {
       class      => "Proteomics::Engine::Myrimatch",
       perform    => 1,
       target_dir => "${target_dir}/$dataset/myrimatch",
