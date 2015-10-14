@@ -14,9 +14,9 @@ my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
 my $msamanda        = "/scratch/cqs/shengq1/local/bin/MSAmanda_Standalone_LinuxMac_1.0.0.4485/MSAmanda.exe";
 my $proteomicstools = "/home/shengq1/proteomicstools/ProteomicsTools.exe";
 my $mod_file        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/Mods.txt";
-my $database_human  = "/scratch/cqs/shengq1/proteomics/shifted/rev_Human_uniprot_sprot_v20120613.fasta";
-my $database_yeast  = "/scratch/cqs/shengq1/proteomics/shifted/rev_Yeast_uniprot_v20120613.fasta";
-my $database_ecoli  = "/scratch/cqs/shengq1/proteomics/shifted/rev_Ecoli_uniprot_v20120613_P4431.fasta";
+my $database_human  = "${target_dir}/database/rev_Human_uniprot_sprot_v20120613.fasta";
+my $database_yeast  = "${target_dir}/database/rev_Yeast_uniprot_v20120613.fasta";
+my $database_ecoli  = "${target_dir}/database/rev_Ecoli_uniprot_v20120613_P4431.fasta";
 my $email           = "quanhu.sheng\@vanderbilt.edu";
 
 my $datasets = {
