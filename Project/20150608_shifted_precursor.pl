@@ -190,7 +190,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       },
 
       "${dataset}_MSGF_${delta}_buildsummary" => {
-        suffix          => "_${delta}",
+        task_name       => "${dataset}_MSGF_${delta}",
         class           => "Proteomics::Summary::BuildSummary",
         perform         => 1,
         target_dir      => "${target_dir}/$dataset/MSGF_buildsummary",
