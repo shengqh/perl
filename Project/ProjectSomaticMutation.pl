@@ -552,7 +552,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -634,9 +634,9 @@ for my $cfg (@cfgs) {
         $index = $index + 1;
         $def->{"Glmvc$index"} = {
           class             => "Variants::GlmvcCall",
-          perform           => 0,
-          target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_f${fp}_g${gp}_withoutBAQ",
-          option            => "-B --max_normal_percentage ${np} --fisher_pvalue ${fp} --glm_pvalue ${gp}",
+          perform           => 1,
+          target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_f${fp}_g${gp}",
+          option            => "--max_normal_percentage ${np} --fisher_pvalue ${fp} --glm_pvalue ${gp}",
           source_type       => "BAM",
           source_config_ref => $cfg->{files_config_ref},
           groups_ref        => $cfg->{groups},
