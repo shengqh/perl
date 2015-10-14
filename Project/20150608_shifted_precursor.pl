@@ -178,7 +178,7 @@ for my $dataset ( sort keys %{$datasets} ) {
         perform         => 1,
         target_dir      => "${target_dir}/$dataset/MSGF",
         option          => "-e MSGF -t DTA",
-        source_ref      => $dataset . "_MSGF",
+        source_ref      => "${dataset}_MSGF_${delta}",
         proteomicstools => $proteomicstools,
         sh_direct       => 1,
         pbs             => {
