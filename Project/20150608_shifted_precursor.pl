@@ -188,7 +188,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_shift_${delta}" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Format::PrecursorShiftProcessor",
-        perform         => 0,
+        perform         => 1,
         target_dir      => "${target_dir}/${dataset}/shift",
         option          => "",
         source_ref      => "${dataset}_source",
@@ -207,7 +207,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_MSGF_${delta}" => {
         suffix     => "_${delta}",
         class      => "Proteomics::Engine::MSGFPlus",
-        perform    => 0,
+        perform    => 1,
         target_dir => "${target_dir}/$dataset/MSGF",
         option     => $datasets->{$dataset}->{MSGF_option},
         source_ref => "${dataset}_shift_${delta}",
@@ -225,7 +225,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_MSGF_${delta}_PSM" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Distiller::PSMDistiller",
-        perform         => 0,
+        perform         => 1,
         target_dir      => "${target_dir}/$dataset/MSGF",
         option          => "-e MSGF -t DTA",
         source_ref      => "${dataset}_MSGF_${delta}",
@@ -242,7 +242,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_MSGF_${delta}_buildsummary" => {
         task_name       => "${dataset}_MSGF_${delta}",
         class           => "Proteomics::Summary::BuildSummary",
-        perform         => 0,
+        perform         => 1,
         target_dir      => "${target_dir}/buildsummary",
         option          => "",
         source_ref      => [ "${dataset}_MSGF_source", "${dataset}_MSGF_${delta}" ],
