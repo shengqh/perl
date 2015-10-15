@@ -321,6 +321,23 @@ my $preparation = {
       "mem"      => "40gb"
     },
   },
+  depth => {
+    class             => "Samtools::Depth",
+    perform           => 1,
+    target_dir        => "${target_dir}/depth",
+    option            => "",
+    minimum_depth     => 10,
+    source_ref        => [ "dna_refine", "rna_refine" ],
+    groups_config_ref => [ $tcga, "dnagroups", $tcga, "rnagroups", $tcga, "sample_groups" ],
+    cqstools          => $cqstools,
+    sh_direct         => 0,
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   GlmvcExtract => {
     class             => "Variants::GlmvcExtract",
     perform           => 1,
@@ -341,7 +358,8 @@ my $preparation = {
   },
 };
 
-performConfig($preparation);
+#performConfig($preparation);
+performTask($preparation, "depth");
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
@@ -524,7 +542,7 @@ for my $cfg (@cfgs) {
     }
   }
 
-  performConfig($def);
+  #performConfig($def);
 }
 
 #performConfig($extractDef);
