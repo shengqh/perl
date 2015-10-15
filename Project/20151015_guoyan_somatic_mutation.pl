@@ -279,9 +279,9 @@ my $tcga = {
 };
 
 my $preparation = {
-  general       => { task_name => "preparation" },
-  dna           => $tcga->{dna},
-  rna           => $tcga->{rna},
+  general    => { task_name => "preparation" },
+  dna        => $tcga->{dna},
+  rna        => $tcga->{rna},
   dna_refine => {
     class        => "GATK::Refine",
     perform      => 1,
@@ -321,13 +321,31 @@ my $preparation = {
       "mem"      => "40gb"
     },
   },
+  GlmvcExtract => {
+    class                => "Variants::GlmvcExtract",
+    perform              => 1,
+    target_dir           => "${target_dir}/tcga_glmvc_extract",
+    option               => "",
+    source_config_ref    => [ $tcga, "tcga_files" ],
+    bam_files_config_ref => [ "dna_refine", "rna_refine" ],
+    groups_ref           => $tcga->{all_sample_groups},
+    fasta_file           => $fasta_file_tcga_dna,
+    sh_direct            => 0,
+    execute_file         => $glmvc,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 };
 
 performConfig($preparation);
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
-  files_config_ref => [ $tcga, "dna" ],
+  files_config_ref => [ $preparation, "dna_refine" ],
   groups           => $tcga->{dna_groups},
   fasta_file       => $fasta_file_tcga_dna,
   cosmic_file      => $cosmic_file_16569_MT,
@@ -339,7 +357,7 @@ my $tcga_dna = {
 
 my $tcga_rna = {
   general => { task_name => "tcga_rna" },
-  files_config_ref => [ $tcga, "rna" ],
+  files_config_ref => [ $preparation, "rna_refine" ],
   groups           => $tcga->{rna_groups},
   fasta_file       => $fasta_file_16569_M,
   cosmic_file      => $cosmic_file_16569_M,
@@ -349,38 +367,10 @@ my $tcga_rna = {
   glm_pvalue       => "0.05"
 };
 
-my $realign_dna = {
-  general => { task_name => "realign_dna" },
-  files_config_ref => [ $preparation, "dna_bwa_refine" ],
-  fasta_file       => $fasta_file_16569_M,
-  cosmic_file      => $cosmic_file_16569_M,
-  dbsnp_file       => $snp_file_16569_M,
-  groups           => $tcga->{dna_groups},
-  gtf_file         => $gtf_file_16569_M,
-  tcga_file        => $tcga->{tcga_dna_files},
-  glm_pvalue       => "0.1"
-};
-
-my $realign_rna = {
-  general => { task_name => "realign_rna" },
-  files_config_ref => [ $preparation, "rna_star_2nd_pass_refine" ],
-  fasta_file       => $fasta_file_16569_M,
-  cosmic_file      => $cosmic_file_16569_M,
-  dbsnp_file       => $snp_file_16569_M,
-  groups           => $tcga->{rna_groups},
-  gtf_file         => $gtf_file_16569_M,
-  tcga_file        => $tcga->{tcga_rna_files},
-  glm_pvalue       => "0.05"
-};
-
-#my @cfgs = ( $tcga_dna, $tcga_rna, $realign_dna, $realign_rna );
 my @cfgs = ( $tcga_dna, $tcga_rna );
 
-#my @cfgs = ($tcga_rna);
-
-my @nps = (0.01);
-my @fps = (0.05);
-my @gps = ( 0.05, 0.1 );
+my @nps = ( 0.01, 0.02 );
+my @gps = ( 0.01, 0.05, 0.1 );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -389,7 +379,7 @@ for my $cfg (@cfgs) {
 
     muTect => {
       class             => "GATK::MuTect",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_muTect",
       option            => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
@@ -408,26 +398,9 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
-    qc3vcf => {
-      class      => "QC::QC3vcf",
-      perform    => 0,
-      target_dir => "${target_dir}/${task_name}_muTect_qc3",
-      option     => "",
-      qc3_perl   => $qc3_perl,
-      source_ref => [ "muTect", "vcf" ],
-      annovar_db => $annovar_db,
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -446,7 +419,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -466,7 +439,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
@@ -484,7 +457,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class                => "Variants::GlmvcValidate",
-      perform              => 0,
+      perform              => 1,
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
       option               => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type          => "BAM",
@@ -509,7 +482,7 @@ for my $cfg (@cfgs) {
       perform    => 0,
       target_dir => "${target_dir}/${task_name}_sequencetask",
       option     => "",
-      source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "Glmvc" ] },
+      source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" ] },
       sh_direct  => 0,
       pbs        => {
         "email"    => $email,
@@ -522,60 +495,36 @@ for my $cfg (@cfgs) {
 
   my $index = 0;
   for my $np (@nps) {
-    for my $fp (@fps) {
-      for my $gp (@gps) {
-        $index = $index + 1;
-        $def->{"Glmvc$index"} = {
-          class             => "Variants::GlmvcCall",
-          perform           => 1,
-          target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_f${fp}_g${gp}",
-          option            => "--max_normal_percentage ${np} --fisher_pvalue ${fp} --glm_pvalue ${gp}",
-          source_type       => "BAM",
-          source_config_ref => $cfg->{files_config_ref},
-          groups_ref        => $cfg->{groups},
-          fasta_file        => $cfg->{fasta_file},
-          annovar_buildver  => "hg19",
-          annovar_protocol  => $annovar_protocol,
-          annovar_operation => $annovar_operation,
-          rnaediting_db     => $rnaediting_db,
-          distance_exon_gtf => $cfg->{gtf_file},
-          sh_direct         => 0,
-          execute_file      => $glmvc,
-          pbs               => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=8",
-            "walltime" => "72",
-            "mem"      => "40gb"
-          },
-        };
-      }
+    for my $gp (@gps) {
+      $index = $index + 1;
+      $def->{"Glmvc$index"} = {
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
+        option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
+        source_type       => "BAM",
+        source_config_ref => $cfg->{files_config_ref},
+        groups_ref        => $cfg->{groups},
+        fasta_file        => $cfg->{fasta_file},
+        annovar_buildver  => "hg19",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        rnaediting_db     => $rnaediting_db,
+        distance_exon_gtf => $cfg->{gtf_file},
+        sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      };
     }
   }
 
-  #performConfig($def);
+  performConfig($def);
 }
-
-my $extractDef = {
-  general      => { task_name => "tcga" },
-  GlmvcExtract => {
-    class                => "Variants::GlmvcExtract",
-    perform              => 1,
-    target_dir           => "${target_dir}/tcga_glmvc_extract",
-    option               => "",
-    source_config_ref    => [ $tcga, "tcga_files" ],
-    bam_files_config_ref => [ $tcga, "dna", $tcga, "rna" ],
-    groups_ref           => $tcga->{all_sample_groups},
-    fasta_file           => $fasta_file_tcga_dna,
-    sh_direct            => 0,
-    execute_file         => $glmvc,
-    pbs                  => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-};
 
 #performConfig($extractDef);
 
