@@ -329,7 +329,24 @@ my $preparation = {
     option            => "",
     minimum_depth     => 10,
     source_ref        => [ "dna_refine", "rna_refine" ],
-    groups_config_ref => [ $tcga, "dna_groups", $tcga, "rna_groups", $tcga, "sample_groups", $tcga, "all_sample_groups" ],
+    groups_config_ref => [ $tcga, "dna_groups", $tcga, "rna_groups", $tcga, "sample_groups" ],
+    cqstools          => $cqstools,
+    sh_direct         => 0,
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  depth5 => {
+    class             => "Samtools::Depth",
+    perform           => 1,
+    target_dir        => "${target_dir}/depth5",
+    option            => "",
+    minimum_depth     => 10,
+    source_ref        => [ "dna_refine", "rna_refine" ],
+    groups_config_ref => [ $tcga, "all_sample_groups" ],
     cqstools          => $cqstools,
     sh_direct         => 0,
     pbs               => {
@@ -361,6 +378,7 @@ my $preparation = {
 
 #performConfig($preparation);
 performTask( $preparation, "depth" );
+performTask( $preparation, "depth5" );
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
