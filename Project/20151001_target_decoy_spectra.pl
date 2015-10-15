@@ -1900,9 +1900,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "msgf_target_accumulate_buildsummary" );
-performTask( $config, "msgf_target_decoy_accumulate_buildsummary" );
-performTask( $config, "msgf_target_accumulate_buildsummary_unique2" );
-performTask( $config, "msgf_target_decoy_accumulate_buildsummary_unique2" );
+performTask( $config, "msgf_target_accumulate_buildsummary_ratio2" );
+performTask( $config, "msgf_target_accumulate_buildsummary_unique2_ratio2" );
 
 1;
