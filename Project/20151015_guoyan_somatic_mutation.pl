@@ -297,7 +297,7 @@ my $preparation = {
     sh_direct    => 0,
     pbs          => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
+      "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -360,7 +360,6 @@ my $preparation = {
 };
 
 #performConfig($preparation);
-performTask( $preparation, "dna_refine" );
 performTask( $preparation, "rna_refine" );
 
 my $tcga_dna = {
