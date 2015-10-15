@@ -163,7 +163,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     },
     "${dataset}_myrimatch_source" => {
       class      => "Proteomics::Engine::Myrimatch",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/$dataset/myrimatch",
       option     => "",
       source_ref => "${dataset}_source",
@@ -188,7 +188,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_shift_${delta}" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Format::PrecursorShiftProcessor",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/${dataset}/shift",
         option          => "",
         source_ref      => "${dataset}_source",
@@ -207,7 +207,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_MSGF_${delta}" => {
         suffix     => "_${delta}",
         class      => "Proteomics::Engine::MSGFPlus",
-        perform    => 1,
+        perform    => 0,
         target_dir => "${target_dir}/$dataset/MSGF",
         option     => $datasets->{$dataset}->{MSGF_option},
         source_ref => "${dataset}_shift_${delta}",
@@ -225,7 +225,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_MSGF_${delta}_PSM" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Distiller::PSMDistiller",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/$dataset/MSGF",
         option          => "-e MSGF -t DTA",
         source_ref      => "${dataset}_MSGF_${delta}",
@@ -242,7 +242,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_MSGF_${delta}_buildsummary" => {
         task_name       => "${dataset}_MSGF_${delta}",
         class           => "Proteomics::Summary::BuildSummary",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/buildsummary",
         option          => "",
         source_ref      => [ "${dataset}_MSGF_source", "${dataset}_MSGF_${delta}" ],
@@ -279,7 +279,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_comet_${delta}_PSM" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Distiller::PSMDistiller",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/$dataset/comet",
         option          => "-e Comet -t DTA",
         source_ref      => "${dataset}_comet_${delta}",
@@ -295,7 +295,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_comet_${delta}_buildsummary" => {
         task_name       => "${dataset}_comet_${delta}",
         class           => "Proteomics::Summary::BuildSummary",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/buildsummary",
         option          => "",
         source_ref      => [ "${dataset}_comet_source", "${dataset}_comet_${delta}" ],
@@ -313,7 +313,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_myrimatch_${delta}" => {
         suffix     => "_${delta}",
         class      => "Proteomics::Engine::Myrimatch",
-        perform    => 1,
+        perform    => 0,
         target_dir => "${target_dir}/$dataset/myrimatch",
         option     => "",
         source_ref => "${dataset}_shift_${delta}",
@@ -330,7 +330,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_myrimatch_${delta}_PSM" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Distiller::PSMDistiller",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/$dataset/myrimatch",
         option          => "-e MyriMatch -t DTA",
         source_ref      => "${dataset}_myrimatch_${delta}",
@@ -346,7 +346,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_myrimatch_${delta}_buildsummary" => {
         task_name       => "${dataset}_myrimatch_${delta}",
         class           => "Proteomics::Summary::BuildSummary",
-        perform         => 1,
+        perform         => 0,
         target_dir      => "${target_dir}/buildsummary",
         option          => "",
         source_ref      => [ "${dataset}_myrimatch_source", "${dataset}_myrimatch_${delta}" ],
@@ -377,7 +377,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
 $configall->{sequencetask} = {
   class      => "CQS::SequenceTask",
-  perform    => 1,
+  perform    => 0,
   target_dir => $target_dir . "/sequencetask",
   option     => "",
   source     => {
