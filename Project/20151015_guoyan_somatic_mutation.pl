@@ -5,7 +5,7 @@ use warnings;
 use CQS::FileUtils;
 use CQS::ClassFactory;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/tcga");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation");
 
 my $email             = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools          = "/home/shengq1/cqstools/CQS.Tools.exe";
