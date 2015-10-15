@@ -444,6 +444,7 @@ for my $cfg (@cfgs) {
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
       annovar_db => $annovar_db,
+      buildver   => "hg19",
       cqstools   => $cqstools,
       affy_file  => $affy_file,
       sh_direct  => 1,
