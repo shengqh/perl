@@ -360,6 +360,7 @@ my $preparation = {
 };
 
 #performConfig($preparation);
+performTask( $preparation, "dna_refine" );
 performTask( $preparation, "rna_refine" );
 
 my $tcga_dna = {
