@@ -398,4 +398,3 @@ $configall->{sequencetask} = {
 performConfig($configall);
 
 1;
-
