@@ -314,7 +314,8 @@ my $preparation = {
     picard_jar => $picard_jar,
     sorted     => 1,
     sh_direct  => 0,
-    pbs        => {
+    fixMisencodedQuals => 0,
+    pbs => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -359,7 +360,7 @@ my $preparation = {
 };
 
 #performConfig($preparation);
-performTask($preparation, "depth");
+performTask( $preparation, "rna_refine" );
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
