@@ -556,7 +556,7 @@ for my $cfg (@cfgs) {
     perform    => 1,
     target_dir => "${target_dir}/${task_name}_sequencetask",
     option     => "",
-    source     => { one => [] },
+    source     => { one => \@individual },
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
