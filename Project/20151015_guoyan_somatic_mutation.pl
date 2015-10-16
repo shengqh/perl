@@ -377,8 +377,8 @@ my $preparation = {
 };
 
 #performConfig($preparation);
-performTask( $preparation, "depth" );
-performTask( $preparation, "depth5" );
+#performTask( $preparation, "depth" );
+#performTask( $preparation, "depth5" );
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
@@ -562,6 +562,7 @@ for my $cfg (@cfgs) {
   }
 
   #performConfig($def);
+  performTask($def, "GlmvcValidation");
 }
 
 #performConfig($extractDef);
