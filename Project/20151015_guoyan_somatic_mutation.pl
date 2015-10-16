@@ -497,24 +497,8 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
-   GlmvcValidation_varscan2 => {
-      class      => "Annotation::Annovar",
-      perform    => 1,
-      target_dir => "${target_dir}/${task_name}_glmvc_validation",
-      option     => $annovar_param,
-      source_ref => [ "GlmvcValidation" ],
-      annovar_db => $annovar_db,
-      buildver   => "hg19",
-      sh_direct  => 1,
-      isvcf      => 0,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
   };
+
   #my @individual = ( "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" );
   my @individual = ( "GlmvcValidation", "GlmvcValidation_varscan2" );
 
@@ -545,8 +529,8 @@ for my $cfg (@cfgs) {
           "mem"      => "40gb"
         },
       };
-      
-      push(@individual, "Glmvc$index");
+
+      push( @individual, "Glmvc$index" );
     }
   }
 
@@ -566,7 +550,7 @@ for my $cfg (@cfgs) {
   };
 
   #performConfig($def);
-  performTask( $def, "GlmvcValidation_varscan2" );
+  #performTask( $def, "GlmvcValidation" );
 }
 
 #performConfig($extractDef);
