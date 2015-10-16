@@ -550,7 +550,8 @@ for my $cfg (@cfgs) {
   };
 
   #performConfig($def);
-  #performTask( $def, "GlmvcValidation" );
+  performTask( $def, "annovar_muTect" );
+  performTask( $def, "annovar_varscan2" );
 }
 
 #performConfig($extractDef);
