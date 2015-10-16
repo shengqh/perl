@@ -517,7 +517,8 @@ for my $cfg (@cfgs) {
     },
 
   };
-  my @individual = ( "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" );
+  #my @individual = ( "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" );
+  my @individual = ( "GlmvcValidation" );
 
   my $index = 0;
   for my $np (@nps) {
