@@ -339,23 +339,6 @@ my $preparation = {
       "mem"      => "40gb"
     },
   },
-  depth5 => {
-    class             => "Samtools::Depth",
-    perform           => 1,
-    target_dir        => "${target_dir}/depth5",
-    option            => "",
-    minimum_depth     => 10,
-    source_ref        => [ "dna_refine", "rna_refine" ],
-    groups_config_ref => [ $tcga, "all_sample_groups" ],
-    cqstools          => $cqstools,
-    sh_direct         => 0,
-    pbs               => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
   GlmvcExtract => {
     class             => "Variants::GlmvcExtract",
     perform           => 1,
@@ -378,7 +361,6 @@ my $preparation = {
 
 #performConfig($preparation);
 #performTask( $preparation, "depth" );
-#performTask( $preparation, "depth5" );
 
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
@@ -515,10 +497,26 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
-
+   GlmvcValidation_varscan2 => {
+      class      => "Annotation::Annovar",
+      perform    => 1,
+      target_dir => "${target_dir}/${task_name}_glmvc_validation",
+      option     => $annovar_param,
+      source_ref => [ "GlmvcValidation" ],
+      annovar_db => $annovar_db,
+      buildver   => "hg19",
+      sh_direct  => 1,
+      isvcf      => 0,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "10gb"
+      },
+    },
   };
   #my @individual = ( "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" );
-  my @individual = ( "GlmvcValidation" );
+  my @individual = ( "GlmvcValidation", "GlmvcValidation_varscan2" );
 
   my $index = 0;
   for my $np (@nps) {
@@ -568,7 +566,7 @@ for my $cfg (@cfgs) {
   };
 
   #performConfig($def);
-  performTask( $def, "sequencetask" );
+  performTask( $def, "GlmvcValidation_varscan2" );
 }
 
 #performConfig($extractDef);
