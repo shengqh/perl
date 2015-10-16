@@ -515,21 +515,9 @@ for my $cfg (@cfgs) {
         "mem"      => "40gb"
       },
     },
-    sequencetask => {
-      class      => "CQS::SequenceTask",
-      perform    => 0,
-      target_dir => "${target_dir}/${task_name}_sequencetask",
-      option     => "",
-      source     => { one => [ "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" ] },
-      sh_direct  => 0,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    }
+
   };
+  my @individual = ( "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" );
 
   my $index = 0;
   for my $np (@nps) {
@@ -558,11 +546,28 @@ for my $cfg (@cfgs) {
           "mem"      => "40gb"
         },
       };
+      
+      push(@individual, "Glmvc$index");
     }
   }
 
+  $def->{sequencetask} = {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/${task_name}_sequencetask",
+    option     => "",
+    source     => { one => [] },
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
   #performConfig($def);
-  performTask($def, "GlmvcValidation");
+  performTask( $def, "sequencetask" );
 }
 
 #performConfig($extractDef);
