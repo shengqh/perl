@@ -550,11 +550,43 @@ for my $cfg (@cfgs) {
   };
 
   #performConfig($def);
-  performTask( $def, "annovar_muTect" );
-  performTask( $def, "annovar_varscan2" );
+  #performTask( $def, "annovar_muTect" );
+  #performTask( $def, "annovar_varscan2" );
 }
 
-#performConfig($extractDef);
+my $annotation = {
+  general => { task_name => "ann" },
+  files   => {
+    "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-A7-A0D9.tsv"],
+    "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0B3.tsv"],
+    "TCGA-BH-A0B8" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0B8.tsv"],
+    "TCGA-BH-A0BJ" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0BJ.tsv"],
+    "TCGA-BH-A0BM" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0BM.tsv"],
+    "TCGA-BH-A0C0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0C0.tsv"],
+    "TCGA-BH-A0DK" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0DK.tsv"],
+    "TCGA-BH-A0DP" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0DP.tsv"],
+    "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0E0.tsv"],
+    "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/TCGA-BH-A0H7.tsv"],
+  },
+  annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/detected_annovar",
+    option     => $annovar_param,
+    source_ref => "files",
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+};
 
+performConfig($annotation);
 1;
 
