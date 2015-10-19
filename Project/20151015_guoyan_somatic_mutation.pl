@@ -590,7 +590,7 @@ my $annotation = {
       "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0E0.tsv"],
       "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0H7.tsv"],
     },
-    bam_files_config_ref => [ $tcga, "dna_refine", $tcga, "rna_refine" ],
+    bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
     groups               => $tcga->{all_sample_groups},
     fasta_file           => $fasta_file_tcga_dna,
     sh_direct            => 0,
