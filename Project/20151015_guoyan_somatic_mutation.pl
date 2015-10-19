@@ -561,7 +561,7 @@ my $annotation = {
     perform    => 0,
     target_dir => "${target_dir}/detected_annotation",
     option     => $annovar_param,
-    source     => { "detected" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/detected_sites.tsv"], },
+    source     => { "detected" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/data/detected_sites.tsv"], },
     annovar_db => $annovar_db,
     buildver   => "hg19",
     sh_direct  => 1,
@@ -592,7 +592,7 @@ my $annotation = {
     },
     bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
     groups               => $tcga->{all_sample_groups},
-    fasta_file           => $fasta_file_tcga_dna,
+    fasta_file           => $fasta_file_16569_MT,
     sh_direct            => 0,
     execute_file         => $glmvc,
     pbs                  => {
