@@ -24,7 +24,7 @@ my $userdef = {
   cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
   search_3utr => 1,
-  #utr3_db     => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
+  utr3_db     => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
 
   #Data
   files => {
