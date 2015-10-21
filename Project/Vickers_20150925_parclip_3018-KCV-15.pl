@@ -21,7 +21,10 @@ my $userdef = {
   fastq_remove_N => 0,
   adapter        => "TGGAATTCTCGGGTGCCAAGG",
 
-  cqstools   => "/home/shengq1/cqstools/CQS.Tools.exe",
+  cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
+
+  search_3utr => 1,
+  #utr3_db     => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
 
   #Data
   files => {
@@ -33,7 +36,7 @@ my $userdef = {
   },
 };
 
-my $def = getSmallRNADefinition($userdef, hg19_genome());
+my $def = getSmallRNADefinition( $userdef, hg19_genome() );
 
 #print Dumper($def);
 
