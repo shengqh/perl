@@ -27,6 +27,8 @@ my $buildsummary_msgf_target_decoy_unique2_file = "/scratch/cqs/shengq1/proteomi
 my $buildsummary_msgf_target_ratio2_file         = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_ratio2.param";
 my $buildsummary_msgf_target_unique2_ratio2_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_unique2_ratio2.param";
 
+my $buildsummary_msgf_target_peptide001_file = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/config/buildsummary_msgf_target_peptide001.param";
+
 my $buildsummary_bins = [ 1, 2, 3, 4, 5 ];
 
 my $config = {
@@ -1611,6 +1613,24 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  msgf_target_accumulate_buildsummary_peptide001 => {
+    class           => "Proteomics::Summary::AccumulateBuildSummary",
+    perform         => 1,
+    target_dir      => "${target_dir}/msgf_target_accumulate_buildsummary_peptide001",
+    option          => "",
+    source_ref      => ["msgf_target"],
+    parameter_file  => $buildsummary_msgf_target_peptide001_file,
+    proteomicstools => $proteomicstools,
+    sh_direct       => 0,
+    bin_size        => 5,
+    bins            => $buildsummary_bins,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   msgf_target_accumulate_buildsummary_ratio2 => {
     class           => "Proteomics::Summary::AccumulateBuildSummary",
     perform         => 1,
@@ -1900,7 +1920,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "msgf_target_accumulate_buildsummary_ratio2" );
-performTask( $config, "msgf_target_accumulate_buildsummary_unique2_ratio2" );
+performTask( $config, "msgf_target_accumulate_buildsummary_peptide001" );
+#performTask( $config, "msgf_target_accumulate_buildsummary_unique2_ratio2" );
 
 1;
