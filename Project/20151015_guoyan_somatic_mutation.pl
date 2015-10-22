@@ -176,17 +176,16 @@ my $tcga = {
     "TCGA-BH-A0E0-DNA-TP-NB" => [ "TCGA-BH-A0E0-DNA-NB", "TCGA-BH-A0E0-DNA-TP" ],
     "TCGA-BH-A0H7-DNA-TP-NB" => [ "TCGA-BH-A0H7-DNA-NB", "TCGA-BH-A0H7-DNA-TP" ],
 
-    #
-    #    "TCGA-A7-A0D9-DNA-TP-NT" => [ "TCGA-A7-A0D9-DNA-NT", "TCGA-A7-A0D9-DNA-TP" ],
-    #    "TCGA-BH-A0B3-DNA-TP-NT" => [ "TCGA-BH-A0B3-DNA-NT", "TCGA-BH-A0B3-DNA-TP" ],
-    #    "TCGA-BH-A0B8-DNA-TP-NT" => [ "TCGA-BH-A0B8-DNA-NT", "TCGA-BH-A0B8-DNA-TP" ],
-    #    "TCGA-BH-A0BJ-DNA-TP-NT" => [ "TCGA-BH-A0BJ-DNA-NT", "TCGA-BH-A0BJ-DNA-TP" ],
-    #    "TCGA-BH-A0BM-DNA-TP-NT" => [ "TCGA-BH-A0BM-DNA-NT", "TCGA-BH-A0BM-DNA-TP" ],
-    #    "TCGA-BH-A0C0-DNA-TP-NT" => [ "TCGA-BH-A0C0-DNA-NT", "TCGA-BH-A0C0-DNA-TP" ],
-    #    "TCGA-BH-A0DK-DNA-TP-NT" => [ "TCGA-BH-A0DK-DNA-NT", "TCGA-BH-A0DK-DNA-TP" ],
-    #    "TCGA-BH-A0DP-DNA-TP-NT" => [ "TCGA-BH-A0DP-DNA-NT", "TCGA-BH-A0DP-DNA-TP" ],
-    #    "TCGA-BH-A0E0-DNA-TP-NT" => [ "TCGA-BH-A0E0-DNA-NT", "TCGA-BH-A0E0-DNA-TP" ],
-    #    "TCGA-BH-A0H7-DNA-TP-NT" => [ "TCGA-BH-A0H7-DNA-NT", "TCGA-BH-A0H7-DNA-TP" ],
+    "TCGA-A7-A0D9-DNA-TP-NT" => [ "TCGA-A7-A0D9-DNA-NT", "TCGA-A7-A0D9-DNA-TP" ],
+    "TCGA-BH-A0B3-DNA-TP-NT" => [ "TCGA-BH-A0B3-DNA-NT", "TCGA-BH-A0B3-DNA-TP" ],
+    "TCGA-BH-A0B8-DNA-TP-NT" => [ "TCGA-BH-A0B8-DNA-NT", "TCGA-BH-A0B8-DNA-TP" ],
+    "TCGA-BH-A0BJ-DNA-TP-NT" => [ "TCGA-BH-A0BJ-DNA-NT", "TCGA-BH-A0BJ-DNA-TP" ],
+    "TCGA-BH-A0BM-DNA-TP-NT" => [ "TCGA-BH-A0BM-DNA-NT", "TCGA-BH-A0BM-DNA-TP" ],
+    "TCGA-BH-A0C0-DNA-TP-NT" => [ "TCGA-BH-A0C0-DNA-NT", "TCGA-BH-A0C0-DNA-TP" ],
+    "TCGA-BH-A0DK-DNA-TP-NT" => [ "TCGA-BH-A0DK-DNA-NT", "TCGA-BH-A0DK-DNA-TP" ],
+    "TCGA-BH-A0DP-DNA-TP-NT" => [ "TCGA-BH-A0DP-DNA-NT", "TCGA-BH-A0DP-DNA-TP" ],
+    "TCGA-BH-A0E0-DNA-TP-NT" => [ "TCGA-BH-A0E0-DNA-NT", "TCGA-BH-A0E0-DNA-TP" ],
+    "TCGA-BH-A0H7-DNA-TP-NT" => [ "TCGA-BH-A0H7-DNA-NT", "TCGA-BH-A0H7-DNA-TP" ],
     #
     #    "TCGA-A7-A0D9-DNA-NT-NB" => [ "TCGA-A7-A0D9-DNA-NB", "TCGA-A7-A0D9-DNA-NT" ],
     #    "TCGA-BH-A0B3-DNA-NT-NB" => [ "TCGA-BH-A0B3-DNA-NB", "TCGA-BH-A0B3-DNA-NT" ],
@@ -284,7 +283,7 @@ my $preparation = {
   rna        => $tcga->{rna},
   dna_refine => {
     class        => "GATK::Refine",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/preparation_tcga_dna_refine",
     option       => "-Xmx40g",
     fasta_file   => $fasta_file_tcga_dna,
@@ -304,7 +303,7 @@ my $preparation = {
   },
   rna_refine => {
     class              => "GATK::RNASeqRefine",
-    perform            => 1,
+    perform            => 0,
     target_dir         => "${target_dir}/preparation_tcga_rna_refine",
     option             => "-Xmx40g",
     fasta_file         => $fasta_file_16569_M,
@@ -324,7 +323,7 @@ my $preparation = {
   },
   depth => {
     class             => "Samtools::Depth",
-    perform           => 1,
+    perform           => 0,
     target_dir        => "${target_dir}/depth",
     option            => "",
     minimum_depth     => 10,
@@ -341,7 +340,7 @@ my $preparation = {
   },
   GlmvcExtract => {
     class             => "Variants::GlmvcExtract",
-    perform           => 1,
+    perform           => 0,
     target_dir        => "${target_dir}/tcga_glmvc_extract",
     option            => "",
     source_config_ref => [ $tcga, "tcga_files" ],
@@ -386,10 +385,13 @@ my $tcga_rna = {
   glm_pvalue       => "0.05"
 };
 
-my @cfgs = ( $tcga_dna, $tcga_rna );
+#my @cfgs = ( $tcga_dna, $tcga_rna );
+#my @nps = ( 0.01, 0.02 );
+#my @gps = ( 0.01, 0.05, 0.1 );
 
-my @nps = ( 0.01, 0.02 );
-my @gps = ( 0.01, 0.05, 0.1 );
+my @cfgs = ( $tcga_dna );
+my @nps = ( 0.01 );
+my @gps = ( 0.1 );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -398,7 +400,7 @@ for my $cfg (@cfgs) {
 
     muTect => {
       class             => "GATK::MuTect",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_muTect",
       option            => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
@@ -419,7 +421,7 @@ for my $cfg (@cfgs) {
     },
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -438,7 +440,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -458,7 +460,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
@@ -477,7 +479,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class                => "Variants::GlmvcValidate",
-      perform              => 1,
+      perform              => 0,
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
       option               => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type          => "BAM",
@@ -536,7 +538,7 @@ for my $cfg (@cfgs) {
 
   $def->{sequencetask} = {
     class      => "CQS::SequenceTask",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/${task_name}_sequencetask",
     option     => "",
     source     => { one => \@individual },
@@ -549,7 +551,7 @@ for my $cfg (@cfgs) {
     },
   };
 
-  #performConfig($def);
+  performConfig($def);
   #performTask( $def, "annovar_muTect" );
   #performTask( $def, "annovar_varscan2" );
 }
@@ -604,6 +606,6 @@ my $annotation = {
   },
 };
 
-performConfig($annotation);
+#performConfig($annotation);
 1;
 
