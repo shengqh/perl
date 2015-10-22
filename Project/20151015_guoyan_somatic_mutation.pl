@@ -400,7 +400,7 @@ for my $cfg (@cfgs) {
 
     muTect => {
       class             => "GATK::MuTect",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_muTect",
       option            => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
@@ -421,7 +421,7 @@ for my $cfg (@cfgs) {
     },
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -440,7 +440,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -460,7 +460,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 0,
+      perform    => 1,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
