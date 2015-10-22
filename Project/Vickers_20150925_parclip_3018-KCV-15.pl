@@ -43,4 +43,3 @@ my $def = getSmallRNADefinition( $userdef, hg19_genome() );
 performParclipSmallRNA($def);
 
 1;
-
