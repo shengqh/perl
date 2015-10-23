@@ -10,7 +10,7 @@ use Data::Dumper;
 use Hash::Merge qw( merge );
 
 #my $target_dir      = "E:/temp";
-my $target_dir      = "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_20ppm";
+my $target_dir      = create_directory_or_die("/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm");
 my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
 my $proteomicstools = "/home/shengq1/proteomicstools/ProteomicsTools.exe";
 my $mod_file        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/Mods.txt";
