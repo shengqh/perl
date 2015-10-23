@@ -164,7 +164,7 @@ my $tcga = {
     "TCGA-BH-A0E0-DNA-TP-RNA-NT" => [ "TCGA-BH-A0E0-RNA-NT", "TCGA-BH-A0E0-DNA-TP" ],
     "TCGA-BH-A0H7-DNA-TP-RNA-NT" => [ "TCGA-BH-A0H7-RNA-NT", "TCGA-BH-A0H7-DNA-TP" ],
   },
-  dna_groups => {
+  dna_nb_groups => {
 #    "TCGA-A7-A0D9-DNA-TP-NB" => [ "TCGA-A7-A0D9-DNA-NB", "TCGA-A7-A0D9-DNA-TP" ],
 #    "TCGA-BH-A0B3-DNA-TP-NB" => [ "TCGA-BH-A0B3-DNA-NB", "TCGA-BH-A0B3-DNA-TP" ],
 #    "TCGA-BH-A0B8-DNA-TP-NB" => [ "TCGA-BH-A0B8-DNA-NB", "TCGA-BH-A0B8-DNA-TP" ],
@@ -175,7 +175,8 @@ my $tcga = {
 #    "TCGA-BH-A0DP-DNA-TP-NB" => [ "TCGA-BH-A0DP-DNA-NB", "TCGA-BH-A0DP-DNA-TP" ],
 #    "TCGA-BH-A0E0-DNA-TP-NB" => [ "TCGA-BH-A0E0-DNA-NB", "TCGA-BH-A0E0-DNA-TP" ],
 #    "TCGA-BH-A0H7-DNA-TP-NB" => [ "TCGA-BH-A0H7-DNA-NB", "TCGA-BH-A0H7-DNA-TP" ],
-
+  },
+  dna_nt_groups => {
     "TCGA-A7-A0D9-DNA-TP-NT" => [ "TCGA-A7-A0D9-DNA-NT", "TCGA-A7-A0D9-DNA-TP" ],
     "TCGA-BH-A0B3-DNA-TP-NT" => [ "TCGA-BH-A0B3-DNA-NT", "TCGA-BH-A0B3-DNA-TP" ],
     "TCGA-BH-A0B8-DNA-TP-NT" => [ "TCGA-BH-A0B8-DNA-NT", "TCGA-BH-A0B8-DNA-TP" ],
@@ -364,7 +365,19 @@ my $preparation = {
 my $tcga_dna = {
   general => { task_name => "tcga_dna" },
   files_config_ref => [ $preparation, "dna_refine" ],
-  groups           => $tcga->{dna_groups},
+  groups           => $tcga->{dna_nb_groups},
+  fasta_file       => $fasta_file_tcga_dna,
+  cosmic_file      => $cosmic_file_16569_MT,
+  dbsnp_file       => $snp_file_16569_MT,
+  gtf_file         => $gtf_file_16569_MT,
+  tcga_file        => $tcga->{tcga_dna_files},
+  glm_pvalue       => "0.1"
+};
+
+my $tcga_dna_nt = {
+  general => { task_name => "tcga_dna_nt" },
+  files_config_ref => [ $preparation, "dna_refine" ],
+  groups           => $tcga->{dna_nt_groups},
   fasta_file       => $fasta_file_tcga_dna,
   cosmic_file      => $cosmic_file_16569_MT,
   dbsnp_file       => $snp_file_16569_MT,
@@ -389,7 +402,7 @@ my $tcga_rna = {
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ( $tcga_dna );
+my @cfgs = ( $tcga_dna_nt );
 my @nps = ( 0.01 );
 my @gps = ( 0.1 );
 
