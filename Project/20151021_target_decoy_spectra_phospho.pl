@@ -12,8 +12,8 @@ my $target_dir            = create_directory_or_die("/scratch/cqs/shengq1/proteo
 my $proteomicstools       = "/home/shengq1/proteomicstools/ProteomicsTools.exe";
 my $email                 = "quanhu.sheng\@vanderbilt.edu";
 my $msgf_jar              = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
-my $msgf_mod_file         = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/msgf_mods.txt";
-my $msgf_option           = "-t 20ppm -ti \"0,1\" -tda 0 -m 1 -inst 1 -e 1 -protocol 5 -ntt 2 -n 2 -minLength 7 -addFeatures 1";
+my $msgf_mod_file         = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/msgf_mods_itraq_phospho.txt";
+my $msgf_option           = "-t 20ppm -ti 0,1 -tda 0 -m 3 -inst 1 -e 1 -protocol 3 -ntt 2 -n 2 -minLength 7 -maxLength 50 -addFeatures 1";
 my $target_database       = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp.fasta";
 my $target_decoy_database = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp_DECOY.fasta";
 
@@ -26,7 +26,7 @@ my $buildsummary_msgf_target_unique2_ratio2_file = "/scratch/cqs/shengq1/proteom
 my $buildsummary_bins                            = [ 1, 2, 3, 4, 5 ];
 
 my $config = {
-  general => { task_name => "td" },
+  general => { task_name => "phos" },
   files   => {
     "TCGA_13-1489_42-2590_36-2529_117C_P_PNNL_B2S5" => [
       "/gpfs21/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/phosphorylation_data/TCGA_13-1489_42-2590_36-2529_117C_P_PNNL_B2S5_f01.mgf",
