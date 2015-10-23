@@ -37,9 +37,9 @@ my $datasets = {
     },
     database                           => $database_human,
     MSGF_option                        => "-t 10ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
-    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
-    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
+    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/comet-it.params",
+    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/myrimatch-it.config",
+    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/msamanda-it.xml",
     buildsummary_msgf_config_file      => $buildsummary_msgf_human_file,
     buildsummary_comet_config_file     => $buildsummary_comet_human_file,
     buildsummary_myrimatch_config_file => $buildsummary_myrimatch_human_file
@@ -54,9 +54,9 @@ my $datasets = {
     },
     database                           => $database_human,
     MSGF_option                        => "-t 10ppm -ti \"0,1\" -tda 0 -m 1 -inst 0 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
-    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
-    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
+    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/comet-it.params",
+    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/myrimatch-it.config",
+    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/msamanda-it.xml",
     buildsummary_msgf_config_file      => $buildsummary_msgf_human_file,
     buildsummary_comet_config_file     => $buildsummary_comet_human_file,
     buildsummary_myrimatch_config_file => $buildsummary_myrimatch_human_file
@@ -71,9 +71,9 @@ my $datasets = {
     },
     database                           => $database_yeast,
     MSGF_option                        => "-t 10ppm -ti \"0,1\" -tda 0 -m 3 -inst 0 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
-    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-it.params",
-    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-it.config",
-    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-it.xml",
+    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/comet-it.params",
+    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/myrimatch-it.config",
+    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/msamanda-it.xml",
     buildsummary_msgf_config_file      => $buildsummary_msgf_yeast_file,
     buildsummary_comet_config_file     => $buildsummary_comet_yeast_file,
     buildsummary_myrimatch_config_file => $buildsummary_myrimatch_yeast_file
@@ -88,9 +88,9 @@ my $datasets = {
     },
     database                           => $database_human,
     MSGF_option                        => "-t 10ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
-    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
-    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-ot.config",
-    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
+    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/comet-ot.params",
+    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/myrimatch-ot.config",
+    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/msamanda-ot.xml",
     buildsummary_msgf_config_file      => $buildsummary_msgf_human_file,
     buildsummary_comet_config_file     => $buildsummary_comet_human_file,
     buildsummary_myrimatch_config_file => $buildsummary_myrimatch_human_file
@@ -105,9 +105,9 @@ my $datasets = {
     },
     database                           => $database_human,
     MSGF_option                        => "-t 10ppm -ti \"0,1\" -tda 0 -m 3 -inst 3 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
-    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/comet-ot.params",
-    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/myrimatch-ot.config",
-    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msamanda-ot.xml",
+    comet_config_file                  => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/comet-ot.params",
+    myrimatch_config_file              => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/myrimatch-ot.config",
+    msamanda_config_file               => "/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm/parameters/msamanda-ot.xml",
     buildsummary_msgf_config_file      => $buildsummary_msgf_human_file,
     buildsummary_comet_config_file     => $buildsummary_comet_human_file,
     buildsummary_myrimatch_config_file => $buildsummary_myrimatch_human_file
@@ -376,7 +376,7 @@ for my $dataset ( sort keys %{$datasets} ) {
 
 $configall->{sequencetask} = {
   class      => "CQS::SequenceTask",
-  perform    => 0,
+  perform    => 1,
   target_dir => $target_dir . "/sequencetask",
   option     => "",
   source     => {
