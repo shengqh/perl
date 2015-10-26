@@ -13,7 +13,7 @@ use Hash::Merge qw( merge );
 my $target_dir      = create_directory_or_die("/scratch/cqs/shengq1/proteomics/20151023_shifted_precursor_10ppm");
 my $msgf_jar        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/MSGFPlus.jar";
 my $proteomicstools = "/home/shengq1/proteomicstools/ProteomicsTools.exe";
-my $mod_file        = "/scratch/cqs/shengq1/local/bin/MSGFPlus/Mods.txt";
+my $mod_file        = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/parameters/msgf_mod.txt";
 my $database_human  = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/database/rev_Human_uniprot_sprot_v20120613.fasta";
 my $database_yeast  = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/database/rev_Yeast_uniprot_v20120613.fasta";
 my $database_ecoli  = "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/database/rev_Ecoli_uniprot_v20120613_P4431.fasta";
