@@ -187,8 +187,8 @@ for my $dataset ( sort keys %{$datasets} ) {
       "${dataset}_shift_${delta}" => {
         suffix          => "_${delta}",
         class           => "Proteomics::Format::PrecursorShiftProcessor",
-        perform         => 1,
-        target_dir      => "${target_dir}/${dataset}_shift",
+        perform         => 0,
+        target_dir      => "/scratch/cqs/shengq1/proteomics/20150608_shifted_precursor/${dataset}/shift",
         option          => "",
         source_ref      => "${dataset}_source",
         proteomicstools => $proteomicstools,
