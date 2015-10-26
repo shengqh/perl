@@ -364,7 +364,7 @@ for my $dataset ( sort keys %{$datasets} ) {
     push(
       @individual,
       (
-        "${dataset}_shift_${delta}",     "${dataset}_MSGF_${delta}",      "${dataset}_MSGF_${delta}_PSM", "${dataset}_comet_${delta}",
+        "${dataset}_MSGF_${delta}",      "${dataset}_MSGF_${delta}_PSM",  "${dataset}_comet_${delta}",
         "${dataset}_comet_${delta}_PSM", "${dataset}_myrimatch_${delta}", "${dataset}_myrimatch_${delta}_PSM"
       )
     );
