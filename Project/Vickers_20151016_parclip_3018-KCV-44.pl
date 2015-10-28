@@ -23,10 +23,11 @@ my $userdef = {
 
   cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
-  search_3utr  => 1,
-  utr3_db      => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
-  fasta_file   => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
-  refgene_file => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
+  search_3utr   => 1,
+  bowtie1_index => hg19_genome()->{bowtie1_index},
+  utr3_db       => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
+  fasta_file    => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
+  refgene_file  => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
 
   #Data
   files => {
@@ -38,7 +39,7 @@ my $userdef = {
   },
 };
 
-my $def = getSmallRNADefinition( $userdef, hg19_genome() );
+my $def = getSmallRNADefinition( $userdef, mm10_genome() );
 
 #print Dumper($def);
 
