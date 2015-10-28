@@ -23,6 +23,11 @@ my $userdef = {
 
   cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
+  search_3utr  => 1,
+  utr3_db      => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
+  fasta_file   => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
+  refgene_file => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
+
   #Data
   files => {
     "3018-KCV-44-1" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-44/3018-KCV-44-1_S1_R1_001.fastq.gz"],
