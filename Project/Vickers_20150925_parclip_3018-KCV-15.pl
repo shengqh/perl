@@ -20,7 +20,7 @@ my $userdef = {
   #Default software parameter (don't change it except you really know it)
   fastq_remove_N => 0,
   adapter        => "TGGAATTCTCGGGTGCCAAGG",
-  cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
+  cqstools       => "/home/shengq1/cqstools/CQS.Tools.exe",
 
   search_3utr  => 1,
   utr3_db      => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
