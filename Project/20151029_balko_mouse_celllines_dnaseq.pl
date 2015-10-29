@@ -43,37 +43,37 @@ my $wes = {
   task_name => "WES",
   files     => {
     "N04_DUSP4flox_LACZ" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-1_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-1_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-1_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-1_2_sequence.txt.gz"
     ],
     "N05_DUSP4flox_Trp53null1_LACZ" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-2_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-2_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-2_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-2_2_sequence.txt.gz"
     ],
     "N07_DUSP4flox_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-3_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-3_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_2_sequence.txt.gz"
     ],
     "N09_DUSP4flox_Trp53null3_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-4_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-4_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-4_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-4_2_sequence.txt.gz"
     ],
     "N13_DUSP4null_LACZ" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-5_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-5_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-5_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-5_2_sequence.txt.gz"
     ],
     "N15_DUSP4null_Trp53null3_LACZ" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-6_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-6_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-6_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-6_2_sequence.txt.gz"
     ],
 
     #    "N16_DUSP4null_MYC" => [
-    #      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-7_1_sequence.txt.gz",
-    #      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-7_2_sequence.txt.gz"
+    #      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-7_1_sequence.txt.gz",
+    #      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-7_2_sequence.txt.gz"
     #    ],
     "N17_DUSP4null_Trp53null1_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-8_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-8_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_2_sequence.txt.gz"
     ],
   },
   groups => {
@@ -81,7 +81,6 @@ my $wes = {
     "N05_DUSP4flox_Trp53null1_LACZ" => [ "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ" ],
     "N09_DUSP4flox_Trp53null3_MYC"  => [ "N04_DUSP4flox_LACZ", "N09_DUSP4flox_Trp53null3_MYC" ],
     "N13_DUSP4null_LACZ"            => [ "N04_DUSP4flox_LACZ", "N13_DUSP4null_LACZ" ],
-
     #"N16_DUSP4null_MYC"             => [ "N04_DUSP4flox_LACZ", "N16_DUSP4null_MYC" ],
     "N15_DUSP4null_Trp53null3_LACZ" => [ "N04_DUSP4flox_LACZ", "N15_DUSP4null_Trp53null3_LACZ" ],
     "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
