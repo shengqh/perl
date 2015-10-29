@@ -37,7 +37,7 @@ my $annovar_param     = "-protocol ${annovar_protocol} -operation ${annovar_oper
 my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $rnaediting_db     = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
 
-my $covered_bed = "/gpfs21/scratch/cqs/shengq1/dnaseq/20150406_bojana_dnaseq_selectedgenes/0699701_Covered.bed";
+my $covered_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Regions.bed";
 
 my $cluster = "slurm";
 
@@ -153,81 +153,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-
-  #  bwa_refine_hc_gvcf => {
-  #    class       => "GATK::HaplotypeCallerGVCF",
-  #    perform     => 1,
-  #    target_dir  => "${target_dir}/bwa_refine_hc_gvcf",
-  #    option      => "",
-  #    source_ref  => "bwa_refine",
-  #    java_option => "",
-  #    fasta_file  => $bwa_fasta,
-  #    dbsnp_vcf   => $dbsnp,
-  #    gatk_jar    => $gatk_jar,
-  #    extension   => ".gvcf",
-  #    sh_direct   => 0,
-  #    pbs         => {
-  #      "email"    => $email,
-  #      "nodes"    => "1:ppn=8",
-  #      "walltime" => "72",
-  #      "mem"      => "40gb"
-  #    },
-  #  },
-  #  bwa_refine_hc_gvcf_vqsr => {
-  #    class       => "GATK::VariantFilterVQSR",
-  #    perform     => 1,
-  #    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_vqsr",
-  #    option      => "",
-  #    source_ref  => "bwa_refine_hc_gvcf",
-  #    java_option => "",
-  #    fasta_file  => $bwa_fasta,
-  #    dbsnp_vcf   => $dbsnp,
-  #    hapmap_vcf  => $hapmap,
-  #    omni_vcf    => $omni,
-  #    g1000_vcf   => $g1000,
-  #    mills_vcf   => $mills,
-  #    gatk_jar    => $gatk_jar,
-  #    cqstools    => $cqstools,
-  #    sh_direct   => 1,
-  #    pbs         => {
-  #      "email"    => $email,
-  #      "nodes"    => "1:ppn=24",
-  #      "walltime" => "72",
-  #      "mem"      => "40gb"
-  #    },
-  #  },
-  #  qc3vcf => {
-  #    class      => "QC::QC3vcf",
-  #    perform    => 1,
-  #    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_qc3",
-  #    option     => "",
-  #    qc3_perl   => $qc3_perl,
-  #    source_ref => [ "bwa_refine_hc_gvcf_vqsr", "snp" ],
-  #    annovar_db => $annovar_db,
-  #    pbs        => {
-  #      "email"    => $email,
-  #      "nodes"    => "1:ppn=1",
-  #      "walltime" => "72",
-  #      "mem"      => "40gb"
-  #    },
-  #  },
-  #  bwa_refine_hc_gvcf_vqsr_annovar => {
-  #    class      => "Annotation::Annovar",
-  #    perform    => 1,
-  #    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar",
-  #    source_ref => [ "bwa_refine_hc_gvcf_vqsr", "snp" ],
-  #    option     => $annovar_param,
-  #    annovar_db => $annovar_db,
-  #    buildver   => "hg19",
-  #    sh_direct  => 1,
-  #    isvcf      => 1,
-  #    pbs        => {
-  #      "email"    => $email,
-  #      "nodes"    => "1:ppn=1",
-  #      "walltime" => "72",
-  #      "mem"      => "10gb"
-  #    },
-  #  },
   conifer => {
     class       => "CNV::Conifer",
     perform     => 1,
@@ -324,27 +249,7 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     },
-  },
-  sequencetask => {
-    class      => "CQS::SequenceTask",
-    perform    => 1,
-    target_dir => "${target_dir}/sequencetask",
-    option     => "",
-    source     => {
-      qc1   => ["fastqc"],
-      qc2   => ["fastqc_summary"],
-      align => [ "bwa", "bwa_refine" ],
-      cnv   => [ "conifer", "cnmops" ],
-      sm    => [ "muTect", "annovar_muTect", "glmvc" ],
-    },
-    sh_direct => 0,
-    pbs       => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
+  }
 };
 
 performConfig($config);
