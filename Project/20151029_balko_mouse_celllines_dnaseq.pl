@@ -203,7 +203,7 @@ for my $dataset (@datasets) {
     $qc->{fastqlen} = {
       class      => "CQS::FastqLen",
       perform    => 1,
-      target_dir => "${target_dir}/fastqlen",
+      target_dir => "${target_dir}/" . $dataset->{task_name} . "/fastqlen",
       option     => "",
       source_ref => "cutadapt",
       cqstools   => $cqstools,

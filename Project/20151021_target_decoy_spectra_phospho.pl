@@ -595,6 +595,44 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  
+  msgf_target_decoy_database_decoy_spectra => {
+    class      => "Proteomics::Engine::MSGFPlus",
+    perform    => 1,
+    target_dir => "${target_dir}/msgf_target_decoy_database_decoy_spectra",
+    option     => $msgf_option,
+    source_ref => ["shift_precursor", "TCGA_13-1489_"],
+    msgf_jar   => $msgf_jar,
+    mod_file   => $msgf_mod_file,
+    database   => $target_decoy_database,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  msgf_target_decoy_database_target_decoy_spectra_buildsummary_unique2 => {
+    class           => "Proteomics::Summary::AccumulateBuildSummary",
+    perform         => 1,
+    target_dir      => "${target_dir}/msgf_target_decoy_accumulate_buildsummary_unique2",
+    option          => "",
+    source_ref      => ["msgf_target_decoy"],
+    datasets_ref    => "datasets",
+    parameter_file  => $buildsummary_msgf_target_decoy_unique2_file,
+    proteomicstools => $proteomicstools,
+    bin_size        => 5,
+    bins            => $buildsummary_bins,
+    sh_direct       => 0,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
