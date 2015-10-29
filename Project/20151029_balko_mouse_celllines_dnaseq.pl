@@ -6,6 +6,7 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
+use Hash::Merge qw( merge );
 
 my $target_dir = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
@@ -36,6 +37,9 @@ my $annovar_operation = "g,f,f";
 my $annovar_param     = "-protocol ${annovar_protocol} -operation ${annovar_operation} --remove";
 my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $rnaediting_db     = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
+
+#minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
+my $cutadapt_option = "-q 10 -O 4 -m 30";
 
 my $cluster = "slurm";
 
@@ -135,13 +139,13 @@ my $wgs = {
     "N15_DUSP4null_Trp53null3_LACZ" => [ "N04_DUSP4flox_LACZ", "N15_DUSP4null_Trp53null3_LACZ" ],
     "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
   },
-
+  cutadapt => 1
 };
 
 my @datasets = ( $wes, $wgs );
 
 for my $dataset (@datasets) {
-  my $config = {
+  my $qc = {
     general => { task_name => $dataset->{task_name} },
     files   => $dataset->{files},
     groups  => $dataset->{groups},
@@ -173,108 +177,154 @@ for my $dataset (@datasets) {
         "walltime" => "2",
         "mem"      => "10gb"
       },
-    },
-    bwa => {
-      class      => "Alignment::BWA",
-      perform    => 1,
-      target_dir => "${target_dir}/" . $dataset->{task_name} . "/bwa",
-      option     => "",
-      bwa_index  => $bwa_fasta,
-      source_ref => "files",
-      picard_jar => $picard_jar,
-      sh_direct  => 0,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
-    bwa_refine => {
-      class       => "GATK::Refine",
-      perform     => 1,
-      target_dir  => "${target_dir}/" . $dataset->{task_name} . "/bwa_refine",
-      option      => "-Xmx40g",
-      gatk_option => "--fix_misencoded_quality_scores",
-      fasta_file  => $bwa_fasta,
-      source_ref  => "bwa",
-      vcf_files   => [$dbsnp],
-      gatk_jar    => $gatk_jar,
-      picard_jar  => $picard_jar,
-      sh_direct   => 0,
-      sorted      => 1,
-      pbs         => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "240",
-        "mem"      => "40gb"
-      },
-    },
-    muTect => {
-      class        => "GATK::MuTect",
-      perform      => 1,
-      target_dir   => "${target_dir}/" . $dataset->{task_name} . "/muTect",
-      option       => "--min_qscore 20 --filter_reads_with_N_cigar",
-      java_option  => "-Xmx40g",
-      source_ref   => "bwa_refine",
-      groups_ref   => "groups",
-      fasta_file   => $bwa_fasta,
-      cosmic_file  => $cosmic,
-      dbsnp_file   => $dbsnp,
-      bychromosome => 0,
-      sh_direct    => 0,
-      muTect_jar   => $mutect,
-      pbs          => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "240",
-        "mem"      => "40gb"
-      },
-    },
-    muTect_annovar => {
-      class      => "Annotation::Annovar",
-      perform    => 1,
-      target_dir => "${target_dir}/" . $dataset->{task_name} . "/muTect",
-      option     => $annovar_param,
-      source_ref => [ "muTect", ".pass.vcf\$" ],
-      annovar_db => $annovar_db,
-      buildver   => "hg19",
-      cqstools   => $cqstools,
-      affy_file  => $affy_file,
-      sh_direct  => 1,
-      isvcf      => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "10gb"
-      },
-    },
-    glmvc => {
-      class             => "Variants::GlmvcCall",
-      perform           => 1,
-      target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
-      option            => "--glm_pvalue 0.1",
-      source_type       => "BAM",
-      source_ref        => "bwa_refine",
-      groups_ref        => "groups",
-      fasta_file        => $bwa_fasta,
-      annovar_buildver  => "hg19",
-      annovar_protocol  => $annovar_protocol,
-      annovar_operation => $annovar_operation,
-      rnaediting_db     => $rnaediting_db,
-      distance_exon_gtf => $transcript_gtf,
-      sh_direct         => 0,
-      execute_file      => $glmvc,
-      pbs               => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=8",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
     }
   };
 
+  my @individuals = ("fastqc");
+  my $source      = "files";
+  if ( defined $dataset->{cutadapt} && $dataset->{cutadapt} ) {
+    $qc->{cutadapt} = {
+      class      => "Cutadapt",
+      perform    => 1,
+      target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
+      option     => $cutadapt_option,
+      source_ref => "files",
+      adapter    => "GATCGGAAGAGC",
+      extension  => "_clipped.fastq.gz",
+      sh_direct  => 1,
+      cluster    => $cluster,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "24",
+        "mem"      => "20gb"
+      },
+    };
+    $qc->{fastqlen} = {
+      class      => "FastqLen",
+      perform    => 0,
+      target_dir => "${target_dir}/fastqlen",
+      option     => "",
+      source_ref => "cutadapt",
+      cqstools   => $cqstools,
+      sh_direct  => 1,
+      pbs        => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "24",
+        "mem"      => "20gb"
+      },
+    };
+    $source = "cutadapt";
+    push @individuals, ( "cutadapt", "fastqlen" );
+  }
+
+  my $config = merge(
+    $qc,
+    {
+      bwa => {
+        class      => "Alignment::BWA",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/bwa",
+        option     => "",
+        bwa_index  => $bwa_fasta,
+        source_ref => $source,
+        picard_jar => $picard_jar,
+        sh_direct  => 0,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+      bwa_refine => {
+        class       => "GATK::Refine",
+        perform     => 1,
+        target_dir  => "${target_dir}/" . $dataset->{task_name} . "/bwa_refine",
+        option      => "-Xmx40g",
+        gatk_option => "--fix_misencoded_quality_scores",
+        fasta_file  => $bwa_fasta,
+        source_ref  => "bwa",
+        vcf_files   => [$dbsnp],
+        gatk_jar    => $gatk_jar,
+        picard_jar  => $picard_jar,
+        sh_direct   => 0,
+        sorted      => 1,
+        pbs         => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "240",
+          "mem"      => "40gb"
+        },
+      },
+      muTect => {
+        class        => "GATK::MuTect",
+        perform      => 1,
+        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/muTect",
+        option       => "--min_qscore 20 --filter_reads_with_N_cigar",
+        java_option  => "-Xmx40g",
+        source_ref   => "bwa_refine",
+        groups_ref   => "groups",
+        fasta_file   => $bwa_fasta,
+        cosmic_file  => $cosmic,
+        dbsnp_file   => $dbsnp,
+        bychromosome => 0,
+        sh_direct    => 0,
+        muTect_jar   => $mutect,
+        pbs          => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "240",
+          "mem"      => "40gb"
+        },
+      },
+      muTect_annovar => {
+        class      => "Annotation::Annovar",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/muTect",
+        option     => $annovar_param,
+        source_ref => [ "muTect", ".pass.vcf\$" ],
+        annovar_db => $annovar_db,
+        buildver   => "hg19",
+        cqstools   => $cqstools,
+        affy_file  => $affy_file,
+        sh_direct  => 1,
+        isvcf      => 1,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "10gb"
+        },
+      },
+      glmvc => {
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
+        option            => "--glm_pvalue 0.1",
+        source_type       => "BAM",
+        source_ref        => "bwa_refine",
+        groups_ref        => "groups",
+        fasta_file        => $bwa_fasta,
+        annovar_buildver  => "hg19",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        rnaediting_db     => $rnaediting_db,
+        distance_exon_gtf => $transcript_gtf,
+        sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      }
+    }
+  );
+
+  push @individuals, ( "bwa", "bwa_refine" );
   my @all = ("fastqc_summary");
 
   if ( defined $dataset->{covered_bed} ) {
