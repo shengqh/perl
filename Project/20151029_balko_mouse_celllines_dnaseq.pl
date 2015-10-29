@@ -81,6 +81,7 @@ my $wes = {
     "N05_DUSP4flox_Trp53null1_LACZ" => [ "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ" ],
     "N09_DUSP4flox_Trp53null3_MYC"  => [ "N04_DUSP4flox_LACZ", "N09_DUSP4flox_Trp53null3_MYC" ],
     "N13_DUSP4null_LACZ"            => [ "N04_DUSP4flox_LACZ", "N13_DUSP4null_LACZ" ],
+
     #"N16_DUSP4null_MYC"             => [ "N04_DUSP4flox_LACZ", "N16_DUSP4null_MYC" ],
     "N15_DUSP4null_Trp53null3_LACZ" => [ "N04_DUSP4flox_LACZ", "N15_DUSP4null_Trp53null3_LACZ" ],
     "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
@@ -274,7 +275,7 @@ for my $dataset (@datasets) {
     }
   };
 
-  my @individuals = ( "fastqc", "bwa", "bwa_refine", "muTect", "muTect_annovar", "glmvc" );
+  my @all = ("fastqc_summary");
 
   if ( defined $dataset->{convered_bed} ) {
     $config->{conifer} = {
@@ -311,7 +312,7 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
-    push @individuals, ( "conifer", "cnmops" );
+    push @all, ( "conifer", "cnmops" );
   }
 
   $config->{sequencetask} = {
@@ -320,8 +321,9 @@ for my $dataset (@datasets) {
     target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
     option     => "",
     source     => {
-      step1 => \@individuals,
-      step2 => ["fastqc_summary"],
+      prepare => [ "fastqc", "bwa",            "bwa_refine" ],
+      sm      => [ "muTect", "muTect_annovar", "glmvc" ],
+      all     => \@all
     },
     sh_direct => 0,
     pbs       => {
