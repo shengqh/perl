@@ -277,7 +277,7 @@ for my $dataset (@datasets) {
 
   my @all = ("fastqc_summary");
 
-  if ( defined $dataset->{convered_bed} ) {
+  if ( defined $dataset->{covered_bed} ) {
     $config->{conifer} = {
       class       => "CNV::Conifer",
       perform     => 1,
@@ -285,7 +285,7 @@ for my $dataset (@datasets) {
       option      => "",
       source_ref  => "bwa",
       conifer     => $conifer,
-      bedfile     => $dataset->{convered_bed},
+      bedfile     => $dataset->{covered_bed},
       isbamsorted => 1,
       sh_direct   => 1,
       pbs         => {
