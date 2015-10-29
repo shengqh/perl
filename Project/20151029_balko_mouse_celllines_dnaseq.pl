@@ -184,7 +184,7 @@ for my $dataset (@datasets) {
   my $source      = "files";
   if ( defined $dataset->{cutadapt} && $dataset->{cutadapt} ) {
     $qc->{cutadapt} = {
-      class      => "Cutadapt",
+      class      => "Trimmer::Cutadapt",
       perform    => 1,
       target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
       option     => $cutadapt_option,
@@ -201,8 +201,8 @@ for my $dataset (@datasets) {
       },
     };
     $qc->{fastqlen} = {
-      class      => "FastqLen",
-      perform    => 0,
+      class      => "CQS::FastqLen",
+      perform    => 1,
       target_dir => "${target_dir}/fastqlen",
       option     => "",
       source_ref => "cutadapt",
