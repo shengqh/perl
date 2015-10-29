@@ -217,7 +217,7 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     },
-    annovar_muTect => {
+    muTect_annovar => {
       class      => "Annotation::Annovar",
       perform    => 1,
       target_dir => "${target_dir}/" . $dataset->{task_name} . "/muTect",
@@ -261,6 +261,8 @@ for my $dataset (@datasets) {
     }
   };
 
+  my @indivudials = ( "fastqc", "bwa", "bwa_refine", "muTect", "muTect_annovar", "glmvc" );
+
   if ( defined $dataset->{convered_bed} ) {
     $config->{conifer} = {
       class       => "CNV::Conifer",
@@ -296,7 +298,26 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
+    push @indivudials, ( "conifer", "cnmops" );
   }
+
+  $config->{sequencetask} = {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
+    option     => "",
+    source     => {
+      step1 => \@indivudials,
+      step2 => ["fastqc_summary"],
+    },
+    sh_direct => 0,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
 
   performConfig($config);
 }
