@@ -41,7 +41,7 @@ my $cluster = "slurm";
 
 my $wes = {
   task_name => "WES",
-  wesfiles  => {
+  files     => {
     "N04_DUSP4flox_LACZ" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-1_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/data/WES/3162-JMB-1_2_sequence.txt.gz"
@@ -80,7 +80,7 @@ my $wes = {
 
 my $wgs = {
   task_name => "WGS",
-  wesfiles  => {
+  files     => {
     "N04_DUSP4flox_LACZ" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WGS/data/3162-JB-1_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WGS/data/3162-JB-1_2_sequence.txt.gz"
@@ -121,6 +121,7 @@ my @datasets = ( $wes, $wgs );
 for my $dataset (@datasets) {
   my $config = {
     general => { task_name => "bmc" },
+    files   => $dataset->{files},
     groups  => {
       "N07_DUSP4flox_MYC"             => [ "N04_DUSP4flox_LACZ", "N07_DUSP4flox_MYC" ],
       "N05_DUSP4flox_Trp53null1_LACZ" => [ "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ" ],
