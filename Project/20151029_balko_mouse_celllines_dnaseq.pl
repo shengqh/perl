@@ -142,7 +142,7 @@ my @datasets = ( $wes, $wgs );
 
 for my $dataset (@datasets) {
   my $config = {
-    general => { task_name => "bmc" },
+    general => { task_name => $dataset->{task_name} },
     files   => $dataset->{files},
     groups  => $dataset->{groups},
     fastqc  => {
