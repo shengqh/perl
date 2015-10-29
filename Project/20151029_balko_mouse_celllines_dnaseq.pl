@@ -274,7 +274,7 @@ for my $dataset (@datasets) {
     }
   };
 
-  my @indivudials = ( "fastqc", "bwa", "bwa_refine", "muTect", "muTect_annovar", "glmvc" );
+  my @individuals = ( "fastqc", "bwa", "bwa_refine", "muTect", "muTect_annovar", "glmvc" );
 
   if ( defined $dataset->{convered_bed} ) {
     $config->{conifer} = {
@@ -311,7 +311,7 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
-    push @indivudials, ( "conifer", "cnmops" );
+    push @individuals, ( "conifer", "cnmops" );
   }
 
   $config->{sequencetask} = {
@@ -320,7 +320,7 @@ for my $dataset (@datasets) {
     target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
     option     => "",
     source     => {
-      step1 => \@indivudials,
+      step1 => \@individuals,
       step2 => ["fastqc_summary"],
     },
     sh_direct => 0,
