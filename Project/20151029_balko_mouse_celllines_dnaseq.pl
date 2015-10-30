@@ -224,7 +224,7 @@ for my $dataset (@datasets) {
           perform    => 1,
           target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt_fastqc",
           option     => "",
-          source_ref => "files",
+          source_ref => "cutadapt",
           sh_direct  => 1,
           cluster    => $cluster,
           pbs        => {
