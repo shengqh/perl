@@ -389,7 +389,7 @@ for my $dataset (@datasets) {
             target_dir  => "${target_dir}/" . $dataset->{task_name} . "/cnmops",
             option      => "",
             source_ref  => "bwa",
-            bedfile     => $dataset->{convered_bed},
+            bedfile     => $dataset->{covered_bed},
             pairmode    => "paired",
             isbamsorted => 1,
             sh_direct   => 1,
