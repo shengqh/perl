@@ -376,7 +376,7 @@ for my $dataset (@datasets) {
       option     => "",
       source     => {
         prepare => \@individuals,
-        sm      => [ "muTect", "muTect_annovar", "glmvc" ],
+        sm      => [ "muTect", "glmvc" ],
         all     => \@all
       },
       sh_direct => 0,
