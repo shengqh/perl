@@ -5,7 +5,10 @@ open( ILL, ">$newbed" );
 
 open( REF, $oldbed );
 while (<REF>) {
-  if ( $_ =~ m/^chrM/ ) {
+  if ( $_ =~ m/^chrY/ ) {
+    next;
+  }
+  elsif ( $_ =~ m/^chrM/ ) {
     my $data = substr $_, 4;
     print ILL "MT$data";
   }
