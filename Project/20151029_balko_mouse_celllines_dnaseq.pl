@@ -145,7 +145,7 @@ my $wgs = {
 my @datasets = ( $wes, $wgs );
 
 for my $dataset (@datasets) {
-  my $qc = {
+  my $config = {
     general => { task_name => $dataset->{task_name} },
     files   => $dataset->{files},
     groups  => $dataset->{groups},
@@ -184,236 +184,244 @@ for my $dataset (@datasets) {
   my @all         = ("fastqc_summary");
   my $source      = "files";
   if ( defined $dataset->{cutadapt} && $dataset->{cutadapt} ) {
-    my $cutadapt = {
-      cutadapt => {
-        class      => "Trimmer::Cutadapt",
-        perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
-        option     => $cutadapt_option,
-        source_ref => "files",
-        adapter    => "AGATCGGAAGAGC",
-        extension  => "_clipped.fastq.gz",
-        sh_direct  => 1,
-        cluster    => $cluster,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "24",
-          "mem"      => "20gb"
+    $config = merge(
+      $config,
+      {
+        cutadapt => {
+          class      => "Trimmer::Cutadapt",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
+          option     => $cutadapt_option,
+          source_ref => "files",
+          adapter    => "AGATCGGAAGAGC",
+          extension  => "_clipped.fastq.gz",
+          sh_direct  => 1,
+          cluster    => $cluster,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "24",
+            "mem"      => "20gb"
+          },
         },
-      },
-      fastqlen => {
-        class      => "CQS::FastqLen",
-        perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/fastqlen",
-        option     => "",
-        source_ref => "cutadapt",
-        cqstools   => $cqstools,
-        sh_direct  => 1,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "24",
-          "mem"      => "20gb"
+        fastqlen => {
+          class      => "CQS::FastqLen",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/fastqlen",
+          option     => "",
+          source_ref => "cutadapt",
+          cqstools   => $cqstools,
+          sh_direct  => 1,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "24",
+            "mem"      => "20gb"
+          },
         },
-      },
-      cutadapt_fastqc => {
-        class      => "QC::FastQC",
-        perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt_fastqc",
-        option     => "",
-        source_ref => "files",
-        sh_direct  => 1,
-        cluster    => $cluster,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=2",
-          "walltime" => "2",
-          "mem"      => "40gb"
+        cutadapt_fastqc => {
+          class      => "QC::FastQC",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt_fastqc",
+          option     => "",
+          source_ref => "files",
+          sh_direct  => 1,
+          cluster    => $cluster,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=2",
+            "walltime" => "2",
+            "mem"      => "40gb"
+          },
         },
-      },
-      cutadapt_fastqc_summary => {
-        class      => "QC::FastQCSummary",
-        perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt_fastqc",
-        option     => "",
-        cluster    => $cluster,
-        cqstools   => $cqstools,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "2",
-          "mem"      => "10gb"
-        },
+        cutadapt_fastqc_summary => {
+          class      => "QC::FastQCSummary",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt_fastqc",
+          option     => "",
+          cluster    => $cluster,
+          cqstools   => $cqstools,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "2",
+            "mem"      => "10gb"
+          },
+        }
       }
-    };
+    );
     $source = "cutadapt";
     push @individuals, ( "cutadapt", "fastqlen", "cutadapt_fastqc" );
     push @all, ("cutadapt_fastqc_summary");
   }
 
-  my $config = merge(
-    $qc,
-    {
-      bwa => {
-        class      => "Alignment::BWA",
-        perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/bwa",
-        option     => "",
-        bwa_index  => $bwa_fasta,
-        source_ref => $source,
-        picard_jar => $picard_jar,
-        sh_direct  => 0,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=8",
-          "walltime" => "72",
-          "mem"      => "40gb"
+  $config = merge(
+      $config,
+      {
+        bwa => {
+          class      => "Alignment::BWA",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/bwa",
+          option     => "",
+          bwa_index  => $bwa_fasta,
+          source_ref => $source,
+          picard_jar => $picard_jar,
+          sh_direct  => 0,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=8",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
         },
-      },
-      bwa_refine => {
-        class       => "GATK::Refine",
-        perform     => 1,
-        target_dir  => "${target_dir}/" . $dataset->{task_name} . "/bwa_refine",
-        option      => "-Xmx40g",
-        gatk_option => "--fix_misencoded_quality_scores",
-        fasta_file  => $bwa_fasta,
-        source_ref  => "bwa",
-        vcf_files   => [$dbsnp],
-        gatk_jar    => $gatk_jar,
-        picard_jar  => $picard_jar,
-        sh_direct   => 0,
-        sorted      => 1,
-        pbs         => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=8",
-          "walltime" => "240",
-          "mem"      => "40gb"
+        bwa_refine => {
+          class       => "GATK::Refine",
+          perform     => 1,
+          target_dir  => "${target_dir}/" . $dataset->{task_name} . "/bwa_refine",
+          option      => "-Xmx40g",
+          gatk_option => "--fix_misencoded_quality_scores",
+          fasta_file  => $bwa_fasta,
+          source_ref  => "bwa",
+          vcf_files   => [$dbsnp],
+          gatk_jar    => $gatk_jar,
+          picard_jar  => $picard_jar,
+          sh_direct   => 0,
+          sorted      => 1,
+          pbs         => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=8",
+            "walltime" => "240",
+            "mem"      => "40gb"
+          },
         },
-      },
-      muTect => {
-        class        => "GATK::MuTect",
-        perform      => 1,
-        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/muTect",
-        option       => "--min_qscore 20 --filter_reads_with_N_cigar",
-        java_option  => "-Xmx40g",
-        source_ref   => "bwa_refine",
-        groups_ref   => "groups",
-        fasta_file   => $bwa_fasta,
-        cosmic_file  => $cosmic,
-        dbsnp_file   => $dbsnp,
-        bychromosome => 0,
-        sh_direct    => 0,
-        muTect_jar   => $mutect,
-        pbs          => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "240",
-          "mem"      => "40gb"
+        muTect => {
+          class        => "GATK::MuTect",
+          perform      => 1,
+          target_dir   => "${target_dir}/" . $dataset->{task_name} . "/muTect",
+          option       => "--min_qscore 20 --filter_reads_with_N_cigar",
+          java_option  => "-Xmx40g",
+          source_ref   => "bwa_refine",
+          groups_ref   => "groups",
+          fasta_file   => $bwa_fasta,
+          cosmic_file  => $cosmic,
+          dbsnp_file   => $dbsnp,
+          bychromosome => 0,
+          sh_direct    => 0,
+          muTect_jar   => $mutect,
+          pbs          => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "240",
+            "mem"      => "40gb"
+          },
         },
-      },
-      muTect_annovar => {
-        class      => "Annotation::Annovar",
-        perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/muTect",
-        option     => $annovar_param,
-        source_ref => [ "muTect", ".pass.vcf\$" ],
-        annovar_db => $annovar_db,
-        buildver   => "hg19",
-        cqstools   => $cqstools,
-        affy_file  => $affy_file,
-        sh_direct  => 1,
-        isvcf      => 1,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "72",
-          "mem"      => "10gb"
+        muTect_annovar => {
+          class      => "Annotation::Annovar",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/muTect",
+          option     => $annovar_param,
+          source_ref => [ "muTect", ".pass.vcf\$" ],
+          annovar_db => $annovar_db,
+          buildver   => "hg19",
+          cqstools   => $cqstools,
+          affy_file  => $affy_file,
+          sh_direct  => 1,
+          isvcf      => 1,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "10gb"
+          },
         },
-      },
-      glmvc => {
-        class             => "Variants::GlmvcCall",
-        perform           => 1,
-        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
-        option            => "--glm_pvalue 0.1",
-        source_type       => "BAM",
-        source_ref        => "bwa_refine",
-        groups_ref        => "groups",
-        fasta_file        => $bwa_fasta,
-        annovar_buildver  => "hg19",
-        annovar_protocol  => $annovar_protocol,
-        annovar_operation => $annovar_operation,
-        rnaediting_db     => $rnaediting_db,
-        distance_exon_gtf => $transcript_gtf,
-        sh_direct         => 0,
-        execute_file      => $glmvc,
-        pbs               => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=8",
-          "walltime" => "72",
-          "mem"      => "40gb"
-        },
+        glmvc => {
+          class             => "Variants::GlmvcCall",
+          perform           => 1,
+          target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
+          option            => "--glm_pvalue 0.1",
+          source_type       => "BAM",
+          source_ref        => "bwa_refine",
+          groups_ref        => "groups",
+          fasta_file        => $bwa_fasta,
+          annovar_buildver  => "hg19",
+          annovar_protocol  => $annovar_protocol,
+          annovar_operation => $annovar_operation,
+          rnaediting_db     => $rnaediting_db,
+          distance_exon_gtf => $transcript_gtf,
+          sh_direct         => 0,
+          execute_file      => $glmvc,
+          pbs               => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=8",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        }
       }
-    }
   );
 
   push @individuals, ( "bwa", "bwa_refine" );
 
   if ( defined $dataset->{covered_bed} ) {
-    $config->{conifer} = {
-      class       => "CNV::Conifer",
-      perform     => 1,
-      target_dir  => "${target_dir}/" . $dataset->{task_name} . "/conifer",
-      option      => "",
-      source_ref  => "bwa",
-      conifer     => $conifer,
-      bedfile     => $dataset->{covered_bed},
-      isbamsorted => 1,
-      sh_direct   => 1,
-      pbs         => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "720",
-        "mem"      => "10gb"
-      },
-    };
-    $config->{cnmops} = {
-      class       => "CNV::cnMops",
-      perform     => 1,
-      target_dir  => "${target_dir}/" . $dataset->{task_name} . "/cnmops",
-      option      => "",
-      source_ref  => "bwa",
-      bedfile     => $dataset->{convered_bed},
-      pairmode    => "paired",
-      isbamsorted => 1,
-      sh_direct   => 1,
-      pbs         => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "720",
-        "mem"      => "40gb"
-      },
-    };
-    push @all, ( "conifer", "cnmops" );
+      $config = merge(
+        $config,
+        {
+          conifer => {
+            class       => "CNV::Conifer",
+            perform     => 1,
+            target_dir  => "${target_dir}/" . $dataset->{task_name} . "/conifer",
+            option      => "",
+            source_ref  => "bwa",
+            conifer     => $conifer,
+            bedfile     => $dataset->{covered_bed},
+            isbamsorted => 1,
+            sh_direct   => 1,
+            pbs         => {
+              "email"    => $email,
+              "nodes"    => "1:ppn=1",
+              "walltime" => "720",
+              "mem"      => "10gb"
+            },
+          },
+          cnmops => {
+            class       => "CNV::cnMops",
+            perform     => 1,
+            target_dir  => "${target_dir}/" . $dataset->{task_name} . "/cnmops",
+            option      => "",
+            source_ref  => "bwa",
+            bedfile     => $dataset->{convered_bed},
+            pairmode    => "paired",
+            isbamsorted => 1,
+            sh_direct   => 1,
+            pbs         => {
+              "email"    => $email,
+              "nodes"    => "1:ppn=1",
+              "walltime" => "720",
+              "mem"      => "40gb"
+            },
+          }
+        }
+      );
+      push @all, ( "conifer", "cnmops" );
   }
 
   $config->{sequencetask} = {
-    class      => "CQS::SequenceTask",
-    perform    => 1,
-    target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
-    option     => "",
-    source     => {
-      prepare => \@individuals,
-      sm      => [ "muTect", "muTect_annovar", "glmvc" ],
-      all     => \@all
-    },
-    sh_direct => 0,
-    pbs       => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
+      class      => "CQS::SequenceTask",
+      perform    => 1,
+      target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
+      option     => "",
+      source     => {
+        prepare => \@individuals,
+        sm      => [ "muTect", "muTect_annovar", "glmvc" ],
+        all     => \@all
+      },
+      sh_direct => 0,
+      pbs       => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=8",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
   };
 
   performConfig($config);
