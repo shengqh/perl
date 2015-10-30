@@ -38,6 +38,8 @@ my $annovar_param     = "-protocol ${annovar_protocol} -operation ${annovar_oper
 my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $rnaediting_db     = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
 
+my $capture_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Mouse_All_Exon_V1.bed";
+
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
 
@@ -91,7 +93,7 @@ my $wes = {
     "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
   },
 
-  covered_bed => "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Regions.bed"
+  capture_bed => $capture_bed
 };
 
 my $wgs = {
@@ -362,7 +364,7 @@ for my $dataset (@datasets) {
 
   push @individuals, ( "bwa", "bwa_refine" );
 
-  if ( defined $dataset->{covered_bed} ) {
+  if ( defined $dataset->{capture_bed} ) {
       $config = merge(
         $config,
         {
@@ -373,7 +375,7 @@ for my $dataset (@datasets) {
             option      => "",
             source_ref  => "bwa",
             conifer     => $conifer,
-            bedfile     => $dataset->{covered_bed},
+            bedfile     => $dataset->{capture_bed},
             isbamsorted => 1,
             sh_direct   => 1,
             pbs         => {
@@ -389,7 +391,7 @@ for my $dataset (@datasets) {
             target_dir  => "${target_dir}/" . $dataset->{task_name} . "/cnmops",
             option      => "",
             source_ref  => "bwa",
-            bedfile     => $dataset->{covered_bed},
+            bedfile     => $dataset->{capture_bed},
             pairmode    => "paired",
             isbamsorted => 1,
             sh_direct   => 1,
