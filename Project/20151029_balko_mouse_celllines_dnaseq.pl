@@ -190,7 +190,7 @@ for my $dataset (@datasets) {
         target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
         option     => $cutadapt_option,
         source_ref => "files",
-        adapter    => "GATCGGAAGAGC",
+        adapter    => "AGATCGGAAGAGC",
         extension  => "_clipped.fastq.gz",
         sh_direct  => 1,
         cluster    => $cluster,
