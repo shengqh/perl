@@ -181,6 +181,7 @@ for my $dataset (@datasets) {
   };
 
   my @individuals = ("fastqc");
+  my @all         = ("fastqc_summary");
   my $source      = "files";
   if ( defined $dataset->{cutadapt} && $dataset->{cutadapt} ) {
     my $cutadapt = {
@@ -247,7 +248,8 @@ for my $dataset (@datasets) {
       }
     };
     $source = "cutadapt";
-    push @individuals, ( "cutadapt", "fastqlen" );
+    push @individuals, ( "cutadapt", "fastqlen", "cutadapt_fastqc" );
+    push @all, ("cutadapt_fastqc_summary");
   }
 
   my $config = merge(
@@ -356,7 +358,6 @@ for my $dataset (@datasets) {
   );
 
   push @individuals, ( "bwa", "bwa_refine" );
-  my @all = ("fastqc_summary");
 
   if ( defined $dataset->{covered_bed} ) {
     $config->{conifer} = {
@@ -402,7 +403,7 @@ for my $dataset (@datasets) {
     target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
     option     => "",
     source     => {
-      prepare => [ "fastqc", "bwa",            "bwa_refine" ],
+      prepare => \@individuals,
       sm      => [ "muTect", "muTect_annovar", "glmvc" ],
       all     => \@all
     },
