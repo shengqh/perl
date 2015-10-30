@@ -379,7 +379,7 @@ for my $dataset (@datasets) {
             pbs         => {
               "email"    => $email,
               "nodes"    => "1:ppn=1",
-              "walltime" => "720",
+              "walltime" => "72",
               "mem"      => "10gb"
             },
           },
@@ -396,7 +396,7 @@ for my $dataset (@datasets) {
             pbs         => {
               "email"    => $email,
               "nodes"    => "1:ppn=1",
-              "walltime" => "720",
+              "walltime" => "72",
               "mem"      => "40gb"
             },
           }
