@@ -19,25 +19,11 @@ my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $conifer    = "/home/shengq1/pylibs/bin/conifer.py";
 my $qc3_perl   = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
-my $bwa_fasta      = "/scratch/cqs/shengq1/references/hg19_16569_MT/bwa_index_0.7.12/hg19_16569_MT.fa";
-my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.gtf";
-my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Homo_sapiens.GRCh37.75.MT.map";
+my $bwa_fasta      = "/scratch/cqs/shengq1/references/mm10/bwa_index_0.7.12/mm10.fa";
+my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl_gtf/v81/Mus_musculus.GRCm38.81.gtf";
+my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl_gtf/v81/Mus_musculus.GRCm38.81.map";
 
-my $dbsnp  = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_MT.vcf";
-my $hapmap = "/scratch/cqs/shengq1/references/gatk/b37/hapmap_3.3.b37.vcf";
-my $omni   = "/scratch/cqs/shengq1/references/gatk/b37/1000G_omni2.5.b37.vcf";
-my $g1000  = "/scratch/cqs/shengq1/references/gatk/b37/1000G_phase1.snps.high_confidence.b37.vcf";
-my $mills  = "/scratch/cqs/shengq1/references/gatk/b37/Mills_and_1000G_gold_standard.indels.b37.vcf";
-
-my $cosmic    = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
-my $affy_file = "/data/cqs/shengq1/reference/affy/HG-U133_Plus_2.na33.annot.csv";
-
-my $annovar_protocol  = "refGene,snp138,cosmic70";
-my $annovar_operation = "g,f,f";
-my $annovar_param     = "-protocol ${annovar_protocol} -operation ${annovar_operation} --remove";
-my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/humandb/";
-my $rnaediting_db     = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
-
+my $dbsnp  = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_MT.vcf";
 my $capture_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Mouse_All_Exon_V1.bed";
 
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
@@ -305,7 +291,6 @@ for my $dataset (@datasets) {
           source_ref   => "bwa_refine",
           groups_ref   => "groups",
           fasta_file   => $bwa_fasta,
-          cosmic_file  => $cosmic,
           dbsnp_file   => $dbsnp,
           bychromosome => 0,
           sh_direct    => 0,
@@ -317,25 +302,6 @@ for my $dataset (@datasets) {
             "mem"      => "40gb"
           },
         },
-        muTect_annovar => {
-          class      => "Annotation::Annovar",
-          perform    => 1,
-          target_dir => "${target_dir}/" . $dataset->{task_name} . "/muTect",
-          option     => $annovar_param,
-          source_ref => [ "muTect", ".pass.vcf\$" ],
-          annovar_db => $annovar_db,
-          buildver   => "hg19",
-          cqstools   => $cqstools,
-          affy_file  => $affy_file,
-          sh_direct  => 1,
-          isvcf      => 1,
-          pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "72",
-            "mem"      => "10gb"
-          },
-        },
         glmvc => {
           class             => "Variants::GlmvcCall",
           perform           => 1,
@@ -345,10 +311,6 @@ for my $dataset (@datasets) {
           source_ref        => "bwa_refine",
           groups_ref        => "groups",
           fasta_file        => $bwa_fasta,
-          annovar_buildver  => "hg19",
-          annovar_protocol  => $annovar_protocol,
-          annovar_operation => $annovar_operation,
-          rnaediting_db     => $rnaediting_db,
           distance_exon_gtf => $transcript_gtf,
           sh_direct         => 0,
           execute_file      => $glmvc,
