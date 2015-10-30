@@ -183,37 +183,68 @@ for my $dataset (@datasets) {
   my @individuals = ("fastqc");
   my $source      = "files";
   if ( defined $dataset->{cutadapt} && $dataset->{cutadapt} ) {
-    $qc->{cutadapt} = {
-      class      => "Trimmer::Cutadapt",
-      perform    => 1,
-      target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
-      option     => $cutadapt_option,
-      source_ref => "files",
-      adapter    => "GATCGGAAGAGC",
-      extension  => "_clipped.fastq.gz",
-      sh_direct  => 1,
-      cluster    => $cluster,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
+    my $cutadapt = {
+      cutadapt => {
+        class      => "Trimmer::Cutadapt",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
+        option     => $cutadapt_option,
+        source_ref => "files",
+        adapter    => "GATCGGAAGAGC",
+        extension  => "_clipped.fastq.gz",
+        sh_direct  => 1,
+        cluster    => $cluster,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "24",
+          "mem"      => "20gb"
+        },
       },
-    };
-    $qc->{fastqlen} = {
-      class      => "CQS::FastqLen",
-      perform    => 1,
-      target_dir => "${target_dir}/" . $dataset->{task_name} . "/fastqlen",
-      option     => "",
-      source_ref => "cutadapt",
-      cqstools   => $cqstools,
-      sh_direct  => 1,
-      pbs        => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "24",
-        "mem"      => "20gb"
+      fastqlen => {
+        class      => "CQS::FastqLen",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/fastqlen",
+        option     => "",
+        source_ref => "cutadapt",
+        cqstools   => $cqstools,
+        sh_direct  => 1,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "24",
+          "mem"      => "20gb"
+        },
       },
+      cutadapt_fastqc => {
+        class      => "QC::FastQC",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt_fastqc",
+        option     => "",
+        source_ref => "files",
+        sh_direct  => 1,
+        cluster    => $cluster,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=2",
+          "walltime" => "2",
+          "mem"      => "40gb"
+        },
+      },
+      cutadapt_fastqc_summary => {
+        class      => "QC::FastQCSummary",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt_fastqc",
+        option     => "",
+        cluster    => $cluster,
+        cqstools   => $cqstools,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "2",
+          "mem"      => "10gb"
+        },
+      }
     };
     $source = "cutadapt";
     push @individuals, ( "cutadapt", "fastqlen" );
