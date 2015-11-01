@@ -23,6 +23,11 @@ my $bwa_fasta   = "/scratch/cqs/shengq1/references/mm10_sorted_M/bwa_index_0.7.1
 my $dbsnp       = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_M.vcf";
 my $capture_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Mouse_All_Exon_V1_M.bed";
 
+my $annovar_protocol  = "refGene";
+my $annovar_operation = "g";
+my $annovar_param     = "-protocol ${annovar_protocol} -operation ${annovar_operation} --remove";
+my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/mm10db/";
+
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
 
@@ -297,15 +302,36 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
+      muTect_annovar => {
+        class      => "Annotation::Annovar",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/muTect_annovar",
+        option     => $annovar_param,
+        source_ref => [ "muTect", ".pass.vcf\$" ],
+        annovar_db => $annovar_db,
+        buildver   => "mm10",
+        cqstools   => $cqstools,
+        sh_direct  => 1,
+        isvcf      => 1,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "10gb"
+        },
+      },
       glmvc => {
-        class        => "Variants::GlmvcCall",
-        perform      => 1,
-        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
-        option       => "--glm_pvalue 0.1",
-        source_type  => "BAM",
-        source_ref   => "bwa_refine",
-        groups_ref   => "groups",
-        fasta_file   => $bwa_fasta,
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
+        option            => "--glm_pvalue 0.1",
+        source_type       => "BAM",
+        source_ref        => "bwa_refine",
+        groups_ref        => "groups",
+        fasta_file        => $bwa_fasta,
+        annovar_buildver  => "mm10",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
         sh_direct    => 0,
         execute_file => $glmvc,
         pbs          => {
@@ -370,7 +396,7 @@ for my $dataset (@datasets) {
     option     => "",
     source     => {
       prepare => \@individuals,
-      sm      => [ "muTect", "glmvc" ],
+      sm      => [ "muTect", "muTect_annovar", "glmvc" ],
       all     => \@all
     },
     sh_direct => 0,
