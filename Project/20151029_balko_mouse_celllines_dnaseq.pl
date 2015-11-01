@@ -332,9 +332,10 @@ for my $dataset (@datasets) {
         annovar_buildver  => "mm10",
         annovar_protocol  => $annovar_protocol,
         annovar_operation => $annovar_operation,
-        sh_direct    => 0,
-        execute_file => $glmvc,
-        pbs          => {
+        annovar_db        => $annovar_db,
+        sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
           "email"    => $email,
           "nodes"    => "1:ppn=8",
           "walltime" => "72",
