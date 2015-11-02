@@ -17,13 +17,14 @@ my $msgf_option           = "-t 20ppm -ti 0,1 -tda 0 -m 3 -inst 1 -e 1 -protocol
 my $target_database       = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp.fasta";
 my $target_decoy_database = "/scratch/cqs/shengq1/proteomics/20151001_target_decoy_spectra/database/humanRefSeq_Version54_with_tryp_DECOY.fasta";
 
-my $buildsummary_msgf_target_file                = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target.param";
-my $buildsummary_msgf_target_decoy_file          = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_decoy.param";
-my $buildsummary_msgf_target_unique2_file        = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_unique2.param";
-my $buildsummary_msgf_target_decoy_unique2_file  = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_decoy_unique2.param";
-my $buildsummary_msgf_target_ratio2_file         = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_ratio2.param";
-my $buildsummary_msgf_target_unique2_ratio2_file = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_unique2_ratio2.param";
-my $buildsummary_bins                            = [ 1, 2, 3, 4, 5 ];
+my $buildsummary_msgf_target_file                  = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target.param";
+my $buildsummary_msgf_target_decoy_file            = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_decoy.param";
+my $buildsummary_msgf_target_decoy_peptide001_file = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_decoy_peptide001.param";
+my $buildsummary_msgf_target_unique2_file          = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_unique2.param";
+my $buildsummary_msgf_target_decoy_unique2_file    = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_decoy_unique2.param";
+my $buildsummary_msgf_target_ratio2_file           = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_ratio2.param";
+my $buildsummary_msgf_target_unique2_ratio2_file   = "/scratch/cqs/shengq1/proteomics/20151021_target_decoy_spectra_phospho/config/buildsummary_msgf_target_unique2_ratio2.param";
+my $buildsummary_bins                              = [ 1, 2, 3, 4, 5 ];
 
 my $config = {
   general => { task_name => "phos" },
@@ -639,7 +640,7 @@ my $config = {
     option          => "",
     source_ref      => [ "msgf_target_decoy", "TCGA_13-1489_", "msgf_target_decoy_database_decoy_spectra" ],
     datasets_ref    => "datasets",
-    parameter_file  => $buildsummary_msgf_target_decoy_file,
+    parameter_file  => $buildsummary_msgf_target_decoy_peptide001_file,
     proteomicstools => $proteomicstools,
     sh_direct       => 1,
     pbs             => {
@@ -667,6 +668,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config,"msgf_target_decoy_database_decoy_spectra_buildsummary");
+performTask( $config, "msgf_target_decoy_database_decoy_spectra_buildsummary" );
 
 1;
