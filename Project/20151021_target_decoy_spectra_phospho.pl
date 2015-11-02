@@ -595,13 +595,13 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  
+
   msgf_target_decoy_database_decoy_spectra => {
     class      => "Proteomics::Engine::MSGFPlus",
     perform    => 1,
     target_dir => "${target_dir}/msgf_target_decoy_database_decoy_spectra",
     option     => $msgf_option,
-    source_ref => ["shift_precursor", "TCGA_13-1489_"],
+    source_ref => [ "shift_precursor", "TCGA_13-1489_" ],
     msgf_jar   => $msgf_jar,
     mod_file   => $msgf_mod_file,
     database   => $target_decoy_database,
@@ -632,7 +632,23 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  
+  msgf_target_decoy_database_decoy_spectra_buildsummary => {
+    class           => "Proteomics::Summary::BuildSummary",
+    perform         => 1,
+    target_dir      => "${target_dir}/msgf_target_decoy_database_decoy_spectra_buildsummary",
+    option          => "",
+    source_ref      => [ "msgf_target_decoy", "TCGA_13-1489_", "msgf_target_decoy_database_decoy_spectra" ],
+    parameter_file  => $buildsummary_msgf_target_decoy_file,
+    proteomicstools => $proteomicstools,
+    sh_direct       => 1,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -649,6 +665,7 @@ my $config = {
   }
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config,"msgf_target_decoy_database_decoy_spectra_buildsummary");
 
 1;
