@@ -633,10 +633,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  msgf_target_decoy_database_decoy_spectra_buildsummary => {
+  msgf_target_decoy_database_decoy_spectra_peptide001 => {
     class           => "Proteomics::Summary::BuildSummary",
     perform         => 1,
-    target_dir      => "${target_dir}/msgf_target_decoy_database_decoy_spectra_buildsummary",
+    target_dir      => "${target_dir}/msgf_target_decoy_database_decoy_spectra_peptide001",
     option          => "",
     source_ref      => [ "msgf_target_decoy", "TCGA_13-1489_", "msgf_target_decoy_database_decoy_spectra" ],
     datasets_ref    => "datasets",
@@ -668,6 +668,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "msgf_target_decoy_database_decoy_spectra_buildsummary" );
+performTask( $config, "msgf_target_decoy_database_decoy_spectra_peptide001" );
 
 1;
