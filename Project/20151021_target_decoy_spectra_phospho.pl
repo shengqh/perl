@@ -638,6 +638,7 @@ my $config = {
     target_dir      => "${target_dir}/msgf_target_decoy_database_decoy_spectra_buildsummary",
     option          => "",
     source_ref      => [ "msgf_target_decoy", "TCGA_13-1489_", "msgf_target_decoy_database_decoy_spectra" ],
+    datasets_ref    => "datasets",
     parameter_file  => $buildsummary_msgf_target_decoy_file,
     proteomicstools => $proteomicstools,
     sh_direct       => 1,
