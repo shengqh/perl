@@ -634,6 +634,7 @@ my $config = {
     },
   },
   msgf_target_decoy_database_decoy_spectra_peptide001 => {
+    task_name       => "Phosphorylation_MSGF_-10",
     class           => "Proteomics::Summary::BuildSummary",
     perform         => 1,
     target_dir      => "${target_dir}/msgf_target_decoy_database_decoy_spectra_peptide001",
