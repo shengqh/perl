@@ -202,10 +202,12 @@ my $config = {
       'mem'      => '40gb',
       'nodes'    => '1:ppn=8'
     },
-    'source'    => { 'step1' => [ 'unmappedReads', 'unmappedReads_bowtie1_genome_1mm', 'unmappedReads_bowtie1_genome_1mm_3utr_count', 'unmappedReads_bowtie1_genome_1mm_3utr_count_target' ] },
-    'cluster'   => 'slurm',
-    'sh_direct' => 0,
-    'perform'   => 1,
+    'source' =>
+      { 'step1' => [ 'gsnap_smallRNA_t2c', 'unmappedReads', 'unmappedReads_bowtie1_genome_1mm', 'unmappedReads_bowtie1_genome_1mm_3utr_count', 'unmappedReads_bowtie1_genome_1mm_3utr_count_target' ] }
+    ,
+    'cluster'    => 'slurm',
+    'sh_direct'  => 0,
+    'perform'    => 1,
     'target_dir' => $def->{target_dir} . '/sequencetask',
     'class'      => 'CQS::SequenceTask',
     'option'     => ''
