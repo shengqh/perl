@@ -29,7 +29,7 @@ my $datasets = {
       "27July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/27July2013_TWR_Yeast.mgf"],
       "31July2013_TWR_yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/31July2013_TWR_yeast.mgf"],
     },
-    MSGF_option                   => "-t 10ppm -ti \"0,1\" -tda 0 -m 3 -inst 1 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
+    msgf_option                   => "-t 10ppm -ti \"0,1\" -tda 0 -m 3 -inst 1 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
     buildsummary_msgf_config_file => $buildsummary_msgf_yeast_file,
     database                      => $database_yeast
   },
@@ -45,12 +45,12 @@ for my $dataset ( sort keys %{$datasets} ) {
   my $curdir = create_directory_or_die("${target_dir}/$dataset/");
 
   my $config = {
-    "${dataset}_MSGF" => {
-      task_name  => "${dataset}_MSGF",
+    "${dataset}_msgf" => {
+      task_name  => "${dataset}_msgf",
       class      => "Proteomics::Engine::MSGFPlus",
       perform    => 1,
-      target_dir => "${curdir}/MSGF",
-      option     => $def->{MSGF_option},
+      target_dir => "${curdir}/msgf",
+      option     => $def->{msgf_option},
       source     => $def->{source},
       msgf_jar   => $msgf_jar,
       mod_file   => $mod_file,
@@ -63,13 +63,13 @@ for my $dataset ( sort keys %{$datasets} ) {
         "mem"      => "40gb"
       },
     },
-    "${dataset}_MSGF_buildsummary" => {
-      task_name       => "${dataset}_MSGF",
+    "${dataset}_msgf_buildsummary" => {
+      task_name       => "${dataset}_msgf",
       class           => "Proteomics::Summary::BuildSummary",
       perform         => 1,
       target_dir      => "${curdir}/buildsummary",
       option          => "",
-      source_ref      => "${dataset}_MSGF",
+      source_ref      => "${dataset}_msgf",
       parameter_file  => $def->{buildsummary_msgf_config_file},
       proteomicstools => $proteomicstools,
       sh_direct       => 1,
