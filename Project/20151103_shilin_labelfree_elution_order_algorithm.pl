@@ -22,12 +22,13 @@ my $buildsummary_msgf_yeast_file = "${target_dir}/config/buildsummary_msgf_yeast
 my $datasets = {
   Elite_HCDOT_Yeast => {
     source => {
-      "21July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/21July2013_TWR_Yeast.mgf"],
-      "22July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/22July2013_TWR_Yeast.mgf"],
-      "24July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/24July2013_TWR_Yeast_Night.mgf"],
-      "25July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/25July2013_TWR_Yeast.mgf"],
-      "27July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/27July2013_TWR_Yeast.mgf"],
-      "31July2013_TWR_yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/figure1_mgf/31July2013_TWR_yeast.mgf"],
+      "21July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/21July2013_TWR_Yeast.mgf"],
+      "22July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/22July2013_TWR_Yeast.mgf"],
+      "24July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/24July2013_TWR_Yeast_Night.mgf"]
+      ,
+      "25July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/25July2013_TWR_Yeast.mgf"],
+      "27July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/27July2013_TWR_Yeast.mgf"],
+      "31July2013_TWR_yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/31July2013_TWR_yeast.mgf"],
     },
     msgf_option                   => "-t 10ppm -ti \"0,1\" -tda 0 -m 3 -inst 1 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
     buildsummary_msgf_config_file => $buildsummary_msgf_yeast_file,
