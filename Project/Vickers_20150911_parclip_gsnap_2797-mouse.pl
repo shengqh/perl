@@ -25,6 +25,10 @@ my $def = {
     "RPI47" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical/result/RPI47_clipped_identical.fastq.gz", ],
     "RPI48" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical/result/RPI48_clipped_identical.fastq.gz", ],
   },
+  identicals_count => {
+    "RPI47" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical/result/RPI47_clipped_identical.fastq.gz.dupcount", ],
+    "RPI48" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical/result/RPI48_clipped_identical.fastq.gz.dupcount", ],
+  },
   files => {
     "RPI47" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical_NTA/result/RPI47_clipped_identical_NTA.fastq.gz", ],
     "RPI48" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical_NTA/result/RPI48_clipped_identical_NTA.fastq.gz", ],
@@ -168,7 +172,7 @@ my $config = {
     'coordinate_file' => '/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt',
     'source_ref'      => [ 'unmappedReads_bowtie1_genome_1mm', '.bam$' ],
     'cqs_tools'       => '/home/shengq1/cqstools/CQS.Tools.exe',
-    'seqcount_ref'    => [ 'identical', '.dupcount$' ],
+    'seqcount'        => $def->{identicals_count},
     'option'          => '',
     'class'           => 'CQS::SmallRNACount'
   },
