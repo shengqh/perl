@@ -29,7 +29,7 @@ my $datasets = {
       "27July2013_TWR_Yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/27July2013_TWR_Yeast.mgf"],
       "31July2013_TWR_yeast" => ["/gpfs21/scratch/cqs/shengq1/proteomics/20151103_shilin_labelfree_elution_order_algorithm/Elite_HCDOT_Yeast/jcoon_figure1_mgf/31July2013_TWR_yeast.mgf"],
     },
-    groups => { "TWR" => [ "21July2013_TWR_Yeast", "22July2013_TWR_Yeast", "24July2013_TWR_Yeast", "25July2013_TWR_Yeast", "27July2013_TWR_Yeast", "31July2013_TWR_yeast" ] },
+    datasets => { "TWR" => [ "21July2013_TWR_Yeast", "22July2013_TWR_Yeast", "24July2013_TWR_Yeast", "25July2013_TWR_Yeast", "27July2013_TWR_Yeast", "31July2013_TWR_yeast" ] },
     msgf_option                   => "-t 10ppm -ti \"0,1\" -tda 0 -m 3 -inst 1 -e 1 -protocol 5 -ntt 2 -n 2 -addFeatures 1",
     buildsummary_msgf_config_file => $buildsummary_msgf_yeast_file,
     database                      => $database_yeast
@@ -68,7 +68,7 @@ for my $dataset ( sort keys %{$datasets} ) {
       target_dir      => "${curdir}/buildsummary",
       option          => "",
       source_ref      => "${dataset}_msgf",
-      groups          => $def->{groups},
+      datasets        => $def->{datasets},
       parameter_file  => $def->{buildsummary_msgf_config_file},
       proteomicstools => $proteomicstools,
       sh_direct       => 1,
