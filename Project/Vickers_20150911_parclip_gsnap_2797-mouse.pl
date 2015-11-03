@@ -21,6 +21,10 @@ my $def = {
   gsnap_index_name      => "mm10",
 
   #Data
+  identicals => {
+    "RPI47" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical/result/RPI47_clipped_identical.fastq.gz", ],
+    "RPI48" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical/result/RPI48_clipped_identical.fastq.gz", ],
+  },
   files => {
     "RPI47" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical_NTA/result/RPI47_clipped_identical_NTA.fastq.gz", ],
     "RPI48" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/mm10/identical_NTA/result/RPI48_clipped_identical_NTA.fastq.gz", ],
@@ -113,7 +117,7 @@ my $config = {
     'sh_direct'  => 1,
     'perform'    => 1,
     'target_dir' => $def->{target_dir} . '/unmappedReads',
-    'source_ref' => [ 'identical', '.fastq.gz$' ],
+    'source'     => $def->{identicals},
     'output_ext' => '_clipped_identical.unmapped.fastq.gz',
     'class'      => 'CQS::Perl'
   },
