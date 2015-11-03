@@ -94,7 +94,7 @@ my $config = {
   },
   gsnap_smallRNA_t2c_table => {
     class      => 'SmallRNA::T2CSummary',
-    perform    => 0,
+    perform    => 1,
     target_dir => $def->{target_dir} . "/gsnap_smallRNA_t2c_table",
     option     => '',
     cluster    => 'slurm',
