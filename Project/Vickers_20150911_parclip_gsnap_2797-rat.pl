@@ -27,10 +27,10 @@ my $def = {
     "RPI43" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI43_clipped_identical.fastq.gz", ],
   },
   identicals_count => {
-    "RPI40" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI40_clipped_identical.fastq.gz.dupcount"],
-    "RPI41" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI41_clipped_identical.fastq.gz.dupcount"],
-    "RPI42" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI42_clipped_identical.fastq.gz.dupcount"],
-    "RPI43" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI43_clipped_identical.fastq.gz.dupcount"],
+    "RPI40" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI40_clipped_identical.fastq.dupcount"],
+    "RPI41" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI41_clipped_identical.fastq.dupcount"],
+    "RPI42" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI42_clipped_identical.fastq.dupcount"],
+    "RPI43" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical/result/RPI43_clipped_identical.fastq.dupcount"],
   },
 
   #Data
@@ -41,10 +41,10 @@ my $def = {
     "RPI43" => [ "/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI43_clipped_identical_NTA.fastq.gz", ],
   },
   counts => {
-    "RPI40" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI40_clipped_identical_NTA.fastq.gz.dupcount"],
-    "RPI41" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI41_clipped_identical_NTA.fastq.gz.dupcount"],
-    "RPI42" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI42_clipped_identical_NTA.fastq.gz.dupcount"],
-    "RPI43" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI43_clipped_identical_NTA.fastq.gz.dupcount"],
+    "RPI40" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI40_clipped_identical_NTA.fastq.dupcount"],
+    "RPI41" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI41_clipped_identical_NTA.fastq.dupcount"],
+    "RPI42" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI42_clipped_identical_NTA.fastq.dupcount"],
+    "RPI43" => ["/gpfs21/scratch/cqs/shengq1/vickers/20150401_parclip_2797_rat_mouse_human/rn5/identical_NTA/result/RPI43_clipped_identical_NTA.fastq.dupcount"],
   },
 };
 
