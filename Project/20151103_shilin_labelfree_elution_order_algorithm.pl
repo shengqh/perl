@@ -38,9 +38,6 @@ my $datasets = {
 
 my $configall = { general => { task_name => "yeast" }, };
 
-my @individual = ();
-my @summary    = ();
-
 for my $dataset ( sort keys %{$datasets} ) {
   my $def    = $datasets->{$dataset};
   my $curdir = create_directory_or_die("${target_dir}/$dataset/");
