@@ -73,6 +73,21 @@ my $config = {
       'nodes'    => '1:ppn=1'
     },
   },
+  'gsnap_smallRNA_t2c' => {
+    'pbs' => {
+      'email'    => 'quanhu.sheng@vanderbilt.edu',
+      'walltime' => '72',
+      'mem'      => '20gb',
+      'nodes'    => '1:ppn=1'
+    },
+    'sh_direct'  => 1,
+    'perform'    => 1,
+    'target_dir' => $def->{target_dir} . '/gsnap_smallRNA_t2c',
+    'source_ref' => [ 'gsnap_smallRNA_count', '.mapped.xml$' ],
+    'cqs_tools'  => '/home/shengq1/cqstools/CQS.Tools.exe',
+    'option'     => '-p 0.05 -e 0.013',
+    'class'      => 'CQS::ParclipT2CFinder'
+  },
   gsnap_smallRNA_t2c_table => {
     class      => 'SmallRNA::T2CSummary',
     perform    => 0,
