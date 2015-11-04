@@ -425,7 +425,8 @@ for my $dataset (@datasets) {
     },
   };
 
-  performConfig($config);
+  #performConfig($config);
+  performTask($config, "gene_bam");
 }
 
 1;
