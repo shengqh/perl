@@ -405,6 +405,7 @@ for my $dataset (@datasets) {
       }
     );
     push @all, ( "conifer", "cnmops" );
+    performTask( $config, "cnmops" );
   }
 
   $config->{sequencetask} = {
@@ -427,7 +428,6 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "gene_bam" );
 }
 
 1;
