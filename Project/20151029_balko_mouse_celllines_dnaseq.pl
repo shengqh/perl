@@ -22,6 +22,7 @@ my $qc3_perl   = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 my $bwa_fasta   = "/scratch/cqs/shengq1/references/mm10_sorted_M/bwa_index_0.7.12/mm10.fa";
 my $dbsnp       = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_M.vcf";
 my $capture_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_M.bed";
+my $capture_slim_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_slim.bed";
 my $gene_bed    = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/dusp4_tp53_myc.bed";
 
 my $annovar_protocol  = "refGene";
@@ -80,7 +81,8 @@ my $wes = {
     "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
   },
 
-  capture_bed => $capture_bed
+  capture_bed => $capture_bed,
+  capture_slim_bed => $capture_slim_bed
 };
 
 my $wgs = {
@@ -375,7 +377,7 @@ for my $dataset (@datasets) {
           option      => "",
           source_ref  => "bwa",
           conifer     => $conifer,
-          bedfile     => $dataset->{capture_bed},
+          bedfile     => $dataset->{capture_slim_bed},
           isbamsorted => 1,
           sh_direct   => 1,
           pbs         => {
