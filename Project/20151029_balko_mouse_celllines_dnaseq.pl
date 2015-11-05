@@ -408,8 +408,8 @@ for my $dataset (@datasets) {
       }
     );
     push @all, ( "conifer", "cnmops" );
-    performTask( $config, "conifer" );
-    performTask( $config, "cnmops" );
+    #performTask( $config, "conifer" );
+    #performTask( $config, "cnmops" );
   }
 
   $config->{sequencetask} = {
@@ -432,6 +432,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
+  performTask( $config, "glmvc" );
 }
 
 1;
