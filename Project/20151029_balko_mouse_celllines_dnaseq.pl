@@ -268,6 +268,7 @@ for my $dataset (@datasets) {
         perform    => 1,
         target_dir => "${target_dir}/" . $dataset->{task_name} . "/gene_bam",
         option     => "-h -L $gene_bed -b",
+        extension  => ".bam",
         source_ref => "bwa",
         sh_direct  => 1,
         sorted     => 1,
@@ -426,7 +427,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask($config, "gene_bam");
+  performTask( $config, "gene_bam" );
 }
 
 1;
