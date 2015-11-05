@@ -24,6 +24,7 @@ my $dbsnp       = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_
 my $capture_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_M.bed";
 my $capture_slim_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_slim.bed";
 my $gene_bed    = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/dusp4_tp53_myc.bed";
+my $exclude_bed    = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/myc.bed";
 
 my $annovar_protocol  = "refGene";
 my $annovar_operation = "g";
@@ -343,7 +344,7 @@ for my $dataset (@datasets) {
         class             => "Variants::GlmvcCall",
         perform           => 1,
         target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
-        option            => "--glm_pvalue 0.1",
+        option            => "--glm_pvalue 0.1 --exclude_bed $exclude_bed",
         source_type       => "BAM",
         source_ref        => "bwa_refine",
         groups_ref        => "groups",
