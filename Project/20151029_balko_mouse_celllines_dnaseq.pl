@@ -344,6 +344,28 @@ for my $dataset (@datasets) {
         class             => "Variants::GlmvcCall",
         perform           => 1,
         target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
+        option            => "--glm_pvalue 0.1",
+        source_type       => "BAM",
+        source_ref        => "bwa_refine",
+        groups_ref        => "groups",
+        fasta_file        => $bwa_fasta,
+        annovar_buildver  => "mm10",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+      glmvc_noMYC => {
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC",
         option            => "--glm_pvalue 0.1 --exclude_bed $exclude_bed",
         source_type       => "BAM",
         source_ref        => "bwa_refine",
@@ -432,7 +454,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "glmvc" );
+  performTask( $config, "glmvc_noMYC" );
 }
 
 1;
