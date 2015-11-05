@@ -1,6 +1,6 @@
 $oldbed     = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Regions.bed";
-$newbed     = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Mouse_All_Exon_V1_M.bed";
-$newslimbed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_Mouse_All_Exon_V1_slim.bed";
+$newbed     = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm9_All_Exon_V1_M.bed";
+$newslimbed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm9_All_Exon_V1_slim.bed";
 
 open( ILL,  ">$newbed" );
 open( SLIM, ">$newslimbed" );
