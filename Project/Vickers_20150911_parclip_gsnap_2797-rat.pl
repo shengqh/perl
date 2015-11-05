@@ -202,7 +202,7 @@ my $config = {
     'target_ref'   => [ 'unmappedReads_bowtie1_genome_1mm_3utr_count', '.xml$' ],
     'cqs_tools'    => '/home/shengq1/cqstools/CQS.Tools.exe',
     'option'       => '',
-    'class'        => 'CQS::ParclipMirnaTarget',
+    'class'        => 'CQS::ParclipTarget',
     'refgene_file' => '/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv'
   },
   'sequencetask' => {
