@@ -19,12 +19,12 @@ my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $conifer    = "/home/shengq1/pylibs/bin/conifer.py";
 my $qc3_perl   = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
-my $bwa_fasta   = "/scratch/cqs/shengq1/references/mm10_sorted_M/bwa_index_0.7.12/mm10.fa";
-my $dbsnp       = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_M.vcf";
-my $capture_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_M.bed";
+my $bwa_fasta        = "/scratch/cqs/shengq1/references/mm10_sorted_M/bwa_index_0.7.12/mm10.fa";
+my $dbsnp            = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_M.vcf";
+my $capture_bed      = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_M.bed";
 my $capture_slim_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_slim.bed";
-my $gene_bed    = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/dusp4_tp53_myc.bed";
-my $exclude_bed    = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/myc.bed";
+my $gene_bed         = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/dusp4_tp53_myc.bed";
+my $exclude_bed      = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/myc.bed";
 
 my $annovar_protocol  = "refGene";
 my $annovar_operation = "g";
@@ -82,7 +82,7 @@ my $wes = {
     "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
   },
 
-  capture_bed => $capture_bed,
+  capture_bed      => $capture_bed,
   capture_slim_bed => $capture_slim_bed
 };
 
@@ -417,6 +417,7 @@ for my $dataset (@datasets) {
           option      => "",
           source_ref  => "bwa",
           bedfile     => $dataset->{capture_bed},
+          refnames     => ["N04_DUSP4flox_LACZ"],
           pairmode    => "paired",
           isbamsorted => 1,
           sh_direct   => 1,
@@ -430,8 +431,9 @@ for my $dataset (@datasets) {
       }
     );
     push @all, ( "conifer", "cnmops" );
+
     #performTask( $config, "conifer" );
-    #performTask( $config, "cnmops" );
+    performTask( $config, "cnmops" );
   }
 
   $config->{sequencetask} = {
@@ -454,7 +456,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "glmvc_noMYC" );
+  #performTask( $config, "glmvc_noMYC" );
 }
 
 1;
