@@ -366,7 +366,7 @@ for my $dataset (@datasets) {
         class             => "Variants::GlmvcCall",
         perform           => 1,
         target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC",
-        option            => "--glm_pvalue 0.1 --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M",
+        option            => "--glm_pvalue 0.1 --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M --glm_use_raw_pvalue",
         source_type       => "BAM",
         source_ref        => "bwa_refine",
         groups_ref        => "groups",
