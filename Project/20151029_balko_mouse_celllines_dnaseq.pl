@@ -378,10 +378,10 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
-      glmvc_table => {
+      glmvc_noMYC_table => {
         class        => "Variants::GlmvcTable",
         perform      => 1,
-        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_table",
+        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
         option       => "",
         source_ref   => [ "glmvc_noMYC", "annotation.tsv" ],
         sh_direct    => 1,
@@ -462,18 +462,18 @@ for my $dataset (@datasets) {
   }
   else {
     $config->{glmvc_WES_validation} = {
-      class                => "Variants::GlmvcValidate",
-      perform              => 0,
-      target_dir           => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
-      option               => "",
-      source_type          => "BAM",
-      source_ref           => "bwa_refine",
-      validation_files_ref => "glmvc_table",
-      groups_ref           => "groups",
-      fasta_file           => $bwa_fasta,
-      sh_direct            => 1,
-      execute_file         => $glmvc,
-      pbs                  => {
+      class            => "Variants::GlmvcValidate",
+      perform          => 0,
+      target_dir       => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
+      option           => "",
+      source_type      => "BAM",
+      source_ref       => "bwa_refine",
+      validation_files => $target_dir . "/WES/glmvc_noMYC_table/result/WES.tsv",
+      groups_ref       => "groups",
+      fasta_file       => $bwa_fasta,
+      sh_direct        => 1,
+      execute_file     => $glmvc,
+      pbs              => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
