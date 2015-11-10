@@ -270,7 +270,7 @@ for my $dataset (@datasets) {
         class      => "Samtools::View",
         perform    => 1,
         target_dir => "${target_dir}/" . $dataset->{task_name} . "/gene_bam",
-        option     => "-h -L $gene_bed -b",
+        option     => "-h -b -L $gene_bed",
         extension  => ".bam",
         source_ref => "bwa",
         sh_direct  => 1,
@@ -417,7 +417,7 @@ for my $dataset (@datasets) {
           option      => "",
           source_ref  => "bwa",
           bedfile     => $dataset->{capture_bed},
-          refnames     => ["N04_DUSP4flox_LACZ"],
+          refnames    => ["N04_DUSP4flox_LACZ"],
           pairmode    => "paired",
           isbamsorted => 1,
           sh_direct   => 1,
@@ -427,13 +427,29 @@ for my $dataset (@datasets) {
             "walltime" => "72",
             "mem"      => "40gb"
           },
-        }
+        },
+        cnmops_bam => {
+          class      => "Samtools::View",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/cnmops_bam",
+          option     => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
+          extension  => ".bam",
+          source_ref => "bwa",
+          sh_direct  => 1,
+          sorted     => 1,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "24",
+            "mem"      => "10gb"
+          },
+        },
       }
     );
     push @all, ( "conifer", "cnmops" );
 
     #performTask( $config, "conifer" );
-    performTask( $config, "cnmops" );
+    performTask( $config, "cnmops_bam" );
   }
 
   $config->{sequencetask} = {
@@ -456,7 +472,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "glmvc_noMYC" );
+  #performTask( $config, "glmvc_noMYC" );
 }
 
 1;
