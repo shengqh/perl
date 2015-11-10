@@ -383,6 +383,21 @@ for my $dataset (@datasets) {
           "walltime" => "72",
           "mem"      => "40gb"
         },
+      },
+      glmvc_table => {
+        class        => "Variants::GlmvcTable",
+        perform      => 1,
+        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_table",
+        option       => "",
+        source_ref   => "glmvc_noMYC",
+        sh_direct    => 1,
+        execute_file => $glmvc,
+        pbs          => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
       }
     }
   );
@@ -449,7 +464,7 @@ for my $dataset (@datasets) {
     push @all, ( "conifer", "cnmops" );
 
     #performTask( $config, "conifer" );
-    performTask( $config, "cnmops_bam" );
+    #performTask( $config, "cnmops_bam" );
   }
 
   $config->{sequencetask} = {
@@ -472,7 +487,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  #performTask( $config, "glmvc_noMYC" );
+  performTask( $config, "glmvc_table" );
 }
 
 1;
