@@ -389,7 +389,7 @@ for my $dataset (@datasets) {
         perform      => 1,
         target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_table",
         option       => "",
-        source_ref   => "glmvc_noMYC",
+        source_ref   => [ "glmvc_noMYC", "annotation.tsv" ],
         sh_direct    => 1,
         execute_file => $glmvc,
         pbs          => {
