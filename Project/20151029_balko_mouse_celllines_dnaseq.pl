@@ -468,18 +468,18 @@ for my $dataset (@datasets) {
   }
   else {
     $config->{glmvc_WES_validation} = {
-      class          => "Variants::GlmvcValidate",
-      perform        => 0,
-      target_dir     => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
-      option         => "",
-      source_type    => "BAM",
-      source_ref     => "glmvc_table",
-      bam_files__ref => "bwa_refine",
-      groups_ref     => "groups",
-      fasta_file     => $bwa_fasta,
-      sh_direct      => 1,
-      execute_file   => $glmvc,
-      pbs            => {
+      class         => "Variants::GlmvcValidate",
+      perform       => 0,
+      target_dir    => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
+      option        => "",
+      source_type   => "BAM",
+      source_ref    => "glmvc_table",
+      bam_files_ref => "bwa_refine",
+      groups_ref    => "groups",
+      fasta_file    => $bwa_fasta,
+      sh_direct     => 1,
+      execute_file  => $glmvc,
+      pbs           => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
