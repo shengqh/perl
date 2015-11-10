@@ -36,6 +36,16 @@ my $cutadapt_option = "-q 10 -O 4 -m 30";
 
 my $cluster = "slurm";
 
+my $groups = {
+  "N07_DUSP4flox_MYC"             => [ "N04_DUSP4flox_LACZ", "N07_DUSP4flox_MYC" ],
+  "N05_DUSP4flox_Trp53null1_LACZ" => [ "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ" ],
+  "N09_DUSP4flox_Trp53null3_MYC"  => [ "N04_DUSP4flox_LACZ", "N09_DUSP4flox_Trp53null3_MYC" ],
+  "N13_DUSP4null_LACZ"            => [ "N04_DUSP4flox_LACZ", "N13_DUSP4null_LACZ" ],
+  "N16_DUSP4null_MYC"             => [ "N04_DUSP4flox_LACZ", "N16_DUSP4null_MYC" ],
+  "N15_DUSP4null_Trp53null3_LACZ" => [ "N04_DUSP4flox_LACZ", "N15_DUSP4null_Trp53null3_LACZ" ],
+  "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
+};
+
 my $wes = {
   task_name => "WES",
   files     => {
@@ -72,15 +82,7 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_2_sequence.txt.gz"
     ],
   },
-  groups => {
-    "N07_DUSP4flox_MYC"             => [ "N04_DUSP4flox_LACZ", "N07_DUSP4flox_MYC" ],
-    "N05_DUSP4flox_Trp53null1_LACZ" => [ "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ" ],
-    "N09_DUSP4flox_Trp53null3_MYC"  => [ "N04_DUSP4flox_LACZ", "N09_DUSP4flox_Trp53null3_MYC" ],
-    "N13_DUSP4null_LACZ"            => [ "N04_DUSP4flox_LACZ", "N13_DUSP4null_LACZ" ],
-    "N16_DUSP4null_MYC"             => [ "N04_DUSP4flox_LACZ", "N16_DUSP4null_MYC" ],
-    "N15_DUSP4null_Trp53null3_LACZ" => [ "N04_DUSP4flox_LACZ", "N15_DUSP4null_Trp53null3_LACZ" ],
-    "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
-  },
+  groups => $groups,
 
   capture_bed      => $capture_bed,
   capture_slim_bed => $capture_slim_bed
@@ -122,15 +124,7 @@ my $wgs = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WGS/data/3162-JB-8_2_sequence.txt.gz"
     ],
   },
-  groups => {
-    "N07_DUSP4flox_MYC"             => [ "N04_DUSP4flox_LACZ", "N07_DUSP4flox_MYC" ],
-    "N05_DUSP4flox_Trp53null1_LACZ" => [ "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ" ],
-    "N09_DUSP4flox_Trp53null3_MYC"  => [ "N04_DUSP4flox_LACZ", "N09_DUSP4flox_Trp53null3_MYC" ],
-    "N13_DUSP4null_LACZ"            => [ "N04_DUSP4flox_LACZ", "N13_DUSP4null_LACZ" ],
-    "N16_DUSP4null_MYC"             => [ "N04_DUSP4flox_LACZ", "N16_DUSP4null_MYC" ],
-    "N15_DUSP4null_Trp53null3_LACZ" => [ "N04_DUSP4flox_LACZ", "N15_DUSP4null_Trp53null3_LACZ" ],
-    "N17_DUSP4null_Trp53null1_MYC"  => [ "N04_DUSP4flox_LACZ", "N17_DUSP4null_Trp53null1_MYC" ],
-  },
+  groups   => $groups,
   cutadapt => 1
 };
 
@@ -468,18 +462,18 @@ for my $dataset (@datasets) {
   }
   else {
     $config->{glmvc_WES_validation} = {
-      class         => "Variants::GlmvcValidate",
-      perform       => 0,
-      target_dir    => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
-      option        => "",
-      source_type   => "BAM",
-      source_ref    => "glmvc_table",
-      bam_files_ref => "bwa_refine",
-      groups_ref    => "groups",
-      fasta_file    => $bwa_fasta,
-      sh_direct     => 1,
-      execute_file  => $glmvc,
-      pbs           => {
+      class                => "Variants::GlmvcValidate",
+      perform              => 0,
+      target_dir           => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
+      option               => "",
+      source_type          => "BAM",
+      source_ref           => "bwa_refine",
+      validation_files_ref => "glmvc_table",
+      groups_ref           => "groups",
+      fasta_file           => $bwa_fasta,
+      sh_direct            => 1,
+      execute_file         => $glmvc,
+      pbs                  => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
