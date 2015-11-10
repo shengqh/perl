@@ -466,6 +466,28 @@ for my $dataset (@datasets) {
     #performTask( $config, "conifer" );
     #performTask( $config, "cnmops_bam" );
   }
+  else {
+    $config->{glmvc_WES_validation} = {
+      class          => "Variants::GlmvcValidate",
+      perform        => 0,
+      target_dir     => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
+      option         => "",
+      source_type    => "BAM",
+      source_ref     => "glmvc_table",
+      bam_files__ref => "bwa_refine",
+      groups_ref     => "groups",
+      fasta_file     => $bwa_fasta,
+      sh_direct      => 1,
+      execute_file   => $glmvc,
+      pbs            => {
+        "email"    => $email,
+        "nodes"    => "1:ppn=1",
+        "walltime" => "72",
+        "mem"      => "40gb"
+      },
+    };
+    performTask( $config, "glmvc_WES_validation" );
+  }
 
   $config->{sequencetask} = {
     class      => "CQS::SequenceTask",
@@ -487,7 +509,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "glmvc_table" );
+  #performTask( $config, "glmvc_table" );
 }
 
 1;
