@@ -15,7 +15,7 @@ my $userdef = merge(
     #General options
     task_name  => "2797_mouse",
     email      => "quanhu.sheng\@vanderbilt.edu",
-    target_dir => create_directory_or_die("/scratch/cqs/shengq1/vickers/20150911_parclip_gsnap_2797-mouse/"),
+    target_dir => "/scratch/cqs/shengq1/vickers/20150911_parclip_gsnap_2797-mouse/",
     max_thread => 8,
     cluster    => "slurm",
 
