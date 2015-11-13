@@ -5,6 +5,7 @@ use warnings;
 use CQS::ClassFactory;
 use CQS::PerformSmallRNA;
 use CQS::FileUtils;
+use Hash::Merge qw( merge );
 
 my $userdef = merge(
   {
