@@ -26,8 +26,8 @@ my $userdef = merge(
 
     #Data
     files => {
-      "RPI47" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
-      "RPI48" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
+      "RPI47" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/mouse/2797-KCV-1_RPI47_Ago2MIN6Huh7.fastq.gz"],
+      "RPI48" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/2797_demultiplexing/mouse/2797-KCV-1_RPI48_Ago3MIN6Huh7.fastq.gz"],
     },
   },
   hg19_3utr()

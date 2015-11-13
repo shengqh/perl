@@ -25,12 +25,6 @@ my $userdef = merge(
 
     cqstools => "/home/shengq1/cqstools/CQS.Tools.exe",
 
-    search_3utr   => 1,
-    bowtie1_index => hg19_genome()->{bowtie1_index},
-    utr3_db       => "/data/cqs/shengq1/reference/utr3/20140612_ucsc_hg19_3UTR.txt",
-    fasta_file    => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_16569_M.fa",
-    refgene_file  => "/gpfs21/scratch/cqs/shengq1/references/hg19_16569_M/hg19_refgene.tsv",
-
     #Data
     files => {
       "Parclip_01" => ["/scratch/cqs/shengq1/vickers/data/201312_parclip_NIH/Vickers_Parclip_1_ATCACG_L002_R1.fastq.gz"],
