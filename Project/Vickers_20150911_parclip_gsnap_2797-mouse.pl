@@ -3,8 +3,10 @@ use strict;
 use warnings;
 
 use CQS::ClassFactory;
+use Pipeline::SmallRNAUtils;
+use Pipeline::ParclipSmallRNA;
 use CQS::PerformSmallRNA;
-use CQS::FileUtils;
+use Data::Dumper;
 use Hash::Merge qw( merge );
 
 my $userdef = merge(
