@@ -480,7 +480,7 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
-    performTask( $config, "glmvc_WES_validation" );
+    #performTask( $config, "glmvc_WES_validation" );
   }
 
   $config->{sequencetask} = {
@@ -503,7 +503,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  #performTask( $config, "glmvc_table" );
+  performTask( $config, "glmvc_noMYC_table" );
 }
 
 1;
