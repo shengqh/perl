@@ -405,7 +405,7 @@ my $tcga_rna = {
 #my @gps = ( 0.01, 0.05, 0.1 );
 
 my @cfgs = ( $tcga_dna_nt );
-my @nps = ( 0.01 );
+my @nps = ( 0.02 );
 my @gps = ( 0.1 );
 
 for my $cfg (@cfgs) {
@@ -523,7 +523,7 @@ for my $cfg (@cfgs) {
     for my $gp (@gps) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 0,
+        perform           => 1,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
