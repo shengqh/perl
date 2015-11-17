@@ -499,9 +499,8 @@ my @cfgs = ( $tcga_dna, $tcga_rna );
 
 #my @cfgs = ($tcga_rna);
 
-my @nps = (0.01);
-my @fps = (0.05);
-my @gps = ( 0.05, 0.1 );
+my @nps = ( 0.01, 0.02 );
+my @gps = ( 0.01, 0.05, 0.1 );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -643,44 +642,65 @@ for my $cfg (@cfgs) {
 
   my $index = 0;
   for my $np (@nps) {
-    for my $fp (@fps) {
-      for my $gp (@gps) {
-        $index = $index + 1;
-        $def->{"Glmvc$index"} = {
-          class             => "Variants::GlmvcCall",
-          perform           => 1,
-          target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_f${fp}_g${gp}",
-          option            => "--max_normal_percentage ${np} --fisher_pvalue ${fp} --glm_pvalue ${gp}",
-          source_type       => "BAM",
-          source_config_ref => $cfg->{files_config_ref},
-          groups_ref        => $cfg->{groups},
-          fasta_file        => $cfg->{fasta_file},
-          annovar_buildver  => "hg19",
-          annovar_protocol  => $annovar_protocol,
-          annovar_operation => $annovar_operation,
-          rnaediting_db     => $rnaediting_db,
-          distance_exon_gtf => $cfg->{gtf_file},
-          sh_direct         => 0,
-          execute_file      => $glmvc,
-          pbs               => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=8",
-            "walltime" => "72",
-            "mem"      => "40gb"
-          },
-        };
-      }
+    for my $gp (@gps) {
+      $index = $index + 1;
+      $def->{"Glmvc$index"} = {
+        class             => "Variants::GlmvcCall",
+        perform           => 0,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
+        option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
+        source_type       => "BAM",
+        source_config_ref => $cfg->{files_config_ref},
+        groups_ref        => $cfg->{groups},
+        fasta_file        => $cfg->{fasta_file},
+        annovar_buildver  => "hg19",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        rnaediting_db     => $rnaediting_db,
+        distance_exon_gtf => $cfg->{gtf_file},
+        sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      };
+
+      $def->{"Glmvc${index}_annotation"} = {
+        class             => "Variants::GlmvcAnnotation",
+        perform           => 1,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
+        option            => "",
+        source_ref        => "Glmvc$index",
+        annovar_buildver  => "hg19",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        rnaediting_db     => $rnaediting_db,
+        distance_exon_gtf => $cfg->{gtf_file},
+        sh_direct         => 1,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      };
     }
   }
 
-  #performConfig($def);
+  performConfig($def);
 }
 
 my $extractDef = {
   general      => { task_name => "tcga" },
   GlmvcExtract => {
     class                => "Variants::GlmvcExtract",
-    perform              => 1,
+    perform              => 0,
     target_dir           => "${target_dir}/tcga_glmvc_extract",
     option               => "",
     source_config_ref    => [ $tcga, "tcga_files" ],
@@ -698,7 +718,7 @@ my $extractDef = {
   },
 };
 
-performConfig($extractDef);
+#performConfig($extractDef);
 
 1;
 
