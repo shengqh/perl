@@ -398,13 +398,13 @@ my $tcga_rna = {
   glm_pvalue       => "0.05"
 };
 
-#my @cfgs = ( $tcga_dna, $tcga_rna );
-#my @nps = ( 0.01, 0.02 );
-#my @gps = ( 0.01, 0.05, 0.1 );
+my @cfgs = ( $tcga_dna, $tcga_rna );
+my @nps = ( 0.01, 0.02 );
+my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ( $tcga_dna_nt );
-my @nps = ( 0.01 );
-my @gps = ( 0.1 );
+#my @cfgs = ( $tcga_dna_nt );
+#my @nps = ( 0.01 );
+#my @gps = ( 0.1 );
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -413,7 +413,7 @@ for my $cfg (@cfgs) {
 
     muTect => {
       class             => "GATK::MuTect",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_muTect",
       option            => "--min_qscore 20 --filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
@@ -434,7 +434,7 @@ for my $cfg (@cfgs) {
     },
     annovar_muTect => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_muTect",
       option     => $annovar_param,
       source_ref => [ "muTect", ".pass.vcf\$" ],
@@ -453,7 +453,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -473,7 +473,7 @@ for my $cfg (@cfgs) {
     },
     annovar_varscan2 => {
       class      => "Annotation::Annovar",
-      perform    => 1,
+      perform    => 0,
       target_dir => "${target_dir}/${task_name}_varscan2",
       option     => $annovar_param,
       source_ref => [ "varscan2", "snp.Somatic.hc.vcf\$" ],
@@ -523,7 +523,7 @@ for my $cfg (@cfgs) {
       $index = $index + 1;
       $def->{"Glmvc$index"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -533,9 +533,32 @@ for my $cfg (@cfgs) {
         annovar_buildver  => "hg19",
         annovar_protocol  => $annovar_protocol,
         annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
         rnaediting_db     => $rnaediting_db,
         distance_exon_gtf => $cfg->{gtf_file},
         sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      };
+
+      $def->{"Glmvc${index}_annotation"} = {
+        class             => "Variants::GlmvcAnnotation",
+        perform           => 1,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
+        option            => "",
+        source_ref        => "Glmvc$index",
+        annovar_buildver  => "hg19",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        rnaediting_db     => $rnaediting_db,
+        distance_exon_gtf => $cfg->{gtf_file},
+        sh_direct         => 1,
         execute_file      => $glmvc,
         pbs               => {
           "email"    => $email,
@@ -590,7 +613,7 @@ my $annotation = {
   },
   GlmvcExtract => {
     class      => "Variants::GlmvcExtract",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/detected_extract",
     option     => "",
     source     => {
