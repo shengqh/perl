@@ -240,6 +240,19 @@ my $tcga = {
     "TCGA-BH-A0H7-DNA-TP-NB" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
   },
 
+  tcga_dna_nt_files => {
+    "TCGA-A7-A0D9-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
+    "TCGA-BH-A0B3-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
+    "TCGA-BH-A0B8-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B8.tsv"],
+    "TCGA-BH-A0BJ-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BJ.tsv"],
+    "TCGA-BH-A0BM-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0BM.tsv"],
+    "TCGA-BH-A0C0-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0C0.tsv"],
+    "TCGA-BH-A0DK-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DK.tsv"],
+    "TCGA-BH-A0DP-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0DP.tsv"],
+    "TCGA-BH-A0E0-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0E0.tsv"],
+    "TCGA-BH-A0H7-DNA-TP-NT" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0H7.tsv"]
+  },
+
   tcga_files => {
     "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-A7-A0D9.tsv"],
     "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/tcga/tcga_validation/TCGA-BH-A0B3.tsv"],
@@ -373,6 +386,7 @@ my $tcga_dna = {
   dbsnp_file       => $snp_file_16569_MT,
   gtf_file         => $gtf_file_16569_MT,
   tcga_file        => $tcga->{tcga_dna_files},
+  thread           => 8,
   glm_pvalue       => "0.1"
 };
 
@@ -384,7 +398,8 @@ my $tcga_dna_nt = {
   cosmic_file      => $cosmic_file_16569_MT,
   dbsnp_file       => $snp_file_16569_MT,
   gtf_file         => $gtf_file_16569_MT,
-  tcga_file        => $tcga->{tcga_dna_files},
+  tcga_file        => $tcga->{tcga_dna_nt_files},
+  thread           => 1,
   glm_pvalue       => "0.1"
 };
 
@@ -397,16 +412,17 @@ my $tcga_rna = {
   dbsnp_file       => $snp_file_16569_M,
   gtf_file         => $gtf_file_16569_M,
   tcga_file        => $tcga->{tcga_rna_files},
+  thread           => 8,
   glm_pvalue       => "0.1"
 };
 
-my @cfgs = ( $tcga_dna, $tcga_rna );
-my @nps = ( 0.01, 0.02 );
-my @gps = ( 0.01, 0.05, 0.1 );
+#my @cfgs = ( $tcga_dna, $tcga_rna );
+#my @nps = ( 0.01, 0.02 );
+#my @gps = ( 0.01, 0.05, 0.1 );
 
-#my @cfgs = ($tcga_dna_nt);
-#my @nps  = (0.02);
-#my @gps  = (0.1);
+my @cfgs = ($tcga_dna_nt);
+my @nps  = (0.02);
+my @gps  = (0.1);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -494,7 +510,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class             => "Variants::GlmvcValidate",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_validation",
       option            => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type       => "BAM",
@@ -523,7 +539,7 @@ for my $cfg (@cfgs) {
     for my $gp (@gps) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 0,
+        perform           => 1,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -540,7 +556,7 @@ for my $cfg (@cfgs) {
         execute_file      => $glmvc,
         pbs               => {
           "email"    => $email,
-          "nodes"    => "1:ppn=8",
+          "nodes"    => "1:ppn=" . $cfg->{thread},
           "walltime" => "72",
           "mem"      => "40gb"
         },
