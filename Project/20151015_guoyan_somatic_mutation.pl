@@ -540,7 +540,7 @@ for my $cfg (@cfgs) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
         perform           => 1,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1_new",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
         source_config_ref => $cfg->{files_config_ref},
