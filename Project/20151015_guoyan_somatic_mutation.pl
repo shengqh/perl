@@ -400,13 +400,13 @@ my $tcga_rna = {
   glm_pvalue       => "0.1"
 };
 
-#my @cfgs = ( $tcga_dna, $tcga_rna );
-#my @nps = ( 0.01, 0.02 );
-#my @gps = ( 0.01, 0.05, 0.1 );
+my @cfgs = ( $tcga_dna, $tcga_rna );
+my @nps = ( 0.01, 0.02 );
+my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ($tcga_dna_nt);
-my @nps  = (0.02);
-my @gps  = (0.1);
+#my @cfgs = ($tcga_dna_nt);
+#my @nps  = (0.02);
+#my @gps  = (0.1);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
