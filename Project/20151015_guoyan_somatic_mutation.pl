@@ -404,9 +404,9 @@ my $tcga_rna = {
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ( $tcga_dna_nt );
-my @nps = ( 0.02 );
-my @gps = ( 0.1 );
+my @cfgs = ($tcga_dna_nt);
+my @nps  = (0.02);
+my @gps  = (0.1);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -493,21 +493,21 @@ for my $cfg (@cfgs) {
       },
     },
     GlmvcValidation => {
-      class                => "Variants::GlmvcValidate",
-      perform              => 1,
-      target_dir           => "${target_dir}/${task_name}_glmvc_validation",
-      option               => "--glm_pvalue " . $cfg->{glm_pvalue},
-      source_type          => "BAM",
-      source               => $cfg->{tcga_file},
-      bam_files_config_ref => $cfg->{files_config_ref},
-      groups_ref           => $cfg->{groups},
-      fasta_file           => $cfg->{fasta_file},
-      annovar_buildver     => "hg19",
-      rnaediting_db        => $rnaediting_db,
-      distance_exon_gtf    => $cfg->{gtf_file},
-      sh_direct            => 1,
-      execute_file         => $glmvc,
-      pbs                  => {
+      class             => "Variants::GlmvcValidate",
+      perform           => 1,
+      target_dir        => "${target_dir}/${task_name}_glmvc_validation",
+      option            => "--glm_pvalue " . $cfg->{glm_pvalue},
+      source_type       => "BAM",
+      source_config_ref => $cfg->{files_config_ref},
+      groups_ref        => $cfg->{groups},
+      validation_files  => $cfg->{tcga_file},
+      fasta_file        => $cfg->{fasta_file},
+      annovar_buildver  => "hg19",
+      rnaediting_db     => $rnaediting_db,
+      distance_exon_gtf => $cfg->{gtf_file},
+      sh_direct         => 1,
+      execute_file      => $glmvc,
+      pbs               => {
         "email"    => $email,
         "nodes"    => "1:ppn=1",
         "walltime" => "72",
