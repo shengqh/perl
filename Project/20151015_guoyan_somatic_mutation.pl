@@ -397,7 +397,7 @@ my $tcga_rna = {
   dbsnp_file       => $snp_file_16569_M,
   gtf_file         => $gtf_file_16569_M,
   tcga_file        => $tcga->{tcga_rna_files},
-  glm_pvalue       => "0.05"
+  glm_pvalue       => "0.1"
 };
 
 #my @cfgs = ( $tcga_dna, $tcga_rna );
@@ -494,7 +494,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class                => "Variants::GlmvcValidate",
-      perform              => 0,
+      perform              => 1,
       target_dir           => "${target_dir}/${task_name}_glmvc_validation",
       option               => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type          => "BAM",
@@ -523,7 +523,7 @@ for my $cfg (@cfgs) {
     for my $gp (@gps) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -548,7 +548,7 @@ for my $cfg (@cfgs) {
 
       $def->{"${task_name}_glmvc_np${np}_g${gp}_annotation"} = {
         class             => "Variants::GlmvcAnnotation",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "",
         source_ref        => "${task_name}_glmvc_np${np}_g${gp}",
