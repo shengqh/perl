@@ -412,7 +412,7 @@ my $tcga_rna = {
   dbsnp_file       => $snp_file_16569_M,
   gtf_file         => $gtf_file_16569_M,
   tcga_file        => $tcga->{tcga_rna_files},
-  thread           => 1,
+  thread           => 8,
   glm_pvalue       => "0.1"
 };
 
@@ -420,7 +420,7 @@ my $tcga_rna = {
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ($tcga_dna);
+my @cfgs = ($tcga_dna_nt);
 my @nps  = (0.02);
 my @gps  = (0.1);
 
@@ -540,7 +540,7 @@ for my $cfg (@cfgs) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
         perform           => 1,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1",
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
         source_config_ref => $cfg->{files_config_ref},
