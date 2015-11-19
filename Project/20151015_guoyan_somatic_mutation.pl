@@ -420,7 +420,7 @@ my $tcga_rna = {
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ($tcga_dna_nt);
+my @cfgs = ($tcga_dna);
 my @nps  = (0.02);
 my @gps  = (0.1);
 
@@ -539,7 +539,7 @@ for my $cfg (@cfgs) {
     for my $gp (@gps) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -557,6 +557,30 @@ for my $cfg (@cfgs) {
         pbs               => {
           "email"    => $email,
           "nodes"    => "1:ppn=" . $cfg->{thread},
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      };
+      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1"} = {
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1",
+        option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
+        source_type       => "BAM",
+        source_config_ref => $cfg->{files_config_ref},
+        groups_ref        => $cfg->{groups},
+        fasta_file        => $cfg->{fasta_file},
+        annovar_buildver  => "hg19",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        rnaediting_db     => $rnaediting_db,
+        distance_exon_gtf => $cfg->{gtf_file},
+        sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
           "walltime" => "72",
           "mem"      => "40gb"
         },
