@@ -420,7 +420,7 @@ my $tcga_rna = {
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ($tcga_dna);
+my @cfgs = ($tcga_dna, $tcga_rna);
 my @nps  = (0.02);
 my @gps  = (0.1);
 
