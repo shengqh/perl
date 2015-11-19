@@ -561,7 +561,31 @@ for my $cfg (@cfgs) {
           "mem"      => "40gb"
         },
       };
-      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1"} = {
+      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread8_newsamtools"} = {
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread8_newsamtools",
+        option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
+        source_type       => "BAM",
+        source_config_ref => $cfg->{files_config_ref},
+        groups_ref        => $cfg->{groups},
+        fasta_file        => $cfg->{fasta_file},
+        annovar_buildver  => "hg19",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        rnaediting_db     => $rnaediting_db,
+        distance_exon_gtf => $cfg->{gtf_file},
+        sh_direct         => 0,
+        execute_file      => $glmvc,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      };
+      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1_newsamtools"} = {
         class             => "Variants::GlmvcCall",
         perform           => 1,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1_newsamtools",
