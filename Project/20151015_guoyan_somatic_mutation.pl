@@ -537,10 +537,10 @@ for my $cfg (@cfgs) {
 
   for my $np (@nps) {
     for my $gp (@gps) {
-      $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
+      $def->{"${task_name}_glmvc_np${np}_g${gp}_read8"} = {
         class             => "Variants::GlmvcCall",
         perform           => 1,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_read8",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
         source_config_ref => $cfg->{files_config_ref},
@@ -585,10 +585,10 @@ for my $cfg (@cfgs) {
           "mem"      => "40gb"
         },
       };
-      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1"} = {
+      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1_read8"} = {
         class             => "Variants::GlmvcCall",
         perform           => 1,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1",
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1_read8",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
         source_config_ref => $cfg->{files_config_ref},
