@@ -420,7 +420,7 @@ my $tcga_rna = {
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ($tcga_dna, $tcga_rna);
+my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
 my @nps  = (0.02);
 my @gps  = (0.1);
 
@@ -585,10 +585,10 @@ for my $cfg (@cfgs) {
           "mem"      => "40gb"
         },
       };
-      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1_newsamtools"} = {
+      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 0,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1_newsamtools",
+        perform           => 1,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
         source_config_ref => $cfg->{files_config_ref},
