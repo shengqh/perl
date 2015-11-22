@@ -539,7 +539,7 @@ for my $cfg (@cfgs) {
     for my $gp (@gps) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 0,
+        perform           => 1,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -563,7 +563,7 @@ for my $cfg (@cfgs) {
       };
       $def->{"${task_name}_glmvc_np${np}_g${gp}_thread8_newsamtools"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread8_newsamtools",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -587,7 +587,7 @@ for my $cfg (@cfgs) {
       };
       $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1_newsamtools"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1_newsamtools",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
