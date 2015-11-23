@@ -416,13 +416,13 @@ my $tcga_rna = {
   glm_pvalue       => "0.1"
 };
 
-#my @cfgs = ( $tcga_dna, $tcga_rna );
-#my @nps = ( 0.01, 0.02 );
-#my @gps = ( 0.01, 0.05, 0.1 );
+my @cfgs = ( $tcga_dna, $tcga_rna );
+my @nps = ( 0.01, 0.02 );
+my @gps = ( 0.01, 0.05, 0.1 );
 
-my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
-my @nps  = (0.02);
-my @gps  = (0.1);
+#my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
+#my @nps  = (0.02);
+#my @gps  = (0.1);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -510,7 +510,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class             => "Variants::GlmvcValidate",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_glmvc_validation",
       option            => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type       => "BAM",
@@ -521,7 +521,7 @@ for my $cfg (@cfgs) {
       annovar_buildver  => "hg19",
       rnaediting_db     => $rnaediting_db,
       distance_exon_gtf => $cfg->{gtf_file},
-      sh_direct         => 1,
+      sh_direct         => 0,
       execute_file      => $glmvc,
       pbs               => {
         "email"    => $email,
@@ -537,10 +537,10 @@ for my $cfg (@cfgs) {
 
   for my $np (@nps) {
     for my $gp (@gps) {
-      $def->{"${task_name}_glmvc_np${np}_g${gp}_read8"} = {
+      $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 0,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_read8",
+        perform           => 1,
+        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
         source_config_ref => $cfg->{files_config_ref},
