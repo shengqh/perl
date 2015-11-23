@@ -539,7 +539,7 @@ for my $cfg (@cfgs) {
     for my $gp (@gps) {
       $def->{"${task_name}_glmvc_np${np}_g${gp}_read8"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_read8",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -587,7 +587,7 @@ for my $cfg (@cfgs) {
       };
       $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1_read8"} = {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1_read8",
         option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
         source_type       => "BAM",
@@ -707,6 +707,6 @@ my $annotation = {
   },
 };
 
-#performConfig($annotation);
+performConfig($annotation);
 1;
 
