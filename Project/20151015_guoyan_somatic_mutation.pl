@@ -510,7 +510,7 @@ for my $cfg (@cfgs) {
     },
     GlmvcValidation => {
       class             => "Variants::GlmvcValidate",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_glmvc_validation",
       option            => "--glm_pvalue " . $cfg->{glm_pvalue},
       source_type       => "BAM",
@@ -707,6 +707,6 @@ my $annotation = {
   },
 };
 
-performConfig($annotation);
+#performConfig($annotation);
 1;
 
