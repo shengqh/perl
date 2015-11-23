@@ -661,7 +661,7 @@ my $annotation = {
   general => { task_name => "ann" },
   annovar => {
     class      => "Annotation::Annovar",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/detected_annotation",
     option     => $annovar_param,
     source     => { "detected" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/data/detected_sites.tsv"], },
@@ -678,7 +678,7 @@ my $annotation = {
   },
   GlmvcExtract => {
     class      => "Variants::GlmvcExtract",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/detected_extract",
     option     => "",
     source     => {
