@@ -667,8 +667,10 @@ for my $cfg (@cfgs) {
         },
       },
     };
-    performConfig($annotation);
+    $def = merge($def, $annotation);
   }
+  
+  performConfig($def);
 }
 
 1;
