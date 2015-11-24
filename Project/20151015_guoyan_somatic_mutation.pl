@@ -4,6 +4,7 @@ use warnings;
 
 use CQS::FileUtils;
 use CQS::ClassFactory;
+use Hash::Merge qw( merge );
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation");
 
