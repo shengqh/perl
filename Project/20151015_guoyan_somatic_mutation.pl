@@ -417,8 +417,8 @@ my $tcga_rna = {
 };
 
 my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
-my @nps = ( 0.01, 0.02 );
-my @gps = ( 0.01, 0.05, 0.1 );
+my @nps  = ( 0.01,      0.02 );
+my @gps  = ( 0.01,      0.05, 0.1 );
 
 my @options =
   ( "--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff", "--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 glm_min_median_score_diff 5" );
@@ -536,7 +536,7 @@ for my $cfg (@cfgs) {
     },
   };
 
-  for ( my $i = 0 ; $i <= scalar(@options) ; $i++ ) {
+  for ( my $i = 0 ; $i < scalar(@options) ; $i++ ) {
     my $option     = $options[$i];
     my $optionName = $optionNames[$i];
 
