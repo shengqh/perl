@@ -416,9 +416,13 @@ my $tcga_rna = {
   glm_pvalue       => "0.1"
 };
 
-my @cfgs = ( $tcga_dna, $tcga_rna );
+my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
 my @nps = ( 0.01, 0.02 );
 my @gps = ( 0.01, 0.05, 0.1 );
+
+my @options =
+  ( "--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff", "--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 glm_min_median_score_diff 5" );
+my @optionNames = ( "tp_0.08_4_noscore", "tp_0.1_5_score5" );
 
 #my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
 #my @nps  = (0.02);
@@ -532,181 +536,140 @@ for my $cfg (@cfgs) {
     },
   };
 
-  #my @individual = ( "muTect", "annovar_muTect", "varscan2", "annovar_varscan2", "GlmvcValidation" );
-  my @individual = ( "GlmvcValidation", "GlmvcValidation_varscan2" );
+  for ( my $i = 0 ; $i <= scalar(@options) ; $i++ ) {
+    my $option     = $options[$i];
+    my $optionName = $optionNames[$i];
 
-  for my $np (@nps) {
-    for my $gp (@gps) {
-      $def->{"${task_name}_glmvc_np${np}_g${gp}"} = {
-        class             => "Variants::GlmvcCall",
-        perform           => 1,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
-        option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
-        source_type       => "BAM",
-        source_config_ref => $cfg->{files_config_ref},
-        groups_ref        => $cfg->{groups},
-        fasta_file        => $cfg->{fasta_file},
-        annovar_buildver  => "hg19",
-        annovar_protocol  => $annovar_protocol,
-        annovar_operation => $annovar_operation,
-        annovar_db        => $annovar_db,
-        rnaediting_db     => $rnaediting_db,
-        distance_exon_gtf => $cfg->{gtf_file},
-        sh_direct         => 0,
-        execute_file      => $glmvc,
-        pbs               => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=" . $cfg->{thread},
-          "walltime" => "72",
-          "mem"      => "40gb"
-        },
-      };
-      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread8_newsamtools"} = {
-        class             => "Variants::GlmvcCall",
-        perform           => 0,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread8_newsamtools",
-        option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
-        source_type       => "BAM",
-        source_config_ref => $cfg->{files_config_ref},
-        groups_ref        => $cfg->{groups},
-        fasta_file        => $cfg->{fasta_file},
-        annovar_buildver  => "hg19",
-        annovar_protocol  => $annovar_protocol,
-        annovar_operation => $annovar_operation,
-        annovar_db        => $annovar_db,
-        rnaediting_db     => $rnaediting_db,
-        distance_exon_gtf => $cfg->{gtf_file},
-        sh_direct         => 0,
-        execute_file      => $glmvc,
-        pbs               => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=8",
-          "walltime" => "72",
-          "mem"      => "40gb"
-        },
-      };
-      $def->{"${task_name}_glmvc_np${np}_g${gp}_thread1_read8"} = {
-        class             => "Variants::GlmvcCall",
-        perform           => 0,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}_thread1_read8",
-        option            => "--max_normal_percentage ${np} --glm_pvalue ${gp}",
-        source_type       => "BAM",
-        source_config_ref => $cfg->{files_config_ref},
-        groups_ref        => $cfg->{groups},
-        fasta_file        => $cfg->{fasta_file},
-        annovar_buildver  => "hg19",
-        annovar_protocol  => $annovar_protocol,
-        annovar_operation => $annovar_operation,
-        annovar_db        => $annovar_db,
-        rnaediting_db     => $rnaediting_db,
-        distance_exon_gtf => $cfg->{gtf_file},
-        sh_direct         => 0,
-        execute_file      => $glmvc,
-        pbs               => {
+    my $optiondir = create_directory_or_die("${target_dir}/${optionName}");
+
+    for my $np (@nps) {
+      for my $gp (@gps) {
+        $def->{"${task_name}_${optionName}_glmvc_np${np}_g${gp}"} = {
+          class             => "Variants::GlmvcCall",
+          perform           => 1,
+          target_dir        => "${optiondir}/${task_name}_glmvc_np${np}_g${gp}",
+          option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
+          source_type       => "BAM",
+          source_config_ref => $cfg->{files_config_ref},
+          groups_ref        => $cfg->{groups},
+          fasta_file        => $cfg->{fasta_file},
+          annovar_buildver  => "hg19",
+          annovar_protocol  => $annovar_protocol,
+          annovar_operation => $annovar_operation,
+          annovar_db        => $annovar_db,
+          rnaediting_db     => $rnaediting_db,
+          distance_exon_gtf => $cfg->{gtf_file},
+          sh_direct         => 0,
+          execute_file      => $glmvc,
+          pbs               => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=" . $cfg->{thread},
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        };
+
+        $def->{"${task_name}_${optionName}_glmvc_np${np}_g${gp}_thread1"} = {
+          class             => "Variants::GlmvcCall",
+          perform           => 0,
+          target_dir        => "${optiondir}/${task_name}_glmvc_np${np}_g${gp}_thread1_read8",
+          option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
+          source_type       => "BAM",
+          source_config_ref => $cfg->{files_config_ref},
+          groups_ref        => $cfg->{groups},
+          fasta_file        => $cfg->{fasta_file},
+          annovar_buildver  => "hg19",
+          annovar_protocol  => $annovar_protocol,
+          annovar_operation => $annovar_operation,
+          annovar_db        => $annovar_db,
+          rnaediting_db     => $rnaediting_db,
+          distance_exon_gtf => $cfg->{gtf_file},
+          sh_direct         => 0,
+          execute_file      => $glmvc,
+          pbs               => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        };
+
+        $def->{"${task_name}_${optionName}_glmvc_np${np}_g${gp}_annotation"} = {
+          class             => "Variants::GlmvcAnnotation",
+          perform           => 0,
+          target_dir        => "${optiondir}/${task_name}_glmvc_np${np}_g${gp}",
+          option            => "",
+          source_ref        => "${task_name}_glmvc_np${np}_g${gp}",
+          annovar_buildver  => "hg19",
+          annovar_protocol  => $annovar_protocol,
+          annovar_operation => $annovar_operation,
+          annovar_db        => $annovar_db,
+          rnaediting_db     => $rnaediting_db,
+          distance_exon_gtf => $cfg->{gtf_file},
+          sh_direct         => 1,
+          execute_file      => $glmvc,
+          pbs               => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=8",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        };
+      }
+    }
+
+    my $annotation = {
+      general => { task_name => "ann" },
+      annovar => {
+        class      => "Annotation::Annovar",
+        perform    => 1,
+        target_dir => "${optiondir}/detected_annotation",
+        option     => $annovar_param,
+        source     => { "detected" => ["${optiondir}/detected_annotation/data/detected_sites.tsv"], },
+        annovar_db => $annovar_db,
+        buildver   => "hg19",
+        sh_direct  => 1,
+        isvcf      => 0,
+        pbs        => {
           "email"    => $email,
           "nodes"    => "1:ppn=1",
           "walltime" => "72",
-          "mem"      => "40gb"
+          "mem"      => "10gb"
         },
-      };
-
-      $def->{"${task_name}_glmvc_np${np}_g${gp}_annotation"} = {
-        class             => "Variants::GlmvcAnnotation",
-        perform           => 0,
-        target_dir        => "${target_dir}/${task_name}_glmvc_np${np}_g${gp}",
-        option            => "",
-        source_ref        => "${task_name}_glmvc_np${np}_g${gp}",
-        annovar_buildver  => "hg19",
-        annovar_protocol  => $annovar_protocol,
-        annovar_operation => $annovar_operation,
-        annovar_db        => $annovar_db,
-        rnaediting_db     => $rnaediting_db,
-        distance_exon_gtf => $cfg->{gtf_file},
-        sh_direct         => 1,
-        execute_file      => $glmvc,
-        pbs               => {
+      },
+      GlmvcExtract => {
+        class      => "Variants::GlmvcExtract",
+        perform    => 1,
+        target_dir => "${optiondir}/detected_extract",
+        option     => "",
+        source     => {
+          "TCGA-A7-A0D9" => ["${optiondir}/detected_extract/data/TCGA-A7-A0D9.tsv"],
+          "TCGA-BH-A0B3" => ["${optiondir}/detected_extract/data/TCGA-BH-A0B3.tsv"],
+          "TCGA-BH-A0B8" => ["${optiondir}/detected_extract/data/TCGA-BH-A0B8.tsv"],
+          "TCGA-BH-A0BJ" => ["${optiondir}/detected_extract/data/TCGA-BH-A0BJ.tsv"],
+          "TCGA-BH-A0BM" => ["${optiondir}/detected_extract/data/TCGA-BH-A0BM.tsv"],
+          "TCGA-BH-A0C0" => ["${optiondir}/detected_extract/data/TCGA-BH-A0C0.tsv"],
+          "TCGA-BH-A0DK" => ["${optiondir}/detected_extract/data/TCGA-BH-A0DK.tsv"],
+          "TCGA-BH-A0DP" => ["${optiondir}/detected_extract/data/TCGA-BH-A0DP.tsv"],
+          "TCGA-BH-A0E0" => ["${optiondir}/detected_extract/data/TCGA-BH-A0E0.tsv"],
+          "TCGA-BH-A0H7" => ["${optiondir}/detected_extract/data/TCGA-BH-A0H7.tsv"],
+        },
+        bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
+        groups               => $tcga->{all_sample_groups},
+        fasta_file           => $fasta_file_16569_MT,
+        sh_direct            => 0,
+        execute_file         => $glmvc,
+        pbs                  => {
           "email"    => $email,
           "nodes"    => "1:ppn=8",
           "walltime" => "72",
           "mem"      => "40gb"
         },
-      };
-
-      push( @individual, "${task_name}_glmvc_np${np}_g${gp}" );
-    }
+      },
+    };
+    performConfig($annotation);
   }
-
-  $def->{sequencetask} = {
-    class      => "CQS::SequenceTask",
-    perform    => 0,
-    target_dir => "${target_dir}/${task_name}_sequencetask",
-    option     => "",
-    source     => { one => \@individual },
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  };
-
-  #performConfig($def);
-
-  #performTask( $def, "annovar_muTect" );
-  #performTask( $def, "annovar_varscan2" );
 }
 
-my $annotation = {
-  general => { task_name => "ann" },
-  annovar => {
-    class      => "Annotation::Annovar",
-    perform    => 0,
-    target_dir => "${target_dir}/detected_annotation",
-    option     => $annovar_param,
-    source     => { "detected" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/data/detected_sites.tsv"], },
-    annovar_db => $annovar_db,
-    buildver   => "hg19",
-    sh_direct  => 1,
-    isvcf      => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "10gb"
-    },
-  },
-  GlmvcExtract => {
-    class      => "Variants::GlmvcExtract",
-    perform    => 1,
-    target_dir => "${target_dir}/tp_0.1_5_score/detected_extract",
-    option     => "",
-    source     => {
-      "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-A7-A0D9.tsv"],
-      "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0B3.tsv"],
-      "TCGA-BH-A0B8" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0B8.tsv"],
-      "TCGA-BH-A0BJ" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0BJ.tsv"],
-      "TCGA-BH-A0BM" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0BM.tsv"],
-      "TCGA-BH-A0C0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0C0.tsv"],
-      "TCGA-BH-A0DK" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0DK.tsv"],
-      "TCGA-BH-A0DP" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0DP.tsv"],
-      "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0E0.tsv"],
-      "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0H7.tsv"],
-    },
-    bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
-    groups               => $tcga->{all_sample_groups},
-    fasta_file           => $fasta_file_16569_MT,
-    sh_direct            => 0,
-    execute_file         => $glmvc,
-    pbs                  => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-};
-
-performConfig($annotation);
 1;
 
