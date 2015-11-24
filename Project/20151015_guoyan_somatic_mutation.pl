@@ -651,7 +651,7 @@ for my $cfg (@cfgs) {
     },
   };
 
-  performConfig($def);
+  #performConfig($def);
 
   #performTask( $def, "annovar_muTect" );
   #performTask( $def, "annovar_varscan2" );
@@ -661,7 +661,7 @@ my $annotation = {
   general => { task_name => "ann" },
   annovar => {
     class      => "Annotation::Annovar",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/detected_annotation",
     option     => $annovar_param,
     source     => { "detected" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_annotation/data/detected_sites.tsv"], },
@@ -679,19 +679,19 @@ my $annotation = {
   GlmvcExtract => {
     class      => "Variants::GlmvcExtract",
     perform    => 1,
-    target_dir => "${target_dir}/detected_extract",
+    target_dir => "${target_dir}/tp_0.1_5_score/detected_extract",
     option     => "",
     source     => {
-      "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-A7-A0D9.tsv"],
-      "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0B3.tsv"],
-      "TCGA-BH-A0B8" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0B8.tsv"],
-      "TCGA-BH-A0BJ" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0BJ.tsv"],
-      "TCGA-BH-A0BM" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0BM.tsv"],
-      "TCGA-BH-A0C0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0C0.tsv"],
-      "TCGA-BH-A0DK" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0DK.tsv"],
-      "TCGA-BH-A0DP" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0DP.tsv"],
-      "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0E0.tsv"],
-      "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/detected_extract/data/TCGA-BH-A0H7.tsv"],
+      "TCGA-A7-A0D9" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-A7-A0D9.tsv"],
+      "TCGA-BH-A0B3" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0B3.tsv"],
+      "TCGA-BH-A0B8" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0B8.tsv"],
+      "TCGA-BH-A0BJ" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0BJ.tsv"],
+      "TCGA-BH-A0BM" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0BM.tsv"],
+      "TCGA-BH-A0C0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0C0.tsv"],
+      "TCGA-BH-A0DK" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0DK.tsv"],
+      "TCGA-BH-A0DP" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0DP.tsv"],
+      "TCGA-BH-A0E0" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0E0.tsv"],
+      "TCGA-BH-A0H7" => ["/gpfs21/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation/tp_0.1_5_score/detected_extract/data/TCGA-BH-A0H7.tsv"],
     },
     bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
     groups               => $tcga->{all_sample_groups},
@@ -707,6 +707,6 @@ my $annotation = {
   },
 };
 
-#performConfig($annotation);
+performConfig($annotation);
 1;
 
