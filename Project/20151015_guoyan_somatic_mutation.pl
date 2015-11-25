@@ -623,7 +623,7 @@ for my $cfg (@cfgs) {
       general => { task_name => "ann" },
       annovar => {
         class      => "Annotation::Annovar",
-        perform    => 1,
+        perform    => 0,
         target_dir => "${optiondir}/detected_annotation",
         option     => $annovar_param,
         source     => { "detected" => ["${optiondir}/detected_annotation/data/detected_sites.tsv"], },
@@ -669,9 +669,10 @@ for my $cfg (@cfgs) {
       },
     };
     $def = merge($def, $annotation);
+    performTask($def, "GlmvcExtract");
   }
   
-  performConfig($def);
+  #performConfig($def);
 }
 
 1;
