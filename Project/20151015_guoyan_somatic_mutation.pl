@@ -541,6 +541,8 @@ for my $cfg (@cfgs) {
   for ( my $i = 0 ; $i < scalar(@options) ; $i++ ) {
     my $option     = $options[$i];
     my $optionName = $optionNames[$i];
+    
+    print("option = " . $option . "\n");
 
     my $optiondir = create_directory_or_die("${target_dir}/${optionName}");
 
