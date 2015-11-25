@@ -479,7 +479,7 @@ for my $cfg (@cfgs) {
       class             => "VarScan2::Somatic",
       perform           => 1,
       target_dir        => "${target_dir}/${task_name}_varscan2",
-      option            => "--min-coverage 10",
+      option            => "",
       mpileup_options   => "-A -q 20 -Q 20 -d 8000",
       java_option       => "-Xmx40g",
       source_config_ref => $cfg->{files_config_ref},
