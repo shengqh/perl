@@ -541,11 +541,10 @@ for my $cfg (@cfgs) {
   for ( my $i = 0 ; $i < scalar(@options) ; $i++ ) {
     my $option     = $options[$i];
     my $optionName = $optionNames[$i];
-    
+    my $optiondir = create_directory_or_die("${target_dir}/${optionName}");
     print("option = " . $option . "\n");
     print("optionName = " . $optionName . "\n");
-
-    my $optiondir = create_directory_or_die("${target_dir}/${optionName}");
+    print("optiondir = " . $optiondir . "\n");
 
     for my $np (@nps) {
       for my $gp (@gps) {
