@@ -543,6 +543,7 @@ for my $cfg (@cfgs) {
     my $optionName = $optionNames[$i];
     
     print("option = " . $option . "\n");
+    print("optionName = " . $optionName . "\n");
 
     my $optiondir = create_directory_or_die("${target_dir}/${optionName}");
 
