@@ -6,7 +6,8 @@ use CQS::FileUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation");
+#my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation");
+my $target_dir = create_directory_or_die("E:/temp");
 
 my $email             = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools          = "/home/shengq1/cqstools/CQS.Tools.exe";
@@ -619,59 +620,61 @@ for my $cfg (@cfgs) {
       }
     }
 
-    my $annotation = {
-      general => { task_name => "ann" },
-      annovar => {
-        class      => "Annotation::Annovar",
-        perform    => 0,
-        target_dir => "${optiondir}/detected_annotation",
-        option     => $annovar_param,
-        source     => { "detected" => ["${optiondir}/detected_annotation/data/detected_sites.tsv"], },
-        annovar_db => $annovar_db,
-        buildver   => "hg19",
-        sh_direct  => 1,
-        isvcf      => 0,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "72",
-          "mem"      => "10gb"
+    if ( $cfg == $tcga_dna ) {
+      my $annotation = {
+        general => { task_name => "ann" },
+        annovar => {
+          class      => "Annotation::Annovar",
+          perform    => 0,
+          target_dir => "${optiondir}/detected_annotation",
+          option     => $annovar_param,
+          source     => { "detected" => ["${optiondir}/detected_annotation/data/detected_sites.tsv"], },
+          annovar_db => $annovar_db,
+          buildver   => "hg19",
+          sh_direct  => 1,
+          isvcf      => 0,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "10gb"
+          },
         },
-      },
-      GlmvcExtract => {
-        class      => "Variants::GlmvcExtract",
-        perform    => 1,
-        target_dir => "${optiondir}/detected_extract",
-        option     => "",
-        source     => {
-          "TCGA-A7-A0D9" => ["${optiondir}/detected_extract/data/TCGA-A7-A0D9.tsv"],
-          "TCGA-BH-A0B3" => ["${optiondir}/detected_extract/data/TCGA-BH-A0B3.tsv"],
-          "TCGA-BH-A0B8" => ["${optiondir}/detected_extract/data/TCGA-BH-A0B8.tsv"],
-          "TCGA-BH-A0BJ" => ["${optiondir}/detected_extract/data/TCGA-BH-A0BJ.tsv"],
-          "TCGA-BH-A0BM" => ["${optiondir}/detected_extract/data/TCGA-BH-A0BM.tsv"],
-          "TCGA-BH-A0C0" => ["${optiondir}/detected_extract/data/TCGA-BH-A0C0.tsv"],
-          "TCGA-BH-A0DK" => ["${optiondir}/detected_extract/data/TCGA-BH-A0DK.tsv"],
-          "TCGA-BH-A0DP" => ["${optiondir}/detected_extract/data/TCGA-BH-A0DP.tsv"],
-          "TCGA-BH-A0E0" => ["${optiondir}/detected_extract/data/TCGA-BH-A0E0.tsv"],
-          "TCGA-BH-A0H7" => ["${optiondir}/detected_extract/data/TCGA-BH-A0H7.tsv"],
+        GlmvcExtract => {
+          class      => "Variants::GlmvcExtract",
+          perform    => 1,
+          target_dir => "${optiondir}/detected_extract",
+          option     => "",
+          source     => {
+            "TCGA-A7-A0D9" => ["${optiondir}/detected_extract/data/TCGA-A7-A0D9.tsv"],
+            "TCGA-BH-A0B3" => ["${optiondir}/detected_extract/data/TCGA-BH-A0B3.tsv"],
+            "TCGA-BH-A0B8" => ["${optiondir}/detected_extract/data/TCGA-BH-A0B8.tsv"],
+            "TCGA-BH-A0BJ" => ["${optiondir}/detected_extract/data/TCGA-BH-A0BJ.tsv"],
+            "TCGA-BH-A0BM" => ["${optiondir}/detected_extract/data/TCGA-BH-A0BM.tsv"],
+            "TCGA-BH-A0C0" => ["${optiondir}/detected_extract/data/TCGA-BH-A0C0.tsv"],
+            "TCGA-BH-A0DK" => ["${optiondir}/detected_extract/data/TCGA-BH-A0DK.tsv"],
+            "TCGA-BH-A0DP" => ["${optiondir}/detected_extract/data/TCGA-BH-A0DP.tsv"],
+            "TCGA-BH-A0E0" => ["${optiondir}/detected_extract/data/TCGA-BH-A0E0.tsv"],
+            "TCGA-BH-A0H7" => ["${optiondir}/detected_extract/data/TCGA-BH-A0H7.tsv"],
+          },
+          bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
+          groups               => $tcga->{all_sample_groups},
+          fasta_file           => $fasta_file_16569_MT,
+          sh_direct            => 0,
+          execute_file         => $glmvc,
+          pbs                  => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=8",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
         },
-        bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
-        groups               => $tcga->{all_sample_groups},
-        fasta_file           => $fasta_file_16569_MT,
-        sh_direct            => 0,
-        execute_file         => $glmvc,
-        pbs                  => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=8",
-          "walltime" => "72",
-          "mem"      => "40gb"
-        },
-      },
-    };
-    $def = merge($def, $annotation);
-    performTask($def, "GlmvcExtract");
+      };
+      $def = merge( $def, $annotation );
+      performTask( $def, "GlmvcExtract" );
+    }
   }
-  
+
   #performConfig($def);
 }
 
