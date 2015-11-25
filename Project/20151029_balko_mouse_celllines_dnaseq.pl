@@ -539,7 +539,11 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  #performTask( $config, "glmvc_noMYC_table" );
+
+  if ( $dataset == $wes ) {
+    performTask( $config, "bwa_dexseqcount" );
+    performTask( $config, "bwa_exontable" );
+  }
 }
 
 1;
