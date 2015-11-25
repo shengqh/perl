@@ -625,7 +625,7 @@ for my $cfg (@cfgs) {
     if ( $cfg == $tcga_dna ) {
       my $annotation = {
         general => { task_name => "ann" },
-        annovar => {
+        "${task_name}_${optionName}_annovar" => {
           class      => "Annotation::Annovar",
           perform    => 0,
           target_dir => "${optiondir}/detected_annotation",
@@ -642,7 +642,7 @@ for my $cfg (@cfgs) {
             "mem"      => "10gb"
           },
         },
-        GlmvcExtract => {
+        "${task_name}_${optionName}_GlmvcExtract" => {
           class      => "Variants::GlmvcExtract",
           perform    => 1,
           target_dir => "${optiondir}/detected_extract",
@@ -673,7 +673,7 @@ for my $cfg (@cfgs) {
         },
       };
       $def = merge( $def, $annotation );
-      performTask( $def, "GlmvcExtract" );
+      performTask( $def, "${task_name}_${optionName}_GlmvcExtract" );
     }
   }
 
