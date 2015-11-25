@@ -544,9 +544,9 @@ for my $cfg (@cfgs) {
     my $option     = $options[$i];
     my $optionName = $optionNames[$i];
     my $optiondir = create_directory_or_die("${target_dir}/${optionName}");
-    print("option = " . $option . "\n");
-    print("optionName = " . $optionName . "\n");
-    print("optiondir = " . $optiondir . "\n");
+    #print("option = " . $option . "\n");
+    #print("optionName = " . $optionName . "\n");
+    #print("optiondir = " . $optiondir . "\n");
 
     for my $np (@nps) {
       for my $gp (@gps) {
