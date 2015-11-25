@@ -477,7 +477,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "--min-coverage 10",
       mpileup_options   => "-A -q 20 -Q 20",
@@ -537,6 +537,8 @@ for my $cfg (@cfgs) {
       },
     },
   };
+  
+  performTask($def, "varscan2");
 
   for ( my $i = 0 ; $i < scalar(@options) ; $i++ ) {
     my $option     = $options[$i];
@@ -673,7 +675,7 @@ for my $cfg (@cfgs) {
         },
       };
       $def = merge( $def, $annotation );
-      performTask( $def, "${task_name}_${optionName}_GlmvcExtract" );
+      #performTask( $def, "${task_name}_${optionName}_GlmvcExtract" );
     }
   }
 
