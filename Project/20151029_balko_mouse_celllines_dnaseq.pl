@@ -25,6 +25,8 @@ my $capture_bed      = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mous
 my $capture_slim_bed = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_slim.bed";
 my $gene_bed         = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/dusp4_tp53_myc.bed";
 my $exclude_bed      = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/config/myc.bed";
+my $dexseq_gff       = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Mus_musculus.GRCm38.75.M.dexseq.gff";
+my $name_map_file    = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Mus_musculus.GRCm38.75.M.map";
 
 my $annovar_protocol  = "refGene";
 my $annovar_operation = "g";
@@ -296,6 +298,39 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
+      bwa_dexseqcount => {
+        class        => "Count::DexseqCount",
+        perform      => 1,
+        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/bwa_dexseqcount",
+        option       => "",
+        source_ref   => ["bwa"],
+        gff_file     => $dexseq_gff,
+        dexseq_count => "/home/shengq1/pylibs/bin/dexseq_count.py",
+        sh_direct    => 0,
+        pbs          => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
+      bwa_exontable => {
+        class         => "CQS::CQSDatatable",
+        perform       => 1,
+        target_dir    => "${target_dir}/" . $dataset->{task_name} . "/bwa_exontable",
+        option        => "-p ENS --noheader -o " . $dataset->{task_name} . "_exon.count",
+        source_ref    => "bwa_dexseqcount",
+        name_map_file => $name_map_file,
+        cqs_tools     => $cqstools,
+        sh_direct     => 1,
+        pbs           => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "10",
+          "mem"      => "10gb"
+        },
+      },
+
       muTect => {
         class        => "GATK::MuTect",
         perform      => 1,
@@ -455,7 +490,7 @@ for my $dataset (@datasets) {
         },
       }
     );
-    push @all, ( "conifer", "cnmops" );
+    push @all, ( "conifer", "bwa_dexseqcount" );
 
     #performTask( $config, "conifer" );
     #performTask( $config, "cnmops_bam" );
@@ -480,6 +515,7 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
+
     #performTask( $config, "glmvc_WES_validation" );
   }
 
@@ -503,7 +539,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "glmvc_noMYC_table" );
+  #performTask( $config, "glmvc_noMYC_table" );
 }
 
 1;
