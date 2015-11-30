@@ -7,6 +7,7 @@ use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/variants/20151015_guoyan_somatic_mutation");
+
 #my $target_dir = create_directory_or_die("E:/temp");
 
 my $email             = "quanhu.sheng\@vanderbilt.edu";
@@ -418,17 +419,18 @@ my $tcga_rna = {
   glm_pvalue       => "0.1"
 };
 
-my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
-my @nps  = ( 0.01,      0.02 );
-my @gps  = ( 0.01,      0.05, 0.1 );
-
-my @options =
-  ( "--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff", "--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 glm_min_median_score_diff 5" );
-my @optionNames = ( "tp_0.08_4_noscore", "tp_0.1_5_score5" );
-
 #my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
-#my @nps  = (0.02);
-#my @gps  = (0.1);
+#my @nps  = ( 0.01,      0.02 );
+#my @gps  = ( 0.01,      0.05, 0.1 );
+
+#my @options = ( "--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff", "--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 glm_min_median_score_diff 5" );
+#my @optionNames = ( "tp_0.08_4_noscore", "tp_0.1_5_score5" );
+
+my @cfgs        = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
+my @nps         = (0.02);
+my @gps         = (0.1);
+my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_min_median_score_diff 5");
+my @optionNames = ("tp_0.08_4_score5");
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -537,13 +539,14 @@ for my $cfg (@cfgs) {
       },
     },
   };
-  
-  performTask($def, "varscan2");
+
+  performTask( $def, "varscan2" );
 
   for ( my $i = 0 ; $i < scalar(@options) ; $i++ ) {
     my $option     = $options[$i];
     my $optionName = $optionNames[$i];
-    my $optiondir = create_directory_or_die("${target_dir}/${optionName}");
+    my $optiondir  = create_directory_or_die("${target_dir}/${optionName}");
+
     #print("option = " . $option . "\n");
     #print("optionName = " . $optionName . "\n");
     #print("optiondir = " . $optiondir . "\n");
@@ -626,7 +629,7 @@ for my $cfg (@cfgs) {
 
     if ( $cfg == $tcga_dna ) {
       my $annotation = {
-        general => { task_name => "ann" },
+        general                              => { task_name => "ann" },
         "${task_name}_${optionName}_annovar" => {
           class      => "Annotation::Annovar",
           perform    => 0,
@@ -675,6 +678,7 @@ for my $cfg (@cfgs) {
         },
       };
       $def = merge( $def, $annotation );
+
       #performTask( $def, "${task_name}_${optionName}_GlmvcExtract" );
     }
   }
@@ -683,6 +687,4 @@ for my $cfg (@cfgs) {
 }
 
 1;
-
-
 
