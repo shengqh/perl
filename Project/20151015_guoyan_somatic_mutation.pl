@@ -429,8 +429,8 @@ my $tcga_rna = {
 my @cfgs        = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
 my @nps         = (0.02);
 my @gps         = (0.1);
-my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_min_median_score_diff 5");
-my @optionNames = ("tp_0.08_4_score5");
+my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_min_median_score_diff 5 --no-BAQ");
+my @optionNames = ("tp_0.08_4_score5_nobaq");
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
