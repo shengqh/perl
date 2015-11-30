@@ -479,7 +479,7 @@ for my $cfg (@cfgs) {
     },
     varscan2 => {
       class             => "VarScan2::Somatic",
-      perform           => 1,
+      perform           => 0,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "",
       mpileup_options   => "-A -q 20 -Q 20 -d 8000",
@@ -632,7 +632,7 @@ for my $cfg (@cfgs) {
         general                              => { task_name => "ann" },
         "${task_name}_${optionName}_annovar" => {
           class      => "Annotation::Annovar",
-          perform    => 0,
+          perform    => 1,
           target_dir => "${optiondir}/detected_annotation",
           option     => $annovar_param,
           source     => { "detected" => ["${optiondir}/detected_annotation/data/detected_sites.tsv"], },
@@ -683,7 +683,7 @@ for my $cfg (@cfgs) {
     }
   }
 
-  #performConfig($def);
+  performConfig($def);
 }
 
 1;
