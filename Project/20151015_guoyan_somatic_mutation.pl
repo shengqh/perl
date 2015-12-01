@@ -423,14 +423,15 @@ my $tcga_rna = {
 #my @nps  = ( 0.01,      0.02 );
 #my @gps  = ( 0.01,      0.05, 0.1 );
 
-my @options = ( "--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff", "--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 glm_min_median_score_diff 5" );
-my @optionNames = ( "tp_0.08_4_noscore", "tp_0.1_5_score5" );
+#my @options = ( "--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff", "--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 glm_min_median_score_diff 5" );
+#my @optionNames = ( "tp_0.08_4_noscore", "tp_0.1_5_score5" );
 
-my @cfgs        = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
+#my @cfgs        = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
+my @cfgs        = ( $tcga_dna, $tcga_rna );
 my @nps         = (0.02);
 my @gps         = (0.1);
-#my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff");
-#my @optionNames = ("tp_0.08_4_noscore");
+my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff");
+my @optionNames = ("tp_0.08_4_noscore");
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -627,6 +628,35 @@ for my $cfg (@cfgs) {
             "mem"      => "40gb"
           },
         };
+
+        if ( $cfg != $tcga_dna_nt && $np == 0.02 && $gp == 0.1 ) {
+          $def->{"${task_name}_${optionName}_glmvc_np${np}_g${gp}_thread1"} = {
+            class             => "Variants::GlmvcCall",
+            perform           => 0,
+            target_dir        => "${optiondir}/${task_name}_glmvc_np${np}_g${gp}_thread1",
+            option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
+            source_type       => "BAM",
+            source_config_ref => $cfg->{files_config_ref},
+            groups_ref        => $cfg->{groups},
+            fasta_file        => $cfg->{fasta_file},
+            annovar_buildver  => "hg19",
+            annovar_protocol  => $annovar_protocol,
+            annovar_operation => $annovar_operation,
+            annovar_db        => $annovar_db,
+            rnaediting_db     => $rnaediting_db,
+            distance_exon_gtf => $cfg->{gtf_file},
+            sh_direct         => 0,
+            execute_file      => $glmvc,
+            pbs               => {
+              "email"    => $email,
+              "nodes"    => "1:ppn=1",
+              "walltime" => "72",
+              "mem"      => "40gb"
+            },
+          };
+          
+          performTask( $def, "${task_name}_${optionName}_glmvc_np${np}_g${gp}_thread1" );
+        }
       }
     }
 
@@ -684,7 +714,7 @@ for my $cfg (@cfgs) {
     }
   }
 
-  performConfig($def);
+  #performConfig($def);
 }
 
 1;
