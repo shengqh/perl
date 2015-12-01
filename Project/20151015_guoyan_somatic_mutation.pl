@@ -518,7 +518,7 @@ for my $cfg (@cfgs) {
     },
   };
 
-  performTask( $def, "varscan2" );
+  #performTask( $def, "varscan2" );
 
   for ( my $i = 0 ; $i < scalar(@options) ; $i++ ) {
     my $option     = $options[$i];
@@ -534,7 +534,7 @@ for my $cfg (@cfgs) {
         $def->{"${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}"} = {
           class             => "Variants::GlmvcValidate",
           perform           => 1,
-          target_dir        => "${optiondir}/${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}",
+          target_dir        => "${optiondir}/${task_name}_glmvc_validation_np${np}_g${gp}",
           option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
           source_type       => "BAM",
           source_config_ref => $cfg->{files_config_ref},
