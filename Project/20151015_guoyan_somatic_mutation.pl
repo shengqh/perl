@@ -429,8 +429,8 @@ my $tcga_rna = {
 my @cfgs        = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
 my @nps         = (0.02);
 my @gps         = (0.1);
-my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_ignore_score_diff");
-my @optionNames = ("tp_0.1_5_noscore");
+my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff");
+my @optionNames = ("tp_0.08_4_noscore");
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -516,28 +516,6 @@ for my $cfg (@cfgs) {
         "mem"      => "10gb"
       },
     },
-    GlmvcValidation => {
-      class             => "Variants::GlmvcValidate",
-      perform           => 0,
-      target_dir        => "${target_dir}/${task_name}_glmvc_validation",
-      option            => "--glm_pvalue " . $cfg->{glm_pvalue},
-      source_type       => "BAM",
-      source_config_ref => $cfg->{files_config_ref},
-      groups_ref        => $cfg->{groups},
-      validation_files  => $cfg->{tcga_file},
-      fasta_file        => $cfg->{fasta_file},
-      annovar_buildver  => "hg19",
-      rnaediting_db     => $rnaediting_db,
-      distance_exon_gtf => $cfg->{gtf_file},
-      sh_direct         => 0,
-      execute_file      => $glmvc,
-      pbs               => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    },
   };
 
   performTask( $def, "varscan2" );
@@ -553,6 +531,31 @@ for my $cfg (@cfgs) {
 
     for my $np (@nps) {
       for my $gp (@gps) {
+        $def->{"${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}"} = {
+          class             => "Variants::GlmvcValidate",
+          perform           => 1,
+          target_dir        => "${optiondir}/${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}",
+          option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
+          source_type       => "BAM",
+          source_config_ref => $cfg->{files_config_ref},
+          groups_ref        => $cfg->{groups},
+          validation_files  => $cfg->{tcga_file},
+          fasta_file        => $cfg->{fasta_file},
+          annovar_buildver  => "hg19",
+          rnaediting_db     => $rnaediting_db,
+          distance_exon_gtf => $cfg->{gtf_file},
+          sh_direct         => 0,
+          execute_file      => $glmvc,
+          pbs               => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        };
+
+        performTask( $def, "${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}" );
+
         $def->{"${task_name}_${optionName}_glmvc_np${np}_g${gp}"} = {
           class             => "Variants::GlmvcCall",
           perform           => 1,
@@ -678,12 +681,10 @@ for my $cfg (@cfgs) {
         },
       };
       $def = merge( $def, $annotation );
-
-      #performTask( $def, "${task_name}_${optionName}_GlmvcExtract" );
     }
   }
 
-  performConfig($def);
+  #performConfig($def);
 }
 
 1;
