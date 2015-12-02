@@ -537,7 +537,7 @@ for my $cfg (@cfgs) {
       for my $gp (@gps) {
         $def->{"${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}"} = {
           class             => "Variants::GlmvcValidate",
-          perform           => 0,
+          perform           => 1,
           target_dir        => "${optiondir}/${task_name}_glmvc_validation_np${np}_g${gp}",
           option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
           source_type       => "BAM",
@@ -562,7 +562,7 @@ for my $cfg (@cfgs) {
 
         $def->{"${task_name}_${optionName}_glmvc_np${np}_g${gp}"} = {
           class             => "Variants::GlmvcCall",
-          perform           => 1,
+          perform           => 0,
           target_dir        => "${optiondir}/${task_name}_glmvc_np${np}_g${gp}",
           option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
           source_type       => "BAM",
@@ -610,7 +610,7 @@ for my $cfg (@cfgs) {
         if ( $cfg != $tcga_dna_nt && $np == 0.02 && $gp == 0.1 ) {
           $def->{"${task_name}_${optionName}_glmvc_np${np}_g${gp}_thread1"} = {
             class             => "Variants::GlmvcCall",
-            perform           => 1,
+            perform           => 0,
             target_dir        => "${optiondir}/${task_name}_glmvc_np${np}_g${gp}_thread1",
             option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
             source_type       => "BAM",
