@@ -535,28 +535,30 @@ for my $cfg (@cfgs) {
 
     for my $np (@nps) {
       for my $gp (@gps) {
-        $def->{"${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}"} = {
-          class             => "Variants::GlmvcValidate",
-          perform           => 1,
-          target_dir        => "${optiondir}/${task_name}_glmvc_validation_np${np}_g${gp}",
-          option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
-          source_type       => "BAM",
-          source_config_ref => $cfg->{files_config_ref},
-          groups_ref        => $cfg->{groups},
-          validation_files  => $cfg->{tcga_file},
-          fasta_file        => $cfg->{fasta_file},
-          annovar_buildver  => "hg19",
-          rnaediting_db     => $rnaediting_db,
-          distance_exon_gtf => $cfg->{gtf_file},
-          sh_direct         => 0,
-          execute_file      => $glmvc,
-          pbs               => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "72",
-            "mem"      => "40gb"
-          },
-        };
+        if ( $np == 0.02 && $gp == 0.1 ) {
+          $def->{"${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}"} = {
+            class             => "Variants::GlmvcValidate",
+            perform           => 1,
+            target_dir        => "${optiondir}/${task_name}_glmvc_validation_np${np}_g${gp}",
+            option            => "$option --max_normal_percentage ${np} --glm_pvalue ${gp}",
+            source_type       => "BAM",
+            source_config_ref => $cfg->{files_config_ref},
+            groups_ref        => $cfg->{groups},
+            validation_files  => $cfg->{tcga_file},
+            fasta_file        => $cfg->{fasta_file},
+            annovar_buildver  => "hg19",
+            rnaediting_db     => $rnaediting_db,
+            distance_exon_gtf => $cfg->{gtf_file},
+            sh_direct         => 0,
+            execute_file      => $glmvc,
+            pbs               => {
+              "email"    => $email,
+              "nodes"    => "1:ppn=1",
+              "walltime" => "72",
+              "mem"      => "40gb"
+            },
+          };
+        }
 
         #performTask( $def, "${task_name}_${optionName}_glmvc_validation_np${np}_g${gp}" );
 
