@@ -380,8 +380,8 @@ my $preparation = {
 #performConfig($preparation);
 #performTask( $preparation, "depth" );
 
-my $tcga_dna = {
-  general => { task_name => "tcga_dna" },
+my $tcga_dna_nb = {
+  general => { task_name => "tcga_dna_nb" },
   files_config_ref => [ $preparation, "dna_refine" ],
   groups           => $tcga->{dna_nb_groups},
   fasta_file       => $fasta_file_tcga_dna,
@@ -406,8 +406,8 @@ my $tcga_dna_nt = {
   glm_pvalue       => "0.1"
 };
 
-my $tcga_rna = {
-  general => { task_name => "tcga_rna" },
+my $tcga_rna_nt = {
+  general => { task_name => "tcga_rna_nt" },
   files_config_ref => [ $preparation, "rna_refine" ],
   groups           => $tcga->{rna_groups},
   fasta_file       => $fasta_file_16569_M,
@@ -419,7 +419,7 @@ my $tcga_rna = {
   glm_pvalue       => "0.1"
 };
 
-my @cfgs = ( $tcga_dna, $tcga_dna_nt, $tcga_rna );
+my @cfgs = ( $tcga_dna_nb, $tcga_dna_nt, $tcga_rna_nt );
 
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
@@ -615,7 +615,7 @@ for my $cfg (@cfgs) {
                 };
 
               }
-              if ( $cfg == $tcga_dna ) {
+              if ( $cfg == $tcga_dna_nb ) {
                 my $annotation = {
                   general                              => { task_name => "ann" },
                   "annovar_${optionName}" => {
