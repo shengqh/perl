@@ -494,7 +494,6 @@ for my $cfg (@cfgs) {
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
       fasta_file        => $cfg->{fasta_file},
-      somatic_p_value   => 0.05,
       sh_direct         => 0,
       VarScan2_jar      => $varscan2,
       pbs               => {
