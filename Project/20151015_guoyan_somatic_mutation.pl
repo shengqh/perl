@@ -394,7 +394,7 @@ my $tcga_dna = {
 };
 
 my $tcga_dna_nt = {
-  general => { task_name => "tcga_dna_nt" },
+  general => { task_name => "tcga_dnant" },
   files_config_ref => [ $preparation, "dna_refine" ],
   groups           => $tcga->{dna_nt_groups},
   fasta_file       => $fasta_file_tcga_dna,
@@ -620,7 +620,7 @@ for my $cfg (@cfgs) {
                   general                              => { task_name => "ann" },
                   "${optionName}_annovar" => {
                     class      => "Annotation::Annovar",
-                    perform    => 1,
+                    perform    => 0,
                     target_dir => "${target_dir}/${optionName}_annovar",
                     option     => $annovar_param,
                     source     => { "detected" => ["${target_dir}/${optionName}_annovar/data/detected_sites.tsv"], },
@@ -637,7 +637,7 @@ for my $cfg (@cfgs) {
                   },
                   "${optionName}_GlmvcExtract" => {
                     class      => "Variants::GlmvcExtract",
-                    perform    => 1,
+                    perform    => 0,
                     target_dir => "${target_dir}/${optionName}_extract",
                     option     => "",
                     source     => {
