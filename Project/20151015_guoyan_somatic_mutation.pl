@@ -446,9 +446,9 @@ for my $cfg (@cfgs) {
 
     muTect => {
       class             => "GATK::MuTect",
-      perform           => 0,
+      perform           => 1,
       target_dir        => "${target_dir}/${task_name}_muTect",
-      option            => "--min_qscore 20 --filter_reads_with_N_cigar",
+      option            => "--filter_reads_with_N_cigar",
       java_option       => "-Xmx40g",
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
