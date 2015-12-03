@@ -15,7 +15,7 @@ my $cqstools          = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $samtools          = "/home/shengq1/local/bin/samtools/samtools";
 my $glmvc             = "/home/shengq1/glmvc/glmvc.exe";
 my $mutect            = "/home/shengq1/local/bin/mutect-1.1.7.jar";
-my $varscan2          = "/home/shengq1/local/bin/VarScan.v2.3.7.jar";
+my $varscan2          = "/scratch/cqs/shengq1/local/bin/VarScan.v2.4.1.jar";
 my $gatk_jar          = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar        = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $hg19_map          = "/data/cqs/shengq1/reference/ensembl_gtf/Homo_sapiens.GRCh37.75.map";
@@ -489,7 +489,7 @@ for my $cfg (@cfgs) {
       perform           => 1,
       target_dir        => "${target_dir}/${task_name}_varscan2",
       option            => "",
-      mpileup_options   => "-A -q 20 -Q 20 -d 8000",
+      mpileup_options   => "",
       java_option       => "-Xmx40g",
       source_config_ref => $cfg->{files_config_ref},
       groups_ref        => $cfg->{groups},
