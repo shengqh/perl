@@ -394,7 +394,7 @@ my $tcga_dna = {
 };
 
 my $tcga_dna_nt = {
-  general => { task_name => "tcga_dnant" },
+  general => { task_name => "tcga_dna_nt" },
   files_config_ref => [ $preparation, "dna_refine" ],
   groups           => $tcga->{dna_nt_groups},
   fasta_file       => $fasta_file_tcga_dna,
@@ -536,13 +536,13 @@ for my $cfg (@cfgs) {
               my $scoreName = $score == 0 ? "noscore" : "score${score}";
               my $scoreOption = $score == 0 ? "--glm_ignore_score_diff" : "--glm_min_median_score_diff 5";
               my $option     = "--min_read_depth 10 --min_tumor_percentage $tp --min_tumor_read $tr $scoreOption --max_normal_percentage $np --glm_pvalue $gp";
-              my $optionName = "${task_name}_tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}";
+              my $optionName = "tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}";
 
               if ( $np == 0.02 && $gp == 0.1 ) {
-                $def->{"${optionName}_glmvc_validation"} = {
+                $def->{"${task_name}_glmvc_${optionName}_validation"} = {
                   class             => "Variants::GlmvcValidate",
-                  perform           => 1,
-                  target_dir        => "${target_dir}/${optionName}_glmvc_validation",
+                  perform           => 0,
+                  target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_validation",
                   option            => $option,
                   source_type       => "BAM",
                   source_config_ref => $cfg->{files_config_ref},
@@ -563,10 +563,10 @@ for my $cfg (@cfgs) {
                 };
               }
 
-              $def->{"${optionName}_glmvc"} = {
+              $def->{"${task_name}_glmvc_${optionName}"} = {
                 class             => "Variants::GlmvcCall",
                 perform           => 1,
-                target_dir        => "${target_dir}/${optionName}_glmvc",
+                target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}",
                 option            => $option,
                 source_type       => "BAM",
                 source_config_ref => $cfg->{files_config_ref},
@@ -589,10 +589,10 @@ for my $cfg (@cfgs) {
               };
 
               if ( $cfg != $tcga_dna_nt && $np == 0.02 && $gp == 0.1 ) {
-                $def->{"${optionName}_glmvc_thread1"} = {
+                $def->{"${task_name}_glmvc_${optionName}_thread1"} = {
                   class             => "Variants::GlmvcCall",
                   perform           => 0,
-                  target_dir        => "${target_dir}/${optionName}_glmvc_thread1",
+                  target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_thread1",
                   option            => $option,
                   source_type       => "BAM",
                   source_config_ref => $cfg->{files_config_ref},
@@ -618,12 +618,12 @@ for my $cfg (@cfgs) {
               if ( $cfg == $tcga_dna ) {
                 my $annotation = {
                   general                              => { task_name => "ann" },
-                  "${optionName}_annovar" => {
+                  "annovar_${optionName}" => {
                     class      => "Annotation::Annovar",
                     perform    => 0,
-                    target_dir => "${target_dir}/${optionName}_annovar",
+                    target_dir => "${target_dir}/annovar_${optionName}",
                     option     => $annovar_param,
-                    source     => { "detected" => ["${target_dir}/${optionName}_annovar/data/detected_sites.tsv"], },
+                    source     => { "detected" => ["${target_dir}/annovar_${optionName}/data/detected_sites.tsv"], },
                     annovar_db => $annovar_db,
                     buildver   => "hg19",
                     sh_direct  => 1,
@@ -635,22 +635,22 @@ for my $cfg (@cfgs) {
                       "mem"      => "10gb"
                     },
                   },
-                  "${optionName}_GlmvcExtract" => {
+                  "extract_${optionName}" => {
                     class      => "Variants::GlmvcExtract",
                     perform    => 0,
-                    target_dir => "${target_dir}/${optionName}_extract",
+                    target_dir => "${target_dir}/extract_${optionName}",
                     option     => "",
                     source     => {
-                      "TCGA-A7-A0D9" => ["${target_dir}/${optionName}_extract/data/TCGA-A7-A0D9.tsv"],
-                      "TCGA-BH-A0B3" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0B3.tsv"],
-                      "TCGA-BH-A0B8" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0B8.tsv"],
-                      "TCGA-BH-A0BJ" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0BJ.tsv"],
-                      "TCGA-BH-A0BM" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0BM.tsv"],
-                      "TCGA-BH-A0C0" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0C0.tsv"],
-                      "TCGA-BH-A0DK" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0DK.tsv"],
-                      "TCGA-BH-A0DP" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0DP.tsv"],
-                      "TCGA-BH-A0E0" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0E0.tsv"],
-                      "TCGA-BH-A0H7" => ["${target_dir}/${optionName}_extract/data/TCGA-BH-A0H7.tsv"],
+                      "TCGA-A7-A0D9" => ["${target_dir}/extract_${optionName}/data/TCGA-A7-A0D9.tsv"],
+                      "TCGA-BH-A0B3" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0B3.tsv"],
+                      "TCGA-BH-A0B8" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0B8.tsv"],
+                      "TCGA-BH-A0BJ" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0BJ.tsv"],
+                      "TCGA-BH-A0BM" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0BM.tsv"],
+                      "TCGA-BH-A0C0" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0C0.tsv"],
+                      "TCGA-BH-A0DK" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0DK.tsv"],
+                      "TCGA-BH-A0DP" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0DP.tsv"],
+                      "TCGA-BH-A0E0" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0E0.tsv"],
+                      "TCGA-BH-A0H7" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0H7.tsv"],
                     },
                     bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
                     groups               => $tcga->{all_sample_groups},
