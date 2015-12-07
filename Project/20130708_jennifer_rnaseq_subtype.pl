@@ -3,7 +3,6 @@ use strict;
 use warnings;
 
 use CQS::QC;
-use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ClassFactory;

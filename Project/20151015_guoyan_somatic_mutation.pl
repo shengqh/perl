@@ -423,21 +423,16 @@ my @cfgs = ( $tcga_dna_nb, $tcga_dna_nt, $tcga_rna_nt );
 
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
+my @nps = (0.02);
+my @gps = (0.1);
 
-my @nps    = (0.02);
-my @gps    = (0.1);
-my @tps    = ( 0.08, 0.1 );
-my @trs    = ( 4, 5 );
-my @scores = ( 0, 5 );
-
-my @options =
-  ( "--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff", "--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 glm_min_median_score_diff 5" );
-my @optionNames = ( "tp_0.08_4_noscore", "tp_0.1_5_score5" );
-
-#my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.08 --min_tumor_read 4 --glm_ignore_score_diff");
-#my @optionNames = ("tp_0.08_4_noscore");
-#my @options     = ("--min_read_depth 10 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_ignore_score_diff");
-#my @optionNames = ("tp_0.1_5_noscore");
+#my @tps             = ( 0.08, 0.1 );
+#my @trs             = ( 4, 5 );
+#my @scores          = ( 0, 5 );
+my @tps             = (0.1);
+my @trs             = (5);
+my @scores          = (5);
+my @zero_strategies = (1);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
@@ -526,16 +521,21 @@ for my $cfg (@cfgs) {
 
   #performTask( $def, "varscan2" );
 
-  for ( my $i = 0 ; $i < scalar(@options) ; $i++ ) {
-    for my $tp (@tps) {
-      for my $tr (@trs) {
-        for my $score (@scores) {
-          for my $np (@nps) {
-            for my $gp (@gps) {
-              my $scoreName = $score == 0 ? "noscore" : "score${score}";
-              my $scoreOption = $score == 0 ? "--glm_ignore_score_diff" : "--glm_min_median_score_diff 5";
-              my $option     = "--min_read_depth 10 --min_tumor_percentage $tp --min_tumor_read $tr $scoreOption --max_normal_percentage $np --glm_pvalue $gp";
-              my $optionName = "tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}";
+  for my $tp (@tps) {
+    for my $tr (@trs) {
+      for my $score (@scores) {
+        for my $np (@nps) {
+          for my $gp (@gps) {
+            for my $zero_strategy (@zero_strategies) {
+              my $zeroExtension = $zero_strategy ? "_zerostragety"                    : "";
+              my $zeroOption    = $zero_strategy ? "--use_zero_minor_allele_strategy" : "";
+              my $scoreName     = $score == 0    ? "noscore"                          : "score${score}";
+              my $scoreOption =
+                $score == 0
+                ? "--glm_ignore_score_diff"
+                : "--glm_min_median_score_diff 5";
+              my $option     = "--min_read_depth 10 --min_tumor_percentage $tp --min_tumor_read $tr $scoreOption --max_normal_percentage $np --glm_pvalue $gp $zeroOption";
+              my $optionName = "tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}$zeroExtension";
 
               if ( $np == 0.02 && $gp == 0.1 ) {
                 $def->{"${task_name}_glmvc_${optionName}_validation"} = {
@@ -587,7 +587,10 @@ for my $cfg (@cfgs) {
                 },
               };
 
-              if ( $cfg != $tcga_dna_nt && $np == 0.02 && $gp == 0.1 ) {
+              if ( $cfg != $tcga_dna_nt
+                && $np == 0.02
+                && $gp == 0.1 )
+              {
                 $def->{"${task_name}_glmvc_${optionName}_thread1"} = {
                   class             => "Variants::GlmvcCall",
                   perform           => 0,
@@ -616,13 +619,15 @@ for my $cfg (@cfgs) {
               }
               if ( $cfg == $tcga_dna_nb ) {
                 my $annotation = {
-                  general                              => { task_name => "ann" },
+                  general                 => { task_name => "ann" },
                   "annovar_${optionName}" => {
                     class      => "Annotation::Annovar",
                     perform    => 0,
                     target_dir => "${target_dir}/annovar_${optionName}",
                     option     => $annovar_param,
-                    source     => { "detected" => ["${target_dir}/annovar_${optionName}/data/detected_sites.tsv"], },
+                    source     => {
+                      "detected" => ["${target_dir}/annovar_${optionName}/data/detected_sites.tsv"],
+                    },
                     annovar_db => $annovar_db,
                     buildver   => "hg19",
                     sh_direct  => 1,
@@ -672,7 +677,6 @@ for my $cfg (@cfgs) {
       }
     }
   }
-
   performConfig($def);
 }
 
