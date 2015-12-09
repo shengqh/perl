@@ -126,6 +126,21 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
+	fastq_len => {
+		class      => "CQS::FastqLen",
+		perform    => 1,
+		target_dir => "$target_dir/fastq_len",
+		option     => "",
+		source_ref => "cutadapt",
+		cqstools   => $cqstools,
+		sh_direct  => 1,
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "24",
+			"mem"      => "20gb"
+		},
+	},
 	bowtie1 => {
 		class         => "Alignment::Bowtie1",
 		perform       => 1,
@@ -142,7 +157,6 @@ my $config = {
 			"mem"      => "40gb"
 		},
 	},
-
 };
 
 performConfig($config);
