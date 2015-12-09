@@ -41,7 +41,7 @@ my $config = {
 	},
 	sra2fastq => {
 		class      => "SRA::FastqDump",
-		perform    => 1,
+		perform    => 0,
 		ispaired   => 0,
 		target_dir => "${target_dir}/FastqDump",
 		option     => "",
@@ -56,7 +56,7 @@ my $config = {
 	},
 	fastqc => {
 		class      => "QC::FastQC",
-		perform    => 1,
+		perform    => 0,
 		target_dir => "${target_dir}/fastqc",
 		option     => "",
 		source_ref => "sra2fastq",
@@ -72,7 +72,7 @@ my $config = {
 		class         => "Alignment::Bowtie1",
 		perform       => 1,
 		target_dir    => "${target_dir}/bowtie1",
-		option        => "-m 1 --best --strata",
+		option        => "-v 1 -m 1 --best --strata",
 		fasta_file    => $fasta_file,
 		source_ref    => "sra2fastq",
 		bowtie1_index => $bowtie_index,
