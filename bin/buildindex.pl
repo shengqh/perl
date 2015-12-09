@@ -19,15 +19,30 @@ buildindex -f fastaFile
 Options:
 
   -f|--file {fastaFile}        Fasta format sequence file
+  -g|--gsnap {0/1}             Build gsnap index
+  -b|--bowtie {0/1}            Build bowtie index
+  -B|--bowtie2 {0/1}           Build bowtie2 index
+  -w|--bwa {0/1}               Build bwa index
   -h|--help                    This page.
 ";
 
 Getopt::Long::Configure('bundling');
 
 my $fastaFile;
+my $dogsnap;
+my $dobowtie;
+my $dobowtie2;
+my $dobwa;
 my $help;
 
-GetOptions( 'h|help' => \$help, 'f|file=s' => \$fastaFile );
+GetOptions(
+  'h|help'      => \$help,
+  'g|gsnap=i'   => \$dogsnap,
+  'b|bowtie=i'  => \$dobowtie,
+  'B|bowtie2=i' => \$dobowtie2,
+  'w|bwa=i'     => \$dobwa,
+  'f|file=s'    => \$fastaFile
+);
 
 if ( defined $help ) {
   print $usage;
@@ -44,7 +59,7 @@ my $basename = basename($fastaFile);
 
 # index fasta file
 if ( !-e "${basename}.fai" ) {
-	run_command("samtools faidx $fastaFile ");
+  run_command("samtools faidx $fastaFile ");
 }
 
 if ( !-e "${base}.dict" ) {
@@ -52,81 +67,94 @@ if ( !-e "${base}.dict" ) {
 }
 
 if ( !-e "${base}.len" ) {
-	run_command("perl /home/shengq1/local/bin/get_fasta_lengths.pl $fastaFile");
-	run_command("mv res_${basename} ${base}.len ");
+  run_command("perl /home/shengq1/local/bin/get_fasta_lengths.pl $fastaFile");
+  run_command("mv res_${basename} ${base}.len ");
 }
 
-# gsnap
-`gsnap 2> 1`;
-my $gsnap = `grep version 1 | cut -d " " -f 3`;
-chomp($gsnap);
-`rm 1`;
-if ( !-e "gsnap_index_k14_${gsnap}" ) {
-  mkdir("gsnap_index_k14_${gsnap}");
-  chdir("gsnap_index_k14_${gsnap}");
-  if ( !-e $basename ) {
-    run_command("ln -s ../$fastaFile $basename ");
-    run_command("ln -s ../${base}.dict ${base}.dict ");
-    run_command("ln -s ../${basename}.fai ${basename}.fai ");
-    run_command("ln -s ../${base}.len ${base}.len ");
+if ( $dogsnap != 0 ) {
+
+  # gsnap
+  `gsnap 2> 1`;
+  my $gsnap = `grep version 1 | cut -d " " -f 3`;
+  chomp($gsnap);
+  `rm 1`;
+  if ( !-e "gsnap_index_k14_${gsnap}" ) {
+    mkdir("gsnap_index_k14_${gsnap}");
+    chdir("gsnap_index_k14_${gsnap}");
+    if ( !-e $basename ) {
+      run_command("ln -s ../$fastaFile $basename ");
+      run_command("ln -s ../${base}.dict ${base}.dict ");
+      run_command("ln -s ../${basename}.fai ${basename}.fai ");
+      run_command("ln -s ../${base}.len ${base}.len ");
+    }
+
+    #min_read_length = kmers + interval - 1
+    #in order to control the min_read_length = 16, we have to smaller the kmers from 15 to 14 when keep the "sampling interval for genome" equals 3
+    run_command("gmap_build -D . -d $base -k 14 -s none $basename");
+    run_command("atoiindex -F . -d $base");
+    chdir("..");
   }
-  #min_read_length = kmers + interval - 1
-  #in order to control the min_read_length = 16, we have to smaller the kmers from 15 to 14 when keep the "sampling interval for genome" equals 3
-  run_command("gmap_build -D . -d $base -k 14 -s none $basename");
-  run_command("atoiindex -F . -d $base");
-  chdir("..");
 }
 
-# bowtie
-my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
-chomp($bowtie);
-if ( !-e "bowtie_index_${bowtie}" ) {
-  mkdir("bowtie_index_${bowtie}");
-  chdir("bowtie_index_${bowtie}");
-  if ( !-e $basename ) {
-    run_command("ln -s ../$fastaFile $basename ");
-    run_command("ln -s ../${base}.dict ${base}.dict ");
-    run_command("ln -s ../${basename}.fai ${basename}.fai ");
-    run_command("ln -s ../${base}.len ${base}.len ");
+if ( $dobowtie != 0 ) {
+
+  # bowtie
+  my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
+  chomp($bowtie);
+  if ( !-e "bowtie_index_${bowtie}" ) {
+    mkdir("bowtie_index_${bowtie}");
+    chdir("bowtie_index_${bowtie}");
+    if ( !-e $basename ) {
+      run_command("ln -s ../$fastaFile $basename ");
+      run_command("ln -s ../${base}.dict ${base}.dict ");
+      run_command("ln -s ../${basename}.fai ${basename}.fai ");
+      run_command("ln -s ../${base}.len ${base}.len ");
+    }
+    run_command("bowtie-build $basename $base ");
+    chdir("..");
   }
-  run_command("bowtie-build $basename $base ");
-  chdir("..");
 }
 
-#bwa
-`bwa 2> 1`;
-my $bwa = `grep Version 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
-chomp($bwa);
-`rm 1`;
-if ( !-e "bwa_index_${bwa}" ) {
-  mkdir("bwa_index_${bwa}");
-  chdir("bwa_index_${bwa}");
-  if ( !-e $basename ) {
-    run_command("ln -s ../$fastaFile $basename ");
-    run_command("ln -s ../${base}.dict ${base}.dict ");
-    run_command("ln -s ../${basename}.fai ${basename}.fai ");
-    run_command("ln -s ../${base}.len ${base}.len ");
-  }
-  print "bwa index $basename \n";
-  run_command("bwa index $basename");
+if ( $dobwa != 0 ) {
 
-  chdir("..");
+  #bwa
+  `bwa 2> 1`;
+  my $bwa = `grep Version 1 | cut -d " " -f 2 | cut -d "-" -f 1`;
+  chomp($bwa);
+  `rm 1`;
+  if ( !-e "bwa_index_${bwa}" ) {
+    mkdir("bwa_index_${bwa}");
+    chdir("bwa_index_${bwa}");
+    if ( !-e $basename ) {
+      run_command("ln -s ../$fastaFile $basename ");
+      run_command("ln -s ../${base}.dict ${base}.dict ");
+      run_command("ln -s ../${basename}.fai ${basename}.fai ");
+      run_command("ln -s ../${base}.len ${base}.len ");
+    }
+    print "bwa index $basename \n";
+    run_command("bwa index $basename");
+
+    chdir("..");
+  }
 }
 
-# bowtie2
-my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
-chomp($bowtie2);
-if ( !-e "bowtie2_index_${bowtie2}" ) {
-  mkdir("bowtie2_index_${bowtie2}");
-  chdir("bowtie2_index_${bowtie2}");
-  if ( !-e $basename ) {
-    run_command("ln -s ../$fastaFile $basename ");
-    run_command("ln -s ../${base}.dict ${base}.dict ");
-    run_command("ln -s ../${basename}.fai ${basename}.fai ");
-    run_command("ln -s ../${base}.len ${base}.len ");
+if ( $dobowtie2 != 0 ) {
+
+  # bowtie2
+  my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
+  chomp($bowtie2);
+  if ( !-e "bowtie2_index_${bowtie2}" ) {
+    mkdir("bowtie2_index_${bowtie2}");
+    chdir("bowtie2_index_${bowtie2}");
+    if ( !-e $basename ) {
+      run_command("ln -s ../$fastaFile $basename ");
+      run_command("ln -s ../${base}.dict ${base}.dict ");
+      run_command("ln -s ../${basename}.fai ${basename}.fai ");
+      run_command("ln -s ../${base}.len ${base}.len ");
+    }
+    run_command("bowtie2-build $basename $base ");
+    chdir("..");
   }
-  run_command("bowtie2-build $basename $base ");
-  chdir("..");
 }
 
 1;
