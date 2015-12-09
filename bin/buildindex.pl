@@ -71,7 +71,7 @@ if ( !-e "${base}.len" ) {
   run_command("mv res_${basename} ${base}.len ");
 }
 
-if ( $dogsnap != 0 ) {
+if ( !defined $dogsnap || $dogsnap != 0 ) {
 
   # gsnap
   `gsnap 2> 1`;
@@ -96,7 +96,7 @@ if ( $dogsnap != 0 ) {
   }
 }
 
-if ( $dobowtie != 0 ) {
+if ( !defined $dobowtie || $dobowtie != 0 ) {
 
   # bowtie
   my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
@@ -115,7 +115,7 @@ if ( $dobowtie != 0 ) {
   }
 }
 
-if ( $dobwa != 0 ) {
+if ( !defined $dobwa || $dobwa != 0 ) {
 
   #bwa
   `bwa 2> 1`;
@@ -138,7 +138,7 @@ if ( $dobwa != 0 ) {
   }
 }
 
-if ( $dobowtie2 != 0 ) {
+if ( !defined $dobowtie2 || $dobowtie2 != 0 ) {
 
   # bowtie2
   my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
