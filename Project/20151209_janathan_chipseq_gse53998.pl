@@ -68,9 +68,23 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
+	fastqc_pre_trim_summary => {
+		class      => "QC::FastQCSummary",
+		perform    => 1,
+		sh_direct  => 1,
+		target_dir => "${target_dir}/fastqc",
+		cqstools   => $cqstools,
+		option     => "",
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "2",
+			"mem"      => "10gb"
+		},
+	},
 	bowtie1 => {
 		class         => "Alignment::Bowtie1",
-		perform       => 1,
+		perform       => 0,
 		target_dir    => "${target_dir}/bowtie1",
 		option        => "-v 1 -m 1 --best --strata",
 		fasta_file    => $fasta_file,
