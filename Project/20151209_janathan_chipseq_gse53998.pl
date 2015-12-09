@@ -69,14 +69,15 @@ my $config = {
 		},
 	},
 	bowtie1 => {
-		class      => "Alignment::Bowtie1",
-		perform    => 1,
-		target_dir => "${target_dir}/bowtie1",
-		option     => "-m 1 --best --strata",
-		fasta_file => $fasta_file,
-		source_ref => "sra2fastq",
-		sh_direct  => 0,
-		pbs        => {
+		class         => "Alignment::Bowtie1",
+		perform       => 1,
+		target_dir    => "${target_dir}/bowtie1",
+		option        => "-m 1 --best --strata",
+		fasta_file    => $fasta_file,
+		source_ref    => "sra2fastq",
+		bowtie1_index => $bowtie_index,
+		sh_direct     => 0,
+		pbs           => {
 			"email"    => $email,
 			"nodes"    => "1:ppn=8",
 			"walltime" => "72",
