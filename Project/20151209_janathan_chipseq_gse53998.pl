@@ -54,10 +54,10 @@ my $config = {
 			"mem"      => "10gb"
 		},
 	},
-	fastqc => {
+	fastqc_pretrim => {
 		class      => "QC::FastQC",
 		perform    => 0,
-		target_dir => "${target_dir}/fastqc",
+		target_dir => "${target_dir}/fastqc_pre_trim",
 		option     => "",
 		source_ref => "sra2fastq",
 		sh_direct  => 0,
@@ -70,9 +70,53 @@ my $config = {
 	},
 	fastqc_pre_trim_summary => {
 		class      => "QC::FastQCSummary",
+		perform    => 0,
+		sh_direct  => 1,
+		target_dir => "${target_dir}/fastqc_pre_trim",
+		cqstools   => $cqstools,
+		option     => "",
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "2",
+			"mem"      => "10gb"
+		},
+	},
+	cutadapt => {
+		class      => "Cutadapt",
+		perform    => 1,
+		target_dir => "${target_dir}/cutadapt",
+		option     => "-O 10 -m 30",
+		source_ref => "sra2fastq",
+		adapter    => "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",    #trueseq adapter
+		extension  => "_clipped.fastq",
+		sh_direct  => 0,
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "24",
+			"mem"      => "20gb"
+		},
+	},
+	fastqc_post_trim => {
+		class      => "QC::FastQC",
+		perform    => 1,
+		target_dir => "${target_dir}/fastqc_post_trim",
+		option     => "",
+		sh_direct  => 1,
+		source_ref => [ "cutadapt", ".fastq.gz" ],
+		pbs        => {
+			"email"    => $email,
+			"nodes"    => "1:ppn=1",
+			"walltime" => "2",
+			"mem"      => "10gb"
+		},
+	},
+	fastqc_post_trim_summary => {
+		class      => "QC::FastQCSummary",
 		perform    => 1,
 		sh_direct  => 1,
-		target_dir => "${target_dir}/fastqc",
+		target_dir => "${target_dir}/fastqc_post_trim",
 		cqstools   => $cqstools,
 		option     => "",
 		pbs        => {
@@ -84,11 +128,11 @@ my $config = {
 	},
 	bowtie1 => {
 		class         => "Alignment::Bowtie1",
-		perform       => 0,
+		perform       => 1,
 		target_dir    => "${target_dir}/bowtie1",
 		option        => "-v 1 -m 1 --best --strata",
 		fasta_file    => $fasta_file,
-		source_ref    => "sra2fastq",
+		source_ref    => "cutadapt",
 		bowtie1_index => $bowtie_index,
 		sh_direct     => 0,
 		pbs           => {
