@@ -45,7 +45,7 @@ my $config = {
     "BRD4_TNF" => ["EC_BRD4_TNF"],
   },
   pairs => {
-    "BRD4_TNF_vs_CON" => [ "BRD4_TNF", "BRD4_CON" ],
+    "BRD4_TNF_vs_CON" => [ "BRD4_CON", "BRD4_TNF" ],
   },
   sra2fastq => {
     class      => "SRA::FastqDump",
