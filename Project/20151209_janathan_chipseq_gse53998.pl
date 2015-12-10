@@ -166,7 +166,7 @@ my $config = {
       step_1 => [ "sra2fastq",               "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1" ],
       step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary" ],
     },
-    sh_direct => 1,
+    sh_direct => 0,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
