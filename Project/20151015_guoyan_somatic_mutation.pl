@@ -436,7 +436,7 @@ my @gps = (0.1);
 my @tps             = (0.1);
 my @trs             = (5);
 my @scores          = (5);
-my @zero_strategies = (1);
+my @zero_strategies = (0);
 
 for my $cfg (@cfgs) {
   my $task_name = $cfg->{general}{task_name};
