@@ -7,8 +7,8 @@ use CQS::FileUtils;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/chipseq/20151208_gse53998");
 
-my $fasta_file   = "/scratch/cqs/shengq1/references/hg19_16569_MT/bowtie_index_1.1.2/hg19_16569_MT.fa";
-my $bowtie_index = "/scratch/cqs/shengq1/references/hg19_16569_MT/bowtie_index_1.1.2/hg19_16569_MT";
+my $fasta_file   = "/scratch/cqs/shengq1/references/hg18_chrM/bowtie_index_1.1.2/hg18_chrM.fa";
+my $bowtie_index = "/scratch/cqs/shengq1/references/hg18_chrM/bowtie_index_1.1.2/hg18_chrM";
 my $cqstools     = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
@@ -84,7 +84,7 @@ my $config = {
 	},
 	cutadapt => {
 		class      => "Cutadapt",
-		perform    => 1,
+		perform    => 0,
 		target_dir => "${target_dir}/cutadapt",
 		option     => "-O 10 -m 30",
 		source_ref => "sra2fastq",
@@ -100,7 +100,7 @@ my $config = {
 	},
 	fastqc_post_trim => {
 		class      => "QC::FastQC",
-		perform    => 1,
+		perform    => 0,
 		target_dir => "${target_dir}/fastqc_post_trim",
 		option     => "",
 		sh_direct  => 1,
@@ -114,7 +114,7 @@ my $config = {
 	},
 	fastqc_post_trim_summary => {
 		class      => "QC::FastQCSummary",
-		perform    => 1,
+		perform    => 0,
 		sh_direct  => 1,
 		target_dir => "${target_dir}/fastqc_post_trim",
 		cqstools   => $cqstools,
@@ -128,7 +128,7 @@ my $config = {
 	},
 	fastq_len => {
 		class      => "CQS::FastqLen",
-		perform    => 1,
+		perform    => 0,
 		target_dir => "$target_dir/fastq_len",
 		option     => "",
 		source_ref => "cutadapt",
