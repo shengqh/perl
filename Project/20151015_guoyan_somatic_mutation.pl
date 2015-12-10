@@ -540,7 +540,7 @@ for my $cfg (@cfgs) {
               if ( $np == 0.02 && $gp == 0.1 ) {
                 $def->{"${task_name}_glmvc_${optionName}_validation"} = {
                   class             => "Variants::GlmvcValidate",
-                  perform           => 0,
+                  perform           => 1,
                   target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_validation",
                   option            => $option,
                   source_type       => "BAM",
@@ -564,7 +564,7 @@ for my $cfg (@cfgs) {
 
               $def->{"${task_name}_glmvc_${optionName}"} = {
                 class             => "Variants::GlmvcCall",
-                perform           => 1,
+                perform           => 0,
                 target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}",
                 option            => $option,
                 source_type       => "BAM",
@@ -641,7 +641,7 @@ for my $cfg (@cfgs) {
                   },
                   "extract_${optionName}" => {
                     class      => "Variants::GlmvcExtract",
-                    perform    => 0,
+                    perform    => 1,
                     target_dir => "${target_dir}/extract_${optionName}",
                     option     => "",
                     source     => {
