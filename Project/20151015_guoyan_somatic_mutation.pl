@@ -423,7 +423,8 @@ my $tcga_rna_nt = {
 my @cfgs = ($tcga_dna_nb);
 
 #minimum read depth
-my @rds = ( 9, 8 );
+#my @rds = ( 10, 9, 8 );
+my @rds = (10);
 
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
@@ -539,13 +540,17 @@ for my $cfg (@cfgs) {
                   $score == 0
                   ? "--glm_ignore_score_diff"
                   : "--glm_min_median_score_diff 5";
-                my $option     = "--min_read_depth $rd --min_tumor_percentage $tp --min_tumor_read $tr $scoreOption --max_normal_percentage $np --glm_pvalue $gp $zeroOption";
-                my $optionName = "rd${rd}_tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}$zeroExtension";
+                my $option = "--min_read_depth $rd --min_tumor_percentage $tp --min_tumor_read $tr $scoreOption --max_normal_percentage $np --glm_pvalue $gp $zeroOption";
+
+                my $optionName = "tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}$zeroExtension";
+                if ( $rd != 10 ) {
+                  $optionName = "rd${rd}_" + $optionName;
+                }
 
                 if ( $np == 0.02 && $gp == 0.1 ) {
                   $def->{"${task_name}_glmvc_${optionName}_validation"} = {
                     class             => "Variants::GlmvcValidate",
-                    perform           => 0,
+                    perform           => 1,
                     target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_validation",
                     option            => $option,
                     source_type       => "BAM",
@@ -569,7 +574,7 @@ for my $cfg (@cfgs) {
 
                 $def->{"${task_name}_glmvc_${optionName}"} = {
                   class             => "Variants::GlmvcCall",
-                  perform           => 1,
+                  perform           => 0,
                   target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}",
                   option            => $option,
                   source_type       => "BAM",
@@ -598,7 +603,7 @@ for my $cfg (@cfgs) {
                 {
                   $def->{"${task_name}_glmvc_${optionName}_thread1"} = {
                     class             => "Variants::GlmvcCall",
-                    perform           => 0,
+                    perform           => 1,
                     target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_thread1",
                     option            => $option,
                     source_type       => "BAM",
@@ -646,7 +651,7 @@ for my $cfg (@cfgs) {
                     },
                     "extract_${optionName}" => {
                       class      => "Variants::GlmvcExtract",
-                      perform    => 0,
+                      perform    => 1,
                       target_dir => "${target_dir}/extract_${optionName}",
                       option     => "",
                       source     => {
