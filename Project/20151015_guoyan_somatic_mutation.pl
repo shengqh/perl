@@ -574,7 +574,7 @@ for my $cfg (@cfgs) {
 
                 $def->{"${task_name}_glmvc_${optionName}"} = {
                   class             => "Variants::GlmvcCall",
-                  perform           => 0,
+                  perform           => 1,
                   target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}",
                   option            => $option,
                   source_type       => "BAM",
