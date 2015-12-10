@@ -420,7 +420,7 @@ my $tcga_rna_nt = {
 };
 
 #my @cfgs = ( $tcga_dna_nb, $tcga_dna_nt, $tcga_rna_nt );
-my @cfgs = ($tcga_dna_nb);
+my @cfgs = ($tcga_dna_nb, $tcga_rna_nt);
 
 #minimum read depth
 #my @rds = ( 10, 9, 8 );
