@@ -419,7 +419,11 @@ my $tcga_rna_nt = {
   glm_pvalue       => "0.1"
 };
 
-my @cfgs = ( $tcga_dna_nb, $tcga_dna_nt, $tcga_rna_nt );
+#my @cfgs = ( $tcga_dna_nb, $tcga_dna_nt, $tcga_rna_nt );
+my @cfgs = ($tcga_dna_nb);
+
+#minimum read depth
+my @rds = ( 9, 8 );
 
 #my @nps = ( 0.01, 0.02 );
 #my @gps = ( 0.01, 0.05, 0.1 );
@@ -521,80 +525,52 @@ for my $cfg (@cfgs) {
 
   #performTask( $def, "varscan2" );
 
-  for my $tp (@tps) {
-    for my $tr (@trs) {
-      for my $score (@scores) {
-        for my $np (@nps) {
-          for my $gp (@gps) {
-            for my $zero_strategy (@zero_strategies) {
-              my $zeroExtension = $zero_strategy ? "_zerostragety"                    : "";
-              my $zeroOption    = $zero_strategy ? "--use_zero_minor_allele_strategy" : "";
-              my $scoreName     = $score == 0    ? "noscore"                          : "score${score}";
-              my $scoreOption =
-                $score == 0
-                ? "--glm_ignore_score_diff"
-                : "--glm_min_median_score_diff 5";
-              my $option     = "--min_read_depth 10 --min_tumor_percentage $tp --min_tumor_read $tr $scoreOption --max_normal_percentage $np --glm_pvalue $gp $zeroOption";
-              my $optionName = "tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}$zeroExtension";
+  for my $rd (@rds) {
+    for my $tp (@tps) {
+      for my $tr (@trs) {
+        for my $score (@scores) {
+          for my $np (@nps) {
+            for my $gp (@gps) {
+              for my $zero_strategy (@zero_strategies) {
+                my $zeroExtension = $zero_strategy ? "_zerostragety"                    : "";
+                my $zeroOption    = $zero_strategy ? "--use_zero_minor_allele_strategy" : "";
+                my $scoreName     = $score == 0    ? "noscore"                          : "score${score}";
+                my $scoreOption =
+                  $score == 0
+                  ? "--glm_ignore_score_diff"
+                  : "--glm_min_median_score_diff 5";
+                my $option     = "--min_read_depth $rd --min_tumor_percentage $tp --min_tumor_read $tr $scoreOption --max_normal_percentage $np --glm_pvalue $gp $zeroOption";
+                my $optionName = "rd${rd}_tp${tp}_tr${tr}_${scoreName}_np${np}_g${gp}$zeroExtension";
 
-              if ( $np == 0.02 && $gp == 0.1 ) {
-                $def->{"${task_name}_glmvc_${optionName}_validation"} = {
-                  class             => "Variants::GlmvcValidate",
-                  perform           => 1,
-                  target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_validation",
-                  option            => $option,
-                  source_type       => "BAM",
-                  source_config_ref => $cfg->{files_config_ref},
-                  groups_ref        => $cfg->{groups},
-                  validation_files  => $cfg->{tcga_file},
-                  fasta_file        => $cfg->{fasta_file},
-                  annovar_buildver  => "hg19",
-                  rnaediting_db     => $rnaediting_db,
-                  distance_exon_gtf => $cfg->{gtf_file},
-                  sh_direct         => 0,
-                  execute_file      => $glmvc,
-                  pbs               => {
-                    "email"    => $email,
-                    "nodes"    => "1:ppn=1",
-                    "walltime" => "72",
-                    "mem"      => "40gb"
-                  },
-                };
-              }
+                if ( $np == 0.02 && $gp == 0.1 ) {
+                  $def->{"${task_name}_glmvc_${optionName}_validation"} = {
+                    class             => "Variants::GlmvcValidate",
+                    perform           => 0,
+                    target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_validation",
+                    option            => $option,
+                    source_type       => "BAM",
+                    source_config_ref => $cfg->{files_config_ref},
+                    groups_ref        => $cfg->{groups},
+                    validation_files  => $cfg->{tcga_file},
+                    fasta_file        => $cfg->{fasta_file},
+                    annovar_buildver  => "hg19",
+                    rnaediting_db     => $rnaediting_db,
+                    distance_exon_gtf => $cfg->{gtf_file},
+                    sh_direct         => 0,
+                    execute_file      => $glmvc,
+                    pbs               => {
+                      "email"    => $email,
+                      "nodes"    => "1:ppn=1",
+                      "walltime" => "72",
+                      "mem"      => "40gb"
+                    },
+                  };
+                }
 
-              $def->{"${task_name}_glmvc_${optionName}"} = {
-                class             => "Variants::GlmvcCall",
-                perform           => 0,
-                target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}",
-                option            => $option,
-                source_type       => "BAM",
-                source_config_ref => $cfg->{files_config_ref},
-                groups_ref        => $cfg->{groups},
-                fasta_file        => $cfg->{fasta_file},
-                annovar_buildver  => "hg19",
-                annovar_protocol  => $annovar_protocol,
-                annovar_operation => $annovar_operation,
-                annovar_db        => $annovar_db,
-                rnaediting_db     => $rnaediting_db,
-                distance_exon_gtf => $cfg->{gtf_file},
-                sh_direct         => 0,
-                execute_file      => $glmvc,
-                pbs               => {
-                  "email"    => $email,
-                  "nodes"    => "1:ppn=" . $cfg->{thread},
-                  "walltime" => "72",
-                  "mem"      => "40gb"
-                },
-              };
-
-              if ( $cfg != $tcga_dna_nt
-                && $np == 0.02
-                && $gp == 0.1 )
-              {
-                $def->{"${task_name}_glmvc_${optionName}_thread1"} = {
+                $def->{"${task_name}_glmvc_${optionName}"} = {
                   class             => "Variants::GlmvcCall",
-                  perform           => 0,
-                  target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_thread1",
+                  perform           => 1,
+                  target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}",
                   option            => $option,
                   source_type       => "BAM",
                   source_config_ref => $cfg->{files_config_ref},
@@ -610,66 +586,96 @@ for my $cfg (@cfgs) {
                   execute_file      => $glmvc,
                   pbs               => {
                     "email"    => $email,
-                    "nodes"    => "1:ppn=1",
+                    "nodes"    => "1:ppn=" . $cfg->{thread},
                     "walltime" => "72",
                     "mem"      => "40gb"
                   },
                 };
 
-              }
-              if ( $cfg == $tcga_dna_nb ) {
-                my $annotation = {
-                  general                 => { task_name => "ann" },
-                  "annovar_${optionName}" => {
-                    class      => "Annotation::Annovar",
-                    perform    => 0,
-                    target_dir => "${target_dir}/annovar_${optionName}",
-                    option     => $annovar_param,
-                    source     => {
-                      "detected" => ["${target_dir}/annovar_${optionName}/data/detected_sites.tsv"],
-                    },
-                    annovar_db => $annovar_db,
-                    buildver   => "hg19",
-                    sh_direct  => 1,
-                    isvcf      => 0,
-                    pbs        => {
-                      "email"    => $email,
-                      "nodes"    => "1:ppn=1",
-                      "walltime" => "72",
-                      "mem"      => "10gb"
-                    },
-                  },
-                  "extract_${optionName}" => {
-                    class      => "Variants::GlmvcExtract",
-                    perform    => 1,
-                    target_dir => "${target_dir}/extract_${optionName}",
-                    option     => "",
-                    source     => {
-                      "TCGA-A7-A0D9" => ["${target_dir}/extract_${optionName}/data/TCGA-A7-A0D9.tsv"],
-                      "TCGA-BH-A0B3" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0B3.tsv"],
-                      "TCGA-BH-A0B8" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0B8.tsv"],
-                      "TCGA-BH-A0BJ" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0BJ.tsv"],
-                      "TCGA-BH-A0BM" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0BM.tsv"],
-                      "TCGA-BH-A0C0" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0C0.tsv"],
-                      "TCGA-BH-A0DK" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0DK.tsv"],
-                      "TCGA-BH-A0DP" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0DP.tsv"],
-                      "TCGA-BH-A0E0" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0E0.tsv"],
-                      "TCGA-BH-A0H7" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0H7.tsv"],
-                    },
-                    bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
-                    groups               => $tcga->{all_sample_groups},
-                    fasta_file           => $fasta_file_16569_MT,
-                    sh_direct            => 0,
-                    execute_file         => $glmvc,
-                    pbs                  => {
+                if ( $cfg != $tcga_dna_nt
+                  && $np == 0.02
+                  && $gp == 0.1 )
+                {
+                  $def->{"${task_name}_glmvc_${optionName}_thread1"} = {
+                    class             => "Variants::GlmvcCall",
+                    perform           => 0,
+                    target_dir        => "${target_dir}/${task_name}_glmvc_${optionName}_thread1",
+                    option            => $option,
+                    source_type       => "BAM",
+                    source_config_ref => $cfg->{files_config_ref},
+                    groups_ref        => $cfg->{groups},
+                    fasta_file        => $cfg->{fasta_file},
+                    annovar_buildver  => "hg19",
+                    annovar_protocol  => $annovar_protocol,
+                    annovar_operation => $annovar_operation,
+                    annovar_db        => $annovar_db,
+                    rnaediting_db     => $rnaediting_db,
+                    distance_exon_gtf => $cfg->{gtf_file},
+                    sh_direct         => 0,
+                    execute_file      => $glmvc,
+                    pbs               => {
                       "email"    => $email,
                       "nodes"    => "1:ppn=1",
                       "walltime" => "72",
                       "mem"      => "40gb"
                     },
-                  },
-                };
-                $def = merge( $def, $annotation );
+                  };
+
+                }
+                if ( $cfg == $tcga_dna_nb ) {
+                  my $annotation = {
+                    general                 => { task_name => "ann" },
+                    "annovar_${optionName}" => {
+                      class      => "Annotation::Annovar",
+                      perform    => 0,
+                      target_dir => "${target_dir}/annovar_${optionName}",
+                      option     => $annovar_param,
+                      source     => {
+                        "detected" => ["${target_dir}/annovar_${optionName}/data/detected_sites.tsv"],
+                      },
+                      annovar_db => $annovar_db,
+                      buildver   => "hg19",
+                      sh_direct  => 1,
+                      isvcf      => 0,
+                      pbs        => {
+                        "email"    => $email,
+                        "nodes"    => "1:ppn=1",
+                        "walltime" => "72",
+                        "mem"      => "10gb"
+                      },
+                    },
+                    "extract_${optionName}" => {
+                      class      => "Variants::GlmvcExtract",
+                      perform    => 0,
+                      target_dir => "${target_dir}/extract_${optionName}",
+                      option     => "",
+                      source     => {
+                        "TCGA-A7-A0D9" => ["${target_dir}/extract_${optionName}/data/TCGA-A7-A0D9.tsv"],
+                        "TCGA-BH-A0B3" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0B3.tsv"],
+                        "TCGA-BH-A0B8" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0B8.tsv"],
+                        "TCGA-BH-A0BJ" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0BJ.tsv"],
+                        "TCGA-BH-A0BM" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0BM.tsv"],
+                        "TCGA-BH-A0C0" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0C0.tsv"],
+                        "TCGA-BH-A0DK" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0DK.tsv"],
+                        "TCGA-BH-A0DP" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0DP.tsv"],
+                        "TCGA-BH-A0E0" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0E0.tsv"],
+                        "TCGA-BH-A0H7" => ["${target_dir}/extract_${optionName}/data/TCGA-BH-A0H7.tsv"],
+                      },
+                      bam_files_config_ref => [ $preparation, "dna_refine", $preparation, "rna_refine" ],
+                      groups               => $tcga->{all_sample_groups},
+                      fasta_file           => $fasta_file_16569_MT,
+                      sh_direct            => 0,
+                      execute_file         => $glmvc,
+                      pbs                  => {
+                        "email"    => $email,
+                        "nodes"    => "1:ppn=1",
+                        "walltime" => "72",
+                        "mem"      => "40gb"
+                      },
+                    },
+                  };
+                  $def = merge( $def, $annotation );
+                }
               }
             }
           }
