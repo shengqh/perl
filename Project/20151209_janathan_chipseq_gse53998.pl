@@ -217,7 +217,7 @@ my $config = {
 #performConfig($config);
 #performTask( $config, "MACS" );
 
-print Dumper($config);
+#print Dumper($config);
 
 performTask( $config, "bradner_rose2" );
 
