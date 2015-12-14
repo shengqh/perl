@@ -41,11 +41,7 @@ my $config = {
     #    "EC_WCE_TNF_JQ1_2"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106535.sra"],
   },
   groups => {
-    "BRD4_CON" => ["EC_BRD4_CON"],
-    "BRD4_TNF" => ["EC_BRD4_TNF"],
-  },
-  pairs => {
-    "BRD4_TNF_vs_CON" => [ "BRD4_CON", "BRD4_TNF" ],
+    "BRD4_TNF_vs_CON" => [ "EC_BRD4_CON", "EC_BRD4_TNF" ],
   },
   sra2fastq => {
     class      => "SRA::FastqDump",
@@ -181,7 +177,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  BradnerRose2 => {
+  bradner_rose2 => {
     class                 => "Chipseq::BradnerRose2",
     perform               => 1,
     target_dir            => "${target_dir}/BradnerRose2",
@@ -205,7 +201,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "sra2fastq",               "fastqc_pre_trim",          "cutadapt", "fastqc_post_trim", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",     "BradnerRose2" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",     "bradner_rose2" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -218,6 +214,7 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "BradnerRose2");
+performTask( $config, "MACS" );
+performTask( $config, "bradner_rose2" );
 
 1;
