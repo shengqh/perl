@@ -181,14 +181,31 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  BradnerRose2 => {
+    class                 => "Chipseq::BradnerRose2",
+    perform               => 1,
+    target_dir            => "${target_dir}/BradnerRose2",
+    option                => "",
+    source_ref            => "bowtie1",
+    groups_ref            => "groups",
+    pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    binding_site_file_ref => [ "MACS", ".bed\$" ],
+    sh_direct             => 1,
+    pbs                   => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 0,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "sra2fastq",               "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary" ],
+      step_1 => [ "sra2fastq",               "fastqc_pre_trim",          "cutadapt", "fastqc_post_trim", "bowtie1" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",     "BradnerRose2" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -200,6 +217,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "BradnerRose2");
 
 1;
