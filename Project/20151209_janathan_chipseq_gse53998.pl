@@ -187,6 +187,7 @@ my $config = {
     groups_ref            => "groups",
     pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_file_ref => [ "MACS", ".bed\$" ],
+    genome                => "hg18",
     sh_direct             => 1,
     pbs                   => {
       "email"    => $email,
