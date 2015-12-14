@@ -4,6 +4,7 @@ use warnings;
 
 use CQS::ClassFactory;
 use CQS::FileUtils;
+use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/chipseq/20151208_gse53998");
 
@@ -214,7 +215,10 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "MACS" );
+#performTask( $config, "MACS" );
+
+print Dumper($config);
+
 performTask( $config, "bradner_rose2" );
 
 1;
