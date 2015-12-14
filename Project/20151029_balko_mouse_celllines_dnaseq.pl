@@ -489,26 +489,6 @@ for my $dataset (@datasets) {
             "mem"      => "10gb"
           },
         },
-        varscan2_copynumber => {
-          class           => "VarScan2::Copynumber",
-          perform         => 1,
-          target_dir      => "${target_dir}/" . $dataset->{task_name} . "/varscan2_copynumber",
-          option          => "",
-          java_option     => "-Xmx40g",
-          mpileup_options => "-q 1",
-          call_options    => "--amp-threshold 0.3 --del-threshold 0.3",
-          source_ref      => "bwa",
-          VarScan2_jar    => $varscan2,
-          groups          => $dataset->{groups},
-          fasta_file      => $bwa_fasta,
-          sh_direct       => 0,
-          pbs             => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "72",
-            "mem"      => "40gb"
-          },
-        }
       }
     );
     push @all, ( "conifer", "bwa_dexseqcount" );
@@ -537,6 +517,27 @@ for my $dataset (@datasets) {
     #performTask( $config, "glmvc_WES_validation" );
   }
 
+  $config->{varscan2_copynumber} = {
+    class           => "VarScan2::Copynumber",
+    perform         => 1,
+    target_dir      => "${target_dir}/" . $dataset->{task_name} . "/varscan2_copynumber",
+    option          => "",
+    java_option     => "-Xmx40g",
+    mpileup_options => "-q 1",
+    call_options    => "--amp-threshold 0.3 --del-threshold 0.3",
+    source_ref      => "bwa",
+    VarScan2_jar    => $varscan2,
+    groups          => $dataset->{groups},
+    fasta_file      => $bwa_fasta,
+    sh_direct       => 0,
+    pbs             => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  };
+
   $config->{sequencetask} = {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -557,9 +558,9 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
+  performTask( $config, "varscan2_copynumber" );
 
   if ( $dataset == $wes ) {
-    performTask( $config, "varscan2_copynumber" );
   }
 }
 
