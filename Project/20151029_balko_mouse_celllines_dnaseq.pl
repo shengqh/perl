@@ -14,6 +14,7 @@ my $email      = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $glmvc      = "/home/shengq1/glmvc/glmvc.exe";
 my $mutect     = "/home/shengq1/local/bin/mutect-1.1.7.jar";
+my $varscan2   = "/home/shengq1/local/bin/VarScan.v2.4.1.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $conifer    = "/home/shengq1/pylibs/bin/conifer.py";
@@ -489,14 +490,16 @@ for my $dataset (@datasets) {
           },
         },
         varscan2_copynumber => {
-          class      => "VarScan2::Copynumber",
-          perform    => 1,
-          target_dir => "${target_dir}/" . $dataset->{task_name} . "/varscan2_copynumber",
-          option     => "",
-          source_ref => "bwa",
-          groups     => $dataset->{groups},
-          sh_direct  => 1,
-          pbs        => {
+          class        => "VarScan2::Copynumber",
+          perform      => 1,
+          target_dir   => "${target_dir}/" . $dataset->{task_name} . "/varscan2_copynumber",
+          option       => "",
+          source_ref   => "bwa",
+          VarScan2_jar => $varscan2,
+          groups       => $dataset->{groups},
+          fasta_file   => $bwa_fasta,
+          sh_direct    => 1,
+          pbs          => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
             "walltime" => "72",
