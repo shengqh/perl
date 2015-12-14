@@ -488,12 +488,24 @@ for my $dataset (@datasets) {
             "mem"      => "10gb"
           },
         },
+        varscan2_copynumber => {
+          class      => "VarScan2::Copynumber",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/varscan2_copynumber",
+          option     => "",
+          source_ref => "bwa",
+          groups     => $dataset->{groups},
+          sh_direct  => 1,
+          pbs        => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        }
       }
     );
     push @all, ( "conifer", "bwa_dexseqcount" );
-
-    #performTask( $config, "conifer" );
-    #performTask( $config, "cnmops_bam" );
   }
   else {
     $config->{glmvc_WES_validation} = {
@@ -541,8 +553,7 @@ for my $dataset (@datasets) {
   #performConfig($config);
 
   if ( $dataset == $wes ) {
-    performTask( $config, "bwa_dexseqcount" );
-    performTask( $config, "bwa_exontable" );
+    performTask( $config, "varscan2_copynumber" );
   }
 }
 
