@@ -13,7 +13,7 @@ my $bowtie_index = "/scratch/cqs/shengq1/references/hg18_chrM/bowtie_index_1.1.2
 my $cqstools     = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
-my $task  = "gse53998";
+my $task  = "fat";
 
 my $config = {
   general => { task_name => $task },
