@@ -28,13 +28,13 @@ my $config = {
     "Visc2_HFD"  => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4902_mm9.noChrM.fix.rmdup.sorted.bam"],
   },
   bam2bed => {
-    class                 => "ATACseq::BamToBed",
-    perform               => 1,
-    target_dir            => "${target_dir}/bam2bed",
-    option                => "",
-    source_ref            => "files",
-    sh_direct             => 0,
-    pbs                   => {
+    class      => "ATACseq::BamToBed",
+    perform    => 0,
+    target_dir => "${target_dir}/bam2bed",
+    option     => "",
+    source_ref => "files",
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -42,10 +42,10 @@ my $config = {
     },
   },
   macs2 => {
-    class      => "Chipseq::MACS",
-    perform    => 0,
+    class      => "Chipseq::MACS2",
+    perform    => 1,
     target_dir => "${target_dir}/macs2",
-    option     => "",
+    option     => "-f BED -g mm",
     source_ref => "bam2bed",
     sh_direct  => 1,
     pbs        => {
