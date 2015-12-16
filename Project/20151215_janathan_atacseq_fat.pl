@@ -47,7 +47,7 @@ my $config = {
     target_dir => "${target_dir}/macs2",
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
-    sh_direct  => 1,
+    sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
