@@ -66,7 +66,7 @@ my $config = {
     },
   },
   macs2bdgdiff => {
-    class      => "Chipseq::MACS2Callpeak",
+    class      => "Chipseq::MACS2Bdgdiff",
     perform    => 1,
     target_dir => "${target_dir}/macs2bdgdiff",
     option     => "",
