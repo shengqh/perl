@@ -27,6 +27,16 @@ my $config = {
     "Visc1_HFD"  => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4901_mm9.noChrM.fix.rmdup.sorted.bam"],
     "Visc2_HFD"  => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4902_mm9.noChrM.fix.rmdup.sorted.bam"],
   },
+  groups => {
+    "SQ_CHOW"   => [ "SQ1_CHOW",   "SQ2_CHOW" ],
+    "Visc_CHOW" => [ "Visc1_CHOW", "Visc2_CHOW" ],
+    "SQ_HFD"    => [ "SQ1_HFD",    "SQ2_HFD" ],
+    "Visc_HFD"  => [ "Visc1_HFD",  "Visc2_HFD" ],
+  },
+  pairs => {
+    "SQ_Visc_CHOW" => [ "SQ_CHOW", "Visc_CHOW" ],
+    "SQ_Visc_HFD"  => [ "SQ_HFD",  "Visc_HFD" ],
+  },
   bam2bed => {
     class      => "ATACseq::BamToBed",
     perform    => 0,
@@ -41,12 +51,26 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2 => {
-    class      => "Chipseq::MACS2",
-    perform    => 1,
-    target_dir => "${target_dir}/macs2",
+  macs2callpeak => {
+    class      => "Chipseq::MACS2Callpeak",
+    perform    => 0,
+    target_dir => "${target_dir}/macs2callpeak",
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  macs2bdgdiff => {
+    class      => "Chipseq::MACS2Callpeak",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff",
+    option     => "",
+    source_ref => "macs2callpeak",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
