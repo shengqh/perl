@@ -73,7 +73,7 @@ my $config = {
     target_dir => "${target_dir}/macs2callpeak_replicates",
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
-    groups     => "groups",
+    groups_ref => "groups",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -82,10 +82,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2callpeak_individual => {
+  macs2bdgdiff_individual => {
     class      => "Chipseq::MACS2Bdgdiff",
     perform    => 0,
-    target_dir => "${target_dir}/macs2callpeak_individual",
+    target_dir => "${target_dir}/macs2bdgdiff_individual",
     option     => "",
     source_ref => "macs2callpeak",
     groups_ref => "groups",
