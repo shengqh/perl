@@ -96,7 +96,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2bdgdiff_individual => {
+  macs2bdgdiff_replicates => {
     class      => "Chipseq::MACS2Bdgdiff",
     perform    => 1,
     target_dir => "${target_dir}/macs2bdgdiff_replicates",
