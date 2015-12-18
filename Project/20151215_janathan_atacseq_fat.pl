@@ -30,14 +30,12 @@ my $config = {
   groups => {
     "SQ_CHOW"   => [ "SQ1_CHOW",   "SQ2_CHOW" ],
     "Visc_CHOW" => [ "Visc1_CHOW", "Visc2_CHOW" ],
-
-    #    "SQ_HFD"    => [ "SQ1_HFD",    "SQ2_HFD" ],
-    #    "Visc_HFD"  => [ "Visc1_HFD",  "Visc2_HFD" ],
+    "SQ_HFD"   => [ "SQ1_HFD",   "SQ2_HFD" ],
+    "Visc_HFD" => [ "Visc1_HFD", "Visc2_HFD" ],
   },
   pairs => {
     "SQ_Visc_CHOW" => [ "SQ_CHOW", "Visc_CHOW" ],
-
-    #   "SQ_Visc_HFD"  => [ "SQ_HFD",  "Visc_HFD" ],
+    "SQ_Visc_HFD"  => [ "SQ_HFD",  "Visc_HFD" ],
   },
   bam2bed => {
     class      => "ATACseq::BamToBed",
