@@ -73,7 +73,7 @@ my $config = {
   },
   macs2bdgdiff_individual => {
     class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/macs2bdgdiff_individual",
     option     => "",
     source_ref => "macs2callpeak_individual",
@@ -103,7 +103,7 @@ my $config = {
   },
   macs2bdgdiff_replicates => {
     class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/macs2bdgdiff_replicates",
     option     => "",
     source_ref => "macs2callpeak_replicates",
