@@ -30,12 +30,14 @@ my $config = {
   groups => {
     "SQ_CHOW"   => [ "SQ1_CHOW",   "SQ2_CHOW" ],
     "Visc_CHOW" => [ "Visc1_CHOW", "Visc2_CHOW" ],
-#    "SQ_HFD"    => [ "SQ1_HFD",    "SQ2_HFD" ],
-#    "Visc_HFD"  => [ "Visc1_HFD",  "Visc2_HFD" ],
+
+    #    "SQ_HFD"    => [ "SQ1_HFD",    "SQ2_HFD" ],
+    #    "Visc_HFD"  => [ "Visc1_HFD",  "Visc2_HFD" ],
   },
   pairs => {
     "SQ_Visc_CHOW" => [ "SQ_CHOW", "Visc_CHOW" ],
- #   "SQ_Visc_HFD"  => [ "SQ_HFD",  "Visc_HFD" ],
+
+    #   "SQ_Visc_HFD"  => [ "SQ_HFD",  "Visc_HFD" ],
   },
   bam2bed => {
     class      => "ATACseq::BamToBed",
@@ -71,6 +73,7 @@ my $config = {
     target_dir => "${target_dir}/macs2callpeak_replicates",
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
+    groups     => "groups",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
