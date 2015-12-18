@@ -53,7 +53,7 @@ my $config = {
   },
   macs2callpeak_individual => {
     class      => "Chipseq::MACS2Callpeak",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/macs2callpeak_individual",
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
@@ -83,7 +83,7 @@ my $config = {
   },
   macs2callpeak_replicates => {
     class      => "Chipseq::MACS2Callpeak",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/macs2callpeak_replicates",
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
