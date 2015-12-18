@@ -53,10 +53,26 @@ my $config = {
   },
   macs2callpeak_individual => {
     class      => "Chipseq::MACS2Callpeak",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/macs2callpeak_individual",
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  macs2bdgdiff_individual => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff_individual",
+    option     => "",
+    source_ref => "macs2callpeak_individual",
+    groups_ref => "groups",
+    pairs_ref  => "pairs",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -72,22 +88,6 @@ my $config = {
     option     => "-f BED -g mm -B -q 0.01",
     source_ref => "bam2bed",
     groups_ref => "groups",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  macs2bdgdiff_individual => {
-    class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 0,
-    target_dir => "${target_dir}/macs2bdgdiff_individual",
-    option     => "",
-    source_ref => "macs2callpeak",
-    groups_ref => "groups",
-    pairs_ref  => "pairs",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
