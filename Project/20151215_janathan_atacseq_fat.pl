@@ -15,7 +15,7 @@ my $cqstools     = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "fat";
 
-my $macs2call_option = "-f BED -g mm -B -q 0.01";
+my $macs2call_option = "-f BED -g mm -B -q 0.01 --nomodel";
 
 my $config = {
   general => { task_name => $task },
@@ -59,10 +59,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2callpeak_individual => {
+  macs2callpeak_individual_nomodel => {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
-    target_dir => "${target_dir}/macs2callpeak_individual",
+    target_dir => "${target_dir}/macs2callpeak_individual_nomodel",
     option     => $macs2call_option,
     source_ref => "bam2bed",
     sh_direct  => 0,
@@ -73,12 +73,12 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2bdgdiff_individual => {
+  macs2bdgdiff_individual_nomodel => {
     class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 0,
-    target_dir => "${target_dir}/macs2bdgdiff_individual",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff_individual_nomodel",
     option     => "",
-    source_ref => "macs2callpeak_individual",
+    source_ref => "macs2callpeak_individual_nomodel",
     groups_ref => "individual_comparison",
     sh_direct  => 0,
     pbs        => {
@@ -88,10 +88,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2callpeak_replicates => {
+  macs2callpeak_replicates_nomodel => {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
-    target_dir => "${target_dir}/macs2callpeak_replicates",
+    target_dir => "${target_dir}/macs2callpeak_replicates_nomodel",
     option     => $macs2call_option,
     source_ref => "bam2bed",
     groups_ref => "replicates",
@@ -103,12 +103,12 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2bdgdiff_replicates => {
+  macs2bdgdiff_replicates_nomodel => {
     class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 0,
-    target_dir => "${target_dir}/macs2bdgdiff_replicates",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff_replicates_nomodel",
     option     => "",
-    source_ref => "macs2callpeak_replicates",
+    source_ref => "macs2callpeak_replicates_nomodel",
     groups_ref => "replicates_comparison",
     sh_direct  => 0,
     pbs        => {
