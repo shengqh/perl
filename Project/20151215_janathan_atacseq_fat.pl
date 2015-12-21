@@ -51,6 +51,7 @@ my $config = {
     target_dir => "${target_dir}/bam2bed",
     option     => "",
     source_ref => "files",
+    blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/mm9/mm9-blacklist.bed",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
