@@ -47,7 +47,7 @@ my $config = {
   },
   bam2bed => {
     class      => "ATACseq::BamToBed",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/bam2bed",
     option     => "",
     source_ref => "files",
