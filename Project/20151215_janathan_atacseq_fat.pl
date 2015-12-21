@@ -15,6 +15,8 @@ my $cqstools     = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "fat";
 
+my $macs2call_option = "-f BED -g mm -B -q 0.01";
+
 my $config = {
   general => { task_name => $task },
   files   => {
@@ -61,7 +63,7 @@ my $config = {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
     target_dir => "${target_dir}/macs2callpeak_individual",
-    option     => "-f BED -g mm -B -q 0.01 --nomodel",
+    option     => $macs2call_option,
     source_ref => "bam2bed",
     sh_direct  => 0,
     pbs        => {
@@ -71,21 +73,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2callpeak_individual_bam => {
-    class      => "Chipseq::MACS2Callpeak",
-    perform    => 0,
-    target_dir => "${target_dir}/macs2callpeak_individual_bam",
-    option     => "-f BAM -g mm -B -q 0.01 --nomodel --shift 4",
-    source_ref => "files",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  
   macs2bdgdiff_individual => {
     class      => "Chipseq::MACS2Bdgdiff",
     perform    => 0,
@@ -103,25 +90,10 @@ my $config = {
   },
   macs2callpeak_replicates => {
     class      => "Chipseq::MACS2Callpeak",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/macs2callpeak_replicates",
-    option     => "-f BED -g mm -B -q 0.01",
+    option     => $macs2call_option,
     source_ref => "bam2bed",
-    groups_ref => "replicates",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  macs2callpeak_replicates_bam => {
-    class      => "Chipseq::MACS2Callpeak",
-    perform    => 0,
-    target_dir => "${target_dir}/macs2callpeak_replicates_bam",
-    option     => "-f BAM -g mm -B -q 0.01 --nomodel --shift 4",
-    source_ref => "files",
     groups_ref => "replicates",
     sh_direct  => 0,
     pbs        => {
