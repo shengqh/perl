@@ -322,63 +322,65 @@ my $def = {
     "CMS-316" => ["/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-316_1_sequence.txt.gz"],
     "CMS-317" => ["/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-317_1_sequence.txt.gz"],
     "CMS-318" => ["/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-318_1_sequence.txt.gz"],
-  },
-  groups => {
-    "RA" => [
-      "CMS-082", "CMS-083", "CMS-084", "CMS-085", "CMS-086", "CMS-087", "CMS-088", "CMS-089",    #
-      "CMS-090", "CMS-091", "CMS-092", "CMS-093", "CMS-094", "CMS-095", "CMS-096", "CMS-097",    #
-      "CMS-106", "CMS-107", "CMS-108", "CMS-109",                                                                      #
-      "CMS-110", "CMS-111", "CMS-112", "CMS-113", "CMS-114", "CMS-115", "CMS-116", "CMS-117", "CMS-118", "CMS-119",    #
-      "CMS-120", "CMS-121",                                                                                            #
-      "CMS-130", "CMS-131", "CMS-132", "CMS-133", "CMS-134", "CMS-135", "CMS-136", "CMS-137", "CMS-138", "CMS-139",    #
-      "CMS-140", "CMS-141", "CMS-142", "CMS-143", "CMS-144", "CMS-145",                                                #
-      "CMS-154", "CMS-155", "CMS-156", "CMS-157", "CMS-158", "CMS-159",                                                #
-      "CMS-160", "CMS-161", "CMS-162", "CMS-163", "CMS-164", "CMS-165", "CMS-166", "CMS-167", "CMS-168", "CMS-169",    #
-      "CMS-178", "CMS-179",                                                                                            #
-      "CMS-180", "CMS-181", "CMS-182", "CMS-183", "CMS-184", "CMS-185", "CMS-186", "CMS-187", "CMS-188", "CMS-189",    #
-      "CMS-190", "CMS-191", "CMS-192", "CMS-193",                                                                      #
-      "CMS-202", "CMS-203", "CMS-204", "CMS-205", "CMS-206", "CMS-207", "CMS-208", "CMS-209",                          #
-      "CMS-210", "CMS-211", "CMS-212", "CMS-213", "CMS-214", "CMS-215", "CMS-216", "CMS-217",                          #
-      "CMS-226", "CMS-227", "CMS-228", "CMS-229",                                                                      #
-      "CMS-230", "CMS-231", "CMS-232", "CMS-233", "CMS-234", "CMS-235", "CMS-236", "CMS-237", "CMS-238", "CMS-239",    #
-      "CMS-240", "CMS-241",                                                                                            #
-      "CMS-250", "CMS-251", "CMS-252", "CMS-253", "CMS-254", "CMS-255", "CMS-256", "CMS-257", "CMS-258", "CMS-259",    #
-      "CMS-260", "CMS-261", "CMS-262", "CMS-263", "CMS-264", "CMS-265",                                                #
-      "CMS-274", "CMS-275", "CMS-276", "CMS-277", "CMS-278", "CMS-279",                                                #
-      "CMS-280", "CMS-281", "CMS-282", "CMS-283", "CMS-284", "CMS-285", "CMS-286", "CMS-287", "CMS-288", "CMS-289",    #
-      "CMS-290", "CMS-291", "CMS-292", "CMS-293", "CMS-294", "CMS-296", "CMS-297", "CMS-298", "CMS-299",               #
-      "CMS-300", "CMS-301", "CMS-302",                                                                                 #
-      "CMS-310", "CMS-311", "CMS-312", "CMS-313", "CMS-314", "CMS-315"
-    ],
-    "RAControl" => [
-      "CMS-098", "CMS-099",                                                                                            #
-      "CMS-100", "CMS-101", "CMS-102", "CMS-103", "CMS-104", "CMS-105",                                                #
-      "CMS-122", "CMS-123", "CMS-124", "CMS-125", "CMS-126", "CMS-127", "CMS-128", "CMS-129",                          #
-      "CMS-146", "CMS-147", "CMS-148", "CMS-149",                                                                      #
-      "CMS-150", "CMS-151", "CMS-152", "CMS-153",                                                                      #
-      "CMS-170", "CMS-171", "CMS-172", "CMS-173", "CMS-174", "CMS-175", "CMS-176", "CMS-177",                          #
-      "CMS-194", "CMS-195", "CMS-196", "CMS-197", "CMS-198", "CMS-199",                                                #
-      "CMS-200", "CMS-201",                                                                                            #
-      "CMS-218", "CMS-219",                                                                                            #
-      "CMS-220", "CMS-221", "CMS-222", "CMS-223", "CMS-224", "CMS-225",                                                #
-      "CMS-242", "CMS-243", "CMS-244", "CMS-245", "CMS-246", "CMS-247", "CMS-248", "CMS-249",                          #
-      "CMS-266", "CMS-267", "CMS-268", "CMS-269",                                                                      #
-      "CMS-272", "CMS-273",                                                                                            #
-      "CMS-303", "CMS-304", "CMS-305", "CMS-306", "CMS-307", "CMS-308", "CMS-309",                                     #
-      "CMS-316", "CMS-317", "CMS-318"                                                                                  #
-    ],
-    "SLE" => [
-      "CMS-034", "CMS-035", "CMS-036", "CMS-037", "CMS-038", "CMS-039",                                                #
-      "CMS-040", "CMS-041", "CMS-042", "CMS-043", "CMS-044", "CMS-045"
-    ],
-    "AltControl" => [ "CMS-269", "CMS-270", "CMS-271" ],
-    "ANCA"       => ["CMS-295"],
-  },
-  pairs => {
-    "RA_vs_Control" => [ "RAControl", "RA" ]
   }
 };
 
+my $groups = {
+  "RA" => [
+    "CMS-082", "CMS-083", "CMS-084", "CMS-085", "CMS-086", "CMS-087", "CMS-088", "CMS-089",    #
+    "CMS-090", "CMS-091", "CMS-092", "CMS-093", "CMS-094", "CMS-095", "CMS-096", "CMS-097",    #
+    "CMS-106", "CMS-107", "CMS-108", "CMS-109",                                                                      #
+    "CMS-110", "CMS-111", "CMS-112", "CMS-113", "CMS-114", "CMS-115", "CMS-116", "CMS-117", "CMS-118", "CMS-119",    #
+    "CMS-120", "CMS-121",                                                                                            #
+    "CMS-130", "CMS-131", "CMS-132", "CMS-133", "CMS-134", "CMS-135", "CMS-136", "CMS-137", "CMS-138", "CMS-139",    #
+    "CMS-140", "CMS-141", "CMS-142", "CMS-143", "CMS-144", "CMS-145",                                                #
+    "CMS-154", "CMS-155", "CMS-156", "CMS-157", "CMS-158", "CMS-159",                                                #
+    "CMS-160", "CMS-161", "CMS-162", "CMS-163", "CMS-164", "CMS-165", "CMS-166", "CMS-167", "CMS-168", "CMS-169",    #
+    "CMS-178", "CMS-179",                                                                                            #
+    "CMS-180", "CMS-181", "CMS-182", "CMS-183", "CMS-184", "CMS-185", "CMS-186", "CMS-187", "CMS-188", "CMS-189",    #
+    "CMS-190", "CMS-191", "CMS-192", "CMS-193",                                                                      #
+    "CMS-202", "CMS-203", "CMS-204", "CMS-205", "CMS-206", "CMS-207", "CMS-208", "CMS-209",                          #
+    "CMS-210", "CMS-211", "CMS-212", "CMS-213", "CMS-214", "CMS-215", "CMS-216", "CMS-217",                          #
+    "CMS-226", "CMS-227", "CMS-228", "CMS-229",                                                                      #
+    "CMS-230", "CMS-231", "CMS-232", "CMS-233", "CMS-234", "CMS-235", "CMS-236", "CMS-237", "CMS-238", "CMS-239",    #
+    "CMS-240", "CMS-241",                                                                                            #
+    "CMS-250", "CMS-251", "CMS-252", "CMS-253", "CMS-254", "CMS-255", "CMS-256", "CMS-257", "CMS-258", "CMS-259",    #
+    "CMS-260", "CMS-261", "CMS-262", "CMS-263", "CMS-264", "CMS-265",                                                #
+    "CMS-274", "CMS-275", "CMS-276", "CMS-277", "CMS-278", "CMS-279",                                                #
+    "CMS-280", "CMS-281", "CMS-282", "CMS-283", "CMS-284", "CMS-285", "CMS-286", "CMS-287", "CMS-288", "CMS-289",    #
+    "CMS-290", "CMS-291", "CMS-292", "CMS-293", "CMS-294", "CMS-296", "CMS-297", "CMS-298", "CMS-299",               #
+    "CMS-300", "CMS-301", "CMS-302",                                                                                 #
+    "CMS-310", "CMS-311", "CMS-312", "CMS-313", "CMS-314", "CMS-315"
+  ],
+  "RAControl" => [
+    "CMS-098", "CMS-099",                                                                                            #
+    "CMS-100", "CMS-101", "CMS-102", "CMS-103", "CMS-104", "CMS-105",                                                #
+    "CMS-122", "CMS-123", "CMS-124", "CMS-125", "CMS-126", "CMS-127", "CMS-128", "CMS-129",                          #
+    "CMS-146", "CMS-147", "CMS-148", "CMS-149",                                                                      #
+    "CMS-150", "CMS-151", "CMS-152", "CMS-153",                                                                      #
+    "CMS-170", "CMS-171", "CMS-172", "CMS-173", "CMS-174", "CMS-175", "CMS-176", "CMS-177",                          #
+    "CMS-194", "CMS-195", "CMS-196", "CMS-197", "CMS-198", "CMS-199",                                                #
+    "CMS-200", "CMS-201",                                                                                            #
+    "CMS-218", "CMS-219",                                                                                            #
+    "CMS-220", "CMS-221", "CMS-222", "CMS-223", "CMS-224", "CMS-225",                                                #
+    "CMS-242", "CMS-243", "CMS-244", "CMS-245", "CMS-246", "CMS-247", "CMS-248", "CMS-249",                          #
+    "CMS-266", "CMS-267", "CMS-268", "CMS-269",                                                                      #
+    "CMS-272", "CMS-273",                                                                                            #
+    "CMS-303", "CMS-304", "CMS-305", "CMS-306", "CMS-307", "CMS-308", "CMS-309",                                     #
+    "CMS-316", "CMS-317", "CMS-318"                                                                                  #
+  ],
+
+  "SLE" => [
+    "CMS-034", "CMS-035", "CMS-036", "CMS-037", "CMS-038", "CMS-039",                                                #
+    "CMS-040", "CMS-041", "CMS-042", "CMS-043", "CMS-044", "CMS-045"
+  ],
+  "AltControl" => [ "CMS-269", "CMS-270", "CMS-271" ],
+  "ANCA"       => ["CMS-295"],
+};
+
+$def->{groups}         = $groups;
+$def->{pairs}          = { "RA_vs_Control" => [ "RAControl", "RA" ] };
+$def->{tRNA_vis_group} = $groups;
 performSmallRNA_hg19($def);
 
 1;
