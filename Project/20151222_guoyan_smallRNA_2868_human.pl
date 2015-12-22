@@ -14,7 +14,7 @@ my $def = {
 
   #Default software parameter (don't change it except you really know it)
   fastq_remove_N => 1,
-
+  cqstools       => "/home/shengq1/cqstools/CQS.Tools.exe",
   #Data
   files => {
     "2868-CMS-001" => ["/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-1_1_sequence.txt.gz"],
