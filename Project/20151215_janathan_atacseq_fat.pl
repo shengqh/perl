@@ -40,20 +40,24 @@ my $config = {
     "SQ_Visc_HFD"  => [ "SQ_HFD",  "Visc_HFD" ],
   },
   individual_comparison => {
-    "SQ_Visc_CHOW_1" => [ "SQ1_CHOW", "Visc1_CHOW" ],
-    "SQ_Visc_CHOW_2" => [ "SQ2_CHOW", "Visc2_CHOW" ],
-    "SQ_Visc_HFD_1"  => [ "SQ1_HFD",  "Visc1_HFD" ],
-    "SQ_Visc_HFD_2"  => [ "SQ2_HFD",  "Visc2_HFD" ],
+    "SQ1_Visc1_CHOW" => [ "SQ1_CHOW", "Visc1_CHOW" ],
+    "SQ2_Visc2_CHOW" => [ "SQ2_CHOW", "Visc2_CHOW" ],
+    "SQ1_Visc1_HFD"  => [ "SQ1_HFD",  "Visc1_HFD" ],
+    "SQ2_Visc2_HFD"  => [ "SQ2_HFD",  "Visc2_HFD" ],
+    "SQ1_Visc2_CHOW" => [ "SQ1_CHOW", "Visc2_CHOW" ],
+    "SQ2_Visc1_CHOW" => [ "SQ2_CHOW", "Visc1_CHOW" ],
+    "SQ1_Visc2_HFD"  => [ "SQ1_HFD",  "Visc2_HFD" ],
+    "SQ2_Visc1_HFD"  => [ "SQ2_HFD",  "Visc1_HFD" ],
   },
   bam2bed => {
-    class      => "ATACseq::BamToBed",
-    perform    => 1,
-    target_dir => "${target_dir}/bam2bed",
-    option     => "",
-    source_ref => "files",
+    class          => "ATACseq::BamToBed",
+    perform        => 1,
+    target_dir     => "${target_dir}/bam2bed",
+    option         => "",
+    source_ref     => "files",
     blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/mm9/mm9-blacklist.bed",
-    sh_direct  => 0,
-    pbs        => {
+    sh_direct      => 0,
+    pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -121,6 +125,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "macs2bdgdiff_individual_nomodel");
 
 1;
