@@ -110,7 +110,8 @@ my $def = {
   }
 };
 
-performSmallRNA_hg19($def);
+my $config = performSmallRNA_hg19($def, 0);
+performTask($config, "tRNA_PositionVis");
 
 1;
 
