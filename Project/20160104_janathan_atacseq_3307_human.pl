@@ -30,36 +30,36 @@ my $config = {
   general => { task_name => "3307" },
   files   => {
     "JDB1_1K_NoTNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-1_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-1_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-1_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-1_2_sequence.txt.gz"
     ],
     "JDB2_50K_NoTNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-2_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-2_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-2_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-2_2_sequence.txt.gz"
     ],
     "JDB3_1K_TNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-3_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-3_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-3_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-3_2_sequence.txt.gz"
     ],
     "JDB4_50K_TNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-4_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-4_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-4_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-4_2_sequence.txt.gz"
     ],
     "JDB6_1K_NoTNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-6_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-6_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-6_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-6_2_sequence.txt.gz"
     ],
     "JDB7_1K_TNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-7_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-7_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-7_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-7_2_sequence.txt.gz"
     ],
     "JDB8_50K_NoTNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-8_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-8_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_2_sequence.txt.gz"
     ],
     "JDB9_50K_TNF" => [
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-9_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human/data/PE-150/3307-JDB-9_2_sequence.txt.gz"
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_1_sequence.txt.gz",
+      "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_2_sequence.txt.gz"
     ],
   },
   fastqc => {
