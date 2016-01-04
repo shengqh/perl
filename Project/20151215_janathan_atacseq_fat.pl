@@ -20,14 +20,14 @@ my $macs2call_option = "-f BED -g mm -B -q 0.01 --nomodel";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "SQ1_CHOW"   => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4895_mm9.noChrM.fix.rmdup.sorted.bam"],
-    "SQ2_CHOW"   => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4896_mm9.noChrM.fix.rmdup.sorted.bam"],
-    "Visc1_CHOW" => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4897_mm9.noChrM.fix.rmdup.sorted.bam"],
-    "Visc2_CHOW" => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4898_mm9.noChrM.fix.rmdup.sorted.bam"],
-    "SQ1_HFD"    => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4899_mm9.noChrM.fix.rmdup.sorted.bam"],
-    "SQ2_HFD"    => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4900_mm9.noChrM.fix.rmdup.sorted.bam"],
-    "Visc1_HFD"  => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4901_mm9.noChrM.fix.rmdup.sorted.bam"],
-    "Visc2_HFD"  => ["/gpfs21/scratch/cqs/shengq1/atacseq/data/fat/20150911_4902_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "SQ1_CHOW"   => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4895_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "SQ2_CHOW"   => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4896_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "Visc1_CHOW" => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4897_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "Visc2_CHOW" => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4898_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "SQ1_HFD"    => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4899_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "SQ2_HFD"    => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4900_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "Visc1_HFD"  => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4901_mm9.noChrM.fix.rmdup.sorted.bam"],
+    "Visc2_HFD"  => ["/gpfs21/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat/data/20150911_4902_mm9.noChrM.fix.rmdup.sorted.bam"],
   },
   replicates => {
     "SQ_CHOW"   => [ "SQ1_CHOW",   "SQ2_CHOW" ],
@@ -125,7 +125,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask($config, "macs2bdgdiff_individual_nomodel");
+performConfig($config);
+#performTask($config, "macs2bdgdiff_individual_nomodel");
 
 1;
