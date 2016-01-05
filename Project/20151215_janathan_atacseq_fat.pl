@@ -8,10 +8,6 @@ use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/atacseq/20151215_janathan_atacseq_fat");
 
-my $fasta_file   = "/scratch/cqs/shengq1/references/hg18_chrM/bowtie_index_1.1.2/hg18_chrM.fa";
-my $bowtie_index = "/scratch/cqs/shengq1/references/hg18_chrM/bowtie_index_1.1.2/hg18_chrM";
-my $cqstools     = "/home/shengq1/cqstools/CQS.Tools.exe";
-
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "fat";
 
@@ -125,7 +121,7 @@ my $config = {
   },
 };
 
-performConfig($config);
-#performTask($config, "macs2bdgdiff_individual_nomodel");
+#performConfig($config);
+performTask($config, "macs2callpeak_replicates_nomodel");
 
 1;
