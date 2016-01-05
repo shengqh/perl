@@ -11,7 +11,9 @@ use Hash::Merge qw( merge );
 my $target_dir = "/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
-my $cqstools  = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+
 my $bwa_fasta = "/scratch/cqs/shengq1/references/hg19_tmp/bwa_index_0.7.12/hg19_16569_M.fa";
 
 my $config = {
@@ -90,6 +92,7 @@ my $config = {
     target_dir => "${target_dir}/bwa_pretrim",
     option     => "",
     bwa_index  => $bwa_fasta,
+    picard_jar => $picard_jar,
     source_ref => "files",
     sh_direct  => 0,
     pbs        => {
@@ -105,6 +108,7 @@ my $config = {
     target_dir => "${target_dir}/bwa_posttrim",
     option     => "",
     bwa_index  => $bwa_fasta,
+    picard_jar => $picard_jar,
     source_ref => "cutadapt",
     sh_direct  => 0,
     pbs        => {
