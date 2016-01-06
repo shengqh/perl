@@ -13,6 +13,8 @@ my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $dbsnp      = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
 
 my $bwa_fasta = "/scratch/cqs/shengq1/references/hg19_tmp/bwa_index_0.7.12/hg19_16569_M.fa";
 
@@ -118,10 +120,30 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-
+  bwa_pretrim_refine => {
+    class       => "GATK::Refine",
+    perform     => 1,
+    target_dir  => "${target_dir}/bwa_pretrim_refine",
+    option      => "-Xmx40g",
+    gatk_option => "--fix_misencoded_quality_scores",
+    fasta_file  => $bwa_fasta,
+    source_ref  => "bwa_pretrim",
+    vcf_files   => [$dbsnp],
+    gatk_jar    => $gatk_jar,
+    picard_jar  => $picard_jar,
+    sh_direct   => 0,
+    sorted      => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask( $config, "bwa_pretrim_refine" );
 
 1;
 
