@@ -122,6 +122,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask($config, "macs2callpeak_replicates_nomodel");
+performTask($config, "macs2callpeak_individual_nomodel");
 
 1;
