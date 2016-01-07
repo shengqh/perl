@@ -16,6 +16,8 @@ my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $dbsnp      = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
 
+my $macs2call_option = "-f BED -g mm -B -q 0.01 --nomodel";
+
 my $bwa_fasta = "/scratch/cqs/shengq1/references/hg19_tmp/bwa_index_0.7.12/hg19_16569_M.fa";
 
 my $config = {
@@ -29,6 +31,12 @@ my $config = {
     "JDB7_1K_TNF"    => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-7_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-7_2_sequence.txt.gz" ],
     "JDB8_50K_NoTNF" => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_2_sequence.txt.gz" ],
     "JDB9_50K_TNF"   => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_2_sequence.txt.gz" ],
+  },
+  individual_comparison => {
+    "1K_NoTNF_vs_1K_TNF_1" => [ "JDB1_1K_NoTNF", "JDB3_1K_TNF" ],
+    "50K_NoTNF_vs_50K_TNF_1" => [ "JDB2_50K_NoTNF", "JDB4_50K_TNF" ],
+    "1K_NoTNF_vs_1K_TNF_2" => [ "JDB6_1K_NoTNF", "JDB7_1K_TNF" ],
+    "50K_NoTNF_vs_50K_TNF_2" => [ "JDB8_50K_NoTNF", "JDB9_50K_TNF" ],
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -90,7 +98,7 @@ my $config = {
   },
   bwa_pretrim => {
     class      => "Alignment::BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa_pretrim",
     option     => "",
     bwa_index  => $bwa_fasta,
@@ -106,7 +114,7 @@ my $config = {
   },
   bwa_posttrim => {
     class      => "Alignment::BWA",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/bwa_posttrim",
     option     => "",
     bwa_index  => $bwa_fasta,
@@ -122,7 +130,7 @@ my $config = {
   },
   bwa_pretrim_refine => {
     class       => "GATK::Refine",
-    perform     => 1,
+    perform     => 0,
     target_dir  => "${target_dir}/bwa_pretrim_refine",
     option      => "-Xmx40g",
     gatk_option => "--fix_misencoded_quality_scores",
@@ -140,10 +148,55 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bam2bed => {
+    class          => "ATACseq::BamToBed",
+    perform        => 1,
+    target_dir     => "${target_dir}/bam2bed",
+    option         => "",
+    source_ref     => "bwa_pretrim_refine",
+    blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
+    sh_direct      => 0,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  macs2callpeak_individual_nomodel => {
+    class      => "Chipseq::MACS2Callpeak",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2callpeak_individual_nomodel",
+    option     => $macs2call_option,
+    source_ref => "bam2bed",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  macs2bdgdiff_individual_nomodel => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff_individual_nomodel",
+    option     => "",
+    source_ref => "macs2callpeak_individual_nomodel",
+    groups_ref => "individual_comparison",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  
 };
 
-#performConfig($config);
-performTask( $config, "bwa_pretrim_refine" );
+performConfig($config);
+#performTask( $config, "bwa_pretrim_refine" );
 
 1;
 
