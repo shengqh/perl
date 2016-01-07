@@ -123,10 +123,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2bdgdiff_replicates_nomodel_coverage => {
-    class         => "Visualization::Coverage",
+  macs2bdgdiff_replicates_nomodel_depth => {
+    class         => "Visualization::Depth",
     perform       => 1,
-    target_dir    => "${target_dir}/macs2bdgdiff_replicates_nomodel_coverage",
+    target_dir    => "${target_dir}/macs2bdgdiff_replicates_nomodel_depth",
     option        => "",
     source_ref    => "macs2bdgdiff_replicates_nomodel",
     groups_ref    => "replicates_group",
@@ -142,6 +142,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "macs2bdgdiff_replicates_nomodel_coverage" );
+performTask( $config, "macs2bdgdiff_replicates_nomodel_depth" );
 
 1;
