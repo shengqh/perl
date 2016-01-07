@@ -518,6 +518,7 @@ for my $dataset (@datasets) {
       }
     );
     push @all, ( "conifer", "bwa_dexseqcount" );
+    performTask( $config, "cnmops_depth" );
   }
   else {
     $config->{glmvc_WES_validation} = {
@@ -539,8 +540,6 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
-
-    performTask( $config, "cnmops_depth" );
   }
 
   $config->{varscan2_copynumber} = {
