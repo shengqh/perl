@@ -119,9 +119,25 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  macs2bdgdiff_replicates_nomodel_coverage => {
+    class         => "Visualization::Coverage",
+    perform       => 1,
+    target_dir    => "${target_dir}/macs2bdgdiff_replicates_nomodel_coverage",
+    option        => "",
+    source_ref    => "macs2bdgdiff_replicates_nomodel",
+    groups_ref    => "replicates_comparison",
+    bam_files_ref => "files",
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 };
 
 #performConfig($config);
-performTask($config, "macs2callpeak_individual_nomodel");
+performTask( $config, "macs2bdgdiff_replicates_nomodel_coverage" );
 
 1;
