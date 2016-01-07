@@ -85,8 +85,13 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_2_sequence.txt.gz"
     ],
   },
-  groups => $groups,
-
+  groups      => $groups,
+  depthgroups => {
+    "WES" => [
+      "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC", "N09_DUSP4flox_Trp53null3_MYC",
+      "N13_DUSP4null_LACZ", "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC", "N17_DUSP4null_Trp53null1_MYC"
+    ]
+  },
   capture_bed      => $capture_bed,
   capture_slim_bed => $capture_slim_bed
 };
@@ -127,7 +132,13 @@ my $wgs = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WGS/data/3162-JB-8_2_sequence.txt.gz"
     ],
   },
-  groups   => $groups,
+  groups      => $groups,
+  depthgroups => {
+    "WES" => [
+      "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC", "N09_DUSP4flox_Trp53null3_MYC",
+      "N13_DUSP4null_LACZ", "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC", "N17_DUSP4null_Trp53null1_MYC"
+    ]
+  },
   cutadapt => 1
 };
 
@@ -489,6 +500,21 @@ for my $dataset (@datasets) {
             "mem"      => "10gb"
           },
         },
+        cnmops_depth => {
+          class         => "Visualization::Depth",
+          perform       => 1,
+          target_dir    => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
+          option        => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
+          source_ref    => [ "cnmops", ".call.bed\$" ],
+          groups_ref    => $dataset->{depthgroups},
+          bam_files_ref => "bwa_refine",
+          pbs           => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "24",
+            "mem"      => "10gb"
+          },
+        },
       }
     );
     push @all, ( "conifer", "bwa_dexseqcount" );
@@ -514,7 +540,7 @@ for my $dataset (@datasets) {
       },
     };
 
-    #performTask( $config, "glmvc_WES_validation" );
+    performTask( $config, "cnmops_depth" );
   }
 
   $config->{varscan2_copynumber} = {
@@ -558,10 +584,7 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "varscan2_copynumber" );
-
-  if ( $dataset == $wes ) {
-  }
+  #performTask( $config, "varscan2_copynumber" );
 }
 
 1;
