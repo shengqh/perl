@@ -45,6 +45,10 @@ my $config = {
     "SQ1_Visc2_HFD"  => [ "SQ1_HFD",  "Visc2_HFD" ],
     "SQ2_Visc1_HFD"  => [ "SQ2_HFD",  "Visc1_HFD" ],
   },
+  replicates_group => {
+    "SQ_Visc_CHOW" => [ "SQ1_CHOW", "SQ2_CHOW", "Visc1_CHOW", "Visc2_CHOW" ],
+    "SQ_Visc_HFD"  => [ "SQ1_HFD",  "SQ2_HFD",  "Visc1_HFD",  "Visc2_HFD" ],
+  },
   bam2bed => {
     class          => "ATACseq::BamToBed",
     perform        => 1,
@@ -125,7 +129,7 @@ my $config = {
     target_dir    => "${target_dir}/macs2bdgdiff_replicates_nomodel_coverage",
     option        => "",
     source_ref    => "macs2bdgdiff_replicates_nomodel",
-    groups_ref    => "replicates_comparison",
+    groups_ref    => "replicates_group",
     bam_files_ref => "files",
     sh_direct     => 0,
     pbs           => {
