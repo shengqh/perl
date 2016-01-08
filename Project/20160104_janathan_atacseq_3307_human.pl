@@ -148,12 +148,27 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_pretrim_markduplicate => {
+    class       => "Picard::MarkDuplicates",
+    perform     => 1,
+    target_dir  => "${target_dir}/bwa_pretrim_markduplicate",
+    option      => "",
+    source_ref  => "bwa_pretrim",
+    picard_jar  => $picard_jar,
+    sh_direct   => 0,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
   bam2bed => {
     class          => "ATACseq::BamToBed",
     perform        => 1,
     target_dir     => "${target_dir}/bam2bed",
     option         => "",
-    source_ref     => "bwa_pretrim_refine",
+    source_ref     => "bwa_pretrim_markduplicate",
     blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
     sh_direct      => 0,
     pbs            => {
@@ -165,7 +180,7 @@ my $config = {
   },
   macs2callpeak_individual_nomodel => {
     class      => "Chipseq::MACS2Callpeak",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/macs2callpeak_individual_nomodel",
     option     => $macs2call_option,
     source_ref => "bam2bed",
@@ -179,7 +194,7 @@ my $config = {
   },
   macs2bdgdiff_individual_nomodel => {
     class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/macs2bdgdiff_individual_nomodel",
     option     => "",
     source_ref => "macs2callpeak_individual_nomodel",
