@@ -8,7 +8,7 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $target_dir = "/scratch/cqs/shengq1/atacseq/20160104_janathan_atacseq_3307_human";
+my $target_dir = "/scratch/cqs/shengq1/atacseq/20160108_janathan_atacseq_3307_human";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
@@ -98,7 +98,7 @@ my $config = {
   },
   bwa_pretrim => {
     class      => "Alignment::BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/bwa_pretrim",
     option     => "",
     bwa_index  => $bwa_fasta,
@@ -180,7 +180,7 @@ my $config = {
   },
   macs2callpeak_individual_nomodel => {
     class      => "Chipseq::MACS2Callpeak",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/macs2callpeak_individual_nomodel",
     option     => $macs2call_option,
     source_ref => "bam2bed",
@@ -194,7 +194,7 @@ my $config = {
   },
   macs2bdgdiff_individual_nomodel => {
     class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/macs2bdgdiff_individual_nomodel",
     option     => "",
     source_ref => "macs2callpeak_individual_nomodel",
