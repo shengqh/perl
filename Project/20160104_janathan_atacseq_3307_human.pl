@@ -332,9 +332,9 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "bwa_pretrim_cleanbam",      "bwa_pretrim_bam2bed",      "bwa_pretrim_macs2callpeak_individual_nomodel" ],
-      T2 => [ "bowtie2_pretrim_cleanbam",  "bowtie2_pretrim_bam2bed",  "bowtie2_pretrim_macs2callpeak_individual_nomodel" ],
-      T3 => [ "bowtie2_posttrim_cleanbam", "bowtie2_posttrim_bam2bed", "bowtie2_posttrim_macs2callpeak_individual_nomodel" ],
+      T1 => [ "bwa_pretrim",      "bwa_pretrim_cleanbam",      "bwa_pretrim_bam2bed",      "bwa_pretrim_macs2callpeak_individual_nomodel" ],
+      T2 => [ "bowtie2_pretrim",  "bowtie2_pretrim_cleanbam",  "bowtie2_pretrim_bam2bed",  "bowtie2_pretrim_macs2callpeak_individual_nomodel" ],
+      T3 => [ "bowtie2_posttrim", "bowtie2_posttrim_cleanbam", "bowtie2_posttrim_bam2bed", "bowtie2_posttrim_macs2callpeak_individual_nomodel" ],
 
     },
     sh_direct => 0,
