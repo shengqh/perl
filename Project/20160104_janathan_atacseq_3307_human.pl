@@ -98,10 +98,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_bam2bed => {
+  bwa_pretrim_bam2bed => {
     class          => "ATACseq::BamToBed",
     perform        => 1,
-    target_dir     => "${target_dir}/bwa_bam2bed",
+    target_dir     => "${target_dir}/bwa_pretrim_bam2bed",
     option         => "",
     source_ref     => "bwa_pretrim_cleanbam",
     blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
@@ -113,12 +113,12 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_macs2callpeak_individual_nomodel => {
+  bwa_pretrim_macs2callpeak_individual_nomodel => {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_macs2callpeak_individual_nomodel",
+    target_dir => "${target_dir}/bwa_pretrim_macs2callpeak_individual_nomodel",
     option     => $macs2call_option,
-    source_ref => "bwa_bam2bed",
+    source_ref => "bwa_pretrim_bam2bed",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -127,12 +127,12 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_macs2bdgdiff_individual_nomodel => {
+  bwa_pretrim_macs2bdgdiff_individual_nomodel => {
     class      => "Chipseq::MACS2Bdgdiff",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_macs2bdgdiff_individual_nomodel",
+    target_dir => "${target_dir}/bwa_pretrim_macs2bdgdiff_individual_nomodel",
     option     => "",
-    source_ref => "bwa_macs2callpeak_individual_nomodel",
+    source_ref => "bwa_pretrim_macs2callpeak_individual_nomodel",
     groups_ref => "individual_comparison",
     sh_direct  => 0,
     pbs        => {
