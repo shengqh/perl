@@ -66,114 +66,6 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  cutadapt => {
-    class      => "Trimmer::Cutadapt",
-    perform    => 0,
-    target_dir => "${target_dir}/cutadapt",
-    option     => "-O 10 -m 50",
-    source_ref => "files",
-    adapter    => "CTGTCTCTTATA",
-    extension  => "_clipped.fastq.gz",
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  fastqlen => {
-    class      => "CQS::FastqLen",
-    perform    => 0,
-    target_dir => "${target_dir}/fastqlen",
-    option     => "",
-    source_ref => "cutadapt",
-    cqstools   => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  bowtie2_pretrim => {
-    class         => "Alignment::Bowtie2",
-    perform       => 1,
-    target_dir    => "${target_dir}/bowtie2_pretrim",
-    option        => "-k 1",
-    bowtie2_index => $bowtie2_index,
-    picard_jar    => $picard_jar,
-    source_ref    => "files",
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bowtie2_pretrim_cleanbam => {
-    class             => "ATACseq::CleanBam",
-    perform           => 1,
-    target_dir        => "${target_dir}/bowtie2_pretrim_cleanbam",
-    option            => "",
-    source_ref        => "bowtie2_pretrim",
-    picard_jar        => $picard_jar,
-    remove_chromosome => "M",
-    sh_direct         => 0,
-    pbs               => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "240",
-      "mem"      => "40gb"
-    },
-  },
-  bowtie2_bam2bed => {
-    class          => "ATACseq::BamToBed",
-    perform        => 1,
-    target_dir     => "${target_dir}/bowtie2_bam2bed",
-    option         => "",
-    source_ref     => "bowtie2_pretrim_cleanbam",
-    blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
-    sh_direct      => 0,
-    pbs            => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bowtie2_macs2callpeak_individual_nomodel => {
-    class      => "Chipseq::MACS2Callpeak",
-    perform    => 1,
-    target_dir => "${target_dir}/bowtie2_macs2callpeak_individual_nomodel",
-    option     => $macs2call_option,
-    source_ref => "bowtie2_bam2bed",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bowtie2_macs2bdgdiff_individual_nomodel => {
-    class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 1,
-    target_dir => "${target_dir}/bowtie2_macs2bdgdiff_individual_nomodel",
-    option     => "",
-    source_ref => "bowtie2_macs2callpeak_individual_nomodel",
-    groups_ref => "individual_comparison",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-
   bwa_pretrim => {
     class      => "Alignment::BWA",
     perform    => 0,
@@ -187,42 +79,6 @@ my $config = {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bwa_posttrim => {
-    class      => "Alignment::BWA",
-    perform    => 0,
-    target_dir => "${target_dir}/bwa_posttrim",
-    option     => "",
-    bwa_index  => $bwa_fasta,
-    picard_jar => $picard_jar,
-    source_ref => "cutadapt",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bwa_pretrim_refine => {
-    class       => "GATK::Refine",
-    perform     => 0,
-    target_dir  => "${target_dir}/bwa_pretrim_refine",
-    option      => "-Xmx40g",
-    gatk_option => "--fix_misencoded_quality_scores",
-    fasta_file  => $bwa_fasta,
-    source_ref  => "bwa_pretrim",
-    vcf_files   => [$dbsnp],
-    gatk_jar    => $gatk_jar,
-    picard_jar  => $picard_jar,
-    sh_direct   => 0,
-    sorted      => 1,
-    pbs         => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "240",
       "mem"      => "40gb"
     },
   },
@@ -286,14 +142,199 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bowtie2_pretrim => {
+    class         => "Alignment::Bowtie2",
+    perform       => 1,
+    target_dir    => "${target_dir}/bowtie2_pretrim",
+    option        => "-k 1",
+    bowtie2_index => $bowtie2_index,
+    picard_jar    => $picard_jar,
+    source_ref    => "files",
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_pretrim_cleanbam => {
+    class             => "ATACseq::CleanBam",
+    perform           => 1,
+    target_dir        => "${target_dir}/bowtie2_pretrim_cleanbam",
+    option            => "",
+    source_ref        => "bowtie2_pretrim",
+    picard_jar        => $picard_jar,
+    remove_chromosome => "M",
+    sh_direct         => 0,
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_pretrim_bam2bed => {
+    class          => "ATACseq::BamToBed",
+    perform        => 1,
+    target_dir     => "${target_dir}/bowtie2_pretrim_bam2bed",
+    option         => "",
+    source_ref     => "bowtie2_pretrim_cleanbam",
+    blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
+    sh_direct      => 0,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_pretrim_macs2callpeak_individual_nomodel => {
+    class      => "Chipseq::MACS2Callpeak",
+    perform    => 1,
+    target_dir => "${target_dir}/bowtie2_pretrim_macs2callpeak_individual_nomodel",
+    option     => $macs2call_option,
+    source_ref => "bowtie2_pretrim_bam2bed",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_pretrim_macs2bdgdiff_individual_nomodel => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/bowtie2_pretrim_macs2bdgdiff_individual_nomodel",
+    option     => "",
+    source_ref => "bowtie2_pretrim_macs2callpeak_individual_nomodel",
+    groups_ref => "individual_comparison",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  cutadapt => {
+    class      => "Trimmer::Cutadapt",
+    perform    => 0,
+    target_dir => "${target_dir}/cutadapt",
+    option     => "-O 10 -m 50",
+    source_ref => "files",
+    adapter    => "CTGTCTCTTATA",
+    extension  => "_clipped.fastq.gz",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  fastqlen => {
+    class      => "CQS::FastqLen",
+    perform    => 0,
+    target_dir => "${target_dir}/fastqlen",
+    option     => "",
+    source_ref => "cutadapt",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "20gb"
+    },
+  },
+  bowtie2_posttrim => {
+    class         => "Alignment::Bowtie2",
+    perform       => 1,
+    target_dir    => "${target_dir}/bowtie2_posttrim",
+    option        => "-k 1",
+    bowtie2_index => $bowtie2_index,
+    picard_jar    => $picard_jar,
+    source_ref    => "cutadapt",
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_posttrim_cleanbam => {
+    class             => "ATACseq::CleanBam",
+    perform           => 1,
+    target_dir        => "${target_dir}/bowtie2_posttrim_cleanbam",
+    option            => "",
+    source_ref        => "bowtie2_posttrim",
+    picard_jar        => $picard_jar,
+    remove_chromosome => "M",
+    sh_direct         => 0,
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_posttrim_bam2bed => {
+    class          => "ATACseq::BamToBed",
+    perform        => 1,
+    target_dir     => "${target_dir}/bowtie2_posttrim_bam2bed",
+    option         => "",
+    source_ref     => "bowtie2_posttrim_cleanbam",
+    blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
+    sh_direct      => 0,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_posttrim_macs2callpeak_individual_nomodel => {
+    class      => "Chipseq::MACS2Callpeak",
+    perform    => 1,
+    target_dir => "${target_dir}/bowtie2_posttrim_macs2callpeak_individual_nomodel",
+    option     => $macs2call_option,
+    source_ref => "bowtie2_posttrim_bam2bed",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_posttrim_macs2bdgdiff_individual_nomodel => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/bowtie2_posttrim_macs2bdgdiff_individual_nomodel",
+    option     => "",
+    source_ref => "bowtie2_posttrim_macs2callpeak_individual_nomodel",
+    groups_ref => "individual_comparison",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "bwa_pretrim_cleanbam",     "bwa_bam2bed",     "bwa_macs2callpeak_individual_nomodel" ],
-      T2 => [ "bowtie2_pretrim_cleanbam", "bowtie2_bam2bed", "bowtie2_macs2callpeak_individual_nomodel" ],
+      T1 => [ "bwa_pretrim_cleanbam",      "bwa_pretrim_bam2bed",      "bwa_pretrim_macs2callpeak_individual_nomodel" ],
+      T2 => [ "bowtie2_pretrim_cleanbam",  "bowtie2_pretrim_bam2bed",  "bowtie2_pretrim_macs2callpeak_individual_nomodel" ],
+      T3 => [ "bowtie2_posttrim_cleanbam", "bowtie2_posttrim_bam2bed", "bowtie2_posttrim_macs2callpeak_individual_nomodel" ],
 
     },
     sh_direct => 0,
