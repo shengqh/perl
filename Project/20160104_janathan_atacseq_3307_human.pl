@@ -156,13 +156,14 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_pretrim_markduplicate => {
-    class       => "Picard::MarkDuplicates",
+  bwa_pretrim_cleanbam => {
+    class       => "ATACseq::CleanBam",
     perform     => 1,
-    target_dir  => "${target_dir}/bwa_pretrim_markduplicate",
+    target_dir  => "${target_dir}/bwa_pretrim_cleanbam",
     option      => "",
     source_ref  => "bwa_pretrim",
     picard_jar  => $picard_jar,
+    remove_chromosome => "M",
     sh_direct   => 0,
     pbs         => {
       "email"    => $email,
@@ -176,7 +177,7 @@ my $config = {
     perform        => 1,
     target_dir     => "${target_dir}/bam2bed",
     option         => "",
-    source_ref     => "bwa_pretrim_markduplicate",
+    source_ref     => "bwa_pretrim_cleanbam",
     blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
     sh_direct      => 0,
     pbs            => {
