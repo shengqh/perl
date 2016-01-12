@@ -142,6 +142,22 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_pretrim_macs2bdgdiff_individual_nomodel_depth => {
+    class         => "Visualization::Depth",
+    perform       => 1,
+    target_dir    => "${target_dir}/bwa_pretrim_macs2bdgdiff_individual_nomodel_depth",
+    option        => "",
+    source_ref    => "bwa_pretrim_macs2bdgdiff_individual_nomodel",
+    groups_ref    => "individual_comparison",
+    bam_files_ref => "files",
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bowtie2_pretrim => {
     class         => "Alignment::Bowtie2",
     perform       => 1,
@@ -212,6 +228,22 @@ my $config = {
     groups_ref => "individual_comparison",
     sh_direct  => 0,
     pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bowtie2_pretrim_macs2bdgdiff_individual_nomodel_depth => {
+    class         => "Visualization::Depth",
+    perform       => 1,
+    target_dir    => "${target_dir}/bowtie2_pretrim_macs2bdgdiff_individual_nomodel_depth",
+    option        => "",
+    source_ref    => "bowtie2_pretrim_macs2bdgdiff_individual_nomodel",
+    groups_ref    => "individual_comparison",
+    bam_files_ref => "files",
+    sh_direct     => 0,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -325,7 +357,22 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-
+  bowtie2_posttrim_macs2bdgdiff_individual_nomodel_depth => {
+    class         => "Visualization::Depth",
+    perform       => 1,
+    target_dir    => "${target_dir}/bowtie2_posttrim_macs2bdgdiff_individual_nomodel_depth",
+    option        => "",
+    source_ref    => "bowtie2_posttrim_macs2bdgdiff_individual_nomodel",
+    groups_ref    => "individual_comparison",
+    bam_files_ref => "files",
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
