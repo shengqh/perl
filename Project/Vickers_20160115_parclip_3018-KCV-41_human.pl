@@ -14,7 +14,7 @@ my $userdef = merge(
   {
 
     #General options
-    task_name  => "3018-KCV-15",
+    task_name  => "3018-KCV-41",
     email      => "quanhu.sheng\@vanderbilt.edu",
     target_dir => "/scratch/cqs/shengq1/vickers/20160115_parclip_3018-KCV-41_human/",
     max_thread => 8,
