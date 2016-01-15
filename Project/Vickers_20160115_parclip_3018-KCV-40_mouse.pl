@@ -36,7 +36,7 @@ my $userdef = merge(
       "3018-KCV-50-i9_S9_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i9_S9_R1_001.fastq.gz"],
     },
   },
-  mouse_3utr()
+  mm10_3utr()
 );
 
 my $def = getSmallRNADefinition( $userdef, mm10_genome() );
