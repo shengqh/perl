@@ -25,15 +25,15 @@ my $userdef = merge(
 
     #Data
     files => {
-      "3018-KCV-50-i1_S1_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i1_S1_R1_001.fastq.gz"],
-      "3018-KCV-50-i2_S2_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i2_S2_R1_001.fastq.gz"],
-      "3018-KCV-50-i3_S3_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i3_S3_R1_001.fastq.gz"],
-      "3018-KCV-50-i4_S4_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i4_S4_R1_001.fastq.gz"],
-      "3018-KCV-50-i5_S5_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i5_S5_R1_001.fastq.gz"],
-      "3018-KCV-50-i6_S6_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i6_S6_R1_001.fastq.gz"],
-      "3018-KCV-50-i7_S7_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i7_S7_R1_001.fastq.gz"],
-      "3018-KCV-50-i8_S8_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i8_S8_R1_001.fastq.gz"],
-      "3018-KCV-50-i9_S9_R1_001.fastq" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i9_S9_R1_001.fastq.gz"],
+      "UPRTxCD4_LIVER" => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i1_S1_R1_001.fastq.gz"],
+      "UPRTxCD4_WAT"   => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i2_S2_R1_001.fastq.gz"],
+      "UPRTxCD4_ECs"   => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i3_S3_R1_001.fastq.gz"],
+      "UPRT_LIVER"     => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i4_S4_R1_001.fastq.gz"],
+      "UPRT_WAT"       => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i5_S5_R1_001.fastq.gz"],
+      "UPRT_ECs"       => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i6_S6_R1_001.fastq.gz"],
+      "CD4_LIVER"      => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i7_S7_R1_001.fastq.gz"],
+      "CD4_WAT"        => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i8_S8_R1_001.fastq.gz"],
+      "CD4_ECs"        => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-50/3018/3018-KCV-50-i9_S9_R1_001.fastq.gz"],
     },
   },
   mm10_3utr()
