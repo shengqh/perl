@@ -15,6 +15,7 @@ my $def = {
   #Default software parameter (don't change it except you really know it)
   fastq_remove_N => 1,
   cqstools       => "/home/shengq1/cqstools/CQS.Tools.exe",
+  mapped_extract => 1,
 
   #Data
   files => {
