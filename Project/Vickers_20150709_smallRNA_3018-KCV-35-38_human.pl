@@ -10,7 +10,7 @@ my $def = {
   #General options
   task_name  => "3018-KCV-35-38",
   email      => "quanhu.sheng\@vanderbilt.edu",
-  target_dir => "/scratch/cqs/shengq1/vickers/20150709_smallRNA_3018-KCV-35-38_human",
+  target_dir => "/scratch/cqs/shengq1/vickers/20150709_smallRNA_3018-KCV-35-38_human_test",
   max_thread => 8,
 
   #Default software parameter (don't change it except you really know it)
