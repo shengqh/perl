@@ -382,7 +382,8 @@ my $groups = {
 $def->{groups}         = $groups;
 $def->{pairs}          = { "RA_vs_Control" => [ "RAControl", "RA" ] };
 $def->{tRNA_vis_group} = $groups;
-performSmallRNA_hg19($def);
+my $config = performSmallRNA_hg19($def, 0);
+performTask($config, "tRNA_deseq2");
 
 1;
 
