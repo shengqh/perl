@@ -139,9 +139,26 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => {
+      "step1" => [ "bam2bed", "macs2callpeak_individual_nomodel" ],
+      "step2" => ["macs2bdgdiff_individual_nomodel"],
+    },
+    sh_direct => 0,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  }
 };
 
 #performConfig($config);
-performTask( $config, "macs2bdgdiff_replicates_nomodel_depth" );
+performTask( $config, "sequencetask" );
 
 1;
