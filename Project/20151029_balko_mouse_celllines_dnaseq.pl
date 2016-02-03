@@ -8,7 +8,7 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $target_dir = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines";
+my $target_dir = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines_test";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
