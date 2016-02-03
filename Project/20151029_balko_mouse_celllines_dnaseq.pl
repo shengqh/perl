@@ -254,6 +254,7 @@ for my $dataset (@datasets) {
     $source = "cutadapt";
     push @individuals, ( "cutadapt", "fastqlen", "cutadapt_fastqc" );
     push @all, ("cutadapt_fastqc_summary");
+    performTask( $config, "cutadapt" );
   }
 
   $config = merge(
@@ -583,7 +584,6 @@ for my $dataset (@datasets) {
   };
 
   #performConfig($config);
-  performTask( $config, "cutadapt" );
 }
 
 1;
