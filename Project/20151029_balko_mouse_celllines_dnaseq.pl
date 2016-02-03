@@ -197,6 +197,7 @@ for my $dataset (@datasets) {
           extension  => "_clipped.fastq.gz",
           sh_direct  => 1,
           cluster    => $cluster,
+          pairend    => 1,
           pbs        => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
