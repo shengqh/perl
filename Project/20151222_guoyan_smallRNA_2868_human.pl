@@ -14,9 +14,10 @@ my $def = {
   max_thread => 8,
 
   #Default software parameter (don't change it except you really know it)
-  fastq_remove_N => 1,
-  cqstools       => "/home/shengq1/cqstools/CQS.Tools.exe",
-  mapped_extract => 0,
+  fastq_remove_N        => 1,
+  cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
+  mapped_extract        => 0,
+  search_unmapped_reads => 0,
 
   #Data
   files => {
@@ -64,7 +65,7 @@ my $def = {
       "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-311_1_sequence.txt.gz"
     ],
     "CMS-056-312" => [ "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-56_1_sequence.txt.gz", "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-312_1_sequence.txt.gz" ],
-    "CMS-059-313"     => [ "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-59_1_sequence.txt.gz", "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-313_1_sequence.txt.gz" ],
+    "CMS-059-313" => [ "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-59_1_sequence.txt.gz", "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-313_1_sequence.txt.gz" ],
     "CMS-062-314" => [ "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-62_1_sequence.txt.gz", "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-314_1_sequence.txt.gz" ],
     "CMS-063-315" => [ "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-63_1_sequence.txt.gz", "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-315_1_sequence.txt.gz" ],
     "CMS-064-316" => [ "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-64_1_sequence.txt.gz", "/gpfs21/scratch/cqs/guoy1/2868/2868-CMS-316_1_sequence.txt.gz" ],
@@ -364,8 +365,8 @@ my $groups = {
 $def->{groups}         = $groups;
 $def->{pairs}          = { "RA_vs_Control" => [ "RAControl", "RA" ] };
 $def->{tRNA_vis_group} = $groups;
-my $config = performSmallRNA_hg19( $def, 0 );
-performTask( $config, "cutadapt" );
+my $config = performSmallRNA_hg19( $def, 1 );
+#performTask( $config, "cutadapt" );
 
 1;
 
