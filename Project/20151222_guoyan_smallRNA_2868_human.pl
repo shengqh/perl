@@ -18,6 +18,7 @@ my $def = {
   cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
   mapped_extract        => 0,
   search_unmapped_reads => 0,
+  remove_sequences      => '\'CCACGTTCCCGTGG;ACAGTCCGACGATC\'',
 
   #Data
   files => {
@@ -366,6 +367,7 @@ $def->{groups}         = $groups;
 $def->{pairs}          = { "RA_vs_Control" => [ "RAControl", "RA" ] };
 $def->{tRNA_vis_group} = $groups;
 my $config = performSmallRNA_hg19( $def, 1 );
+
 #performTask( $config, "cutadapt" );
 
 1;
