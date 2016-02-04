@@ -17,7 +17,6 @@ my $def = {
   cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
   mapped_extract        => 1,
   search_unmapped_reads => 0,
-  remove_sequences      => '\'CCACGTTCCCGTGG;ACAGTCCGACGATC\'',
 
   #Data
   files => {
