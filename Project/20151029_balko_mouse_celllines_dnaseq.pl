@@ -8,7 +8,7 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $target_dir = "/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines_test";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines_test");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
@@ -145,6 +145,7 @@ my $wgs = {
 my @datasets = ( $wes, $wgs );
 
 for my $dataset (@datasets) {
+  my $dataset_dir = create_directory_or_die( "${target_dir}/" . $dataset->{task_name});
   my $config = {
     general => { task_name => $dataset->{task_name} },
     files   => $dataset->{files},
@@ -152,7 +153,7 @@ for my $dataset (@datasets) {
     fastqc  => {
       class      => "QC::FastQC",
       perform    => 1,
-      target_dir => "${target_dir}/" . $dataset->{task_name} . "/fastqc",
+      target_dir => "${dataset_dir}/fastqc",
       option     => "",
       source_ref => "files",
       sh_direct  => 1,
