@@ -9,7 +9,7 @@ my $def_human = {
   #General options
   task_name       => "3116_human",
   email           => "quanhu.sheng\@vanderbilt.edu",
-  target_dir      => "/scratch/cqs/shengq1/smallRNA/20150414_guoyan_smallRNA_3116/",
+  target_dir      => "/scratch/cqs/shengq1/smallRNA/20160215_guoyan_smallRNA_3116/",
   max_thread      => 8,
   min_read_length => 16,
   cluster         => "slurm",
