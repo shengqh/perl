@@ -13,6 +13,7 @@ my $def_human = {
   max_thread      => 8,
   min_read_length => 16,
   cluster         => "slurm",
+  cqstools        => "/home/shengq1/cqstools/CQS.Tools.exe",
 
   #Data
   files => {
@@ -20,7 +21,14 @@ my $def_human = {
     "3116-DCs-2" => ["/scratch/cqs/guoy1/3116/3116-DCs-2_1_sequence.txt.gz"],
     "3116-DCs-3" => ["/scratch/cqs/guoy1/3116/3116-DCs-3_1_sequence.txt.gz"],
     "3116-DCs-4" => ["/scratch/cqs/guoy1/3116/3116-DCs-4_1_sequence.txt.gz"],
-  }
+  },
+  groups => {
+    "TEST1" => [ "3116-DCs-1", "3116-DCs-2" ],
+    "TEST2" => [ "3116-DCs-3", "3116-DCs-4" ],
+  },
+  pairs => {
+    "TEST" => [ "TEST1", "TEST2" ],
+  },
 };
 
 performSmallRNA_hg19($def_human);
