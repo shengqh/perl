@@ -19,10 +19,10 @@ buildindex -f fastaFile
 Options:
 
   -f|--file {fastaFile}        Fasta format sequence file
-  -g|--gsnap {0/1}             Build gsnap index
-  -b|--bowtie {0/1}            Build bowtie index
-  -B|--bowtie2 {0/1}           Build bowtie2 index
-  -w|--bwa {0/1}               Build bwa index
+  -g|--gsnap                   Build gsnap index
+  -b|--bowtie                  Build bowtie index
+  -B|--bowtie2                 Build bowtie2 index
+  -w|--bwa                     Build bwa index
   -h|--help                    This page.
 ";
 
@@ -36,12 +36,12 @@ my $dobwa;
 my $help;
 
 GetOptions(
-  'h|help'      => \$help,
-  'g|gsnap=i'   => \$dogsnap,
-  'b|bowtie=i'  => \$dobowtie,
-  'B|bowtie2=i' => \$dobowtie2,
-  'w|bwa=i'     => \$dobwa,
-  'f|file=s'    => \$fastaFile
+  'h|help'    => \$help,
+  'g|gsnap'   => \$dogsnap,
+  'b|bowtie'  => \$dobowtie,
+  'B|bowtie2' => \$dobowtie2,
+  'w|bwa'     => \$dobwa,
+  'f|file=s'  => \$fastaFile
 );
 
 if ( defined $help ) {
@@ -71,7 +71,7 @@ if ( !-e "${base}.len" ) {
   run_command("mv res_${basename} ${base}.len ");
 }
 
-if ( !defined $dogsnap || $dogsnap != 0 ) {
+if ( defined $dogsnap ) {
 
   # gsnap
   `gsnap 2> 1`;
@@ -96,7 +96,7 @@ if ( !defined $dogsnap || $dogsnap != 0 ) {
   }
 }
 
-if ( !defined $dobowtie || $dobowtie != 0 ) {
+if ( defined $dobowtie ) {
 
   # bowtie
   my $bowtie = `bowtie --version | grep bowtie | grep version | cut -d " " -f 3`;
@@ -115,7 +115,7 @@ if ( !defined $dobowtie || $dobowtie != 0 ) {
   }
 }
 
-if ( !defined $dobwa || $dobwa != 0 ) {
+if ( defined $dobwa ) {
 
   #bwa
   `bwa 2> 1`;
@@ -138,7 +138,7 @@ if ( !defined $dobwa || $dobwa != 0 ) {
   }
 }
 
-if ( !defined $dobowtie2 || $dobowtie2 != 0 ) {
+if ( defined $dobowtie2 ) {
 
   # bowtie2
   my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
