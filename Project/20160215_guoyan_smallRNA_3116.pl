@@ -14,6 +14,7 @@ my $def_human = {
   min_read_length      => 16,
   cluster              => "slurm",
   search_not_identical => 1,
+  blast_unmapped_reads => 1,
   cqstools             => "/home/shengq1/cqstools/CQS.Tools.exe",
 
   #Data
