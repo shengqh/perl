@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use CQS::PerformSmallRNA;
+use CQS::ClassFactory;
 
 my $def_human = {
 
@@ -33,6 +34,8 @@ my $def_human = {
   },
 };
 
-performSmallRNA_hg19($def_human);
+my $config = performSmallRNA_hg19($def_human, 0);
+performTask($config, "bowtie1_unmapped_sequence_blast");
+
 1;
 
