@@ -2,15 +2,11 @@
 use strict;
 use warnings;
 
-use CQS::QC;
-use CQS::DNASeq;
-use CQS::RNASeq;
-use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
-use CQS::Cutadapt;
+use Trimmer::Cutadapt;
 
 my $root;
 my $cqs_tools;
@@ -1023,7 +1019,7 @@ my $config_human = {
 #performConfig($config_rat);
 #performConfig($config_human);
 
-performTask($config_rat,"mirna_count_bowtie2_genome_cutadapt_topN");
+performTask( $config_rat, "mirna_count_bowtie2_genome_cutadapt_topN" );
 
 #performConfig($config_rat, "^shrimp2", 1);
 #performConfig($config_human, "^shrimp2", 1);
