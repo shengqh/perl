@@ -71,8 +71,8 @@ if ( !defined($fastaFile) ) {
   print STDERR "file is required for build index." . "\n";
   $pass = 0;
 }
-elsif ( !-e $sjdbGTFfile ) {
-  print STDERR "sjdbGTFfile is not exist " . $sjdbGTFfile . "\n";
+elsif ( !-e $fastaFile ) {
+  print STDERR "fasta file is not exist " . $fastaFile . "\n";
   $pass = 0;
 }
 
