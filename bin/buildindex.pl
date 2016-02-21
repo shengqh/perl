@@ -172,6 +172,8 @@ if ( defined $dostar ) {
   my $star = `STAR --version`;
   chomp($star);
   my $star_dir = "STAR_index_${star}_${sjdbGTFfileVersion}_sjdb${sjdbOverhang}";
+  
+  my $absolute_gtf = File::Spec->rel2abs($sjdbGTFfile);
 
   if ( !-e $star_dir ) {
     mkdir($star_dir);
@@ -182,7 +184,7 @@ if ( defined $dostar ) {
       run_command("ln -s ../${basename}.fai ${basename}.fai ");
       run_command("ln -s ../${base}.len ${base}.len ");
     }
-    run_command("STAR --runThreadN $thread --runMode genomeGenerate --genomeDir . --genomeFastaFiles $basename --sjdbGTFfile $sjdbGTFfile --sjdbOverhang $sjdbOverhang");
+    run_command("STAR --runThreadN $thread --runMode genomeGenerate --genomeDir . --genomeFastaFiles $basename --sjdbGTFfile $absolute_gtf --sjdbOverhang $sjdbOverhang");
     chdir($absolute_dir);
   }
 }
