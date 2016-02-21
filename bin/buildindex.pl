@@ -171,7 +171,7 @@ if ( defined $dostar ) {
   # STAR
   my $star = `STAR --version`;
   chomp($star);
-  my $star_dir = 'STAR_index_${star}_${sjdbGTFfileVersion}_sjdb${sjdbOverhang}';
+  my $star_dir = "STAR_index_${star}_${sjdbGTFfileVersion}_sjdb${sjdbOverhang}";
 
   if ( !-e $star_dir ) {
     mkdir($star_dir);
