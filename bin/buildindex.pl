@@ -124,31 +124,6 @@ if ( !-e "${base}.len" ) {
 
 my $absolute_dir = File::Spec->rel2abs(".");
 
-if ( defined $dogsnap ) {
-
-  # gsnap
-  `gsnap 2> 1`;
-  my $gsnap = `grep version 1 | cut -d " " -f 3`;
-  chomp($gsnap);
-  `rm 1`;
-  if ( !-e "gsnap_index_k14_${gsnap}" ) {
-    mkdir("gsnap_index_k14_${gsnap}");
-    chdir("gsnap_index_k14_${gsnap}");
-    if ( !-e $basename ) {
-      run_command("ln -s ../$fastaFile $basename ");
-      run_command("ln -s ../${base}.dict ${base}.dict ");
-      run_command("ln -s ../${basename}.fai ${basename}.fai ");
-      run_command("ln -s ../${base}.len ${base}.len ");
-    }
-
-    #min_read_length = kmers + interval - 1
-    #in order to control the min_read_length = 16, we have to smaller the kmers from 15 to 14 when keep the "sampling interval for genome" equals 3
-    run_command("gmap_build -D . -d $base -k 14 -s none $basename");
-    run_command("atoiindex -F . -d $base");
-    chdir($absolute_dir);
-  }
-}
-
 if ( defined $dobowtie ) {
 
   # bowtie
@@ -208,6 +183,50 @@ if ( defined $dostar ) {
       run_command("ln -s ../${base}.len ${base}.len ");
     }
     run_command("STAR --runThreadN $thread --runMode genomeGenerate --genomeDir . --genomeFastaFiles $basename --sjdbGTFfile $sjdbGTFfile --sjdbOverhang $sjdbOverhang");
+    chdir($absolute_dir);
+  }
+}
+
+if ( defined $dobowtie2 ) {
+
+  # bowtie2
+  my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
+  chomp($bowtie2);
+  if ( !-e "bowtie2_index_${bowtie2}" ) {
+    mkdir("bowtie2_index_${bowtie2}");
+    chdir("bowtie2_index_${bowtie2}");
+    if ( !-e $basename ) {
+      run_command("ln -s ../$fastaFile $basename ");
+      run_command("ln -s ../${base}.dict ${base}.dict ");
+      run_command("ln -s ../${basename}.fai ${basename}.fai ");
+      run_command("ln -s ../${base}.len ${base}.len ");
+    }
+    run_command("bowtie2-build $basename $base ");
+    chdir("..");
+  }
+}
+
+if ( defined $dogsnap ) {
+
+  # gsnap
+  `gsnap 2> 1`;
+  my $gsnap = `grep version 1 | cut -d " " -f 3`;
+  chomp($gsnap);
+  `rm 1`;
+  if ( !-e "gsnap_index_k14_${gsnap}" ) {
+    mkdir("gsnap_index_k14_${gsnap}");
+    chdir("gsnap_index_k14_${gsnap}");
+    if ( !-e $basename ) {
+      run_command("ln -s ../$fastaFile $basename ");
+      run_command("ln -s ../${base}.dict ${base}.dict ");
+      run_command("ln -s ../${basename}.fai ${basename}.fai ");
+      run_command("ln -s ../${base}.len ${base}.len ");
+    }
+
+    #min_read_length = kmers + interval - 1
+    #in order to control the min_read_length = 16, we have to smaller the kmers from 15 to 14 when keep the "sampling interval for genome" equals 3
+    run_command("gmap_build -D . -d $base -k 14 -s none $basename");
+    run_command("atoiindex -F . -d $base");
     chdir($absolute_dir);
   }
 }
