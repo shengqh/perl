@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 use File::Basename;
+use File::Spec;
 use Getopt::Long;
 
 sub run_command {
@@ -23,6 +24,11 @@ Options:
   -b|--bowtie                  Build bowtie index
   -B|--bowtie2                 Build bowtie2 index
   -w|--bwa                     Build bwa index
+  -s|--star                    Build STAR index
+  --sjdbGTFfile                Option sjdbGTFfile for STAR index
+  --sjdbGTFfileVersion         Option sjdbGTFfile version for STAR index
+  --sjdbOverhang               Option sjdbOverhang for STAR index
+  --thread                     Option thread for STAR index
   -h|--help                    This page.
 ";
 
@@ -33,16 +39,28 @@ my $dogsnap;
 my $dobowtie;
 my $dobowtie2;
 my $dobwa;
+my $dostar;
+my $sjdbGTFfile;
+my $sjdbOverhang;
+my $thread;
 my $help;
+my $sjdbGTFfileVersion;
 
 GetOptions(
-  'h|help'    => \$help,
-  'g|gsnap'   => \$dogsnap,
-  'b|bowtie'  => \$dobowtie,
-  'B|bowtie2' => \$dobowtie2,
-  'w|bwa'     => \$dobwa,
-  'f|file=s'  => \$fastaFile
+  'h|help'               => \$help,
+  'f|file=s'             => \$fastaFile,
+  'g|gsnap'              => \$dogsnap,
+  'b|bowtie'             => \$dobowtie,
+  'B|bowtie2'            => \$dobowtie2,
+  'w|bwa'                => \$dobwa,
+  's|star'               => \$dostar,
+  'sjdbGTFfile=s'        => \$sjdbGTFfile,
+  'sjdbGTFfileVersion=s' => \$sjdbGTFfileVersion,
+  'sjdbOverhang=i'       => \$sjdbOverhang,
+  'thread=i'             => \$thread,
 );
+
+my $pass = 1;
 
 if ( defined $help ) {
   print $usage;
@@ -50,6 +68,39 @@ if ( defined $help ) {
 }
 
 if ( !defined($fastaFile) ) {
+  print STDERR "file is required for build index." . "\n";
+  $pass = 0;
+}
+elsif ( !-e $sjdbGTFfile ) {
+  print STDERR "sjdbGTFfile is not exist " . $sjdbGTFfile . "\n";
+  $pass = 0;
+}
+
+if ( defined $dostar ) {
+  if ( !defined $sjdbGTFfile ) {
+    print STDERR "sjdbGTFfile is required for STAR index." . "\n";
+    $pass = 0;
+  }
+  elsif ( !-e $sjdbGTFfile ) {
+    print STDERR "sjdbGTFfile is not exist " . $sjdbGTFfile . "\n";
+    $pass = 0;
+  }
+
+  if ( !defined $sjdbGTFfileVersion ) {
+    print STDERR "sjdbGTFfileVersion is required for STAR index." . "\n";
+    $pass = 0;
+  }
+
+  if ( !defined $sjdbOverhang ) {
+    $sjdbOverhang = 99;
+  }
+
+  if ( !defined $thread ) {
+    $thread = 8;
+  }
+}
+
+if ( !$pass ) {
   print $usage;
   exit(1);
 }
@@ -70,6 +121,8 @@ if ( !-e "${base}.len" ) {
   run_command("perl /home/shengq1/local/bin/get_fasta_lengths.pl $fastaFile");
   run_command("mv res_${basename} ${base}.len ");
 }
+
+my $absolute_dir = File::Spec->rel2abs(".");
 
 if ( defined $dogsnap ) {
 
@@ -92,7 +145,7 @@ if ( defined $dogsnap ) {
     #in order to control the min_read_length = 16, we have to smaller the kmers from 15 to 14 when keep the "sampling interval for genome" equals 3
     run_command("gmap_build -D . -d $base -k 14 -s none $basename");
     run_command("atoiindex -F . -d $base");
-    chdir("..");
+    chdir($absolute_dir);
   }
 }
 
@@ -111,7 +164,7 @@ if ( defined $dobowtie ) {
       run_command("ln -s ../${base}.len ${base}.len ");
     }
     run_command("bowtie-build $basename $base ");
-    chdir("..");
+    chdir($absolute_dir);
   }
 }
 
@@ -134,26 +187,28 @@ if ( defined $dobwa ) {
     print "bwa index $basename \n";
     run_command("bwa index $basename");
 
-    chdir("..");
+    chdir($absolute_dir);
   }
 }
 
-if ( defined $dobowtie2 ) {
+if ( defined $dostar ) {
 
-  # bowtie2
-  my $bowtie2 = `bowtie2 --version | grep bowtie2 | grep version | cut -d " " -f 3`;
-  chomp($bowtie2);
-  if ( !-e "bowtie2_index_${bowtie2}" ) {
-    mkdir("bowtie2_index_${bowtie2}");
-    chdir("bowtie2_index_${bowtie2}");
+  # STAR
+  my $star = `STAR --version`;
+  chomp($star);
+  my $star_dir = 'STAR_index_${star}_${sjdbGTFfileVersion}_sjdb${sjdbOverhang}';
+
+  if ( !-e $star_dir ) {
+    mkdir($star_dir);
+    chdir($star_dir);
     if ( !-e $basename ) {
       run_command("ln -s ../$fastaFile $basename ");
       run_command("ln -s ../${base}.dict ${base}.dict ");
       run_command("ln -s ../${basename}.fai ${basename}.fai ");
       run_command("ln -s ../${base}.len ${base}.len ");
     }
-    run_command("bowtie2-build $basename $base ");
-    chdir("..");
+    run_command("STAR --runThreadN $thread --runMode genomeGenerate --genomeDir . --genomeFastaFiles $basename --sjdbGTFfile $sjdbGTFfile --sjdbOverhang $sjdbOverhang");
+    chdir($absolute_dir);
   }
 }
 
