@@ -15,20 +15,20 @@ my $usage = "
 
 Synopsis:
 
-buildindex -f fastaFile
+buildindex -f fastaFile [Options]
 
 Options:
 
   -f|--file {fastaFile}        Fasta format sequence file
-  -g|--gsnap                   Build gsnap index
   -b|--bowtie                  Build bowtie index
-  -B|--bowtie2                 Build bowtie2 index
   -w|--bwa                     Build bwa index
   -s|--star                    Build STAR index
   --sjdbGTFfile                Option sjdbGTFfile for STAR index
   --sjdbGTFfileVersion         Option sjdbGTFfile version for STAR index
   --sjdbOverhang               Option sjdbOverhang for STAR index
   --thread                     Option thread for STAR index
+  -B|--bowtie2                 Build bowtie2 index
+  -g|--gsnap                   Build gsnap index
   -h|--help                    This page.
 ";
 
