@@ -141,7 +141,13 @@ if ( defined $dobowtie ) {
   }
 
   if ( !-e "${base}.1.ebwt" ) {
-    run_command("bowtie-build $basename $base ");
+    my $size = -s $basename;
+    if ( $size >= 4000000000 ) {
+      run_command("bowtie-build --large-index $basename $base ");
+    }
+    else {
+      run_command("bowtie-build $basename $base ");
+    }
   }
   chdir($absolute_dir);
 }
