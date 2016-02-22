@@ -131,16 +131,19 @@ if ( defined $dobowtie ) {
   chomp($bowtie);
   if ( !-e "bowtie_index_${bowtie}" ) {
     mkdir("bowtie_index_${bowtie}");
-    chdir("bowtie_index_${bowtie}");
-    if ( !-e $basename ) {
-      run_command("ln -s ../$fastaFile $basename ");
-      run_command("ln -s ../${base}.dict ${base}.dict ");
-      run_command("ln -s ../${basename}.fai ${basename}.fai ");
-      run_command("ln -s ../${base}.len ${base}.len ");
-    }
-    run_command("bowtie-build $basename $base ");
-    chdir($absolute_dir);
   }
+  chdir("bowtie_index_${bowtie}");
+  if ( !-e $basename ) {
+    run_command("ln -s ../$fastaFile $basename ");
+    run_command("ln -s ../${base}.dict ${base}.dict ");
+    run_command("ln -s ../${basename}.fai ${basename}.fai ");
+    run_command("ln -s ../${base}.len ${base}.len ");
+  }
+
+  if ( !-e "${base}.1.ebwt" ) {
+    run_command("bowtie-build $basename $base ");
+  }
+  chdir($absolute_dir);
 }
 
 if ( defined $dobwa ) {
@@ -172,7 +175,7 @@ if ( defined $dostar ) {
   my $star = `STAR --version`;
   chomp($star);
   my $star_dir = "STAR_index_${star}_${sjdbGTFfileVersion}_sjdb${sjdbOverhang}";
-  
+
   my $absolute_gtf = File::Spec->rel2abs($sjdbGTFfile);
 
   if ( !-e $star_dir ) {
