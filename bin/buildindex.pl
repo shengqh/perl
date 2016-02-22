@@ -143,6 +143,7 @@ if ( defined $dobowtie ) {
   if ( !-e "${base}.1.ebwt" ) {
     my $size = -s $basename;
     if ( $size >= 4000000000 ) {
+      print "Database size = $size, build large-index \n";
       run_command("bowtie-build --large-index $basename $base ");
     }
     else {
