@@ -158,8 +158,7 @@ my $config = {
     target_dir => "${target_dir}/BradnerRose2",
     option     => "",
     source_ref => "bowtie1",
-
-    #groups_ref            => "groups",
+    groups_ref            => "pairs",
     pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_file_ref => [ "MACS", ".bed\$" ],
     genome                => "hg19",
