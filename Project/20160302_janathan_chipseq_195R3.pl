@@ -177,7 +177,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",             "bradner_rose2" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",             ],
     },
     sh_direct => 0,
     pbs       => {
