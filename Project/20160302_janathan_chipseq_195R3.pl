@@ -138,13 +138,12 @@ my $config = {
   },
   MACS => {
     class      => "Chipseq::MACS",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/MACS",
     option     => "-w",
     source_ref => "bowtie1",
-
-    #groups_ref => "groups",
-    #pairs_ref  => "pairs",
+    groups_ref => "groups",
+    pairs_ref  => "pairs",
     sh_direct => 1,
     pbs       => {
       "email"    => $email,
@@ -155,7 +154,7 @@ my $config = {
   },
   bradner_rose2 => {
     class      => "Chipseq::BradnerRose2",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/BradnerRose2",
     option     => "",
     source_ref => "bowtie1",
@@ -174,7 +173,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
