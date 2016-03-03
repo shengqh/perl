@@ -179,13 +179,13 @@ my $config = {
   },
   bradner_rose2 => {
     class                 => "Chipseq::BradnerRose2",
-    perform               => 0,
+    perform               => 1,
     target_dir            => "${target_dir}/BradnerRose2",
     option                => "",
     source_ref            => "bowtie1",
-    groups_ref            => "pairs",
+    groups_ref            => "treatments",
     pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
-    binding_site_file_ref => [ "MACS", ".bed\$" ],
+    binding_site_file_ref => [ "macs1callpeak", ".bed\$" ],
     genome                => "hg19",
     sh_direct             => 1,
     pbs                   => {
@@ -201,8 +201,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1", "fastq_len" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "macs1callpeak", ],
+      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1",       "fastq_len" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "macs1callpeak", "bradner_rose2" ],
     },
     sh_direct => 0,
     pbs       => {
