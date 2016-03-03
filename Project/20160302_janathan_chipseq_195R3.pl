@@ -137,13 +137,15 @@ my $config = {
     },
   },
   macs2callpeak => {
-    class      => "Chipseq::MACS2Callpeak",
-    perform    => 1,
-    target_dir => "${target_dir}/macs2callpeak",
-    option     => "-B",
-    source_ref => "bowtie1",
-    sh_direct  => 0,
-    pbs        => {
+    class             => "Chipseq::MACS2Callpeak",
+    perform           => 1,
+    target_dir        => "${target_dir}/macs2callpeak",
+    option            => "-B --nomodel --extsize 200",
+    source_ref        => "bowtie1",
+    groups            => "groups",
+    groups_as_control => 1,
+    sh_direct         => 0,
+    pbs               => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -191,8 +193,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS", ],
+      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1", "fastq_len" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "MACS", ],
     },
     sh_direct => 0,
     pbs       => {
