@@ -38,6 +38,9 @@ my $config = {
   pairs => {
     "d17_ESctrl2" => [ "d17_static_ESctrl2", "d17_shear_ESctrl2" ]
   },
+  macs1_groups => {
+    "d17_ESctrl2" => [ "d17_static_ESctrl2_H3K27ac", "d17_shear_ESctrl2_H3K27ac" ]
+  },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -158,14 +161,13 @@ my $config = {
     },
   },
 
-  MACS => {
+  macs1callpeak => {
     class      => "Chipseq::MACS",
-    perform    => 0,
-    target_dir => "${target_dir}/MACS",
+    perform    => 1,
+    target_dir => "${target_dir}/macs1callpeak",
     option     => "-w",
     source_ref => "bowtie1",
-    groups_ref => "treatments",
-    pairs_ref  => "pairs",
+    groups_ref => "macs1_groups",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
