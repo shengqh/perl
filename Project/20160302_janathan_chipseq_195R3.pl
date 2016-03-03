@@ -174,10 +174,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bradner_rose2 => {
+  macs1_bradner_rose2 => {
     class                 => "Chipseq::BradnerRose2",
     perform               => 1,
-    target_dir            => "${target_dir}/BradnerRose2",
+    target_dir            => "${target_dir}/macs1_bradner_rose2",
     option                => "",
     source_ref            => "bowtie1",
     groups_ref            => "treatments",
