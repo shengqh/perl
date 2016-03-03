@@ -169,7 +169,7 @@ my $config = {
     source_ref   => "bowtie1",
     groups_ref   => "treatments",
     controls_ref => "controls",
-    sh_direct    => 1,
+    sh_direct    => 0,
     pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
