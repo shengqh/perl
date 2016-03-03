@@ -176,6 +176,21 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  macs2bdgdiff => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff",
+    option     => "",
+    source_ref => "macs2callpeak",
+    groups_ref => "pairs",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 
   macs1callpeak => {
     class        => "Chipseq::MACS",
@@ -218,8 +233,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1",             "fastq_len" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "macs2_bradner_rose2", "macs1callpeak", "macs1_bradner_rose2" ],
+      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1",      "fastq_len" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "macs2bdgdiff", "macs2_bradner_rose2", "macs1callpeak", "macs1_bradner_rose2" ],
     },
     sh_direct => 0,
     pbs       => {
