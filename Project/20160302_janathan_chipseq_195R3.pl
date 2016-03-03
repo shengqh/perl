@@ -160,7 +160,7 @@ my $config = {
 
   MACS => {
     class      => "Chipseq::MACS",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/MACS",
     option     => "-w",
     source_ref => "bowtie1",
