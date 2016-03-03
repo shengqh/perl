@@ -185,7 +185,7 @@ my $config = {
     pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_file_ref => [ "macs1callpeak", ".bed\$" ],
     genome                => "hg19",
-    sh_direct             => 1,
+    sh_direct             => 0,
     pbs                   => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
