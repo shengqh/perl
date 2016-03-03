@@ -202,7 +202,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1", "fastq_len" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "MACS", ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "macs1callpeak", ],
     },
     sh_direct => 0,
     pbs       => {
