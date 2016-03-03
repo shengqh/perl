@@ -162,14 +162,15 @@ my $config = {
   },
 
   macs1callpeak => {
-    class      => "Chipseq::MACS",
-    perform    => 1,
-    target_dir => "${target_dir}/macs1callpeak",
-    option     => "-w",
-    source_ref => "bowtie1",
-    groups_ref => "macs1_groups",
-    sh_direct  => 1,
-    pbs        => {
+    class        => "Chipseq::MACS",
+    perform      => 1,
+    target_dir   => "${target_dir}/macs1callpeak",
+    option       => "-w",
+    source_ref   => "bowtie1",
+    groups_ref   => "treatments",
+    controls_ref => "controls",
+    sh_direct    => 1,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
