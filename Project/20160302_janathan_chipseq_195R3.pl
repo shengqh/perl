@@ -176,7 +176,7 @@ my $config = {
   },
   bradner_rose2 => {
     class                 => "Chipseq::BradnerRose2",
-    perform               => 0,
+    perform               => 1,
     target_dir            => "${target_dir}/BradnerRose2",
     option                => "",
     source_ref            => "bowtie1",
