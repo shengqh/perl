@@ -38,9 +38,6 @@ my $config = {
   pairs => {
     "d17_ESctrl2" => [ "d17_static_ESctrl2", "d17_shear_ESctrl2" ]
   },
-  macs1_groups => {
-    "d17_ESctrl2" => [ "d17_static_ESctrl2_H3K27ac", "d17_shear_ESctrl2_H3K27ac" ]
-  },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -179,11 +176,12 @@ my $config = {
   },
   bradner_rose2 => {
     class                 => "Chipseq::BradnerRose2",
-    perform               => 1,
+    perform               => 0,
     target_dir            => "${target_dir}/BradnerRose2",
     option                => "",
     source_ref            => "bowtie1",
     groups_ref            => "treatments",
+    controls_ref          => "controls",
     pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_file_ref => [ "macs1callpeak", ".bed\$" ],
     genome                => "hg19",
