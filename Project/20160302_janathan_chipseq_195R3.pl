@@ -18,12 +18,12 @@ my $task  = "195R3";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "d17_static_ESctrl1_Input"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/195R3/195R/day_17_static/CT663p5-14_bc11_GGCTAC_L007_R1_001.fastq.gz"],
-    "d17_static_ESctrl2_Input"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/195R3/195R/day_17_static/CT663p1-4_bc01_ATCACG_L006_R1_001.fastq.gz"],
-    "d17_static_ESctrl1_H3K27ac" => ["/gpfs21/scratch/cqs/shengq1/chipseq/195R3/195R/day_17_static/CT663p47-54_index3_TTAGGC_L004_R1_001.fastq.gz"],
-    "d17_static_ESctrl2_H3K27ac" => ["/gpfs21/scratch/cqs/shengq1/chipseq/195R3/195R/day_17_static/CT663p55-62_index11_GGCTAC_L005_R1_001.fastq.gz"],
-    "d17_shear_ESctrl2_Input"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/195R3/195R/day_17_shear/CT663p1-4_bc03_TTAGGC_L006_R1_001.fastq.gz"],
-    "d17_shear_ESctrl2_H3K27ac"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
+    "d17_static_ESctrl1_Input"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p5-14_bc11_GGCTAC_L007_R1_001.fastq.gz"],
+    "d17_static_ESctrl2_Input"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p1-4_bc01_ATCACG_L006_R1_001.fastq.gz"],
+    "d17_static_ESctrl1_H3K27ac" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p47-54_index3_TTAGGC_L004_R1_001.fastq.gz"],
+    "d17_static_ESctrl2_H3K27ac" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p55-62_index11_GGCTAC_L005_R1_001.fastq.gz"],
+    "d17_shear_ESctrl2_Input"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p1-4_bc03_TTAGGC_L006_R1_001.fastq.gz"],
+    "d17_shear_ESctrl2_H3K27ac"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
   },
   groups => {
     "d17_static_ESctrl1" => [ "d17_static_ESctrl1_Input", "d17_static_ESctrl1_H3K27ac" ],
