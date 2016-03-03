@@ -25,10 +25,15 @@ my $config = {
     "d17_shear_ESctrl2_Input"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p1-4_bc03_TTAGGC_L006_R1_001.fastq.gz"],
     "d17_shear_ESctrl2_H3K27ac"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
   },
-  groups => {
-    "d17_static_ESctrl1" => [ "d17_static_ESctrl1_Input", "d17_static_ESctrl1_H3K27ac" ],
-    "d17_static_ESctrl2" => [ "d17_static_ESctrl2_Input", "d17_static_ESctrl2_H3K27ac" ],
-    "d17_shear_ESctrl2"  => [ "d17_shear_ESctrl2_Input",  "d17_shear_ESctrl2_H3K27ac" ],
+  treatments => {
+    "d17_static_ESctrl1" => ["d17_static_ESctrl1_H3K27ac"],
+    "d17_static_ESctrl2" => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_shear_ESctrl2"  => ["d17_shear_ESctrl2_H3K27ac"],
+  },
+  controls => {
+    "d17_static_ESctrl1" => [ "d17_static_ESctrl1_Input", ],
+    "d17_static_ESctrl2" => [ "d17_static_ESctrl2_Input", ],
+    "d17_shear_ESctrl2"  => [ "d17_shear_ESctrl2_Input", ],
   },
   pairs => {
     "d17_ESctrl2" => [ "d17_static_ESctrl2", "d17_shear_ESctrl2" ]
@@ -137,15 +142,15 @@ my $config = {
     },
   },
   macs2callpeak => {
-    class             => "Chipseq::MACS2Callpeak",
-    perform           => 1,
-    target_dir        => "${target_dir}/macs2callpeak",
-    option            => "-B --nomodel --extsize 200",
-    source_ref        => "bowtie1",
-    groups_ref        => "groups",
-    groups_as_control => 1,
-    sh_direct         => 0,
-    pbs               => {
+    class         => "Chipseq::MACS2Callpeak",
+    perform       => 1,
+    target_dir    => "${target_dir}/macs2callpeak",
+    option        => "-B --nomodel --extsize 200",
+    source_ref    => "bowtie1",
+    treatment_ref => "treatments",
+    control_ref   => "controls",
+    sh_direct     => 0,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
