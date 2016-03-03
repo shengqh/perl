@@ -65,7 +65,7 @@ my $config = {
     class      => "Trimmer::Cutadapt",
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
-    option     => "-O 10 -m 30",
+    option     => "-m 30 --trim-n",
     source_ref => "files",
     adapter    => "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",    #trueseq adapter
     extension  => "_clipped.fastq",
@@ -136,6 +136,21 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  macs2callpeak => {
+    class      => "Chipseq::MACS2Callpeak",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2callpeak",
+    option     => "-B",
+    source_ref => "bowtie1",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   MACS => {
     class      => "Chipseq::MACS",
     perform    => 1,
@@ -176,8 +191,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",             ],
+      step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS", ],
     },
     sh_direct => 0,
     pbs       => {
