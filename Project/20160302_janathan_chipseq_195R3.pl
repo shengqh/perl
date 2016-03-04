@@ -193,7 +193,7 @@ my $config = {
   },
   macs2bdgdiff_bradner_rose2 => {
     class                 => "Chipseq::BradnerRose2",
-    perform               => 1,
+    perform               => 0,
     target_dir            => "${target_dir}/macs2bdgdiff_bradner_rose2",
     option                => "",
     source_ref            => "bowtie1",
