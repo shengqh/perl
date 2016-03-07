@@ -277,6 +277,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "macs2callpeak_bradner_rose2" );
+performTask( $config, "sequencetask" );
 
 1;
