@@ -172,7 +172,7 @@ my $config = {
     groups_ref           => "treatments",
     controls_ref         => "controls",
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
-    binding_site_bed_ref => [ "macs2callpeak", ".bed\$" ],
+    binding_site_bed_ref => [ "macs2callpeak", "" ],
     genome               => "hg19",
     sh_direct            => 0,
     pbs                  => {
@@ -277,6 +277,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "sequencetask" );
+performTask( $config, "macs2callpeak_bradner_rose2" );
 
 1;
