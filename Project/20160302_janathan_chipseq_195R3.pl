@@ -39,10 +39,10 @@ my $config = {
     "d17_ESctrl2" => [ "d17_static_ESctrl2", "d17_shear_ESctrl2" ]
   },
   difftreatments => {
-    "d17_ESctrl2"  => ["d17_shear_ESctrl2_H3K27ac"],
+    "d17_ESctrl2" => ["d17_shear_ESctrl2_H3K27ac"],
   },
   diffcontrols => {
-    "d17_ESctrl2"  => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_ESctrl2" => ["d17_static_ESctrl2_H3K27ac"],
   },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
@@ -207,6 +207,7 @@ my $config = {
     controls_ref          => "diffcontrols",
     pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_file_ref => [ "macs2bdgdiff", ".bed\$" ],
+    binding_site_filter   => "^chr",
     genome                => "hg19",
     sh_direct             => 0,
     pbs                   => {
@@ -258,8 +259,11 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1",                     "fastq_len" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs2callpeak",    "macs2callpeak_bradner_rose2", "macs2bdgdiff", "macs2bdgdiff_bradner_rose2", "macs1callpeak", "macs1callpeak_bradner_rose2" ],
+      step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
+      step_2 => [
+        "fastqc_pre_trim_summary", "fastqc_post_trim_summary",   "macs2callpeak", "macs2callpeak_bradner_rose2",
+        "macs2bdgdiff",            "macs2bdgdiff_bradner_rose2", "macs1callpeak", "macs1callpeak_bradner_rose2"
+      ],
     },
     sh_direct => 0,
     pbs       => {
