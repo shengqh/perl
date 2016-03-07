@@ -151,7 +151,7 @@ my $config = {
     class        => "Chipseq::MACS2Callpeak",
     perform      => 1,
     target_dir   => "${target_dir}/macs2callpeak",
-    option       => "-g hs --broad -B",
+    option       => "-g hs --broad -B -p 1e-9",
     source_ref   => "bowtie1",
     groups_ref   => "treatments",
     controls_ref => "controls",
@@ -217,12 +217,11 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-
   macs1callpeak => {
     class        => "Chipseq::MACS",
     perform      => 1,
     target_dir   => "${target_dir}/macs1callpeak",
-    option       => "-w",
+    option       => "-p 1e-9 -w -S --space=50",
     source_ref   => "bowtie1",
     groups_ref   => "treatments",
     controls_ref => "controls",
