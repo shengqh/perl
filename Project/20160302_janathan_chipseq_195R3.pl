@@ -275,12 +275,8 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "MACS" );
-
-#print Dumper($config);
-
-#performTask( $config, "bradner_rose2" );
+performTask( $config, "macs2callpeak_bradner_rose2" );
 
 1;
