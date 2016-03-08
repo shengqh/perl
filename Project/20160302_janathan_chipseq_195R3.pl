@@ -20,31 +20,37 @@ my $task  = "195R3";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "d17_static_ESctrl1_Input"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p5-14_bc11_GGCTAC_L007_R1_001.fastq.gz"],
-    "d17_static_ESctrl2_Input"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p1-4_bc01_ATCACG_L006_R1_001.fastq.gz"],
-    "d17_static_ESctrl1_H3K27ac" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p47-54_index3_TTAGGC_L004_R1_001.fastq.gz"],
-    "d17_static_ESctrl2_H3K27ac" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p55-62_index11_GGCTAC_L005_R1_001.fastq.gz"],
-    "d17_shear_ESctrl2_Input"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p1-4_bc03_TTAGGC_L006_R1_001.fastq.gz"],
-    "d17_shear_ESctrl2_H3K27ac"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
+    "d17_static_ESctrl1_Input"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p5-14_bc11_GGCTAC_L007_R1_001.fastq.gz"],
+    "d17_static_ESctrl2_Input"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p1-4_bc01_ATCACG_L006_R1_001.fastq.gz"],
+    "d17_static_ESctrl1_H3K27ac"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p47-54_index3_TTAGGC_L004_R1_001.fastq.gz"],
+    "d17_static_ESctrl2_H3K27ac"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT663p55-62_index11_GGCTAC_L005_R1_001.fastq.gz"],
+    "d17_shear_ESctrl2_Input"     => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p1-4_bc03_TTAGGC_L006_R1_001.fastq.gz"],
+    "d17_shear_ESctrl2_H3K27ac"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
+    "d17_shear_ESctrl2_H3K27ac_b" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005b_R1_001.fastq.gz"],
   },
   treatments => {
-    "d17_static_ESctrl1" => ["d17_static_ESctrl1_H3K27ac"],
-    "d17_static_ESctrl2" => ["d17_static_ESctrl2_H3K27ac"],
-    "d17_shear_ESctrl2"  => ["d17_shear_ESctrl2_H3K27ac"],
+    "d17_static_ESctrl1"  => ["d17_static_ESctrl1_H3K27ac"],
+    "d17_static_ESctrl2"  => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_shear_ESctrl2"   => ["d17_shear_ESctrl2_H3K27ac"],
+    "d17_shear_ESctrl2_b" => ["d17_shear_ESctrl2_H3K27ac_b"],
   },
   controls => {
-    "d17_static_ESctrl1" => [ "d17_static_ESctrl1_Input", ],
-    "d17_static_ESctrl2" => [ "d17_static_ESctrl2_Input", ],
-    "d17_shear_ESctrl2"  => [ "d17_shear_ESctrl2_Input", ],
+    "d17_static_ESctrl1"  => [ "d17_static_ESctrl1_Input", ],
+    "d17_static_ESctrl2"  => [ "d17_static_ESctrl2_Input", ],
+    "d17_shear_ESctrl2"   => [ "d17_shear_ESctrl2_Input", ],
+    "d17_shear_ESctrl2_b" => [ "d17_shear_ESctrl2_Input", ],
   },
   diffpairs => {
-    "d17_ESctrl2" => [ "d17_static_ESctrl2", "d17_shear_ESctrl2" ]
+    "d17_ESctrl2"   => [ "d17_static_ESctrl2", "d17_shear_ESctrl2" ],
+    "d17_ESctrl2_b" => [ "d17_static_ESctrl2", "d17_shear_ESctrl2_b" ]
   },
   difftreatments => {
-    "d17_ESctrl2" => ["d17_shear_ESctrl2_H3K27ac"],
+    "d17_ESctrl2"   => ["d17_shear_ESctrl2_H3K27ac"],
+    "d17_ESctrl2_b" => ["d17_shear_ESctrl2_H3K27ac_b"],
   },
   diffcontrols => {
-    "d17_ESctrl2" => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_ESctrl2"   => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_ESctrl2_b" => ["d17_static_ESctrl2_H3K27ac"],
   },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
@@ -279,8 +285,8 @@ my $config = {
     source     => {
       step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
       step_2 => [
-        "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam", "macs2callpeak", "macs2callpeak_bradner_rose2",
-        "macs2bdgdiff", "macs2bdgdiff_bradner_rose2", "macs1callpeak", "macs1callpeak_bradner_rose2"
+        "fastqc_pre_trim_summary",    "fastqc_post_trim_summary", "qc3bam", "macs2callpeak", "macs2callpeak_bradner_rose2", "macs2bdgdiff",
+        "macs2bdgdiff_bradner_rose2", "macs1callpeak",            "macs1callpeak_bradner_rose2"
       ],
     },
     sh_direct => 0,
