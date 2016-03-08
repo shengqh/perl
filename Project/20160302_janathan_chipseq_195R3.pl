@@ -174,7 +174,7 @@ my $config = {
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_bed_ref => [ "macs2callpeak", ".bed\$" ],
     genome               => "hg19",
-    sh_direct            => 0,
+    sh_direct            => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -209,7 +209,7 @@ my $config = {
     binding_site_bed_ref => [ "macs2bdgdiff", ".bed\$" ],
     binding_site_filter  => "^chr",
     genome               => "hg19",
-    sh_direct            => 0,
+    sh_direct            => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -244,7 +244,7 @@ my $config = {
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_bed_ref => [ "macs1callpeak", ".bed\$" ],
     genome               => "hg19",
-    sh_direct            => 0,
+    sh_direct            => 1,
     pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
