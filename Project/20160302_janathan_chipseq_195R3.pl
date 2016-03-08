@@ -8,9 +8,11 @@ use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3");
 
-my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
-my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
-my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
+my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
+my $bowtie_index   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
+my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
+my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+my $transcript_gtf = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.gtf";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "195R3";
@@ -148,6 +150,22 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  qc3bam => {
+    class          => "QC::QC3bam",
+    perform        => 1,
+    target_dir     => "${target_dir}/qc3bam",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    qc3_perl       => $qc3_perl,
+    source_ref     => "bowtie1",
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   macs2callpeak => {
     class        => "Chipseq::MACS2Callpeak",
     perform      => 1,
@@ -261,8 +279,8 @@ my $config = {
     source     => {
       step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
       step_2 => [
-        "fastqc_pre_trim_summary", "fastqc_post_trim_summary",   "macs2callpeak", "macs2callpeak_bradner_rose2",
-        "macs2bdgdiff",            "macs2bdgdiff_bradner_rose2", "macs1callpeak", "macs1callpeak_bradner_rose2"
+        "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam", "macs2callpeak", "macs2callpeak_bradner_rose2",
+        "macs2bdgdiff", "macs2bdgdiff_bradner_rose2", "macs1callpeak", "macs1callpeak_bradner_rose2"
       ],
     },
     sh_direct => 0,
