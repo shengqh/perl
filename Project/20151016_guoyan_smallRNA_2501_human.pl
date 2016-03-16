@@ -14,9 +14,11 @@ my $def = {
   max_thread => 8,
 
   #Default software parameter (don't change it except you really know it)
-  fastq_remove_N => 0,
-  cqstools       => "/home/shengq1/cqstools/CQS.Tools.exe",
-
+  fastq_remove_N        => 0,
+  cqstools              => "/home/shengq1/cqstools/CQS.Tools.exe",
+  search_not_identical  => 0,
+  search_unmapped_reads => 0,
+  blast_unmapped_reads  => 0,
   #Data
   files => {
     "2501-ASK-01" => ["/data/cqs/guom1/2501_rawdata_1/2501-ASK-1_1.fastq.gz"],
@@ -63,19 +65,7 @@ my $def = {
   tRNA_vis_group => {
 
     #"AML" => [
-    "C" => [
-      "2501-ASK-01",
-      "2501-ASK-04",
-      "2501-ASK-15",
-      "2501-ASK-17",
-      "2501-ASK-21",
-      "2501-ASK-23",
-      "2501-ASK-24",
-      "2501-ASK-25",
-      "2501-ASK-27",
-      "2501-ASK-37",
-      "2501-ASK-40"
-    ],
+    "C" => [ "2501-ASK-01", "2501-ASK-04", "2501-ASK-15", "2501-ASK-17", "2501-ASK-21", "2501-ASK-23", "2501-ASK-24", "2501-ASK-25", "2501-ASK-27", "2501-ASK-37", "2501-ASK-40" ],
 
     #    "MDS" => [
     "A" => [
@@ -89,6 +79,7 @@ my $def = {
 };
 
 my $config = performSmallRNA_hg19( $def, 1 );
+
 #performTask( $config, "tRNA_PositionVis" );
 
 1;
