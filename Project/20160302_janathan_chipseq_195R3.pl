@@ -27,30 +27,90 @@ my $config = {
     "d17_shear_ESctrl2_Input"     => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p1-4_bc03_TTAGGC_L006_R1_001.fastq.gz"],
     "d17_shear_ESctrl2_H3K27ac"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
     "d17_shear_ESctrl2_H3K27ac_b" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005b_R1_001.fastq.gz"],
+
+    "d17_static_iPSctrl2_input" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_006.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L008_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L008_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L008_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L008_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L008_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L008_R1_006.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L008_R1_007.fastq.gz"
+    ],
+    "d17_static_iPSctrl2_H3K27ac" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_006.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_007.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_008.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_009.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-23_GGCTAC_L006_R1_010.fastq.gz"
+    ],
+
+    "d17_shear_iPSctrl2_input" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L007_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L007_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L007_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L007_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L007_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L008_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L008_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L008_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L008_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L008_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-29_ACAGTG_L008_R1_006.fastq.gz"
+    ],
+    "d17_shear_iPSctrl2_H3K27ac" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_006.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_007.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_008.fastq.gz"
+    ],
   },
   treatments => {
     "d17_static_ESctrl1"  => ["d17_static_ESctrl1_H3K27ac"],
     "d17_static_ESctrl2"  => ["d17_static_ESctrl2_H3K27ac"],
     "d17_shear_ESctrl2"   => ["d17_shear_ESctrl2_H3K27ac"],
     "d17_shear_ESctrl2_b" => ["d17_shear_ESctrl2_H3K27ac_b"],
+    "d17_static_iPSctrl2" => ["d17_static_iPSctrl2_H3K27ac"],
+    "d17_shear_iPSctrl2"  => ["d17_shear_iPSctrl2_H3K27ac"],
+
   },
   controls => {
     "d17_static_ESctrl1"  => [ "d17_static_ESctrl1_Input", ],
     "d17_static_ESctrl2"  => [ "d17_static_ESctrl2_Input", ],
     "d17_shear_ESctrl2"   => [ "d17_shear_ESctrl2_Input", ],
     "d17_shear_ESctrl2_b" => [ "d17_shear_ESctrl2_Input", ],
+    "d17_static_iPSctrl2" => ["d17_static_iPSctrl2_input"],
+    "d17_shear_iPSctrl2"  => ["d17_shear_iPSctrl2_input"],
   },
   diffpairs => {
-    "d17_ESctrl2"   => [ "d17_static_ESctrl2", "d17_shear_ESctrl2" ],
-    "d17_ESctrl2_b" => [ "d17_static_ESctrl2", "d17_shear_ESctrl2_b" ]
+    "d17_ESctrl2"   => [ "d17_static_ESctrl2",  "d17_shear_ESctrl2" ],
+    "d17_ESctrl2_b" => [ "d17_static_ESctrl2",  "d17_shear_ESctrl2_b" ],
+    "d17_iPSctrl2"  => [ "d17_static_iPSctrl2", "d17_shear_iPSctrl2" ]
   },
   difftreatments => {
     "d17_ESctrl2"   => ["d17_shear_ESctrl2_H3K27ac"],
     "d17_ESctrl2_b" => ["d17_shear_ESctrl2_H3K27ac_b"],
+    "d17_iPSctrl2"  => ["d17_shear_iPSctrl2_H3K27ac"],
   },
   diffcontrols => {
     "d17_ESctrl2"   => ["d17_static_ESctrl2_H3K27ac"],
     "d17_ESctrl2_b" => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_iPSctrl2"  => ["d17_static_iPSctrl2_H3K27ac"],
   },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
@@ -285,8 +345,8 @@ my $config = {
     source     => {
       step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
       step_2 => [
-        "fastqc_pre_trim_summary", "fastqc_post_trim_summary",    "qc3bam",       "macs1callpeak", "macs1callpeak_bradner_rose2",
-        "macs2callpeak",           "macs2callpeak_bradner_rose2", "macs2bdgdiff", "macs2bdgdiff_bradner_rose2"
+        "fastqc_pre_trim_summary",     "fastqc_post_trim_summary", "qc3bam", "macs1callpeak", "macs1callpeak_bradner_rose2", "macs2callpeak",
+        "macs2callpeak_bradner_rose2", "macs2bdgdiff",             "macs2bdgdiff_bradner_rose2"
       ],
     },
     sh_direct => 0,
