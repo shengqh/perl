@@ -161,14 +161,18 @@ my $config = {
     "d17_iPSctrl2_H3K27me3" => [ "d17_static_iPSctrl2_H3K27me3", "d17_shear_iPSctrl2_H3K27me3" ],
   },
   difftreatments => {
-    "d17_ESctrl2"   => ["d17_shear_ESctrl2_H3K27ac"],
-    "d17_ESctrl2_b" => ["d17_shear_ESctrl2_H3K27ac_b"],
-    "d17_iPSctrl2"  => ["d17_shear_iPSctrl2_H3K27ac"],
+    "d17_ESctrl2_H3K27ac"   => ["d17_shear_ESctrl2_H3K27ac"],
+    "d17_ESctrl2_H3K27ac_b" => ["d17_shear_ESctrl2_H3K27ac_b"],
+    "d17_iPSctrl2_H3K27ac"  => ["d17_shear_iPSctrl2_H3K27ac"],
+    "d17_iPSctrl2_H3K4me1"  => ["d17_shear_iPSctrl2_H3K4me1"],
+    "d17_iPSctrl2_H3K27me3" => ["d17_shear_iPSctrl2_H3K27me3"],
   },
   diffcontrols => {
-    "d17_ESctrl2"   => ["d17_static_ESctrl2_H3K27ac"],
-    "d17_ESctrl2_b" => ["d17_static_ESctrl2_H3K27ac"],
-    "d17_iPSctrl2"  => ["d17_static_iPSctrl2_H3K27ac"],
+    "d17_ESctrl2_H3K27ac"   => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_ESctrl2_H3K27ac_b" => ["d17_static_ESctrl2_H3K27ac"],
+    "d17_iPSctrl2_H3K27ac"  => ["d17_static_iPSctrl2_H3K27ac"],
+    "d17_iPSctrl2_H3K4me1"  => ["d17_static_iPSctrl2_H3K4me1"],
+    "d17_iPSctrl2_H3K27me3" => ["d17_static_iPSctrl2_H3K27me3"],
   },
   merge_fastq => {
     class      => "Format::MergeFastq",
@@ -356,7 +360,7 @@ my $config = {
   },
   macs2bdgdiff_bradner_rose2 => {
     class                => "Chipseq::BradnerRose2",
-    perform              => 0,
+    perform              => 1,
     target_dir           => "${target_dir}/macs2bdgdiff_bradner_rose2",
     option               => "",
     source_ref           => "bowtie1",
