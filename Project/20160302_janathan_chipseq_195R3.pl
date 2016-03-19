@@ -121,7 +121,7 @@ my $config = {
     target_dir => "${target_dir}/merge_fastq",
     option     => "",
     source_ref => "split_files",
-    sh_direct  => 0,
+    sh_direct  => 1,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=2",
