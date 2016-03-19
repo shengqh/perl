@@ -81,6 +81,25 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_007.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_008.fastq.gz"
     ],
+    "d17_shear_iPSctrl2_H3K4me1" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-17_ACAGTG_L005_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-17_ACAGTG_L005_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-17_ACAGTG_L005_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-17_ACAGTG_L005_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-17_ACAGTG_L005_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-17_ACAGTG_L005_R1_006.fastq.gz"
+    ],
+    "d17_shear_iPSctrl2_H3K27me3" => [
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_001.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_002.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_003.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_004.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_005.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_006.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_007.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT644-20_ACTTGA_L005_R1_008.fastq.gz"
+    ],
+
   },
 
   treatments => {
