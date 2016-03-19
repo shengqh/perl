@@ -27,7 +27,9 @@ my $config = {
     "d17_shear_ESctrl2_Input"     => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p1-4_bc03_TTAGGC_L006_R1_001.fastq.gz"],
     "d17_shear_ESctrl2_H3K27ac"   => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
     "d17_shear_ESctrl2_H3K27ac_b" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005b_R1_001.fastq.gz"],
+  },
 
+  split_files => {
     "d17_static_iPSctrl2_input" => [
       "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_001.fastq.gz",
       "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_static/CT644-30_GCCAAT_L007_R1_002.fastq.gz",
@@ -80,6 +82,7 @@ my $config = {
       "/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_from_christina/CT644-19_CAGATC_L005_R1_008.fastq.gz"
     ],
   },
+
   treatments => {
     "d17_static_ESctrl1"  => ["d17_static_ESctrl1_H3K27ac"],
     "d17_static_ESctrl2"  => ["d17_static_ESctrl2_H3K27ac"],
@@ -112,12 +115,26 @@ my $config = {
     "d17_ESctrl2_b" => ["d17_static_ESctrl2_H3K27ac"],
     "d17_iPSctrl2"  => ["d17_static_iPSctrl2_H3K27ac"],
   },
+  merge_fastq => {
+    class      => "Format::MergeFastq",
+    perform    => 1,
+    target_dir => "${target_dir}/merge_fastq",
+    option     => "",
+    source_ref => "split_files",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=2",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
     perform    => 1,
     target_dir => "${target_dir}/fastqc_pre_trim",
     option     => "",
-    source_ref => "files",
+    source_ref => [ "files", "merge_fastq" ],
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -145,7 +162,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
     option     => "-m 30 --trim-n",
-    source_ref => "files",
+    source_ref => [ "files", "merge_fastq" ],
     adapter    => "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",    #trueseq adapter
     extension  => "_clipped.fastq",
     sh_direct  => 0,
