@@ -330,39 +330,6 @@ for my $dataset (@datasets) {
           "mem"      => "10gb"
         },
       },
-      bwa_dexseqcount => {
-        class        => "Count::DexseqCount",
-        perform      => 1,
-        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/bwa_dexseqcount",
-        option       => "",
-        source_ref   => ["bwa_refine"],
-        gff_file     => $dexseq_gff,
-        dexseq_count => $dexseq_script,
-        sh_direct    => 0,
-        pbs          => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "72",
-          "mem"      => "40gb"
-        },
-      },
-      bwa_exontable => {
-        class         => "CQS::CQSDatatable",
-        perform       => 1,
-        target_dir    => "${target_dir}/" . $dataset->{task_name} . "/bwa_exontable",
-        option        => "-p ENS --noheader -o " . $dataset->{task_name} . "_exon.count",
-        source_ref    => "bwa_dexseqcount",
-        name_map_file => $name_map_file,
-        cqs_tools     => $cqstools,
-        sh_direct     => 1,
-        pbs           => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "10",
-          "mem"      => "10gb"
-        },
-      },
-
       muTect => {
         class        => "GATK::MuTect",
         perform      => 1,
