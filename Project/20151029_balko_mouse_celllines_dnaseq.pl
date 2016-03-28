@@ -64,6 +64,10 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_2_sequence.txt.gz"
     ],
+    "N08_DUSP4flox_Trp53null1_MYC" => [
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_2_sequence.txt.gz"
+    ],
     "N09_DUSP4flox_Trp53null3_MYC" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-4_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-4_2_sequence.txt.gz"
@@ -84,12 +88,16 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_2_sequence.txt.gz"
     ],
+    "N18_DUSP4null_Trp53null3_MYC" => [
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_1_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_2_sequence.txt.gz"
+    ],
   },
   groups      => $groups,
   depthgroups => {
     "WES" => [
-      "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC", "N09_DUSP4flox_Trp53null3_MYC",
-      "N13_DUSP4null_LACZ", "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC", "N17_DUSP4null_Trp53null1_MYC"
+      "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC", "N08_DUSP4flox_Trp53null1_MYC", "N09_DUSP4flox_Trp53null3_MYC",
+      "N13_DUSP4null_LACZ", "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC", "N17_DUSP4null_Trp53null1_MYC", "N18_DUSP4null_Trp53null3_MYC"
     ]
   },
   capture_bed      => $capture_bed,
@@ -134,7 +142,7 @@ my $wgs = {
   },
   groups      => $groups,
   depthgroups => {
-    "WES" => [
+    "WGS" => [
       "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC", "N09_DUSP4flox_Trp53null3_MYC",
       "N13_DUSP4null_LACZ", "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC", "N17_DUSP4null_Trp53null1_MYC"
     ]
@@ -145,8 +153,8 @@ my $wgs = {
 my @datasets = ( $wes, $wgs );
 
 for my $dataset (@datasets) {
-  my $dataset_dir = create_directory_or_die( "${target_dir}/" . $dataset->{task_name});
-  my $config = {
+  my $dataset_dir = create_directory_or_die( "${target_dir}/" . $dataset->{task_name} );
+  my $config      = {
     general => { task_name => $dataset->{task_name} },
     files   => $dataset->{files},
     groups  => $dataset->{groups},
@@ -584,7 +592,7 @@ for my $dataset (@datasets) {
     },
   };
 
-  #performConfig($config);
+  performConfig($config);
 }
 
 1;
