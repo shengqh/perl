@@ -8,17 +8,18 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines_test");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
-my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $glmvc      = "/home/shengq1/glmvc/glmvc.exe";
-my $mutect     = "/home/shengq1/local/bin/mutect-1.1.7.jar";
-my $varscan2   = "/home/shengq1/local/bin/VarScan.v2.4.1.jar";
-my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
-my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
-my $conifer    = "/home/shengq1/pylibs/bin/conifer.py";
-my $qc3_perl   = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $glmvc         = "/home/shengq1/glmvc/glmvc.exe";
+my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
+my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.4.1.jar";
+my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $conifer       = "/home/shengq1/pylibs/bin/conifer.py";
+my $qc3_perl      = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+my $dexseq_script = "/home/shengq1/R/x86_64-pc-linux-gnu-library/3.2/DEXSeq/python_scripts/dexseq_count.py";
 
 my $bwa_fasta        = "/scratch/cqs/shengq1/references/mm10_sorted_M/bwa_index_0.7.12/mm10.fa";
 my $dbsnp            = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_M.vcf";
@@ -96,8 +97,9 @@ my $wes = {
   groups      => $groups,
   depthgroups => {
     "WES" => [
-      "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC", "N08_DUSP4flox_Trp53null1_MYC", "N09_DUSP4flox_Trp53null3_MYC",
-      "N13_DUSP4null_LACZ", "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC", "N17_DUSP4null_Trp53null1_MYC", "N18_DUSP4null_Trp53null3_MYC"
+      "N04_DUSP4flox_LACZ",           "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC",             "N08_DUSP4flox_Trp53null1_MYC",
+      "N09_DUSP4flox_Trp53null3_MYC", "N13_DUSP4null_LACZ",            "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC",
+      "N17_DUSP4null_Trp53null1_MYC", "N18_DUSP4null_Trp53null3_MYC"
     ]
   },
   capture_bed      => $capture_bed,
@@ -328,7 +330,7 @@ for my $dataset (@datasets) {
         option       => "",
         source_ref   => ["bwa"],
         gff_file     => $dexseq_gff,
-        dexseq_count => "/home/shengq1/pylibs/bin/dexseq_count.py",
+        dexseq_count => $dexseq_script,
         sh_direct    => 0,
         pbs          => {
           "email"    => $email,
@@ -511,7 +513,7 @@ for my $dataset (@datasets) {
         },
       }
     );
-    push @all, ( "bwa_dexseqcount" );
+    push @all, ("bwa_dexseqcount");
   }
   else {
     $config->{glmvc_WES_validation} = {
