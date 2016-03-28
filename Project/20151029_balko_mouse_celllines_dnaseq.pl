@@ -487,7 +487,6 @@ for my $dataset (@datasets) {
         },
       }
     );
-    push @all, ("bwa_dexseqcount");
   }
   else {
     $config->{glmvc_WES_validation} = {
