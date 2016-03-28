@@ -293,22 +293,6 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
-      gene_bam => {
-        class      => "Samtools::View",
-        perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/gene_bam",
-        option     => "-h -b -L $gene_bed",
-        extension  => ".bam",
-        source_ref => "bwa",
-        sh_direct  => 1,
-        sorted     => 1,
-        pbs        => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=1",
-          "walltime" => "24",
-          "mem"      => "10gb"
-        },
-      },
       bwa_refine => {
         class           => "GATK::Refine",
         perform         => 1,
@@ -328,6 +312,22 @@ for my $dataset (@datasets) {
           "nodes"    => "1:ppn=8",
           "walltime" => "240",
           "mem"      => "40gb"
+        },
+      },
+      gene_bam => {
+        class      => "Samtools::View",
+        perform    => 1,
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/gene_bam",
+        option     => "-h -b -L $gene_bed",
+        extension  => ".bam",
+        source_ref => "bwa_refine",
+        sh_direct  => 1,
+        sorted     => 1,
+        pbs        => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=1",
+          "walltime" => "24",
+          "mem"      => "10gb"
         },
       },
       bwa_dexseqcount => {
