@@ -329,7 +329,7 @@ for my $dataset (@datasets) {
         perform      => 1,
         target_dir   => "${target_dir}/" . $dataset->{task_name} . "/bwa_dexseqcount",
         option       => "",
-        source_ref   => ["bwa"],
+        source_ref   => ["bwa_refine"],
         gff_file     => $dexseq_gff,
         dexseq_count => $dexseq_script,
         sh_direct    => 0,
