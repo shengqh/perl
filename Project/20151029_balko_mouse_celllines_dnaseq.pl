@@ -460,23 +460,6 @@ for my $dataset (@datasets) {
     $config = merge(
       $config,
       {
-        conifer => {
-          class       => "CNV::Conifer",
-          perform     => 1,
-          target_dir  => "${target_dir}/" . $dataset->{task_name} . "/conifer",
-          option      => "",
-          source_ref  => "bwa",
-          conifer     => $conifer,
-          bedfile     => $dataset->{capture_slim_bed},
-          isbamsorted => 1,
-          sh_direct   => 1,
-          pbs         => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "72",
-            "mem"      => "10gb"
-          },
-        },
         cnmops => {
           class       => "CNV::cnMops",
           perform     => 1,
@@ -528,7 +511,7 @@ for my $dataset (@datasets) {
         },
       }
     );
-    push @all, ( "conifer", "bwa_dexseqcount" );
+    push @all, ( "bwa_dexseqcount" );
   }
   else {
     $config->{glmvc_WES_validation} = {
