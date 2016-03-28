@@ -94,7 +94,13 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_2_sequence.txt.gz"
     ],
   },
-  groups      => $groups,
+  groups => merge(
+    $groups,
+    {
+      "N08_DUSP4flox_Trp53null1_MYC" => [ "N04_DUSP4flox_LACZ", "N08_DUSP4flox_Trp53null1_MYC" ],
+      "N18_DUSP4null_Trp53null3_MYC" => [ "N04_DUSP4flox_LACZ", "N18_DUSP4null_Trp53null3_MYC" ],
+    }
+  ),
   depthgroups => {
     "WES" => [
       "N04_DUSP4flox_LACZ",           "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC",             "N08_DUSP4flox_Trp53null1_MYC",
