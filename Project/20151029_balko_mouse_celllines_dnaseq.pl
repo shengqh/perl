@@ -271,7 +271,8 @@ for my $dataset (@datasets) {
     $source = "cutadapt";
     push @individuals, ( "cutadapt", "fastqlen", "cutadapt_fastqc" );
     push @all, ("cutadapt_fastqc_summary");
-    performTask( $config, "cutadapt" );
+
+    #performTask( $config, "cutadapt" );
   }
 
   $config = merge(
@@ -314,10 +315,10 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
-      gene_bam => {
+      bwa_refine_genes_bam => {
         class      => "Samtools::View",
         perform    => 1,
-        target_dir => "${target_dir}/" . $dataset->{task_name} . "/gene_bam",
+        target_dir => "${target_dir}/" . $dataset->{task_name} . "/bwa_refine_genes_bam",
         option     => "-h -b -L $gene_bed",
         extension  => ".bam",
         source_ref => "bwa_refine",
@@ -368,28 +369,29 @@ for my $dataset (@datasets) {
           "mem"      => "10gb"
         },
       },
-      glmvc => {
-        class             => "Variants::GlmvcCall",
-        perform           => 1,
-        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
-        option            => "--glm_pvalue 0.1",
-        source_type       => "BAM",
-        source_ref        => "bwa_refine",
-        groups_ref        => "groups",
-        fasta_file        => $bwa_fasta,
-        annovar_buildver  => "mm10",
-        annovar_protocol  => $annovar_protocol,
-        annovar_operation => $annovar_operation,
-        annovar_db        => $annovar_db,
-        sh_direct         => 0,
-        execute_file      => $glmvc,
-        pbs               => {
-          "email"    => $email,
-          "nodes"    => "1:ppn=8",
-          "walltime" => "72",
-          "mem"      => "40gb"
-        },
-      },
+
+      #      glmvc => {
+      #        class             => "Variants::GlmvcCall",
+      #        perform           => 1,
+      #        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
+      #        option            => "--glm_pvalue 0.1",
+      #        source_type       => "BAM",
+      #        source_ref        => "bwa_refine",
+      #        groups_ref        => "groups",
+      #        fasta_file        => $bwa_fasta,
+      #        annovar_buildver  => "mm10",
+      #        annovar_protocol  => $annovar_protocol,
+      #        annovar_operation => $annovar_operation,
+      #        annovar_db        => $annovar_db,
+      #        sh_direct         => 0,
+      #        execute_file      => $glmvc,
+      #        pbs               => {
+      #          "email"    => $email,
+      #          "nodes"    => "1:ppn=8",
+      #          "walltime" => "72",
+      #          "mem"      => "40gb"
+      #        },
+      #      },
       glmvc_noMYC => {
         class             => "Variants::GlmvcCall",
         perform           => 1,
@@ -430,7 +432,8 @@ for my $dataset (@datasets) {
     }
   );
 
-  push @individuals, ( "bwa", "bwa_refine" );
+  push @individuals, ( "bwa", "bwa_refine", "bwa_refine_genes_bam" );
+  push @all, ( "muTect", "muTect_annovar", "glmvc_noMYC", "glmvc_noMYC_table" );
 
   if ( defined $dataset->{capture_bed} ) {
     $config = merge(
@@ -487,8 +490,10 @@ for my $dataset (@datasets) {
         },
       }
     );
+    push @all, ( "cnmops", "cnmops_bam", "cnmops_depth" );
   }
   else {
+    #validate the CNV in WES by WGS data
     $config->{glmvc_WES_validation} = {
       class            => "Variants::GlmvcValidate",
       perform          => 0,
@@ -508,6 +513,7 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
+    push @all, ("glmvc_WES_validation");
   }
 
   $config->{varscan2_copynumber} = {
@@ -530,6 +536,7 @@ for my $dataset (@datasets) {
       "mem"      => "40gb"
     },
   };
+  push @all, ("varscan2_copynumber");
 
   $config->{sequencetask} = {
     class      => "CQS::SequenceTask",
@@ -537,9 +544,8 @@ for my $dataset (@datasets) {
     target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
     option     => "",
     source     => {
-      prepare => \@individuals,
-      sm      => [ "muTect", "muTect_annovar", "glmvc" ],
-      all     => \@all
+      step1 => \@individuals,
+      step2 => \@all,
     },
     sh_direct => 0,
     pbs       => {
