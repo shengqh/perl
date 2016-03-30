@@ -474,14 +474,15 @@ for my $dataset (@datasets) {
           },
         },
         cnmops_depth => {
-          class         => "Visualization::Depth",
-          perform       => 1,
-          target_dir    => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
-          option        => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
-          source_ref    => [ "cnmops", ".cnvr.tsv" ],
-          groups_ref    => $dataset->{depthgroups},
-          bam_files_ref => "bwa_refine",
-          pbs           => {
+          class          => "Visualization::Depth",
+          perform        => 1,
+          target_dir     => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
+          option         => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
+          source_ref     => [ "cnmops", ".cnvr.tsv" ],
+          groups_ref     => $dataset->{depthgroups},
+          bam_files_ref  => "bwa_refine",
+          cnvr_files_ref => [ "cnmops", ".cnvr.tsv" ],
+          pbs            => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
             "walltime" => "24",
