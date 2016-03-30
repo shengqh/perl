@@ -478,7 +478,7 @@ for my $dataset (@datasets) {
           perform       => 1,
           target_dir    => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
           option        => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
-          source_ref    => [ "cnmops", ".bed" ],
+          source_ref    => [ "cnmops", ".cnvr.tsv" ],
           groups_ref    => $dataset->{depthgroups},
           bam_files_ref => "bwa_refine",
           pbs           => {
