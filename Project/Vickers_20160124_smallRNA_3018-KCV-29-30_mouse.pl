@@ -65,7 +65,7 @@ my $def = {
 };
 
 my $config = performSmallRNA_mm10($def, 0);
-performTask($config, "reads_in_tasks");
+performTask($config, "reads_in_tasks_pie");
 
 
 1;
