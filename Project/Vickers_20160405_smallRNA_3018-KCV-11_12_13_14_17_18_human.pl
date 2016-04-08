@@ -8,8 +8,8 @@ my $def = {
 
 	#General options
 	task_name                 => "KCV-11_12_13_14_17_18",
-	email                     => "shilin.zhao\@vanderbilt.edu",
-	target_dir                => "/scratch/cqs/zhaos/vickers/20160405_smallRNA_3018-KCV-11_12_13_14_17_18_human",
+	email                     => "quanhu.sheng\@vanderbilt.edu",
+	target_dir                => "/scratch/cqs/shengq1/vickers/20160405_smallRNA_3018-KCV-11_12_13_14_17_18_human",
 	max_thread                => 8,
 	cqstools                  => "/home/shengq1/cqstools/CQS.Tools.exe",
 	sequencetask_run_time     => 12,
@@ -106,6 +106,10 @@ my $def = {
 		"HetFH_HDL_vs_Control_HDL"     => { groups => [ "Control_HDL",   "HetFH_HDL" ], },
 		"HetFH_VLDL_vs_Control_VLDL"  => { groups => [ "Control_VLDL", "HetFH_VLDL" ], },
 		"HetFH_LDL_vs_Control_LDL"      => { groups => [ "Control_LDL",   "HetFH_LDL" ], },
+
+    "Control_HDL_vs_Control_LDL"      => { groups => [ "Control_LDL",   "Control_HDL" ], },
+    "Control_HDL_vs_Control_VLDL"      => { groups => [ "Control_VLDL",   "Control_HDL" ], },
+    "Control_VLDL_vs_Control_LDL"      => { groups => [ "Control_LDL",   "Control_VLDL" ], },
 	}
 };
 
