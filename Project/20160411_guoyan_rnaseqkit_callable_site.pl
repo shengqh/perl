@@ -13,8 +13,8 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160411_g
 my $email             = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools          = "/home/shengq1/cqstools/CQS.Tools.exe";
 
-my $preparation = {
-  general => { task_name => "preparation" },
+my $config = {
+  general => { task_name => "callable_site" },
 
   depth => {
     class         => "Samtools::DepthStat",
@@ -51,7 +51,7 @@ my $preparation = {
   },
 };
 
-performConfig($preparation);
+performConfig($config);
 
 1;
 
