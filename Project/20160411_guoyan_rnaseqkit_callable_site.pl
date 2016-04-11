@@ -10,8 +10,8 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160411_g
 
 #my $target_dir = create_directory_or_die("E:/temp");
 
-my $email             = "quanhu.sheng\@vanderbilt.edu";
-my $cqstools          = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $email    = "quanhu.sheng\@vanderbilt.edu";
+my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $config = {
   general => { task_name => "callable_site" },
@@ -20,7 +20,8 @@ my $config = {
     class         => "Samtools::DepthStat",
     perform       => 1,
     target_dir    => "${target_dir}/depth_stat",
-    option        => "",
+    cqstools      => $cqstools,
+    option        => "-q 20 -Q 20",
     minimum_depth => 20,
     source        => {
       "EAAIRABPEI-08"  => ["/gpfs21/scratch/cqs/guom1/BGI_yan/tophat_G/tpG_bam/EAAIRABPEI-8_sorted.bam"],
@@ -40,8 +41,11 @@ my $config = {
       "EAAGRABPEI-208" => ["/gpfs21/scratch/cqs/guom1/BGI_yan/tophat_G/tpG_bam/EAAGRABPEI-208_sorted.bam"],
       "EAAHRABPEI-209" => ["/gpfs21/scratch/cqs/guom1/BGI_yan/tophat_G/tpG_bam/EAAHRABPEI-209_sorted.bam"],
     },
-    cqstools  => $cqstools,
-    sh_direct => 0,
+    groups => {
+      "RNase H"   => [ "EAAIRABPEI-08",  "EAAIRABPEI-09",  "EAAIRABPEI-11",  "EAAIRABPEI-12",  "EAAIRABPEI-13",  "EAAIRABPEI-14",  "EAAIRABPEI-15",  "EAAIRABPEI-16" ],
+      "Ribo-Zero" => [ "EAAARABPEI-201", "EAAARABPEI-202", "EAAARABPEI-203", "EAAARABPEI-205", "EAAARABPEI-206", "EAAARABPEI-207", "EAAARABPEI-208", "EAAARABPEI-209", ]
+    },
+    sh_direct => 1,
     pbs       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
