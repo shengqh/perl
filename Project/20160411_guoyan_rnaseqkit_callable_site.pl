@@ -15,8 +15,7 @@ my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $config = {
   general => { task_name => "callable_site" },
-
-  depth => {
+  depth   => {
     class         => "Samtools::DepthStat",
     perform       => 1,
     target_dir    => "${target_dir}/depth_stat",
@@ -45,8 +44,9 @@ my $config = {
       "RNase H"   => [ "EAAIRABPEI-08",  "EAAJRABPEI-09",  "EAAKRABPEI-11",  "EAALRABPEI-12",  "EAAMRABPEI-13",  "EAANRABPEI-14",  "EAAORABPEI-15",  "EAAPRABPEI-16" ],
       "Ribo-Zero" => [ "EAAARABPEI-201", "EAABRABPEI-202", "EAACRABPEI-203", "EAADRABPEI-205", "EAAERABPEI-206", "EAAFRABPEI-207", "EAAGRABPEI-208", "EAAHRABPEI-209", ]
     },
-    sh_direct => 1,
-    pbs       => {
+    is_groups_paired => 1,
+    sh_direct        => 1,
+    pbs              => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
