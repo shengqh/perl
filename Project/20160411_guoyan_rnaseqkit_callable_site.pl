@@ -17,11 +17,11 @@ my $preparation = {
   general => { task_name => "preparation" },
 
   depth => {
-    class         => "Samtools::Depth",
+    class         => "Samtools::DepthStat",
     perform       => 1,
-    target_dir    => "${target_dir}/depth",
+    target_dir    => "${target_dir}/depth_stat",
     option        => "",
-    minimum_depth => 10,
+    minimum_depth => 20,
     source        => {
       "EAAIRABPEI-08"  => ["/gpfs21/scratch/cqs/guom1/BGI_yan/tophat_G/tpG_bam/EAAIRABPEI-8_sorted.bam"],
       "EAAJRABPEI-09"  => ["/gpfs21/scratch/cqs/guom1/BGI_yan/tophat_G/tpG_bam/EAAJRABPEI-9_sorted.bam"],
