@@ -66,8 +66,8 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_2_sequence.txt.gz"
     ],
     "N08_DUSP4flox_Trp53null1_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_1_sequence_merged.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_2_sequence_merged.txt.gz"
     ],
     "N09_DUSP4flox_Trp53null3_MYC" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-4_1_sequence.txt.gz",
@@ -90,8 +90,8 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_2_sequence.txt.gz"
     ],
     "N18_DUSP4null_Trp53null3_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_2_sequence.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_1_sequence_merged.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_2_sequence_merged.txt.gz"
     ],
   },
   groups => merge(
