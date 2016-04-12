@@ -11,7 +11,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160411_g
 #my $target_dir = create_directory_or_die("E:/temp");
 
 my $email    = "quanhu.sheng\@vanderbilt.edu";
-my $cqstools = "/home/shengq1/cqstools/CQS.Tools.exe";
+my $cqstools = "/home/shengq1/cqstools/cqstools.exe";
 
 my $config = {
   general => { task_name => "callable_site" },
