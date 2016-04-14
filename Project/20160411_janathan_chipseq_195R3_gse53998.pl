@@ -47,7 +47,7 @@ my $config = {
   },
   merge_bed => {
     class      => "Bedtools::Merge",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/merge_bed",
     option     => "-d 10 -c 4 -o collapse -delim \"_UNION_\"",
     source_ref => "peaks",
