@@ -32,7 +32,7 @@ my $config = {
   },
   macs1callpeak => {
     class      => "Chipseq::MACS",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/macs1callpeak",
     option     => "-p 1e-9 -w -S --space=50",
     source_ref => "bam_files",
