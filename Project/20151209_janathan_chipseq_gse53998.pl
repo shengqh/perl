@@ -95,7 +95,7 @@ my $config = {
     },
   },
   cutadapt => {
-    class      => "Cutadapt",
+    class      => "Trimmer::Cutadapt",
     perform    => 0,
     target_dir => "${target_dir}/cutadapt",
     option     => "-m 30",
