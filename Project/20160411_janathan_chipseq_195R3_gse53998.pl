@@ -13,7 +13,7 @@ my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.
 my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
-my $task  = "Comparison";
+my $task  = "chipseq";
 
 my $config = {
   general   => { task_name => $task },
