@@ -24,8 +24,8 @@ my $config = {
     "EC_BRD4_CON" => ["EC_BRD4_CON"],
   },
   "peaks" => {
-    "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs1callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_peaks.bed"],
-    "EC_BRD4_CON" => ["/scratch/cqs/shengq1/chipseq/20160411_janathan_chipseq_195R3_gse53998/macs1callpeak/result/EC_BRD4_CON/EC_BRD4_CON_peaks.bed"],
+    "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs1callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_peaks.name.bed"],
+    "EC_BRD4_CON" => ["/scratch/cqs/shengq1/chipseq/20160411_janathan_chipseq_195R3_gse53998/macs1callpeak/result/EC_BRD4_CON/EC_BRD4_CON_peaks.name.bed"],
   },
   groups => {
     "comparison" => [ "EC_BRD4_CON", "d17_static_iPSctrl2_H3K27ac" ]
