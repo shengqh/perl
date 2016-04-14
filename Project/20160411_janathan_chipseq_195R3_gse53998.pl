@@ -32,7 +32,7 @@ my $config = {
   },
   macs1callpeak => {
     class      => "Chipseq::MACS",
-    perform    => 1,
+    perform    => 0,
     target_dir => "${target_dir}/macs1callpeak",
     option     => "-p 1e-9 -w -S --space=50",
     source_ref => "bam_files",
@@ -49,7 +49,7 @@ my $config = {
     class      => "Bedtools::Merge",
     perform    => 1,
     target_dir => "${target_dir}/merge_bed",
-    option     => "",
+    option     => "-d 10 -c 4 -o collapse -delim \"_UNION_|\"",
     source_ref => "peaks",
     groups_ref => "groups",
     sh_direct  => 0,
