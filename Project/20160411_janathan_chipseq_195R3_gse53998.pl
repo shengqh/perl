@@ -45,7 +45,7 @@ my $config = {
     },
   },
   merge_bed => {
-    class      => "Chipseq::MACS",
+    class      => "Bedtools::Merge",
     perform    => 1,
     target_dir => "${target_dir}/merge_bed",
     option     => "",
