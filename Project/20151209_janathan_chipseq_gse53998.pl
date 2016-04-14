@@ -25,7 +25,8 @@ my $config = {
     "EC_BRD4_TNF" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106516.sra"],
 
     #    "EC_BRD4_TNF_JQ1"     => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106517.sra"],
-    #    "EC_H3K27AC_CON"      => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106518.sra"],
+    "EC_H3K27AC_CON" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106518.sra"],
+
     #    "EC_H3K27AC_TNF"      => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106519.sra"],
     #    "EC_H3K27AC_TNF_JQ1"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106520.sra"],
     #    "EC_H3K4ME3_CON"      => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106521.sra"],
@@ -45,15 +46,13 @@ my $config = {
     #    "EC_WCE_TNF_JQ1_2"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106535.sra"],
   },
   treatments => {
-    "EC_BRD4_CON" => ["EC_BRD4_CON"],
-    "EC_BRD4_TNF" => ["EC_BRD4_TNF"],
-  },
-  groups => {
-    "BRD4_TNF_vs_CON" => [ "EC_BRD4_CON", "EC_BRD4_TNF" ],
+    "EC_BRD4_CON"    => ["EC_BRD4_CON"],
+    "EC_BRD4_TNF"    => ["EC_BRD4_TNF"],
+    "EC_H3K27AC_CON" => ["EC_H3K27AC_CON"],
   },
   sra2fastq => {
     class      => "SRA::FastqDump",
-    perform    => 0,
+    perform    => 1,
     ispaired   => 0,
     target_dir => "${target_dir}/FastqDump",
     option     => "",
@@ -68,7 +67,7 @@ my $config = {
   },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc_pre_trim",
     option     => "",
     source_ref => "sra2fastq",
@@ -82,7 +81,7 @@ my $config = {
   },
   fastqc_pre_trim_summary => {
     class      => "QC::FastQCSummary",
-    perform    => 0,
+    perform    => 1,
     sh_direct  => 1,
     target_dir => "${target_dir}/fastqc_pre_trim",
     cqstools   => $cqstools,
@@ -96,7 +95,7 @@ my $config = {
   },
   cutadapt => {
     class      => "Trimmer::Cutadapt",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/cutadapt",
     option     => "-m 30",
     source_ref => "sra2fastq",
@@ -112,7 +111,7 @@ my $config = {
   },
   fastqc_post_trim => {
     class      => "QC::FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc_post_trim",
     option     => "",
     sh_direct  => 1,
@@ -126,7 +125,7 @@ my $config = {
   },
   fastqc_post_trim_summary => {
     class      => "QC::FastQCSummary",
-    perform    => 0,
+    perform    => 1,
     sh_direct  => 1,
     target_dir => "${target_dir}/fastqc_post_trim",
     cqstools   => $cqstools,
@@ -140,7 +139,7 @@ my $config = {
   },
   fastq_len => {
     class      => "CQS::FastqLen",
-    perform    => 0,
+    perform    => 1,
     target_dir => "$target_dir/fastq_len",
     option     => "",
     source_ref => "cutadapt",
@@ -155,7 +154,7 @@ my $config = {
   },
   bowtie1 => {
     class         => "Alignment::Bowtie1",
-    perform       => 0,
+    perform       => 1,
     target_dir    => "${target_dir}/bowtie1",
     option        => "-v 1 -m 1 --best --strata",
     fasta_file    => $fasta_file,
@@ -208,8 +207,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "sra2fastq",               "fastqc_pre_trim",          "cutadapt", "fastqc_post_trim", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",     "bradner_rose2" ],
+      step_1 => [ "sra2fastq", "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "MACS", "bradner_rose2" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -222,6 +221,7 @@ my $config = {
 };
 
 performConfig($config);
+
 #performTask( $config, "MACS" );
 
 #print Dumper($config);
