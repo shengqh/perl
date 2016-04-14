@@ -47,7 +47,7 @@ my $config = {
   },
   merge_bed => {
     class      => "Bedtools::Merge",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/merge_bed",
     option     => "-d 10 -c 4 -o collapse -delim \"_UNION_\"",
     source_ref => "peaks",
@@ -62,7 +62,7 @@ my $config = {
   },
   htseqcount => {
     class        => "Count::HTSeqCount",
-    perform      => 1,
+    perform      => 0,
     target_dir   => "${target_dir}/htseqcount",
     option       => "",
     source_ref   => "bam_files",
