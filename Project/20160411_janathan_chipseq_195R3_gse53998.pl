@@ -61,7 +61,7 @@ my $config = {
     },
   },
   htseqcount => {
-    class      => "HTSeqCount",
+    class      => "Count::HTSeqCount",
     perform    => 1,
     target_dir => "${target_dir}/htseqcount",
     option     => "",
