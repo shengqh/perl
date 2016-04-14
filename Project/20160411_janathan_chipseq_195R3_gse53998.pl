@@ -73,6 +73,22 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  correlation => {
+    class                    => "CQS::UniqueR",
+    perform                  => 1,
+    target_dir               => "${target_dir}/count_table_correlation",
+    rtemplate                => "countTableCorrelation.R",
+    output_file              => "parameterSampleFile1",
+    output_file_ext          => ".Correlation.png",
+    parameterSampleFile1_ref => ["peaktable"],
+    sh_direct                => 1,
+    pbs                      => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "1",
+      "mem"      => "10gb"
+    },
+  },
 
   sequencetask => {
     class      => "CQS::SequenceTask",
@@ -81,7 +97,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "merge_bed", "htseqcount" ],
-      step_2 => ["peaktable"],
+      step_2 => [ "peaktable", "correlation" ],
     },
     sh_direct => 0,
     pbs       => {
