@@ -28,7 +28,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/macs1callpeak",
     option     => "-p 1e-9 -w -S --space=20",
-    source_ref => "bowtie1",
+    source_ref => "bam_files",
     groups_ref => "treatments",
     sh_direct  => 0,
     pbs        => {
