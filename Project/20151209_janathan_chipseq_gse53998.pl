@@ -222,10 +222,9 @@ my $config = {
 };
 
 #performConfig($config);
-#performTask( $config, "MACS" );
+performTask( $config, "MACS" );
 
 #print Dumper($config);
-
-performTask( $config, "bradner_rose2" );
+#performTask( $config, "bradner_rose2" );
 
 1;
