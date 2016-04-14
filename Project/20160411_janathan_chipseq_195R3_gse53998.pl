@@ -60,6 +60,21 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  htseqcount => {
+    class      => "HTSeqCount",
+    perform    => 1,
+    target_dir => "${target_dir}/htseqcount",
+    option     => "",
+    source_ref => "bam_files",
+    gff_file   => "merge_bed",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },  
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 0,
