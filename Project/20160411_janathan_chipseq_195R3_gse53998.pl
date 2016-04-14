@@ -18,32 +18,15 @@ my $task  = "chipseq";
 my $config = {
   general   => { task_name => $task },
   bam_files => {
-    "EC_BRD4_CON" => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/bowtie1/result/EC_BRD4_CON/EC_BRD4_CON.bam"],
+    "EC_BRD4_CON"                 => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/bowtie1/result/EC_BRD4_CON/EC_BRD4_CON.bam"],
+    "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/bowtie1/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac.bam"],
   },
-  treatments => {
-    "EC_BRD4_CON" => ["EC_BRD4_CON"],
-  },
-  "peaks" => {
+  peaks => {
     "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs1callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_peaks.name.bed"],
     "EC_BRD4_CON"                 => ["/scratch/cqs/shengq1/chipseq/20160411_janathan_chipseq_195R3_gse53998/macs1callpeak/result/EC_BRD4_CON/EC_BRD4_CON_peaks.name.bed"],
   },
   groups => {
     "comparison" => [ "EC_BRD4_CON", "d17_static_iPSctrl2_H3K27ac" ]
-  },
-  macs1callpeak => {
-    class      => "Chipseq::MACS",
-    perform    => 0,
-    target_dir => "${target_dir}/macs1callpeak",
-    option     => "-p 1e-9 -w -S --space=50",
-    source_ref => "bam_files",
-    groups_ref => "treatments",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
   },
   merge_bed => {
     class      => "Bedtools::Merge",
@@ -75,13 +58,30 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  peaktable => {
+    class      => "CQS::CQSDatatable",
+    perform    => 1,
+    target_dir => "${target_dir}/peaktable",
+    option     => "--noheader -e -o ${task}_peak.count",
+    source_ref => "htseqcount",
+    cqs_tools  => $cqstools,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_2 => ["macs1callpeak"],
+      step_1 => [ "merge_bed", "htseqcount" ],
+      step_2 => ["peaktable"],
     },
     sh_direct => 0,
     pbs       => {
