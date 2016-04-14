@@ -62,11 +62,11 @@ my $config = {
   },
   htseqcount => {
     class        => "Count::HTSeqCount",
-    perform      => 0,
+    perform      => 1,
     target_dir   => "${target_dir}/htseqcount",
     option       => "",
     source_ref   => "bam_files",
-    gff_file_ref => "merge_bed",
+    gff_file_ref => [ "merge_bed", ".gff\$" ],
     sh_direct    => 0,
     pbs          => {
       "email"    => $email,
