@@ -204,7 +204,7 @@ my $config = {
   },
   sequencetask => {
     class      => "CQS::SequenceTask",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
@@ -221,8 +221,8 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask( $config, "MACS" );
+performConfig($config);
+#performTask( $config, "MACS" );
 
 #print Dumper($config);
 #performTask( $config, "bradner_rose2" );
