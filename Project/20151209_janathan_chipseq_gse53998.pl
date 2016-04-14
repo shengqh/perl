@@ -215,8 +215,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "sra2fastq",               "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "MACS", "bradner_rose2" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary" ],
+      step_1 => [ "sra2fastq",               "fastqc_pre_trim",          "cutadapt", "fastqc_post_trim", "bowtie1" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",     "bradner_rose2" ],
     },
     sh_direct => 0,
     pbs       => {
