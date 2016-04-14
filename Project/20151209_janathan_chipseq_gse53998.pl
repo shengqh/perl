@@ -15,6 +15,9 @@ my $cqstools     = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "gse53998";
 
+#sra download by
+#wget --ftp-user anonymous --ftp-password quanhu.sheng@vanderbilt.edu -r ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP%2FSRP035%2FSRP035320/
+
 my $config = {
   general => { task_name => $task },
   files   => {
@@ -40,6 +43,10 @@ my $config = {
     #    "EC_WCE_TNF_2"        => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106533.sra"],
     #    "EC_WCE_TNF_JQ1"      => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106534.sra"],
     #    "EC_WCE_TNF_JQ1_2"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106535.sra"],
+  },
+  treatments => {
+    "EC_BRD4_CON" => ["EC_BRD4_CON"],
+    "EC_BRD4_TNF" => ["EC_BRD4_TNF"],
   },
   groups => {
     "BRD4_TNF_vs_CON" => [ "EC_BRD4_CON", "EC_BRD4_TNF" ],
@@ -168,8 +175,7 @@ my $config = {
     target_dir => "${target_dir}/MACS",
     option     => "-w",
     source_ref => "bowtie1",
-    groups_ref => "groups",
-    pairs_ref  => "pairs",
+    groups_ref => "treatments",
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -184,7 +190,7 @@ my $config = {
     target_dir            => "${target_dir}/BradnerRose2",
     option                => "",
     source_ref            => "bowtie1",
-    groups_ref            => "groups",
+    groups_ref            => "treatments",
     pipeline_dir          => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_file_ref => [ "MACS", ".bed\$" ],
     genome                => "hg18",
