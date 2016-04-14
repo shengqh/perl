@@ -28,7 +28,7 @@ my $config = {
     "EC_BRD4_CON" => ["/scratch/cqs/shengq1/chipseq/20160411_janathan_chipseq_195R3_gse53998/macs1callpeak/result/EC_BRD4_CON/EC_BRD4_CON_peaks.bed"],
   },
   groups => {
-    "Comparison" => [ "EC_BRD4_CON", "d17_static_iPSctrl2_H3K27ac" ]
+    "comparison" => [ "EC_BRD4_CON", "d17_static_iPSctrl2_H3K27ac" ]
   },
   macs1callpeak => {
     class      => "Chipseq::MACS",
