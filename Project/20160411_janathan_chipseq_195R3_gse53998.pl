@@ -8,8 +8,6 @@ use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/chipseq/20160411_janathan_chipseq_195R3_gse53998");
 
-my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
-my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
 my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
