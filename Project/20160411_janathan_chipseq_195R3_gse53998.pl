@@ -94,8 +94,9 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "merge_bed", "htseqcount" ],
-      step_2 => [ "peaktable", "correlation" ],
+      step_1 => [ "merge_bed" ],
+      step_2 => [ "htseqcount" ],
+      step_3 => [ "peaktable", "correlation" ],
     },
     sh_direct => 0,
     pbs       => {
