@@ -48,13 +48,13 @@ my $config = {
     #    "EC_WCE_TNF_JQ1_2"    => ["/gpfs21/scratch/cqs/shengq1/chipseq/20151208_gse53998/sra/SRR1106535.sra"],
   },
   treatments => {
-    "EC_BRD4_CON"    => ["EC_BRD4_CON"],
-    "EC_BRD4_TNF"    => ["EC_BRD4_TNF"],
+    #"EC_BRD4_CON"    => ["EC_BRD4_CON"],
+    #"EC_BRD4_TNF"    => ["EC_BRD4_TNF"],
     "EC_H3K27AC_CON" => ["EC_H3K27AC_CON"],
   },
   inputs => {
-    "EC_BRD4_CON"    => ["EC_WCE_CON"],
-    "EC_BRD4_TNF"    => ["EC_WCE_TNF"],
+    #"EC_BRD4_CON"    => ["EC_WCE_CON"],
+    #"EC_BRD4_TNF"    => ["EC_WCE_TNF"],
     "EC_H3K27AC_CON" => ["EC_WCE_CON"],
   },
   sra2fastq => {
@@ -199,10 +199,26 @@ my $config = {
     source_ref           => "bowtie1",
     groups_ref           => "treatments",
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
-    binding_site_bed_ref => [ "MACS", ".bed\$" ],
+    binding_site_bed_ref => [ "MACS", ".name.bed\$" ],
     genome               => "hg18",
     sh_direct            => 1,
     pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  macs2callpeak => {
+    class        => "Chipseq::MACS2Callpeak",
+    perform      => 1,
+    target_dir   => "${target_dir}/macs2callpeak",
+    option       => "-g hs --broad -B -p 1e-9",
+    source_ref   => "bowtie1",
+    groups_ref   => "treatments",
+    controls_ref => "inputs",
+    sh_direct    => 0,
+    pbs          => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -216,7 +232,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "sra2fastq",               "fastqc_pre_trim",          "cutadapt", "fastqc_post_trim", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",     "bradner_rose2" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "MACS",     "bradner_rose2", "macs2callpeak" ],
     },
     sh_direct => 0,
     pbs       => {
