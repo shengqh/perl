@@ -8,7 +8,7 @@ use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/chipseq/20160411_janathan_chipseq_195R3_gse53998");
 
-my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
+my $cqstools = "/home/shengq1/cqstools/cqstools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "chipseq";
@@ -16,15 +16,25 @@ my $task  = "chipseq";
 my $config = {
   general   => { task_name => $task },
   bam_files => {
-    "EC_H3K27AC_CON"                 => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/bowtie1/result/EC_H3K27AC_CON/EC_H3K27AC_CON.bam"],
+    "EC_H3K27AC_CON"              => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/bowtie1/result/EC_H3K27AC_CON/EC_H3K27AC_CON.bam"],
     "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/bowtie1/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac.bam"],
   },
   peaks => {
-    "EC_H3K27AC_CON"                 => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/MACS/result/EC_H3K27AC_CON/EC_H3K27AC_CON_peaks.name.bed"],
+    "EC_H3K27AC_CON"              => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/MACS/result/EC_H3K27AC_CON/EC_H3K27AC_CON_peaks.name.bed"],
     "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs1callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_peaks.name.bed"],
   },
   groups => {
     "comparison" => [ "EC_H3K27AC_CON", "d17_static_iPSctrl2_H3K27ac" ]
+  },
+  macs2peaks => {
+    "EC_H3K27AC_CON" => [
+      "/scratch/cqs/shengq1/chipseq/20151208_gse53998/macs2callpeak/result/EC_H3K27AC_CON/EC_H3K27AC_CON_treat_pileup.bdg",
+      "/scratch/cqs/shengq1/chipseq/20151208_gse53998/macs2callpeak/result/EC_H3K27AC_CON/EC_H3K27AC_CON_control_lambda.bdg"
+    ],
+    "d17_static_iPSctrl2_H3K27ac" => [
+      "/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs2callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_treat_pileup.bdg",
+      "/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs2callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_control_lambda.bdg"
+    ],
   },
   merge_bed => {
     class      => "Bedtools::Merge",
@@ -71,32 +81,30 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  correlation => {
-    class                    => "CQS::UniqueR",
-    perform                  => 1,
-    target_dir               => "${target_dir}/peaktable",
-    rtemplate                => "countTableCorrelation.R",
-    output_file              => "parameterSampleFile1",
-    output_file_ext          => ".Correlation.png",
-    parameterSampleFile1_ref => ["peaktable", ".count\$"],
-    sh_direct                => 1,
-    pbs                      => {
+  macs2bdgdiff => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff",
+    option     => "",
+    source_ref => "macs2peaks",
+    groups_ref => "groups",
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
-      "walltime" => "1",
-      "mem"      => "10gb"
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
-
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "merge_bed" ],
-      step_2 => [ "htseqcount" ],
-      step_3 => [ "peaktable", "correlation" ],
+      step_1 => ["merge_bed"],
+      step_2 => ["htseqcount"],
+      step_3 => [ "peaktable", "macs2bdgdiff" ],
     },
     sh_direct => 0,
     pbs       => {
