@@ -16,11 +16,11 @@ my $task  = "chipseq";
 my $config = {
   general   => { task_name => $task },
   bam_files => {
-    "EC_H3K27AC_CON"              => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/bowtie1/result/EC_H3K27AC_CON/EC_H3K27AC_CON.bam"],
+    "EC_H3K27AC_CON"              => ["/scratch/cqs/shengq1/chipseq/20160419_janathan_chipseq_gse53999_hg19/bowtie1/result/EC_H3K27AC_CON/EC_H3K27AC_CON.bam"],
     "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/bowtie1/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac.bam"],
   },
   peaks => {
-    "EC_H3K27AC_CON"              => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/MACS/result/EC_H3K27AC_CON/EC_H3K27AC_CON_peaks.name.bed"],
+    "EC_H3K27AC_CON"              => ["/scratch/cqs/shengq1/chipseq/20160419_janathan_chipseq_gse53999_hg19/macs1callpeak/result/EC_H3K27AC_CON/EC_H3K27AC_CON_peaks.name.bed"],
     "d17_static_iPSctrl2_H3K27ac" => ["/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs1callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_peaks.name.bed"],
   },
   groups => {
@@ -28,8 +28,8 @@ my $config = {
   },
   macs2peaks => {
     "EC_H3K27AC_CON" => [
-      "/scratch/cqs/shengq1/chipseq/20151208_gse53998/macs2callpeak/result/EC_H3K27AC_CON/EC_H3K27AC_CON_treat_pileup.bdg",
-      "/scratch/cqs/shengq1/chipseq/20151208_gse53998/macs2callpeak/result/EC_H3K27AC_CON/EC_H3K27AC_CON_control_lambda.bdg"
+      "/scratch/cqs/shengq1/chipseq/20160419_janathan_chipseq_gse53999_hg19/macs2callpeak/result/EC_H3K27AC_CON/EC_H3K27AC_CON_treat_pileup.bdg",
+      "/scratch/cqs/shengq1/chipseq/20160419_janathan_chipseq_gse53999_hg19/macs2callpeak/result/EC_H3K27AC_CON/EC_H3K27AC_CON_control_lambda.bdg"
     ],
     "d17_static_iPSctrl2_H3K27ac" => [
       "/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/macs2callpeak/result/d17_static_iPSctrl2_H3K27ac/d17_static_iPSctrl2_H3K27ac_treat_pileup.bdg",
