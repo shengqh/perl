@@ -18,8 +18,8 @@ my $task  = "gse53998_hg19";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "EC_H3K27AC_CON" => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/cutadapt/result/EC_H3K27AC_CON.fastq.gz"],
-    "EC_WCE_CON"     => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/cutadapt/result/EC_WCE_CON.fastq.gz"],
+    "EC_H3K27AC_CON" => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/cutadapt/result/EC_H3K27AC_CON_clipped.fastq.gz"],
+    "EC_WCE_CON"     => ["/scratch/cqs/shengq1/chipseq/20151208_gse53998/cutadapt/result/EC_WCE_CON_clipped.fastq.gz"],
   },
   treatments => {
     "EC_H3K27AC_CON" => ["EC_H3K27AC_CON"],
