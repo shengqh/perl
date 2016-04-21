@@ -88,12 +88,12 @@ my $wes = {
   },
   adapter_files => {
     "N08_DUSP4flox_Trp53null1_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_1_sequence_merged.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_2_sequence_merged.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_1_merged_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_2_merged_sequence.txt.gz"
     ],
     "N18_DUSP4null_Trp53null3_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_1_sequence_merged.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_2_sequence_merged.txt.gz"
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_1_merged_sequence.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_2_merged_sequence.txt.gz"
     ],
   },
   groups => merge(
