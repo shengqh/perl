@@ -51,8 +51,8 @@ my $groups = {
 };
 
 my $wes = {
-  task_name => "WES",
-  files     => {
+  task_name        => "WES",
+  no_adapter_files => {
     "N04_DUSP4flox_LACZ" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-1_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-1_2_sequence.txt.gz"
@@ -64,10 +64,6 @@ my $wes = {
     "N07_DUSP4flox_MYC" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_2_sequence.txt.gz"
-    ],
-    "N08_DUSP4flox_Trp53null1_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_1_sequence_merged.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_2_sequence_merged.txt.gz"
     ],
     "N09_DUSP4flox_Trp53null3_MYC" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-4_1_sequence.txt.gz",
@@ -89,6 +85,12 @@ my $wes = {
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-8_2_sequence.txt.gz"
     ],
+  },
+  adapter_files => {
+    "N08_DUSP4flox_Trp53null1_MYC" => [
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_1_sequence_merged.txt.gz",
+      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-9_2_sequence_merged.txt.gz"
+    ],
     "N18_DUSP4null_Trp53null3_MYC" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_1_sequence_merged.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-10_2_sequence_merged.txt.gz"
@@ -108,13 +110,17 @@ my $wes = {
       "N17_DUSP4null_Trp53null1_MYC", "N18_DUSP4null_Trp53null3_MYC"
     ]
   },
+  cutadapt         => 1,
   capture_bed      => $capture_bed,
   capture_slim_bed => $capture_slim_bed
 };
 
 my $wgs = {
-  task_name => "WGS",
-  files     => {
+  task_name        => "WGS",
+  no_adapter_files => {
+
+  },
+  adapter_files => {
     "N04_DUSP4flox_LACZ" => [
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WGS/data/3162-JB-1_1_sequence.txt.gz",
       "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WGS/data/3162-JB-1_2_sequence.txt.gz"
@@ -163,15 +169,16 @@ my @datasets = ( $wes, $wgs );
 for my $dataset (@datasets) {
   my $dataset_dir = create_directory_or_die( "${target_dir}/" . $dataset->{task_name} );
   my $config      = {
-    general => { task_name => $dataset->{task_name} },
-    files   => $dataset->{files},
-    groups  => $dataset->{groups},
-    fastqc  => {
+    general          => { task_name => $dataset->{task_name} },
+    adapter_files    => $dataset->{adapter_files},
+    no_adapter_files => $dataset->{no_adapter_files},
+    groups           => $dataset->{groups},
+    fastqc           => {
       class      => "QC::FastQC",
       perform    => 1,
       target_dir => "${dataset_dir}/fastqc",
       option     => "",
-      source_ref => "files",
+      source_ref => [ "adapter_files", "no_adapter_files" ],
       sh_direct  => 1,
       cluster    => $cluster,
       pbs        => {
@@ -197,9 +204,10 @@ for my $dataset (@datasets) {
     }
   };
 
-  my @individuals = ("fastqc");
-  my @all         = ("fastqc_summary");
-  my $source      = "files";
+  my @step1  = ("fastqc");
+  my @step2  = ("fastqc_summary");
+  my @step3  = ();
+  my $source = "files";
   if ( defined $dataset->{cutadapt} && $dataset->{cutadapt} ) {
     $config = merge(
       $config,
@@ -209,7 +217,7 @@ for my $dataset (@datasets) {
           perform    => 1,
           target_dir => "${target_dir}/" . $dataset->{task_name} . "/cutadapt",
           option     => $cutadapt_option,
-          source_ref => "files",
+          source_ref => "adapter_files",
           adapter    => "AGATCGGAAGAGC",
           extension  => "_clipped.fastq.gz",
           sh_direct  => 1,
@@ -268,9 +276,9 @@ for my $dataset (@datasets) {
         }
       }
     );
-    $source = "cutadapt";
-    push @individuals, ( "cutadapt", "fastqlen", "cutadapt_fastqc" );
-    push @all, ("cutadapt_fastqc_summary");
+    $source = [ "no_adapter_files", "cutadapt" ];
+    push @step1, ( "cutadapt", "fastqlen", "cutadapt_fastqc" );
+    push @step2, ("cutadapt_fastqc_summary");
 
     #performTask( $config, "cutadapt" );
   }
@@ -369,29 +377,6 @@ for my $dataset (@datasets) {
           "mem"      => "10gb"
         },
       },
-
-      #      glmvc => {
-      #        class             => "Variants::GlmvcCall",
-      #        perform           => 1,
-      #        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc",
-      #        option            => "--glm_pvalue 0.1",
-      #        source_type       => "BAM",
-      #        source_ref        => "bwa_refine",
-      #        groups_ref        => "groups",
-      #        fasta_file        => $bwa_fasta,
-      #        annovar_buildver  => "mm10",
-      #        annovar_protocol  => $annovar_protocol,
-      #        annovar_operation => $annovar_operation,
-      #        annovar_db        => $annovar_db,
-      #        sh_direct         => 0,
-      #        execute_file      => $glmvc,
-      #        pbs               => {
-      #          "email"    => $email,
-      #          "nodes"    => "1:ppn=8",
-      #          "walltime" => "72",
-      #          "mem"      => "40gb"
-      #        },
-      #      },
       glmvc_noMYC => {
         class             => "Variants::GlmvcCall",
         perform           => 1,
@@ -432,8 +417,8 @@ for my $dataset (@datasets) {
     }
   );
 
-  push @individuals, ( "bwa", "bwa_refine", "bwa_refine_genes_bam" );
-  push @all, ( "muTect", "muTect_annovar", "glmvc_noMYC", "glmvc_noMYC_table" );
+  push @step1, ( "bwa", "bwa_refine", "bwa_refine_genes_bam" );
+  push @step2, ( "muTect", "muTect_annovar", "glmvc_noMYC", "glmvc_noMYC_table" );
 
   if ( defined $dataset->{capture_bed} ) {
     $config = merge(
@@ -491,7 +476,7 @@ for my $dataset (@datasets) {
         },
       }
     );
-    push @all, ( "cnmops", "cnmops_bam", "cnmops_depth" );
+    push @step2, ( "cnmops", "cnmops_bam", "cnmops_depth" );
   }
   else {
     #validate the CNV in WES by WGS data
@@ -514,7 +499,7 @@ for my $dataset (@datasets) {
         "mem"      => "40gb"
       },
     };
-    push @all, ("glmvc_WES_validation");
+    push @step2, ("glmvc_WES_validation");
   }
 
   $config->{varscan2_copynumber} = {
@@ -537,7 +522,7 @@ for my $dataset (@datasets) {
       "mem"      => "40gb"
     },
   };
-  push @all, ("varscan2_copynumber");
+  push @step2, ("varscan2_copynumber");
 
   $config->{sequencetask} = {
     class      => "CQS::SequenceTask",
@@ -545,8 +530,8 @@ for my $dataset (@datasets) {
     target_dir => "${target_dir}/" . $dataset->{task_name} . "/sequencetask",
     option     => "",
     source     => {
-      step1 => \@individuals,
-      step2 => \@all,
+      step1 => \@step1,
+      step2 => \@step2,
     },
     sh_direct => 0,
     pbs       => {
