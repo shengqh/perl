@@ -476,7 +476,8 @@ for my $dataset (@datasets) {
         },
       }
     );
-    push @step2, ( "cnmops", "cnmops_bam", "cnmops_depth" );
+    push @step2, ( "cnmops", "cnmops_depth" );
+    push @step3, ( "cnmops_bam" );
   }
   else {
     #validate the CNV in WES by WGS data
@@ -532,6 +533,7 @@ for my $dataset (@datasets) {
     source     => {
       step1 => \@step1,
       step2 => \@step2,
+      step3 => \@step3,
     },
     sh_direct => 0,
     pbs       => {
