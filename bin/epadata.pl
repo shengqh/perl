@@ -2,7 +2,6 @@
 use strict;
 use warnings;
 use Getopt::Long;
-use Text::CSV;
 
 my $usage = "
 
@@ -39,15 +38,64 @@ if ( !defined($input_file) || !defined($output_file) ) {
 print "input_file = $input_file \n";
 print "output_file = $output_file \n";
 
-my @rows;
-my $csv = Text::CSV->new( { binary => 1 } )    # should set binary attribute.
-  or die "Cannot use CSV: " . Text::CSV->error_diag();
+open my $in,  "<$input_file"  or die "$input_file: $!";
+open my $out, ">$output_file" or die "$output_file: $!";
 
-open my $in,  "<:encoding(utf8)", $input_file  or die "$input_file: $!";
-open my $out, ">:encoding(utf8)", $output_file or die "$output_file: $!";
-while ( my $row = $csv->getline($in) ) {
-  $row->[0] !~ m/^END OF FILE/ or last;
-  $csv->print( $out, $row );
+my $header = <$in>;
+chomp($header);
+my @headers = split( ',', $header );
+my $header_count = scalar(@headers);
+
+sub is_correct_line {
+  my $line = shift;
+  if ( $line !~ /\"$/ ) {
+    return 0;
+  }
+
+  my @parts = split( ',', $line );
+  return ( scalar(@parts) == $header_count );
+}
+
+sub is_insert {
+  my $line = shift;
+  return $line =~ /[^,\s]+/;
+}
+
+my $lastline;
+while ( my $row = <$in> ) {
+  chomp($row);
+  if ( $row =~ /END OF FILE/ ) {
+    last;
+  }
+
+  my $printout = 1;
+  while ( !is_correct_line($row) ) {
+    my $nextline1 = <$in>;
+    chomp($nextline1);
+    if ( length($nextline1) == 0 ) {
+      if ( is_insert($row) && is_correct_line($lastline) ) {
+        $printout = 0;
+        last;
+      }
+      else {
+        die "lastline=" . $lastline . "\ncurrentline=" . $row . "\nnextline is empty\n";
+      }
+    }
+
+    if ( !is_insert($nextline1) ) {
+      die "lastline=" . $lastline . "\ncurrentline=" . $row . "\nnextline=" . $nextline1 . "\n";
+    }
+
+    my $nextline2 = <$in>;
+    chomp($nextline2);
+
+    $row = $row . $nextline2;
+  }
+
+  if ($printout) {
+    print $out $row, "\n";
+  }
+  $lastline = $row;
 }
 close $in;
 close $out;
