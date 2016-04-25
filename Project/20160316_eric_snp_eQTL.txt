@@ -1,0 +1,62 @@
+1) at windows, genereate exclude_samples1.tsv based on snp samples and gene expression samples.
+
+2) exclude sample at linux
+cd /scratch/cqs/shengq1/eqtl/20160316_eric_snp_eQTL/data/Hamid_HCE_Project_PLINK_271013_0138
+plink --bfile Hamid_HumanCoreExome_Plates1to5andredos_Final --make-bed --out exclude_samples1 --remove exclude_samples1.tsv
+
+3) generate relationship table and figures
+mkdir related
+cd related
+pyGenClean_find_related_samples  --bfile ../exclude_samples1 --out exclude_samples1_related
+grep "twin" exclude_samples1_related.related_individuals > exclude_samples1_related.related_individuals.twins
+cut -f1,2 exclude_samples1_related.related_individuals.twins > exclude_samples1_related.related_individuals.twins.samples
+cut -f3,4 exclude_samples1_related.related_individuals.twins >> exclude_samples1_related.related_individuals.twins.samples
+plink --bfile ../exclude_samples1 --keep exclude_samples1_related.related_individuals.twins.samples --out twins --make-bed
+plink --bfile twins --missing --out twins
+
+4) based on twins.imissing, choose the one with less missing value for each pair and generate excluding_samples2.tsv 
+ FID                      IID MISS_PHENO   N_MISS   N_GENO   F_MISS
+   9   Hamid_1_SIDGM13119_A02          Y      683   536323 0.001273
+  15   Hamid_1_SIDGM11843_G02          Y      544   536323 0.001014
+ 100   Hamid_2_SIDGM12887_G02          Y      538   536323 0.001003
+ 168   Hamid_2_SIDGM12887_H11          Y     2450   536323 0.004568
+ 191   Hamid_3_SIDGM13119_G02          Y      774   536323 0.001443
+ 219   Hamid_3_SIDGM07348_C06          Y      599   536323 0.001117
+ 287   Hamid_4_SIDGM11842_G02          Y      564   536323 0.001052
+ 357   Hamid_4_SIDGM11837_E11          Y      586   536323 0.001093
+ 365   Hamid_4_SIDGM11842_E12          Y      494   536323 0.0009211
+ 369   Hamid_5_SIDGM11843_A01          Y     2589   536323 0.004827
+ 379   Hamid_5_SIDGM07349_C02          Y      525   536323 0.0009789
+ 383   Hamid_5_SIDGM11837_G02          Y      628   536323 0.001171
+
+excluding_samples2.tsv
+219     Hamid_3_SIDGM07348_C06
+287     Hamid_4_SIDGM11842_G02
+191     Hamid_3_SIDGM13119_G02
+369     Hamid_5_SIDGM11843_A01
+168     Hamid_2_SIDGM12887_H11
+383     Hamid_5_SIDGM11837_G02
+
+5) exclude twin samples at linux
+cd ..
+plink --bfile exclude_samples1 --make-bed --out exclude_samples2 --remove exclude_samples2.tsv
+
+6) generate exclude_samples2_replaceid.txt at windows
+
+7) replace id at linux
+plink --bfile exclude_samples2 --update-ids exclude_samples2_replaceid.txt --make-bed --out exclude_samples2_replaceid
+
+8) filter by criteria
+plink --bfile exclude_samples2_replaceid --make-bed --out comprehensive_filtered --mind 0.05 --geno 0.05 --maf 0.05 --hwe 0.001
+plink --bfile comprehensive_filtered --recode A-transpose tab --out comprehensive_filtered
+cut -f2,7- comprehensive_filtered.traw > comprehensive_filtered.txt
+
+9) filter preliminary dataset by including file list
+plink --bfile exclude_samples2_replaceid --make-bed --out preliminary --keep prelimitary_include_samples.txt
+plink --bfile preliminary --make-bed --out preliminary_filtered --mind 0.05 --geno 0.05 --maf 0.05 --hwe 0.001
+plink --bfile preliminary_filtered --recode A-transpose tab --out preliminary_filtered
+cut -f2,7- preliminary_filtered.traw > preliminary_filtered.txt
+
+
+
+
