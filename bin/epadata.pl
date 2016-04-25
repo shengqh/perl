@@ -53,7 +53,15 @@ sub is_correct_line {
   }
 
   my @parts = split( ',', $line );
-  return ( scalar(@parts) == $header_count );
+  my $part_count = scalar(@parts);
+  
+  if($part_count == $header_count ){
+    return 1;
+  }elsif($part_count > $header_count){
+    die "Long line: " . $line, "\n";
+  }else{
+    return 0;
+  }
 }
 
 sub is_insert {
@@ -63,15 +71,17 @@ sub is_insert {
 
 my $lastline;
 while ( my $row = <$in> ) {
-  chomp($row);
+  $row =~ s/[\r\n]+//;
   if ( $row =~ /END OF FILE/ ) {
     last;
   }
 
   my $printout = 1;
   while ( !is_correct_line($row) ) {
+    #print $row, "\n";
+    
     my $nextline1 = <$in>;
-    chomp($nextline1);
+    $nextline1 =~ s/[\r\n]+//;
     if ( length($nextline1) == 0 ) {
       if ( is_insert($row) && is_correct_line($lastline) ) {
         $printout = 0;
@@ -87,7 +97,7 @@ while ( my $row = <$in> ) {
     }
 
     my $nextline2 = <$in>;
-    chomp($nextline2);
+    $nextline2 =~ s/[\r\n]+//;
 
     $row = $row . $nextline2;
   }
