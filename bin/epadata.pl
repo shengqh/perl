@@ -51,14 +51,14 @@ my $header_count = scalar(@headers);
 
 sub is_correct_line {
   my $line = shift;
-  if ( $line !~ /\"$/ ) {
+  if ( $line !~ /\"[^,]+\"$/ ) {
     return 0;
   }
 
   my @parts = split( ',', $line );
   my $part_count = scalar(@parts);
   
-  if($part_count == $header_count ){
+  if($part_count == $header_count && $parts[0] =~ /[\d.]+/){
     return 1;
   }elsif($part_count > $header_count){
     die "Long line: " . $line, "\n";
@@ -67,9 +67,11 @@ sub is_correct_line {
   }
 }
 
+is_correct_line('38.895572,-76.958072,"NAD83",10,"11","001","0041","44201",1,"Ozone","2006-03-21","22:00","2006-03-22","03:00",2006,81,.025,"Parts per million","1 HOUR","",.005,,"","Equivalent","INSTRUMENTAL-ULTRA VIOLET"') or die;
+
 sub is_insert {
   my $line = shift;
-  return $line =~ /[^,\s]+/;
+  return $line =~ /[^,\s"]+/;
 }
 
 my $lastline;
@@ -103,6 +105,10 @@ while ( my $row = <$in> ) {
     $nextline2 =~ s/[\r\n]+//;
 
     $row = $row . $nextline2;
+    
+    if($row =~ /^[^.]{4-6}\./){
+      die "lastline=" . $lastline . "\ncurrentline=" . $row . "\nnextline1=" . $nextline1. "\nnextline2=" . $nextline2 . "\n";
+    }
   }
 
   if ($printout) {
