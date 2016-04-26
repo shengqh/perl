@@ -42,7 +42,10 @@ open my $in,  "<$input_file"  or die "$input_file: $!";
 open my $out, ">$output_file" or die "$output_file: $!";
 
 my $header = <$in>;
-chomp($header);
+$header =~ s/[\r\n]+//;
+
+print $out $header, "\n";
+
 my @headers = split( ',', $header );
 my $header_count = scalar(@headers);
 
