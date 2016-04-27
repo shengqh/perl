@@ -12,7 +12,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_b
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $glmvc         = "/home/shengq1/glmvc/glmvc.exe";
+my $glmvc         = "/home/shengq1/glmvc_old/glmvc.x64.1.3.12/glmvc.exe";
 my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
 my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.4.1.jar";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
