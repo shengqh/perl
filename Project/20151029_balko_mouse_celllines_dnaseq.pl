@@ -12,7 +12,8 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_b
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
-my $glmvc         = "/home/shengq1/glmvc_old/glmvc.x64.1.3.12/glmvc.exe";
+my $glmvc         = "/home/shengq1/glmvc/glmvc.exe";
+my $glmvc_1_3_6   = "/home/shengq1/glmvc_old/glmvc.x64.1.3.6/glmvc.exe";
 my $mutect        = "/home/shengq1/local/bin/mutect-1.1.7.jar";
 my $varscan2      = "/home/shengq1/local/bin/VarScan.v2.4.1.jar";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
@@ -399,6 +400,28 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
+      glmvc_noMYC_v1_3_6 => {
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_v1_3_6",
+        option            => "--glm_pvalue 0.1 --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M --glm_use_raw_pvalue",
+        source_type       => "BAM",
+        source_ref        => "bwa_refine",
+        groups_ref        => "groups",
+        fasta_file        => $bwa_fasta,
+        annovar_buildver  => "mm10",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        sh_direct         => 0,
+        execute_file      => $glmvc_1_3_6,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=8",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
       glmvc_noMYC_table => {
         class        => "Variants::GlmvcTable",
         perform      => 1,
@@ -544,7 +567,9 @@ for my $dataset (@datasets) {
     },
   };
 
-  performConfig($config);
+#  performConfig($config);
+  performTask($config, "glmvc_noMYC");
+  performTask($config, "glmvc_noMYC_v1_3_6");
 }
 
 1;
