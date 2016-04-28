@@ -393,11 +393,11 @@ for my $dataset (@datasets) {
         annovar_protocol  => $annovar_protocol,
         annovar_operation => $annovar_operation,
         annovar_db        => $annovar_db,
-        sh_direct         => 0,
+        sh_direct         => 1,
         execute_file      => $glmvc,
         pbs               => {
           "email"    => $email,
-          "nodes"    => "1:ppn=8",
+          "nodes"    => "1:ppn=20",
           "walltime" => "72",
           "mem"      => "40gb"
         },
@@ -415,11 +415,11 @@ for my $dataset (@datasets) {
         annovar_protocol  => $annovar_protocol,
         annovar_operation => $annovar_operation,
         annovar_db        => $annovar_db,
-        sh_direct         => 0,
+        sh_direct         => 1,
         execute_file      => $glmvc_1_3_6,
         pbs               => {
           "email"    => $email,
-          "nodes"    => "1:ppn=8",
+          "nodes"    => "1:ppn=20",
           "walltime" => "72",
           "mem"      => "40gb"
         },
