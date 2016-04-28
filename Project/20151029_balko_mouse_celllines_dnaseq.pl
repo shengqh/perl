@@ -446,6 +446,28 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
+      glmvc_noMYC_v1_3_6_rawpvalue => {
+        class             => "Variants::GlmvcCall",
+        perform           => 1,
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_v1_3_6_rawpvalue",
+        option            => $glmvc_option . " --glm_use_raw_pvalue",
+        source_type       => "BAM",
+        source_ref        => "bwa_refine",
+        groups_ref        => "groups",
+        fasta_file        => $bwa_fasta,
+        annovar_buildver  => "mm10",
+        annovar_protocol  => $annovar_protocol,
+        annovar_operation => $annovar_operation,
+        annovar_db        => $annovar_db,
+        sh_direct         => 0,
+        execute_file      => $glmvc_1_3_6,
+        pbs               => {
+          "email"    => $email,
+          "nodes"    => "1:ppn=6",
+          "walltime" => "72",
+          "mem"      => "40gb"
+        },
+      },
       glmvc_noMYC_table => {
         class        => "Variants::GlmvcTable",
         perform      => 1,
@@ -593,7 +615,9 @@ for my $dataset (@datasets) {
 
 #  performConfig($config);
   performTask($config, "glmvc_noMYC");
+  performTask($config, "glmvc_noMYC_rawpvalue");
   performTask($config, "glmvc_noMYC_v1_3_6");
+  performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
 }
 
 1;
