@@ -397,7 +397,7 @@ for my $dataset (@datasets) {
         execute_file      => $glmvc,
         pbs               => {
           "email"    => $email,
-          "nodes"    => "1:ppn=20",
+          "nodes"    => "1:ppn=6",
           "walltime" => "72",
           "mem"      => "40gb"
         },
@@ -419,7 +419,7 @@ for my $dataset (@datasets) {
         execute_file      => $glmvc_1_3_6,
         pbs               => {
           "email"    => $email,
-          "nodes"    => "1:ppn=20",
+          "nodes"    => "1:ppn=6",
           "walltime" => "72",
           "mem"      => "40gb"
         },
