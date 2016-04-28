@@ -39,7 +39,7 @@ my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/mm10db/";
 #minimum quality score 10, minimum overlap 4 bases, remove reads with length less than 30
 my $cutadapt_option = "-q 10 -O 4 -m 30";
 
-my $glmvc_option = "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.1 --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M --glm_use_raw_pvalue";
+my $glmvc_option = "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.1 --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M";
 
 my $cluster = "slurm";
 
