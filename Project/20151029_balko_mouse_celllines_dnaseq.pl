@@ -380,10 +380,10 @@ for my $dataset (@datasets) {
           "mem"      => "10gb"
         },
       },
-      glmvc_noMYC => {
+      glmvc_noMYC_fdr => {
         class             => "Variants::GlmvcCall",
         perform           => 1,
-        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC",
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_fdr",
         option            => $glmvc_option,
         source_type       => "BAM",
         source_ref        => "bwa_refine",
@@ -405,7 +405,7 @@ for my $dataset (@datasets) {
       glmvc_noMYC_rawpvalue => {
         class             => "Variants::GlmvcCall",
         perform           => 1,
-        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_rawpavalue",
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_rawpvalue",
         option            => $glmvc_option . " --glm_use_raw_pvalue",
         source_type       => "BAM",
         source_ref        => "bwa_refine",
@@ -424,10 +424,10 @@ for my $dataset (@datasets) {
           "mem"      => "40gb"
         },
       },
-      glmvc_noMYC_v1_3_6 => {
+      glmvc_noMYC_v1_3_6_fdr => {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
-        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_v1_3_6",
+        perform           => 0,
+        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_v1_3_6_fdr",
         option            => $glmvc_option,
         source_type       => "BAM",
         source_ref        => "bwa_refine",
@@ -448,7 +448,7 @@ for my $dataset (@datasets) {
       },
       glmvc_noMYC_v1_3_6_rawpvalue => {
         class             => "Variants::GlmvcCall",
-        perform           => 1,
+        perform           => 0,
         target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_v1_3_6_rawpvalue",
         option            => $glmvc_option . " --glm_use_raw_pvalue",
         source_type       => "BAM",
@@ -473,7 +473,7 @@ for my $dataset (@datasets) {
         perform      => 1,
         target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
         option       => "",
-        source_ref   => [ "glmvc_noMYC", "annotation.tsv" ],
+        source_ref   => [ "glmvc_noMYC_rawpvalue", "annotation.tsv" ],
         sh_direct    => 1,
         execute_file => $glmvc,
         pbs          => {
@@ -487,7 +487,7 @@ for my $dataset (@datasets) {
   );
 
   push @step1, ( "bwa", "bwa_refine", "bwa_refine_genes_bam" );
-  push @step2, ( "muTect", "muTect_annovar", "glmvc_noMYC", "glmvc_noMYC_table" );
+  push @step2, ( "muTect", "muTect_annovar", "glmvc_noMYC_rawpvalue", "glmvc_noMYC_table" );
 
   if ( defined $dataset->{capture_bed} ) {
     $config = merge(
@@ -614,10 +614,11 @@ for my $dataset (@datasets) {
   };
 
 #  performConfig($config);
-  performTask($config, "glmvc_noMYC");
+  #performTask($config, "glmvc_noMYC_fdr");
   performTask($config, "glmvc_noMYC_rawpvalue");
-  performTask($config, "glmvc_noMYC_v1_3_6");
-  performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
+  #performTask($config, "glmvc_noMYC_v1_3_6_fdr");
+  #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
+  performTask($config, "glmvc_noMYC_table");
 }
 
 1;
