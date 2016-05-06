@@ -6,3 +6,5 @@ annotate_variation.pl -buildver hg19 -downdb -webfrom annovar esp6500si_all /scr
 annotate_variation.pl -buildver hg19 -downdb -webfrom annovar ljb26_all /scratch/cqs/shengq1/references/annovar/humandb/
 annotate_variation.pl -buildver hg38 -downdb -webfrom annovar refGene /scratch/cqs/shengq1/references/annovar/humandb/
 annotate_variation.pl -buildver hg38 -downdb -webfrom annovar cosmic70 /scratch/cqs/shengq1/references/annovar/humandb/
+annotate_variation.pl -buildver hg38 -downdb -webfrom annovar 1000g2015aug /scratch/cqs/shengq1/references/annovar/humandb/
+annotate_variation.pl -buildver hg38 -downdb -webfrom annovar avsnp144 /scratch/cqs/shengq1/references/annovar/humandb/
