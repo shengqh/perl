@@ -13,10 +13,10 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160509_b
 
 #my $target_dir = "e:/temp";
 
-my $transcript_gtf = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.gtf";
-my $name_map_file  = "/scratch/cqs/shengq1/references/ucsc/mm10_ucsc.map";
-my $star_index     = "/scratch/cqs/shengq1/references/mm10_chr/STAR_index_ucsc_sjdb49";
-my $fasta_file     = "/scratch/cqs/shengq1/references/mm10_chr/mm10.fa";
+my $transcript_gtf = "/scratch/cqs/shengq1/references/ensembl/v78/Mus_musculus.GRCm38.78.MT.gtf";
+my $name_map_file  = "/scratch/cqs/shengq1/references/ensembl/v78/Mus_musculus.GRCm38.78.MT.map";
+my $star_index     = "/scratch/cqs/shengq1/references/mm10_sorted_M/STAR_index_v38.78_2.5.0b_sjdb49";
+my $fasta_file     = "/scratch/cqs/shengq1/references/mm10_sorted_M/mm10.fa";
 my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
 my $email          = "quanhu.sheng\@vanderbilt.edu";
 
@@ -133,7 +133,7 @@ my $config = {
     class         => "CQS::CQSDatatable",
     perform       => 1,
     target_dir    => "${target_dir}/star_genetable",
-    option        => "-p uc --noheader -e -o ${task}_gene.count",
+    option        => "-p ENS --noheader -e -o ${task}_gene.count",
     source_ref    => "star_htseqcount",
     name_map_file => $name_map_file,
     cqs_tools     => $cqstools,
