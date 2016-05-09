@@ -54,6 +54,21 @@ my $config = {
     "JDB-17" =>
       [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-17_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-17_2_sequence.txt.gz" ],
   },
+  groups => {
+    "FED"      => [ "JDB-01", "JDB-02", "JDB-03" ],
+    "DMSO"     => [ "JDB-04", "JDB-05", "JDB-06" ],
+    "JQ1"      => [ "JDB-07", "JDB-08", "JDB-09" ],
+    "CAPTISOL" => [ "JDB-11", "JDB-12", "JDB-16" ],
+    "dBET"     => [ "JDB-13", "JDB-14", "JDB-17" ],
+  },
+  pairs => {
+    "DMSO_vs_FED"      => [ "FED",      "DMSO" ],
+    "JQ1_vs_FED"       => [ "FED",      "JQ1" ],
+    "CAPTISOL_vs_FED"  => [ "FED",      "CAPTISOL" ],
+    "dBET_vs_FED"      => [ "FED",      "dBET" ],
+    "JQ1_vs_DMSO"      => [ "DMSO",     "JQ1" ],
+    "dBET_vs_CAPTISOL" => [ "CAPTISOL", "dBET" ],
+  },
   fastqc => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -130,14 +145,34 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  star_deseq2 => {
+    class                => "Comparison::DESeq2",
+    perform              => 1,
+    target_dir           => "${target_dir}/star_deseq2",
+    option               => "",
+    source_ref           => "pairs",
+    groups_ref           => "groups",
+    countfile_ref        => "star_genetable",
+    sh_direct            => 1,
+    show_DE_gene_cluster => 1,
+    pvalue               => 0.05,
+    fold_change          => 2.0,
+    min_median_read      => 5,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",         "star", "star_htseqcount" ],
-      step2 => [ "fastqc_summary", "star_genetable" ],
+      step1 => [ "fastqc",         "star",           "star_htseqcount" ],
+      step2 => [ "fastqc_summary", "star_genetable", "star_deseq2" ],
     },
     sh_direct => 0,
     pbs       => {
