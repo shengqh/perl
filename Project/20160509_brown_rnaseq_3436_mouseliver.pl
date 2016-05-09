@@ -7,9 +7,9 @@ use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 
-my $task = "20150724_chenxi_rnaseq_2436_mouse";
+my $task = "B3436";
 
-my $target_dir = "/scratch/cqs/shengq1/rnaseq/20160509_brown_rnaseq_3436_mouseliver";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160509_brown_rnaseq_3436_mouseliver");
 
 #my $target_dir = "e:/temp";
 
