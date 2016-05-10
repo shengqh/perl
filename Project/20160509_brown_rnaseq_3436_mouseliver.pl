@@ -190,7 +190,7 @@ my $config = {
     option     => "",
     source     => {
       step1 => [ "fastqc",         "star",           "star_htseqcount" ],
-      step2 => [ "fastqc_summary", "star_genetable", "star_genetable_correlation", "star_deseq2" ],
+      step2 => [ "fastqc_summary", "star_genetable", "star_genetable_correlation", "star_genetable_deseq2" ],
     },
     sh_direct => 0,
     pbs       => {
