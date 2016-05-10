@@ -116,14 +116,30 @@ my $config = {
   },
   star_htseqcount => {
     class          => "Count::HTSeqCount",
-    perform        => 1,
+    perform        => 0,
     target_dir     => "${target_dir}/star_htseqcount",
-    option         => "-i gene_id -t exon -s no -m intersection-nonempty -q",
+    option         => "-i gene_id -t exon -s no -m intersection-nonempty",
     source_ref     => [ "star", "_Aligned.sortedByCoord.out.bam" ],
     gff_file       => $transcript_gtf,
     ispairend      => 1,
     sorted_by_name => 0,
     stranded       => "no",
+    sh_direct      => 0,
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_featurecount => {
+    class          => "Count::FeatureCounts",
+    perform        => 1,
+    target_dir     => "${target_dir}/star_featurecount",
+    option         => "-g gene_id -t exon",
+    source_ref     => [ "star", "_Aligned.sortedByCoord.out.bam" ],
+    gff_file       => $transcript_gtf,
+    ispairend      => 1,
     sh_direct      => 0,
     pbs            => {
       "email"    => $email,
@@ -192,7 +208,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",         "star",           "star_htseqcount" ],
+      step1 => [ "fastqc",         "star",           "star_featurecount" ],
       step2 => [ "fastqc_summary", "star_genetable", "star_genetable_correlation", "star_genetable_deseq2" ],
     },
     sh_direct => 0,
