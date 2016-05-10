@@ -99,14 +99,15 @@ my $config = {
     },
   },
   star => {
-    class      => "Alignment::STAR",
-    perform    => 1,
-    target_dir => "${target_dir}/star",
-    option     => "--twopassMode Basic",
-    source_ref => "files",
-    genome_dir => $star_index,
-    sh_direct  => 0,
-    pbs        => {
+    class                     => "Alignment::STAR",
+    perform                   => 1,
+    target_dir                => "${target_dir}/star",
+    option                    => "--twopassMode Basic",
+    source_ref                => "files",
+    genome_dir                => $star_index,
+    output_sort_by_coordinate => 1,
+    sh_direct                 => 0,
+    pbs                       => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
