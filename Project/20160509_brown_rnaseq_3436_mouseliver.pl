@@ -145,10 +145,10 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  star_deseq2 => {
+  star_genetable_deseq2 => {
     class                => "Comparison::DESeq2",
     perform              => 1,
-    target_dir           => "${target_dir}/star_deseq2",
+    target_dir           => "${target_dir}/star_genetable_deseq2",
     option               => "",
     source_ref           => "pairs",
     groups_ref           => "groups",
@@ -165,10 +165,10 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  star_correlation => {
+  star_genetable_correlation => {
     class                    => "CQS::UniqueR",
     perform                  => 1,
-    target_dir               => "${target_dir}/count_table_correlation",
+    target_dir               => "${target_dir}/star_genetable_correlation",
     rtemplate                => "countTableVisFunctions.R,countTableCorrelation.R",
     output_file              => "parameterSampleFile1",
     output_file_ext          => ".Correlation.png",
@@ -190,7 +190,7 @@ my $config = {
     option     => "",
     source     => {
       step1 => [ "fastqc",         "star",           "star_htseqcount" ],
-      step2 => [ "fastqc_summary", "star_genetable", "star_correlation", "star_deseq2" ],
+      step2 => [ "fastqc_summary", "star_genetable", "star_genetable_correlation", "star_deseq2" ],
     },
     sh_direct => 0,
     pbs       => {
