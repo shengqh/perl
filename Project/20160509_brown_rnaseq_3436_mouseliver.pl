@@ -165,6 +165,24 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  star_correlation => {
+    class                    => "CQS::UniqueR",
+    perform                  => 1,
+    target_dir               => "/count_table_correlation",
+    rtemplate                => "countTableVisFunctions.R,countTableCorrelation.R",
+    output_file              => "parameterSampleFile1",
+    output_file_ext          => ".Correlation.png",
+    parameterSampleFile1_ref => [ "star_genetable", ".count\$" ],
+    parameterSampleFile2_ref => "groups",
+    sh_direct                => 1,
+    pbs                      => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "1",
+      "mem"      => "10gb"
+    },
+  },
+
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -172,7 +190,7 @@ my $config = {
     option     => "",
     source     => {
       step1 => [ "fastqc",         "star",           "star_htseqcount" ],
-      step2 => [ "fastqc_summary", "star_genetable", "star_deseq2" ],
+      step2 => [ "fastqc_summary", "star_genetable", "star_correlation", "star_deseq2" ],
     },
     sh_direct => 0,
     pbs       => {
