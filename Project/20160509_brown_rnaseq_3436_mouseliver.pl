@@ -9,7 +9,7 @@ use CQS::ConfigUtils;
 
 my $task = "B3436";
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160509_brown_3436");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160509_brown_3436_temp");
 
 #my $target_dir = "e:/temp";
 
@@ -114,34 +114,35 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  star_htseqcount => {
-    class          => "Count::HTSeqCount",
-    perform        => 0,
-    target_dir     => "${target_dir}/star_htseqcount",
-    option         => "-i gene_id -t exon -s no -m intersection-nonempty",
-    source_ref     => [ "star", "_Aligned.sortedByCoord.out.bam" ],
-    gff_file       => $transcript_gtf,
-    ispairend      => 1,
-    sorted_by_name => 0,
-    stranded       => "no",
-    sh_direct      => 0,
-    pbs            => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
+
+  #  star_htseqcount => {
+  #    class          => "Count::HTSeqCount",
+  #    perform        => 0,
+  #    target_dir     => "${target_dir}/star_htseqcount",
+  #    option         => "-i gene_id -t exon -s no -m intersection-nonempty",
+  #    source_ref     => [ "star", "_Aligned.sortedByCoord.out.bam" ],
+  #    gff_file       => $transcript_gtf,
+  #    ispairend      => 1,
+  #    sorted_by_name => 0,
+  #    stranded       => "no",
+  #    sh_direct      => 0,
+  #    pbs            => {
+  #      "email"    => $email,
+  #      "nodes"    => "1:ppn=1",
+  #      "walltime" => "72",
+  #      "mem"      => "40gb"
+  #    },
+  #  },
   star_featurecount => {
-    class          => "Count::FeatureCounts",
-    perform        => 1,
-    target_dir     => "${target_dir}/star_featurecount",
-    option         => "-g gene_id -t exon",
-    source_ref     => [ "star", "_Aligned.sortedByCoord.out.bam" ],
-    gff_file       => $transcript_gtf,
-    ispairend      => 1,
-    sh_direct      => 0,
-    pbs            => {
+    class      => "Count::FeatureCounts",
+    perform    => 1,
+    target_dir => "${target_dir}/star_featurecount",
+    option     => "-g gene_id -t exon",
+    source_ref => [ "star", "_Aligned.sortedByCoord.out.bam" ],
+    gff_file   => $transcript_gtf,
+    ispairend  => 1,
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
