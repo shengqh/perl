@@ -26,21 +26,15 @@ my $config = {
     "d17_shear_ESctrl2_H3K27ac"  => ["/gpfs21/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/195R/day_17_shear/CT663p55-62_index7_CAGATC_L005_R1_001.fastq.gz"],
   },
   treatments => {
-    "d17_static_ESctrl2_H3K27ac" => ["d17_static_ESctrl2_H3K27ac"],
-    "d17_shear_ESctrl2_H3K27ac"  => ["d17_shear_ESctrl2_H3K27ac"],
+    "static" => ["d17_static_ESctrl2_H3K27ac"],
+    "shear"  => ["d17_shear_ESctrl2_H3K27ac"],
   },
   controls => {
-    "d17_static_ESctrl2_H3K27ac" => ["d17_static_ESctrl2_Input"],
-    "d17_shear_ESctrl2_H3K27ac"  => ["d17_shear_ESctrl2_Input"],
+    "static" => ["d17_static_ESctrl2_Input"],
+    "shear"  => ["d17_shear_ESctrl2_Input"],
   },
   diffpairs => {
-    "d17_ESctrl2_H3K27ac" => [ "d17_static_ESctrl2_H3K27ac", "d17_shear_ESctrl2_H3K27ac" ],
-  },
-  difftreatments => {
-    "d17_ESctrl2_H3K27ac" => ["d17_shear_ESctrl2_H3K27ac"],
-  },
-  diffcontrols => {
-    "d17_ESctrl2_H3K27ac" => ["d17_static_ESctrl2_H3K27ac"],
+    "shear_vs_static" => [ "static", "shear" ],
   },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
@@ -146,53 +140,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  qc3bam => {
-    class          => "QC::QC3bam",
-    perform        => 1,
-    target_dir     => "${target_dir}/qc3bam",
-    option         => "",
-    transcript_gtf => $transcript_gtf,
-    qc3_perl       => $qc3_perl,
-    source_ref     => "bowtie1",
-    pbs            => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-
-  macs2callpeak => {
-    class        => "Chipseq::MACS2Callpeak",
-    perform      => 1,
-    target_dir   => "${target_dir}/macs2callpeak",
-    option       => "-g hs --broad -B -p 1e-9",
-    source_ref   => "bowtie1",
-    groups_ref   => "treatments",
-    controls_ref => "controls",
-    sh_direct    => 0,
-    pbs          => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  macs2bdgdiff => {
-    class      => "Chipseq::MACS2Bdgdiff",
-    perform    => 1,
-    target_dir => "${target_dir}/macs2bdgdiff",
-    option     => "",
-    source_ref => "macs2callpeak",
-    groups_ref => "diffpairs",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
   macs1callpeak => {
     class        => "Chipseq::MACS",
     perform      => 1,
@@ -228,16 +175,46 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  macs2callpeak => {
+    class        => "Chipseq::MACS2Callpeak",
+    perform      => 1,
+    target_dir   => "${target_dir}/macs2callpeak",
+    option       => "-g hs --broad -B -p 1e-9",
+    source_ref   => "bowtie1",
+    groups_ref   => "treatments",
+    controls_ref => "controls",
+    sh_direct    => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  macs2bdgdiff => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/macs2bdgdiff",
+    option     => "",
+    source_ref => "macs2callpeak",
+    groups_ref => "diffpairs",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
-      step_2 => [
-        "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam", "macs1callpeak", "macs1callpeak_bradner_rose2", "macs2callpeak", "macs2bdgdiff"
-      ],
+      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "bowtie1",                     "fastq_len" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs1callpeak",    "macs1callpeak_bradner_rose2", "macs2callpeak" ],
+      step_3 => ["macs2bdgdiff"],
     },
     sh_direct => 0,
     pbs       => {
