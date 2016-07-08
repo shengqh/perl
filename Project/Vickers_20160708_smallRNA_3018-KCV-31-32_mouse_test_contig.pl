@@ -23,6 +23,7 @@ my $userdef = {
   remove_sequences      => "'CCACGTTCCCGTGG;ACAGTCCGACGATC'",
   search_unmapped_reads => 1,
   blast_unmapped_reads  => 1,
+  search_not_identical  => 0,
 
   #General options
   task_name  => "withcontig",
