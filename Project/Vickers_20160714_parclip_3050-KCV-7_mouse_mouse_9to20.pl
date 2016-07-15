@@ -22,7 +22,7 @@ my $userdef = merge(
 
     #Default software parameter (don't change it except you really know it)
     fastq_remove_N      => 0,
-    fastq_remove_random => 1,                                       #for nextflex kit
+    fastq_remove_random => 4,                                       #for nextflex kit
     adapter             => "TGGAATTCTCGGGTGCCAAGG",
     cqstools            => "/home/shengq1/cqstools/cqstools.exe",
 
