@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $target_dir = "/scratch/cqs/shengq1/dnaseq/20160715_exomeseq_vcf_pipeline";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20160715_exomeseq_vcf_pipeline");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
