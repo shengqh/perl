@@ -13,6 +13,8 @@ my $bowtie_index   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_
 my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
 my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 my $transcript_gtf = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.gtf";
+my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $bwa_fasta      = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "3512";
@@ -120,6 +122,22 @@ my $config = {
       "mem"      => "20gb"
     },
   },
+  bwa => {
+    class      => "Alignment::BWA",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa",
+    option     => "",
+    bwa_index  => $bwa_fasta,
+    source_ref => "cutadapt",
+    picard_jar => $picard_jar,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bowtie1 => {
     class                   => "Alignment::Bowtie1",
     perform                 => 1,
@@ -193,7 +211,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
+      step_1 => [ "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "fastq_len", "bowtie1", "bwa" ],
       step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam", "macs1callpeak", "macs1callpeak_bradner_rose2" ],
     },
     sh_direct => 0,
