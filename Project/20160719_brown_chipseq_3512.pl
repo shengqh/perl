@@ -6,7 +6,7 @@ use CQS::ClassFactory;
 use CQS::FileUtils;
 use Data::Dumper;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/2016719_chipseq_3512");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160719_chipseq_3512");
 
 my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
 my $bowtie_index   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
