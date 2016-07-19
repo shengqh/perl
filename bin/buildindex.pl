@@ -77,24 +77,21 @@ elsif ( !-e $fastaFile ) {
 }
 
 if ( defined $dostar ) {
-  if ( !defined $sjdbGTFfile ) {
-    print STDERR "sjdbGTFfile is required for STAR index." . "\n";
-    $pass = 0;
-  }
-  elsif ( !-e $sjdbGTFfile ) {
-    print STDERR "sjdbGTFfile is not exist " . $sjdbGTFfile . "\n";
-    $pass = 0;
-  }
+  if ( defined $sjdbGTFfile ) {
+    if ( !-e $sjdbGTFfile ) {
+      print STDERR "sjdbGTFfile is not exist " . $sjdbGTFfile . "\n";
+      $pass = 0;
+    }
 
-  if ( !defined $sjdbGTFfileVersion ) {
-    print STDERR "sjdbGTFfileVersion is required for STAR index." . "\n";
-    $pass = 0;
-  }
+    if ( !defined $sjdbGTFfileVersion ) {
+      print STDERR "sjdbGTFfileVersion is required for STAR index." . "\n";
+      $pass = 0;
+    }
 
-  if ( !defined $sjdbOverhang ) {
-    $sjdbOverhang = 99;
+    if ( !defined $sjdbOverhang ) {
+      $sjdbOverhang = 99;
+    }
   }
-
   if ( !defined $thread ) {
     $thread = 8;
   }
@@ -179,11 +176,16 @@ if ( defined $dobwa ) {
 if ( defined $dostar ) {
 
   # STAR
-  my $star = `STAR --version`;
+  my $star = `STAR --version | cut -d "_" -f 2`;
   chomp($star);
-  my $star_dir = "STAR_index_${star}_${sjdbGTFfileVersion}_sjdb${sjdbOverhang}";
+  my $star_dir;
 
-  my $absolute_gtf = File::Spec->rel2abs($sjdbGTFfile);
+  if ( defined $sjdbGTFfile ) {
+    $star_dir = "STAR_index_${star}_${sjdbGTFfileVersion}_sjdb${sjdbOverhang}";
+  }
+  else {
+    $star_dir = "STAR_index_${star}";
+  }
 
   if ( !-e $star_dir ) {
     mkdir($star_dir);
@@ -194,7 +196,13 @@ if ( defined $dostar ) {
       run_command("ln -s ../${basename}.fai ${basename}.fai ");
       run_command("ln -s ../${base}.len ${base}.len ");
     }
-    run_command("STAR --runThreadN $thread --runMode genomeGenerate --genomeDir . --genomeFastaFiles $basename --sjdbGTFfile $absolute_gtf --sjdbOverhang $sjdbOverhang");
+    if ( defined $sjdbGTFfile ) {
+      my $absolute_gtf = File::Spec->rel2abs($sjdbGTFfile);
+      run_command("STAR --runThreadN $thread --runMode genomeGenerate --genomeDir . --genomeFastaFiles $basename --sjdbGTFfile $absolute_gtf --sjdbOverhang $sjdbOverhang");
+    }
+    else {
+      run_command("STAR --runThreadN $thread --runMode genomeGenerate --genomeDir . --genomeFastaFiles $basename");
+    }
     chdir($absolute_dir);
   }
 }
