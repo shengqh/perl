@@ -72,6 +72,22 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  sequencetask => {
+    class      => "CQS::SequenceTask",
+    perform    => 1,
+    target_dir => "${target_dir}/sequencetask",
+    option     => "",
+    source     => {
+      step_2 => [ "star_genetable", "star_deseq2" ],
+    },
+    sh_direct => 0,
+    pbs       => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 };
 
 performConfig($config);
