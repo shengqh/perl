@@ -155,6 +155,23 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bowtie1_miss2 => {
+    class                   => "Alignment::Bowtie1",
+    perform                 => 1,
+    target_dir              => "${target_dir}/bowtie1_miss2",
+    option                  => "-v 2 -m 1 --best --strata",
+    fasta_file              => $fasta_file,
+    source_ref              => [ "cutadapt", ".fastq.gz\$" ],
+    bowtie1_index           => $bowtie_index,
+    chromosome_grep_pattern => "\"^chr\"",
+    sh_direct               => 0,
+    pbs                     => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   qc3bam => {
     class          => "QC::QC3bam",
     perform        => 1,
