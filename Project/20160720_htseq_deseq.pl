@@ -19,14 +19,14 @@ my $config = {
     task_name => $task,
   },
   files => {
-    "DKO-1_Cell_1"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0001b_htseq_count.txt"],
-    "DKO-1_Cell_2"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0002b_htseq_count.txt"],
-    "DKO-1_Cell_3"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0003b_htseq_count.txt"],
-    "DKO-1_Cell_4"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0004b_htseq_count.txt"],
-    "DKO-1_Microvesicle_1" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0005b_htseq_count.txt"],
-    "DKO-1_Microvesicle_2" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0006b_htseq_count.txt"],
-    "DKO-1_Microvesicle_3" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0007b_htseq_count.txt"],
-    "DKO-1_Microvesicle_4" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/3839_RJC_0008b_htseq_count.txt"],
+    "DKO-1_Cell_1"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0001b.new.txt"],
+    "DKO-1_Cell_2"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0002b.new.txt"],
+    "DKO-1_Cell_3"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0003b.new.txt"],
+    "DKO-1_Cell_4"         => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0004b.new.txt"],
+    "DKO-1_Microvesicle_1" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0005b.new.txt"],
+    "DKO-1_Microvesicle_2" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0006b.new.txt"],
+    "DKO-1_Microvesicle_3" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0007b.new.txt"],
+    "DKO-1_Microvesicle_4" => ["/dors/bioinfo/exrna/RJC3839mRNA_Jie/htseqcount/old/3839_RJC_0008b.new.txt"],
   },
 
   groups => {
