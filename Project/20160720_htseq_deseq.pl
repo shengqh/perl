@@ -11,7 +11,7 @@ my $name_map_file = "/scratch/pingj1/db/hg38/gencode.v24.primary_assembly.annota
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
 
 my $task       = "deseq";
-my $target_dir = "/scratch/cqs/shengq1/rnaseq/20160720_htseq_deseq";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160720_htseq_deseq");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
