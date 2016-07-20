@@ -9,7 +9,7 @@ use CQS::ConfigUtils;
 
 my $task = "B3436";
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/rnaseq_pipeline_star_deseq2");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/pipeline_star_deseq2");
 
 #my $target_dir = "e:/temp";
 
