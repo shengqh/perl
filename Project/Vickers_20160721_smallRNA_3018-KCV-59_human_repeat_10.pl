@@ -27,8 +27,8 @@ my $userdef = {
   blast_unmapped_reads  => 1,
 
   #General options
-  task_name  => "withcontig",
-  target_dir => $root . "with_contig",
+  task_name  => "repeat10",
+  target_dir => $root,
 
   #Data
   files => {
