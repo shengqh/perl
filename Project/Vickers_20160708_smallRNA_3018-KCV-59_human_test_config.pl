@@ -9,7 +9,7 @@ use Pipeline::SmallRNA;
 
 my $genome = hg19_genome();
 
-my $root = create_directory_or_die("/scratch/cqs/shengq1/vickers/20160708_smallRNA_3018-KCV-59_62_63_human_test_config");
+my $root = create_directory_or_die("/scratch/cqs/shengq1/vickers/20160708_smallRNA_3018-KCV-59_62_63_human_test_config/");
 
 my $userdef = {
 
