@@ -7,17 +7,13 @@ use CQS::FileUtils;
 use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160721_chipseq_3530");
+my $task  = "3530";
 
 my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
 my $bowtie_index   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
 my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
-my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
-my $transcript_gtf = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.gtf";
-my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
-my $bwa_fasta      = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
-my $task  = "3512";
 
 my $config = {
   general => { task_name => $task },
