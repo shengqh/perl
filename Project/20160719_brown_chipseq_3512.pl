@@ -35,7 +35,7 @@ my $config = {
     "HUVEC_LSS"         => ["HUVEC_LSS_Input"],
     "HUVEC_Oscillatory" => ["HUVEC_Oscillatory_Input"],
   },
-  depthgroupds => {
+  depthgroups => {
     "HUVEC_LSS"         => [ "HUVEC_LSS",         "HUVEC_LSS_Input" ],
     "HUVEC_Oscillatory" => [ "HUVEC_Oscillatory", "HUVEC_Oscillatory_Input" ],
   },
