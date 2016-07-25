@@ -200,6 +200,8 @@ my $config = {
     groups_ref    => "depthgroups",
     bam_files_ref => "bowtie1",
     sh_direct     => 1,
+    single_pdf    => 1,
+    facet_sample  => 0,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -231,6 +233,8 @@ my $config = {
     source_ref    => [ "macs2callpeak", ".bed\$" ],
     groups_ref    => "depthgroups",
     bam_files_ref => "bowtie1",
+    single_pdf    => 1,
+    facet_sample  => 0,
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
@@ -258,7 +262,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask( $config, "macs1callpeak_loose" );
+performConfig($config);
+#performTask( $config, "macs1callpeak_loose" );
 
 1;
