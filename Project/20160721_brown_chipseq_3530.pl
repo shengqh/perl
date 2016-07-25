@@ -175,12 +175,44 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  depth => {
+  macs1callpeak_depth => {
     class         => "Visualization::Depth",
     perform       => 1,
     target_dir    => "${target_dir}/macs1callpeak_depth",
     option        => "",
     source_ref    => [ "macs1callpeak", ".name.bed" ],
+    groups_ref    => "depthgroups",
+    bam_files_ref => "bowtie1",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "10gb"
+    },
+  },
+  macs2callpeak => {
+    class        => "Chipseq::MACS2Callpeak",
+    perform      => 1,
+    target_dir   => "${target_dir}/macs2callpeak",
+    option       => "-g hs --broad -B -p 1e-9",
+    source_ref   => "bowtie1",
+    groups_ref   => "treatments",
+    controls_ref => "controls",
+    sh_direct    => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  macs2callpeak_depth => {
+    class         => "Visualization::Depth",
+    perform       => 1,
+    target_dir    => "${target_dir}/macs2callpeak_depth",
+    option        => "",
+    source_ref    => [ "macs2callpeak", ".bed\$" ],
     groups_ref    => "depthgroups",
     bam_files_ref => "bowtie1",
     sh_direct     => 1,
@@ -197,8 +229,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "fastq_len", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs1callpeak",    "depth" ],
+      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "fastq_len",           "bowtie1" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs1callpeak",    "macs1callpeak_depth", "macs2callpeak", "macs2callpeak_depth" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -210,7 +242,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask( $config, "depth" );
+performConfig($config);
+#performTask( $config, "depth" );
 
 1;
