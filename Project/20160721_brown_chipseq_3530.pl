@@ -183,6 +183,7 @@ my $config = {
     source_ref    => [ "macs1callpeak", ".name.bed" ],
     groups_ref    => "depthgroups",
     bam_files_ref => "bowtie1",
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
