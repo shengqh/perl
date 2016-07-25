@@ -9,7 +9,7 @@ use CQS::ConfigUtils;
 
 my $task = "B3436";
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160509_brown_3436");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160509_rnaseq_3436");
 
 #my $target_dir = "e:/temp";
 
@@ -23,36 +23,21 @@ my $email          = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "JDB-01" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-1_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-1_2_sequence.txt.gz" ],
-    "JDB-02" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-2_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-2_2_sequence.txt.gz" ],
-    "JDB-03" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-3_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-3_2_sequence.txt.gz" ],
-    "JDB-04" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-4_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-4_2_sequence.txt.gz" ],
-    "JDB-05" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-5_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-5_2_sequence.txt.gz" ],
-    "JDB-06" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-6_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-6_2_sequence.txt.gz" ],
-    "JDB-07" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-7_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-7_2_sequence.txt.gz" ],
-    "JDB-08" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-8_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-8_2_sequence.txt.gz" ],
-    "JDB-09" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-9_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-9_2_sequence.txt.gz" ],
-    "JDB-11" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-11_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-11_2_sequence.txt.gz" ],
-    "JDB-12" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-12_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-12_2_sequence.txt.gz" ],
-    "JDB-13" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-13_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-13_2_sequence.txt.gz" ],
-    "JDB-14" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-14_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-14_2_sequence.txt.gz" ],
-    "JDB-16" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-16_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-16_2_sequence.txt.gz" ],
-    "JDB-17" =>
-      [ "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-17_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/rnaseq/20160509_brown_3436/data/3436-JDB-17_2_sequence.txt.gz" ],
+    "JDB-01" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-1_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-1_2_sequence.txt.gz" ],
+    "JDB-02" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-2_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-2_2_sequence.txt.gz" ],
+    "JDB-03" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-3_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-3_2_sequence.txt.gz" ],
+    "JDB-04" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-4_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-4_2_sequence.txt.gz" ],
+    "JDB-05" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-5_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-5_2_sequence.txt.gz" ],
+    "JDB-06" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-6_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-6_2_sequence.txt.gz" ],
+    "JDB-07" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-7_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-7_2_sequence.txt.gz" ],
+    "JDB-08" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-8_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-8_2_sequence.txt.gz" ],
+    "JDB-09" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-9_1_sequence.txt.gz",  "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-9_2_sequence.txt.gz" ],
+    "JDB-11" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-11_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-11_2_sequence.txt.gz" ],
+    "JDB-12" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-12_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-12_2_sequence.txt.gz" ],
+    "JDB-13" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-13_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-13_2_sequence.txt.gz" ],
+    "JDB-14" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-14_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-14_2_sequence.txt.gz" ],
+    "JDB-16" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-16_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-16_2_sequence.txt.gz" ],
+    "JDB-17" => [ "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-17_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3436/3436-JDB-17_2_sequence.txt.gz" ],
   },
   groups => {
     "FED"      => [ "JDB-01", "JDB-02", "JDB-03" ],
@@ -205,4 +190,3 @@ my $config = {
 
 performConfig($config);
 1;
-
