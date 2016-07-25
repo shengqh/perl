@@ -188,8 +188,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "sra2fastq", "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "fastq_len", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs1callpeak", "macs1callpeak_depth", "macs2callpeak", "macs2callpeak_depth" ],
+      step_1 => [ "sra2fastq", "fastqc_raw", "bowtie1" ],
+      step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_depth", "macs2callpeak", "macs2callpeak_depth" ],
     },
     sh_direct => 0,
     pbs       => {
