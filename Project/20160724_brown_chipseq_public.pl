@@ -73,10 +73,10 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  fastqc_pre_trim => {
+  fastqc_raw => {
     class      => "QC::FastQC",
     perform    => 1,
-    target_dir => "${target_dir}/fastqc_pre_trim",
+    target_dir => "${target_dir}/fastqc_raw",
     option     => "",
     source_ref => ["sra2fastq"],
     sh_direct  => 0,
@@ -87,11 +87,11 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  fastqc_pre_trim_summary => {
+  fastqc_raw_summary => {
     class      => "QC::FastQCSummary",
     perform    => 1,
     sh_direct  => 1,
-    target_dir => "${target_dir}/fastqc_pre_trim",
+    target_dir => "${target_dir}/fastqc_raw",
     cqstools   => $cqstools,
     option     => "",
     pbs        => {
@@ -99,65 +99,6 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "2",
       "mem"      => "10gb"
-    },
-  },
-  cutadapt => {
-    class      => "Trimmer::Cutadapt",
-    perform    => 1,
-    target_dir => "${target_dir}/cutadapt",
-    option     => "-m 30 --trim-n",
-    source_ref => ["sra2fastq"],
-    adapter    => "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",    #trueseq adapter
-    extension  => "_clipped.fastq",
-    sh_direct  => 0,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
-    },
-  },
-  fastqc_post_trim => {
-    class      => "QC::FastQC",
-    perform    => 1,
-    target_dir => "${target_dir}/fastqc_post_trim",
-    option     => "",
-    sh_direct  => 1,
-    source_ref => [ "cutadapt", ".fastq.gz" ],
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "2",
-      "mem"      => "10gb"
-    },
-  },
-  fastqc_post_trim_summary => {
-    class      => "QC::FastQCSummary",
-    perform    => 1,
-    sh_direct  => 1,
-    target_dir => "${target_dir}/fastqc_post_trim",
-    cqstools   => $cqstools,
-    option     => "",
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "2",
-      "mem"      => "10gb"
-    },
-  },
-  fastq_len => {
-    class      => "CQS::FastqLen",
-    perform    => 1,
-    target_dir => "$target_dir/fastq_len",
-    option     => "",
-    source_ref => "cutadapt",
-    cqstools   => $cqstools,
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "20gb"
     },
   },
   bowtie1 => {
@@ -166,7 +107,7 @@ my $config = {
     target_dir              => "${target_dir}/bowtie1",
     option                  => "-v 1 -m 1 --best --strata",
     fasta_file              => $fasta_file,
-    source_ref              => [ "cutadapt", ".fastq.gz\$" ],
+    source_ref              => "sra2fastq",
     bowtie1_index           => $bowtie_index,
     chromosome_grep_pattern => "\"^chr\"",
     sh_direct               => 0,
