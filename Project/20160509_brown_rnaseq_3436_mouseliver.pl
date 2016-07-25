@@ -19,7 +19,7 @@ my $star_index     = "/scratch/cqs/shengq1/references/mm10_sorted_M/STAR_index_v
 my $fasta_file     = "/scratch/cqs/shengq1/references/mm10_sorted_M/mm10.fa";
 my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
 my $email          = "quanhu.sheng\@vanderbilt.edu";
-
+my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 my $config = {
   general => { task_name => $task },
   files   => {
@@ -99,14 +99,13 @@ my $config = {
       "mem"      => "30gb"
     },
   },
-  star_rnaseqc => {
-    class          => "QC::RNASeQC",
+  star_qc3 => {
+    class          => "QC::QC3bam",
     perform        => 1,
-    target_dir     => "${target_dir}/star_rnaseqc",
+    target_dir     => "${target_dir}/star_qc3",
     option         => "",
     transcript_gtf => $transcript_gtf,
-    fasta_file     => $fasta_file,
-    jar            => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
+    qc3_perl       => $qc3_perl,
     source_ref     => [ "star", "_Aligned.sortedByCoord.out.bam" ],
     pbs            => {
       "email"    => $email,
@@ -205,6 +204,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "star_rnaseqc" );
+performTask( $config, "star_qc3" );
 
 1;
