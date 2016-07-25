@@ -7,11 +7,11 @@ use CQS::FileUtils;
 use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160721_chipseq_3530");
-my $task  = "3530";
+my $task       = "3530";
 
-my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
-my $bowtie_index   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
-my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
+my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
+my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
+my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -46,6 +46,14 @@ my $config = {
     "G145R_P_TBX5" => ["G145R_P_Input"],
     "C2_1_TBX5"    => ["C2_1_Input"],
     "C4_3_TBX5"    => ["C4_3_Input"],
+  },
+  depthgroups => {
+    "CR_Y_TBX5"    => [ "CR_Y_TBX5",    "CR_Y_Input" ],
+    "CR_S_TBX5"    => [ "CR_S_TBX5",    "CR_S_Input" ],
+    "G145R_C_TBX5" => [ "G145R_C_TBX5", "G145R_C_Input" ],
+    "G145R_P_TBX5" => [ "G145R_P_TBX5", "G145R_P_Input" ],
+    "C2_1_TBX5"    => [ "C2_1_TBX5",    "C2_1_Input" ],
+    "C4_3_TBX5"    => [ "C4_3_TBX5",    "C4_3_Input" ],
   },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
@@ -167,6 +175,21 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  depth => {
+    class         => "Visualization::Depth",
+    perform       => 1,
+    target_dir    => "${target_dir}/macs1callpeak_depth",
+    option        => "",
+    source_ref    => [ "macs1callpeak", ".name.bed" ],
+    groups_ref    => "depthgroups",
+    bam_files_ref => "bowtie1",
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "10gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -174,7 +197,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "fastq_len", "bowtie1" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs1callpeak" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "macs1callpeak",    "depth" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -186,5 +209,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask( $config, "depth" );
+
 1;
