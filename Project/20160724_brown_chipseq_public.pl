@@ -13,6 +13,9 @@ my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.
 my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
 my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
 
+my $transcript_gtf = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.gtf";
+my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
@@ -118,6 +121,21 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bowtie1_qc3 => {
+    class          => "QC::QC3bam",
+    perform        => 1,
+    target_dir     => "${target_dir}/bowtie1_qc3",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    qc3_perl       => $qc3_perl,
+    source_ref     =>  ["bowtie1", ".bam\$" ],
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   macs1callpeak => {
     class        => "Chipseq::MACS",
     perform      => 1,
@@ -201,8 +219,8 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "depth" );
+performTask( $config, "bowtie1_qc3" );
 
 1;
