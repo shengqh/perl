@@ -226,7 +226,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  depth => {
+  macs1callpeak_depth => {
     class         => "Visualization::Depth",
     perform       => 1,
     target_dir    => "${target_dir}/macs1callpeak_depth",
@@ -234,6 +234,9 @@ my $config = {
     source_ref    => [ "macs1callpeak", ".name.bed" ],
     groups_ref    => "depthgroups",
     bam_files_ref => "bowtie1",
+    single_pdf    => 1,
+    facet_sample  => 0,
+    draw_line     => 1,
     sh_direct     => 1,
     pbs           => {
       "email"    => $email,
@@ -248,8 +251,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "fastq_len",     "bowtie1", "bwa" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam",           "macs1callpeak", "macs1callpeak_bradner_rose2", "depth" ],
+      step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "fastq_len",     "bowtie1",                     "bwa" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam",           "macs1callpeak", "macs1callpeak_bradner_rose2", "macs1callpeak_depth" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -262,6 +265,6 @@ my $config = {
 };
 
 #performConfig($config);
-performTask( $config, "depth" );
+performTask( $config, "macs1callpeak_depth" );
 
 1;
