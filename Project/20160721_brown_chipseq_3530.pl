@@ -202,6 +202,7 @@ my $config = {
     sh_direct     => 1,
     single_pdf    => 1,
     facet_sample  => 0,
+    draw_line     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -236,6 +237,7 @@ my $config = {
     single_pdf    => 1,
     facet_sample  => 0,
     sh_direct     => 1,
+    draw_line     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -263,6 +265,7 @@ my $config = {
 };
 
 performConfig($config);
+
 #performTask( $config, "macs1callpeak_loose" );
 
 1;
