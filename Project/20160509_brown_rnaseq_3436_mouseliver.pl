@@ -99,6 +99,22 @@ my $config = {
       "mem"      => "30gb"
     },
   },
+  star_rnaseqc => {
+    class          => "QC::RNASeQC",
+    perform        => 1,
+    target_dir     => "${target_dir}/star_rnaseqc",
+    option         => "",
+    transcript_gtf => $transcript_gtf,
+    fasta_file     => $fasta_file,
+    jar            => "/home/shengq1/local/bin/RNA-SeQC_v1.1.7.jar",
+    source_ref     => [ "star", "_Aligned.sortedByCoord.out.bam" ],
+    pbs            => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   star_featurecount => {
     class      => "Count::FeatureCounts",
     perform    => 1,
@@ -188,5 +204,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask( $config, "star_rnaseqc" );
+
 1;
