@@ -35,6 +35,10 @@ my $config = {
     "HUVEC_LSS"         => ["HUVEC_LSS_Input"],
     "HUVEC_Oscillatory" => ["HUVEC_Oscillatory_Input"],
   },
+  depthgroupds => {
+    "HUVEC_LSS"         => [ "HUVEC_LSS",         "HUVEC_LSS_Input" ],
+    "HUVEC_Oscillatory" => [ "HUVEC_Oscillatory", "HUVEC_Oscillatory_Input" ],
+  },
   fastqc_pre_trim => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -222,6 +226,22 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  depth => {
+    class         => "Visualization::Depth",
+    perform       => 1,
+    target_dir    => "${target_dir}/macs1callpeak_depth",
+    option        => "",
+    source_ref    => [ "macs1callpeak", ".name.bed" ],
+    groups_ref    => "depthgroups",
+    bam_files_ref => "bowtie1",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "10gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -229,7 +249,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "fastqc_pre_trim",         "cutadapt",                 "fastqc_post_trim", "fastq_len",     "bowtie1", "bwa" ],
-      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam",           "macs1callpeak", "macs1callpeak_bradner_rose2" ],
+      step_2 => [ "fastqc_pre_trim_summary", "fastqc_post_trim_summary", "qc3bam",           "macs1callpeak", "macs1callpeak_bradner_rose2", "depth" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -241,5 +261,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask( $config, "depth" );
+
 1;
