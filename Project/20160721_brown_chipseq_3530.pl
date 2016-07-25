@@ -175,6 +175,22 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  macs1callpeak_loose => {
+    class        => "Chipseq::MACS",
+    perform      => 1,
+    target_dir   => "${target_dir}/macs1callpeak_loose",
+    option       => "-p 1e-5 -w -S --space=50",
+    source_ref   => "bowtie1",
+    groups_ref   => "treatments",
+    controls_ref => "controls",
+    sh_direct    => 0,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   macs1callpeak_depth => {
     class         => "Visualization::Depth",
     perform       => 1,
@@ -242,7 +258,7 @@ my $config = {
   },
 };
 
-performConfig($config);
-#performTask( $config, "depth" );
+#performConfig($config);
+performTask( $config, "macs1callpeak_loose" );
 
 1;
