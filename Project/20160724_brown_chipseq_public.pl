@@ -11,8 +11,9 @@ my $task       = "public";
 
 my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
 my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
+my $bwa_index    = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
 my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
-
+my $picard_jar   = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $transcript_gtf = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.gtf";
 my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
@@ -102,6 +103,22 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "2",
       "mem"      => "10gb"
+    },
+  },
+  bwa => {
+    class      => "Alignment::BWA",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa",
+    option     => "-k 25",
+    bwa_index  => $bwa_index,
+    source_ref => "sra2fastq",
+    picard_jar => $picard_jar,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
   bowtie1 => {
@@ -208,6 +225,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "macs1callpeak_depth" );
+performTask( $config, "bwa" );
 
 1;
