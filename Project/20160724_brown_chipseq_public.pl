@@ -128,7 +128,7 @@ my $config = {
     option         => "",
     transcript_gtf => $transcript_gtf,
     qc3_perl       => $qc3_perl,
-    source_ref     =>  ["bowtie1", ".bam\$" ],
+    source_ref     => [ "bowtie1", ".bam\$" ],
     pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -161,6 +161,9 @@ my $config = {
     groups_ref    => "depthgroups",
     bam_files_ref => "bowtie1",
     sh_direct     => 1,
+    single_pdf    => 1,
+    facet_sample  => 0,
+    draw_line     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
@@ -190,7 +193,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "sra2fastq", "fastqc_raw", "bowtie1" ],
+      step_1 => [ "sra2fastq",          "fastqc_raw",    "bowtie1" ],
       step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_depth", "macs2callpeak" ],
     },
     sh_direct => 0,
@@ -205,6 +208,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "bowtie1_qc3" );
+performTask( $config, "macs1callpeak_depth" );
 
 1;
