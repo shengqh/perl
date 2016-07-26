@@ -184,22 +184,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2callpeak_depth => {
-    class         => "Visualization::Depth",
-    perform       => 1,
-    target_dir    => "${target_dir}/macs2callpeak_depth",
-    option        => "",
-    source_ref    => [ "macs2callpeak", ".bed\$" ],
-    groups_ref    => "depthgroups",
-    bam_files_ref => "bowtie1",
-    sh_direct     => 1,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "24",
-      "mem"      => "10gb"
-    },
-  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -207,7 +191,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "sra2fastq", "fastqc_raw", "bowtie1" ],
-      step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_depth", "macs2callpeak", "macs2callpeak_depth" ],
+      step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_depth", "macs2callpeak" ],
     },
     sh_direct => 0,
     pbs       => {
