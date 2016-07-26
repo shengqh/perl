@@ -236,8 +236,8 @@ my $config = {
     bam_files_ref => "bowtie1",
     single_pdf    => 1,
     facet_sample  => 0,
-    sh_direct     => 1,
     draw_line     => 1,
+    sh_direct     => 1,
     pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
