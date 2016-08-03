@@ -30,7 +30,7 @@ my $config = {
   },
   fastqc => {
     class      => "QC::FastQC",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     source_ref => "files",
@@ -44,7 +44,7 @@ my $config = {
   },
   fastqc_summary => {
     class      => "QC::FastQCSummary",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqc",
     option     => "",
     cqstools   => $cqstools,
@@ -57,7 +57,7 @@ my $config = {
   },
   cutadapt => {
     class      => "Trimmer::Cutadapt",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/cutadapt",
     option     => "-O 10 -m 50",
     source_ref => "files",
@@ -73,7 +73,7 @@ my $config = {
   },
   fastqlen => {
     class      => "CQS::FastqLen",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/fastqlen",
     option     => "",
     source_ref => "cutadapt",
@@ -88,7 +88,7 @@ my $config = {
   },
   bwa => {
     class      => "Alignment::BWA",
-    perform    => 0,
+    perform    => 1,
     target_dir => "${target_dir}/bwa",
     option     => "",
     bwa_index  => $bwa_fasta,
