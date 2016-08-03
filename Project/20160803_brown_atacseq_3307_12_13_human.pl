@@ -169,6 +169,7 @@ my $config = {
     option        => "",
     source_ref    => "bwa_macs2bdgdiff",
     bam_files_ref => "bwa_cleanbam",
+    groups_ref    => "comparison",
     sh_direct     => 0,
     pbs           => {
       "email"    => $email,
