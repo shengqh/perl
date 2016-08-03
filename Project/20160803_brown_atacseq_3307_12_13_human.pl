@@ -17,7 +17,7 @@ my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 
 my $macs2call_option = "-f BED -g hg -B -q 0.01 --nomodel";
 
-my $bwa_fasta     = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
+my $bwa_fasta = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
 
 my $config = {
   general => { task_name => "HAEC" },
@@ -25,8 +25,12 @@ my $config = {
     "HAEC_5percent"  => [ "/scratch/cqs/shengq1/brown/data/3307/3307-JDB-12_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3307/3307-JDB-12_2_sequence.txt.gz" ],
     "HAEC_10percent" => [ "/scratch/cqs/shengq1/brown/data/3307/3307-JDB-13_1_sequence.txt.gz", "/scratch/cqs/shengq1/brown/data/3307/3307-JDB-13_2_sequence.txt.gz" ],
   },
+  treatments => {
+    "HAEC_5percent"  => ["HAEC_5percent"],
+    "HAEC_10percent" => ["HAEC_10percent"],
+  },
   comparison => {
-    "DIFF_HAEC" => ["HAEC_5percent", "HAEC_10percent"]
+    "DIFF_HAEC" => [ "HAEC_5percent", "HAEC_10percent" ]
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -93,7 +97,7 @@ my $config = {
     option     => "",
     bwa_index  => $bwa_fasta,
     picard_jar => $picard_jar,
-    source_ref => ["cutadapt", ".fastq.gz"],
+    source_ref => [ "cutadapt", ".fastq.gz" ],
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -139,6 +143,7 @@ my $config = {
     target_dir => "${target_dir}/bwa_macs2callpeak",
     option     => $macs2call_option,
     source_ref => "bwa_bam2bed",
+    groups_ref => "treatments",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -177,14 +182,14 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     },
-  },  
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc", "cutadapt", "fastqlen", "bwa",      "bwa_cleanbam",      "bwa_bam2bed",      "bwa_macs2callpeak" ],
+      T1 => [ "fastqc",         "cutadapt",         "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
       T2 => [ "fastqc_summary", "bwa_macs2bdgdiff", "bwa_macs2bdgdiff_depth" ],
     },
     sh_direct => 0,
@@ -194,7 +199,7 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     },
-    },
+  },
 };
 
 performConfig($config);
