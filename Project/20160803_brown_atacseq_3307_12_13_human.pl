@@ -67,6 +67,7 @@ my $config = {
     source_ref => "files",
     adapter    => "CTGTCTCTTATA",
     extension  => "_clipped.fastq.gz",
+    pairend    => 1,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
@@ -216,7 +217,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc_raw",         "cutadapt",               "fastqc_trimmed",   "fastqlen", "bwa",   "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
+      T1 => [ "fastqc_raw",         "cutadapt",               "fastqc_trimmed",   "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
       T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs2bdgdiff_depth" ],
     },
     sh_direct => 0,
