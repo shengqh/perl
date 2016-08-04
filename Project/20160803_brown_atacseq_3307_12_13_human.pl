@@ -32,10 +32,10 @@ my $config = {
   comparison => {
     "DIFF_HAEC" => [ "HAEC_5percent", "HAEC_10percent" ]
   },
-  fastqc => {
+  fastqc_raw => {
     class      => "QC::FastQC",
     perform    => 1,
-    target_dir => "${target_dir}/fastqc",
+    target_dir => "${target_dir}/fastqc_raw",
     option     => "",
     source_ref => "files",
     sh_direct  => 1,
@@ -46,10 +46,10 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  fastqc_summary => {
+  fastqc_raw_summary => {
     class      => "QC::FastQCSummary",
     perform    => 1,
-    target_dir => "${target_dir}/fastqc",
+    target_dir => "${target_dir}/fastqc_raw",
     option     => "",
     cqstools   => $cqstools,
     pbs        => {
@@ -73,6 +73,33 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
       "mem"      => "20gb"
+    },
+  },
+  fastqc_trimmed => {
+    class      => "QC::FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc_trimmed",
+    option     => "",
+    source_ref => [ "cutadapt", ".fastq.gz" ],
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=2",
+      "walltime" => "2",
+      "mem"      => "40gb"
+    },
+  },
+  fastqc_trimmed_summary => {
+    class      => "QC::FastQCSummary",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc_trimmed",
+    option     => "",
+    cqstools   => $cqstools,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
     },
   },
   fastqlen => {
@@ -189,8 +216,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc",         "cutadapt",         "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
-      T2 => [ "fastqc_summary", "bwa_macs2bdgdiff", "bwa_macs2bdgdiff_depth" ],
+      T1 => [ "fastqc_raw",         "cutadapt",               "fastqc_trimmed",   "fastqlen", "bwa",   "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
+      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs2bdgdiff_depth" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -203,8 +230,6 @@ my $config = {
 };
 
 performConfig($config);
-
-#performTask( $config, "bowtie2_pretrim" );
 
 1;
 
