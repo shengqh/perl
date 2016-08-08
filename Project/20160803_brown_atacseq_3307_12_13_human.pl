@@ -15,7 +15,7 @@ my $cqstools   = "/home/shengq1/cqstools/cqstools.exe";
 my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 
-my $macs2call_option = "-f BED --broad -g hg -B -q 0.01 --broad-cutoff 0.01 --nomodel";
+my $macs2call_option = "-f BED --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel";
 
 my $bwa_fasta = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
 
