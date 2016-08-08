@@ -142,6 +142,7 @@ my $config = {
     source_ref        => "bwa",
     picard_jar        => $picard_jar,
     remove_chromosome => "M",
+    keep_chromosome   => "chr",
     sh_direct         => 0,
     pbs               => {
       "email"    => $email,
