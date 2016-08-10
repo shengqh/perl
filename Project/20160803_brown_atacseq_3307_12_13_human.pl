@@ -196,16 +196,18 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_macs2bdgdiff_depth => {
-    class         => "Visualization::Depth",
-    perform       => 1,
-    target_dir    => "${target_dir}/bwa_macs2bdgdiff_depth",
-    option        => "",
-    source_ref    => "bwa_macs2bdgdiff",
-    bam_files_ref => "bwa_cleanbam",
-    groups_ref    => "comparison",
-    sh_direct     => 0,
-    pbs           => {
+  bwa_macs2bdgdiff_bradner_rose2 => {
+    class                => "Chipseq::BradnerRose2",
+    perform              => 1,
+    target_dir           => "${target_dir}/macs1callpeak_bradner_rose2",
+    option               => "",
+    source_ref           => "bwa_bam2bed",
+    groups_ref           => "treatments",
+    pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    binding_site_bed_ref => [ "bwa_macs2bdgdiff", ".bed\$" ],
+    genome               => "hg19",
+    sh_direct            => 1,
+    pbs                  => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -219,7 +221,7 @@ my $config = {
     option     => "",
     source     => {
       T1 => [ "fastqc_raw",         "cutadapt",               "fastqc_trimmed",   "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
-      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs2bdgdiff_depth" ],
+      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs2bdgdiff_bradner_rose2" ],
     },
     sh_direct => 0,
     pbs       => {
