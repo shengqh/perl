@@ -29,11 +29,11 @@ my $userdef = merge(
 
     #Data
     files => {
-      "3018-KCV-15-15"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-15_ATGTCA_L006_R1_001.fastq.gz"],
-      "3018-KCV-15-36"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-36_CCAACA_L006_R1_001.fastq.gz"],
-      "3018-KCV-15-37"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-37_CGGAAT_L006_R1_001.fastq.gz"],
-      "3018-KCV-15-46"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-46_TCCCGA_L006_R1_001.fastq.gz"],
-      "3018-KCV-15-47"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-47_TCGAAG_L006_R1_001.fastq.gz"],
+#      "3018-KCV-15-15"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-15_ATGTCA_L006_R1_001.fastq.gz"],
+#      "3018-KCV-15-36"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-36_CCAACA_L006_R1_001.fastq.gz"],
+#      "3018-KCV-15-37"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-37_CGGAAT_L006_R1_001.fastq.gz"],
+#      "3018-KCV-15-46"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-46_TCCCGA_L006_R1_001.fastq.gz"],
+#      "3018-KCV-15-47"  => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-15_parclip/3018-KCV-15-47_TCGAAG_L006_R1_001.fastq.gz"],
       "S6_T"            => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-51/3018/3018-KCV-51-i11_S1_R1_001.fastq.gz"],
       "S6_B"            => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-51/3018/3018-KCV-51-i12_S2_R1_001.fastq.gz"],
       "S6_M"            => ["/gpfs21/scratch/cqs/shengq1/vickers/data/3018-KCV-51/3018/3018-KCV-51-i13_S3_R1_001.fastq.gz"],
