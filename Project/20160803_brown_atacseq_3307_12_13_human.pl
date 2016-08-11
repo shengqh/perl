@@ -15,7 +15,7 @@ my $cqstools   = "/home/shengq1/cqstools/cqstools.exe";
 my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 
-my $macs1call_option = "-p 1e-9 -w -S --space=50";
+my $macs1call_option        = "-p 1e-9 -w -S --space=50";
 my $macs2call_option_qvalue = "-f BED --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel";
 my $macs2call_option_pvalue = "-f BED --broad -g hs -B -p 1e-9 --broad-cutoff 1e-9 --nomodel";
 
@@ -198,7 +198,7 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-    bwa_macs2bdgdiff => {
+  bwa_macs2bdgdiff => {
     class      => "Chipseq::MACS2Bdgdiff",
     perform    => 1,
     target_dir => "${target_dir}/bwa_macs2bdgdiff",
@@ -246,14 +246,30 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_macs1callpeak_bradner_rose_coltron => {
+    class         => "Chipseq::Coltron",
+    perform       => 1,
+    target_dir    => "${target_dir}/bwa_macs1callpeak_bradner_rose_coltron",
+    option        => "",
+    source_ref    => [ "bwa_macs1callpeak_bradner_rose", "" ],
+    bam_files_ref => "treatments",
+    genome        => "HG19",
+    sh_direct     => 1,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc_raw",         "cutadapt",               "fastqc_trimmed",   "fastqlen", "bwa",   "bwa_cleanbam", "bwa_bam2bed", "bwa_macs1callpeak", "bwa_macs2callpeak_qvalue", "bwa_macs2callpeak_pvalue" ],
-      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs1callpeak_bradner_rose" ],
+      T1 => [ "fastqc_raw", "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs1callpeak", "bwa_macs2callpeak_qvalue", "bwa_macs2callpeak_pvalue" ],
+      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs1callpeak_bradner_rose", "bwa_macs1callpeak_bradner_rose_coltron" ],
     },
     sh_direct => 0,
     pbs       => {
