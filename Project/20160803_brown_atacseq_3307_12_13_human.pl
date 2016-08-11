@@ -15,7 +15,7 @@ my $cqstools   = "/home/shengq1/cqstools/cqstools.exe";
 my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 
-my $macs1call_option = "-p 1e-5 -w -S --space=50";
+my $macs1call_option = "-p 1e-9 -w -S --space=50";
 my $macs2call_option = "-f BED --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel";
 
 my $bwa_fasta = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
@@ -200,8 +200,8 @@ my $config = {
   bwa_macs1callpeak => {
     class      => "Chipseq::MACS",
     perform    => 1,
-    target_dir => "${target_dir}/macs1callpeak",
-    option     => "-p 1e-9 -w -S --space=50",
+    target_dir => "${target_dir}/bwa_macs1callpeak",
+    option     => $macs1call_option,
     source_ref => "bwa_bam2bed",
     groups_ref => "treatments",
     sh_direct  => 0,
@@ -217,7 +217,7 @@ my $config = {
     perform              => 1,
     target_dir           => "${target_dir}/macs1callpeak_bradner_rose",
     option               => "",
-    source_ref           => "bwa_bam2bed",
+    source_ref           => "bwa_cleanbam",
     groups_ref           => "treatments",
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_bed_ref => [ "bwa_macs1callpeak", ".bed\$" ],
