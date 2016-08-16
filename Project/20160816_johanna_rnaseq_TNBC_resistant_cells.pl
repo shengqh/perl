@@ -20,6 +20,11 @@ my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.
 my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
 my $email          = "quanhu.sheng\@vanderbilt.edu";
 my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
+my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $dbsnp          = "/data/cqs/shengq1/reference/dbsnp/human_GRCh37_v141_16569_M.vcf";
 my $config         = {
   general => { task_name => $task },
   files   => {
@@ -196,6 +201,60 @@ my $config         = {
       "mem"      => "10gb"
     },
   },
+  star_refine => {
+    class      => "GATK::RNASeqRefine",
+    perform    => 1,
+    target_dir => "${target_dir}/star_refine",
+    option     => "-Xmx40g",
+    fasta_file => $fasta_file,
+    source_ref => "star",
+    vcf_files  => [$dbsnp],
+    gatk_jar   => $gatk_jar,
+    picard_jar => $picard_jar,
+    sorted     => 0,
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_refine_SNPindel => {
+    class       => "GATK::SNPIndel",
+    perform     => 1,
+    target_dir  => "${target_dir}/star_refine_SNPindel",
+    option      => "",
+    source_ref  => "star_refine",
+    java_option => "",
+    fasta_file  => $fasta_file,
+    dbsnp_vcf   => $dbsnp,
+    gatk_jar    => $gatk_jar,
+    is_rna      => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_refine_SNPindel_annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/star_refine_SNPindel_annovar",
+    source_ref => "star_refine_SNPindel",
+    option     => $annovar_param,
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
 
   sequencetask => {
     class      => "CQS::SequenceTask",
@@ -203,7 +262,7 @@ my $config         = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",         "star",           "star_featurecount" ],
+      step1 => [ "fastqc", "star", "star_featurecount", "star_refine", "star_refine_SNPindel", "star_refine_SNPindel_annovar" ],
       step2 => [ "fastqc_summary", "star_genetable", "star_genetable_correlation", "star_genetable_deseq2" ],
     },
     sh_direct => 0,
