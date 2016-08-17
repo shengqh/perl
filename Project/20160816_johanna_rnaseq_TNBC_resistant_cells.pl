@@ -24,7 +24,7 @@ my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
-my $dbsnp          = "/data/cqs/shengq1/reference/dbsnp/human_9606_b147_GRCh37p13.vcf";
+my $dbsnp          = "/scratch/cqs/shengq1/references/dbsnp/human_9606_b147_GRCh37p13.vcf";
 my $config         = {
   general => { task_name => $task },
   files   => {
