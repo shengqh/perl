@@ -69,7 +69,7 @@ my $config         = {
   pairs => {
     "Parental_vs_Resistant" => {
       groups    => [ "Resistant", "Parental" ],
-      celllines => [ "CAL148",    "MDA", "CAL51", "CAL51", "CAL148", "MDA", "CAL51", "CAL51" ],
+      Cellline => [ "CAL148",    "MDA", "CAL51", "CAL51", "CAL148", "MDA", "CAL51", "CAL51" ],
     },
   },
   fastqc => {
