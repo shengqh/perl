@@ -235,7 +235,6 @@ my $config = {
     source_ref  => "star_refine",
     java_option => "",
     fasta_file  => $fasta_file,
-    dbsnp_vcf   => $dbsnp,
     gatk_jar    => $gatk_jar,
     is_rna      => 1,
     pbs         => {
