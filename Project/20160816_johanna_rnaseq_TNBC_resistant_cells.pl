@@ -25,7 +25,9 @@ my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $annovar_param  = "-protocol refGene,snp138,cosmic70 -operation g,f,f --remove";
 my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $dbsnp          = "/scratch/cqs/shengq1/references/dbsnp/human_9606_b147_GRCh37p13.vcf";
-my $config         = {
+my $indel          = "/scratch/cqs/shengq1/references/broad/hg19/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf";
+
+my $config = {
   general => { task_name => $task },
   files   => {
     "P_CAL148" => [
@@ -68,7 +70,7 @@ my $config         = {
   },
   pairs => {
     "Parental_vs_Resistant" => {
-      groups    => [ "Resistant", "Parental" ],
+      groups   => [ "Resistant", "Parental" ],
       Cellline => [ "CAL148",    "MDA", "CAL51", "CAL51", "CAL148", "MDA", "CAL51", "CAL51" ],
     },
   },
@@ -208,7 +210,7 @@ my $config         = {
     option                   => "-Xmx40g",
     fasta_file               => $fasta_file,
     source_ref               => "star",
-    vcf_files                => [$dbsnp],
+    vcf_files                => [$dbsnp, $indel],
     gatk_jar                 => $gatk_jar,
     picard_jar               => $picard_jar,
     replace_read_group       => 0,
