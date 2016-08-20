@@ -556,27 +556,48 @@ for my $dataset (@datasets) {
     push @step3, ("cnmops_bam");
   }
   else {
-    #validate the CNV in WES by WGS data
-    $config->{glmvc_WES_validation} = {
-      class            => "Variants::GlmvcValidate",
-      perform          => 0,
-      target_dir       => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
-      option           => "",
-      source_type      => "BAM",
-      source_ref       => "bwa_refine",
-      validation_files => $target_dir . "/WES/glmvc_noMYC_table/result/WES.tsv",
-      groups_ref       => "groups",
-      fasta_file       => $bwa_fasta,
-      sh_direct        => 1,
-      execute_file     => $glmvc,
-      pbs              => {
-        "email"    => $email,
-        "nodes"    => "1:ppn=1",
-        "walltime" => "72",
-        "mem"      => "40gb"
-      },
-    };
-    push @step2, ("glmvc_WES_validation");
+    $config = merge(
+      $config,
+      {
+        cnmops => {
+          class       => "CNV::cnMops",
+          perform     => 1,
+          target_dir  => "/workspace/shengq1/dnaseq/" . $dataset->{task_name} . "/cnmops",
+          option      => "",
+          source_ref  => "bwa_refine",
+          refnames    => ["N04_DUSP4flox_LACZ"],
+          pairmode    => "paired",
+          isbamsorted => 1,
+          sh_direct   => 1,
+          pbs         => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        },
+        glmvc_WES_validation => {
+          class            => "Variants::GlmvcValidate",
+          perform          => 0,
+          target_dir       => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
+          option           => "",
+          source_type      => "BAM",
+          source_ref       => "bwa_refine",
+          validation_files => $target_dir . "/WES/glmvc_noMYC_table/result/WES.tsv",
+          groups_ref       => "groups",
+          fasta_file       => $bwa_fasta,
+          sh_direct        => 1,
+          execute_file     => $glmvc,
+          pbs              => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "72",
+            "mem"      => "40gb"
+          },
+        }
+      }
+    );
+    push @step2, ("cnmops", "glmvc_WES_validation");
   }
 
   $config->{varscan2_copynumber} = {
