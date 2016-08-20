@@ -424,7 +424,7 @@ for my $dataset (@datasets) {
         execute_file      => $glmvc_1_3_6,
         pbs               => {
           "email"    => $email,
-          "nodes"    => "1:ppn=6",
+          "nodes"    => "1:ppn=12",
           "walltime" => "72",
           "mem"      => "40gb"
         },
