@@ -40,6 +40,7 @@ my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/mm10db/";
 my $cutadapt_option = "-q 10 -O 4 -m 30";
 
 my $glmvc_option = "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.1 --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M";
+my $glmvc_option_pvalue = "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.01 --glm_use_raw_pvalue --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M";
 
 my $cluster = "slurm";
 
@@ -406,7 +407,7 @@ for my $dataset (@datasets) {
         class             => "Variants::GlmvcCall",
         perform           => 1,
         target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_rawpvalue",
-        option            => $glmvc_option . " --glm_use_raw_pvalue",
+        option            => $glmvc_option_pvalue,
         source_type       => "BAM",
         source_ref        => "bwa_refine",
         groups_ref        => "groups",
@@ -450,7 +451,7 @@ for my $dataset (@datasets) {
         class             => "Variants::GlmvcCall",
         perform           => 0,
         target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_v1_3_6_rawpvalue",
-        option            => $glmvc_option . " --glm_use_raw_pvalue",
+        option            => $glmvc_option_pvalue,
         source_type       => "BAM",
         source_ref        => "bwa_refine",
         groups_ref        => "groups",
