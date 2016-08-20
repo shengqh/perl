@@ -406,7 +406,8 @@ for my $dataset (@datasets) {
       glmvc_noMYC_rawpvalue => {
         class             => "Variants::GlmvcCall",
         perform           => 1,
-        target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_rawpvalue",
+        #target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_rawpvalue",
+        target_dir        => "/workspace/shengq1/dnaseq/" . $dataset->{task_name} . "/glmvc_noMYC_rawpvalue",
         option            => $glmvc_option_pvalue,
         source_type       => "BAM",
         source_ref        => "bwa_refine",
@@ -416,7 +417,7 @@ for my $dataset (@datasets) {
         annovar_protocol  => $annovar_protocol,
         annovar_operation => $annovar_operation,
         annovar_db        => $annovar_db,
-        sh_direct         => 0,
+        sh_direct         => 1,
         execute_file      => $glmvc_1_3_6,
         pbs               => {
           "email"    => $email,
@@ -472,7 +473,8 @@ for my $dataset (@datasets) {
       glmvc_noMYC_table => {
         class        => "Variants::GlmvcTable",
         perform      => 1,
-        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
+        #target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
+        target_dir   => "/workspace/shengq1/dnaseq/" . $dataset->{task_name} . "/glmvc_noMYC_table",
         option       => "",
         source_ref   => [ "glmvc_noMYC_rawpvalue", "annotation.tsv" ],
         sh_direct    => 1,
