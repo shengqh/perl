@@ -597,7 +597,7 @@ for my $dataset (@datasets) {
         }
       }
     );
-    push @step2, ("cnmops", "glmvc_WES_validation");
+    push @step2, ( "cnmops", "glmvc_WES_validation" );
   }
 
   $config->{varscan2_copynumber} = {
@@ -643,11 +643,14 @@ for my $dataset (@datasets) {
 
   #  performConfig($config);
   #performTask($config, "glmvc_noMYC_fdr");
-  performTask( $config, "glmvc_noMYC_rawpvalue" );
+  #performTask( $config, "glmvc_noMYC_rawpvalue" );
 
-  #performTask($config, "glmvc_noMYC_v1_3_6_fdr");
   #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
-  performTask( $config, "glmvc_noMYC_table" );
+  #performTask( $config, "glmvc_noMYC_table" );
+
+  if ( !defined $dataset->{capture_bed} ) {
+    performTask( $config, "cnmops" );
+  }
 }
 
 1;
