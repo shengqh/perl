@@ -40,7 +40,8 @@ my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/mm10db/";
 my $cutadapt_option = "-q 10 -O 4 -m 30";
 
 my $glmvc_option = "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.1 --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M";
-my $glmvc_option_pvalue = "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.01 --glm_use_raw_pvalue --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M";
+my $glmvc_option_pvalue =
+  "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.01 --glm_use_raw_pvalue --exclude_bed $exclude_bed -r 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,X,M";
 
 my $cluster = "slurm";
 
@@ -307,20 +308,21 @@ for my $dataset (@datasets) {
         },
       },
       bwa_refine => {
-        class           => "GATK::Refine",
-        perform         => 1,
-        target_dir      => "${target_dir}/" . $dataset->{task_name} . "/bwa_refine",
-        option          => "-Xmx40g",
-        gatk_option     => "--fix_misencoded_quality_scores",
-        fasta_file      => $bwa_fasta,
-        source_ref      => "bwa",
-        indel_vcf_files => [$dbsnp],
-        known_vcf_files => [$dbsnp],
-        gatk_jar        => $gatk_jar,
-        picard_jar      => $picard_jar,
-        sh_direct       => 0,
-        sorted          => 1,
-        pbs             => {
+        class            => "GATK::Refine",
+        perform          => 1,
+        target_dir       => "${target_dir}/" . $dataset->{task_name} . "/bwa_refine",
+        option           => "-Xmx40g",
+        gatk_option      => "--fix_misencoded_quality_scores",
+        fasta_file       => $bwa_fasta,
+        source_ref       => "bwa",
+        indel_vcf_files  => [$dbsnp],
+        known_vcf_files  => [$dbsnp],
+        gatk_jar         => $gatk_jar,
+        picard_jar       => $picard_jar,
+        slim_print_reads => 1,
+        sh_direct        => 0,
+        sorted           => 1,
+        pbs              => {
           "email"    => $email,
           "nodes"    => "1:ppn=8",
           "walltime" => "240",
@@ -404,8 +406,9 @@ for my $dataset (@datasets) {
         },
       },
       glmvc_noMYC_rawpvalue => {
-        class             => "Variants::GlmvcCall",
-        perform           => 1,
+        class   => "Variants::GlmvcCall",
+        perform => 1,
+
         #target_dir        => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_rawpvalue",
         target_dir        => "/workspace/shengq1/dnaseq/" . $dataset->{task_name} . "/glmvc_noMYC_rawpvalue",
         option            => $glmvc_option_pvalue,
@@ -471,8 +474,9 @@ for my $dataset (@datasets) {
         },
       },
       glmvc_noMYC_table => {
-        class        => "Variants::GlmvcTable",
-        perform      => 1,
+        class   => "Variants::GlmvcTable",
+        perform => 1,
+
         #target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
         target_dir   => "/workspace/shengq1/dnaseq/" . $dataset->{task_name} . "/glmvc_noMYC_table",
         option       => "",
@@ -549,7 +553,7 @@ for my $dataset (@datasets) {
       }
     );
     push @step2, ( "cnmops", "cnmops_depth" );
-    push @step3, ( "cnmops_bam" );
+    push @step3, ("cnmops_bam");
   }
   else {
     #validate the CNV in WES by WGS data
@@ -616,12 +620,13 @@ for my $dataset (@datasets) {
     },
   };
 
-#  performConfig($config);
+  #  performConfig($config);
   #performTask($config, "glmvc_noMYC_fdr");
-  performTask($config, "glmvc_noMYC_rawpvalue");
+  performTask( $config, "glmvc_noMYC_rawpvalue" );
+
   #performTask($config, "glmvc_noMYC_v1_3_6_fdr");
   #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
-  performTask($config, "glmvc_noMYC_table");
+  performTask( $config, "glmvc_noMYC_table" );
 }
 
 1;
