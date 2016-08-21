@@ -9,6 +9,8 @@ use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines");
+my $workspace = "/workspace/shengq1/dnaseq/";
+
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
@@ -503,7 +505,7 @@ for my $dataset (@datasets) {
         cnmops => {
           class       => "CNV::cnMops",
           perform     => 1,
-          target_dir  => "${target_dir}/" . $dataset->{task_name} . "/cnmops",
+          target_dir  => $workspace . $dataset->{task_name} . "/cnmops",
           option      => "",
           source_ref  => "bwa_refine",
           bedfile     => $dataset->{capture_bed},
@@ -562,10 +564,9 @@ for my $dataset (@datasets) {
         cnmops => {
           class       => "CNV::cnMops",
           perform     => 1,
-          target_dir  => "/workspace/shengq1/dnaseq/" . $dataset->{task_name} . "/cnmops",
+          target_dir  => $workspace . $dataset->{task_name} . "/cnmops",
           option      => "",
           source_ref  => "bwa_refine",
-          refnames    => ["N04_DUSP4flox_LACZ"],
           pairmode    => "paired",
           isbamsorted => 1,
           sh_direct   => 1,
@@ -648,9 +649,9 @@ for my $dataset (@datasets) {
   #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
   #performTask( $config, "glmvc_noMYC_table" );
 
-  if ( !defined $dataset->{capture_bed} ) {
+  #if ( !defined $dataset->{capture_bed} ) {
     performTask( $config, "cnmops" );
-  }
+  #}
 }
 
 1;
