@@ -9,9 +9,9 @@ use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines");
-my $workspace = "/workspace/shengq1/dnaseq/";
+my $workspace  = "/workspace/shengq1/dnaseq/";
 
-my $email      = "quanhu.sheng\@vanderbilt.edu";
+my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $glmvc         = "/home/shengq1/glmvc/glmvc.exe";
@@ -562,15 +562,16 @@ for my $dataset (@datasets) {
       $config,
       {
         cnmops => {
-          class       => "CNV::cnMops",
-          perform     => 1,
-          target_dir  => $workspace . $dataset->{task_name} . "/cnmops",
-          option      => "",
-          source_ref  => "bwa_refine",
-          pairmode    => "paired",
-          isbamsorted => 1,
-          sh_direct   => 1,
-          pbs         => {
+          class         => "CNV::cnMops",
+          perform       => 1,
+          target_dir    => $workspace . $dataset->{task_name} . "/cnmops",
+          option        => "",
+          source_ref    => "bwa_refine",
+          pairmode      => "paired",
+          isbamsorted   => 1,
+          ref_seq_names => [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "X", "Y", "M" ],
+          sh_direct     => 1,
+          pbs           => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
             "walltime" => "72",
@@ -650,7 +651,8 @@ for my $dataset (@datasets) {
   #performTask( $config, "glmvc_noMYC_table" );
 
   #if ( !defined $dataset->{capture_bed} ) {
-    performTask( $config, "cnmops" );
+  performTask( $config, "cnmops" );
+
   #}
 }
 
