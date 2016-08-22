@@ -513,27 +513,12 @@ for my $dataset (@datasets) {
           pairmode    => "paired",
           isbamsorted => 1,
           sh_direct   => 1,
+          cqstools    => $cqstools,
           pbs         => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
             "walltime" => "72",
             "mem"      => "40gb"
-          },
-        },
-        cnmops_bam => {
-          class      => "Samtools::View",
-          perform    => 1,
-          target_dir => "${target_dir}/" . $dataset->{task_name} . "/cnmops_bam",
-          option     => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
-          extension  => ".bam",
-          source_ref => "bwa_refine",
-          sh_direct  => 1,
-          sorted     => 1,
-          pbs        => {
-            "email"    => $email,
-            "nodes"    => "1:ppn=1",
-            "walltime" => "24",
-            "mem"      => "10gb"
           },
         },
         cnmops_depth => {
@@ -570,6 +555,7 @@ for my $dataset (@datasets) {
           pairmode      => "paired",
           isbamsorted   => 1,
           ref_seq_names => [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "X", "Y", "M" ],
+          cqstools      => $cqstools,
           sh_direct     => 1,
           pbs           => {
             "email"    => $email,
