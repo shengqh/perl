@@ -568,6 +568,25 @@ for my $dataset (@datasets) {
             "mem"      => "40gb"
           },
         },
+        cnmops_depth => {
+          class          => "Visualization::Depth",
+          perform        => 1,
+          target_dir     => $workspace . $dataset->{task_name} . "/cnmops_depth",
+          option         => "",
+          source_ref     => [ "cnmops", ".call.tsv.cnvr\$" ],
+          groups_ref     => $dataset->{depthgroups},
+          bam_files_ref  => "bwa_refine",
+          cnvr_files_ref => [ "cnmops", ".call.tsv.cnvr\$" ],
+          single_pdf     => 0,
+          facet_sample   => 1,
+          draw_line      => 0,
+          pbs            => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "24",
+            "mem"      => "10gb"
+          },
+        },
         glmvc_WES_validation => {
           class            => "Variants::GlmvcValidate",
           perform          => 0,
@@ -590,6 +609,7 @@ for my $dataset (@datasets) {
       }
     );
     push @step2, ( "cnmops", "glmvc_WES_validation" );
+    push @step3, ( "cnmops_depth" );
   }
 
   $config->{varscan2_copynumber} = {
@@ -641,9 +661,7 @@ for my $dataset (@datasets) {
   #performTask( $config, "glmvc_noMYC_table" );
 
   performTask( $config, "cnmops" );
-  if ( defined $dataset->{capture_bed} ) {
-    performTask( $config, "cnmops_depth" );
-  }
+  performTask( $config, "cnmops_depth" );
 }
 
 1;
