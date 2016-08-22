@@ -526,10 +526,10 @@ for my $dataset (@datasets) {
           perform        => 1,
           target_dir     => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
           option         => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
-          source_ref     => [ "cnmops", ".cnvr.tsv" ],
+          source_ref     => [ "cnmops", ".call.tsv.cnvr\$" ],
           groups_ref     => $dataset->{depthgroups},
           bam_files_ref  => "bwa_refine",
-          cnvr_files_ref => [ "cnmops", ".cnvr.tsv" ],
+          cnvr_files_ref => [ "cnmops", ".call.tsv.cnvr\$" ],
           pbs            => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
@@ -540,7 +540,6 @@ for my $dataset (@datasets) {
       }
     );
     push @step2, ( "cnmops", "cnmops_depth" );
-    push @step3, ("cnmops_bam");
   }
   else {
     $config = merge(
@@ -636,10 +635,10 @@ for my $dataset (@datasets) {
   #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
   #performTask( $config, "glmvc_noMYC_table" );
 
-  #if ( !defined $dataset->{capture_bed} ) {
   performTask( $config, "cnmops" );
-
-  #}
+  if ( defined $dataset->{capture_bed} ) {
+    performTask( $config, "cnmops_depth" );
+  }
 }
 
 1;
