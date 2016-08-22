@@ -554,7 +554,7 @@ for my $dataset (@datasets) {
           pairmode      => "paired",
           isbamsorted   => 1,
           refnames      => ["N04_DUSP4flox_LACZ"],
-          ref_seq_names => [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "X", "Y", "M" ],
+          ref_seq_names => [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "X", "Y" ],
           cqstools      => $cqstools,
           sh_direct     => 1,
           window        => 25000,
