@@ -503,18 +503,19 @@ for my $dataset (@datasets) {
       $config,
       {
         cnmops => {
-          class       => "CNV::cnMops",
-          perform     => 1,
-          target_dir  => $workspace . $dataset->{task_name} . "/cnmops",
-          option      => "",
-          source_ref  => "bwa_refine",
-          bedfile     => $dataset->{capture_bed},
-          refnames    => ["N04_DUSP4flox_LACZ"],
-          pairmode    => "paired",
-          isbamsorted => 1,
-          sh_direct   => 1,
-          cqstools    => $cqstools,
-          pbs         => {
+          class            => "CNV::cnMops",
+          perform          => 1,
+          target_dir       => $workspace . $dataset->{task_name} . "/cnmops",
+          option           => "",
+          source_ref       => "bwa_refine",
+          bedfile          => $dataset->{capture_bed},
+          refnames         => ["N04_DUSP4flox_LACZ"],
+          pairmode         => "paired",
+          isbamsorted      => 1,
+          sh_direct        => 1,
+          cqstools         => $cqstools,
+          cqstools_options => "--ignoreCN1CN3",
+          pbs              => {
             "email"    => $email,
             "nodes"    => "1:ppn=1",
             "walltime" => "72",
@@ -609,7 +610,7 @@ for my $dataset (@datasets) {
       }
     );
     push @step2, ( "cnmops", "glmvc_WES_validation" );
-    push @step3, ( "cnmops_depth" );
+    push @step3, ("cnmops_depth");
   }
 
   $config->{varscan2_copynumber} = {
