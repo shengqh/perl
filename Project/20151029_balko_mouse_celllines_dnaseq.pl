@@ -524,7 +524,7 @@ for my $dataset (@datasets) {
         cnmops_depth => {
           class          => "Visualization::Depth",
           perform        => 1,
-          target_dir     => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
+          target_dir     => $workspace . $dataset->{task_name} . "/cnmops_depth",
           option         => "-h -b -L " . "${target_dir}/" . $dataset->{task_name} . "/cnmops/result/" . $dataset->{task_name} . ".call.bed",
           source_ref     => [ "cnmops", ".call.tsv.cnvr\$" ],
           groups_ref     => $dataset->{depthgroups},
