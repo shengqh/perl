@@ -442,8 +442,8 @@ my $config = {
     source     => {
       step_1 => [ "merge_fastq", "fastqc_pre_trim", "cutadapt", "fastqc_post_trim", "bowtie1", "fastq_len" ],
       step_2 => [
-        "fastqc_pre_trim_summary",     "fastqc_post_trim_summary", "qc3bam", "macs1callpeak", "macs1callpeak_bradner_rose2", "macs2callpeak",
-        "macs2callpeak_bradner_rose2", "macs2bdgdiff",             "macs2bdgdiff_bradner_rose2"
+        "fastqc_pre_trim_summary",     "fastqc_post_trim_summary", "qc3bam",                     "macs1callpeak", "macs1callpeak_bradner_rose2", "macs2callpeak",
+        "macs2callpeak_bradner_rose2", "macs2bdgdiff",             "macs2bdgdiff_bradner_rose2", "bamplot"
       ],
     },
     sh_direct => 0,
