@@ -301,16 +301,16 @@ my $config = {
     class      => "Visualization::Bamplot",
     perform    => 1,
     target_dir => "${target_dir}/bamplot",
-    option     => "-g HG19 -y uniform",
+    option     => "-g HG19 -y uniform -r",
     source_ref => "bowtie1",
     groups_ref => "plotgroups",
     gff_file   => $plot_gff,
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
+      "nodes"    => "1:ppn=1",
+      "walltime" => "1",
+      "mem"      => "10gb"
     },
   },
   qc3bam => {
