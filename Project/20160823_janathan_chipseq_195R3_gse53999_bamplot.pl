@@ -12,7 +12,7 @@ my $cqstools = "/home/shengq1/cqstools/cqstools.exe";
 
 my $email    = "quanhu.sheng\@vanderbilt.edu";
 my $task     = "chipseq";
-my $plot_gff = "/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/config/cor.gff";
+my $plot_gff = "/scratch/cqs/shengq1/chipseq/20160823_janathan_chipseq_195R3_gse53999_bamplot/config/H3K27ac.gff";
 
 my $config = {
   general   => { task_name => $task },
