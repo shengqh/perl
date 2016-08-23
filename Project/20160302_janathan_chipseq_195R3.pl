@@ -14,6 +14,8 @@ my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
 my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 my $transcript_gtf = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.gtf";
 
+my $plot_gff = "/scratch/cqs/shengq1/chipseq/20160302_janathan_chipseq_195R3/config/cor.gff";
+
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "195R3";
 
@@ -174,6 +176,9 @@ my $config = {
     "d17_iPSctrl2_H3K4me1"  => ["d17_static_iPSctrl2_H3K4me1"],
     "d17_iPSctrl2_H3K27me3" => ["d17_static_iPSctrl2_H3K27me3"],
   },
+  plotgroups => {
+    "195R3_H3K27ac" => [ "d17_static_ESctrl1_H3K27ac", "d17_static_ESctrl2_H3K27ac", "d17_static_iPSctrl2_H3K27ac" ]
+  },
   merge_fastq => {
     class      => "Format::MergeFastq",
     perform    => 1,
@@ -286,6 +291,22 @@ my $config = {
     chromosome_grep_pattern => "\"^chr\"",
     sh_direct               => 0,
     pbs                     => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bamplot => {
+    class         => "Visualization::Bamplot",
+    perform       => 1,
+    target_dir    => "${target_dir}/bamplot",
+    option        => "-g HG19 -y uniform",
+    source_ref    => "plotgroups",
+    bam_files_ref => "bowtie1",
+    gff_file      => $plot_gff,
+    sh_direct     => 1,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
