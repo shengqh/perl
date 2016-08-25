@@ -41,7 +41,7 @@ my $userdef = {
     "G1" => [ "i1", "i2" ],
     "G2" => [ "i3", "i4" ]
   },
-  comparison => {
+  pairs => {
     "COMP" => [ "G1", "G2" ]
   }
 };
