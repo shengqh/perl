@@ -3,13 +3,14 @@ use strict;
 use warnings;
 
 use CQS::PerformSmallRNA;
+use CQS::ClassFactory;
 
 my $def = {
 
 	#General options
 	task_name                 => "KCV-77_78_79",
 	email                     => "quanhu.sheng\@vanderbilt.edu",
-	target_dir                => "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse",
+	target_dir                => "/scratch/cqs/zhaos/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse",
 	max_thread                => 8,
 	cqstools                  => "/home/shengq1/cqstools/CQS.Tools.exe",
 	sequencetask_run_time     => 6,
@@ -257,7 +258,12 @@ my $def = {
     },
 };
 
-performSmallRNA_mm10($def);
+my $config = performSmallRNA_mm10($def, 0);
+
+$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
+
+performTask($config, "identical_sequence_count_table");
+
 
 1;
 
