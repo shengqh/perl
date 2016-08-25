@@ -37,18 +37,24 @@ my $userdef = {
     "i3" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-59/3018-KCV-59-i3_S3_R1_001.fastq.gz'],
     "i4" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-59/3018-KCV-59-i4_S4_R1_001.fastq.gz'],
   },
+  groups => {
+    "G1" => [ "i1", "i2" ],
+    "G2" => [ "i3", "i4" ]
+  },
+  comparison => {
+    "COMP" => [ "G1", "G2" ]
+  }
 };
-
 
 my $defWithContig = getSmallRNADefinition( $userdef, $genome );
 performSmallRNA($defWithContig);
 
-$userdef->{target_dir}   = $root . "without_contig";
-$userdef->{task_name}    = "without_contig";
-$genome->{bowtie1_index} = "/scratch/cqs/shengq1/references/gencode/hg19_slim/bowtie_index_1.1.2/GRCh37.p13.genome.slim";
-
-my $defWithoutContig = getSmallRNADefinition( $userdef, $genome );
-performSmallRNA($defWithoutContig);
+#$userdef->{target_dir}   = $root . "without_contig";
+#$userdef->{task_name}    = "without_contig";
+#$genome->{bowtie1_index} = "/scratch/cqs/shengq1/references/gencode/hg19_slim/bowtie_index_1.1.2/GRCh37.p13.genome.slim";
+#
+#my $defWithoutContig = getSmallRNADefinition( $userdef, $genome );
+#performSmallRNA($defWithoutContig);
 
 1;
 
