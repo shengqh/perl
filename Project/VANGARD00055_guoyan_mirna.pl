@@ -2,15 +2,10 @@
 use strict;
 use warnings;
 
-use CQS::QC;
-use CQS::DNASeq;
-use CQS::RNASeq;
-use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
-use CQS::Cutadapt;
 
 my $root;
 my $cqs_tools;

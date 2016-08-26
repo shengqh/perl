@@ -2,15 +2,10 @@
 use strict;
 use warnings;
 
-use CQS::QC;
-use CQS::DNASeq;
-use CQS::RNASeq;
-use CQS::CQSTools;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
-use CQS::Cutadapt;
 
 my $root          = "/scratch/cqs/shengq1/mirna/20131127_guoyan_mirna";
 my $cqstools      = "/home/shengq1/cqstools/CQS.Tools.exe";

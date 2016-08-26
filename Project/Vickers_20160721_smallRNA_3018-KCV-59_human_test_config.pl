@@ -47,8 +47,8 @@ my $userdef = {
 };
 
 my $defWithContig = getSmallRNADefinition( $userdef, $genome );
-#performSmallRNA($defWithContig);
-performSmallRNATask($defWithContig, "identical_sequence_count_table");
+performSmallRNA($defWithContig);
+#performSmallRNATask($defWithContig, "identical_sequence_count_table");
 
 #$userdef->{target_dir}   = $root . "without_contig";
 #$userdef->{task_name}    = "without_contig";

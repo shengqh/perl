@@ -5,7 +5,6 @@ use warnings;
 use CQS::FileUtils;
 use CQS::SystemUtils;
 use CQS::ClassFactory;
-use CQS::CNV;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20140120_jennifer_exome_taylor");
 

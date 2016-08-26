@@ -2,11 +2,8 @@
 use strict;
 use warnings;
 
-use CQS::QC;
-use CQS::RNASeq;
 use CQS::FileUtils;
 use CQS::SystemUtils;
-use CQS::SomaticMutation;
 use CQS::ClassFactory;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/somaticmutation_comparison");
