@@ -200,7 +200,7 @@ $config->{deseq2_miRNA}{target_dir}                   = "/scratch/cqs/shengq1/vi
 #performTask($config, "deseq2_top100Contigs");
 #performTask($config, "deseq2_miRNA");
 
-for my $group ( [ "1", "2", "4" ] ) {
+for my $group ( "1", "2", "4" ) {
   $config->{"bowtie1_bacteria_group${group}_pm_count"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group${group}_pm_count";
   $config->{"bowtie1_bacteria_group${group}_pm_table"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group${group}_pm_table";
   $config->{"group${group}_deseq2"}{target_dir}                    = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_bacteria_group${group}";
