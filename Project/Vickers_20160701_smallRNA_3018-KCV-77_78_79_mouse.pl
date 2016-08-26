@@ -265,7 +265,7 @@ $config->{deseq2_top100Reads}{target_dir} = "/scratch/cqs/shengq1/vickers/201607
 $config->{deseq2_top100Contigs}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Contigs";
 
 #performTask($config, "identical_sequence_count_table");
-#performTask($config, "deseq2_top100Reads");
+performTask($config, "deseq2_top100Reads");
 performTask($config, "deseq2_top100Contigs");
 
 1;
