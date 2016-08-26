@@ -264,12 +264,14 @@ $config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vi
 $config->{deseq2_top100Reads}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Reads";
 $config->{deseq2_top100Contigs}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Contigs";
 $config->{deseq2_miRNA}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";
+$config->{bowtie1_bacteria_group1_pm_count}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group1_pm_count";
 $config->{bowtie1_bacteria_group1_pm_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group1_pm_table";
 
 #performTask($config, "identical_sequence_count_table");
 #performTask($config, "deseq2_top100Reads");
 #performTask($config, "deseq2_top100Contigs");
 #performTask($config, "deseq2_miRNA");
+performTask($config, "bowtie1_bacteria_group1_pm_count");
 performTask($config, "bowtie1_bacteria_group1_pm_table");
 
 1;
