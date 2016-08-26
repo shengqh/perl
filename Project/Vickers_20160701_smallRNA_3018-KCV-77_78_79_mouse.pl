@@ -263,10 +263,12 @@ my $config = performSmallRNA_mm10($def, 0);
 $config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
 $config->{deseq2_top100Reads}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Reads";
 $config->{deseq2_top100Contigs}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Contigs";
+$config->{deseq2_miRNA}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";
 
 #performTask($config, "identical_sequence_count_table");
-performTask($config, "deseq2_top100Reads");
-performTask($config, "deseq2_top100Contigs");
+#performTask($config, "deseq2_top100Reads");
+#performTask($config, "deseq2_top100Contigs");
+performTask($config, "deseq2_miRNA");
 
 1;
 
