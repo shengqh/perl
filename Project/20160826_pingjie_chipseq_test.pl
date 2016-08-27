@@ -2,8 +2,8 @@
 use strict;
 use warnings;
 
-use CQS::PerformSmallRNA;
 use CQS::ClassFactory;
+use Pipeline::ChIPSeq;
 
 my $input = "/scratch/pingj1/chipseq/tagAlign/InputDNAAll.tagAlign.gz";
 
