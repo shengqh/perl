@@ -19,6 +19,8 @@ my $config = {
   search_not_identical => 0,
   blast_unmapped_reads => 1,
   cqstools             => "/home/shengq1/cqstools/cqstools.exe",
+  picard_jar =>"/scratch/cqs/shengq1/local/bin/picard/picard.jar",
+  spp_r => "/home/pingj1/soft/phantompeakqualtools/run_spp.R",
 
   #Data
   files => {
