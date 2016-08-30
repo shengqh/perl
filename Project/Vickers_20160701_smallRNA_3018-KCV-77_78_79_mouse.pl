@@ -191,25 +191,29 @@ my $def = {
 
 my $config = performSmallRNA_mm10( $def, 0 );
 
-$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
-$config->{deseq2_top100Reads}{target_dir}             = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Reads";
-$config->{deseq2_top100Contigs}{target_dir}           = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Contigs";
-$config->{deseq2_miRNA}{target_dir}                   = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";
-#performTask($config, "identical_sequence_count_table");
-#performTask($config, "deseq2_top100Reads");
-#performTask($config, "deseq2_top100Contigs");
-#performTask($config, "deseq2_miRNA");
+#$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
+#$config->{deseq2_top100Reads}{target_dir}             = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Reads";
+#$config->{deseq2_top100Contigs}{target_dir}           = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100Contigs";
+#$config->{deseq2_miRNA}{target_dir}                   = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";
+##performTask($config, "identical_sequence_count_table");
+##performTask($config, "deseq2_top100Reads");
+##performTask($config, "deseq2_top100Contigs");
+##performTask($config, "deseq2_miRNA");
+#
+#for my $group ( "1", "2", "4" ) {
+#  $config->{"bowtie1_bacteria_group${group}_pm_count"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group${group}_pm_count";
+#  $config->{"bowtie1_bacteria_group${group}_pm_table"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group${group}_pm_table";
+#  $config->{"group${group}_deseq2"}{target_dir}                    = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_bacteria_group${group}";
+#  $config->{"group${group}_reads_deseq2"}{target_dir}              = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_bacteria_group${group}_reads";
+#
+#  performTask( $config, "bowtie1_bacteria_group${group}_pm_count" );
+#  performTask( $config, "bowtie1_bacteria_group${group}_pm_table" );
+#  performTask( $config, "group${group}_deseq2" );
+#  performTask( $config, "group${group}_reads_deseq2" );
+#}
 
-for my $group ( "1", "2", "4" ) {
-  $config->{"bowtie1_bacteria_group${group}_pm_count"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group${group}_pm_count";
-  $config->{"bowtie1_bacteria_group${group}_pm_table"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_bacteria_group${group}_pm_table";
-  $config->{"group${group}_deseq2"}{target_dir}                    = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_bacteria_group${group}";
-  $config->{"group${group}_reads_deseq2"}{target_dir}              = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_bacteria_group${group}_reads";
+$config->{nonhost_overlap_vis}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/data_visualization/nonhost_overlap_vis";
+performTask( $config, "nonhost_overlap_vis" );
 
-  performTask( $config, "bowtie1_bacteria_group${group}_pm_count" );
-  performTask( $config, "bowtie1_bacteria_group${group}_pm_table" );
-  performTask( $config, "group${group}_deseq2" );
-  performTask( $config, "group${group}_reads_deseq2" );
-}
 1;
 
