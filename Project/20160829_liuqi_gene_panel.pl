@@ -23,10 +23,11 @@ my $mills  = "/scratch/cqs/shengq1/references/gatk/b37/Mills_and_1000G_gold_stan
 
 my $cosmic = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
 
-my $annovar_param = "-protocol refGene,avsnp147,cosmic70 -operation g,f,f --remove";
+my $annovar_param = "-protocol refGene,avsnp147,cosmic70,exac03 -operation g,f,f,f --remove";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $qc3_perl      = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
 my $covered_bed = "/gpfs21/scratch/cqs/shengq1/dnaseq/20160829_liuqi_gene_panel/documents/TCPS_Labcorp_genes_20160829.bed";
 
@@ -1000,45 +1001,84 @@ my $config = {
     option     => "-Xmx40g",
 
     #gatk_option => "--fix_misencoded_quality_scores",
-    gatk_option => "",
-    fasta_file  => $bwa_fasta,
-    source_ref  => "bwa",
-    vcf_files   => [ $dbsnp, $mills ],
-    gatk_jar    => $gatk_jar,
-    picard_jar  => $picard_jar,
-    sh_direct   => 0,
-    sorted      => 1,
-    pbs         => {
+    gatk_option              => "",
+    fasta_file               => $bwa_fasta,
+    source_ref               => "bwa",
+    vcf_files                => [ $dbsnp, $mills ],
+    gatk_jar                 => $gatk_jar,
+    picard_jar               => $picard_jar,
+    sh_direct                => 0,
+    slim_print_reads         => 1,
+    use_self_slim_method     => 1,
+    samtools_baq_calibration => 0,
+    sorted                   => 1,
+    pbs                      => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "24",
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
       "mem"      => "40gb"
     },
   },
+  qc3 => {
+    class             => "QC::QC3bam",
+    perform           => 1,
+    target_dir        => "${target_dir}/qc3bam",
+    option            => "",
+    target_region_bed => $covered_bed,
+    transcript_gtf    => $transcript_gtf,
+    qc3_perl          => $qc3_perl,
+    source_ref        => "bwa",
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  qc3_refine => {
+    class             => "QC::QC3bam",
+    perform           => 1,
+    target_dir        => "${target_dir}/qc3bam_refine",
+    option            => "",
+    target_region_bed => $covered_bed,
+    transcript_gtf    => $transcript_gtf,
+    qc3_perl          => $qc3_perl,
+    source_ref        => "bwa_refine",
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   bwa_refine_hc_gvcf => {
-    class       => "GATK::HaplotypeCallerGVCF",
-    perform     => 1,
-    target_dir  => "${target_dir}/bwa_refine_hc_gvcf",
-    option      => "",
-    source_ref  => "bwa_refine",
-    java_option => "",
-    fasta_file  => $bwa_fasta,
-    dbsnp_vcf   => $dbsnp,
-    gatk_jar    => $gatk_jar,
-    extension   => ".gvcf",
-    sh_direct   => 0,
-    pbs         => {
+    class         => "GATK::HaplotypeCaller",
+    perform       => 1,
+    target_dir    => "${target_dir}/bwa_refine_hc_gvcf",
+    option        => "",
+    source_ref    => "bwa_refine",
+    java_option   => "",
+    fasta_file    => $bwa_fasta,
+    gatk_jar      => $gatk_jar,
+    bed_file      => $covered_bed,
+    extension     => ".g.vcf",
+    by_chromosome => 0,                                    #since we have the bed file, we cannot use by_chromosome.
+    gvcf          => 1,
+    sh_direct     => 0,
+    pbs           => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
-      "walltime" => "24",
+      "walltime" => "72",
       "mem"      => "40gb"
     },
   },
-  bwa_refine_hc_gvcf_filter => {
+  bwa_refine_hc_gvcf_vqsr => {
     class       => "GATK::VariantFilter",
     perform     => 1,
-    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_filter",
+    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_vqsr",
     option      => "",
+    vqsr_mode   => 1,
     source_ref  => "bwa_refine_hc_gvcf",
     java_option => "",
     fasta_file  => $bwa_fasta,
@@ -1049,6 +1089,7 @@ my $config = {
     mills_vcf   => $mills,
     gatk_jar    => $gatk_jar,
     cqstools    => $cqstools,
+    bed_file    => $covered_bed,
     sh_direct   => 1,
     pbs         => {
       "email"    => $email,
@@ -1057,11 +1098,33 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_refine_hc_gvcf_filter_annovar => {
+  bwa_refine_hc_gvcf_hardfilter => {
+    class       => "GATK::VariantFilter",
+    perform     => 0,
+    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_hardfilter",
+    option      => "",
+    vqsr_mode   => 0,
+    source_ref  => "bwa_refine_hc_gvcf",
+    java_option => "",
+    fasta_file  => $bwa_fasta,
+    dbsnp_vcf   => $dbsnp,
+    gatk_jar    => $gatk_jar,
+    cqstools    => $cqstools,
+    bed_file    => $covered_bed,
+    is_rna      => 0,
+    sh_direct   => 1,
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_refine_hc_gvcf_vqsr_annovar => {
     class      => "Annotation::Annovar",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_refine_hc_gvcf_filter_annovar",
-    source_ref => [ "bwa_refine_hc_gvcf_filter", "snp" ],
+    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar",
+    source_ref => "bwa_refine_hc_gvcf_vqsr",
     option     => $annovar_param,
     annovar_db => $annovar_db,
     buildver   => "hg19",
@@ -1083,7 +1146,10 @@ my $config = {
       step1 => ["fastqc"],
       step2 => ["fastqc_summary"],
       step3 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
-      step4 => [ "bwa_refine_hc_gvcf_filter", "bwa_refine_hc_gvcf_filter_annovar" ],
+      step4 => [
+        "qc3", "qc3_refine", "bwa_refine_hc_gvcf_vqsr",    #"bwa_refine_hc_gvcf_hardfilter",
+        "bwa_refine_hc_gvcf_vqsr_annovar"
+      ],
     },
     sh_direct => 0,
     pbs       => {

@@ -13,19 +13,23 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/rnaseq/20160816_j
 
 #my $target_dir = "e:/temp";
 
-my $transcript_gtf = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v23lift37.annotation.gtf";
-my $name_map_file  = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v23lift37.annotation.map";
-my $star_index     = "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2a";
-my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2a/GRCh37.p13.genome.fa";
-my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
-my $email          = "quanhu.sheng\@vanderbilt.edu";
-my $qc3_perl       = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
-my $gatk_jar       = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
-my $picard_jar     = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
-my $annovar_param  = "-protocol refGene,avsnp147,cosmic70 -operation g,f,f --remove";
-my $annovar_db     = "/scratch/cqs/shengq1/references/annovar/humandb/";
-my $dbsnp          = "/scratch/cqs/shengq1/references/dbsnp/human_9606_b147_GRCh37p13.vcf";
-my $indel          = "/scratch/cqs/shengq1/references/broad/hg19/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf";
+my $transcript_gtf    = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v23lift37.annotation.gtf";
+my $name_map_file     = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v23lift37.annotation.map";
+my $star_index        = "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2a";
+my $fasta_file        = "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2a/GRCh37.p13.genome.fa";
+my $cqstools          = "/home/shengq1/cqstools/cqstools.exe";
+my $email             = "quanhu.sheng\@vanderbilt.edu";
+my $qc3_perl          = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
+my $gatk_jar          = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar        = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+my $annovar_protocol  = "refGene,avsnp147,cosmic70";
+my $annovar_operation = "g,f,f";
+my $annovar_param     = "-protocol $annovar_protocol -operation $annovar_operation --remove";
+my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $dbsnp             = "/scratch/cqs/shengq1/references/dbsnp/human_9606_b147_GRCh37p13.vcf";
+my $indel             = "/scratch/cqs/shengq1/references/broad/hg19/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf";
+my $glmvc             = "/home/shengq1/glmvc/glmvc.exe";
+my $glmvc_option      = "--max_normal_percentage 0.01 --min_tumor_percentage 0.1 --min_tumor_read 5 --glm_pvalue 0.05";
 
 my $config = {
   general => { task_name => $task },
@@ -73,6 +77,12 @@ my $config = {
       groups   => [ "Resistant", "Parental" ],
       Cellline => [ "CAL148",    "MDA", "CAL51", "CAL51", "CAL148", "MDA", "CAL51", "CAL51" ],
     },
+  },
+  mutations => {
+    "CAL148"  => [ "P_CAL148",  "R_CAL148" ],
+    "MDA"     => [ "P_MDA",     "R_MDA" ],
+    "CAL51_1" => [ "P_CAL51_1", "R_CAL51_1" ],
+    "CAL51_2" => [ "P_CAL51_2", "R_CAL51_2" ],
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -190,9 +200,9 @@ my $config = {
     class                    => "CQS::UniqueR",
     perform                  => 1,
     target_dir               => "${target_dir}/star_genetable_correlation",
-    rtemplate                => "countTableVisFunctions.R,countTableCorrelation.R",
+    rtemplate                => "countTableVisFunctions.R,countTableGroupCorrelation.R",
     output_file              => "parameterSampleFile1",
-    output_file_ext          => ".pairsCorrelation.png",
+    output_file_ext          => ".Correlation.png",
     parameterSampleFile1_ref => [ "star_genetable", ".count\$" ],
     parameterSampleFile2_ref => "groups",
     sh_direct                => 1,
@@ -217,7 +227,7 @@ my $config = {
     reorder_chromosome       => 0,
     fixMisencodedQuals       => 0,
     samtools_baq_calibration => 0,
-    slim_print_reads         => 0,
+    slim_print_reads         => 1,
     sorted                   => 1,
     sh_direct                => 0,
     pbs                      => {
@@ -244,6 +254,40 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  star_refine_snp_combined => {
+    class       => "GATK::CombineVariants",
+    perform     => 1,
+    target_dir  => "${target_dir}/star_refine_snp_combined",
+    option      => "",
+    source_ref  => [ "star_refine_SNPindel", "_snp_filtered.pass.vcf\$" ],
+    java_option => "",
+    fasta_file  => $fasta_file,
+    gatk_jar    => $gatk_jar,
+    extension   => "_snp.vcf",
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  star_refine_indel_combined => {
+    class       => "GATK::CombineVariants",
+    perform     => 1,
+    target_dir  => "${target_dir}/star_refine_indel_combined",
+    option      => "",
+    source_ref  => [ "star_refine_SNPindel", "_indel_filtered.pass.vcf\$" ],
+    java_option => "",
+    fasta_file  => $fasta_file,
+    gatk_jar    => $gatk_jar,
+    extension   => "_indel.vcf",
+    pbs         => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   star_refine_SNPindel_annovar => {
     class      => "Annotation::Annovar",
     perform    => 1,
@@ -261,6 +305,46 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  star_refine_SNPindel_combined_annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/star_refine_SNPindel_combined_annovar",
+    source_ref => [ "star_refine_snp_combined", "star_refine_indel_combined" ],
+    option     => $annovar_param,
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
+  glmvc => {
+    class             => "Variants::GlmvcCall",
+    perform           => 1,
+    target_dir        => "${target_dir}/glmvc",
+    option            => $glmvc_option,
+    source_type       => "BAM",
+    source_ref        => "star_refine",
+    groups_ref        => "mutations",
+    fasta_file        => $fasta_file,
+    sh_direct         => 1,
+    execute_file      => $glmvc,
+    annovar_buildver  => "hg19",
+    annovar_protocol  => $annovar_protocol,
+    annovar_operation => $annovar_operation,
+    annovar_db        => $annovar_db,
+
+    pbs => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=24",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
 
   sequencetask => {
     class      => "CQS::SequenceTask",
@@ -268,8 +352,11 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",         "star",           "star_featurecount",          "star_refine", "star_refine_SNPindel", "star_refine_SNPindel_annovar" ],
-      step2 => [ "fastqc_summary", "star_genetable", "star_genetable_correlation", "star_genetable_deseq2" ],
+      step1 => [ "fastqc", "star", "star_featurecount", "star_refine", "star_refine_SNPindel", "star_refine_SNPindel_annovar" ],
+      step2 => [
+        "fastqc_summary",           "star_genetable",             "star_genetable_correlation",            "star_genetable_deseq2",
+        "star_refine_snp_combined", "star_refine_indel_combined", "star_refine_SNPindel_combined_annovar", "glmvc"
+      ],
     },
     sh_direct => 0,
     pbs       => {

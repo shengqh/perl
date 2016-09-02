@@ -7,7 +7,7 @@ use CQS::FileUtils;
 use Data::Dumper;
 
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160901_chipseq_ips");
-my $task       = "public";
+my $task       = "chipseq_ips";
 
 my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
 my $bowtie_index   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
@@ -100,6 +100,25 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  macs1callpeak_bradner_rose2 => {
+    class                => "Chipseq::BradnerRose2",
+    perform              => 1,
+    target_dir           => "${target_dir}/macs1callpeak_bradner_rose2",
+    option               => "",
+    source_ref           => "bowtie1",
+    groups_ref           => "treatments",
+    controls_ref         => "controls",
+    pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    binding_site_bed_ref => [ "macs1callpeak", ".bed\$" ],
+    genome               => "hg19",
+    sh_direct            => 1,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bamplot => {
     class      => "Visualization::Bamplot",
     perform    => 1,
@@ -126,7 +145,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "fastqc_raw",         "bowtie1" ],
-      step_2 => [ "fastqc_raw_summary", "macs1callpeak" ],
+      step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_bradner_rose2", "bamplot" ],
     },
     sh_direct => 0,
     pbs       => {
