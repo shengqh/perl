@@ -191,29 +191,32 @@ my $def = {
 
 my $config = performSmallRNA_mm10( $def, 0 );
 
-$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
-$config->{deseq2_top100_reads}{target_dir}            = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_reads";
-$config->{deseq2_top100_contigs}{target_dir}          = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_contigs";
-$config->{deseq2_miRNA}{target_dir}                   = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";
-performTask( $config, "identical_sequence_count_table" );
-performTask( $config, "deseq2_top100_reads" );
-performTask( $config, "deseq2_top100_contigs" );
-performTask( $config, "deseq2_miRNA" );
+$config->{bowtie1_genome_1mm_NTA_smallRNA_count}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/bowtie1_genome_1mm_NTA_smallRNA_count";
+performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_count" );
+
+#$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
+#$config->{deseq2_top100_reads}{target_dir}            = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_reads";
+#$config->{deseq2_top100_contigs}{target_dir}          = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_contigs";
+#$config->{deseq2_miRNA}{target_dir}                   = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";
+#performTask( $config, "identical_sequence_count_table" );
+#performTask( $config, "deseq2_top100_reads" );
+#performTask( $config, "deseq2_top100_contigs" );
+#performTask( $config, "deseq2_miRNA" );
+##
+#for my $group ( "bacteria_group1", "bacteria_group2", "fungus_group4" ) {
+#  $config->{"bowtie1_${group}_pm_count"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_${group}_pm_count";
+#  $config->{"bowtie1_${group}_pm_table"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_${group}_pm_table";
+#  $config->{"deseq2_${group}"}{target_dir}           = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_${group}";
+#  $config->{"deseq2_${group}_reads"}{target_dir}     = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_${group}_reads";
 #
-for my $group ( "bacteria_group1", "bacteria_group2", "fungus_group4" ) {
-  $config->{"bowtie1_${group}_pm_count"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_${group}_pm_count";
-  $config->{"bowtie1_${group}_pm_table"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_${group}_pm_table";
-  $config->{"deseq2_${group}"}{target_dir}           = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_${group}";
-  $config->{"deseq2_${group}_reads"}{target_dir}     = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_${group}_reads";
-
-  performTask( $config, "bowtie1_${group}_pm_count" );
-  performTask( $config, "bowtie1_${group}_pm_table" );
-  performTask( $config, "deseq2_${group}" );
-  performTask( $config, "deseq2_${group}_reads" );
-}
-
-#$config->{nonhost_overlap_vis}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/data_visualization/nonhost_overlap_vis";
-#performTask( $config, "nonhost_overlap_vis" );
+#  performTask( $config, "bowtie1_${group}_pm_count" );
+#  performTask( $config, "bowtie1_${group}_pm_table" );
+#  performTask( $config, "deseq2_${group}" );
+#  performTask( $config, "deseq2_${group}_reads" );
+#}
+#
+##$config->{nonhost_overlap_vis}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/data_visualization/nonhost_overlap_vis";
+##performTask( $config, "nonhost_overlap_vis" );
 
 1;
 

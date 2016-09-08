@@ -23,7 +23,7 @@ my $mills  = "/scratch/cqs/shengq1/references/gatk/b37/Mills_and_1000G_gold_stan
 
 my $cosmic = "/scratch/cqs/shengq1/references/cosmic/cosmic_v71_hg19_16569_MT.vcf";
 
-my $annovar_param = "-protocol refGene,avsnp147,cosmic70,exac03 -operation g,f,f,f --remove";
+my $annovar_param = "-protocol refGene,avsnp147,cosmic70,exac03 -operation g,f,f,f";
 my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
 my $gatk_jar      = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar    = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
