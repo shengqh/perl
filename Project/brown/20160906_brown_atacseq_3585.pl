@@ -164,6 +164,7 @@ my $config = {
     blacklist_file => "/scratch/cqs/shengq1/references/mappable_region/hg19/wgEncodeDacMapabilityConsensusExcludable.bed",
     is_sorted_by_name => 0,
     is_paired_end => 1,
+    maximum_fragment_length => 1000,
     sh_direct      => 1,
     pbs            => {
       "email"    => $email,
