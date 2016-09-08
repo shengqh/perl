@@ -16,7 +16,8 @@ my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 
 my $macs1call_option        = "-p 1e-9 -w -S --space=50";
-my $macs2call_option_qvalue = "-f BEDPE --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel";
+my $macs2call_option_qvalue = "-f BEDPE --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup";
+
 #my $macs2call_option_pvalue = "-f BED --broad -g hs -B -p 1e-9 --broad-cutoff 1e-9 --nomodel";
 
 my $bwa_fasta = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
@@ -121,15 +122,16 @@ my $config = {
     },
   },
   bwa => {
-    class      => "Alignment::BWA",
-    perform    => 1,
-    target_dir => "${target_dir}/bwa",
-    option     => "",
-    bwa_index  => $bwa_fasta,
-    picard_jar => $picard_jar,
-    source_ref => [ "cutadapt", ".fastq.gz" ],
-    sh_direct  => 0,
-    pbs        => {
+    class              => "Alignment::BWA",
+    perform            => 1,
+    target_dir         => "${target_dir}/bwa",
+    option             => "",
+    bwa_index          => $bwa_fasta,
+    picard_jar         => $picard_jar,
+    source_ref         => [ "cutadapt", ".fastq.gz" ],
+    sort_by_coordinate => 0,
+    sh_direct          => 0,
+    pbs                => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
@@ -145,6 +147,7 @@ my $config = {
     picard_jar        => $picard_jar,
     remove_chromosome => "M",
     keep_chromosome   => "chr",
+    is_sorted_by_name => 1,
     sh_direct         => 0,
     pbs               => {
       "email"    => $email,

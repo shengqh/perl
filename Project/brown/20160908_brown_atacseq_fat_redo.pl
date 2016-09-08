@@ -11,7 +11,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160908_at
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "fat";
 
-my $macs2call_option_qvalue = "-f BEDPE --broad -g mm -B -q 0.01 --broad-cutoff 0.01 --nomodel";
+my $macs2call_option_qvalue = "-f BEDPE --broad -g mm -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup";
 
 my $config = {
   general => { task_name => $task },
