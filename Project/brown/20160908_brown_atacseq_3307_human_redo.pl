@@ -8,34 +8,42 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160906_atacseq_3585");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160908_atacseq_3307_human_redo");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
-my $cqstools   = "/home/shengq1/cqstools/cqstools.exe";
+my $cqstools   = "/home/shengq1/cqstools/CQS.Tools.exe";
 my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $dbsnp      = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M.vcf";
 
 my $macs2call_option_qvalue = "-f BEDPE --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel";
 
 my $bwa_fasta = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
 
 my $config = {
-  general => { task_name => "3585" },
+  general => { task_name => "3307" },
   files   => {
-    "3585-JDB-1" => [ "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-1_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-1_2_sequence.txt.gz" ],
-    "3585-JDB-2" => [ "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-2_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-2_2_sequence.txt.gz" ],
-    "3585-JDB-3" => [ "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-3_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-3_2_sequence.txt.gz" ],
-    "3585-JDB-4" => [ "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-4_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-4_2_sequence.txt.gz" ],
-    "3585-JDB-5" => [ "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-5_1_sequence.txt.gz", "/gpfs21/scratch/cqs/shengq1/brown/data/3585/3585-JDB-5_2_sequence.txt.gz" ],
+    "JDB1_1K_NoTNF"  => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-1_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-1_2_sequence.txt.gz" ],
+    "JDB2_50K_NoTNF" => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-2_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-2_2_sequence.txt.gz" ],
+    "JDB3_1K_TNF"    => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-3_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-3_2_sequence.txt.gz" ],
+    "JDB4_50K_TNF"   => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-4_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-4_2_sequence.txt.gz" ],
+    "JDB6_1K_NoTNF"  => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-6_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-6_2_sequence.txt.gz" ],
+    "JDB7_1K_TNF"    => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-7_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-7_2_sequence.txt.gz" ],
+    "JDB8_50K_NoTNF" => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_2_sequence.txt.gz" ],
+    "JDB9_50K_TNF"   => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_2_sequence.txt.gz" ],
   },
-  treatments => {
-    "3585-JDB-1" => "3585-JDB-1",
-    "3585-JDB-2" => "3585-JDB-2",
-    "3585-JDB-3" => "3585-JDB-3",
-    "3585-JDB-4" => "3585-JDB-4",
-    "3585-JDB-5" => "3585-JDB-5",
+  individual_comparison => {
+    "1K_NoTNF_vs_1K_TNF_1"   => [ "JDB1_1K_NoTNF",  "JDB3_1K_TNF" ],
+    "50K_NoTNF_vs_50K_TNF_1" => [ "JDB2_50K_NoTNF", "JDB4_50K_TNF" ],
+    "1K_NoTNF_vs_1K_TNF_2"   => [ "JDB6_1K_NoTNF",  "JDB7_1K_TNF" ],
+    "50K_NoTNF_vs_50K_TNF_2" => [ "JDB8_50K_NoTNF", "JDB9_50K_TNF" ],
   },
-
+  all_data => {
+    "1K_NoTNF_vs_1K_TNF_1"   => [ "JDB1_1K_NoTNF", "JDB3_1K_TNF", "JDB2_50K_NoTNF", "JDB4_50K_TNF", "JDB6_1K_NoTNF", "JDB7_1K_TNF", "JDB8_50K_NoTNF", "JDB9_50K_TNF" ],
+    "50K_NoTNF_vs_50K_TNF_1" => [ "JDB1_1K_NoTNF", "JDB3_1K_TNF", "JDB2_50K_NoTNF", "JDB4_50K_TNF", "JDB6_1K_NoTNF", "JDB7_1K_TNF", "JDB8_50K_NoTNF", "JDB9_50K_TNF" ],
+    "1K_NoTNF_vs_1K_TNF_2"   => [ "JDB1_1K_NoTNF", "JDB3_1K_TNF", "JDB2_50K_NoTNF", "JDB4_50K_TNF", "JDB6_1K_NoTNF", "JDB7_1K_TNF", "JDB8_50K_NoTNF", "JDB9_50K_TNF" ],
+    "50K_NoTNF_vs_50K_TNF_2" => [ "JDB1_1K_NoTNF", "JDB3_1K_TNF", "JDB2_50K_NoTNF", "JDB4_50K_TNF", "JDB6_1K_NoTNF", "JDB7_1K_TNF", "JDB8_50K_NoTNF", "JDB9_50K_TNF" ],
+  },
   fastqc_raw => {
     class      => "QC::FastQC",
     perform    => 1,
@@ -180,7 +188,6 @@ my $config = {
     target_dir => "${target_dir}/bwa_macs2callpeak",
     option     => $macs2call_option_qvalue,
     source_ref => "bwa_bam2bed",
-    groups_ref => "treatments",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
@@ -189,18 +196,15 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_macs2callpeak_bradner_rose => {
-    class                => "Chipseq::BradnerRose2",
-    perform              => 1,
-    target_dir           => "${target_dir}/bwa_macs2callpeak_bradner_rose",
-    option               => "",
-    source_ref           => "bwa_cleanbam",
-    groups_ref           => "treatments",
-    pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
-    binding_site_bed_ref => [ "bwa_macs2callpeak", ".bed\$" ],
-    genome               => "hg19",
-    sh_direct            => 1,
-    pbs                  => {
+  bwa_macs2bdgdiff => {
+    class      => "Chipseq::MACS2Bdgdiff",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_macs2bdgdiff",
+    option     => "",
+    source_ref => "bwa_macs2callpeak",
+    groups_ref => "individual_comparison",
+    sh_direct  => 0,
+    pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -213,8 +217,9 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc_raw",         "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak", "bwa_macs2callpeak_bradner_rose" ],
+      T1 => [ "fastqc_raw",         "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
       T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary" ],
+
     },
     sh_direct => 0,
     pbs       => {
@@ -223,10 +228,13 @@ my $config = {
       "walltime" => "72",
       "mem"      => "40gb"
     },
-  },
+    }
+
 };
 
 performConfig($config);
+
+#performTask( $config, "bowtie2_pretrim" );
 
 1;
 
