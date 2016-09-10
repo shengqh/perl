@@ -31,6 +31,8 @@ my $qc3_perl      = "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl";
 
 my $covered_bed = "/gpfs21/scratch/cqs/shengq1/dnaseq/20160829_liuqi_gene_panel/documents/TCPS_Labcorp_genes_20160829.bed";
 
+my $gene_bed = "/gpfs21/scratch/cqs/shengq1/dnaseq/20160829_liuqi_gene_panel/documents/interesting_gene.bed";
+
 my $cluster = "slurm";
 
 my $config = {
@@ -1019,6 +1021,23 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_refine_genes_bam => {
+    class      => "Samtools::View",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_refine_genes_bam",
+    option     => "-h -b -L $gene_bed",
+    extension  => ".bam",
+    source_ref => "bwa_refine",
+    sh_direct  => 1,
+    sorted     => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "24",
+      "mem"      => "10gb"
+    },
+  },
+
   qc3 => {
     class             => "QC::QC3bam",
     perform           => 1,

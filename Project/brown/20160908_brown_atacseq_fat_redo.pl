@@ -11,7 +11,7 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160908_at
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "fat";
 
-my $macs2call_option_qvalue = "-f BEDPE --broad -g mm -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup";
+my $macs2call_option_qvalue = "-f BEDPE --broad -g mm -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup all";
 
 my $config = {
   general => { task_name => $task },
@@ -127,30 +127,14 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  macs2bdgdiff_replicates_nomodel_depth => {
-    class         => "Visualization::Depth",
-    perform       => 1,
-    target_dir    => "${target_dir}/macs2bdgdiff_replicates_nomodel_depth",
-    option        => "",
-    source_ref    => "macs2bdgdiff_replicates_nomodel",
-    groups_ref    => "replicates_group",
-    bam_files_ref => "files",
-    sh_direct     => 0,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      "step1" => [ "bam2bed", "macs2callpeak_individual_nomodel" ],
-      "step2" => ["macs2bdgdiff_individual_nomodel"],
+      "step1" => [ "bam2bed",                         "macs2callpeak_individual_nomodel", "macs2callpeak_replicates_nomodel" ],
+      "step2" => [ "macs2bdgdiff_individual_nomodel", "macs2bdgdiff_replicates_nomodel" ],
     },
     sh_direct => 0,
     pbs       => {

@@ -16,7 +16,7 @@ my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 
 my $macs1call_option        = "-p 1e-9 -w -S --space=50";
-my $macs2call_option_qvalue = "-f BEDPE --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup";
+my $macs2call_option_qvalue = "-f BEDPE --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup all";
 
 #my $macs2call_option_pvalue = "-f BED --broad -g hs -B -p 1e-9 --broad-cutoff 1e-9 --nomodel";
 
@@ -129,7 +129,7 @@ my $config = {
     bwa_index          => $bwa_fasta,
     picard_jar         => $picard_jar,
     source_ref         => [ "cutadapt", ".fastq.gz" ],
-    sort_by_coordinate => 0,
+    sort_by_coordinate => 1,
     sh_direct          => 0,
     pbs                => {
       "email"    => $email,
@@ -139,17 +139,17 @@ my $config = {
     },
   },
   bwa_cleanbam => {
-    class             => "ATACseq::CleanBam",
-    perform           => 1,
-    target_dir        => "${target_dir}/bwa_cleanbam",
-    option            => "",
-    source_ref        => "bwa",
-    picard_jar        => $picard_jar,
-    remove_chromosome => "M",
-    keep_chromosome   => "chr",
-    is_sorted_by_name => 1,
-    sh_direct         => 0,
-    pbs               => {
+    class                   => "ATACseq::CleanBam",
+    perform                 => 1,
+    target_dir              => "${target_dir}/bwa_cleanbam",
+    option                  => "",
+    source_ref              => "bwa",
+    picard_jar              => $picard_jar,
+    remove_chromosome       => "M",
+    keep_chromosome         => "chr",
+    is_sorted_by_coordinate => 1,
+    sh_direct               => 0,
+    pbs                     => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "240",
