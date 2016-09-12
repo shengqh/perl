@@ -158,7 +158,7 @@ my $config = {
     },
   },
   bwa_bam2bed => {
-    class                   => "ATACseq::BamToBed",
+    class                   => "Format::Bam2Bed",
     perform                 => 1,
     target_dir              => "${target_dir}/bwa_bam2bed",
     option                  => "",

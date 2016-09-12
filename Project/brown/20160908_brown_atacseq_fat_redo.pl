@@ -50,7 +50,7 @@ my $config = {
     "SQ_Visc_HFD"  => [ "SQ1_HFD",  "SQ2_HFD",  "Visc1_HFD",  "Visc2_HFD" ],
   },
   bam2bed => {
-    class                   => "ATACseq::BamToBed",
+    class                   => "Format::Bam2Bed",
     perform                 => 1,
     target_dir              => "${target_dir}/bam2bed",
     option                  => "",
@@ -60,7 +60,7 @@ my $config = {
     is_paired_end           => 1,
     maximum_fragment_length => 1000,
     minimum_fragment_length => 30,
-    sh_direct               => 0,
+    sh_direct               => 1,
     pbs                     => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
