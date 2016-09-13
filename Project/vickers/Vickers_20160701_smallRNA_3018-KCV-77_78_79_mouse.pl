@@ -21,7 +21,11 @@ my $def = {
   remove_sequences      => "'CCACGTTCCCGTGG;ACAGTCCGACGATC'",
   search_unmapped_reads => 1,
   blast_unmapped_reads  => 1,
-  fastq_remove_random   => 4,                                   #next flex
+  blast_top100_reads => 1,
+  blast_localdb => "/scratch/cqs/shengq1/references/blastdb",
+  
+  #next flex
+  fastq_remove_random   => 4,                                   
 
   #Data
   files => {
@@ -191,10 +195,14 @@ my $def = {
 
 my $config = performSmallRNA_mm10( $def, 0 );
 
-$config->{bowtie1_genome_1mm_NTA_smallRNA_count}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/bowtie1_genome_1mm_NTA_smallRNA_count";
-performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_count" );
+#$config->{bowtie1_genome_1mm_NTA_smallRNA_count}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/bowtie1_genome_1mm_NTA_smallRNA_count";
+#performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_count" );
 
-#$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
+$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
+$config->{identical_sequence_top100_blast}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top100_blast";
+
+performTask( $config, "identical_sequence_top100_blast" );
+
 #$config->{deseq2_top100_reads}{target_dir}            = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_reads";
 #$config->{deseq2_top100_contigs}{target_dir}          = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_contigs";
 #$config->{deseq2_miRNA}{target_dir}                   = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";

@@ -1117,9 +1117,26 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_refine_hc_gvcf_vqsr_annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar",
+    source_ref => "bwa_refine_hc_gvcf_vqsr",
+    option     => $annovar_param,
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   bwa_refine_hc_gvcf_hardfilter => {
     class       => "GATK::VariantFilter",
-    perform     => 0,
+    perform     => 1,
     target_dir  => "${target_dir}/bwa_refine_hc_gvcf_hardfilter",
     option      => "",
     vqsr_mode   => 0,
@@ -1139,11 +1156,11 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_refine_hc_gvcf_vqsr_annovar => {
+  bwa_refine_hc_gvcf_hardfilter_annovar => {
     class      => "Annotation::Annovar",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar",
-    source_ref => "bwa_refine_hc_gvcf_vqsr",
+    target_dir => "${target_dir}/bwa_refine_hc_gvcf_hardfilter_annovar",
+    source_ref => "bwa_refine_hc_gvcf_hardfilter",
     option     => $annovar_param,
     annovar_db => $annovar_db,
     buildver   => "hg19",
@@ -1166,8 +1183,11 @@ my $config = {
       step2 => ["fastqc_summary"],
       step3 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
       step4 => [
-        "qc3", "qc3_refine", "bwa_refine_hc_gvcf_vqsr",    #"bwa_refine_hc_gvcf_hardfilter",
-        "bwa_refine_hc_gvcf_vqsr_annovar"
+        "qc3", "qc3_refine", 
+        "bwa_refine_hc_gvcf_vqsr",    
+        "bwa_refine_hc_gvcf_vqsr_annovar",
+        "bwa_refine_hc_gvcf_hardfilter",
+        "bwa_refine_hc_gvcf_hardfilter_annovar",
       ],
     },
     sh_direct => 0,

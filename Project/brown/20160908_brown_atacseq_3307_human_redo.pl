@@ -220,7 +220,7 @@ my $config = {
     option     => "",
     source     => {
       T1 => [ "fastqc_raw",         "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
-      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary" ],
+      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff" ],
 
     },
     sh_direct => 0,

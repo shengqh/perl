@@ -8,7 +8,7 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $dataset_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20160908_exomeseq_somatic_mutation_pipeline");
+my $dataset_dir = create_directory_or_die("/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation");
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -37,22 +37,11 @@ my $config = {
     task_name => "WES"
   },
   files => {
-    "N04_DUSP4flox_LACZ" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-1_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-1_2_sequence.txt.gz"
-    ],
-    "N05_DUSP4flox_Trp53null1_LACZ" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-2_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-2_2_sequence.txt.gz"
-    ],
-    "N07_DUSP4flox_MYC" => [
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_1_sequence.txt.gz",
-      "/gpfs21/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines/WES/data/3162-JMB-3_2_sequence.txt.gz"
-    ],
+  "N04" => ["/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N04_DUSP4flox_LACZ_19.1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N04_DUSP4flox_LACZ_19.2.fastq.gz"],
+  "N05" => ["/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N05_DUSP4flox_Trp53null1_LACZ_19.1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N05_DUSP4flox_Trp53null1_LACZ_19.2.fastq.gz"],
   },
   groups => {
-    "N05_DUSP4flox_Trp53null1_LACZ" => [ "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ" ],
-    "N07_DUSP4flox_MYC"             => [ "N04_DUSP4flox_LACZ", "N07_DUSP4flox_MYC" ],
+    "N05_vs_N04" => [ "N04", "N05" ],
   },
 
   fastqc => {
@@ -103,6 +92,7 @@ my $config = {
   bwa_refine => {
     class            => "GATK::Refine",
     perform          => 1,
+    init_command   => "setpkgs -a java_1.8",
     target_dir       => "${dataset_dir}/bwa_refine",
     option           => "-Xmx40g",
     gatk_option      => "--fix_misencoded_quality_scores",
@@ -124,6 +114,7 @@ my $config = {
   muTect => {
     class        => "GATK::MuTect",
     perform      => 1,
+    init_command   => "setpkgs -a java",
     target_dir   => "${dataset_dir}/muTect",
     option       => "--min_qscore 20 --filter_reads_with_N_cigar",
     java_option  => "-Xmx40g",
