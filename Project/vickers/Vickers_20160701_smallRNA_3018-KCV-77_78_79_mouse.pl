@@ -199,9 +199,11 @@ my $config = performSmallRNA_mm10( $def, 0 );
 #performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_count" );
 
 $config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
-$config->{identical_sequence_top100_blast}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top100_blast";
+$config->{identical_sequence_top100_contig_blast}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top100_contig_blast";
+$config->{identical_sequence_top100_read_blast}{target_dir} = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top100_read_blast";
 
-performTask( $config, "identical_sequence_top100_blast" );
+performTask( $config, "identical_sequence_top100_contig_blast" );
+performTask( $config, "identical_sequence_top100_read_blast" );
 
 #$config->{deseq2_top100_reads}{target_dir}            = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_reads";
 #$config->{deseq2_top100_contigs}{target_dir}          = "/scratch/cqs/shengq1/vickers/20160701_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_contigs";
