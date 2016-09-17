@@ -25,6 +25,16 @@ my $config = {
     "Visc1_HFD"  => ["/gpfs21/scratch/cqs/shengq1/brown/data/fat/20150911_4901_mm9.noChrM.fix.rmdup.sorted.bam"],
     "Visc2_HFD"  => ["/gpfs21/scratch/cqs/shengq1/brown/data/fat/20150911_4902_mm9.noChrM.fix.rmdup.sorted.bam"],
   },
+  treatments => {
+    "SQ1_CHOW"   => "SQ1_CHOW",
+    "SQ2_CHOW"   => "SQ2_CHOW",
+    "Visc1_CHOW" => "Visc1_CHOW",
+    "Visc2_CHOW" => "Visc2_CHOW",
+    "SQ1_HFD"    => "SQ1_HFD",
+    "SQ2_HFD"    => "SQ2_HFD",
+    "Visc1_HFD"  => "Visc1_HFD",
+    "Visc2_HFD"  => "Visc2_HFD",
+  },
   replicates => {
     "SQ_CHOW"   => [ "SQ1_CHOW",   "SQ2_CHOW" ],
     "Visc_CHOW" => [ "Visc1_CHOW", "Visc2_CHOW" ],
@@ -127,6 +137,43 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_macs2callpeak_bradner_rose => {
+    class                => "Chipseq::BradnerRose2",
+    perform              => 1,
+    target_dir           => "${target_dir}/bwa_macs2callpeak_bradner_rose",
+    option               => "",
+    source_ref           => "files",
+    groups_ref           => "treatments",
+    pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    binding_site_bed_ref => [ "macs2callpeak_individual_nomodel", ".bed\$" ],
+    genome               => "hg19",
+    sh_direct            => 1,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_macs2callpeak_bradner_rose_coltron => {
+    class              => "Chipseq::Coltron",
+    perform            => 1,
+    target_dir         => "${target_dir}/bwa_macs2callpeak_bradner_rose_coltron",
+    option             => "",
+    source_ref         => "files",
+    groups_ref         => "treatments",
+    enhancer_files_ref => [ "bwa_macs2callpeak_bradner_rose", "_AllEnhancers.table.txt" ],
+    genome             => "HG19",
+    pipeline_dir       => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -134,7 +181,7 @@ my $config = {
     option     => "",
     source     => {
       "step1" => [ "bam2bed",                         "macs2callpeak_individual_nomodel", "macs2callpeak_replicates_nomodel" ],
-      "step2" => [ "macs2bdgdiff_individual_nomodel", "macs2bdgdiff_replicates_nomodel" ],
+      "step2" => [ "macs2bdgdiff_individual_nomodel", "macs2bdgdiff_replicates_nomodel", "bwa_macs2callpeak_bradner_rose", "bwa_macs2callpeak_bradner_rose_coltron" ],
     },
     sh_direct => 0,
     pbs       => {

@@ -32,6 +32,16 @@ my $config = {
     "JDB8_50K_NoTNF" => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-8_2_sequence.txt.gz" ],
     "JDB9_50K_TNF"   => [ "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_1_sequence.txt.gz", "/data/cqs/shengq1/data/3307/PE-150/3307-JDB-9_2_sequence.txt.gz" ],
   },
+  treatments => {
+    "JDB1_1K_NoTNF"  => "JDB1_1K_NoTNF",
+    "JDB2_50K_NoTNF" => "JDB2_50K_NoTNF",
+    "JDB3_1K_TNF"    => "JDB3_1K_TNF",
+    "JDB4_50K_TNF"   => "JDB4_50K_TNF",
+    "JDB6_1K_NoTNF"  => "JDB6_1K_NoTNF",
+    "JDB7_1K_TNF"    => "JDB7_1K_TNF",
+    "JDB8_50K_NoTNF" => "JDB8_50K_NoTNF",
+    "JDB9_50K_TNF"   => "JDB9_50K_TNF",
+  },
   individual_comparison => {
     "1K_NoTNF_vs_1K_TNF_1"   => [ "JDB1_1K_NoTNF",  "JDB3_1K_TNF" ],
     "50K_NoTNF_vs_50K_TNF_1" => [ "JDB2_50K_NoTNF", "JDB4_50K_TNF" ],
@@ -213,14 +223,50 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_macs2callpeak_bradner_rose => {
+    class                => "Chipseq::BradnerRose2",
+    perform              => 1,
+    target_dir           => "${target_dir}/bwa_macs2callpeak_bradner_rose",
+    option               => "",
+    source_ref           => "bwa_cleanbam",
+    groups_ref           => "treatments",
+    pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    binding_site_bed_ref => [ "bwa_macs2callpeak", ".bed\$" ],
+    genome               => "hg19",
+    sh_direct            => 1,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_macs2callpeak_bradner_rose_coltron => {
+    class              => "Chipseq::Coltron",
+    perform            => 1,
+    target_dir         => "${target_dir}/bwa_macs2callpeak_bradner_rose_coltron",
+    option             => "",
+    source_ref         => "bwa_cleanbam",
+    groups_ref         => "treatments",
+    enhancer_files_ref => [ "bwa_macs2callpeak_bradner_rose", "_AllEnhancers.table.txt" ],
+    genome             => "HG19",
+    pipeline_dir       => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc_raw",         "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
-      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff" ],
+      T1 => [ "fastqc_raw", "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
+      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs2callpeak_bradner_rose", "bwa_macs2callpeak_bradner_rose_coltron" ],
 
     },
     sh_direct => 0,

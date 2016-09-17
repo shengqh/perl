@@ -209,6 +209,24 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_macs2callpeak_bradner_rose_coltron => {
+    class              => "Chipseq::Coltron",
+    perform            => 1,
+    target_dir         => "${target_dir}/bwa_macs2callpeak_bradner_rose_coltron",
+    option             => "",
+    source_ref         => "bwa_cleanbam",
+    groups_ref         => "treatments",
+    enhancer_files_ref => [ "bwa_macs2callpeak_bradner_rose", "_AllEnhancers.table.txt" ],
+    genome             => "HG19",
+    pipeline_dir       => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -216,7 +234,7 @@ my $config = {
     option     => "",
     source     => {
       T1 => [ "fastqc_raw",         "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak", "bwa_macs2callpeak_bradner_rose" ],
-      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary" ],
+      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2callpeak_bradner_rose_coltron" ],
     },
     sh_direct => 0,
     pbs       => {
