@@ -19,7 +19,7 @@ my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 
 my $bwa_fasta     = "/scratch/cqs/shengq1/references/mm10_sorted_M/bwa_index_0.7.12/mm10.fa";
 my $dbsnp         = "/scratch/cqs/shengq1/references/dbsnp/mm10/mouse_GRCm38_v142_M.vcf";
-my $indel_vcf     = "/scratch/cqs/shengq1/references/mm10/mpg.v5.indels.pass.vcf";
+my $indel_vcf     = "/scratch/cqs/shengq1/references/mm10/mpg.v5.indels.pass.reordered.vcf";
 my $capture_bed   = "/scratch/cqs/shengq1/references/sureselect/S0276129_Mouse_All_Exon_V1/S0276129_mm10_All_Exon_V1_M.bed";
 my $name_map_file = "/scratch/cqs/shengq1/references/ensembl_gtf/v75/Mus_musculus.GRCm38.75.M.map";
 
