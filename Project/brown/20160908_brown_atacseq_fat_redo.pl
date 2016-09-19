@@ -11,7 +11,9 @@ my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160908_at
 my $email = "quanhu.sheng\@vanderbilt.edu";
 my $task  = "fat";
 
+my $macs1call_option        = "-p 1e-9 -w -S --space=50";
 my $macs2call_option_qvalue = "-f BEDPE --broad -g mm -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup all";
+my $macs2call_option_pvalue = "-f BEDPE --broad -g mm -B -p 1e-9 --broad-cutoff 1e-9 --nomodel --slocal 20000 --llocal 20000 --keep-dup all";
 
 my $config = {
   general => { task_name => $task },
@@ -82,7 +84,7 @@ my $config = {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
     target_dir => "${target_dir}/macs2callpeak_individual_nomodel",
-    option     => $macs2call_option_qvalue,
+    option     => $macs2call_option_pvalue,
     source_ref => "bam2bed",
     sh_direct  => 0,
     pbs        => {
@@ -111,7 +113,7 @@ my $config = {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
     target_dir => "${target_dir}/macs2callpeak_replicates_nomodel",
-    option     => $macs2call_option_qvalue,
+    option     => $macs2call_option_pvalue,
     source_ref => "bam2bed",
     groups_ref => "replicates",
     sh_direct  => 0,

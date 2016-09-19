@@ -17,8 +17,7 @@ my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 
 my $macs1call_option        = "-p 1e-9 -w -S --space=50";
 my $macs2call_option_qvalue = "-f BEDPE --broad -g hs -B -q 0.01 --broad-cutoff 0.01 --nomodel --slocal 20000 --llocal 20000 --keep-dup all";
-
-#my $macs2call_option_pvalue = "-f BED --broad -g hs -B -p 1e-9 --broad-cutoff 1e-9 --nomodel";
+my $macs2call_option_pvalue = "-f BEDPE --broad -g hs -B -p 1e-9 --broad-cutoff 1e-9 --nomodel --slocal 20000 --llocal 20000 --keep-dup all";
 
 my $bwa_fasta = "/scratch/cqs/shengq1/references/gencode/hg19/bwa_index_0.7.12/GRCh37.p13.genome.fa";
 
@@ -175,11 +174,11 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bwa_macs2callpeak_qvalue => {
+  bwa_macs2callpeak => {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_macs2callpeak_qvalue",
-    option     => $macs2call_option_qvalue,
+    target_dir => "${target_dir}/bwa_macs2callpeak",
+    option     => $macs2call_option_pvalue,
     source_ref => "bwa_bam2bed",
     groups_ref => "treatments",
     sh_direct  => 0,
@@ -195,7 +194,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/bwa_macs2bdgdiff",
     option     => "",
-    source_ref => "bwa_macs2callpeak_qvalue",
+    source_ref => "bwa_macs2callpeak",
     groups_ref => "comparison",
     sh_direct  => 0,
     pbs        => {
@@ -213,7 +212,7 @@ my $config = {
     source_ref           => "bwa_cleanbam",
     groups_ref           => "treatments",
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
-    binding_site_bed_ref => [ "bwa_macs2callpeak_qvalue", ".bed\$" ],
+    binding_site_bed_ref => [ "bwa_macs2callpeak", ".bed\$" ],
     genome               => "hg19",
     sh_direct            => 1,
     pbs                  => {
@@ -241,14 +240,66 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_macs1callpeak => {
+    class      => "Chipseq::MACS",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_macs1callpeak",
+    option     => $macs1call_option,
+    source_ref => "bwa_bam2bed",
+    groups_ref => "treatments",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_macs1callpeak_bradner_rose => {
+    class                => "Chipseq::BradnerRose2",
+    perform              => 1,
+    target_dir           => "${target_dir}/bwa_macs1callpeak_bradner_rose",
+    option               => "",
+    source_ref           => "bwa_cleanbam",
+    groups_ref           => "treatments",
+    pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    binding_site_bed_ref => [ "bwa_macs1callpeak", ".bed\$" ],
+    genome               => "hg19",
+    sh_direct            => 1,
+    pbs                  => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_macs1callpeak_bradner_rose_coltron => {
+    class              => "Chipseq::Coltron",
+    perform            => 1,
+    target_dir         => "${target_dir}/bwa_macs1callpeak_bradner_rose_coltron",
+    option             => "",
+    source_ref         => "bwa_cleanbam",
+    groups_ref         => "treatments",
+    enhancer_files_ref => [ "bwa_macs1callpeak_bradner_rose", "_AllEnhancers.table.txt" ],
+    genome             => "HG19",
+    pipeline_dir       => "/scratch/cqs/shengq1/local/bin/bradnerlab",
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc_raw", "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak_qvalue" ],
-      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2bdgdiff", "bwa_macs2callpeak_bradner_rose", "bwa_macs2callpeak_bradner_rose_coltron" ],
+      T1 => [ "fastqc_raw", "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
+      T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2callpeak_bradner_rose", "bwa_macs2callpeak_bradner_rose_coltron" ],
     },
     sh_direct => 0,
     pbs       => {

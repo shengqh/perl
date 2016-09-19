@@ -6,34 +6,33 @@ use CQS::ClassFactory;
 use CQS::FileUtils;
 use Data::Dumper;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160919_chipseq_HUVEC");
-my $task       = "chipseq_HUVEC";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160919_chipseq_mouseLiver");
+my $task       = "chipseq_mouseLiver";
 
-my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
-my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
-my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
-my $plot_gff     = "/scratch/cqs/shengq1/chipseq/20160823_janathan_chipseq_195R3_gse53999_bamplot/config/H3K27ac.gff";
+my $fasta_file     = "/scratch/cqs/shengq1/references/mm10_sorted_M/bowtie_index_1.1.2/mm10.fa";
+my $bowtie_index   = "/scratch/cqs/shengq1/references/mm10_sorted_M/bowtie_index_1.1.2/mm10";
+my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
   general => { task_name => $task },
   files   => {
-    "HUVEC_1"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-1_1_sequence.txt.gz"],
-    "HUVEC_1_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-2_1_sequence.txt.gz"],
-    "HUVEC_2"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-3_1_sequence.txt.gz"],
-    "HUVEC_2_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-4_1_sequence.txt.gz"],
+    "MouseLiver_1"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-5_1_sequence.txt.gz"],
+    "MouseLiver_1_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-6_1_sequence.txt.gz"],
+    "MouseLiver_2"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-7_1_sequence.txt.gz"],
+    "MouseLiver_2_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-8_1_sequence.txt.gz"],
   },
   treatments => {
-    "HUVEC_1" => ["HUVEC_1"],
-    "HUVEC_2" => ["HUVEC_2"],
+    "MouseLiver_1" => ["MouseLiver_1"],
+    "MouseLiver_2" => ["MouseLiver_2"],
   },
   controls => {
-    "HUVEC_1" => ["HUVEC_1_Input"],
-    "HUVEC_2" => ["HUVEC_2_Input"],
+    "MouseLiver_1" => ["MouseLiver_1_Input"],
+    "MouseLiver_2" => ["MouseLiver_2_Input"],
   },
   plotgroups => {
-    "HUVEC" => [ "HUVEC_1", "HUVEC_1_Input", "HUVEC_2", "HUVEC_2_Input" ],
+    "MouseLiver" => [ "MouseLiver_1", "MouseLiver_1_Input", "MouseLiver_2", "MouseLiver_2_Input" ],
   },
   fastqc_raw => {
     class      => "QC::FastQC",
@@ -174,25 +173,6 @@ my $config = {
       "mem"      => "40gb"
     },
   },
-  bamplot => {
-    class      => "Visualization::Bamplot",
-    perform    => 1,
-    target_dir => "${target_dir}/bamplot",
-    option     => "-g HG19 -y uniform -r",
-
-    #option        => "-g HG19 -y uniform -r --save-temp",
-    source_ref    => "bowtie1",
-    groups_ref    => "plotgroups",
-    gff_file      => $plot_gff,
-    rainbow_color => 0,
-    sh_direct     => 1,
-    pbs           => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "1",
-      "mem"      => "10gb"
-    },
-  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
@@ -200,7 +180,7 @@ my $config = {
     option     => "",
     source     => {
       step_1 => [ "fastqc_raw", "cutadapt", "fastqc_post_trim", "fastq_len", "bowtie1" ],
-      step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_bradner_rose2", "bamplot" ],
+      step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_bradner_rose2" ],
     },
     sh_direct => 0,
     pbs       => {
