@@ -37,8 +37,14 @@ my $config = {
     task_name => "WES"
   },
   files => {
-  "N04" => ["/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N04_DUSP4flox_LACZ_19.1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N04_DUSP4flox_LACZ_19.2.fastq.gz"],
-  "N05" => ["/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N05_DUSP4flox_Trp53null1_LACZ_19.1.fastq.gz", "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N05_DUSP4flox_Trp53null1_LACZ_19.2.fastq.gz"],
+    "N04" => [
+      "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N04_DUSP4flox_LACZ_19.1.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N04_DUSP4flox_LACZ_19.2.fastq.gz"
+    ],
+    "N05" => [
+      "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N05_DUSP4flox_Trp53null1_LACZ_19.1.fastq.gz",
+      "/gpfs21/scratch/cqs/shengq1/pipelines/exomeseq_somatic_mutation/data/N05_DUSP4flox_Trp53null1_LACZ_19.2.fastq.gz"
+    ],
   },
   groups => {
     "N05_vs_N04" => [ "N04", "N05" ],
@@ -90,21 +96,23 @@ my $config = {
     },
   },
   bwa_refine => {
-    class            => "GATK::Refine",
-    perform          => 1,
-    init_command   => "setpkgs -a java_1.8",
-    target_dir       => "${dataset_dir}/bwa_refine",
-    option           => "-Xmx40g",
-    gatk_option      => "--fix_misencoded_quality_scores",
-    fasta_file       => $bwa_fasta,
-    source_ref       => "bwa",
-    vcf_files        => [$dbsnp],
-    gatk_jar         => $gatk_jar,
-    picard_jar       => $picard_jar,
-    slim_print_reads => 1,
-    sh_direct        => 0,
-    sorted           => 1,
-    pbs              => {
+    class             => "GATK::Refine",
+    perform           => 1,
+    init_command      => "setpkgs -a java_1.8",
+    target_dir        => "${dataset_dir}/bwa_refine",
+    option            => "-Xmx40g",
+    gatk_option       => "--fix_misencoded_quality_scores",
+    fasta_file        => $bwa_fasta,
+    source_ref        => "bwa",
+    indel_vcf_files   => [$dbsnp],
+    known_vcf_files   => [$dbsnp],
+    gatk_jar          => $gatk_jar,
+    picard_jar        => $picard_jar,
+    indel_realignment => 1,
+    slim_print_reads  => 1,
+    sh_direct         => 0,
+    sorted            => 1,
+    pbs               => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "240",
@@ -114,7 +122,7 @@ my $config = {
   muTect => {
     class        => "GATK::MuTect",
     perform      => 1,
-    init_command   => "setpkgs -a java",
+    init_command => "setpkgs -a java",
     target_dir   => "${dataset_dir}/muTect",
     option       => "--min_qscore 20 --filter_reads_with_N_cigar",
     java_option  => "-Xmx40g",
@@ -168,7 +176,8 @@ my $config = {
     },
   }
 };
-performConfig($config);
+#performConfig($config);
+performTask($config, "bwa_refine");
 
 1;
 
