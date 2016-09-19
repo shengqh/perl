@@ -178,8 +178,8 @@ my $config = {
   }
 };
 
-#performConfig($config);
-performTask( $config, "bwa_refine" );
+performConfig($config);
+#performTask( $config, "bwa_refine" );
 
 1;
 
