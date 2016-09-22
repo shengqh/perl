@@ -48,6 +48,7 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
+      "emailType" => "FAIL",
       "nodes"    => "1:ppn=1",
       "walltime" => "2",
       "mem"      => "10gb"
@@ -157,6 +158,7 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
+performTask($config, "fastqc_raw");
 
 1;
