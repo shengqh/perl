@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $target_dir = "/scratch/cqs/shengq1/dnaseq/20160829_liuqi_gene_panel";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20160915_liuqi_gene_panel_redo");
 my $cqstools   = "/home/shengq1/cqstools/cqstools.exe";
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
@@ -1037,53 +1037,6 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  mismatch => {
-    class              => "QC::BamMismatch",
-    perform            => 1,
-    target_dir         => "${target_dir}/mismatch",
-    option             => "",
-    source_ref         => "bwa_refine_genes_bam",
-    sh_direct          => 1,
-    pbs                => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  qc3 => {
-    class             => "QC::QC3bam",
-    perform           => 1,
-    target_dir        => "${target_dir}/qc3bam",
-    option            => "",
-    target_region_bed => $covered_bed,
-    transcript_gtf    => $transcript_gtf,
-    qc3_perl          => $qc3_perl,
-    source_ref        => "bwa",
-    pbs               => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  qc3_refine => {
-    class             => "QC::QC3bam",
-    perform           => 1,
-    target_dir        => "${target_dir}/qc3bam_refine",
-    option            => "",
-    target_region_bed => $covered_bed,
-    transcript_gtf    => $transcript_gtf,
-    qc3_perl          => $qc3_perl,
-    source_ref        => "bwa_refine",
-    pbs               => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-
   bwa_refine_hc_gvcf => {
     class         => "GATK::HaplotypeCaller",
     perform       => 1,
@@ -1147,61 +1100,14 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bwa_refine_hc_gvcf_hardfilter => {
-    class       => "GATK::VariantFilter",
-    perform     => 1,
-    target_dir  => "${target_dir}/bwa_refine_hc_gvcf_hardfilter",
-    option      => "",
-    vqsr_mode   => 0,
-    source_ref  => "bwa_refine_hc_gvcf",
-    java_option => "",
-    fasta_file  => $bwa_fasta,
-    dbsnp_vcf   => $dbsnp,
-    gatk_jar    => $gatk_jar,
-    cqstools    => $cqstools,
-    bed_file    => $covered_bed,
-    is_rna      => 0,
-    sh_direct   => 1,
-    pbs         => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bwa_refine_hc_gvcf_hardfilter_annovar => {
-    class      => "Annotation::Annovar",
-    perform    => 1,
-    target_dir => "${target_dir}/bwa_refine_hc_gvcf_hardfilter_annovar",
-    source_ref => "bwa_refine_hc_gvcf_hardfilter",
-    option     => $annovar_param,
-    annovar_db => $annovar_db,
-    buildver   => "hg19",
-    sh_direct  => 1,
-    isvcf      => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "2",
-      "mem"      => "10gb"
-    },
-  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => ["fastqc"],
-      step2 => ["fastqc_summary"],
-      step3 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
-      step4 => [
-        "qc3", "qc3_refine", 
-        "bwa_refine_hc_gvcf_vqsr",    
-        "bwa_refine_hc_gvcf_vqsr_annovar",
-        "bwa_refine_hc_gvcf_hardfilter",
-        "bwa_refine_hc_gvcf_hardfilter_annovar",
-      ],
+      step1 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
+      step2 => [ "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_vqsr_annovar" ],
     },
     sh_direct => 0,
     pbs       => {
@@ -1213,8 +1119,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-performTask($config, "bwa_refine_hc_gvcf_vqsr_annovar");
+performConfig($config);
 
 1;
 

@@ -174,12 +174,43 @@ my $config = {
       "mem"      => "40gb"
     },
   },
+  bwa_bam2bed_bed2bam => {
+    class                  => "Bedtools::Bedtobam",
+    perform                => 1,
+    target_dir             => "${target_dir}/bwa_bam2bed_bed2bam",
+    option                 => "",
+    source_ref             => "bwa_bam2bed",
+    chromosome_length_file => $bwa_fasta . ".fai",
+    sh_direct              => 1,
+    pbs                    => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_bamtobed => {
+    class             => "Bedtools::Bamtobed",
+    perform           => 1,
+    target_dir        => "${target_dir}/bwa_bamtobed",
+    option            => "",
+    source_ref        => "bwa_cleanbam",
+    is_sorted_by_name => 0,
+    is_paired_end     => 1,
+    sh_direct         => 0,
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=32",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   bwa_macs2callpeak => {
     class      => "Chipseq::MACS2Callpeak",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_macs2callpeak",
+    target_dir => "${target_dir}/bwa_macs2callpeak_bam",
     option     => $macs2call_option_pvalue,
-    source_ref => "bwa_bam2bed",
+    source_ref => "bwa_bam2bed_bed2bam",
     groups_ref => "treatments",
     sh_direct  => 0,
     pbs        => {
@@ -207,9 +238,9 @@ my $config = {
   bwa_macs2callpeak_bradner_rose => {
     class                => "Chipseq::BradnerRose2",
     perform              => 1,
-    target_dir           => "${target_dir}/bwa_macs2callpeak_bradner_rose",
+    target_dir           => "${target_dir}/bwa_macs2callpeak_bradner_rose_bam",
     option               => "",
-    source_ref           => "bwa_cleanbam",
+    source_ref           => "bwa_bam2bed_bed2bam",
     groups_ref           => "treatments",
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_bed_ref => [ "bwa_macs2callpeak", ".bed\$" ],
@@ -225,9 +256,9 @@ my $config = {
   bwa_macs2callpeak_bradner_rose_coltron => {
     class              => "Chipseq::Coltron",
     perform            => 1,
-    target_dir         => "${target_dir}/bwa_macs2callpeak_bradner_rose_coltron",
+    target_dir         => "${target_dir}/bwa_macs2callpeak_bradner_rose_coltron_bam",
     option             => "",
-    source_ref         => "bwa_cleanbam",
+    source_ref         => "bwa_bam2bed_bed2bam",
     groups_ref         => "treatments",
     enhancer_files_ref => [ "bwa_macs2callpeak_bradner_rose", "_AllEnhancers.table.txt" ],
     genome             => "HG19",
@@ -243,9 +274,9 @@ my $config = {
   bwa_macs1callpeak => {
     class      => "Chipseq::MACS",
     perform    => 1,
-    target_dir => "${target_dir}/bwa_macs1callpeak",
+    target_dir => "${target_dir}/bwa_macs1callpeak_bam",
     option     => $macs1call_option,
-    source_ref => "bwa_bam2bed",
+    source_ref => "bwa_bam2bed_bed2bam",
     groups_ref => "treatments",
     sh_direct  => 0,
     pbs        => {
@@ -258,9 +289,9 @@ my $config = {
   bwa_macs1callpeak_bradner_rose => {
     class                => "Chipseq::BradnerRose2",
     perform              => 1,
-    target_dir           => "${target_dir}/bwa_macs1callpeak_bradner_rose",
+    target_dir           => "${target_dir}/bwa_macs1callpeak_bradner_rose_bam",
     option               => "",
-    source_ref           => "bwa_cleanbam",
+    source_ref           => "bwa_bam2bed_bed2bam",
     groups_ref           => "treatments",
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
     binding_site_bed_ref => [ "bwa_macs1callpeak", ".bed\$" ],
@@ -276,9 +307,9 @@ my $config = {
   bwa_macs1callpeak_bradner_rose_coltron => {
     class              => "Chipseq::Coltron",
     perform            => 1,
-    target_dir         => "${target_dir}/bwa_macs1callpeak_bradner_rose_coltron",
+    target_dir         => "${target_dir}/bwa_macs1callpeak_bradner_rose_coltron_bam",
     option             => "",
-    source_ref         => "bwa_cleanbam",
+    source_ref         => "bwa_bam2bed_bed2bam",
     groups_ref         => "treatments",
     enhancer_files_ref => [ "bwa_macs1callpeak_bradner_rose", "_AllEnhancers.table.txt" ],
     genome             => "HG19",
@@ -298,7 +329,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc_raw", "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_macs2callpeak" ],
+      T1 => [ "fastqc_raw", "cutadapt", "fastqc_trimmed", "fastqlen", "bwa", "bwa_cleanbam", "bwa_bam2bed", "bwa_bam2bed_bed2bam", "bwa_macs2callpeak" ],
       T2 => [ "fastqc_raw_summary", "fastqc_trimmed_summary", "bwa_macs2callpeak_bradner_rose", "bwa_macs2callpeak_bradner_rose_coltron" ],
     },
     sh_direct => 0,
@@ -312,6 +343,7 @@ my $config = {
 };
 
 performConfig($config);
+#performTask( $config, "bwa_bam2bed_bed2bam" );
 
 1;
 

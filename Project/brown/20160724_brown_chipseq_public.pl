@@ -72,6 +72,7 @@ my $config = {
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
+      "emailType"=> "FAIL",
       "nodes"    => "1:ppn=1",
       "walltime" => "10",
       "mem"      => "10gb"
@@ -225,6 +226,6 @@ my $config = {
 
 #performConfig($config);
 
-performTask( $config, "bwa" );
+performTask( $config, "sra2fastq" );
 
 1;
