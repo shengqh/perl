@@ -20,10 +20,14 @@ my $def = {
   fastq_remove_N        => 0,
   remove_sequences      => "'CCACGTTCCCGTGG;ACAGTCCGACGATC'",
   search_unmapped_reads => 1,
-  blast_unmapped_reads  => 1,
 
   #nextflex kit
-  fastq_remove_random   => 4,                                   
+  fastq_remove_random => 4,
+
+  #time cost task
+  blast_top_reads         => 1,
+  blast_unmapped_reads    => 0,
+  perform_contig_analysis => 0,
 
   #Data
   files => {
