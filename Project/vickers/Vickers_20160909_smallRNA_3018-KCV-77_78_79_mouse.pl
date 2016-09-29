@@ -22,7 +22,7 @@ my $def = {
   search_unmapped_reads => 1,
   blast_unmapped_reads  => 1,
   top_read_number       => 300,
-  blast_top100_reads    => 1,
+  blast_top_reads       => 1,
   blast_localdb         => "/scratch/cqs/shengq1/references/blastdb",
 
   #next flex
@@ -199,16 +199,30 @@ my $config = performSmallRNA_mm10( $def, 0 );
 #$config->{bowtie1_genome_1mm_NTA_smallRNA_count}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/host_genome/bowtie1_genome_1mm_NTA_smallRNA_count";
 #performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_count" );
 
-$config->{identical_sequence_count_table}{target_dir}         = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
-$config->{identical_sequence_top100_contig_blast}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top100_contig_blast";
-$config->{identical_sequence_top100_read_blast}{target_dir}   = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top100_read_blast";
-$config->{identical_sequence_top100_minicontig_blast}{target_dir} =
-  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top100_minicontig_blast";
+my $topreads = $def->{top_read_number};
+$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
+$config->{"identical_sequence_top${topreads}_contig_blast"}{target_dir} =
+  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top${topreads}_contig_blast";
+$config->{"identical_sequence_top${topreads}_read_blast"}{target_dir} =
+  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top${topreads}_read_blast";
+$config->{"identical_sequence_top${topreads}_minicontig_blast"}{target_dir} =
+  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top${topreads}_minicontig_blast";
+
+$config->{"deseq2_top${topreads}_contigs"}{target_dir} =
+  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top${topreads}_contigs";
+$config->{"deseq2_top${topreads}_reads"}{target_dir} =
+  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top${topreads}_reads";
+$config->{"deseq2_top${topreads}_minicontigs"}{target_dir} =
+  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top${topreads}_minicontigs";
+
 
 performTask( $config, "identical_sequence_count_table" );
-performTask( $config, "identical_sequence_top100_contig_blast" );
-performTask( $config, "identical_sequence_top100_read_blast" );
-performTask( $config, "identical_sequence_top100_minicontig_blast" );
+performTask( $config, "identical_sequence_top${topreads}_contig_blast" );
+performTask( $config, "identical_sequence_top${topreads}_read_blast" );
+performTask( $config, "identical_sequence_top${topreads}_minicontig_blast" );
+performTask( $config, "deseq2_top${topreads}_contigs" );
+performTask( $config, "deseq2_top${topreads}_reads" );
+performTask( $config, "deseq2_top${topreads}_minicontigs" );
 
 #$config->{deseq2_top100_reads}{target_dir}            = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_reads";
 #$config->{deseq2_top100_contigs}{target_dir}          = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_contigs";

@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use CQS::PerformSmallRNA;
+use CQS::PerformSmallRNA2;
 use CQS::ClassFactory;
 
 my $def = {
@@ -10,7 +10,7 @@ my $def = {
   #General options
   task_name                 => "smallrnaseq",
   email                     => "quanhu.sheng\@vanderbilt.edu",
-  target_dir                => "/scratch/cqs/shengq1/pipelines/smallrnaseq",
+  target_dir                => "/scratch/cqs/shengq1/pipelines/smallrnaseq2",
   max_thread                => 8,
   cqstools                  => "/home/shengq1/cqstools/cqstools.exe",
   sequencetask_run_time     => 6,
