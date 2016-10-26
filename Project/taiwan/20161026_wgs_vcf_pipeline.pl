@@ -22,14 +22,41 @@ my $g1000     = "/home/cylee/tiger/bundle/b37/1000G_phase1.snps.high_confidence.
 my $mills     = "/home/cylee/tiger/bundle/b37/Mills_and_1000G_gold_standard.indels.b37.vcf";
 
 my $annovar_param = "-protocol refGene,avsnp147,cosmic70,exac03 -operation g,f,f,f";
-my $annovar_db    = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $annovar_db    = "/home/cylee/annovar/humandb/";
 
 my $config = {
   general => { task_name => "wgs" },
 
   files => {
-    "Control" => ["/home/cylee/tiger/wgs/data/SRR062634_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062634_2.filt.fastq.gz"],
-    "Sample"  => ["/home/cylee/tiger/wgs/data/SRR062635_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062635_2.filt.fastq.gz"],
+    "Control" => [ "/home/cylee/tiger/wgs/data/SRR062634_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062634_2.filt.fastq.gz" ],
+    "Sample"  => [ "/home/cylee/tiger/wgs/data/SRR062635_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062635_2.filt.fastq.gz" ],
+  },
+  fastqc => {
+    class      => "QC::FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc",
+    option     => "",
+    source_ref => "files",
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=2",
+      "walltime" => "1",
+      "mem"      => "10gb"
+    },
+  },
+  fastqc_summary => {
+    class      => "QC::FastQCSummary",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc",
+    option     => "",
+    cqstools   => $cqstools,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
   },
   bwa => {
     class      => "Alignment::BWA",
@@ -42,7 +69,7 @@ my $config = {
     sh_direct  => 1,
     pbs        => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=4",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -64,7 +91,7 @@ my $config = {
     sorted           => 1,
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=4",
       "walltime" => "240",
       "mem"      => "40gb"
     },
@@ -85,7 +112,7 @@ my $config = {
     sh_direct        => 1,
     pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=4",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -109,29 +136,11 @@ my $config = {
     sh_direct   => 1,
     pbs         => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=4",
       "walltime" => "72",
       "mem"      => "40gb"
     },
   },
-  bwa_refine_hc_gvcf_vqsr_annovar => {
-    class      => "Annotation::Annovar",
-    perform    => 1,
-    target_dir => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar",
-    option     => $annovar_param,
-    source_ref => [ "bwa_refine_hc_gvcf_vqsr", ".pass.vcf\$" ],
-    annovar_db => $annovar_db,
-    buildver   => "hg19",
-    cqstools   => $cqstools,
-    sh_direct  => 1,
-    isvcf      => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "10gb"
-    },
-  },  
   bwa_refine_hc_gvcf_hardFilter => {
     class       => "GATK::VariantFilter",
     perform     => 1,
@@ -153,19 +162,37 @@ my $config = {
       "mem"      => "70gb"
     },
   },
+  bwa_refine_hc_gvcf_hardFilter_annovar => {
+    class      => "Annotation::Annovar",
+    perform    => 1,
+    target_dir => "${target_dir}/bwa_refine_hc_gvcf_hardFilter_annovar",
+    option     => $annovar_param,
+    source_ref => [ "bwa_refine_hc_gvcf_hardFilter", ".pass.vcf\$" ],
+    annovar_db => $annovar_db,
+    buildver   => "hg19",
+    cqstools   => $cqstools,
+    sh_direct  => 1,
+    isvcf      => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "10gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
-      step2 => [ "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_hardFilter" ],
+      step1 => [ "fastqc",         "bwa",                     "bwa_refine",                    "bwa_refine_hc_gvcf" ],
+      step2 => [ "fastqc_summary", "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_hardFilter", "bwa_refine_hc_gvcf_hardFilter_annovar" ],
     },
     sh_direct => 0,
     pbs       => {
       "email"    => $email,
-      "nodes"    => "1:ppn=8",
+      "nodes"    => "1:ppn=4",
       "walltime" => "72",
       "mem"      => "40gb"
     },
@@ -175,5 +202,4 @@ my $config = {
 performConfig($config);
 
 1;
-
 
