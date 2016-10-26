@@ -13,6 +13,7 @@ my $email      = "quanhu.sheng\@vanderbilt.edu";
 my $cqstools   = "/home/cylee/tools/cqstools/cqstools.exe";
 my $gatk_jar   = "/home/cylee/tools/GenomeAnalysisTK.jar";
 my $picard_jar = "/home/cylee/tools/picard.jar";
+my $mutect     = "/home/cylee/tools/mutect-1.1.7.jar";
 
 my $bwa_fasta = "/home/cylee/tiger/bundle/b37/bwa_index_0.7.12/human_g1k_v37.fasta";
 my $dbsnp     = "/home/cylee/tiger/bundle/dbsnp/human_GRCh37_v147_16569_MT.vcf";
@@ -20,6 +21,7 @@ my $hapmap    = "/home/cylee/tiger/bundle/b37/hapmap_3.3.b37.vcf";
 my $omni      = "/home/cylee/tiger/bundle/b37/1000G_omni2.5.b37.vcf";
 my $g1000     = "/home/cylee/tiger/bundle/b37/1000G_phase1.snps.high_confidence.b37.vcf";
 my $mills     = "/home/cylee/tiger/bundle/b37/Mills_and_1000G_gold_standard.indels.b37.vcf";
+my $cosmic    = "/home/cylee/tiger/bundle/cosmic_v71_hg19_16569_MT.vcf";
 
 my $annovar_param = "-protocol refGene,avsnp147,cosmic70,exac03 -operation g,f,f,f";
 my $annovar_db    = "/home/cylee/annovar/humandb/";
@@ -30,6 +32,9 @@ my $config = {
   files => {
     "Control" => [ "/home/cylee/tiger/wgs/data/SRR062634_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062634_2.filt.fastq.gz" ],
     "Sample"  => [ "/home/cylee/tiger/wgs/data/SRR062635_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062635_2.filt.fastq.gz" ],
+  },
+  groups => {
+    "Test" => [ "Control", "Sample" ]
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -92,6 +97,27 @@ my $config = {
     pbs              => {
       "email"    => $email,
       "nodes"    => "1:ppn=4",
+      "walltime" => "240",
+      "mem"      => "40gb"
+    },
+  },
+  bwa_refine_mutect => {
+    class        => "GATK::MuTect",
+    perform      => 1,
+    target_dir   => "${target_dir}/bwa_refine_mutect",
+    option       => "--min_qscore 20 --filter_reads_with_N_cigar",
+    java_option  => "-Xmx40g",
+    source_ref   =>,
+    groups_ref   => "groups",
+    fasta_file   => $bwa_fasta,
+    cosmic_file  => $cosmic,
+    dbsnp_file   => $dbsnp,
+    bychromosome => 0,
+    sh_direct    => 1,
+    muTect_jar   => $mutect,
+    pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
       "walltime" => "240",
       "mem"      => "40gb"
     },
@@ -186,7 +212,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",         "bwa",                     "bwa_refine",                    "bwa_refine_hc_gvcf" ],
+      step1 => [ "fastqc", "bwa", "bwa_refine", "bwa_refine_hc_gvcf", "bwa_refine_mutect" ],
       step2 => [ "fastqc_summary", "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_hardFilter", "bwa_refine_hc_gvcf_hardFilter_annovar" ],
     },
     sh_direct => 0,
