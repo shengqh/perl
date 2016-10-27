@@ -105,6 +105,7 @@ my $config = {
     class        => "GATK::MuTect",
     perform      => 1,
     target_dir   => "${target_dir}/bwa_refine_mutect",
+    java         => "/usr/lib/jvm/java-7-oracle/jre/bin/java",
     option       => "--min_qscore 20 --filter_reads_with_N_cigar",
     java_option  => "-Xmx40g",
     source_ref   => "bwa_refine",
@@ -212,7 +213,7 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc", "bwa", "bwa_refine", "bwa_refine_hc_gvcf", "bwa_refine_mutect" ],
+      step1 => [ "fastqc",         "bwa",                     "bwa_refine",                    "bwa_refine_hc_gvcf", "bwa_refine_mutect" ],
       step2 => [ "fastqc_summary", "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_hardFilter", "bwa_refine_hc_gvcf_hardFilter_annovar" ],
     },
     sh_direct => 0,
