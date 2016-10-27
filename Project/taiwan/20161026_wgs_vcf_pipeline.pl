@@ -7,7 +7,7 @@ use CQS::SystemUtils;
 use CQS::ConfigUtils;
 use CQS::ClassFactory;
 
-my $target_dir = create_directory_or_die("/home/cylee/tiger/wgs");
+my $target_dir = create_directory_or_die("/home/cylee/tiger/wgs2");
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools   = "/home/cylee/tools/cqstools/cqstools.exe";
@@ -30,8 +30,8 @@ my $config = {
   general => { task_name => "wgs" },
 
   files => {
-    "Control" => [ "/home/cylee/tiger/wgs/data/SRR062634_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062634_2.filt.fastq.gz" ],
-    "Sample"  => [ "/home/cylee/tiger/wgs/data/SRR062635_1.filt.fastq.gz", "/home/cylee/tiger/wgs/data/SRR062635_2.filt.fastq.gz" ],
+    "Control" => [ "/home/cylee/tiger/wgs2/data/Control.1.fastq.gz", "/home/cylee/tiger/wgs2/data/Control.2.fastq.gz" ],
+    "Sample"  => [ "/home/cylee/tiger/wgs2/data/Sample.1.fastq.gz", "/home/cylee/tiger/wgs2/data/Sample.2.fastq.gz" ],
   },
   groups => {
     "Test" => [ "Control", "Sample" ]
