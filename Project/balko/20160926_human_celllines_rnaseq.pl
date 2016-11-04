@@ -18,7 +18,18 @@ my $name_map_file  = "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v23li
 my $star_index     = "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2a";
 my $fasta_file     = "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2a/GRCh37.p13.genome.fa";
 
+my $gatk_jar   = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
+my $picard_jar = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
+
+my $dbsnp             = "/scratch/cqs/shengq1/references/dbsnp/human_GRCh37_v142_16569_M_chr.vcf";
+my $annovar_protocol  = "refGene,avsnp147,cosmic70";
+my $annovar_operation = "g,f,f";
+my $annovar_param     = "-protocol ${annovar_protocol} -operation ${annovar_operation} --remove";
+my $annovar_db        = "/scratch/cqs/shengq1/references/annovar/humandb/";
+my $rnaediting_db     = "/data/cqs/shengq1/reference/rnaediting/hg19.txt";
+
 my $cqstools = "/home/shengq1/cqstools/cqstools.exe";
+my $glmvc    = "/home/shengq1/glmvc/glmvc.exe";
 my $email    = "quanhu.sheng\@vanderbilt.edu";
 
 my $config = {
@@ -63,10 +74,17 @@ my $config = {
   },
   pairs => {
     "MHCII_Pos_vs_Neg" => {
-      groups   => [ "MHCII_Neg", "MHCII_Pos" ],
+      groups => [ "MHCII_Neg", "MHCII_Pos" ],
       Paired => [ "A375",      "SKMEL28", "HCC70", "MDA231", "A375", "SKMEL28", "HCC70", "MDA231" ],
+
       #Tumor    => [ "Melanoma",  "Melanoma", "Breast", "Breast", "Melanoma", "Melanoma", "Breast", "Breast" ]
     }
+  },
+  somatic_groups => {
+    "A375_Melanoma"    => [ "A375_Melanoma_Neg",    "A375_Melanoma_Pos" ],
+    "SKMEL28_Melanoma" => [ "SKMEL28_Melanoma_Neg", "SKMEL28_Melanoma_Pos" ],
+    "HCC70_Breast"     => [ "HCC70_Breast_Neg",     "HCC70_Breast_Pos" ],
+    "MDA231_Breast"    => [ "MDA231_Breast_Neg",    "MDA231_Breast_Pos" ],
   },
   fastqc => {
     class      => "QC::FastQC",
@@ -166,32 +184,58 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  star_genetable_correlation => {
-    class                    => "CQS::UniqueR",
-    perform                  => 1,
-    target_dir               => "${target_dir}/star_genetable_correlation",
-    rtemplate                => "countTableVisFunctions.R,countTableGroupCorrelation.R",
-    output_file              => "parameterSampleFile1",
-    output_file_ext          => ".Correlation.png",
-    parameterSampleFile1_ref => [ "star_genetable", ".count\$" ],
-    parameterSampleFile2_ref => "groups",
-    sh_direct                => 1,
-    pbs                      => {
+  star_refine => {
+    class            => "GATK::RNASeqRefine",
+    perform          => 1,
+    target_dir       => "${target_dir}/star_refine",
+    option           => "-Xmx40g",
+    fasta_file       => $fasta_file,
+    source_ref       => "star",
+    vcf_files        => [$dbsnp],
+    gatk_jar         => $gatk_jar,
+    picard_jar       => $picard_jar,
+    slim_print_reads => 1,
+    sorted           => 1,
+    sh_direct        => 1,
+    pbs              => {
       "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "1",
-      "mem"      => "10gb"
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
-
+  star_refine_glmvc => {
+    class             => "Variants::GlmvcCall",
+    perform           => 1,
+    target_dir        => "${target_dir}/star_refine_glmvc",
+    option            => "--min_tumor_percentage 0.1 --min_tumor_read 5",
+    source_type       => "BAM",
+    source_ref        => "star_refine",
+    groups_ref        => "somatic_groups",
+    fasta_file        => $fasta_file,
+    annovar_buildver  => "hg19",
+    annovar_protocol  => $annovar_protocol,
+    annovar_operation => $annovar_operation,
+    annovar_db        => $annovar_db,
+    rnaediting_db     => $rnaediting_db,
+    distance_exon_gtf => $transcript_gtf,
+    sh_direct         => 1,
+    execute_file      => $glmvc,
+    pbs               => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
   sequencetask => {
     class      => "CQS::SequenceTask",
     perform    => 1,
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step1 => [ "fastqc",         "star",           "star_featurecount" ],
-      step2 => [ "fastqc_summary", "star_genetable", "star_genetable_correlation", "star_genetable_deseq2" ],
+      step1 => [ "fastqc",         "star",           "star_featurecount",     "star_refine" ],
+      step2 => [ "fastqc_summary", "star_genetable", "star_genetable_deseq2", "star_refine_glmvc" ],
     },
     sh_direct => 0,
     pbs       => {

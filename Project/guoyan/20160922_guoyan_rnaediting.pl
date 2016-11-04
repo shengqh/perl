@@ -12,11 +12,12 @@ my $target_dir = create_directory_or_die("/workspace/shengq1/guoyan/20160922_rna
 my $email      = "quanhu.sheng\@vanderbilt.edu";
 
 my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
+my $gatk_jar     = "/home/shengq1/local/bin/GATK/GenomeAnalysisTK.jar";
 my $picard_jar   = "/scratch/cqs/shengq1/local/bin/picard/picard.jar";
 my $bwa_fasta    = "/workspace/shengq1/guoyan/20160922_rnaediting/database/bwa_index_0.7.12/rat_GRM4.fasta";
 my $bowtie_fasta = "/workspace/shengq1/guoyan/20160922_rnaediting/database/bowtie_index_1.1.2/rat_GRM4.fasta";
 my $bowtie_index = "/workspace/shengq1/guoyan/20160922_rnaediting/database/bowtie_index_1.1.2/rat_GRM4";
-my $config = {
+my $config       = {
   general => { task_name => "rnaediting" },
   files   => {
     "Cerebellum-Rat1_S01" => [
@@ -167,37 +168,6 @@ my $config = {
       "mem"      => "10gb"
     },
   },
-  bwa => {
-    class              => "Alignment::BWA",
-    perform            => 1,
-    target_dir         => "${target_dir}/bwa",
-    option             => "",
-    bwa_index          => $bwa_fasta,
-    picard_jar         => $picard_jar,
-    source_ref         => "files",
-    sort_by_coordinate => 1,
-    sh_direct          => 1,
-    pbs                => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=8",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
-  bwa_mismatch => {
-    class      => "QC::BamMismatch",
-    perform    => 1,
-    target_dir => "${target_dir}/bwa_mismatch",
-    option     => "",
-    source_ref => "bwa",
-    sh_direct  => 1,
-    pbs        => {
-      "email"    => $email,
-      "nodes"    => "1:ppn=1",
-      "walltime" => "72",
-      "mem"      => "40gb"
-    },
-  },
   fastq_join => {
     class      => "Format::FastqJoin",
     perform    => 1,
@@ -240,20 +210,74 @@ my $config = {
     },
   },
   fastq_join_bowtie => {
-    class         => "Alignment::Bowtie1",
-    perform       => 1,
-    target_dir    => "${target_dir}/fastq_join_bowtie",
-    option        => "",
-    fasta_file    => $bowtie_fasta,
-    source_ref    => "fastq_join",
-    bowtie1_index => $bowtie_index,
+    class                 => "Alignment::Bowtie1",
+    perform               => 1,
+    target_dir            => "${target_dir}/fastq_join_bowtie",
+    option                => "",
+    fasta_file            => $bowtie_fasta,
+    source_ref            => "fastq_join",
+    bowtie1_index         => $bowtie_index,
+    add_RG_to_read        => 1,
+    picard_jar            => $picard_jar,
     output_to_same_folder => 1,
-    sh_direct     => 1,
-    pbs           => {
+    sh_direct             => 1,
+    pbs                   => {
       "email"    => $email,
       "nodes"    => "1:ppn=8",
       "walltime" => "72",
       "mem"      => "40gb"
+    },
+  },
+  fastq_join_bowtie_snv => {
+    class      => "GATK::UnifiedGenotyperCombine",
+    perform    => 1,
+    target_dir => "${target_dir}/fastq_join_bowtie_snv",
+    option     => "-rf ReassignOneMappingQuality -RMQF 255 -RMQT 60",
+    fasta_file => $bowtie_fasta,
+    source_ref => "fastq_join_bowtie",
+    gatk_jar   => $gatk_jar,
+    by_file    => 0,
+    sh_direct  => 1,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  fastq_join_bowtie_stat => {
+    class                    => "CQS::UniqueR",
+    perform                  => 1,
+    target_dir               => "${target_dir}/fastq_join_bowtie",
+    option                   => "",
+    rtemplate                => "samtoolsStatTable.R",
+    output_file              => ".MappedStat",
+    output_file_ext          => ".Reads.tsv",
+    parameterSampleFile1_ref => [ "fastq_join_bowtie", ".stat\$" ],
+    sh_direct                => 1,
+    pbs                      => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  reads_summary => {
+    class              => "CQS::UniqueR",
+    perform            => 1,
+    target_dir         => "${target_dir}/reads_summary",
+    rtemplate          => "rnaeditingReads.R",
+    output_file        => ".Summary",
+    output_file_ext    => ".Reads.png;.Reads.tsv",
+    parameterFile1_ref => [ "fastqc_raw_summary", ".FastQC.summary.reads.tsv\$" ],
+    parameterFile2_ref => [ "fastq_join_fastqc_summary", ".FastQC.summary.reads.tsv\$" ],
+    parameterFile3_ref => [ "fastq_join_bowtie_stat", ".Reads.tsv\$" ],
+    sh_direct          => 1,
+    pbs                => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "1",
+      "mem"      => "10gb"
     },
   },
   fastq_join_bowtie_mismatch => {
@@ -263,8 +287,25 @@ my $config = {
     option       => "",
     source_ref   => "fastq_join_bowtie",
     max_mismatch => 10,
+    height_width => "4000 4000",
     sh_direct    => 1,
     pbs          => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "72",
+      "mem"      => "40gb"
+    },
+  },
+  rnaediting_result => {
+    class          => "RNAediting::ParseMutation",
+    perform        => 1,
+    target_dir     => "${target_dir}/rnaediting_result",
+    option         => "",
+    source_ref     => "fastq_join_bowtie",
+    sequence_fasta => $bowtie_fasta,
+    positions      => "72, 75, 231, 246, 331",
+    sh_direct      => 1,
+    pbs            => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
       "walltime" => "72",
@@ -277,8 +318,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      T1 => [ "fastqc_raw",         "bwa",          "fastq_join",                "fastq_join_fastqc", "fastq_join_bowtie" ],
-      T2 => [ "fastqc_raw_summary", "bwa_mismatch", "fastq_join_fastqc_summary", "fastq_join_bowtie_mismatch" ],
+      T1 => [ "fastqc_raw",         "fastq_join",                "fastq_join_fastqc",      "fastq_join_bowtie", "fastq_join_bowtie_snv" ],
+      T2 => [ "fastqc_raw_summary", "fastq_join_fastqc_summary", "fastq_join_bowtie_stat", "reads_summary",     "rnaediting_result", "fastq_join_bowtie_mismatch" ],
     },
     sh_direct => 0,
     pbs       => {
