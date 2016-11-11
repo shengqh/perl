@@ -35,6 +35,8 @@ my $gene_bed = "/gpfs21/scratch/cqs/shengq1/dnaseq/20160829_liuqi_gene_panel/doc
 
 my $cluster = "slurm";
 
+my $genes = "APC ROBO2 KRAS NRAS BRAF TP53";
+
 my $config = {
   general => { task_name => "Adenoma" },
   files   => {
@@ -1824,6 +1826,108 @@ my $config = {
       "mem"      => "10gb"
     },
   },
+  bwa_refine_hc_gvcf_vqsr_annovar_filter => {
+    class               => "Annotation::FilterAnnovar",
+    perform             => 1,
+    target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter",
+    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar",
+    option              => "",
+    sh_direct           => 1,
+    maximum_exac_values => "0.001,0.01,0.1,1.0",
+    pbs                 => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  bwa_refine_hc_gvcf_vqsr_annovar_filter_cbioportal => {
+    class               => "Annotation::CBioPortal",
+    perform             => 1,
+    target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter",
+    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter",
+    option              => "",
+    sample_name_pattern => "cur_",
+    sample_name_suffix  => "",
+    gene_names          => $genes,
+    sh_direct           => 1,
+    pbs                 => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  bwa_refine_hc_gvcf_vqsr_annovar_filter_oncoprint => {
+    class               => "Annotation::OncoPrint",
+    perform             => 1,
+    target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter",
+    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter",
+    picture_width       => 6000,
+    picture_height      => 1000,
+    sample_name_pattern => "cur_",
+    sample_name_suffix  => "",
+    gene_names          => $genes,
+    sh_direct           => 1,
+    pbs                 => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  bwa_refine_hc_gvcf_vqsr_annovar_filter_base1 => {
+    class               => "Annotation::FilterAnnovar",
+    perform             => 1,
+    target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar",
+    option              => "",
+    sample_name_pattern => "_Base1",
+    sample_name_suffix  => ".base1",
+    sh_direct           => 1,
+    maximum_exac_values => "0.001,0.01,0.1,1.0",
+    pbs                 => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_cbioportal => {
+    class               => "Annotation::CBioPortal",
+    perform             => 1,
+    target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+    option              => "",
+    sample_name_pattern => "_Base1",
+    sample_name_suffix  => "",
+    gene_names          => $genes,
+    sh_direct           => 1,
+    pbs                 => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
+  bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_oncoprint => {
+    class               => "Annotation::OncoPrint",
+    perform             => 1,
+    target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+    picture_width       => 4000,
+    picture_height      => 1000,
+    sample_name_pattern => "_Base1",
+    sample_name_suffix  => "",
+    gene_names          => "APC ROBO2 KRAS NRAS BRAF TP53",
+    sh_direct           => 1,
+    pbs                 => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=1",
+      "walltime" => "2",
+      "mem"      => "10gb"
+    },
+  },
   bwa_refine_hc_gvcf_hardfilter => {
     class       => "GATK::VariantFilter",
     perform     => 0,
@@ -1874,7 +1978,7 @@ my $config = {
         "fastqc_summary",
 
         # "qc3", "qc3_refine",
-        "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_vqsr_annovar"
+        "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_vqsr_annovar", "bwa_refine_hc_gvcf_vqsr_annovar_filter", "bwa_refine_hc_gvcf_vqsr_annovar_filter_oncoprint_base1"
 
           #, "bwa_refine_hc_gvcf_hardfilter", "bwa_refine_hc_gvcf_hardfilter_annovar",
       ],
@@ -1889,9 +1993,12 @@ my $config = {
   },
 };
 
-performConfig($config);
+#performConfig($config);
 
-#performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar" );
+#performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter" );
+performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter_cbioportal" );
+#performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1" );
+performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_cbioportal" );
 
 1;
 

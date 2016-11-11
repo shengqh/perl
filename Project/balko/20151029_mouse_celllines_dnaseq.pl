@@ -8,8 +8,7 @@ use CQS::ConfigUtils;
 use CQS::ClassFactory;
 use Hash::Merge qw( merge );
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/dnaseq/20151029_balko_mouse_celllines");
-my $workspace  = "/workspace/shengq1/dnaseq/";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/balko/20151029_mouse_celllines_dnaseq");
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -478,9 +477,7 @@ for my $dataset (@datasets) {
       glmvc_noMYC_table => {
         class   => "Variants::GlmvcTable",
         perform => 1,
-
-        #target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
-        target_dir   => "/workspace/shengq1/dnaseq/" . $dataset->{task_name} . "/glmvc_noMYC_table",
+        target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
         option       => "",
         source_ref   => [ "glmvc_noMYC_rawpvalue", "annotation.tsv" ],
         sh_direct    => 1,
@@ -505,7 +502,7 @@ for my $dataset (@datasets) {
         cnmops => {
           class            => "CNV::cnMops",
           perform          => 1,
-          target_dir       => $workspace . $dataset->{task_name} . "/cnmops",
+          target_dir       => "${target_dir}/" . $dataset->{task_name} . "/cnmops",
           option           => "",
           source_ref       => "bwa_refine",
           bedfile          => $dataset->{capture_bed},
@@ -525,7 +522,7 @@ for my $dataset (@datasets) {
         cnmops_depth => {
           class          => "Visualization::Depth",
           perform        => 1,
-          target_dir     => $workspace . $dataset->{task_name} . "/cnmops_depth",
+          target_dir     => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
           option         => "",
           source_ref     => [ "cnmops", ".call.tsv.cnvr\$" ],
           groups_ref     => $dataset->{depthgroups},
@@ -552,7 +549,7 @@ for my $dataset (@datasets) {
         cnmops => {
           class            => "CNV::cnMops",
           perform          => 1,
-          target_dir       => $workspace . $dataset->{task_name} . "/cnmops",
+          target_dir       => "${target_dir}/" . $dataset->{task_name} . "/cnmops",
           option           => "",
           source_ref       => "bwa_refine",
           pairmode         => "paired",
@@ -573,7 +570,7 @@ for my $dataset (@datasets) {
         cnmops_depth => {
           class          => "Visualization::Depth",
           perform        => 1,
-          target_dir     => $workspace . $dataset->{task_name} . "/cnmops_depth",
+          target_dir     => "${target_dir}/" . $dataset->{task_name} . "/cnmops_depth",
           option         => "",
           source_ref     => [ "cnmops", ".call.tsv.cnvr\$" ],
           groups_ref     => $dataset->{depthgroups},
@@ -591,7 +588,7 @@ for my $dataset (@datasets) {
         },
         glmvc_WES_validation => {
           class            => "Variants::GlmvcValidate",
-          perform          => 0,
+          perform          => 1,
           target_dir       => "${target_dir}/" . $dataset->{task_name} . "/glmvc_WES_validation",
           option           => "",
           source_type      => "BAM",
@@ -655,15 +652,15 @@ for my $dataset (@datasets) {
     },
   };
 
-  #  performConfig($config);
-  #performTask($config, "glmvc_noMYC_fdr");
-  #performTask( $config, "glmvc_noMYC_rawpvalue" );
-
-  #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
-  #performTask( $config, "glmvc_noMYC_table" );
-
-  performTask( $config, "cnmops" );
-  performTask( $config, "cnmops_depth" );
+  performConfig($config);
+#  #performTask($config, "glmvc_noMYC_fdr");
+#  #performTask( $config, "glmvc_noMYC_rawpvalue" );
+#
+#  #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
+#  #performTask( $config, "glmvc_noMYC_table" );
+#
+#  performTask( $config, "cnmops" );
+#  performTask( $config, "cnmops_depth" );
 }
 
 1;
