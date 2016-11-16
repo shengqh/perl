@@ -1845,7 +1845,7 @@ my $config = {
     class               => "Annotation::CBioPortal",
     perform             => 1,
     target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter",
-    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter",
+    source_ref          => ["bwa_refine_hc_gvcf_vqsr_annovar_filter", ".SNP.tsv"],
     option              => "",
     sample_name_pattern => "cur_",
     sample_name_suffix  => "",
@@ -1862,7 +1862,7 @@ my $config = {
     class               => "Annotation::OncoPrint",
     perform             => 1,
     target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter",
-    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter",
+    source_ref          => ["bwa_refine_hc_gvcf_vqsr_annovar_filter", ".SNP.tsv"],
     picture_width       => 6000,
     picture_height      => 1000,
     sample_name_pattern => "cur_",
@@ -1897,7 +1897,7 @@ my $config = {
     class               => "Annotation::CBioPortal",
     perform             => 1,
     target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
-    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+    source_ref          => ["bwa_refine_hc_gvcf_vqsr_annovar_filter_base1", ".SNP.tsv"],
     option              => "",
     sample_name_pattern => "_Base1",
     sample_name_suffix  => "",
@@ -1914,7 +1914,7 @@ my $config = {
     class               => "Annotation::OncoPrint",
     perform             => 1,
     target_dir          => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
-    source_ref          => "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+    source_ref          => ["bwa_refine_hc_gvcf_vqsr_annovar_filter_base1", ".SNP.tsv"],
     picture_width       => 4000,
     picture_height      => 1000,
     sample_name_pattern => "_Base1",
@@ -1978,7 +1978,13 @@ my $config = {
         "fastqc_summary",
 
         # "qc3", "qc3_refine",
-        "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_vqsr_annovar", "bwa_refine_hc_gvcf_vqsr_annovar_filter", "bwa_refine_hc_gvcf_vqsr_annovar_filter_oncoprint_base1"
+        "bwa_refine_hc_gvcf_vqsr", "bwa_refine_hc_gvcf_vqsr_annovar", 
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter", 
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter_oncoprint",
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter_cbioportal",
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1", 
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_oncoprint",
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_cbioportal"
 
           #, "bwa_refine_hc_gvcf_hardfilter", "bwa_refine_hc_gvcf_hardfilter_annovar",
       ],
@@ -1993,12 +1999,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-
-#performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter" );
-performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter_cbioportal" );
-#performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1" );
-performTask( $config, "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_cbioportal" );
+performConfig($config);
 
 1;
 

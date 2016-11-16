@@ -475,8 +475,8 @@ for my $dataset (@datasets) {
         },
       },
       glmvc_noMYC_table => {
-        class   => "Variants::GlmvcTable",
-        perform => 1,
+        class        => "Variants::GlmvcTable",
+        perform      => 1,
         target_dir   => "${target_dir}/" . $dataset->{task_name} . "/glmvc_noMYC_table",
         option       => "",
         source_ref   => [ "glmvc_noMYC_rawpvalue", "annotation.tsv" ],
@@ -517,6 +517,30 @@ for my $dataset (@datasets) {
             "nodes"    => "1:ppn=1",
             "walltime" => "72",
             "mem"      => "40gb"
+          },
+        },
+        bamplot => {
+          class      => "Visualization::Bamplot",
+          perform    => 1,
+          target_dir => "${target_dir}/" . $dataset->{task_name} . "/cnmops_bamplot",
+          option     => "-g MM10 -y uniform -r --save-temp",
+          source_ref => "bwa_refine",
+          groups     => {
+            "test" => [
+              "N04_DUSP4flox_LACZ", "N05_DUSP4flox_Trp53null1_LACZ", "N07_DUSP4flox_MYC", "N09_DUSP4flox_Trp53null3_MYC",
+              "N13_DUSP4null_LACZ", "N15_DUSP4null_Trp53null3_LACZ", "N16_DUSP4null_MYC", "N17_DUSP4null_Trp53null1_MYC"
+            ]
+          },
+          gff_file           => [ "cnmops", ".cnvr" ],
+          is_rainbow_color   => 0,
+          is_single_pdf      => 0,
+          is_draw_individual => 0,
+          sh_direct          => 1,
+          pbs                => {
+            "email"    => $email,
+            "nodes"    => "1:ppn=1",
+            "walltime" => "1",
+            "mem"      => "10gb"
           },
         },
         cnmops_depth => {
@@ -652,15 +676,19 @@ for my $dataset (@datasets) {
     },
   };
 
-  performConfig($config);
-#  #performTask($config, "glmvc_noMYC_fdr");
-#  #performTask( $config, "glmvc_noMYC_rawpvalue" );
-#
-#  #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
-#  #performTask( $config, "glmvc_noMYC_table" );
-#
-#  performTask( $config, "cnmops" );
-#  performTask( $config, "cnmops_depth" );
+  #performConfig($config);
+
+  if ( defined $dataset->{capture_bed} ) {
+    performTask( $config, "bamplot" );
+  }
+
+  #  #performTask( $config, "glmvc_noMYC_rawpvalue" );
+  #
+  #  #performTask($config, "glmvc_noMYC_v1_3_6_rawpvalue");
+  #  #performTask( $config, "glmvc_noMYC_table" );
+  #
+  #  performTask( $config, "cnmops" );
+  #  performTask( $config, "cnmops_depth" );
 }
 
 1;
