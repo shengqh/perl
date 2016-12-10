@@ -24,6 +24,8 @@ my $def = {
   top_read_number       => 100,
   blast_top_reads       => 0,
   blast_localdb         => "/scratch/cqs/shengq1/references/blastdb",
+  
+  special_sequence_file => "/scratch/cqs/shengq1/vickers/20161121_smallRNA_3018_85_spikein_run2/spikein.txt",
 
   #next flex
   fastq_remove_random => 4,

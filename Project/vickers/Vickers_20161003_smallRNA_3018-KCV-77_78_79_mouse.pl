@@ -2,17 +2,19 @@
 use strict;
 use warnings;
 
-use CQS::PerformSmallRNA;
+use CQS::PerformSmallRNA2;
 use CQS::ClassFactory;
+
+my $email = "quanhu.sheng\@vanderbilt.edu";
 
 my $def = {
 
   #General options
   task_name                 => "KCV-77_78_79",
-  email                     => "quanhu.sheng\@vanderbilt.edu",
-  target_dir                => "/scratch/cqs/zhaos/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse",
+  email                     => $email,
+  target_dir                => "/scratch/cqs/zhaos/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse",
   max_thread                => 8,
-  cqstools                  => "/home/shengq1/cqstools/CQS.Tools.exe",
+  cqstools                  => "/home/shengq1/cqstools/cqstools.exe",
   sequencetask_run_time     => 6,
   table_vis_group_text_size => 12,
 
@@ -28,37 +30,47 @@ my $def = {
   #next flex
   fastq_remove_random => 4,
 
+  #DE
+  DE_top25only              => 1,
+  DE_detected_in_both_group => 1,
+  DE_perform_wilcox         => 1,
+  DE_show_gene_cluster      => 0,
+
   #Data
   files => {
     "Liver_WT_1"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i1_S1_R1_001.fastq.gz'],
+    "Liver_SRBIKO_2"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i2_S2_R1_001.fastq.gz'],
+    "Liver_WT_3"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i3_S3_R1_001.fastq.gz'],
+    "Liver_SRBIKO_4"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i4_S4_R1_001.fastq.gz'],
+    "Liver_WT_5"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i5_S5_R1_001.fastq.gz'],
+    "Urine_WT_1"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i8_S6_R1_001.fastq.gz'],
+    "Urine_SRBIKO_2"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i9_S7_R1_001.fastq.gz'],
     "Urine_WT_3"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i10_S8_R1_001.fastq.gz'],
     "Bile_WT_1"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i15_S9_R1_001.fastq.gz'],
     "Bile_SRBIKO_2"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i16_S10_R1_001.fastq.gz'],
     "Bile_WT_3"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i17_S11_R1_001.fastq.gz'],
     "Bile_SRBIKO_4"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i18_S12_R1_001.fastq.gz'],
     "Bile_WT_5"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i19_S13_R1_001.fastq.gz'],
-    "Liver_SRBIKO_2"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i2_S2_R1_001.fastq.gz'],
     "HDL_WT_1"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i28_S14_R1_001.fastq.gz'],
     "HDL_SRBIKO_2"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i29_S15_R1_001.fastq.gz'],
-    "Liver_WT_3"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i3_S3_R1_001.fastq.gz'],
     "HDL_WT_3"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i30_S16_R1_001.fastq.gz'],
     "HDL_SRBIKO_6"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i31_S17_R1_001.fastq.gz'],
     "HDL_SRBIKO_7"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i32_S18_R1_001.fastq.gz'],
-    "Liver_SRBIKO_4"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i4_S4_R1_001.fastq.gz'],
     "APOB_WT_1"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i42_S19_R1_001.fastq.gz'],
     "APOB_SRBIKO_2"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i43_S20_R1_001.fastq.gz'],
     "APOB_WT_3"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i44_S21_R1_001.fastq.gz'],
     "APOB_SRBIKO_4"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i45_S22_R1_001.fastq.gz'],
-    "Liver_WT_5"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i5_S5_R1_001.fastq.gz'],
-    "Urine_WT_1"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i8_S6_R1_001.fastq.gz'],
-    "Urine_SRBIKO_2"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i9_S7_R1_001.fastq.gz'],
     "APOB_WT_8"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i1_S1_R1_001.fastq.gz'],
+    "APOB_SRBIKO_9"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i2_S2_R1_001.fastq.gz'],
+    "Liver_SRBIKO_6"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i6_S3_R1_001.fastq.gz'],
+    "Liver_SRBIKO_7"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i7_S4_R1_001.fastq.gz'],
+    "Liver_WT_8"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i8_S5_R1_001.fastq.gz'],
+    "Liver_SRBIKO_9"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i9_S6_R1_001.fastq.gz'],
     "Urine_WT_5"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i11_S7_R1_001.fastq.gz'],
     "Urine_SRBIKO_6"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i12_S8_R1_001.fastq.gz'],
     "Urine_SRBIKO_7"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i13_S9_R1_001.fastq.gz'],
     "Urine_WT_8"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i14_S10_R1_001.fastq.gz'],
     "Urine_SRBIKO_9"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i15_S11_R1_001.fastq.gz'],
-    "APOB_SRBIKO_9"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i2_S2_R1_001.fastq.gz'],
     "Bile_SRBIKO_6"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i20_S12_R1_001.fastq.gz'],
     "Bile_SRBIKO_7"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i21_S13_R1_001.fastq.gz'],
     "Bile_WT_8"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i22_S14_R1_001.fastq.gz'],
@@ -70,10 +82,11 @@ my $def = {
     "APOB_WT_5"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i46_S20_R1_001.fastq.gz'],
     "APOB_SRBIKO_6"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i47_S21_R1_001.fastq.gz'],
     "APOB_SRBIKO_7"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i48_S22_R1_001.fastq.gz'],
-    "Liver_SRBIKO_6"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i6_S3_R1_001.fastq.gz'],
-    "Liver_SRBIKO_7"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i7_S4_R1_001.fastq.gz'],
-    "Liver_WT_8"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i8_S5_R1_001.fastq.gz'],
-    "Liver_SRBIKO_9"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i9_S6_R1_001.fastq.gz'],
+    "APOB_WT_10"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i3_S1_R1_001.fastq.gz'],
+    "APOB_SRBIKO_11"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i4_S2_R1_001.fastq.gz'],
+    "APOB_WT_12"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i5_S3_R1_001.fastq.gz'],
+    "APOB_SRBIKO_13"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i6_S4_R1_001.fastq.gz'],
+    "APOB_WT_14"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i7_S5_R1_001.fastq.gz'],
     "Liver_WT_10"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i10_S6_R1_001.fastq.gz'],
     "Liver_SRBIKO_11" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i11_S7_R1_001.fastq.gz'],
     "Liver_WT_12"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i12_S8_R1_001.fastq.gz'],
@@ -86,17 +99,11 @@ my $def = {
     "Bile_WT_12"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i25_S15_R1_001.fastq.gz'],
     "Bile_SRBIKO_13"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i26_S16_R1_001.fastq.gz'],
     "Bile_WT_14"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i27_S17_R1_001.fastq.gz'],
-    "APOB_WT_10"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i3_S1_R1_001.fastq.gz'],
     "HDL_SRBIKO_4"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i37_S18_R1_001.fastq.gz'],
     "HDL_WT_5"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i38_S19_R1_001.fastq.gz'],
     "HDL_WT_12"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i39_S20_R1_001.fastq.gz'],
-    "APOB_SRBIKO_11"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i4_S2_R1_001.fastq.gz'],
     "HDL_SRBIKO_13"   => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i40_S21_R1_001.fastq.gz'],
     "HDL_WT_14"       => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i41_S22_R1_001.fastq.gz'],
-    "APOB_WT_12"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i5_S3_R1_001.fastq.gz'],
-    "APOB_SRBIKO_13"  => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i6_S4_R1_001.fastq.gz'],
-    "APOB_WT_14"      => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i7_S5_R1_001.fastq.gz'],
-
   },
   groups => {
     "APOB_SRBIKO"  => [ "APOB_SRBIKO_2",  "APOB_SRBIKO_4",  "APOB_SRBIKO_9",  "APOB_SRBIKO_6",  "APOB_SRBIKO_7",   "APOB_SRBIKO_11",  "APOB_SRBIKO_13" ],
@@ -195,57 +202,36 @@ my $def = {
 };
 
 my $config = performSmallRNA_mm10( $def, 0 );
+$config->{miRge} = {
+  class        => "SmallRNA::miRge",
+  perform      => 1,
+  miRge_script => "/scratch/cqs/shengq1/tools/miRge/miRge.pl",
+  target_dir   => "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/comparison/miRge",
+  option       => "--adapter none --species mouse --diff-isomirs",
+  source_ref   => [ "cutadapt", ".fastq.gz" ],
+  sh_direct    => 1,
+  pbs          => {
+    "email"    => $email,
+    "nodes"    => "1:ppn=8",
+    "walltime" => "72",
+    "mem"      => "20gb"
+  },
+};
 
-#$config->{bowtie1_genome_1mm_NTA_smallRNA_count}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/host_genome/bowtie1_genome_1mm_NTA_smallRNA_count";
-#performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_count" );
+#performTask( $config, "miRge" );
 
-my $topreads = $def->{top_read_number};
-$config->{identical_sequence_count_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_count_table";
-$config->{"identical_sequence_top${topreads}_contig_blast"}{target_dir} =
-  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top${topreads}_contig_blast";
-$config->{"identical_sequence_top${topreads}_read_blast"}{target_dir} =
-  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top${topreads}_read_blast";
-$config->{"identical_sequence_top${topreads}_minicontig_blast"}{target_dir} =
-  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/identical_sequence_top${topreads}_minicontig_blast";
-
-$config->{"deseq2_top${topreads}_contigs"}{target_dir} =
-  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top${topreads}_contigs";
-$config->{"deseq2_top${topreads}_reads"}{target_dir} =
-  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top${topreads}_reads";
-$config->{"deseq2_top${topreads}_minicontigs"}{target_dir} =
-  "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top${topreads}_minicontigs";
+$config->{bowtie1_genome_1mm_NTA_smallRNA_table}{target_dir}         = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/bowtie1_genome_1mm_NTA_smallRNA_table";
+$config->{deseq2_miRNA}{target_dir}         = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_miRNA";
+$config->{deseq2_tRNA}{target_dir}          = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_tRNA";
+$config->{deseq2_otherSmallRNA}{target_dir} = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_otherSmallRNA";
+$config->{deseq2_miRNA_NTA_base}{target_dir}         = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_miRNA_NTA_base";
 
 
-performTask( $config, "identical_sequence_count_table" );
-performTask( $config, "identical_sequence_top${topreads}_contig_blast" );
-performTask( $config, "identical_sequence_top${topreads}_read_blast" );
-performTask( $config, "identical_sequence_top${topreads}_minicontig_blast" );
-performTask( $config, "deseq2_top${topreads}_contigs" );
-performTask( $config, "deseq2_top${topreads}_reads" );
-performTask( $config, "deseq2_top${topreads}_minicontigs" );
-
-#$config->{deseq2_top100_reads}{target_dir}            = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_reads";
-#$config->{deseq2_top100_contigs}{target_dir}          = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/class_independent/deseq2_top100_contigs";
-#$config->{deseq2_miRNA}{target_dir}                   = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/host_genome/deseq2_miRNA";
-#performTask( $config, "identical_sequence_count_table" );
-#performTask( $config, "deseq2_top100_reads" );
-#performTask( $config, "deseq2_top100_contigs" );
+#performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_table" );
 #performTask( $config, "deseq2_miRNA" );
-##
-#for my $group ( "bacteria_group1", "bacteria_group2", "fungus_group4" ) {
-#  $config->{"bowtie1_${group}_pm_count"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_${group}_pm_count";
-#  $config->{"bowtie1_${group}_pm_table"}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/bowtie1_${group}_pm_table";
-#  $config->{"deseq2_${group}"}{target_dir}           = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_${group}";
-#  $config->{"deseq2_${group}_reads"}{target_dir}     = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/nonhost_genome/deseq2_${group}_reads";
-#
-#  performTask( $config, "bowtie1_${group}_pm_count" );
-#  performTask( $config, "bowtie1_${group}_pm_table" );
-#  performTask( $config, "deseq2_${group}" );
-#  performTask( $config, "deseq2_${group}_reads" );
-#}
-#
-##$config->{nonhost_overlap_vis}{target_dir} = "/scratch/cqs/shengq1/vickers/20160909_smallRNA_3018-KCV-77_78_79_mouse/data_visualization/nonhost_overlap_vis";
-##performTask( $config, "nonhost_overlap_vis" );
+#performTask( $config, "deseq2_tRNA" );
+#performTask( $config, "deseq2_otherSmallRNA" );
+performTask( $config, "deseq2_miRNA_NTA_base" );
 
 1;
 
