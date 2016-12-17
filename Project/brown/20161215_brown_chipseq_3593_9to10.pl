@@ -6,8 +6,8 @@ use CQS::ClassFactory;
 use CQS::FileUtils;
 use Data::Dumper;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160919_chipseq_HUVEC");
-my $task       = "chipseq_HUVEC";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20161215_brown_chipseq_3593_9to10");
+my $task       = "chipseq_3593_9to12";
 
 my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
 my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
@@ -19,21 +19,17 @@ my $email = "quanhu.sheng\@vanderbilt.edu";
 my $config = {
   general => { task_name => $task },
   files   => {
-    "HUVEC_1"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-1_1_sequence.txt.gz"],
-    "HUVEC_1_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-2_1_sequence.txt.gz"],
-    "HUVEC_2"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-3_1_sequence.txt.gz"],
-    "HUVEC_2_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-4_1_sequence.txt.gz"],
+    "H3K27ac_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-9_S1_R1_001.fastq.gz"],
+    "H3K27ac"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-10_S2_R1_001.fastq.gz"],
   },
   treatments => {
-    "HUVEC_1" => ["HUVEC_1"],
-    "HUVEC_2" => ["HUVEC_2"],
+    "H3K27ac" => ["H3K27ac"],
   },
   controls => {
-    "HUVEC_1" => ["HUVEC_1_Input"],
-    "HUVEC_2" => ["HUVEC_2_Input"],
+    "H3K27ac" => ["H3K27ac_Input"],
   },
   plotgroups => {
-    "HUVEC" => [ "HUVEC_1", "HUVEC_1_Input", "HUVEC_2", "HUVEC_2_Input" ],
+    "H3K27ac" => [ "H3K27ac", "H3K27ac_Input" ],
   },
   fastqc_raw => {
     class      => "QC::FastQC",
@@ -181,9 +177,9 @@ my $config = {
     option     => "-g HG19 -y uniform -r",
 
     #option        => "-g HG19 -y uniform -r --save-temp",
-    source_ref => [ "bowtie1", ".bam\$" ],
-    groups_ref => "plotgroups",
-    gff_file   => $plot_gff,
+    source_ref         => "bowtie1",
+    groups_ref         => "plotgroups",
+    gff_file           => $plot_gff,
     is_rainbow_color   => 0,
     is_draw_individual => 0,
     is_single_pdf      => 1,

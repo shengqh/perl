@@ -6,8 +6,7 @@ use CQS::ClassFactory;
 use CQS::FileUtils;
 use Data::Dumper;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160919_chipseq_HUVEC");
-my $task       = "chipseq_HUVEC";
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20161216_chipseq_gse");
 
 my $fasta_file   = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome.fa";
 my $bowtie_index = "/scratch/cqs/shengq1/references/gencode/hg19/bowtie_index_1.1.2/GRCh37.p13.genome";
@@ -15,36 +14,70 @@ my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
 my $plot_gff     = "/scratch/cqs/shengq1/chipseq/20160823_janathan_chipseq_195R3_gse53999_bamplot/config/H3K27ac.gff";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
+my $task  = "20161216_chipseq_gse";
 
 my $config = {
   general => { task_name => $task },
   files   => {
-    "HUVEC_1"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-1_1_sequence.txt.gz"],
-    "HUVEC_1_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-2_1_sequence.txt.gz"],
-    "HUVEC_2"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-3_1_sequence.txt.gz"],
-    "HUVEC_2_Input" => ["/gpfs21/scratch/cqs/shengq1/brown/data/3593/3593-JDB-4_1_sequence.txt.gz"],
+    "CM1_8_H3K27ac" => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279957.sra"],
+    "CM1_8_Input"   => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279961.sra"],
+    "CM1_8_Tbx5"    => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279963.sra"],
+    "Gata4"         => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279964.sra"],
+    "H3K27ac"       => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279965.sra"],
+    "H3K27me3"      => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279966.sra"],
+    "H3K36me3"      => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279967.sra"],
+    "input"         => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279969.sra"],
+    "Med1"          => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279970.sra"],
+    "Tbx5"          => ["/gpfs21/scratch/cqs/shengq1/brown/data/20161216_chipseq_gse/GSM2279971.sra"],
   },
   treatments => {
-    "HUVEC_1" => ["HUVEC_1"],
-    "HUVEC_2" => ["HUVEC_2"],
+    "CM1_8_H3K27ac" => ["CM1_8_H3K27ac"],
+    "CM1_8_Tbx5"    => ["CM1_8_Tbx5"],
+    "Gata4"         => ["Gata4"],
+    "H3K27ac"       => ["H3K27ac"],
+    "H3K27me3"      => ["H3K27me3"],
+    "H3K36me3"      => ["H3K36me3"],
+    "Med1"          => ["Med1"],
+    "Tbx5"          => ["Tbx5"],
   },
   controls => {
-    "HUVEC_1" => ["HUVEC_1_Input"],
-    "HUVEC_2" => ["HUVEC_2_Input"],
+    "CM1_8_H3K27ac" => ["CM1_8_Input"],
+    "CM1_8_Tbx5"    => ["CM1_8_Input"],
+    "Gata4"         => ["input"],
+    "H3K27ac"       => ["input"],
+    "H3K27me3"      => ["input"],
+    "H3K36me3"      => ["input"],
+    "Med1"          => ["input"],
+    "Tbx5"          => ["input"],
   },
   plotgroups => {
-    "HUVEC" => [ "HUVEC_1", "HUVEC_1_Input", "HUVEC_2", "HUVEC_2_Input" ],
+    "chipseq" => [ "CM1_8_Input", "CM1_8_H3K27ac", "CM1_8_Tbx5", "input", "Gata4", "H3K27ac", "H3K27me3", "H3K36me3", "Med1", "Tbx5" ],
   },
-  fastqc_raw => {
-    class      => "QC::FastQC",
+  sra2fastq => {
+    class      => "SRA::FastqDump",
     perform    => 1,
-    target_dir => "${target_dir}/fastqc_raw",
+    ispaired   => 0,
+    target_dir => "${target_dir}/sra2fastqd",
     option     => "",
     source_ref => "files",
     sh_direct  => 0,
     pbs        => {
       "email"    => $email,
       "nodes"    => "1:ppn=1",
+      "walltime" => "10",
+      "mem"      => "10gb"
+    },
+  },
+  fastqc_raw => {
+    class      => "QC::FastQC",
+    perform    => 1,
+    target_dir => "${target_dir}/fastqc_raw",
+    option     => "",
+    source_ref => "sra2fastq",
+    sh_direct  => 0,
+    pbs        => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=2",
       "walltime" => "2",
       "mem"      => "10gb"
     },
@@ -68,7 +101,7 @@ my $config = {
     perform    => 1,
     target_dir => "${target_dir}/cutadapt",
     option     => "-m 30 --trim-n",
-    source_ref => ["files"],
+    source_ref => "sra2fastq",
     adapter    => "AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC",    #trueseq adapter
     extension  => "_clipped.fastq",
     sh_direct  => 0,
@@ -120,6 +153,22 @@ my $config = {
       "nodes"    => "1:ppn=1",
       "walltime" => "24",
       "mem"      => "20gb"
+    },
+  },
+  bowtie1 => {
+    class         => "Alignment::Bowtie1",
+    perform       => 1,
+    target_dir    => "${target_dir}/bowtie1",
+    option        => "-v 1 -m 1 --best --strata",
+    fasta_file    => $fasta_file,
+    source_ref    => [ "cutadapt", ".fastq.gz\$" ],
+    bowtie1_index => $bowtie_index,
+    sh_direct     => 0,
+    pbs           => {
+      "email"    => $email,
+      "nodes"    => "1:ppn=8",
+      "walltime" => "72",
+      "mem"      => "40gb"
     },
   },
   bowtie1 => {
@@ -181,9 +230,9 @@ my $config = {
     option     => "-g HG19 -y uniform -r",
 
     #option        => "-g HG19 -y uniform -r --save-temp",
-    source_ref => [ "bowtie1", ".bam\$" ],
-    groups_ref => "plotgroups",
-    gff_file   => $plot_gff,
+    source_ref         => "bowtie1",
+    groups_ref         => "plotgroups",
+    gff_file           => $plot_gff,
     is_rainbow_color   => 0,
     is_draw_individual => 0,
     is_single_pdf      => 1,
@@ -201,8 +250,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_raw",         "cutadapt",                 "fastqc_post_trim", "fastq_len",                   "bowtie1" ],
-      step_2 => [ "fastqc_raw_summary", "fastqc_post_trim_summary", "macs1callpeak",    "macs1callpeak_bradner_rose2", "bamplot" ],
+      step_1 => [ "sra2fastq",          "fastqc_raw",               "cutadapt",      "fastqc_post_trim",            "fastq_len", "bowtie1" ],
+      step_2 => [ "fastqc_raw_summary", "fastqc_post_trim_summary", "macs1callpeak", "macs1callpeak_bradner_rose2", "bamplot" ],
     },
     sh_direct => 0,
     pbs       => {

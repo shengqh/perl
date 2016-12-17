@@ -140,8 +140,9 @@ my $config = {
   trimmer => {
     class      => "CQS::FastqTrimmer",
     perform    => 0,
-    target_dir => "${target_dir}/trim_terminalN",
-    option     => "-n -z -m 30",
+    target_dir => "${target_dir}/trim_terminalN_new",
+    #option     => "-n -z -m 30",
+    option     => "",
     extension  => "_trim.fastq.gz",
     source_ref => "files",
     cqstools   => $cqstools,
@@ -469,9 +470,7 @@ my $config = {
   },
 };
 
-#performConfig($config);
-#performTask( $config, "star_dexseqcount" );
-performTask( $config, "star_exontable" );
+performTask( $config, "trimmer" );
 
 1;
 

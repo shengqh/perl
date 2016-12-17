@@ -27,6 +27,9 @@ my $def = {
 
   special_sequence_file => "/scratch/cqs/shengq1/vickers/20161121_smallRNA_3018_85_spikein_run2/spikein.txt",
 
+  #NTA consideration
+  consider_tRNA_NTA=>1,
+
   #next flex
   fastq_remove_random => 4,
   #Data
@@ -42,7 +45,8 @@ my $def = {
   },
 };
 
-performSmallRNA_hg19($def);
+my $config = performSmallRNA_hg19($def, 0);
+performTask($config, "identical_NTA");
 
 1;
 

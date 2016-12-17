@@ -9,9 +9,9 @@ use Data::Dumper;
 my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/brown/20160919_chipseq_mouseLiver");
 my $task       = "chipseq_mouseLiver";
 
-my $fasta_file     = "/scratch/cqs/shengq1/references/mm10_sorted_M/bowtie_index_1.1.2/mm10.fa";
-my $bowtie_index   = "/scratch/cqs/shengq1/references/mm10_sorted_M/bowtie_index_1.1.2/mm10";
-my $cqstools       = "/home/shengq1/cqstools/cqstools.exe";
+my $fasta_file   = "/scratch/cqs/shengq1/references/mm10_sorted_M/bowtie_index_1.1.2/mm10.fa";
+my $bowtie_index = "/scratch/cqs/shengq1/references/mm10_sorted_M/bowtie_index_1.1.2/mm10";
+my $cqstools     = "/home/shengq1/cqstools/cqstools.exe";
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
@@ -127,7 +127,7 @@ my $config = {
     target_dir              => "${target_dir}/bowtie1",
     option                  => "-v 1 -m 1 --best --strata",
     fasta_file              => $fasta_file,
-    source_ref              => "cutadapt",
+    source_ref              => [ "cutadapt", ".fastq.gz" ],
     bowtie1_index           => $bowtie_index,
     chromosome_grep_pattern => "\"^chr\"",
     sh_direct               => 0,
@@ -143,7 +143,7 @@ my $config = {
     perform      => 1,
     target_dir   => "${target_dir}/macs1callpeak",
     option       => "-p 1e-9 -w -S --space=50",
-    source_ref   => "bowtie1",
+    source_ref   => [ "bowtie1", ".bam\$" ],
     groups_ref   => "treatments",
     controls_ref => "controls",
     sh_direct    => 0,
@@ -159,7 +159,7 @@ my $config = {
     perform              => 1,
     target_dir           => "${target_dir}/macs1callpeak_bradner_rose2",
     option               => "",
-    source_ref           => "bowtie1",
+    source_ref           => [ "bowtie1", ".bam\$" ],
     groups_ref           => "treatments",
     controls_ref         => "controls",
     pipeline_dir         => "/scratch/cqs/shengq1/local/bin/bradnerlab",
@@ -179,8 +179,8 @@ my $config = {
     target_dir => "${target_dir}/sequencetask",
     option     => "",
     source     => {
-      step_1 => [ "fastqc_raw", "cutadapt", "fastqc_post_trim", "fastq_len", "bowtie1" ],
-      step_2 => [ "fastqc_raw_summary", "macs1callpeak", "macs1callpeak_bradner_rose2" ],
+      step_1 => [ "fastqc_raw",         "cutadapt",                 "fastqc_post_trim", "fastq_len",                   "bowtie1" ],
+      step_2 => [ "fastqc_raw_summary", "fastqc_post_trim_summary", "macs1callpeak",    "macs1callpeak_bradner_rose2", "bamplot" ],
     },
     sh_direct => 0,
     pbs       => {

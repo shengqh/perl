@@ -37,6 +37,7 @@ my $cluster = "slurm";
 
 #my $genes = "APC PTEN NEB RYR1 FAT1 FAT4";
 my $genes = "5031439G07RIK ABCA13 ABCA2 ADAMTSL3 APC2 ARFGEF2 ARVCF ASPM ATP7A BYSL CADPS2 CASZ1 CCAR2 CCNDBP1 CEBPZ CELSR1 CELSR2 CEP152 CYP4A14 D130043K22RIK DEFB34 DENND4C DHX8 DIP2B DLG5 DLGAP2 DNAH10 EIF3A EPHB2 F13A1 FAM175A FAT1 FAT3 FBLN1 GEMIN5 GM973 GOLGA2 GRIA3 HGSNAT HMCN2 HYDIN IFT122 IGFLR1 KIF14 KIF1B KIF21B KNDC1 LAMC2 LRP1 LRRFIP1 LTBP1 MAN2B2 MAP4K4 MED17 MED21 MEGF8 MICALCL MMS22L MRVI1 MYO7B N4BP1 NAV2 NF1 NME8 NOL10 NR4A1 NTF5 NTRK1 NXF3 PCDH9 PCDHA3 PCDHB7 PCNT PIK3C3 PLXNB1 POP1 POPDC3 PPP6R2 PRDM2 PRKD1 PTGES3 PTPN21 RALGAPB RGS13 RRS1 RSPO1 SENP2 SERPINE2 SH2B2 SH3RF1 SMYD4 SNX16 SYNE2 TDRD5 TDRD6 TENM1 TMC6 TTK TTN UBR4 UTRN WDR45 XDH ZC3H13 ZCCHC6 ZFHX3 ZFP384 CCDC108 CLIP2 DPYSL5 EPHB3 FBXL19 NAV3 NCKAP1L NES PLXNA3 SPTBN4 VWA8 MUC4";
+my $detail_genes = "APC";
 
 my $task_name = "Adenoma";
 my $config    = {
@@ -1848,6 +1849,8 @@ my $config    = {
     perform                 => 1,
     target_dir              => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter",
     source_ref              => [ "bwa_refine_hc_gvcf_vqsr_annovar_filter", ".snv.tsv" ],
+    detail_file_ref         => [ "bwa_refine_hc_gvcf_vqsr_annovar_filter", ".filtered.tsv" ],
+    detail_genes            => $detail_genes,
     option                  => "",
     sample_name_pattern     => "cur_",
     sample_name_suffix      => "",
@@ -1886,6 +1889,8 @@ my $config    = {
     perform                 => 1,
     target_dir              => "${target_dir}/bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
     source_ref              => [ "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1", ".snv.tsv" ],
+    detail_file_ref         => [ "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1", ".filtered.tsv" ],
+    detail_genes            => $detail_genes,
     option                  => "",
     sample_name_pattern     => "cur_",
     sample_name_suffix      => "",
@@ -1925,11 +1930,10 @@ my $config    = {
     source     => {
       step1 => [ "merge_fastq", "fastqc", "bwa", "bwa_refine", "bwa_refine_hc_gvcf" ],
       step2 => [
-        "fastqc_summary",                                   "bwa_refine_hc_gvcf_vqsr",
-        "bwa_refine_hc_gvcf_vqsr_annovar",                  "bwa_refine_hc_gvcf_vqsr_annovar_filter",
-        "bwa_refine_hc_gvcf_vqsr_annovar_filter_geneannotation", 
-        "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",     "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_geneannotation",
-        "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_fishertest"
+        "fastqc_summary",                                              "bwa_refine_hc_gvcf_vqsr",
+        "bwa_refine_hc_gvcf_vqsr_annovar",                             "bwa_refine_hc_gvcf_vqsr_annovar_filter",
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter_geneannotation",       "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1",
+        "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_geneannotation", "bwa_refine_hc_gvcf_vqsr_annovar_filter_base1_fishertest"
       ],
     },
     sh_direct => 0,
@@ -1942,7 +1946,7 @@ my $config    = {
   },
 };
 
-performConfig( $config );
+performConfig($config);
 
 1;
 
