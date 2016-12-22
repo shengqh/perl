@@ -17,6 +17,8 @@ my $def = {
   table_vis_group_text_size => 12,
 
   use_pearson_in_hca => 1,
+  use_green_red_color_in_hca => 1,
+  top25cv_in_hca => 1,
 
   transcript_gtf => "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v25lift37.annotation.gtf",
   name_map_file  => "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v25lift37.annotation.map",
