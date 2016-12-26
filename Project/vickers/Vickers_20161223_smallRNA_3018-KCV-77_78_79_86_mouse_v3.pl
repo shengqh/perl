@@ -30,29 +30,91 @@ my $def = {
   #next flex
   fastq_remove_random => 4,
 
-  #DE
   #Data
   files => {
-    "Liver_WT_01"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i1_S1_R1_001.fastq.gz'],
-    "Liver_WT_03"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i3_S3_R1_001.fastq.gz'],
-    "Liver_WT_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i22_S22_R1_001.fastq.gz'],
-    "Liver_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i5_S5_R1_001.fastq.gz'],
-    "Liver_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i23_S23_R1_001.fastq.gz'],
-    "Liver_WT_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i24_S24_R1_001.fastq.gz'],
-    "Liver_WT_08"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i8_S5_R1_001.fastq.gz'],
-    "Liver_WT_10"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i10_S6_R1_001.fastq.gz'],
-    "Liver_WT_12"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i12_S8_R1_001.fastq.gz'],
-    "Liver_WT_14"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i14_S10_R1_001.fastq.gz'],
-    "Liver_SRBIKO_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i19_S19_R1_001.fastq.gz'],
-    "Liver_SRBIKO_02" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i2_S2_R1_001.fastq.gz'],
-    "Liver_SRBIKO_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i21_S21_R1_001.fastq.gz'],
-    "Liver_SRBIKO_04" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i4_S4_R1_001.fastq.gz'],
-    "Liver_SRBIKO_06" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i6_S3_R1_001.fastq.gz'],
-    "Liver_SRBIKO_07" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i7_S4_R1_001.fastq.gz'],
-    "Liver_SRBIKO_09" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i9_S6_R1_001.fastq.gz'],
-    "Liver_SRBIKO_11" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i11_S7_R1_001.fastq.gz'],
-    "Liver_SRBIKO_13" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i13_S9_R1_001.fastq.gz'],
-    "Liver_SRBIKO_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i20_S20_R1_001.fastq.gz'],
+
+    "APOB_WT_01"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i42_S19_R1_001.fastq.gz'],
+    "APOB_WT_03"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i44_S21_R1_001.fastq.gz'],
+    "APOB_WT_05"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i46_S20_R1_001.fastq.gz'],
+    "APOB_WT_08"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i1_S1_R1_001.fastq.gz'],
+    "APOB_WT_10"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i3_S1_R1_001.fastq.gz'],
+    "APOB_WT_12"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i5_S3_R1_001.fastq.gz'],
+    "APOB_WT_14"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i7_S5_R1_001.fastq.gz'],
+    "APOB_WT_86_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i4_S4_R1_001.fastq.gz'],
+    "APOB_WT_86_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i5_S5_R1_001.fastq.gz'],
+    "APOB_WT_86_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i6_S6_R1_001.fastq.gz'],
+    "APOB_SRBIKO_02"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i43_S20_R1_001.fastq.gz'],
+    "APOB_SRBIKO_04"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i45_S22_R1_001.fastq.gz'],
+    "APOB_SRBIKO_06"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i47_S21_R1_001.fastq.gz'],
+    "APOB_SRBIKO_07"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i48_S22_R1_001.fastq.gz'],
+    "APOB_SRBIKO_09"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i2_S2_R1_001.fastq.gz'],
+    "APOB_SRBIKO_11"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i4_S2_R1_001.fastq.gz'],
+    "APOB_SRBIKO_13"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i6_S4_R1_001.fastq.gz'],
+    "APOB_SRBIKO_86_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i1_S1_R1_001.fastq.gz'],
+    "APOB_SRBIKO_86_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i3_S3_R1_001.fastq.gz'],
+    "APOB_SRBIKO_86_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i2_S2_R1_001.fastq.gz'],
+
+    "Bile_WT_01"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i15_S9_R1_001.fastq.gz'],
+    "Bile_WT_03"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i17_S11_R1_001.fastq.gz'],
+    "Bile_WT_05"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i19_S13_R1_001.fastq.gz'],
+    "Bile_WT_08"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i22_S14_R1_001.fastq.gz'],
+    "Bile_WT_10"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i24_S14_R1_001.fastq.gz'],
+    "Bile_WT_12"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i25_S15_R1_001.fastq.gz'],
+    "Bile_WT_14"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i27_S17_R1_001.fastq.gz'],
+    "Bile_WT_86_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i16_S16_R1_001.fastq.gz'],
+    "Bile_WT_86_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i17_S17_R1_001.fastq.gz'],
+    "Bile_WT_86_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i18_S18_R1_001.fastq.gz'],
+    "Bile_SRBIKO_02"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i16_S10_R1_001.fastq.gz'],
+    "Bile_SRBIKO_04"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i18_S12_R1_001.fastq.gz'],
+    "Bile_SRBIKO_06"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i20_S12_R1_001.fastq.gz'],
+    "Bile_SRBIKO_07"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i21_S13_R1_001.fastq.gz'],
+    "Bile_SRBIKO_09"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i23_S15_R1_001.fastq.gz'],
+    "Bile_SRBIKO_13"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i26_S16_R1_001.fastq.gz'],
+    "Bile_SRBIKO_86_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i13_S13_R1_001.fastq.gz'],
+    "Bile_SRBIKO_86_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i15_S15_R1_001.fastq.gz'],
+    "Bile_SRBIKO_86_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i14_S14_R1_001.fastq.gz'],
+
+    "HDL_WT_01"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i28_S14_R1_001.fastq.gz'],
+    "HDL_WT_03"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i30_S16_R1_001.fastq.gz'],
+    "HDL_WT_08"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i33_S16_R1_001.fastq.gz'],
+    "HDL_WT_10"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i35_S18_R1_001.fastq.gz'],
+    "HDL_WT_05"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i38_S19_R1_001.fastq.gz'],
+    "HDL_WT_12"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i39_S20_R1_001.fastq.gz'],
+    "HDL_WT_14"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i41_S22_R1_001.fastq.gz'],
+    "HDL_WT_86_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i10_S10_R1_001.fastq.gz'],
+    "HDL_WT_86_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i11_S11_R1_001.fastq.gz'],
+    "HDL_WT_86_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i12_S12_R1_001.fastq.gz'],
+    "HDL_SRBIKO_02"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i29_S15_R1_001.fastq.gz'],
+    "HDL_SRBIKO_06"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i31_S17_R1_001.fastq.gz'],
+    "HDL_SRBIKO_07"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i32_S18_R1_001.fastq.gz'],
+    "HDL_SRBIKO_09"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i34_S17_R1_001.fastq.gz'],
+    "HDL_SRBIKO_11"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i36_S19_R1_001.fastq.gz'],
+    "HDL_SRBIKO_04"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i37_S18_R1_001.fastq.gz'],
+    "HDL_SRBIKO_13"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i40_S21_R1_001.fastq.gz'],
+    "HDL_SRBIKO_86_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i7_S7_R1_001.fastq.gz'],
+    "HDL_SRBIKO_86_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i9_S9_R1_001.fastq.gz'],
+    "HDL_SRBIKO_86_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i8_S8_R1_001.fastq.gz'],
+
+    "Liver_WT_01"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i1_S1_R1_001.fastq.gz'],
+    "Liver_WT_03"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i3_S3_R1_001.fastq.gz'],
+    "Liver_WT_05"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i5_S5_R1_001.fastq.gz'],
+    "Liver_WT_08"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i8_S5_R1_001.fastq.gz'],
+    "Liver_WT_10"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i10_S6_R1_001.fastq.gz'],
+    "Liver_WT_12"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i12_S8_R1_001.fastq.gz'],
+    "Liver_WT_14"        => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i14_S10_R1_001.fastq.gz'],
+    "Liver_WT_86_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i22_S22_R1_001.fastq.gz'],
+    "Liver_WT_86_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i23_S23_R1_001.fastq.gz'],
+    "Liver_WT_86_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i24_S24_R1_001.fastq.gz'],
+    "Liver_SRBIKO_02"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i2_S2_R1_001.fastq.gz'],
+    "Liver_SRBIKO_04"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i4_S4_R1_001.fastq.gz'],
+    "Liver_SRBIKO_06"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i6_S3_R1_001.fastq.gz'],
+    "Liver_SRBIKO_07"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i7_S4_R1_001.fastq.gz'],
+    "Liver_SRBIKO_09"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i9_S6_R1_001.fastq.gz'],
+    "Liver_SRBIKO_11"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i11_S7_R1_001.fastq.gz'],
+    "Liver_SRBIKO_13"    => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i13_S9_R1_001.fastq.gz'],
+    "Liver_SRBIKO_86_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i19_S19_R1_001.fastq.gz'],
+    "Liver_SRBIKO_86_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i21_S21_R1_001.fastq.gz'],
+    "Liver_SRBIKO_86_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i20_S20_R1_001.fastq.gz'],
 
     "Urine_WT_01"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i8_S6_R1_001.fastq.gz'],
     "Urine_WT_03"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i10_S8_R1_001.fastq.gz'],
@@ -65,113 +127,57 @@ my $def = {
     "Urine_SRBIKO_09" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i15_S11_R1_001.fastq.gz'],
     "Urine_SRBIKO_11" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i16_S11_R1_001.fastq.gz'],
     "Urine_SRBIKO_13" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i17_S12_R1_001.fastq.gz'],
-
-    "HDL_WT_01"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i28_S14_R1_001.fastq.gz'],
-    "HDL_WT_03"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i30_S16_R1_001.fastq.gz'],
-    "HDL_WT_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i10_S10_R1_001.fastq.gz'],
-    "HDL_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i11_S11_R1_001.fastq.gz'],
-    "HDL_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i38_S19_R1_001.fastq.gz'],
-    "HDL_WT_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i12_S12_R1_001.fastq.gz'],
-    "HDL_WT_08"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i33_S16_R1_001.fastq.gz'],
-    "HDL_WT_10"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i35_S18_R1_001.fastq.gz'],
-    "HDL_WT_12"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i39_S20_R1_001.fastq.gz'],
-    "HDL_WT_14"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i41_S22_R1_001.fastq.gz'],
-    "HDL_SRBIKO_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i7_S7_R1_001.fastq.gz'],
-    "HDL_SRBIKO_02" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i29_S15_R1_001.fastq.gz'],
-    "HDL_SRBIKO_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i9_S9_R1_001.fastq.gz'],
-    "HDL_SRBIKO_04" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i37_S18_R1_001.fastq.gz'],
-    "HDL_SRBIKO_06" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i31_S17_R1_001.fastq.gz'],
-    "HDL_SRBIKO_07" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i32_S18_R1_001.fastq.gz'],
-    "HDL_SRBIKO_09" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i34_S17_R1_001.fastq.gz'],
-    "HDL_SRBIKO_11" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i36_S19_R1_001.fastq.gz'],
-    "HDL_SRBIKO_13" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i40_S21_R1_001.fastq.gz'],
-    "HDL_SRBIKO_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i8_S8_R1_001.fastq.gz'],
-
-    "APOB_WT_01"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i42_S19_R1_001.fastq.gz'],
-    "APOB_WT_03"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i44_S21_R1_001.fastq.gz'],
-    "APOB_WT_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i4_S4_R1_001.fastq.gz'],
-    "APOB_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i5_S5_R1_001.fastq.gz'],
-    "APOB_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i46_S20_R1_001.fastq.gz'],
-    "APOB_WT_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i6_S6_R1_001.fastq.gz'],
-    "APOB_WT_08"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i1_S1_R1_001.fastq.gz'],
-    "APOB_WT_10"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i3_S1_R1_001.fastq.gz'],
-    "APOB_WT_12"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i5_S3_R1_001.fastq.gz'],
-    "APOB_WT_14"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i7_S5_R1_001.fastq.gz'],
-    "APOB_SRBIKO_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i1_S1_R1_001.fastq.gz'],
-    "APOB_SRBIKO_02" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i43_S20_R1_001.fastq.gz'],
-    "APOB_SRBIKO_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i3_S3_R1_001.fastq.gz'],
-    "APOB_SRBIKO_04" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i45_S22_R1_001.fastq.gz'],
-    "APOB_SRBIKO_06" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i47_S21_R1_001.fastq.gz'],
-    "APOB_SRBIKO_07" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i48_S22_R1_001.fastq.gz'],
-    "APOB_SRBIKO_09" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i2_S2_R1_001.fastq.gz'],
-    "APOB_SRBIKO_11" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i4_S2_R1_001.fastq.gz'],
-    "APOB_SRBIKO_13" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i6_S4_R1_001.fastq.gz'],
-    "APOB_SRBIKO_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i2_S2_R1_001.fastq.gz'],
-
-    "Bile_WT_01"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i15_S9_R1_001.fastq.gz'],
-    "Bile_WT_03"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i17_S11_R1_001.fastq.gz'],
-    "Bile_WT_04"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i16_S16_R1_001.fastq.gz'],
-    "Bile_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i19_S13_R1_001.fastq.gz'],
-    "Bile_WT_05"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i17_S17_R1_001.fastq.gz'],
-    "Bile_WT_06"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i18_S18_R1_001.fastq.gz'],
-    "Bile_WT_10"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i24_S14_R1_001.fastq.gz'],
-    "Bile_WT_12"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i25_S15_R1_001.fastq.gz'],
-    "Bile_WT_14"     => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i27_S17_R1_001.fastq.gz'],
-    "Bile_SRBIKO_01" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i13_S13_R1_001.fastq.gz'],
-    "Bile_SRBIKO_02" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i16_S10_R1_001.fastq.gz'],
-    "Bile_SRBIKO_03" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i15_S15_R1_001.fastq.gz'],
-    "Bile_SRBIKO_06" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i20_S12_R1_001.fastq.gz'],
-    "Bile_SRBIKO_07" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i21_S13_R1_001.fastq.gz'],
-    "Bile_SRBIKO_09" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-78/3018/3018-KCV-78-i23_S15_R1_001.fastq.gz'],
-    "Bile_SRBIKO_13" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-79/3018/3018-KCV-79-i26_S16_R1_001.fastq.gz'],
-    "Bile_SRBIKO_20" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-86/3018-KCV-86-i14_S14_R1_001.fastq.gz'],
-    "Bile_SRBIKO_40" => ['/gpfs21/scratch/cqs/zhaos/vickers/data/3018/3018-KCV-77/3018/3018-KCV-77-i18_S12_R1_001.fastq.gz'],
   },
   groups => {
-    "APOB_SRBIKO"  => [ "APOB_SRBIKO_2",  "APOB_SRBIKO_4",  "APOB_SRBIKO_9",  "APOB_SRBIKO_6",  "APOB_SRBIKO_7",   "APOB_SRBIKO_11",  "APOB_SRBIKO_13" ],
-    "APOB_WT"      => [ "APOB_WT_1",      "APOB_WT_3",      "APOB_WT_8",      "APOB_WT_5",      "APOB_WT_10",      "APOB_WT_12",      "APOB_WT_14" ],
-    "Bile_SRBIKO"  => [ "Bile_SRBIKO_2",  "Bile_SRBIKO_4",  "Bile_SRBIKO_6",  "Bile_SRBIKO_7",  "Bile_SRBIKO_9",   "Bile_SRBIKO_13" ],
-    "Bile_WT"      => [ "Bile_WT_1",      "Bile_WT_3",      "Bile_WT_5",      "Bile_WT_8",      "Bile_WT_10",      "Bile_WT_12",      "Bile_WT_14" ],
-    "HDL_SRBIKO"   => [ "HDL_SRBIKO_2",   "HDL_SRBIKO_6",   "HDL_SRBIKO_7",   "HDL_SRBIKO_9",   "HDL_SRBIKO_11",   "HDL_SRBIKO_4",    "HDL_SRBIKO_13" ],
-    "HDL_WT"       => [ "HDL_WT_1",       "HDL_WT_3",       "HDL_WT_8",       "HDL_WT_10",      "HDL_WT_5",        "HDL_WT_12",       "HDL_WT_14" ],
-    "Liver_SRBIKO" => [ "Liver_SRBIKO_2", "Liver_SRBIKO_4", "Liver_SRBIKO_6", "Liver_SRBIKO_7", "Liver_SRBIKO_9",  "Liver_SRBIKO_11", "Liver_SRBIKO_13" ],
-    "Liver_WT"     => [ "Liver_WT_1",     "Liver_WT_3",     "Liver_WT_5",     "Liver_WT_8",     "Liver_WT_10",     "Liver_WT_12",     "Liver_WT_14" ],
-    "Urine_SRBIKO" => [ "Urine_SRBIKO_2", "Urine_SRBIKO_6", "Urine_SRBIKO_7", "Urine_SRBIKO_9", "Urine_SRBIKO_11", "Urine_SRBIKO_13" ],
-    "Urine_WT"     => [ "Urine_WT_3",     "Urine_WT_1",     "Urine_WT_5",     "Urine_WT_8",     "Urine_WT_14" ],
-
+    "APOB_WT" => [ "APOB_WT_01", "APOB_WT_03", "APOB_WT_05", "APOB_WT_08", "APOB_WT_10", "APOB_WT_12", "APOB_WT_14", "APOB_WT_86_04", "APOB_WT_86_05", "APOB_WT_86_06" ],
+    "APOB_SRBIKO" =>
+      [ "APOB_SRBIKO_02", "APOB_SRBIKO_04", "APOB_SRBIKO_06", "APOB_SRBIKO_07", "APOB_SRBIKO_09", "APOB_SRBIKO_11", "APOB_SRBIKO_13", "APOB_SRBIKO_86_01", "APOB_SRBIKO_86_03", "APOB_SRBIKO_86_20" ],
+    "Bile_WT" => [ "Bile_WT_01", "Bile_WT_03", "Bile_WT_05", "Bile_WT_08", "Bile_WT_10", "Bile_WT_12", "Bile_WT_14", "Bile_WT_86_04", "Bile_WT_86_05", "Bile_WT_86_06" ],
+    "Bile_SRBIKO" => [ "Bile_SRBIKO_02", "Bile_SRBIKO_04", "Bile_SRBIKO_06", "Bile_SRBIKO_07", "Bile_SRBIKO_09", "Bile_SRBIKO_13", "Bile_SRBIKO_86_01", "Bile_SRBIKO_86_03", "Bile_SRBIKO_86_20" ],
+    "HDL_WT" => [ "HDL_WT_01", "HDL_WT_03", "HDL_WT_08", "HDL_WT_10", "HDL_WT_05", "HDL_WT_12", "HDL_WT_14", "HDL_WT_86_04", "HDL_WT_86_05", "HDL_WT_86_06" ],
+    "HDL_SRBIKO" =>
+      [ "HDL_SRBIKO_02", "HDL_SRBIKO_06", "HDL_SRBIKO_07", "HDL_SRBIKO_09", "HDL_SRBIKO_11", "HDL_SRBIKO_04", "HDL_SRBIKO_13", "HDL_SRBIKO_86_01", "HDL_SRBIKO_86_03", "HDL_SRBIKO_86_20" ],
+    "Liver_WT"     => [ "Liver_WT_01", "Liver_WT_03", "Liver_WT_05", "Liver_WT_08", "Liver_WT_10", "Liver_WT_12", "Liver_WT_14", "Liver_WT_86_04", "Liver_WT_86_05", "Liver_WT_86_06" ],
+    "Liver_SRBIKO" => [
+      "Liver_SRBIKO_02", "Liver_SRBIKO_04",    "Liver_SRBIKO_06",    "Liver_SRBIKO_07", "Liver_SRBIKO_09", "Liver_SRBIKO_11",
+      "Liver_SRBIKO_13", "Liver_SRBIKO_86_01", "Liver_SRBIKO_86_03", "Liver_SRBIKO_86_20"
+    ],
+    "Urine_WT"     => [ "Urine_WT_01",     "Urine_WT_03",     "Urine_WT_05",     "Urine_WT_08",     "Urine_WT_14" ],
+    "Urine_SRBIKO" => [ "Urine_SRBIKO_02", "Urine_SRBIKO_06", "Urine_SRBIKO_07", "Urine_SRBIKO_09", "Urine_SRBIKO_11", "Urine_SRBIKO_13" ],
   },
   pairs => {
     "APOB_SRBIKO_vs_WT" => {
       groups => [ "APOB_WT", "APOB_SRBIKO" ],
       Batch  => [
-        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-77',
-        '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86'
       ],
     },
+
     "Bile_SRBIKO_vs_WT" => {
       groups => [ "Bile_WT", "Bile_SRBIKO" ],
       Batch  => [
-        '3018-KCV-77', '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-77',
-        '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86'
       ],
     },
     "HDL_SRBIKO_vs_WT" => {
       groups => [ "HDL_WT", "HDL_SRBIKO" ],
       Batch  => [
-        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-77',
-        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86'
       ],
     },
     "Liver_SRBIKO_vs_WT" => {
       groups => [ "Liver_WT", "Liver_SRBIKO" ],
       Batch  => [
-        '3018-KCV-77', '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-77',
-        '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86',
+        '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', '3018-KCV-86', '3018-KCV-86', '3018-KCV-86'
       ],
     },
     "Urine_SRBIKO_vs_WT" => {
       groups => [ "Urine_WT",    "Urine_SRBIKO" ],
-      Batch  => [ '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79', ],
+      Batch  => [ '3018-KCV-77', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-77', '3018-KCV-78', '3018-KCV-78', '3018-KCV-78', '3018-KCV-79', '3018-KCV-79' ],
     },
   },
   groups_vis_layout => {
@@ -223,36 +229,7 @@ my $def = {
   },
 };
 
-my $config = performSmallRNA_mm10( $def, 0 );
-$config->{miRge} = {
-  class        => "SmallRNA::miRge",
-  perform      => 1,
-  miRge_script => "/scratch/cqs/shengq1/tools/miRge/miRge.pl",
-  target_dir   => "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/comparison/miRge",
-  option       => "--adapter none --species mouse --diff-isomirs",
-  source_ref   => [ "cutadapt", ".fastq.gz" ],
-  sh_direct    => 1,
-  pbs          => {
-    "email"    => $email,
-    "nodes"    => "1:ppn=8",
-    "walltime" => "72",
-    "mem"      => "20gb"
-  },
-};
-
-#performTask( $config, "miRge" );
-
-$config->{bowtie1_genome_1mm_NTA_smallRNA_table}{target_dir} = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/bowtie1_genome_1mm_NTA_smallRNA_table";
-$config->{deseq2_miRNA}{target_dir}                          = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_miRNA";
-$config->{deseq2_tRNA}{target_dir}                           = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_tRNA";
-$config->{deseq2_otherSmallRNA}{target_dir}                  = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_otherSmallRNA";
-$config->{deseq2_miRNA_NTA_base}{target_dir}                 = "/scratch/cqs/shengq1/vickers/20161003_smallRNA_3018-KCV-77_78_79_mouse/deseq2_miRNA_NTA_base";
-
-#performTask( $config, "bowtie1_genome_1mm_NTA_smallRNA_table" );
-#performTask( $config, "deseq2_miRNA" );
-#performTask( $config, "deseq2_tRNA" );
-#performTask( $config, "deseq2_otherSmallRNA" );
-performTask( $config, "deseq2_miRNA_NTA_base" );
+my $config = performSmallRNA_mm10( $def, 1 );
 
 1;
 
