@@ -229,7 +229,8 @@ my $def = {
   },
 };
 
-my $config = performSmallRNA_mm10( $def, 1 );
+my $config = performSmallRNA_mm10( $def, 0 );
+performTask($config, "count_table_correlation");
 
 1;
 

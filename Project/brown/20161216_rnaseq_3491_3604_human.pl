@@ -16,13 +16,25 @@ my $def = {
   sequencetask_run_time     => 6,
   table_vis_group_text_size => 12,
 
-  use_pearson_in_hca => 1,
-  use_green_red_color_in_hca => 1,
-  top25cv_in_hca => 1,
+  #rnaseqc
+  perform_rnaseqc      => 0,
+  rnaseqc_init_command => "setpkgs -a java",
+  rnaseqc_jar          => "/home/shengq1/local/bin/RNA-SeQC_v1.1.8.jar",
+  fasta_file           => "/scratch/cqs/shengq1/references/gencode/hg19/GRCh37.p13.genome.fa",
+  rrna_fasta           => "/home/shengq1/local/bin/RNA-SeQC-resources/human_all_rRNA.fasta",
 
-  transcript_gtf => "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v25lift37.annotation.gtf",
-  name_map_file  => "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v25lift37.annotation.map",
-  star_index     => "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2b_gencodeV25_sjdb99",
+  #qc3
+  perform_qc3bam => 1,
+  qc3_perl       => "/scratch/cqs/shengq1/local/bin/qc3/qc3.pl",
+
+  #correlation
+  use_pearson_in_hca         => 1,
+  use_green_red_color_in_hca => 1,
+  top25cv_in_hca             => 1,
+
+  transcript_gtf => "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.gtf",
+  name_map_file  => "/scratch/cqs/shengq1/references/gencode/hg19/gencode.v19.chr_patch_hapl_scaff.annotation.map",
+  star_index     => "/scratch/cqs/shengq1/references/gencode/hg19/STAR_index_2.5.2b_gencodeV19_sjdb99",
 
   #Data
   files => {
