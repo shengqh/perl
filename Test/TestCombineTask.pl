@@ -5,7 +5,7 @@ use warnings;
 use CQS::ClassFactory;
 use CQS::FileUtils;
 
-my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/temp");
+my $target_dir = create_directory_or_die("/scratch/cqs/shengq1/temp/test");
 
 my $email = "quanhu.sheng\@vanderbilt.edu";
 
